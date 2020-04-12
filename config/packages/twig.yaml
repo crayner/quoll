@@ -1,0 +1,13 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        absoluteURL: '%absoluteURL%'
+        version: '%version%'
+        logPath: '%kernel.cache_dir%/logs'
+        systemName: '%system_name%'
+        organisationName: '%organisation_name%'
+    paths:
+        '%kernel.project_dir%/public': images
+    exception_controller: null

@@ -30,10 +30,11 @@
 !bin/console
 !bin/symfony_requirements
 /vendor/
+/node_modules/
 
 # Assets and user uploads
-/web/bundles/
-/web/uploads/
+/public/bundles/
+/public/uploads/
 
 # PHPUnit
 /app/phpunit.xml
@@ -50,3 +51,12 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+/config/packages/quoll.yaml

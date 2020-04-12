@@ -1,0 +1,47 @@
+security:
+    encoders:
+        native:
+            algorithm: auto
+            cost: 15
+    providers:
+        security_user_provider:
+            id: App\Modules\Security\Manager\SecurityUserProvider
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt|home)|css|images|build|js)/
+            security: false
+        main:
+            anonymous: ~
+            form_login:
+                login_path:             login
+                check_path:             login
+                csrf_parameter:         'authenticate[_token]'
+                csrf_token_id:          authenticate
+                default_target_path:    home
+                use_referer:            true
+                csrf_token_generator:   security.csrf.token_manager
+                username_parameter:     'authenticate[_username]'
+                password_parameter:     'authenticate[_password]'
+                failure_path_parameter: login
+                provider:               security_user_provider
+            provider:                   security_user_provider
+            access_denied_handler:      App\Modules\Security\Manager\AccessDeniedHandler
+            logout:
+                path:                   logout
+                target:                 home
+                success_handler:        App\Modules\Security\Manager\LogoutSuccessHandler
+            remember_me:                false
+#                secret:               '%env(APP_SECRET)%'
+#                name:                 '%session_name%_remember_me'
+#                lifetime:             43200 # 12 hours in seconds
+#                path:                 /
+#                secure:               false
+#                remember_me_parameter: 'login[_remember_me]'
+            switch_user:                true
+            guard:
+                authenticators:
+                    - App\Modules\Security\Manager\LoginFormAuthenticator
+                    - App\Modules\Security\Manager\GoogleAuthenticator
+                entry_point: App\Modules\Security\Manager\LoginFormAuthenticator
+            context: main
+    role_hierarchy: '%security.hierarchy.roles%'
