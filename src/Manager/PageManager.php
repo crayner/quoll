@@ -17,6 +17,7 @@ namespace App\Manager;
 
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
@@ -156,6 +157,9 @@ class PageManager
      * @param FastFinder $fastFinder
      * @param GlobalHelper $helper
      * @param Format $format
+     * @param ImageHelper $imageHelper
+     * @param UrlGeneratorHelper $urlGeneratorHelper
+     * @param AcademicYearHelper $academicYearHelper
      * @throws \Exception
      */
     public function __construct(
@@ -169,7 +173,10 @@ class PageManager
         IdleTimeout $idleTimeout,
         FastFinder $fastFinder,
         GlobalHelper $helper,
-        Format $format
+        Format $format,
+        ImageHelper $imageHelper,
+        UrlGeneratorHelper $urlGeneratorHelper,
+        AcademicYearHelper $academicYearHelper
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -318,7 +325,7 @@ class PageManager
                 'from a fork of' => TranslationsHelper::translate('from a fork of'),
                 'licence' => TranslationsHelper::translate('licence'),
             ],
-            'footerLogo' => ImageHelper::getAbsoluteImageURL('File', '/themes/Default/img/logoFooter.png'),
+            'footerLogo' => ImageHelper::getAbsoluteImageURL('File', '/build/static/logoFooter.png'),
             'footerThemeAuthor' => TranslationsHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default']),
             'year' => date('Y'),
         ];

@@ -14,7 +14,7 @@ namespace App\Modules\System\Util;
 
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Entity\I18n;
-use Kookaburra\UserAdmin\Entity\Person;
+use App\Modules\People\Entity\Person;
 use App\Modules\System\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;

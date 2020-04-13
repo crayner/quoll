@@ -38,13 +38,13 @@ interface EntityInterface
     public function create(): string;
 
     /**
-     * create
+     * foreignConstraints
      * @return string
      */
     public function foreignConstraints(): string;
 
     /**
-     * create
+     * coreData
      * @return string
      */
     public function coreData(): string;

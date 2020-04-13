@@ -114,8 +114,7 @@ class ProviderFactory
     public static function create(string $entityName): EntityProviderInterface
     {
         //The $entityName could be the plain name or the namespace name of the entity.
-        // e.g. Kookaburra\SystemAdmin\Entity\Module or Module
-
+        // e.g. App\Modules\System\Entity\Module or Module
         $namespace = dirname($entityName);
         $entityName = basename($entityName);
 
@@ -128,27 +127,7 @@ class ProviderFactory
             return self::addInstance($entityName,  new $providerName(self::$factory));
         }
 
-        if (self::$stack->getParentRequest()) {
-            if (self::$stack->getParentRequest()->attributes->has('module') && false !== self::$stack->getParentRequest()->attributes->get('module')) {
-                $module = self::$stack->getParentRequest()->attributes->get('module');
-                $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
-                if (class_exists($providerName)) {
-                    return self::addInstance($entityName, new $providerName(self::$factory));
-                }
-            }
-        }
-
-        if (self::$stack->getCurrentRequest()) {
-            if (self::$stack->getCurrentRequest()->attributes->has('module') && false !== self::$stack->getCurrentRequest()->attributes->get('module')) {
-                $module = self::$stack->getCurrentRequest()->attributes->get('module');
-                $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
-                if (class_exists($providerName)) {
-                    return self::addInstance($entityName, new $providerName(self::$factory));
-                }
-            }
-        }
-
-        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available.', $entityName));
+        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $namespace));
     }
 
     /**

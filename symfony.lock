@@ -194,6 +194,9 @@
     "symfony/inflector": {
         "version": "v5.0.7"
     },
+    "symfony/intl": {
+        "version": "v5.0.7"
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -222,6 +225,12 @@
             "./config/packages/prod/monolog.yaml",
             "./config/packages/test/monolog.yaml"
         ]
+    },
+    "symfony/options-resolver": {
+        "version": "v5.0.7"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.15.0"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.15.0"

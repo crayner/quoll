@@ -59,6 +59,24 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/School/Entity'
                 prefix: 'App\Modules\School\Entity'
                 alias: School
+            Enrolment:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Enrolment/Entity'
+                prefix: 'App\Modules\Enrolment\Entity'
+                alias: Enrolment
+            Finance:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Finance/Entity'
+                prefix: 'App\Modules\Finance\Entity'
+                alias: Finance
+            Comms:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Comms/Entity'
+                prefix: 'App\Modules\Comms\Entity'
+                alias: Comms
         dql:
             string_functions:
                 substring_index: App\Doctrine\SubstringIndexFunction

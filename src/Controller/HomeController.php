@@ -16,6 +16,12 @@
 namespace App\Controller;
 
 use App\Manager\PageManager;
+use App\Modules\System\Entity\Hook;
+use App\Modules\System\Entity\Setting;
+use App\Provider\ProviderFactory;
+use App\Twig\Sidebar\Flash;
+use App\Twig\Sidebar\Login;
+use App\Twig\Sidebar\Register;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,15 +83,26 @@ class HomeController extends AbstractController
 
         $sidebar = $pageManager->getSidebar();
         $sidebar->addContent(new Flash());
+        $sidebar->addContent(new Login());
 
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
 
-        return $pageManager->render(['content' => trim($this->renderView('default/welcome.html.twig',
+        return $pageManager->render(['content' => trim($this->renderView('home/welcome.html.twig',
             [
                 'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
             ]
         ))]);
+    }
+
+    /**
+     * legacy
+     * @param string $q
+     * @Route("/legacy/{q}/", name="legacy")
+     */
+    public function legacy(string $q)
+    {
+        dd($q);
     }
 }

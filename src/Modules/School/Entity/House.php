@@ -19,7 +19,7 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\ImageRemovalTrait;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
-use Kookaburra\UserAdmin\Entity\Person;
+use App\Modules\People\Entity\Person;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

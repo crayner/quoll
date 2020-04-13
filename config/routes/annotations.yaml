@@ -1,7 +1,9 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+    schemes: [ 'https' ]
 
-kernel:
-    resource: ../../src/Kernel.php
+security_no_prefix:
+    resource: ../../src/Modules/Security/ControllerNoPrefix/
     type: annotation
+    schemes: [ 'https' ]

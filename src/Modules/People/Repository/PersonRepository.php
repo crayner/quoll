@@ -17,7 +17,7 @@ namespace App\Modules\People\Repository;
 
 use App\Util\TranslationsHelper;
 use Doctrine\ORM\NoResultException;
-use Kookaburra\RollGroups\Entity\RollGroup;
+use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Entity\District;
 use App\Modules\People\Entity\Person;

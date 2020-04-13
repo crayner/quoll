@@ -15,7 +15,7 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Exception\MissingClassException;
 use App\Exception\MissingEntityException;
 use App\Manager\Traits\EntityTrait;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class AcademicYearProvider
- * @package Kookaburra\SchoolProvider\Provider
+ * @package App\Modules\SchoolProvider\Provider
  */
 class AcademicYearProvider implements EntityProviderInterface
 {

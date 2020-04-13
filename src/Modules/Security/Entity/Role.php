@@ -17,6 +17,7 @@ namespace App\Modules\Security\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Modules\System\Entity\Action;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -110,7 +111,7 @@ class Role implements EntityInterface
 
     /**
      * @var Collection|Action[]|null
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\Action", mappedBy="roles", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Modules\System\Entity\Action", mappedBy="roles", cascade={"persist"})
      */
     private $actions;
 

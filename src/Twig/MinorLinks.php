@@ -15,12 +15,16 @@
 
 namespace App\Twig;
 
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
-use App\Modules\Security\Util\SecurityHelper;
 
+/**
+ * Class MinorLinks
+ * @package App\Twig
+ */
 class MinorLinks implements ContentInterface
 {
     use ContentTrait;
@@ -44,8 +48,8 @@ class MinorLinks implements ContentInterface
         $links = [];
         $languageLink = false;
         // Add a link to go back to the system/personal default language, if we're not using it
-        if ($this->getSession()->has(['i18n','default','code']) && $this->getSession()->has(['i18n','code'])) {
-            if ($this->getSession()->get(['i18n','code']) !== $this->getSession()->get(['i18n','default','code'])) {
+        if ($this->getSession()->has('i18n') && $this->getSession()->has('code')) {
+            if ($this->getSession()->get('i18n') !== $this->getSession()->get('i18n')) {
                 $systemDefaultShortName = trim(strstr($this->getSession()->get(['i18n','default','name']), '-', true));
                 $languageLink =
                     [

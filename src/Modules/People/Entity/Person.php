@@ -15,15 +15,19 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Entity\ApplicationForm;
-use App\Modules\System\Entity\I18n;
-use App\Modules\School\Entity\AcademicYear;
-use Kookaburra\SystemAdmin\Entity\Setting;
-use App\Entity\Staff;
-use App\Entity\StudentEnrolment;
-use App\Entity\Theme;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\People\Manager\PersonNameManager;
+use App\Modules\People\Util\UserHelper;
+use App\Modules\People\Validator\Username;
+use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Entity\ApplicationForm;
+use App\Modules\School\Entity\House;
+use App\Modules\Security\Entity\Role;
+use App\Modules\SystemAdmin\Entity\Setting;
+use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Theme;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationsHelper;
@@ -32,14 +36,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use App\Modules\School\Entity\House;
-use App\Modules\Security\Entity\Role;
-use App\Modules\People\Manager\PersonNameManager;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\People\Validator\Username;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as ASSERT;
 use Symfony\Component\Intl\Languages;
+use Symfony\Component\Validator\Constraints as ASSERT;
 
 /**
  * Class __prefix__Person
@@ -2355,8 +2354,8 @@ class Person implements EntityInterface
 
     /**
      * @var ApplicationForm|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\ApplicationForm")
-     * @ORM\JoinColumn(name="application_form", referencedColumnName="gibbonApplicationFormID", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ApplicationForm")
+     * @ORM\JoinColumn(name="application_form", referencedColumnName="id", nullable=true)
      */
     private $applicationForm;
 
@@ -2531,8 +2530,8 @@ class Person implements EntityInterface
 
     /**
      * @var Theme|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Theme")
-     * @ORM\JoinColumn(name="personal_theme", referencedColumnName="gibbonThemeID", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Theme")
+     * @ORM\JoinColumn(name="personal_theme", referencedColumnName="id", nullable=true)
      */
     private $theme;
 
@@ -2725,7 +2724,7 @@ class Person implements EntityInterface
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Entity\Staff", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="Staff", mappedBy="person")
      */
     private $staff;
 
@@ -2753,7 +2752,7 @@ class Person implements EntityInterface
 
     /**
      * @var Collection|null
-     * @ORM\OneToMany(targetEntity="App\Entity\CourseClassPerson", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClassPerson", mappedBy="person")
      */
     private $courseClassPerson;
 
@@ -2938,7 +2937,7 @@ class Person implements EntityInterface
 
     /**
      * @var StudentEnrolment[]|Collection||null
-     * @ORM\OneToMany(targetEntity="App\Entity\StudentEnrolment", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="person")
      */
     private $studentEnrolments;
 
