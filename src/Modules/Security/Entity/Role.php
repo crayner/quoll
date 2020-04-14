@@ -31,7 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Security\Repository\RoleRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Role",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
- *     @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
+ *     @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"}),
+ *     @ORM\UniqueConstraint(name="role", columns={"role"})})
  */
 class Role implements EntityInterface
 {
@@ -44,6 +45,12 @@ class Role implements EntityInterface
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(length=32, unique=true, nullable=false)
+     */
+    private $role;
 
     /**
      * @var string
@@ -155,6 +162,22 @@ class Role implements EntityInterface
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
     }
 
     /**
@@ -481,6 +504,7 @@ class Role implements EntityInterface
     {
         return "CREATE TABLE `__prefix__Role` (
                     `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `role` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                     `category` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Staff',
                     `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `nameShort` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -492,9 +516,9 @@ class Role implements EntityInterface
                     `restriction` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'None',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `nameShort` (`nameShort`)
-                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-                ";
+                    UNIQUE KEY `nameShort` (`nameShort`),
+                    UNIQUE KEY `role` (`role`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;                ";
     }
 
     /**
@@ -512,12 +536,12 @@ class Role implements EntityInterface
      */
     public function coreData(): string
     {
-        return "INSERT INTO `__prefix__Role` (`category`, `name`, `nameShort`, `description`, `type`, `canLoginRole`, `futureYearsLogin`, `pastYearsLogin`, `restriction`) VALUES
-                    ('Staff', 'Administrator', 'Adm', 'Controls all aspects of the system', 'Core', 'Y', 'Y', 'Y', 'Admin Only'),
-                    ('Staff', 'Teacher', 'Tcr', 'Regular, classroom teacher', 'Core', 'Y', 'Y', 'Y', 'None'),
-                    ('Student', 'Student', 'Std', 'Person studying in the school', 'Core', 'Y', 'Y', 'Y', 'None'),
-                    ('Parent', 'Parent', 'Prt', 'Parent or guardian of person studying in', 'Core', 'Y', 'Y', 'Y', 'None'),
-                    ('Staff', 'Support Staff', 'SSt', 'Staff who support teaching and learning', 'Core', 'Y', 'Y', 'Y', 'None'),
-                    ('Staff', 'Librarian', 'LIB', 'Library Staff', 'Core', 'Y', 'N', 'N', 'Admin Only');";
+        return "INSERT INTO `__prefix__Role` ('role', `category`, `name`, `nameShort`, `description`, `type`, `canLoginRole`, `futureYearsLogin`, `pastYearsLogin`, `restriction`) VALUES
+                    ('ROLE_SYSTEM_ADMIN', 'Staff', 'Administrator', 'Adm', 'Controls all aspects of the system', 'Core', 'Y', 'Y', 'Y', 'Admin Only'),
+                    ('ROLE_TEACHER', 'Staff', 'Teacher', 'Tcr', 'Regular, classroom teacher', 'Core', 'Y', 'Y', 'Y', 'None'),
+                    ('ROLE_STUDENT', 'Student', 'Student', 'Std', 'Person studying in the school', 'Core', 'Y', 'Y', 'Y', 'None'),
+                    ('ROLE_PARENT', 'Parent', 'Parent', 'Prt', 'Parent or guardian of person studying in', 'Core', 'Y', 'Y', 'Y', 'None'),
+                    ('ROLE_SUPPORT_STAFF', 'Staff', 'Support Staff', 'SSt', 'Staff who support teaching and learning', 'Core', 'Y', 'Y', 'Y', 'None'),
+                    ('ROLE_LIBRARIAN', 'Staff', 'Librarian', 'LIB', 'Library Staff', 'Core', 'Y', 'N', 'N', 'Admin Only');";
     }
 }
