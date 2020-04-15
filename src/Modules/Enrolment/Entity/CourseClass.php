@@ -51,7 +51,7 @@ class CourseClass implements EntityInterface
     /**
      * @var Course|null
      * @ORM\ManyToOne(targetEntity="Course", inversedBy="courseClasses")
-     * @ORM\JoinColumn(name="course_class", referencedColumnName="course", nullable=true)
+     * @ORM\JoinColumn(name="course", referencedColumnName="id", nullable=true)
      */
     private $course;
 

@@ -33,7 +33,7 @@ class CourseClassPerson implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
+     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -41,7 +41,7 @@ class CourseClassPerson implements EntityInterface
     /**
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="CourseClass", inversedBy="courseClassPeople")
-     * @ORM\JoinColumn(name="course_class", referencedColumnName="gibbonCourseClassID", nullable=false)
+     * @ORM\JoinColumn(name="course_class", referencedColumnName="id", nullable=false)
      * @Assert\NotBlank()
      */
     private $courseClass;
