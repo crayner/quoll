@@ -152,7 +152,7 @@ class RollGroup implements EntityInterface
 
     /**
      * @var Collection|null
-     * @ORM\OneToMany(targetEntity="App\Entity\StudentEnrolment", mappedBy="rollGroup")
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="rollGroup")
      */
     private $studentEnrolments;
 

@@ -14,7 +14,7 @@ namespace App\Modules\Security\Manager;
 
 use App\Modules\System\Entity\I18n;
 use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Role;
+use App\Modules\Security\Entity\Role;
 use App\Modules\School\Entity\AcademicYear;
 use App\Manager\GibbonManager;
 use App\Provider\LogProvider;
@@ -68,7 +68,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     /**
      * LoginFormAuthenticator constructor.
-     * @param ProviderFactory $providerFactory
      * @param RouterInterface $router
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
@@ -192,8 +191,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $person->setFailCount(0);
         ProviderFactory::getEntityManager()->persist($person);
         ProviderFactory::getEntityManager()->flush();
-
-        LogProvider::setLog($session->get('academicYearCurrent'), null, $person, 'Login - Success', array('username' => $person->getUsername()), $ip);
 
         if ($targetPath = $this->getTargetPath($request, $providerKey))
             return new RedirectResponse($targetPath);

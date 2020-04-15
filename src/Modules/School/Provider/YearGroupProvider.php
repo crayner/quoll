@@ -15,7 +15,7 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;
 use App\Provider\EntityProviderInterface;
 use Doctrine\DBAL\Driver\PDOException;

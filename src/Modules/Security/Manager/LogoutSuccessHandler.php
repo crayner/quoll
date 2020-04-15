@@ -17,12 +17,7 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 {
 	/**
-	 * @var string
-	 */
-	private $locale = 'en_GB';
-
-	/**
-	 * @var \Twig_Environment
+	 * @var RouterInterface
 	 */
 	private $router;
 
@@ -34,14 +29,12 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
     /**
      * LogoutSuccessHandler constructor.
      * @param RouterInterface $router
-     * @param LocaleHelper $manager
      * @param LoggerInterface $logger
      * @param string $locale
      */
-	public function __construct(RouterInterface $router, LocaleHelper $manager, LoggerInterface $logger, string $locale = 'en_GB')
+	public function __construct(RouterInterface $router, LoggerInterface $logger)
 	{
 		$this->router = $router;
-        $this->locale = $locale;
         $this->logger = $logger->withName('security');
 	}
 
@@ -67,7 +60,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 
             ProviderFactory::create(AcademicYear::class)->setCurrentAcademicYear($session);
         }
-		$request->setLocale($this->locale);
+		$request->setLocale(null);
 
         $this->logger->info(sprintf('A user logged out from machine %s', $request->server->get('REMOTE_ADDRESS')));
 

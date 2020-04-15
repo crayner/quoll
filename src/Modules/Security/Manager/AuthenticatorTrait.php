@@ -15,12 +15,13 @@
 
 namespace App\Modules\Security\Manager;
 
+use App\Manager\SessionManager;
 use App\Modules\System\Entity\I18n;
 use App\Modules\School\Entity\AcademicYear;
 use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorHelper;
-use App\Modules\System\Entity\Role;
+use App\Modules\Security\Entity\Role;
 use App\Modules\People\Entity\Person;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,10 +153,9 @@ trait AuthenticatorTrait
         $session->set('gender', $userData->getGender());
         $session->set('status', $userData->getstatus());
         $primaryRole = $userData->getPrimaryRole();
-        $session->set('gibbonRoleIDPrimary', $primaryRole ? $primaryRole->getId() : null);
-        $session->set('gibbonRoleIDCurrent', $primaryRole ? $primaryRole->getId() : null);
-        $session->set('gibbonRoleIDCurrentCategory', $primaryRole ? $primaryRole->getCategory() : null);
-        $session->set('gibbonRoleIDAll', ProviderFactory::create(Role::class)->getRoleList($userData->getAllRoles()) );
+        $session->set('primaryRole', $primaryRole ? $primaryRole->getId() : null);
+        $session->set('currentRole', $primaryRole ? $primaryRole->getId() : null);
+        $session->set('allRoles', ProviderFactory::create(Role::class)->getRoleList($userData->getAllRoles()) );
         $session->set('image_240', $userData->getImage240());
         $session->set('lastTimestamp', $userData->getLastTimestamp());
         $session->set('calendarFeedPersonal', $userData->getcalendarFeedPersonal());
@@ -165,15 +165,15 @@ trait AuthenticatorTrait
         $session->set('dateStart', $userData->getdateStart());
         $session->set('personalBackground', $userData->getpersonalBackground());
         $session->set('messengerLastBubble', $userData->getmessengerLastBubble());
-        $session->set('gibboni18nIDPersonal', $userData->getI18nPersonal() ? $userData->getI18nPersonal()->getId() : null);
+        $session->set('personalI18n', $userData->getI18nPersonal() ? $userData->getI18nPersonal() : null);
         $session->set('googleAPIRefreshToken', $userData->getgoogleAPIRefreshToken());
         $session->set('receiveNotificationEmails', $userData->getreceiveNotificationEmails());
-        $session->set('gibbonHouseID', $userData->getHouse() ? $userData->getHouse()->getId() : null);
+        $session->set('house', $userData->getHouse() ? $userData->getHouse() : null);
         //Deal with themes
-        $session->set('gibbonThemeIDPersonal', $userData->getTheme() ? $userData->getTheme()->getId() : null);
+        $session->set('personalTheme', $userData->getTheme() ? $userData->getTheme()->getId() : null);
 
         // Cache FF actions on login
-        $session->cacheFastFinderActions($primaryRole);
+        SessionManager::cacheFastFinderActions($primaryRole,$session);
 
         return $userData;
     }

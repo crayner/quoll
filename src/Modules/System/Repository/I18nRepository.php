@@ -20,6 +20,7 @@ use App\Modules\System\Entity\I18n;
 use App\Modules\System\Util\LocaleHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class I18nRepository
@@ -85,5 +86,24 @@ class I18nRepository extends ServiceEntityRepository
             ->setParameter('yes', 'Y')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findOneByCode
+     * @param string $code
+     * @param Request|null $request
+     * @return object|null
+     */
+    public function findOneByCode(string $code, ?Request $request = null)
+    {
+        $locale = $this->findOneBy(['code' => $code]);
+        if (null == $locale) {
+            $locale = $this->findOneBy(['systemDefault' => 'Y']);
+            if (null !== $request) {
+                $request->setDefaultLocale($locale->getCode());
+                $request->setLocale($locale->getCode());
+            }
+        }
+        return $locale;
     }
 }

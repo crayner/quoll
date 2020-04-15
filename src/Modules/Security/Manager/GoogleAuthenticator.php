@@ -1,19 +1,17 @@
 <?php
 namespace App\Modules\Security\Manager;
 
-use App\Provider\ProviderFactory;
-use App\Modules\People\Entity\Person;
-use App\Manager\GibbonManager;
 use App\Manager\MessageManager;
-use App\Provider\LogProvider;
+use App\Modules\People\Entity\Person;
+use App\Modules\System\Entity\Setting;
+use App\Modules\System\Provider\SettingProvider;
+use App\Provider\ProviderFactory;
 use App\Util\EntityHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Modules\System\Entity\Setting;
-use App\Modules\System\Manager\UsernamePasswordToken;
-use App\Modules\System\Provider\SettingProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -66,26 +64,35 @@ class GoogleAuthenticator implements AuthenticatorInterface
     /**
      * @var SecurityUserProvider
      */
-	private $provider;
+    private $provider;
+
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * GoogleAuthenticator constructor.
-     * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param MessageManager $messageManager
-     * @param SettingProvider $settingManager
      * @param LoggerInterface $logger
      * @param SecurityUserProvider $provider
-     * @throws \Google_Exception
      */
-	public function __construct(RouterInterface $router, MessageManager $messageManager, LoggerInterface $logger, SecurityUserProvider $provider)
-	{
+	public function __construct(
+	    RouterInterface $router,
+        MessageManager $messageManager,
+        LoggerInterface $logger,
+        SecurityUserProvider $provider,
+        RequestStack $request,
+        ProviderFactory $factory
+    ) {
         $this->settingManager = ProviderFactory::create(Setting::class);
 		$this->em = $this->settingManager->getEntityManager();
 		$this->router = $router;
 		$this->messageManager = $messageManager;
         $this->logger = $logger;
         $this->provider = $provider;
+        $this->request = $request->getCurrentRequest();
         if ($this->readGoogleOAuth() !== false) {
             $this->getClient();
             $this->getClient()->setLogger($logger);
@@ -150,8 +157,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
     private function getGoogleClient()
     {
         // @todo For some reason the Request Query is not set correctly on some servers.  When the setting causing this is identified we can do something about this.
-        if (empty($code = GibbonManager::getRequest()->query->get('code'))) {
-            $uri = 'http://' . GibbonManager::getRequest()->getHttpHost() . GibbonManager::getRequest()->getRequestUri();
+        if (empty($code = $this->getRequest()->query->get('code'))) {
+            $uri = 'http://' . $this->getRequest()->getHttpHost() . $this->getRequest()->getRequestUri();
             parse_str(parse_url($uri, PHP_URL_QUERY), $query);
             $code = $query['code'];
         }
@@ -355,7 +362,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
     {
         if (! empty($this->clientSecrets))
             return $this->clientSecrets;
-        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/config/packages/kookaburra.yaml'));
+        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/config/packages/quoll.yaml'));
         $clientSecrets = [];
         $clientSecrets['web']['client_id'] = $config['parameters']['google_client_id'];
         $clientSecrets['web']['project_id'] = $config['parameters']['google_api_key'];
@@ -461,7 +468,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
      */
     public function setAccessToken($googleAPIAccessToken)
     {
-        GibbonManager::getSession()->set('googleAPIAccessToken', $googleAPIAccessToken);
+        $this->getRequest()->getSession()->set('googleAPIAccessToken', $googleAPIAccessToken);
         return $this;
     }
 
@@ -506,6 +513,15 @@ class GoogleAuthenticator implements AuthenticatorInterface
      */
     private function getProjectDir(): string
     {
-        return realpath(__DIR__ . '/../../../../..');
+        return realpath(__DIR__ . '/../../../..');
+        return realpath(__DIR__ . '/../../../..');
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 }

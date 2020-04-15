@@ -15,6 +15,7 @@ namespace App\Modules\Enrolment\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\School\Entity\Scale;
+use App\Modules\Timetable\Entity\TTDayRowClass;
 use App\Util\EntityHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -97,7 +98,7 @@ class CourseClass implements EntityInterface
 
     /**
      * @var Collection|TTDayRowClass[]|null
-     * @ORM\OneToMany(targetEntity="TTDayRowClass", mappedBy="courseClass")
+     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TTDayRowClass", mappedBy="courseClass")
      */
     private $TTDayRowClasses;
 

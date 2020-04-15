@@ -536,7 +536,7 @@ class Role implements EntityInterface
      */
     public function coreData(): string
     {
-        return "INSERT INTO `__prefix__Role` ('role', `category`, `name`, `nameShort`, `description`, `type`, `canLoginRole`, `futureYearsLogin`, `pastYearsLogin`, `restriction`) VALUES
+        return "INSERT INTO `__prefix__Role` (`category`, `name`, `nameShort`, `description`, `type`, `canLoginRole`, `futureYearsLogin`, `pastYearsLogin`, `restriction`) VALUES
                     ('ROLE_SYSTEM_ADMIN', 'Staff', 'Administrator', 'Adm', 'Controls all aspects of the system', 'Core', 'Y', 'Y', 'Y', 'Admin Only'),
                     ('ROLE_TEACHER', 'Staff', 'Teacher', 'Tcr', 'Regular, classroom teacher', 'Core', 'Y', 'Y', 'Y', 'None'),
                     ('ROLE_STUDENT', 'Student', 'Student', 'Std', 'Person studying in the school', 'Core', 'Y', 'Y', 'Y', 'None'),
