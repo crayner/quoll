@@ -1,0 +1,46 @@
+parameters:
+    guid: 0A35A2493F3247898DF16AD845C41716
+    installed: true
+    databaseServer: localhost
+    databaseUsername: craigray
+    databasePassword: tiGGer44
+    databaseName: craigray_kookaburra
+    databasePort: '3306'
+    databasePrefix: gibbon
+    caching: 1
+    absoluteURL: 'https://bilby.craigrayner.com'
+    security.hierarchy.roles:
+        ROLE_USER: null
+        ROLE_ALLOWED_TO_SWITCH: null
+        ROLE_PARENT:
+            - ROLE_USER
+        ROLE_STUDENT:
+            - ROLE_USER
+        ROLE_STAFF:
+            - ROLE_USER
+        ROLE_TEACHER:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STUDENT
+            - ROLE_STAFF
+        ROLE_HEAD_TEACHER:
+            - ROLE_TEACHER
+        ROLE_PRINCIPAL:
+            - ROLE_HEAD_TEACHER
+        ROLE_ADMIN:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STAFF
+        ROLE_REGISTRAR:
+            - ROLE_PRINCIPAL
+            - ROLE_ADMIN
+        ROLE_SYSTEM_ADMIN:
+            - ROLE_REGISTRAR
+            - ROLE_PARENT
+    timezone: Australia/Sydney
+    locale: en_GB
+    mailer_dns: 'smtp://null'
+    google_api_key: null
+    google_client_id: null
+    google_client_secret: null
+    system_name: Kookaburra
+    organisation_name: 'Hill Range Services'
+    messenger_transport_dsn: 'doctrine://default'

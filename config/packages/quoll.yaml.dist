@@ -1,0 +1,46 @@
+parameters:
+    guid: 'Generate a Secret Code Here'
+    installed: false
+    databaseServer: ~
+    databaseUsername: ~
+    databasePassword: ~
+    databaseName: ~
+    databasePort: ~
+    databasePrefix: ''
+    caching: 1
+    absoluteURL: ''
+    security.hierarchy.roles:
+        ROLE_USER: null
+        ROLE_ALLOWED_TO_SWITCH: null
+        ROLE_PARENT:
+            - ROLE_USER
+        ROLE_STUDENT:
+            - ROLE_USER
+        ROLE_STAFF:
+            - ROLE_USER
+        ROLE_TEACHER:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STUDENT
+            - ROLE_STAFF
+        ROLE_HEAD_TEACHER:
+            - ROLE_TEACHER
+        ROLE_PRINCIPAL:
+            - ROLE_HEAD_TEACHER
+        ROLE_ADMIN:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STAFF
+        ROLE_REGISTRAR:
+            - ROLE_PRINCIPAL
+            - ROLE_ADMIN
+        ROLE_SYSTEM_ADMIN:
+            - ROLE_REGISTRAR
+            - ROLE_PARENT
+    timezone: ~
+    locale: en_GB
+    mailer_dns: 'smtp://null'
+    google_api_key: ~
+    google_client_id: ~
+    google_client_secret: ~
+    system_name: Kookaburra
+    organisation_name: Organisation Name
+    messenger_transport_dsn: 'doctrine://default'
