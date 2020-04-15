@@ -23,7 +23,7 @@ use App\Provider\ProviderFactory;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -82,14 +82,14 @@ class Login implements SidebarContentInterface
     private function getTranslations(): array
     {
         return [
-            'Login' => TranslationsHelper::translate('Login', [], 'UserAdmin'),
-            'Username or email' => TranslationsHelper::translate('Username or email', [], 'UserAdmin'),
-            'Password' => TranslationsHelper::translate('Password', [], 'UserAdmin'),
-            'Options' => TranslationsHelper::translate('Options', [], 'UserAdmin'),
-            'Forgot Password' => TranslationsHelper::translate('Forgot Password', [], 'UserAdmin'),
-            'Login with Google' => TranslationsHelper::translate('Login with Google', [], 'UserAdmin'),
-            'Language' => TranslationsHelper::translate('Language', [], 'UserAdmin'),
-            'Academic Year' => TranslationsHelper::translate('Academic Year', [], 'SchoolAdmin'),
+            'Login' => TranslationHelper::translate('Login', [], 'UserAdmin'),
+            'Username or email' => TranslationHelper::translate('Username or email', [], 'UserAdmin'),
+            'Password' => TranslationHelper::translate('Password', [], 'UserAdmin'),
+            'Options' => TranslationHelper::translate('Options', [], 'UserAdmin'),
+            'Forgot Password' => TranslationHelper::translate('Forgot Password', [], 'UserAdmin'),
+            'Login with Google' => TranslationHelper::translate('Login with Google', [], 'UserAdmin'),
+            'Language' => TranslationHelper::translate('Language', [], 'UserAdmin'),
+            'Academic Year' => TranslationHelper::translate('Academic Year', [], 'SchoolAdmin'),
         ];
     }
 }

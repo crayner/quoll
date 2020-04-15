@@ -14,7 +14,7 @@ namespace App\Modules\School\Entity;
 
 use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Manager\Traits\BooleanList;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -287,8 +287,8 @@ class Scale implements EntityInterface
             'usage' => $this->getUsage(),
             'abbr' => $this->getNameShort(),
             'isActive' => $this->isActive(),
-            'active' => $this->isActive() ? TranslationsHelper::translate('Yes', [], 'messages') : TranslationsHelper::translate('No', [], 'messages'),
-            'numeric' => $this->isNumeric() ? TranslationsHelper::translate('Yes', [], 'messages') : TranslationsHelper::translate('No', [], 'messages'),
+            'active' => $this->isActive() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
+            'numeric' => $this->isNumeric() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
             'canDelete' => ProviderFactory::create(Scale::class)->canDelete($this),
         ];
     }

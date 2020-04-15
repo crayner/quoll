@@ -19,7 +19,7 @@ use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;

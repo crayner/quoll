@@ -17,7 +17,7 @@ namespace App\Modules\School\Entity;
 
 use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
@@ -269,7 +269,7 @@ class AcademicYear implements EntityInterface
         $dates = $this->getFirstDay()->format('d M Y') . ' - ' . $this->getLastDay()->format('d M Y');
         return [
             'name' => $this->getName(),
-            'status' => TranslationsHelper::translate('academicyear.status.'.strtolower($this->getStatus()), [], 'SchoolAdmin'),
+            'status' => TranslationHelper::translate('academicyear.status.'.strtolower($this->getStatus()), [], 'SchoolAdmin'),
             'dates' => $dates,
             'canDelete' => $this->canDelete(),
             'sequence' => $this->getSequenceNumber(),

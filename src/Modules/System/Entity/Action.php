@@ -15,7 +15,7 @@ namespace App\Modules\System\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Security\Entity\Role;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -226,7 +226,7 @@ class Action implements EntityInterface
             return null;
         $name = explode('_', $this->getName());
         $domain = $this->getModule() ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
-        return TranslationsHelper::translate($name[0], [], $domain);
+        return TranslationHelper::translate($name[0], [], $domain);
     }
 
     /**

@@ -16,7 +16,7 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -413,7 +413,7 @@ class NotificationEvent implements EntityInterface
             'name' => $this->getEvent(),
             'module' => $this->getModule()->getName(),
             'subscribers' => strval(intval($this->getListeners()->count())),
-            'active' => $this->isActive() ? TranslationsHelper::translate('Yes', [], 'messages') : TranslationsHelper::translate('No', [], 'messages'),
+            'active' => $this->isActive() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
             'isActive' => $this->isActive(),
             'canDelete' => false,
         ];

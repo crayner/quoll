@@ -16,7 +16,7 @@
 namespace App\Twig;
 
 use App\Manager\ScriptManager;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
@@ -54,7 +54,7 @@ class MainMenu implements ContentInterface
                             $item['route'] = SecurityHelper::isRouteAccessible($route) ? $route : $altRoute;
                             $item['url'] = false;
                             $moduleName = SecurityHelper::getModuleName($item['route']);
-                            $item['name'] = TranslationsHelper::translate($item['name'], [], $moduleName);
+                            $item['name'] = TranslationHelper::translate($item['name'], [], $moduleName);
                             $item['href'] = UrlGeneratorHelper::getUrl($item['route']);
                         } else {
                             $modulePath = '/modules/' . $item['name'];
@@ -69,7 +69,7 @@ class MainMenu implements ContentInterface
                 }
                 foreach($menuMainItems as $q=>$w) {
                     unset($menuMainItems[$q]);
-                    $menuMainItems[TranslationsHelper::translate($q)] = $w;
+                    $menuMainItems[TranslationHelper::translate($q)] = $w;
                 }
                 $this->getSession()->set('menuMainItems', $menuMainItems);
             } else {

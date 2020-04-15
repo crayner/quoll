@@ -16,7 +16,7 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -532,25 +532,25 @@ class Facility implements EntityInterface
     {
         $result = [];
         if ($this->isComputer())
-            $result[] = TranslationsHelper::translate('Teaching computer', [], 'School');
+            $result[] = TranslationHelper::translate('Teaching computer', [], 'School');
         if ($this->getStudentComputers() > 0)
-            $result[] = TranslationsHelper::translate('Student computers', ['count' => $this->getStudentComputers()], 'School');
+            $result[] = TranslationHelper::translate('Student computers', ['count' => $this->getStudentComputers()], 'School');
         if ($this->isProjector())
-            $result[] = TranslationsHelper::translate('Projector', [], 'School');
+            $result[] = TranslationHelper::translate('Projector', [], 'School');
         if ($this->isTv())
-            $result[] = TranslationsHelper::translate('TV', [], 'School');
+            $result[] = TranslationHelper::translate('TV', [], 'School');
         if ($this->isDvd())
-            $result[] = TranslationsHelper::translate('DVD Player', [], 'School');
+            $result[] = TranslationHelper::translate('DVD Player', [], 'School');
         if ($this->isHifi())
-            $result[] = TranslationsHelper::translate('Hifi', [], 'School');
+            $result[] = TranslationHelper::translate('Hifi', [], 'School');
         if ($this->isSpeakers())
-            $result[] = TranslationsHelper::translate('Speakers', [], 'School');
+            $result[] = TranslationHelper::translate('Speakers', [], 'School');
         if ($this->isIwb())
-            $result[] = TranslationsHelper::translate('Interactive White Board', [], 'School');
+            $result[] = TranslationHelper::translate('Interactive White Board', [], 'School');
         if (!empty($this->getPhoneInt()))
-            $result[] = TranslationsHelper::translate('Extension Number {number}', ['{number}' => $this->getPhoneInt()], 'School');
+            $result[] = TranslationHelper::translate('Extension Number {number}', ['{number}' => $this->getPhoneInt()], 'School');
         if (!empty($this->getPhoneExt()))
-            $result[] = TranslationsHelper::translate('Phone Number {number}', ['{number}' => $this->getPhoneExt()], 'School');
+            $result[] = TranslationHelper::translate('Phone Number {number}', ['{number}' => $this->getPhoneExt()], 'School');
         return implode("\n<br/>", $result);
     }
 

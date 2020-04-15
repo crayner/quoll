@@ -60,7 +60,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 
             ProviderFactory::create(AcademicYear::class)->setCurrentAcademicYear($session);
         }
-		$request->setLocale(null);
+		$request->setLocale($request->getDefaultLocale());
 
         $this->logger->info(sprintf('A user logged out from machine %s', $request->server->get('REMOTE_ADDRESS')));
 

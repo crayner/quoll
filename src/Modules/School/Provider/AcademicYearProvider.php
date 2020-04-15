@@ -21,7 +21,7 @@ use App\Exception\MissingEntityException;
 use App\Manager\Traits\EntityTrait;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\YearGroup;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -52,7 +52,7 @@ class AcademicYearProvider implements EntityProviderInterface
         //Check number of years returned.
         if (!$year instanceof AcademicYear) {
             if (!empty($this->getRepository()->findAll())) {
-                throw new MissingEntityException(TranslationsHelper::translate('Configuration Error: there is a problem accessing the current Academic Year from the database.', [], 'messages'));
+                throw new MissingEntityException(TranslationHelper::translate('Configuration Error: there is a problem accessing the current Academic Year from the database.', [], 'messages'));
             } else {
                 $year = new AcademicYear();
                 $year->setSequenceNumber(1)->setStatus('Current')->setFirstDay(new \DateTimeImmutable(date('Y') . '-01-01'))->setLastDay(new \DateTimeImmutable(date('Y') . '-12-31'))->setName(date('Y'));

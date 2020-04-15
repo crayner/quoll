@@ -15,7 +15,7 @@
 
 namespace App\Manager\Entity;
 
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -368,7 +368,7 @@ class BreadCrumbs
         $result = [];
         foreach($this->getItems() as $item) {
             $crumb = [];
-            $crumb['name'] = TranslationsHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());
+            $crumb['name'] = TranslationHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());
 
             $crumb['url'] = $item->getUri() ? UrlGeneratorHelper::getUrl($item->getUri(), $item->getUriParams(), true) : '';
             $result[$item->getName()] = $crumb;

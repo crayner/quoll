@@ -15,7 +15,7 @@ namespace App\Modules\School\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -238,7 +238,7 @@ class ScaleGrade implements EntityInterface
             'sequence' => $this->getSequenceNumber(),
             'id' => $this->getId(),
             'scale' => $this->getScaleId(),
-            'default' => $this->isDefault() ? TranslationsHelper::translate('Yes', [], 'messages') : TranslationsHelper::translate('No', [], 'messages'),
+            'default' => $this->isDefault() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
             'canDelete' => ProviderFactory::create(ScaleGrade::class)->canDelete($this),
         ];
     }

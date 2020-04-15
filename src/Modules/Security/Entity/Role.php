@@ -18,7 +18,7 @@ namespace App\Modules\Security\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\System\Entity\Action;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -458,12 +458,12 @@ class Role implements EntityInterface
     public function toArray(?string $name = NULL): array
     {
         return [
-            'category' => TranslationsHelper::translate($this->getCategory()),
+            'category' => TranslationHelper::translate($this->getCategory()),
             'name' => $this->getName(),
             'name_short' => $this->getNameShort(),
             'description' => $this->getDescription(),
-            'type' => TranslationsHelper::translate($this->getType()),
-            'login_years' => TranslationsHelper::translate($this->getLoginYearsDescription()),
+            'type' => TranslationHelper::translate($this->getType()),
+            'login_years' => TranslationHelper::translate($this->getLoginYearsDescription()),
             'isAdditional' => $this->getType() !== 'Core',
         ];
     }

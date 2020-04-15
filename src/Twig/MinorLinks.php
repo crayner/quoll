@@ -18,7 +18,7 @@ namespace App\Twig;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 
 /**
@@ -104,20 +104,20 @@ class MinorLinks implements ContentInterface
 
             $links[] = [
                 'class' => 'link-white',
-                'text' => TranslationsHelper::translate('Logout', [], 'messages'),
+                'text' => TranslationHelper::translate('Logout', [], 'messages'),
                 'url' => UrlGeneratorHelper::getUrl('logout'),
                 'translation_domain' => 'messages',
             ];
             $links[] = [
                 'class' => 'link-white',
-                'text' => TranslationsHelper::translate('Preferences', [], 'messages'),
+                'text' => TranslationHelper::translate('Preferences', [], 'messages'),
                 'url' => UrlGeneratorHelper::getUrl('user_admin__preferences'),
                 'translation_domain' => 'messages',
             ];
             if ($this->getSession()->get('emailLink', '') !== '') {
                 $links[] = [
                     'class' => 'link-white',
-                    'text' => TranslationsHelper::translate('Email'),
+                    'text' => TranslationHelper::translate('Email'),
                     'url' => $this->getSession()->get('emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],

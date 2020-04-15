@@ -30,7 +30,7 @@ use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Validator as ASSERTLOCAL;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -3093,7 +3093,7 @@ class Person implements EntityInterface
         return [
             'fullName' => $this->formatName(['informal' => true, 'reverse' => true, 'style' => 'long']),
             'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getImage240()),
-            'status' => TranslationsHelper::translate($this->getStatus()),
+            'status' => TranslationHelper::translate($this->getStatus()),
             '_status' => $this->getStatus(),
             'family' => $this->getFamilyName(),
             'family_id' => $this->getFamilyId(),

@@ -15,7 +15,7 @@
  */
 namespace App\Modules\People\Repository;
 
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\NoResultException;
 use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Entity\House;
@@ -232,7 +232,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         $today = new \DateTime(date('Y-m-d'));
         return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationsHelper::translate('Staff', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Staff', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
             ->join('p.staff','s')
             ->where('s.id IS NOT NULL')
             ->andWhere('p.status = :full')
@@ -313,7 +313,7 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentParentsAsArray(): array
     {
         return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationsHelper::translate('Parent', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
             ->join('p.adults', 'fa')
             ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
             ->andWhere('p.status = :full')

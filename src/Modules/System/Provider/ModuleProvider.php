@@ -15,10 +15,10 @@
 
 namespace App\Modules\System\Provider;
 
+use App\Modules\Security\Entity\Role;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\Role;
 use App\Modules\System\Entity\Setting;
 use App\Manager\Traits\EntityTrait;
 
@@ -32,20 +32,18 @@ class ModuleProvider implements EntityProviderInterface
     private $entityName = Module::class;
 
     /**
-     * selectModulesByRole
-     * @param Role|int $roleID
-     * @return mixed
+     * findByRole
+     * @param Role $role
+     * @param bool $byCategory
+     * @return array
      */
-    public function selectModulesByRole($roleID, bool $byCategory = true)
+    public function findByRole(Role $role, bool $byCategory = true): array
     {
-        $settingProvider = ProviderFactory::create(Setting::class);
-        $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
+        $result = $this->getRepository()->findByRole($role);
+        $mainMenuCategoryOrder = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('System', 'mainMenuCategoryOrder');
 
-        $roleID = $roleID instanceof Role ? $roleID->getId() : intval($roleID);
-
-        $result = $this->getRepository()->findModulesByRole($roleID);
         $sorted = [];
-        foreach(explode(',', $mainMenuCategoryOrder) as $category)
+        foreach($mainMenuCategoryOrder as $category)
         {
             if ($byCategory && !isset($sorted[$category])) {
                 $sorted[$category] = [];

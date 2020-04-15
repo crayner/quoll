@@ -16,7 +16,7 @@ use App\Manager\EntityInterface;
 use App\Modules\School\Manager\SpecialDayManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\School\Validator as Check;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -347,7 +347,7 @@ class AcademicYearSpecialDay implements EntityInterface
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'date' => $this->getDate()->format('jS M/Y'),
-            'type' => TranslationsHelper::translate('academicyearspecialday.type.'.strtolower($this->getType()), [], 'SchoolAdmin'),
+            'type' => TranslationHelper::translate('academicyearspecialday.type.'.strtolower($this->getType()), [], 'SchoolAdmin'),
             'canDelete' => true,
             'canDuplicate' => SpecialDayManager::canDuplicate($this),
         ];

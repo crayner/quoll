@@ -71,9 +71,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @param RouterInterface $router
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GlobalHelper $helper
      */
-    public function __construct(RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        RouterInterface $router,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GlobalHelper $helper
+    ) {
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;

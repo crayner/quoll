@@ -14,7 +14,7 @@ namespace App\Modules\System\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -390,7 +390,7 @@ class I18n implements EntityInterface
             "id" => $this->getId(),
             "code" => $this->getCode(),
             "name" => $this->getName(),
-            'active' => TranslationsHelper::translate($this->isActive() ? 'Yes' : 'No', [], 'messages'),
+            'active' => TranslationHelper::translate($this->isActive() ? 'Yes' : 'No', [], 'messages'),
             'status' => $this->getStatus(),
             'isActive' => $this->isActive(),
             'isNotDefault' => !$this->isSystemDefault() && $this->isInstalled(),
@@ -405,10 +405,10 @@ class I18n implements EntityInterface
     {
         $result = '';
         if ($this->isSystemDefault())
-            $result .= ', ' . TranslationsHelper::translate('Default');
+            $result .= ', ' . TranslationHelper::translate('Default');
 
         if ($this->isInstalled())
-            $result .= ', '.TranslationsHelper::translate('Installed');
+            $result .= ', '.TranslationHelper::translate('Installed');
 
         $result = trim($result,', ');
 

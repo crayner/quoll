@@ -139,38 +139,7 @@ trait AuthenticatorTrait
         $session->set('person', $userData);
 
         // all legacy
-        $session->set('username', $username);
-        $session->set('password', $userData->getPassword());
-        $session->set('passwordForceReset', $userData->getPasswordForceReset());
-        $session->set('gibbonPersonID', $userData->getId());
-        $session->set('surname', $userData->getSurname());
-        $session->set('firstName', $userData->getFirstName());
-        $session->set('preferredName', $userData->getPreferredName());
-        $session->set('officialName', $userData->getOfficialName());
-        $session->set('email', $userData->getEmail());
-        $session->set('emailAlternate', $userData->getEmailAlternate());
-        $session->set('website', $userData->getWebsite());
-        $session->set('gender', $userData->getGender());
-        $session->set('status', $userData->getstatus());
         $primaryRole = $userData->getPrimaryRole();
-        $session->set('primaryRole', $primaryRole ? $primaryRole->getId() : null);
-        $session->set('currentRole', $primaryRole ? $primaryRole->getId() : null);
-        $session->set('allRoles', ProviderFactory::create(Role::class)->getRoleList($userData->getAllRoles()) );
-        $session->set('image_240', $userData->getImage240());
-        $session->set('lastTimestamp', $userData->getLastTimestamp());
-        $session->set('calendarFeedPersonal', $userData->getcalendarFeedPersonal());
-        $session->set('viewCalendarSchool', $userData->getviewCalendarSchool());
-        $session->set('viewCalendarPersonal', $userData->getviewCalendarPersonal());
-        $session->set('viewCalendarSpaceBooking', $userData->getviewCalendarSpaceBooking());
-        $session->set('dateStart', $userData->getdateStart());
-        $session->set('personalBackground', $userData->getpersonalBackground());
-        $session->set('messengerLastBubble', $userData->getmessengerLastBubble());
-        $session->set('personalI18n', $userData->getI18nPersonal() ? $userData->getI18nPersonal() : null);
-        $session->set('googleAPIRefreshToken', $userData->getgoogleAPIRefreshToken());
-        $session->set('receiveNotificationEmails', $userData->getreceiveNotificationEmails());
-        $session->set('house', $userData->getHouse() ? $userData->getHouse() : null);
-        //Deal with themes
-        $session->set('personalTheme', $userData->getTheme() ? $userData->getTheme()->getId() : null);
 
         // Cache FF actions on login
         SessionManager::cacheFastFinderActions($primaryRole,$session);

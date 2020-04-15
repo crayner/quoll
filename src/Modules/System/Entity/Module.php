@@ -15,7 +15,7 @@ namespace App\Modules\System\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Comms\Entity\NotificationEvent;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Modules\Comms\Entity\Notification;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -427,19 +427,19 @@ class Module implements EntityInterface
 
         if (null === $this->status) {
             if ($this->getType() === 'Core') {
-                $this->status = TranslationsHelper::translate('Installed');
+                $this->status = TranslationHelper::translate('Installed');
             } else {
                 if (false === is_dir($this->getModuleDir() . '/' . str_replace(' ', '-', strtolower($this->getName()))))
                 {
-                    $this->status = TranslationsHelper::translate('Not Installed');
+                    $this->status = TranslationHelper::translate('Not Installed');
                 } else {
                     $installed = $this->getUpgradeLogs()->filter(function($log) {
                         return $log->getVersion() === 'Installation';
                     });
                     if ($this->getUpgradeLogs()->count() === 0 || $installed->count() === 0)
-                        $this->status = TranslationsHelper::translate('Not Installed');
+                        $this->status = TranslationHelper::translate('Not Installed');
                     else
-                        $this->status = TranslationsHelper::translate('Installed');
+                        $this->status = TranslationHelper::translate('Installed');
                 }
             }
         }

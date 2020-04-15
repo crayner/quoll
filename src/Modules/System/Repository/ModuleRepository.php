@@ -12,8 +12,8 @@
  */
 namespace App\Modules\System\Repository;
 
+use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -34,12 +34,12 @@ class ModuleRepository extends ServiceEntityRepository
 
     /**
      * findModulesByRole
-     * @param int $roleID
+     * @param Role $role
      * @return array|null
      */
-    public function findModulesByRole(int $roleID)
+    public function findByRole(Role $role)
     {
-        $result = $this->createQueryBuilder('m')
+        return $this->createQueryBuilder('m')
             ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL AS alternateEntryURL'])
             ->join('m.actions', 'a')
             ->join('a.roles', 'r')
@@ -50,11 +50,9 @@ class ModuleRepository extends ServiceEntityRepository
             ->orderBy('m.name')
             ->addOrderBy('a.name')
             ->setParameter('active', 'Y')
-            ->setParameter('role_id', intval($roleID))
+            ->setParameter('role_id', intval($role->getId()))
             ->getQuery()
             ->getResult();
-        dump($result);
-        return $result;
     }
 
     /**

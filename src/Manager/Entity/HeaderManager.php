@@ -17,7 +17,7 @@ namespace App\Manager\Entity;
 
 use App\Twig\MainMenu;
 use App\Util\ImageHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -68,7 +68,7 @@ class HeaderManager
             'organisationName' => $this->getRequest()->getSession()->get('organisationName', 'Kookaburra'),
             'organisationLogo' => ImageHelper::getLogoImage(),
             'menu' => $this->getMainMenu(),
-            'translations' => TranslationsHelper::getTranslations(),
+            'translations' => TranslationHelper::getTranslations(),
         ];
     }
 
@@ -106,10 +106,10 @@ class HeaderManager
             $result = $this->mainMenu->getAttribute('menuMainItems');
             foreach($result as $catName=>$items)
             {
-                TranslationsHelper::addTranslation($catName);
+                TranslationHelper::addTranslation($catName);
                 foreach($items as $q=>$item)
                 {
-                    TranslationsHelper::addTranslation($item['name'], [], 'messages');
+                    TranslationHelper::addTranslation($item['name'], [], 'messages');
                     if ($item['route'] !== false)
                         $result[$catName][$q]['url'] = UrlGeneratorHelper::getUrl($item['route'], []);
                 }
@@ -125,8 +125,8 @@ class HeaderManager
      */
     private function setTranslations(): self
     {
-        TranslationsHelper::addTranslation('Home', [], 'messages');
-        TranslationsHelper::addTranslation('Kookaburra', [], 'messages');
+        TranslationHelper::addTranslation('Home', [], 'messages');
+        TranslationHelper::addTranslation('Kookaburra', [], 'messages');
         return $this;
     }
 }

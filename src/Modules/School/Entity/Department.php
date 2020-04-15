@@ -14,7 +14,7 @@ namespace App\Modules\School\Entity;
 
 use App\Manager\EntityInterface;
 use App\Modules\Staff\Entity\DepartmentStaff;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -323,7 +323,7 @@ class Department implements EntityInterface
         return [
             'name' => $this->getName(),
             'abbr' => $this->getNameShort(),
-            'type' => TranslationsHelper::translate($this->getType()),
+            'type' => TranslationHelper::translate($this->getType()),
             'canDelete' => true,
             'staff' => $this->getStaffNames(),
         ];
@@ -339,7 +339,7 @@ class Department implements EntityInterface
         foreach($this->getStaff() as $staff)
             $result[] = $staff->getPerson()->formatName(['style' => 'long', 'reverse' => true]);
         if (empty($result))
-            $result[] = TranslationsHelper::translate('None', [], 'Departments');
+            $result[] = TranslationHelper::translate('None', [], 'Departments');
         return implode("\n<br/>", $result);
     }
 

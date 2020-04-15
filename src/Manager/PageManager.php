@@ -18,6 +18,7 @@ namespace App\Manager;
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\System\Entity\I18n;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
@@ -31,7 +32,7 @@ use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Util\LocaleHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
@@ -233,7 +234,11 @@ class PageManager
      */
     public function getLocale()
     {
-        return LocaleHelper::getLocale();
+        if ($this->getRequest()->getLocale() !== null)
+            return $this->getRequest()->getLocale();
+        if ($this->getRequest()->getDefaultLocale() !== null)
+            return $this->getRequest()->getDefaultLocale();
+        return 'en_GB';
     }
 
     /**
@@ -244,11 +249,12 @@ class PageManager
     {
         $this->addTranslation('Loading');
         $this->addTranslation('Close');
-        $result =  [
+        $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getLocale(), $this->request);
+        return [
             'pageHeader' => $this->getPageHeader(),
             'popup' => $this->isPopup(),
             'locale' => $this->getLocale(),
-            'rtl' => LocaleHelper::getRtl($this->getLocale()),
+            'rtl' => $locale->isRtl(),
             'bodyImage' => ImageHelper::getBackgroundImage(),
             'minorLinks' => $this->minorLinks->getContent(),
             'headerDetails' => $this->getHeaderDetails(),
@@ -260,7 +266,6 @@ class PageManager
             'translations' => $this->getTranslations(),
             'messages' => $this->getMessages(),
         ];
-        return $result;
     }
 
     /**
@@ -319,14 +324,14 @@ class PageManager
     {
         return [
             'translations' => [
-                'Kookaburra' => TranslationsHelper::translate('Kookaburra'),
-                'Created under the' => TranslationsHelper::translate('Created under the'),
-                'Powered by' => TranslationsHelper::translate('Powered by'),
-                'from a fork of' => TranslationsHelper::translate('from a fork of'),
-                'licence' => TranslationsHelper::translate('licence'),
+                'Kookaburra' => TranslationHelper::translate('Kookaburra'),
+                'Created under the' => TranslationHelper::translate('Created under the'),
+                'Powered by' => TranslationHelper::translate('Powered by'),
+                'from a fork of' => TranslationHelper::translate('from a fork of'),
+                'licence' => TranslationHelper::translate('licence'),
             ],
             'footerLogo' => ImageHelper::getAbsoluteImageURL('File', '/build/static/logoFooter.png'),
-            'footerThemeAuthor' => TranslationsHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default']),
+            'footerThemeAuthor' => TranslationHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default']),
             'year' => date('Y'),
         ];
     }
@@ -353,8 +358,9 @@ class PageManager
                 'popup' => $this->isPopup(),
             ]
         );
-
-        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]));
+        $x = array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]);
+        $response = new JsonResponse($x);
+        return $response;
     }
 
     /**
@@ -363,21 +369,15 @@ class PageManager
      */
     private function getTitle()
     {
-        if ($this->getRoute() === 'home')
-            return '';
-
-        if (strpos($this->getRoute(), 'install__') === 0)
-        {
-            return 'Installation';
+        $title = 'messages';
+        if ($this->getRequest()->attributes->has('_route_params')) {
+            $x = $this->getRequest()->attributes->get('_route_params');
+            if (!key_exists('module', $x))
+                return '';
+            $title = ucfirst($x['module']);
         }
 
-        $title = $this->getAction()['name'];
-        if (mb_strpos($title, '_'))
-        {
-            $title = mb_substr($title, 0, mb_strpos($title, '_'));
-        }
-
-        return TranslationsHelper::translate($title, [], str_replace(' ', '', $this->getModule()['name']));
+        return TranslationHelper::translate($title, [], str_replace(' ', '', $title));
     }
 
     /**
@@ -407,7 +407,7 @@ class PageManager
 
         $moduleName = $this->getModule()['name'];
         $domain = str_replace(' ','',$moduleName);
-        $result['title'] = TranslationsHelper::translate($title, $params, $domain);
+        $result['title'] = TranslationHelper::translate($title, $params, $domain);
         $result['crumbs'] = $crumbs;
         $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
         $result['domain'] = $domain;
@@ -588,7 +588,7 @@ class PageManager
      */
     public function addTranslation(string $id, array $options = [], string $domain = 'messages'): PageManager
     {
-        $this->translations[$id] = TranslationsHelper::translate($id,$options,$domain);
+        $this->translations[$id] = TranslationHelper::translate($id,$options,$domain);
         return $this;
     }
 
@@ -623,9 +623,9 @@ class PageManager
         foreach($flashBag->All() as $status => $list) { // Read and clear
             foreach ($list as $content) {
                 if (is_array($content)) {
-                    $messages[] = ['class' => $status, 'message' => TranslationsHelper::translate($content[0], $content[1], $content[2])];
+                    $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
                 } else
-                    $messages[] = ['class' => $status, 'message' => TranslationsHelper::translate($content, [], 'messages')];
+                    $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content, [], 'messages')];
             }
         }
 

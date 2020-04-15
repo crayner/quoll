@@ -17,7 +17,7 @@ namespace App\Twig;
 
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -60,6 +60,6 @@ class IdleTimeout implements ContentInterface
      */
     private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
-        return TranslationsHelper::translate($key, $params, $domain);
+        return TranslationHelper::translate($key, $params, $domain);
     }
 }

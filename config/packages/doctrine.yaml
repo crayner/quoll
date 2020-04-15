@@ -77,6 +77,18 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/Comms/Entity'
                 prefix: 'App\Modules\Comms\Entity'
                 alias: Comms
+            Timetable:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Timetable/Entity'
+                prefix: 'App\Modules\Timetable\Entity'
+                alias: Timetable
+            Staff:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Staff/Entity'
+                prefix: 'App\Modules\Staff\Entity'
+                alias: Staff
         dql:
             string_functions:
                 substring_index: App\Doctrine\SubstringIndexFunction

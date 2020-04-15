@@ -19,7 +19,7 @@ use App\Modules\Comms\Entity\NotificationListener;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\YearGroup;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -49,7 +49,7 @@ class EventListenerValidator extends ConstraintValidator
             $this->context->buildViolation('This value cannot be blank when the Scope is set to {name}')
                 ->atPath('scopeID')
                 ->setTranslationDomain('SystemAdmin')
-                ->setParameter('{name}', TranslationsHelper::tranlate($value->getScopeType(), [], 'messages'))
+                ->setParameter('{name}', TranslationHelper::tranlate($value->getScopeType(), [], 'messages'))
                 ->addViolation();
             return;
         }

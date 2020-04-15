@@ -33,10 +33,11 @@ export function fetchJson(url, options, locale) {
             // decode JSON, but avoid problems with empty responses
             return response.text()
                 .then(text => {
-                    if (text.includes('window.Sfdump'))
+                    text = text.replace('<?php', '')
+                    if (text.includes('window.Sfdump') || text.includes('<?php'))
                     {
                         console.log(text)
-                        return ''
+                        return []
                     }
                     return typeof(text) === 'string' ? JSON.parse(text) : ''
                 })

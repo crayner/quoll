@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Class TranslationsHelper
  * @package App\Util
  */
-class TranslationsHelper
+class TranslationHelper
 {
     /**
      * @var TranslatorInterface

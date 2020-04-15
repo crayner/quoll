@@ -17,7 +17,7 @@ namespace App\Twig;
 
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\System\Entity\Module;
 use App\Modules\People\Entity\Person;
@@ -203,6 +203,6 @@ class FastFinder implements ContentInterface
      */
     private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
-        return TranslationsHelper::translate($key, $params, $domain);
+        return TranslationHelper::translate($key, $params, $domain);
     }
 }

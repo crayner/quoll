@@ -14,7 +14,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
 use App\Util\ImageHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\People\Util\StudentHelper;
@@ -189,7 +189,7 @@ class FamilyChild implements EntityInterface
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
             'fullName' => $person->formatName(['style' => 'long', 'preferredName' => false]),
-            'status' => TranslationsHelper::translate($person->getStatus(), [], 'UserAdmin'),
+            'status' => TranslationHelper::translate($person->getStatus(), [], 'UserAdmin'),
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),
             'family_id' => $this->getFamily()->getId(),

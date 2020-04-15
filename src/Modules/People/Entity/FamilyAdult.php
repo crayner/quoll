@@ -14,7 +14,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -386,16 +386,16 @@ class FamilyAdult implements EntityInterface
 
         return [
             'fullName' => $person->formatName(['style' => 'formal']),
-            'status' => TranslationsHelper::translate($person->getStatus(), [], 'UserAdmin'),
+            'status' => TranslationHelper::translate($person->getStatus(), [], 'UserAdmin'),
             'comment' => $this->getComment(),
             'person_id' => $this->getPerson()->getId(),
             'adult_id' => $this->getId(),
             'family_id' => $this->getFamily()->getId(),
-            'childDataAccess' => TranslationsHelper::translate(($this->isChildDataAccess() ? 'Yes' : 'No'), [], 'messages'),
-            'phone' => TranslationsHelper::translate(($this->isContactCall() ? 'Yes' : 'No'), [], 'messages'),
-            'sms' => TranslationsHelper::translate(($this->isContactSMS() ? 'Yes' : 'No'), [], 'messages'),
-            'email' => TranslationsHelper::translate(($this->isContactEmail() ? 'Yes' : 'No'), [], 'messages'),
-            'mail' => TranslationsHelper::translate(($this->isContactMail() ? 'Yes' : 'No'), [], 'messages'),
+            'childDataAccess' => TranslationHelper::translate(($this->isChildDataAccess() ? 'Yes' : 'No'), [], 'messages'),
+            'phone' => TranslationHelper::translate(($this->isContactCall() ? 'Yes' : 'No'), [], 'messages'),
+            'sms' => TranslationHelper::translate(($this->isContactSMS() ? 'Yes' : 'No'), [], 'messages'),
+            'email' => TranslationHelper::translate(($this->isContactEmail() ? 'Yes' : 'No'), [], 'messages'),
+            'mail' => TranslationHelper::translate(($this->isContactMail() ? 'Yes' : 'No'), [], 'messages'),
             'contactPriority' => $this->getContactPriority(),
             'id' => $this->getId(),
         ];

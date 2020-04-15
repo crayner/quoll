@@ -15,60 +15,31 @@
 
 namespace App\Controller;
 
-use App\Manager\PageManager;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class HomeController
  * @package App\Controller
  */
-class HomeController extends AbstractController
+class HomeController extends AbstractPageController
 {
     /**
-     * @Route("/", name="unauthenticated")
-     * @param PageManager $pageManager
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/{_locale}/home/", name="home")
+     * @Route("/{_locale}", name="unauthenticated_with_locale")
+     * @Route("/", name="unauthenticated_no_locale")
      */
-    public function index(PageManager $pageManager)
-    {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
-        }
-
-        return $pageManager->render('home/index.html.twig');
-
-        $result = $manager->execute($request, $gibbonManager->getPage());
-
-        if ($result instanceof Response){
-            return $result;
-        }
-
-        return $this->render('index.html.twig',
-            [
-                'controller_name' => 'LegacyController',
-                'manager' => $result,
-            ]
-        );
-    }
-
-    /**
-     * @Route("/home/", name="home")
-     * @param PageManager $pageManager
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse|Response
-     */
-    public function home(PageManager $pageManager)
+    public function home()
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
-            return $this->redirectToRoute('legacy');
+            return $this->redirectToRoute('personal_page');
 
+        $pageManager = $this->getPageManager();
         $request = $pageManager->getRequest();
 
         if ($request->getContentType() !== 'json')
@@ -88,21 +59,38 @@ class HomeController extends AbstractController
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
-
-        return $pageManager->render(['content' => trim($this->renderView('home/welcome.html.twig',
+        return $pageManager->render(
             [
-                'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
+                'content' => trim($this->renderView('home/welcome.html.twig',
+                        [
+                            'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
+                        ]
+                    )
+                )
             ]
-        ))]);
+        );
     }
 
     /**
      * legacy
-     * @param string $q
+     * @Route("/{_locale}/personal/page/", name="personal_page")
      * @Route("/legacy/{q}/", name="legacy")
      */
-    public function legacy(string $q)
+    public function personalPage(string $q = 'nothing')
     {
-        dd($q);
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
+            return $this->redirectToRoute('home');
+
+        if ($q !== 'nothing')
+            dd($q);
+
+
+        return $this->getPageManager()->render(
+            [
+                'content' => '',
+            ]
+        );
+
+        dd($this->getUser());
     }
 }
