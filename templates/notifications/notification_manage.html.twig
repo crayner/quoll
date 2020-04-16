@@ -1,0 +1,127 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% set moduleName = 'Notifications' %}
+{% set module = {'baseURL': '/', 'crumbs': [],  'title': 'Notifications'} %}
+{% set breadcrumbs = 'new' %}
+
+{% block content %}
+    <div class='linkTop'>
+        <a class="text-gray-600" onclick='return confirm({{ "Are you sure you want to delete these records."|trans }}' href={{ path('notifications_delete_all') }}>{{ 'Delete All Notifications'|trans }}&nbsp;<span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+    </div>
+
+    <h2>
+        {{ 'New Notifications'|trans }} <span style='font-size: 65%; font-style: italic; font-weight: normal'> {{ new|length }}</span>
+    </h2>
+
+    <table cellspacing="0" style="width: 100%">
+        <thead>
+        <tr class="head">
+            <td style="width: 18%">
+                {{ 'Source'|trans }}
+            </td>
+            <td style="width: 12%">
+                {{ 'Date'|trans }}
+            </td>
+            <td style="width: 51%">
+                {{ 'Message'|trans }}
+            </td>
+            <td style="width: 7%" class="content-centre">
+                {{ 'Count'|trans }}
+            </td>
+            <td class="content-centre" style="width: 12%">
+                {{ 'Actions'|trans }}
+            </td>
+        </tr>
+        </thead>
+        <tbody class="striped">
+        {% if new|length is same as(0) %}
+            <tr class="striped">
+                <td colspan="5" class="warning">
+                    {{ 'There are no records to display.'|trans }}
+                </td>
+            </tr>
+        {% else %}
+            {% for note in new %}
+                <tr class="striped">
+                    <td>
+                        {{ note.source }}
+                    </td>
+                    <td>
+                        {{ note.timestamp|date(formatSetting('dateFormatPHP')) }}
+                    </td>
+                    <td>
+                        {{ note.text|raw }}
+                    </td>
+                    <td class="content-centre">
+                        {{ note.count }}
+                    </td>
+                    <td class="content-centre">
+                        <a href="{{ path('notification_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+
+    <h2>
+        {{ 'Archived Notifications'|trans }} <span style='font-size: 65%; font-style: italic; font-weight: normal'> {{ archived|length }}</span>
+    </h2>
+
+    <table cellspacing="0" style="width: 100%">
+        <thead>
+        <tr class="head">
+            <td style="width: 18%">
+                {{ 'Source'|trans }}
+            </td>
+            <td style="width: 12%">
+                {{ 'Date'|trans }}
+            </td>
+            <td style="width: 51%">
+                {{ 'Message'|trans }}
+            </td>
+            <td style="width: 7%" class="content-centre">
+                {{ 'Count'|trans }}
+            </td>
+            <td class="content-centre" style="width: 12%">
+                {{ 'Actions'|trans }}
+            </td>
+        </tr>
+        </thead>
+        <tbody class="striped">
+        {% if archived|length is same as(0) %}
+            <tr class="striped">
+                <td colspan="5" class="warning">
+                    {{ 'There are no records to display.'|trans }}
+                </td>
+            </tr>
+        {% else %}
+            {% for note in archived %}
+                <tr class="striped">
+                    <td>
+                        {{ note.source }}
+                    </td>
+                    <td>
+                        {{ note.timestamp|date(formatSetting('dateFormatPHP')) }}
+                    </td>
+                    <td>
+                        {{ note.text|raw }}
+                    </td>
+                    <td class="content-centre">
+                        {{ note.count }}
+                    </td>
+                    <td class="content-centre">
+                        <a href="{{ path('notification_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+{% endblock content %}

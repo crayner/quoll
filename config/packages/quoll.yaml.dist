@@ -7,7 +7,7 @@ parameters:
     databaseName: ~
     databasePort: ~
     databasePrefix: ''
-    caching: 1
+    caching: true  # No caching if false
     absoluteURL: ''
     security.hierarchy.roles:
         ROLE_USER: null

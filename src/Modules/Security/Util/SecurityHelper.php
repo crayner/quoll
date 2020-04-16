@@ -12,17 +12,17 @@
  */
 namespace App\Modules\Security\Util;
 
-use Doctrine\DBAL\Exception\DriverException;
-use KApp\Modules\System\Entity\Action;
-use KApp\Modules\System\Entity\Module;
-use App\Modules\Security\Entity\Person;
-use App\Modules\System\Entity\Setting;
 use App\Exception\RouteConfigurationException;
+use App\Modules\People\Entity\Person;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\System\Entity\Action;
+use App\Modules\System\Entity\Module;
+use App\Modules\System\Entity\Setting;
 use App\Modules\System\Provider\ActionProvider ;
 use App\Modules\System\Provider\ModuleProvider ;
 use App\Provider\ProviderFactory;
-use App\Modules\Security\Manager\SecurityUser;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -144,11 +144,13 @@ class SecurityHelper
 
     /**
      * getModuleFromRoute
-     * @param string $route
+     * @param string|null $route
      * @return array
      */
-    public static function getModuleFromRoute(string $route): array 
+    public static function getModuleFromRoute(?string $route): array
     {
+        if (is_null($route))
+            return [];
         self::getActionFromRoute($route);
         if (!self::$module && mb_strpos($route, '__') !== false) {
             $route = explode('__', $route);

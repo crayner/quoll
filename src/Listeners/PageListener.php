@@ -18,6 +18,7 @@ namespace App\Listeners;
 use App\Manager\PageManager;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
+use App\Util\CacheHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -39,9 +40,14 @@ class PageListener implements EventSubscriberInterface
      * @param PageManager $pageManager
      * @param ProviderFactory $factory Pre load to Container
      * @param TranslationHelper $helper
+     * @param CacheHelper $cache
      */
-    public function __construct(PageManager $pageManager, ProviderFactory $factory, TranslationHelper $helper)
-    {
+    public function __construct(
+        PageManager $pageManager,
+        ProviderFactory $factory,
+        TranslationHelper $helper,
+        CacheHelper $cache
+    ) {
         $this->pageManager = $pageManager;
     }
 
@@ -70,7 +76,7 @@ class PageListener implements EventSubscriberInterface
         $route = $request->attributes->get('_route');
 
         // Ignore Debug Screens
-        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js)#", $route))
+        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|api)#", $route))
             return;
 
         if ($request->hasSession()) {

@@ -22,6 +22,7 @@ use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * Class HomeController
@@ -73,23 +74,17 @@ class HomeController extends AbstractPageController
     /**
      * legacy
      * @Route("/personal/page/", name="personal_page")
-     * @Route("/legacy/{q}/", name="legacy")
      */
-    public function personalPage(string $q = 'nothing')
+    public function personalPage()
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('home');
 
-        if ($q !== 'nothing')
-            dd($q);
-
-
+        dump($this->getUser(),$this->isGranted('ROLE_SYSTEM_ADMIN'));
         return $this->getPageManager()->render(
             [
-                'content' => '',
+                'content' => '<h3>Personal Page</h3>',
             ]
         );
-
-        dd($this->getUser());
     }
 }

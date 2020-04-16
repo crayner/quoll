@@ -15,18 +15,18 @@
 
 namespace App\Twig;
 
-use App\Entity\CourseClass;
-use App\Entity\CourseClassPerson;
-use App\Util\TranslationHelper;
+use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\System\Entity\Module;
 use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Role;
-use App\Entity\StudentEnrolment;
+use App\Modules\Security\Entity\Role;
+use App\Modules\Security\Provider\RoleProvider;
+use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Entity\Module;
 use App\Provider\ProviderFactory;
-use App\Modules\System\Provider\RoleProvider;
 use App\Util\CacheHelper;
-use App\Modules\People\Util\SecurityHelper;
+use App\Util\TranslationHelper;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

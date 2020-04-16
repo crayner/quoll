@@ -43,3 +43,11 @@ services:
             $stream: '%kernel.logs_dir%/translation.%kernel.environment%.log'
             $level:    'warning'
             $bubble:   false
+
+    App\Util\CacheHelper:
+        arguments:
+            $caching: '%caching%'
+
+    App\Manager\RouterLoader:
+        tags: [ routing.loader ]
+

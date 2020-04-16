@@ -274,7 +274,7 @@ class PageManager
             'route' => $this->getRoute(),
             'action' => $this->getRoute() !== 'home' ? $this->getAction() : [],
             'module' => $this->getRoute() !== 'home' ? $this->getModule() : [],
-            'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []),
+            'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []) ?: '',
             'footer' => $this->getFooter(),
             'translations' => $this->getTranslations(),
             'messages' => $this->getMessages(),

@@ -1,13 +1,28 @@
 Learn With Us: Learn With Us
-We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.: We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.
+'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.': 'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.'
 Welcome: Welcome
 Close: Close
-Created under the: Created under the
+Created under the: 'Created under the'
 Home: Home
 Kookaburra: Kookaburra
 Quoll: Quoll
 Loading: Loading
 Powered by: Powered by
-Theme {name} by {person}: Theme {name} by {person}
-from a fork of: from a fork of
+'Theme {name} by {person}': 'Theme {name} by {person}'
+from a fork of: 'from a fork of'
 licence: licence
+return:
+    error:
+        0: 'Your request failed because you do not have access to this action.'
+        1: 'Your request failed because your inputs were invalid.'
+        2: 'Your request failed due to a database error.'
+        8: 'Your request failed because some values are still in use within the data.'
+        9: 'The highest grouped action cannot be determined.'
+        csrf: 'Invalid Cross Site Request Forgery Token.'
+    warning:
+        3: 'The request failed as the record has a deletion lock.'
+    error1: 'Your request failed because your inputs were invalid.'
+    error2: 'Your request failed due to a database error.'
+    success0: 'Your request was completed successfully.'
+    success:
+        0: 'Your request was completed successfully.'

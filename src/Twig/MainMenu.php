@@ -15,16 +15,14 @@
 
 namespace App\Twig;
 
-use App\Manager\ScriptManager;
-use App\Util\TranslationHelper;
-use App\Util\UrlGeneratorHelper;
+use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Provider\ProviderFactory;
-use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Security\Util\UserHelper;
-use Symfony\Component\HttpFoundation\UrlHelper;
+use App\Util\TranslationHelper;
+use App\Util\UrlGeneratorHelper;
 
 /**
  * Class MainMenu

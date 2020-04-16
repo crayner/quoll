@@ -12,3 +12,8 @@ security_no_prefix:
     resource: ../../src/Modules/Security/ControllerNoPrefix/
     type: annotation
     schemes: [ 'https' ]
+
+quoll_routes:
+    resource: .
+    type: quoll
+    schemes: [ 'https' ]

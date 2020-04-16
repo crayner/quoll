@@ -36,26 +36,30 @@ class UrlGeneratorHelper
     }
 
     /**
-     * @param $route
+     * getPath
+     * @param string|null $route
      * @param array $parameters
      * @param bool $relative
-     *
      * @return string
      */
-    public static function getPath($route, $parameters = [], $relative = false)
+    public static function getPath(?string $route, array $parameters = [], bool $relative = false)
     {
+        if (is_null($route))
+            return null;
         return self::$generator->generate($route, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $schemeRelative
-     *
-     * @return string
+     * getUrl
+     * @param string|null $name
+     * @param array $parameters
+     * @param bool $schemeRelative
+     * @return string|null
      */
-    public static function getUrl($name, $parameters = [], $schemeRelative = false)
+    public static function getUrl(?string $name, array $parameters = [], bool $schemeRelative = false): ?string
     {
+        if (is_null($name))
+            return null;
         return self::$generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::ABSOLUTE_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
