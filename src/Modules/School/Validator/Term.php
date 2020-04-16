@@ -19,12 +19,12 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Class Term
- * @package App\Modules\SchoolAdmin\Validator
+ * @package App\Modules\School\Validator
  * @Annotation
  */
 class Term extends Constraint
 {
-    public $transDomain = 'SchoolAdmin';
+    public $transDomain = 'School';
 
     /**
      * getTargets

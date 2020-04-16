@@ -26,7 +26,7 @@ use Doctrine\DBAL\Schema\SchemaException;
 
 /**
  * Class ScaleGradeProvider
- * @package App\Modules\SchoolAdmin\Provider
+ * @package App\Modules\School\Provider
  */
 class ScaleGradeProvider implements EntityProviderInterface
 {

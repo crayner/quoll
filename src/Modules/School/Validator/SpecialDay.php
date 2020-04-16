@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Class SpecialDay
- * @package App\Modules\SchoolAdmin\Validator
+ * @package App\Modules\School\Validator
  * @Annotation
  */
 class SpecialDay extends Constraint

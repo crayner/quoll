@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ScaleGrade
- * @package App\Modules\SchoolAdmin\Entity
+ * @package App\Modules\Schoo\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\ScaleGradeRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="ScaleGrade",
  *     indexes={@ORM\Index(name="scale",columns={"scale"})},

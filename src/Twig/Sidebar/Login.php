@@ -89,7 +89,7 @@ class Login implements SidebarContentInterface
             'Forgot Password' => TranslationHelper::translate('Forgot Password', [], 'Security'),
             'Login with Google' => TranslationHelper::translate('Login with Google', [], 'Security'),
             'Language' => TranslationHelper::translate('Language', [], 'Security'),
-            'Academic Year' => TranslationHelper::translate('Academic Year', [], 'SchoolAdmin'),
+            'Academic Year' => TranslationHelper::translate('Academic Year', [], 'School'),
         ];
     }
 }

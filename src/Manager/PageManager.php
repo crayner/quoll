@@ -337,7 +337,7 @@ class PageManager
     {
         return [
             'translations' => [
-                'Kookaburra' => TranslationHelper::translate('Kookaburra'),
+                'Kookaburra' => TranslationHelper::translate('Quoll'),
                 'Created under the' => TranslationHelper::translate('Created under the'),
                 'Powered by' => TranslationHelper::translate('Powered by'),
                 'from a fork of' => TranslationHelper::translate('from a fork of'),

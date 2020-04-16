@@ -18,6 +18,7 @@ namespace App\Listeners;
 use App\Manager\PageManager;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -37,8 +38,9 @@ class PageListener implements EventSubscriberInterface
      * PageListener constructor.
      * @param PageManager $pageManager
      * @param ProviderFactory $factory Pre load to Container
+     * @param TranslationHelper $helper
      */
-    public function __construct(PageManager $pageManager, ProviderFactory $factory)
+    public function __construct(PageManager $pageManager, ProviderFactory $factory, TranslationHelper $helper)
     {
         $this->pageManager = $pageManager;
     }

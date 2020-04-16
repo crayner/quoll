@@ -21,7 +21,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class ScaleGradeRepository
- * @package App\Modules\SchoolAdmin\Repository
+ * @package App\Modules\School\Repository
  */
 class ScaleGradeRepository extends ServiceEntityRepository
 {

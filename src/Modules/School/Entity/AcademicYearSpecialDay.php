@@ -347,7 +347,7 @@ class AcademicYearSpecialDay implements EntityInterface
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'date' => $this->getDate()->format('jS M/Y'),
-            'type' => TranslationHelper::translate('academicyearspecialday.type.'.strtolower($this->getType()), [], 'SchoolAdmin'),
+            'type' => TranslationHelper::translate('academicyearspecialday.type.'.strtolower($this->getType()), [], 'School'),
             'canDelete' => true,
             'canDuplicate' => SpecialDayManager::canDuplicate($this),
         ];

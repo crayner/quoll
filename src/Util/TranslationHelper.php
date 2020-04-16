@@ -44,7 +44,7 @@ class TranslationHelper
      */
     public function __construct(TranslatorInterface $translator)
     {
-       self::$translator = $translator;
+        self::$translator = $translator;
     }
 
     /**

@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Class TermValidator
- * @package App\Modules\SchoolAdmin\Validator
+ * @package App\Modules\School\Validator
  */
 class TermValidator extends ConstraintValidator
 {

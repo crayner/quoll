@@ -53,12 +53,6 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
         if (null === $id || '' === $id)
             return '';
 
-        if ($domain === 'gibbon')
-        {
-            // trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
-            $domain = 'messages';
-        }
-
         // Change translation domain to 'messages' if a translation can't be found in the
         // current domain
         if ('messages' !== $domain && false === $this->getCatalogue($locale)->has((string) $id, $domain)) {
@@ -250,6 +244,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
     /**
      * Translator constructor.
      * @param TranslatorInterface $translator
+     * @param RequestStack $stack
      */
     public function __construct(TranslatorInterface $translator, RequestStack $stack)
     {

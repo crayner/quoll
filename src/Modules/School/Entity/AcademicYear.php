@@ -269,7 +269,7 @@ class AcademicYear implements EntityInterface
         $dates = $this->getFirstDay()->format('d M Y') . ' - ' . $this->getLastDay()->format('d M Y');
         return [
             'name' => $this->getName(),
-            'status' => TranslationHelper::translate('academicyear.status.'.strtolower($this->getStatus()), [], 'SchoolAdmin'),
+            'status' => TranslationHelper::translate('academicyear.status.'.strtolower($this->getStatus()), [], 'School'),
             'dates' => $dates,
             'canDelete' => $this->canDelete(),
             'sequence' => $this->getSequenceNumber(),
