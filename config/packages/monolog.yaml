@@ -1,0 +1,77 @@
+monolog:
+    channels:
+        - 'demonstration'
+        - 'gibbon'
+        - 'setting'
+        - 'mailer'
+        - 'importer'
+        - 'notification'
+        - 'installation'
+        - 'translation'
+    handlers:
+        security:
+            # log all messages (since debug is the lowest level)
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/security.%kernel.environment%.log'
+            channels: [security]
+            max_files: 7
+        mailer:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/mailer.%kernel.environment%.log'
+            channels: [mailer]
+            max_files: 7
+        request:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/request.%kernel.environment%.log'
+            channels: [request]
+            max_files: 7
+        doctrine:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/doctrine.%kernel.environment%.log'
+            channels: [doctrine]
+            max_files: 7
+        demonstration:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/demonstration.%kernel.environment%.log'
+            channels: [demonstration]
+            max_files: 1
+        gibbon:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/gibbon.%kernel.environment%.log'
+            channels: [gibbon]
+            max_files: 1
+        setting:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/setting.%kernel.environment%.log'
+            channels: [setting]
+            max_files: 7
+        importer:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/importer.%kernel.environment%.log'
+            channels: [importer]
+            max_files: 1
+            formatter: monolog.formatter.importer
+        notification:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/notification.%kernel.environment%.log'
+            channels: [notification]
+            max_files: 14
+        installation:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/installation.%kernel.environment%.log'
+            channels: [installation]
+            max_files: 14
+        translation:
+            type:     service
+            id:       App\Translation\Logger
+            channels: [translation]

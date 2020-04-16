@@ -1,4 +1,7 @@
 {
+    "crayner/doctrine-bundle": {
+        "version": "1.0.06"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

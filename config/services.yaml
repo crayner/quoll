@@ -25,3 +25,21 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    monolog.formatter.importer:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
+    App\Translation\Translator:
+        decorates: translator
+
+    App\Logger\UserDetailProcessor:
+        tags:
+            - { name: monolog.processor }
+
+    App\Translation\Logger:
+        arguments:
+            $stream: '%kernel.logs_dir%/translation.%kernel.environment%.log'
+            $level:    'warning'
+            $bubble:   false
