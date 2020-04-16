@@ -154,7 +154,7 @@ class StringReplacement implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="caseSensitive")
+     * @ORM\Column(length=1, name="case_sensitive")
      * @Assert\Choice(callback="getBooleanList")
      */
     private $caseSensitive = 'N';
@@ -164,7 +164,7 @@ class StringReplacement implements EntityInterface
      */
     public function isCaseSensitive(): bool
     {
-        return $this->getCaseSensitive() === 'Y' ? true : false ;
+        return $this->getCaseSensitive() === 'Y';
     }
 
     /**
@@ -172,8 +172,8 @@ class StringReplacement implements EntityInterface
      */
     public function getCaseSensitive(): string
     {
-        return $this->caseSensitive = in_array($this->caseSensitive, self::getBooleanList()) ? $this->caseSensitive : 'N' ;
-    }
+        return $this->caseSensitive = self::checkBoolean($this->caseSensitive, 'N');
+}
 
     /**
      * setCaseSensitive
@@ -183,7 +183,7 @@ class StringReplacement implements EntityInterface
      */
     public function setCaseSensitive(?string $caseSensitive): StringReplacement
     {
-        $this->caseSensitive = in_array($caseSensitive, self::getBooleanList()) ? $caseSensitive : 'N' ;
+        $this->caseSensitive = self::checkBoolean($caseSensitive, 'N');
         return $this;
     }
 
