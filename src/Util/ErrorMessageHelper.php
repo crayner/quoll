@@ -31,7 +31,7 @@ class ErrorMessageHelper
     public static function getInvalidInputsMessage(array $data, bool $translate = false): array
     {
         //      error1 = return.error.1 = Your request failed because your inputs were invalid.
-        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationsHelper::translate('return.error.1', [], 'messages') : ['return.error.1', [], 'messages'])];
+        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.1', [], 'messages') : ['return.error.1', [], 'messages'])];
         $data['status'] = 'error';
         return $data;
     }
@@ -44,7 +44,7 @@ class ErrorMessageHelper
     public static function getDatabaseErrorMessage(array $data, bool $translate = false): array
     {
         //      error2 = return.error.2 = Your request failed due to a database error.
-        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationsHelper::translate('return.error.2', [], 'messages') : ['return.error.2', [], 'messages'])];
+        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.2', [], 'messages') : ['return.error.2', [], 'messages'])];
         $data['status'] = 'error';
         return $data;
     }
@@ -58,7 +58,7 @@ class ErrorMessageHelper
     public static function getSuccessMessage(array $data, bool $translate = false): array
     {
         //      success0 = return.success.0 = Your request was completed successfully.
-        $data['errors'][] = ['class' => 'success', 'message' => ($translate ? TranslationsHelper::translate('return.success.0', [], 'messages') : ['return.success.0', [], 'messages'])];
+        $data['errors'][] = ['class' => 'success', 'message' => ($translate ? TranslationHelper::translate('return.success.0', [], 'messages') : ['return.success.0', [], 'messages'])];
         $data['status'] = 'success';
         return $data;
     }
@@ -70,7 +70,7 @@ class ErrorMessageHelper
      */
     public static function getInvalidTokenMessage(array $data, bool $translate = false): array
     {
-        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationsHelper::translate('return.error.csrf', [], 'messages') : ['return.error.csrf', [], 'messages'])];
+        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.csrf', [], 'messages') : ['return.error.csrf', [], 'messages'])];
         $data['status'] = 'error';
         return $data;
     }
@@ -89,9 +89,9 @@ class ErrorMessageHelper
         if ($translate){
             foreach($data['errors'] as $q=>$error) {
                 if (is_array($error['message']) && count($error['message']) === 3)
-                    $data['errors'][$q]['message'] = TranslationsHelper::translate($error['message'][0],$error['message'][1],$error['message'][2]);
+                    $data['errors'][$q]['message'] = TranslationHelper::translate($error['message'][0],$error['message'][1],$error['message'][2]);
                 else
-                    $data['errors'][$q]['message'] = TranslationsHelper::translate($error['message']);
+                    $data['errors'][$q]['message'] = TranslationHelper::translate($error['message']);
             }
         }
 

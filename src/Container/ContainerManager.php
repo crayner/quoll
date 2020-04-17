@@ -16,7 +16,7 @@
 namespace App\Container;
 
 use App\Util\ReactFormHelper;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -74,10 +74,10 @@ class ContainerManager
         $this->translator = $translator;
         $this->stack = $stack;
 
-        TranslationsHelper::addTranslation('Errors on Tab', [], 'messages');
-        TranslationsHelper::addTranslation('All fields on all panels are saved together.', [], 'messages');
-        TranslationsHelper::addTranslation('Return', [], 'messages');
-        TranslationsHelper::addTranslation('Add', [], 'messages');
+        TranslationHelper::addTranslation('Errors on Tab', [], 'messages');
+        TranslationHelper::addTranslation('All fields on all panels are saved together.', [], 'messages');
+        TranslationHelper::addTranslation('Return', [], 'messages');
+        TranslationHelper::addTranslation('Add', [], 'messages');
     }
 
     /**
@@ -207,7 +207,7 @@ class ContainerManager
             }
             $container['panels'] = $container['panels']->toArray();
             $container['forms'] = $container['forms']->toArray();
-            $container['translations'] = TranslationsHelper::getTranslations();
+            $container['translations'] = TranslationHelper::getTranslations();
             $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();

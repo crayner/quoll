@@ -18,7 +18,7 @@ namespace App\Util;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class TranslationsHelper
+ * Class TranslationHelper
  * @package App\Util
  */
 class TranslationHelper
@@ -39,7 +39,7 @@ class TranslationHelper
     private static $domain = 'messages';
 
     /**
-     * TranslationsHelper constructor.
+     * TranslationHelper constructor.
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)

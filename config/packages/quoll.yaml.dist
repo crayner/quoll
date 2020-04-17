@@ -41,6 +41,6 @@ parameters:
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~
-    system_name: Kookaburra
+    system_name: Quoll
     organisation_name: Organisation Name
     messenger_transport_dsn: 'doctrine://default'
