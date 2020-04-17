@@ -67,7 +67,10 @@ export default function SideBar(props) {
 
 SideBar.propTypes = {
     minimised: PropTypes.bool.isRequired,
-    content: PropTypes.object.isRequired,
+    content: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ]).isRequired,
     functions: PropTypes.object.isRequired,
     width: PropTypes.number.isRequired,
     sidebarOpen: PropTypes.bool.isRequired,

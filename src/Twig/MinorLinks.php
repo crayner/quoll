@@ -15,7 +15,9 @@
 
 namespace App\Twig;
 
+use App\Modules\School\Entity\House;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -51,16 +53,17 @@ class MinorLinks implements ContentInterface
         $links = [];
         $languageLink = false;
         // Add a link to go back to the system/personal default language, if we're not using it
-        if ($this->getSession()->has('i18n') && $this->getSession()->has('code')) {
-            if ($this->getSession()->get('i18n') !== $this->getSession()->get('i18n')) {
-                $systemDefaultShortName = trim(strstr($this->getSession()->get(['i18n','default','name']), '-', true));
+        if ($this->getSession()->has('i18n')) {
+            $locale = $this->getSession()->get('i18n');
+            if ($locale->getCode() !== $this->getRequest()->getDefaultLocale()) {
+                $defaultLocale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getRequest()->getDefaultLocale());
                 $languageLink =
                     [
                         'url' => [
                             'route' => 'locale_switch',
-                            'params' => ['i18n' => $this->getSession()->get(['i18n','default','code'])],
+                            'params' => ['i18n' => $defaultLocale->getCode()],
                         ],
-                        'text' => $systemDefaultShortName,
+                        'text' => $defaultLocale->getShortName(),
                         'class' => 'link-white',
                         'translation_domain' => false,
                     ];
@@ -70,33 +73,32 @@ class MinorLinks implements ContentInterface
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
             if ($languageLink)
                 $links[] = $languageLink;
-
             if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
                 $links[] = [
-                    'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink', 'https:://www.craigrayner.com'),
-                    'text' => ['organisation_website', ['%name%' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationNameShort', 'Kookaburra')]],
+                    'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink'),
+                    'text' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationNameShort', 'Quoll'),
                     'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
                 ];
-
             }
         } else {
-            $name = $this->getSession()->get('preferredName').' '.$this->getSession()->get('surname');
-            if ($this->getSession()->has('gibbonRoleIDCurrentCategory')) {
-                if ($this->getSession()->get('gibbonRoleIDCurrentCategory') === 'Student') {
-                    $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');
-                    if ($highestAction == 'View Student Profile_brief') {
-                        $name = [
-                            'class' => 'link-white',
-                            'text' => $name,
-                            'translation_domain' => false,
-                            'url' => $this->getSession()->get('absoluteURL').'/?q=/modules/Students/student_view_details.php&gibbonPersonID='.$this->getSession()->get('gibbonPersonID'),
-                        ];
-                    }
+            $person = $this->getSession()->get('person');
+            $name = $person->formatName(['preferred' => true, 'reverse' => false]);
+            if ($person->getPrimaryRole()->getCategory() === 'Student') {
+                $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');
+                if ($highestAction == 'View Student Profile_brief') {
+                    $name = [
+                        'class' => 'link-white',
+                        'text' => $name,
+                        'translation_domain' => false,
+                        'url' => $this->getSession()->get('absoluteURL').'/?q=/modules/Students/student_view_details.php&person='.$person->getId(),
+                    ];
                 }
             }
-            if (is_string($name)){
+
+
+            if (is_string($name) && '' !== $name){
                 $name = [
                     'text' => $name,
                     'url' => '',
@@ -104,43 +106,34 @@ class MinorLinks implements ContentInterface
                 ];
             }
             $links[] = $name;
+            $provider = ProviderFactory::create(Setting::class);
 
             $links[] = [
                 'class' => 'link-white',
-                'text' => TranslationHelper::translate('Logout', [], 'messages'),
+                'text' => TranslationHelper::translate('Logout', [], 'Security'),
                 'url' => UrlGeneratorHelper::getUrl('logout'),
-                'translation_domain' => 'messages',
+                'translation_domain' => 'Security',
             ];
             $links[] = [
                 'class' => 'link-white',
-                'text' => TranslationHelper::translate('Preferences', [], 'messages'),
-                'url' => UrlGeneratorHelper::getUrl('user_admin__preferences'),
-                'translation_domain' => 'messages',
+                'text' => TranslationHelper::translate('Preferences', [], 'People'),
+                'url' => UrlGeneratorHelper::getUrl('preferences'),
+                'translation_domain' => 'People',
             ];
-            if ($this->getSession()->get('emailLink', '') !== '') {
+            if ($provider->hasSettingByScope('System','emailLink')) {
                 $links[] = [
                     'class' => 'link-white',
-                    'text' => TranslationHelper::translate('Email'),
-                    'url' => $this->getSession()->get('emailLink'),
+                    'text' => TranslationHelper::translate('Email', [], 'People'),
+                    'url' => $provider->getSettingByScopeAsString('System','emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
                 ];
             }
-            if ($this->getSession()->get('webLink', '') !== '') {
+            if ($provider->hasSettingByScope('System','webLink')) {
                 $links[] = [
-                    'url' => $this->getSession()->get('webLink', ''),
-                    'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
-                    'translation_domain' => 'messages',
-                    'target' => '_blank',
-                    'class' => 'link-white',
-                    'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
-                ];
-            }
-            if ($this->getSession()->get('website', '') !== '') {
-                $links[] = [
-                    'url' => $this->getSession()->get('website', ''),
-                    'text' => 'My Website',
-                    'translation_domain' => 'messages',
+                    'url' => $provider->getSettingByScopeAsString('System','webLink'),
+                    'text' => $provider->getSettingByScopeAsString('System', 'organisationNameShort'),
+                    'translation_domain' => 'School',
                     'target' => '_blank',
                     'class' => 'link-white',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
@@ -151,13 +144,14 @@ class MinorLinks implements ContentInterface
                 $links[] = $languageLink;
 
             //Check for house logo (needed to get bubble, below, in right spot)
-            if ($this->getSession()->has('gibbonHouseIDLogo') && $this->getSession()->has('gibbonHouseIDName')) {
-                if ($this->getSession()->get('gibbonHouseIDLogo', '') !== '') {
+            if ($person->getHouse() instanceof House) {
+                $house = $person->getHouse();
+                if ($house->getLogo() !== '') {
                     $this->houseLogo = [
                         'class' => 'ml-1 w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16',
-                        'title' => $this->getSession()->get('gibbonHouseIDName'),
+                        'title' => $house->getName(),
                         'style' => 'vertical-align: -75%;',
-                        'src' => '/'.$this->getSession()->get('gibbonHouseIDLogo'),
+                        'src' => $house->getLogo(),
                     ];
                 }
             }
@@ -171,6 +165,7 @@ class MinorLinks implements ContentInterface
      */
     public function getContent(): array
     {
+        $this->execute();
         return $this->content ?: [];
     }
 

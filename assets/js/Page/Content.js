@@ -38,6 +38,7 @@ export default function Content(props) {
     function buildContent() {
         let result = []
         let x = []
+        let w = 1
         let loop = 0
         if (!popup) {
             let crumbs = Object.keys(breadCrumbs).map(name => {
@@ -45,27 +46,27 @@ export default function Content(props) {
 
                 if (loop + 1 === Object.keys(breadCrumbs).length) {
                     loop++
-                    return (<span key={name} className="trailEnd">{crumb.name}</span>)
+                    return (<span key={w++} className="trailEnd">{crumb.name}</span>)
                 } else if (loop > 4) {
                     loop++
-                    return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
+                    return (<span key={w++}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
                                                 className="text-blue-700 underline">...</a> . </span>)
                 } else {
                     loop++
-                    return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
+                    return (<span key={w++}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
                                                 className="text-blue-700 underline">{crumb.name}</a> . </span>)
                 }
             })
             if (crumbs.length > 0)
                 x.push(
-                    <div id="breadCrumbs" className="sm:pt-10 lg:pt-0" key={'breadcrumbs'}>
+                    <div id="breadCrumbs" className="sm:pt-10 lg:pt-0" key={'breadCrumbs'}>
                         <div className="absolute lg:static top-0 my-6 text-xs text-blue-700">
                             {crumbs}
                         </div>
                     </div>
                 )
 
-            x.push(<PageHeader details={pageHeader} key={pageHeader} functions={functions}/>)
+            x.push(<PageHeader details={pageHeader} key={'pageHeader'} functions={functions}/>)
         }
         if (messages.length > 0) {
             x.push(<Messages messages={messages} translate={functions.translate} key={'messages'} />)
@@ -73,7 +74,7 @@ export default function Content(props) {
 
         if (popup) {
             x.push(<a className={'close-button gray ml-3'} onClick={() => window.close()}
-                      title={functions.translate('Close')} key={'' + ++loop}>
+                      title={functions.translate('Close')} key={w++}>
                 <span className={'fas fa-times-circle fa-fw text-gray-800 hover:text-green-500'}></span>
             </a>)
         }
@@ -83,23 +84,23 @@ export default function Content(props) {
         })
 
         if (Object.keys(pagination).length > 0) {
-            x.push(<PaginationApp {...pagination} functions={functions} key={pagination.name} />)
+            x.push(<PaginationApp {...pagination} functions={functions} key={w++} />)
         }
 
         if (Object.keys(special).length > 0) {
-            x.push(<SpecialApp {...special} functions={functions} key={special.name} />)
+            x.push(<SpecialApp {...special} functions={functions} key={w++} />)
         }
 
         if (Object.keys(containers).length > 0) {
             Object.keys(containers).map(name => {
                 const container = containers[name]
-                x.push(<ContainerApp                     {...container}
-                                                         functions={functions} key={name} />)
+                x.push(<ContainerApp {...container} functions={functions} key={w++} />)
             })
         }
 
         if (!popup)
-            result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
+            result.push(<Sidebar key={'sidebar'} functions={functions} {...state} key={w++} />)
+
         result.push(<div {...state.contentAttr} key={'content'}>
             {x}
             </div>)

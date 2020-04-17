@@ -55,8 +55,8 @@ class FastFinder implements ContentInterface
             return;
 
         $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
-
-        $this->addAttribute('roleCategory', RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')));
+        $person = $this->getSession()->get('person');
+        $this->addAttribute('roleCategory', $person->getPrimaryRole()->getCategory());
 
         $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
         $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')

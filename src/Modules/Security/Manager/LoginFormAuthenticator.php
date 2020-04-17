@@ -12,15 +12,9 @@
  */
 namespace App\Modules\Security\Manager;
 
-use App\Modules\System\Entity\I18n;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Entity\Role;
-use App\Modules\School\Entity\AcademicYear;
-use App\Manager\GibbonManager;
-use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorHelper;
-use App\Util\GlobalHelper;
+use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,7 +157,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-//        dd($this,$user,$credentials);
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -191,9 +184,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->setLanguage($request);
 
         $session->save();
-        $ip = GlobalHelper::getIPAddress();
+        $ip = $this->getIPAddress($request);
         $person->setLastIPAddress($ip);
-        $person->setLastTimestamp(new \DateTime());
+        $person->setLastTimestamp(new \DateTimeImmutable());
         $person->setFailCount(0);
         ProviderFactory::getEntityManager()->persist($person);
         ProviderFactory::getEntityManager()->flush();
@@ -215,31 +208,58 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     /**
      * authenticationFailure
-     * @param array $query
+     * @param string $message
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function authenticationFailure(string $message)
+    public function authenticationFailure(string $message, Request $request)
     {
-        GibbonManager::getSession()->clear();
-        GibbonManager::getSession()->getBag('flashes')->add('error', [$message, [], 'UserAdmin']);
-        
+        if ($request->hasSession()) {
+            $request->getSession()->clear();
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, new AuthenticationException(TranslationHelper::translate($message, [],'Security')));
+            $request->getSession()->getBag('flashes')->add('warning', [$message, [], 'Security']);
+        }
         return new RedirectResponse($this->getLoginUrl());
     }
 
     /**
      * Override to change what happens after a bad username/password is submitted.
      *
+     * @param Request $request
+     * @param AuthenticationException $exception
      * @return RedirectResponse
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($request->hasSession()) {
             $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-            $request->getSession()->getBag('flashes')->add('warning', ['return.fail.1', [], 'UserAdmin']);
+            $request->getSession()->getBag('flashes')->add('warning', ['return.fail.1', [], 'Security']);
         }
 
-        $url = $this->getLoginUrl();
-
-        return new RedirectResponse($url);
+        return new RedirectResponse($this->getLoginUrl());
     }
+
+
+    /**
+     * getIPAddress
+     * @return array|bool|false|string
+     */
+    private function getIPAddress(Request $request)
+    {
+        if ($request->server->has('HTTP_CLIENT_IP'))
+            return $request->server->get('HTTP_CLIENT_IP');
+        else if($request->server->has('HTTP_X_FORWARDED_FOR'))
+            return $request->server->get('HTTP_X_FORWARDED_FOR');
+        else if($request->server->has('HTTP_X_FORWARDED'))
+            return $request->server->get('HTTP_X_FORWARDED');
+        else if($request->server->has('HTTP_FORWARDED_FOR'))
+            return $request->server->get('HTTP_FORWARDED_FOR');
+        else if($request->server->has('HTTP_FORWARDED'))
+            return $request->server->get('HTTP_FORWARDED');
+        else if($request->server->has('REMOTE_ADDR'))
+            return $request->server->get('REMOTE_ADDR');
+
+        return false;
+    }
+
 }

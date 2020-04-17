@@ -26,7 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class House
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\HouseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="House",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
+ *     @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class House implements EntityInterface
@@ -131,7 +133,7 @@ class House implements EntityInterface
      */
     public function getLogo(): string
     {
-        return $this->isFileInPublic($this->logo) ? $this->logo : '/build/static/DefaultLogo.png';
+        return $this->isFileInPublic($this->logo) ? $this->logo : '';
     }
 
     /**
@@ -141,7 +143,6 @@ class House implements EntityInterface
     public function setLogo(?string $logo): House
     {
         if ($this->isFileInPublic($logo)) {
-            $this->setExistingFile('logo', '/build/static/DefaultLogo.png');
             $this->logo = $logo;
         }
         return $this;

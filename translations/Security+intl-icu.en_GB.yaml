@@ -5,3 +5,14 @@ Login: Login
 Options: Options
 Password: Password
 Username or email: Username or email
+return:
+    fail:
+        0b: 'Username or password not set.'
+        1: 'Incorrect username and password.'
+        2: 'You do not have sufficient privileges to login.'
+        5: 'Your request failed due to a database error.'
+        6: 'Too many failed logins: please <a href="/password/reset/">reset password</a>.'
+        7: 'Error with Google Authentication. Please contact <a href="mailto: {email}">{name}</a> if you have any questions.'
+        8: 'Google account does not match the email stored in {systemName}. If you have logged in with your school Google account please contact <a href="mailto:{email}">{name}</a> if you have any questions.'
+        9: 'Your primary role does not support the ability to log into the specified year.'
+Logout: Logout

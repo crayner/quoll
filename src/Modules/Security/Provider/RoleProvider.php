@@ -61,7 +61,7 @@ class RoleProvider implements EntityProviderInterface
      * @return string|null
      * @throws \Exception
      */
-    public static function getRoleCategory($roleID): ?string
+    public function getRoleCategory(int $roleID): ?string
     {
         $roleID = intval($roleID);
         if (isset(self::$entities[$roleID]))

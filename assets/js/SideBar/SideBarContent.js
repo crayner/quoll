@@ -56,7 +56,10 @@ export default function SideBarContent(props) {
 }
 
 SideBarContent.propTypes = {
-    content: PropTypes.object.isRequired,
+    content: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]).isRequired,
     sidebarContentAttr: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
 }

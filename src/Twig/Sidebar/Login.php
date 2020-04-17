@@ -56,7 +56,7 @@ class Login implements SidebarContentInterface
         return [
             'googleOAuth' => $this->getGoogleOAuth(),
             'login' => [
-                'resetPasswordURL' => UrlGeneratorHelper::getUrl('legacy', ['q' => 'passwordReset.php']),
+                'resetPasswordURL' => UrlGeneratorHelper::getUrl('password_reset'),
                 'academicYears' => ProviderFactory::create(AcademicYear::class)->getSelectList(),
                 'academicYear' => AcademicYearHelper::getCurrentAcademicYear()->getId(),
                 'languages' => ProviderFactory::create(I18n::class)->getSelectedLanguages(),

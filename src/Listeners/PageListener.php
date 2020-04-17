@@ -16,7 +16,7 @@
 namespace App\Listeners;
 
 use App\Manager\PageManager;
-use App\Modules\People\Entity\Person;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\TranslationHelper;
@@ -41,12 +41,14 @@ class PageListener implements EventSubscriberInterface
      * @param ProviderFactory $factory Pre load to Container
      * @param TranslationHelper $helper
      * @param CacheHelper $cache
+     * @param SecurityHelper $securityHelper
      */
     public function __construct(
         PageManager $pageManager,
         ProviderFactory $factory,
         TranslationHelper $helper,
-        CacheHelper $cache
+        CacheHelper $cache,
+        SecurityHelper $securityHelper
     ) {
         $this->pageManager = $pageManager;
     }
@@ -58,7 +60,7 @@ class PageListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onRequest', 24]
+            KernelEvents::REQUEST => ['onRequest', 0]
         ];
     }
 
@@ -79,13 +81,6 @@ class PageListener implements EventSubscriberInterface
         if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|api)#", $route))
             return;
 
-        if ($request->hasSession()) {
-            $session = $request->getSession();
-            $person = $session->get('person');
-            if ($person instanceof Person && $person->getI18nPersonal() !== null)
-                $request->setLocale($person->getI18nPersonal()->getCode());
-        }
-
         $this->pageManager->configurePage();
 
         if ($request->query->has('raw_page'))
@@ -95,5 +90,4 @@ class PageListener implements EventSubscriberInterface
             $event->setResponse($this->pageManager->getBaseResponse());
 
     }
-
 }

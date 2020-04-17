@@ -709,27 +709,25 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true, name="lastTimestamp")
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="lastTimestamp")
      */
     private $lastTimestamp;
 
     /**
-     * @return \DateTime|null
+     * @return \DateTimeImmutable|null
      */
-    public function getLastTimestamp(): ?\DateTime
+    public function getLastTimestamp(): ?\DateTimeImmutable
     {
         return $this->lastTimestamp;
     }
 
     /**
-     * @param \DateTime|null $lastTimestamp
-     * @return Person
+     * @param \DateTimeImmutable|null $lastTimestamp
      */
-    public function setLastTimestamp(?\DateTime $lastTimestamp): Person
+    public function setLastTimestamp(?\DateTimeImmutable $lastTimestamp): void
     {
         $this->lastTimestamp = $lastTimestamp;
-        return $this;
     }
 
     /**
@@ -757,8 +755,8 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true, name="lastFailTimestamp")
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable", nullable=true, name="lastFailTimestamp")
      */
     private $lastFailTimestamp;
 
@@ -775,21 +773,19 @@ class Person implements EntityInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTimeImmutable|null
      */
-    public function getLastFailTimestamp(): ?\DateTime
+    public function getLastFailTimestamp(): ?\DateTimeImmutable
     {
         return $this->lastFailTimestamp;
     }
 
     /**
-     * @param \DateTime|null $lastFailTimestamp
-     * @return Person
+     * @param \DateTimeImmutable|null $lastFailTimestamp
      */
-    public function setLastFailTimestamp(?\DateTime $lastFailTimestamp): Person
+    public function setLastFailTimestamp(?\DateTimeImmutable $lastFailTimestamp): void
     {
         $this->lastFailTimestamp = $lastFailTimestamp;
-        return $this;
     }
 
     /**

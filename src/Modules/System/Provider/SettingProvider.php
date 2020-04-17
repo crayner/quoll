@@ -324,8 +324,10 @@ class SettingProvider implements EntityProviderInterface
      */
     public function hasSettingByScope(string $scope, string $name, bool $testForEmpty = true): bool
     {
-        if (!($setting = $this->getSettingByScope($scope, $name, true)) instanceof Setting)
+        $setting = $this->getSettingByScope($scope, $name, true);
+        if (!$setting instanceof Setting)
             return false;
+
         if (! $testForEmpty)
             return true;
 

@@ -26,3 +26,15 @@ return:
     success0: 'Your request was completed successfully.'
     success:
         0: 'Your request was completed successfully.'
+Action: Action
+Actions: Actions
+Class: Class
+Classes: Classes
+Fast Finder: Fast Finder
+Staff: Staff
+'Start typing a name...': 'Start typing a name...'
+Stay Connected: Stay Connected
+Student: Student
+Students: Students
+'Total Student Enrolment:': 'Total Student Enrolment:'
+'Your session is about to expire: you will be logged out shortly.': 'Your session is about to expire: you will be logged out shortly.'

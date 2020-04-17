@@ -14,6 +14,7 @@ namespace App\Modules\Security\Util;
 
 use App\Exception\RouteConfigurationException;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;

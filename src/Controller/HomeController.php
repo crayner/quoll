@@ -80,10 +80,9 @@ class HomeController extends AbstractPageController
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('home');
 
-        dump($this->getUser(),$this->isGranted('ROLE_SYSTEM_ADMIN'));
         return $this->getPageManager()->render(
             [
-                'content' => '<h3>Personal Page</h3>',
+                'content' => '<h3 key="personal_page">Personal Page</h3>',
             ]
         );
     }

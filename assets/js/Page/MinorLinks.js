@@ -15,7 +15,7 @@ export default function MinorLinks(props) {
             content.push(<span key={key}>{link.text}</span>)
             content.push(<span key={key + '.dot'}>{' . '}</span>)
         } else {
-            content.push(<a href={link.url} className={'link-white'} key={key}>{link.text}</a>)
+            content.push(<a href={link.url} className={'link-white'} key={key} target={link.target}>{link.text}</a>)
             content.push(<span key={key + '.dot'}>{' . '}</span>)
         }
     })
