@@ -15,10 +15,11 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Provider\EntityProviderInterface;
 use App\Manager\Traits\EntityTrait;
+use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Action;
-use App\Modules\System\Entity\Role;
+use App\Provider\EntityProviderInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class ActionProvider
@@ -34,13 +35,13 @@ class ActionProvider implements EntityProviderInterface
     private $entityName = Action::class;
 
     /**
-     * findByURLListModuleRole
+     * findByrouteListModuleRole
      * @param array $criteria
      * @return mixed
      */
-    public function findByURLListModuleRole(array $criteria)
+    public function findByrouteListModuleRole(array $criteria)
     {
-        return $this->getRepository()->findByURLListModuleRole($criteria);
+        return $this->getRepository()->findByrouteListModuleRole($criteria);
     }
 
     /**
@@ -79,5 +80,57 @@ class ActionProvider implements EntityProviderInterface
                 $result[$id]['roles'][$roleId]['checked'] = true;
         }
         return $result;
+    }
+
+    public function buildMenu()
+    {
+        return $this->getRepository()->findAllWithRolesAndModules();
+    }
+
+    /**
+     * findFastFinderActions
+     * @param AuthorizationCheckerInterface $checker
+     * @return mixed
+     */
+    public function findFastFinderActions(AuthorizationCheckerInterface $checker): array
+    {
+        $result = $this->getRepository()->findFastFinderActions();
+        $answer = [];
+        foreach($result as $action)
+        {
+            if ($checker->isGranted($action->getRole())) {
+                $act = [];
+                $act['id'] = 'Act-' . $action->getName() . '/' . $action->getEntryRoute();
+                $name = explode('_', $action->getName());
+                $act['text'] = $name[0];
+                $act['search'] = $action->getModule()->getName();
+                $answer[] = $act;
+            }
+        }
+
+        uasort($answer, function($a,$b) {
+            if ($a['text'] === $b['text'])
+                return 0;
+            return $a['text'] < $b['text'] ? -1 : 1;
+        });
+
+        return $answer;
+
+         /*   ->select([
+                "CONCAT('Act-', m.name, '/', a.entryRoute) AS id",
+                "CONCAT('" . $actionTitle . "', SUBSTRING_INDEX(a.name, '_', 1)) AS text",
+                'm.name as search'
+            ])
+            ->join('a.module', 'm')
+//           ->leftJoin('a.roles', 'r')
+            ->where('m.active = :yes')
+            ->andWhere('a.menuShow = :yes')
+//            ->andWhere('r.id = :role')
+            ->orderBy('text', 'ASC')
+            ->setParameter('yes', 'Y')
+//            ->setParameters(['yes' => 'Y', 'role' => intval($role->getId())])
+            ->distinct()
+            ->getQuery()
+            ->getResult(); */
     }
 }

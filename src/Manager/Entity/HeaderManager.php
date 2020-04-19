@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -111,22 +111,12 @@ class HeaderManager
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
             return [];
+
         $this->mainMenu->execute();
+
         if ($this->mainMenu->isValid() && $this->mainMenu->hasAttribute('menuMainItems'))
-        {
-            $result = $this->mainMenu->getAttribute('menuMainItems');
-            foreach($result as $catName=>$items)
-            {
-                TranslationHelper::addTranslation($catName);
-                foreach($items as $q=>$item)
-                {
-                    TranslationHelper::addTranslation($item['name'], [], 'messages');
-                    if ($item['route'] !== false)
-                        $result[$catName][$q]['url'] = UrlGeneratorHelper::getUrl($item['route'], []);
-                }
-            }
-            return $result;
-        }
+            return $this->mainMenu->getAttribute('menuMainItems') ?: [];
+
         return [];
     }
 

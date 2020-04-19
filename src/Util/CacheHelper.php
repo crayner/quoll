@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -24,6 +24,7 @@ class CacheHelper
      * @var bool
      */
     private static $caching;
+
     /**
      * @var SessionInterface
      */
@@ -65,8 +66,9 @@ class CacheHelper
     public static function isStale(string $name, int $interval = 10): bool
     {
         if (!self::isCaching())
-            return false;
-        $cacheTime = self::getSession()->get($name . '_cacheTime', null);
+            return true;
+        $interval = $interval + rand(0, $interval) - intval($interval/2);
+        $cacheTime = self::getSession()->get(self::getCacheName($name), null);
         if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp())
             return true;
         return false;
@@ -94,7 +96,7 @@ class CacheHelper
     {
         if (self::isCaching()) {
             self::getSession()->set($name, $content);
-            self::getSession()->set($name . '_cacheTime', new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
+            self::getSession()->set(self::getCacheName($name), new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
         }
     }
 
@@ -116,5 +118,21 @@ class CacheHelper
     public static function isCaching(): bool
     {
         return self::$caching;
+    }
+
+    public static function clearCacheValue(string $name)
+    {
+        self::getSession()->clear($name);
+        self::getSession()->clear(self::getCacheName($name));
+    }
+
+    /**
+     * getCacheName
+     * @param string $name
+     * @return string
+     */
+    private static function getCacheName(string $name): string
+    {
+        return $name . '_cacheTime';
     }
 }

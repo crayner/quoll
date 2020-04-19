@@ -82,7 +82,7 @@ class PasswordManager
         $data['status'] = 'success';
 
         //Check to see if academic year id variables are set, if not set them
-        if ($session->exists('gibbonAcademicYearID') || $session->exists('gibbonAcademicYearName')) {
+        if (!$session->has('academicYear')) {
             ProviderFactory::create(AcademicYear::class)->setCurrentAcademicYear($session);
         }
 
@@ -91,14 +91,12 @@ class PasswordManager
         $forceReset = $person->isPasswordForceReset();
 
         $ok = $user->changePassword($password);
-        TranslationHelper::setDomain('UserAdmin');
+        TranslationHelper::setDomain('Security');
         if ($ok && $forceReset) {
             $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('return.success.a')];
             // Set Session
             $token = $this->tokenStorage->getToken();
             $session->set('_security_main', serialize($token));
-            $session->set('password', $person->getPassword());  // legacy
-            $session->set('passwordForceReset', 'N'); // Legacy
             return $data;
         }
 
@@ -107,8 +105,6 @@ class PasswordManager
             // Set Session
             $token = $this->tokenStorage->getToken();
             $session->set('_security_main', serialize($token));
-            $session->set('password', $person->getPassword());  // legacy
-            $session->set('passwordForceReset', 'N'); // Legacy
             return $data;
         }
 

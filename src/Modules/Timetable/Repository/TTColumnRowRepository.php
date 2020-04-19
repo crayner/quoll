@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Repository;
 
-use Kookaburra\UserAdmin\Entity\Person;
+use App\Modules\People\Entity\Person;
 use App\Entity\TTColumnRow;
 use App\Entity\TTDay;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

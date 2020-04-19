@@ -16,10 +16,10 @@
 namespace App\Modules\People\Util;
 
 use App\Modules\People\Entity\Person;
-use App\Entity\Staff;
+use App\Modules\People\Entity\Staff;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
-use App\Modules\People\Manager\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -99,7 +99,7 @@ class UserHelper
         if (is_null($token))
             return self::$currentSecurityUser = null;
 
-        self::$currentSecurityUser = $token->getUser() instanceof SecurityUser ? $token->getUser() : null ;
+        self::$currentSecurityUser = $token->getUser() instanceof SecurityUser ? $token->getUser() : null;
         return self::$currentSecurityUser;
     }
 
@@ -108,7 +108,7 @@ class UserHelper
      * @param Person|null $person
      * @return SecurityUser|null
      */
-    public static function getSecurityUser(Person $person = null): ?SecurityUser
+    public static function getSecurityUser(?Person $person = null): ?SecurityUser
     {
         if (is_null($person))
             return self::getCurrentSecurityUser();
@@ -127,9 +127,10 @@ class UserHelper
 
     /**
      * isStaff
+     * @param Person|null $person
      * @return bool
      */
-    public static function isStaff(Person $person = null): bool
+    public static function isStaff(?Person $person = null): bool
     {
         $person = $person ?: self::getCurrentUser();
 
@@ -138,9 +139,10 @@ class UserHelper
 
     /**
      * isParent
+     * @param Person|null $person
      * @return bool
      */
-    public static function isStudent(Person $person = null): bool
+    public static function isStudent(?Person $person = null): bool
     {
         $person = $person ?: self::getCurrentUser();
 
@@ -149,9 +151,10 @@ class UserHelper
 
     /**
      * isParent
+     * @param Person|null $person
      * @return bool
      */
-    public static function isParent(Person $person = null): bool
+    public static function isParent(?Person $person = null): bool
     {
         $person = $person ?: self::getCurrentUser();
 
@@ -349,9 +352,9 @@ class UserHelper
 
     /**
      * getActivitiesByStudents
+     * @param Person|null $person
      * @param string $returnStyle
      * @return array
-     * @throws \Exception
      */
     public static function getActivitiesByStudent(?Person $person = null, string $returnStyle = 'entity')
     {

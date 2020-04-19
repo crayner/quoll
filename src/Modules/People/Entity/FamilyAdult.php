@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -386,7 +386,7 @@ class FamilyAdult implements EntityInterface
 
         return [
             'fullName' => $person->formatName(['style' => 'formal']),
-            'status' => TranslationHelper::translate($person->getStatus(), [], 'UserAdmin'),
+            'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
             'comment' => $this->getComment(),
             'person_id' => $this->getPerson()->getId(),
             'adult_id' => $this->getId(),

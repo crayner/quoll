@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -25,8 +25,12 @@ use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
  * Class SecurityHelper
@@ -56,16 +60,32 @@ class SecurityHelper
     private static $action;
 
     /**
+     * @var RoleHierarchyInterface
+     */
+    private static $hierarchy;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private static $storage;
+
+    /**
      * SecurityHelper constructor.
      * @param LoggerInterface $logger
      * @param AuthorizationCheckerInterface $checker
+     * @param TokenStorageInterface $storage
+     * @param RoleHierarchyInterface $hierarchy
      */
     public function __construct(
         LoggerInterface $logger,
-        AuthorizationCheckerInterface $checker
+        AuthorizationCheckerInterface $checker,
+        TokenStorageInterface $storage,
+        RoleHierarchyInterface $hierarchy
     ) {
         self::$logger = $logger;
         self::$checker = $checker;
+        self::$hierarchy = $hierarchy;
+        self::$storage = $storage;
     }
 
     /**
@@ -91,18 +111,20 @@ class SecurityHelper
 
     /**
      * getHighestGroupedAction
-     * @param string $address
-     * @return bool|string
+     * @param string $route
+     * @return bool|mixed
      */
-    public static function getHighestGroupedAction(string $address)
+    public static function getHighestGroupedAction(string $route)
     {
-        $module = self::checkModuleReady($address);
-        if (isset(self::$highestGroupedActionList[$address]))
-            return self::$highestGroupedActionList[$address];
+        $module = self::checkModuleReady($route);
+        if (null === $module)
+            return false;
+        if (isset(self::$highestGroupedActionList[$route]))
+            return self::$highestGroupedActionList[$route];
         if ($user = UserHelper::getCurrentUser() === null)
-            return self::$highestGroupedActionList[$address] = false;
-        $result = self::getActionProvider()->getRepository()->findHighestGroupedAction(self::getActionName($address), $module);
-        return self::$highestGroupedActionList[$address] = $result ? $result['name'] : false;
+            return self::$highestGroupedActionList[$route] = false;
+        $result = self::getActionProvider()->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
+        return self::$highestGroupedActionList[$route] = $result ? $result['name'] : false;
     }
 
     /**
@@ -112,184 +134,168 @@ class SecurityHelper
 
     /**
      * checkModuleReady
-     * @param string $address
+     * @param string $route
      * @return \App\Manager\EntityInterface|bool
      */
-    public static function checkModuleReady(string $address)
+    public static function checkModuleReady(string $route)
     {
-        if (isset(self::$checkModuleReadyList[$address]))
-            return self::$checkModuleReadyList[$address];
+        if (isset(self::$checkModuleReadyList[$route]))
+            return self::$checkModuleReadyList[$route];
         try {
-            return self::$checkModuleReadyList[$address] = self::getModuleProvider()->findOneBy(['name' => self::getModuleName($address), 'active' => 'Y']);
+            return self::$checkModuleReadyList[$route] = self::getModuleProvider()->findOneBy(['name' => self::getModuleName($route), 'active' => 'Y']);
         } catch (PDOException | \PDOException $e) {
         }
 
-        return self::$checkModuleReadyList[$address] = false;
+        return self::$checkModuleReadyList[$route] = false;
     }
 
     /**
      * checkModuleRouteReady
      * @param string $route
-     * @return \App\Manager\EntityInterface|bool
-     * @throws RouteConfigurationException
+     * @return Module|bool
      */
     public static function checkModuleRouteReady(string $route)
     {
-        try {
-            return self::getModuleProvider()->findOneBy(['name' => self::getModuleNameFromRoute($route), 'active' => 'Y']);
-        } catch (PDOException | \PDOException $e) {
-        }
-
+        if (self::getModuleFromRoute($route) instanceof Module)
+            return true;
         return false;
     }
 
     /**
      * getModuleFromRoute
      * @param string|null $route
-     * @return array
+     * @return Module|null
      */
-    public static function getModuleFromRoute(?string $route): array
+    public static function getModuleFromRoute(?string $route): ?Module
     {
         if (is_null($route))
-            return [];
+            return null;
         self::getActionFromRoute($route);
-        if (!self::$module && mb_strpos($route, '__') !== false) {
-            $route = explode('__', $route);
-            $route = $route[0];
-            try {
-                self::$module = ProviderFactory::getRepository(Module::class)->findOneBy(['name' => ucwords(str_replace('_', ' ', $route))]);
-            } catch (DriverException $e) {
-                self::$module = null;
-            }
-        }
 
-        return self::$module ? self::$module->toArray() : [];
+        return self::$module ?: null;
     }
 
     /**
      * getModuleName
-     * @param string $address
+     * @param string $route
      * @return bool|string
      */
-    public static function getModuleName(string $address)
+    public static function getModuleName(string $route)
     {
-        if (strpos($address, '__'))
+        if (strpos($route, '__'))
         {
-            $module = explode('__', $address);
+            $module = explode('__', $route);
             $module = explode('_', $module[0]);
             foreach($module as $q=>$w)
                 $module[$q] = ucfirst($w);
             return implode(' ', $module);
         }
-        return substr(substr($address, 9), 0, strpos(substr($address, 9), '/'));
+        return substr(substr($route, 9), 0, strpos(substr($route, 9), '/'));
     }
 
     /**
      * getActionName
-     * @param $address
+     * @param $route
      * @return bool|string
      */
-    public static function getActionName($address)
+    public static function getActionName($route)
     {
-        return substr($address, (10 + strlen(self::getModuleName($address))));
+        return substr($route, (10 + strlen(self::getModuleName($route))));
     }
 
     /**
      * getModuleNameFromRoute
      * @param string $route
      * @return mixed
-     * @throws RouteConfigurationException
      */
     public static function getModuleNameFromRoute(string $route)
     {
-        $route = self::splitRoute($route);
-        return $route['module'];
+        if (!self::$module instanceof Module) {
+            self::getActionFromRoute($route);
+        }
+        return self::$module ? self::$module->getName() : '';
     }
 
     /**
-     * getActionFromRoute
-     * @param $route
-     * @return array
+     * @var array
      */
-    public static function getActionFromRoute($route): array
+    private static $routeActions = [];
+
+    /**
+     * getActionFromRoute
+     * @param string $route
+     * @return Action|null
+     */
+    public static function getActionFromRoute(string $route): ?Action
     {
-        if (null === self::$action && mb_strpos($route, '__') !== false) {
+        if (!key_exists($route, self::$routeActions)) {
             self::$action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);
-            self::$module = self::$action ? self::$action->getModule() : null;
+            self::$routeActions[$route] = self::$action;
+        } else {
+            self::$action = self::$routeActions[$route];
         }
-        return self::$action ? self::$action->toArray() : [];
+        self::$module = self::$action instanceof Action ? self::$action->getModule() : null;
+        return self::$routeActions[$route];
     }
 
     /**
      * getActionNameFromRoute
-     * @param $route
-     * @return mixed
-     * @throws RouteConfigurationException
+     * @param string $route
+     * @return string
      */
-    public static function getActionNameFromRoute($route)
+    public static function getActionNameFromRoute(string $route): string
     {
-        $route = self::splitRoute($route);
-        return $route['action'];
+        return self::isActionAccessible($route) ? self::$action->getName() : '';
     }
 
     /**
-     * splitRoute
-     * @param string $route
-     * @return array
-     * @throws RouteConfigurationException
-     */
-    public static function splitRoute(string $route): array
-    {
-        $route = explode('__', $route);
-        if (count($route) !== 2)
-            throw new RouteConfigurationException(implode('__', $route));
-        $route['module'] = ucwords(str_replace('_', ' ', $route[0]));
-        $route['action'] = $route[1];
-        return $route;
-    }
-    /**
      * isActionAccessible
-     * @param string $address
+     * @param string $route
      * @param string $sub
+     * @param LoggerInterface|null $logger
      * @return bool
      */
-    public static function isActionAccessible(string $address, string $sub = '%', ?LoggerInterface $logger = null): bool
+    public static function isActionAccessible(string $route, string $sub = '%', ?LoggerInterface $logger = null): bool
     {
         if (null !== $logger)
             self::$logger = $logger;
-        return self::isActionAccessibleToRole(self::checkModuleReady($address),self::getActionName($address), $address, $sub);
+        if (self::checkActionReady($route) === false) {
+            self::$logger->warning(sprintf('No action was linked to the route "%s"', $route));
+            return false;
+        }
+
+        return self::isActionAccessibleToUser(self::$module,self::$action, $route, $sub);
+    }
+
+    /**
+     * checkActionReady
+     * @param string $route
+     * @return bool
+     */
+    public static function checkActionReady(string $route): bool
+    {
+        return self::getActionFromRoute($route) instanceof Action;
     }
 
     /**
      * isActionAccessibleToRole
-     * @param Module|bool $module
+     * @param Module $module
      * @param string $action
+     * @param string $route
      * @param string $sub
      * @return bool
      */
-    private static function isActionAccessibleToRole($module, string $action, string $address, string $sub)
+    private static function isActionAccessibleToUser(Module $module, Action $action, string $route, string $sub)
     {
         if (UserHelper::getCurrentUser() instanceof Person) {
             //Check user has a current role set
             if (! empty(UserHelper::getCurrentUser()->getPrimaryRole())) {
                 //Check module ready
-                if ($module instanceof Module) {
+                if ($module instanceof Module && $action instanceof Action) {
                     //Check current role has access rights to the current action.
-                    try {
-                        $role = UserHelper::getCurrentUser()->getPrimaryRole();
-                        if (count(self::getActionProvider()->findByURLListModuleRole(
-                                [
-                                    'name' => "%".$action."%",
-                                    "module" => $module,
-                                    'role' => $role,
-                                    'sub' => $sub === '' ? '%' : $sub,
-                                ]
-                            )) > 0)
-                            return true;
-                    } catch (PDOException $e) {
-                    }
+                    return self::$checker->isGranted($action->getRole()) === VoterInterface::ACCESS_GRANTED;
                 } else {
-                    self::$logger->warning(sprintf('No module was linked to the address "%s"', $address));
+                    self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
                 }
             } else {
                 self::$logger->debug(sprintf('The user does not have a valid Primary Role.' ));
@@ -314,7 +320,12 @@ class SecurityHelper
     {
         if (null !== $logger)
             self::$logger = $logger;
-        return self::isActionAccessibleToRole(self::checkModuleRouteReady($route),self::getActionNameFromRoute($route), $route, $sub);
+        if (self::checkModuleRouteReady($route) === false) {
+            self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
+            return false;
+        }
+
+        return self::isActionAccessibleToUser(self::$module,self::$action,$route,$sub);
     }
 
     /**
@@ -395,5 +406,42 @@ class SecurityHelper
         $person = $user->getPerson();
 
         $person->setPassword($password);
+    }
+
+    /**
+     * @return RoleHierarchyInterface
+     */
+    public static function getHierarchy(): RoleHierarchyInterface
+    {
+        return self::$hierarchy;
+    }
+
+    /**
+     * getRoleCategory
+     * @param string $role
+     * @return string
+     */
+    public static function getRoleCategory(string $role): string
+    {
+        $reachableRoles = self::getHierarchy()->getReachableRoleNames([$role]);
+
+        if (in_array('ROLE_STAFF', $reachableRoles))
+            return 'Staff';
+        if (in_array('ROLE_STUDENT', $reachableRoles))
+            return 'Student';
+        if (in_array('ROLE_PARENT', $reachableRoles))
+            return 'Parent';
+        return 'Other';
+    }
+
+    /**
+     * getCurrentUser
+     * @return string|\Stringable|\Symfony\Component\Security\Core\User\UserInterface
+     */
+    public function getCurrentUser()
+    {
+        $token = self::$storage->getToken();
+
+        return $token->getUser();
     }
 }

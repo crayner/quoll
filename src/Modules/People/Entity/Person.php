@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -25,7 +25,7 @@ use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Entity\Role;
-use App\Modules\SystemAdmin\Entity\Setting;
+use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
 use App\Provider\ProviderFactory;
@@ -510,26 +510,27 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var Role|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Security\Entity\Role")
-     * @ORM\JoinColumn(name="primary_role", referencedColumnName="id", nullable=false)
+     * @var string|null
+     * @ORM\Column(length=32)
      * @ASSERT\NotBlank()
      */
     private $primaryRole;
 
     /**
-     * @return Role|null
+     * @return string|null
      */
-    public function getPrimaryRole(): ?Role
+    public function getPrimaryRole(): ?string
     {
         return $this->primaryRole;
     }
 
     /**
-     * @param Role|null $primaryRole
+     * PrimaryRole.
+     *
+     * @param string|null $primaryRole
      * @return Person
      */
-    public function setPrimaryRole(?Role $primaryRole): Person
+    public function setPrimaryRole(?string $primaryRole): Person
     {
         $this->primaryRole = $primaryRole;
         return $this;
@@ -537,7 +538,7 @@ class Person implements EntityInterface
 
     /**
      * @var array
-     * @ORM\Column(name="all_roles",type="simple_array",nullable=true,length=191)
+     * @ORM\Column(name="all_roles",type="simple_array",nullable=true)
      */
     private $allRoles = [];
 
@@ -546,9 +547,12 @@ class Person implements EntityInterface
      */
     public function getAllRoles(): array
     {
-        if ($this->getPrimaryRole() instanceof Role && ! in_array($this->getPrimaryRole()->getId(), $this->allRoles ?: []))
-            $this->allRoles[] = $this->getPrimaryRole()->getId();
-        return $this->allRoles = $this->allRoles ?: [];
+        if ($this->getPrimaryRole() !== null) {
+            if ($this->allRoles === null)
+                $this->allRoles = [];
+            $this->allRoles[] = $this->getPrimaryRole();
+        }
+        return $this->allRoles = array_unique($this->allRoles ?: []);
     }
 
     /**
@@ -559,11 +563,8 @@ class Person implements EntityInterface
     {
         if (null === $allRoles)
             $allRoles = [];
-        foreach($allRoles as $q=>$w)
-            if ($w instanceof Role)
-                $allRoles[$q] = $w->getId();
-        if ($this->getPrimaryRole() instanceof Role && ! in_array($this->getPrimaryRole()->getId(), $allRoles))
-            $allRoles[] = $this->getPrimaryRole()->getId();
+        if ($this->getPrimaryRole() !== null)
+            $allRoles[] = $this->getPrimaryRole();
 
         $this->allRoles = array_unique($allRoles ?: []);
         return $this;

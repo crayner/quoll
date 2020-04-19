@@ -210,7 +210,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
         if ($user->isPasswordForceReset())
             $request->getSession()->set('passwordForceReset', 'Y');
 
-		if (!$user->getPrimaryRole() || !$user->getPrimaryRole()->isCanLoginRole())
+		if (!$user->getPrimaryRole())
             return $this->authenticationFailure(['loginReturn' => 'fail2']);
 
 		if ($user->getFailCount() >= 3 && $user->isLastFailTimestampTooOld()) {

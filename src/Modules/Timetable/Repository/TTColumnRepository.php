@@ -19,7 +19,7 @@
  * along with this program in the LICENCE file.
  * If not, see <hTTColumnp://www.gnu.org/licenses/>.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *

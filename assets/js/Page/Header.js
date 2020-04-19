@@ -17,13 +17,13 @@ export default function Header(props) {
                 const item = items[key]
                 return (<li className="hover:bg-purple-700" key={key}>
                     <a className="block text-sm text-white focus:text-purple-200 text-left no-underline px-1 py-2 md:py-1 leading-normal"
-                       href={item.url}>{details.translations[item.name]}</a>
+                       href={item.url}>{item.name}</a>
                 </li>)
             })
 
             menu.push(<li className="sm:relative group mt-1" key={categoryName}>
                     <a className="block uppercase font-bold text-sm text-gray-800 hover:text-purple-600 no-underline px-2 py-3"
-                       href="#">{details.translations[categoryName]}</a>
+                       href="#">{categoryName}</a>
                     <ul className="list-none bg-transparent-900 absolute hidden group-hover:block w-full sm:w-48 left-0 m-0 -mt-1 py-1 sm:p-1 z-50">
                         {itemContent}
                     </ul>

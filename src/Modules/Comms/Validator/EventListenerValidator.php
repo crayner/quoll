@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -48,7 +48,7 @@ class EventListenerValidator extends ConstraintValidator
         {
             $this->context->buildViolation('This value cannot be blank when the Scope is set to {name}')
                 ->atPath('scopeID')
-                ->setTranslationDomain('SystemAdmin')
+                ->setTranslationDomain('System')
                 ->setParameter('{name}', TranslationHelper::tranlate($value->getScopeType(), [], 'messages'))
                 ->addViolation();
             return;
@@ -59,7 +59,7 @@ class EventListenerValidator extends ConstraintValidator
             if (null === $person || !$person->isStudent())
                 $this->context->buildViolation('The value is not a valid student.')
                     ->atPath('scopeID')
-                    ->setTranslationDomain('SystemAdmin')
+                    ->setTranslationDomain('System')
                     ->addViolation();
             return;
         }
@@ -69,7 +69,7 @@ class EventListenerValidator extends ConstraintValidator
             if (null === $person || !$person->isStaff())
                 $this->context->buildViolation('The value is not a valid staff member.')
                     ->atPath('scopeID')
-                    ->setTranslationDomain('SystemAdmin')
+                    ->setTranslationDomain('System')
                     ->addViolation();
             return;
         }
@@ -79,7 +79,7 @@ class EventListenerValidator extends ConstraintValidator
             if (!$yg instanceof YearGroup)
                 $this->context->buildViolation('The value is not a valid Year Group.')
                     ->atPath('scopeID')
-                    ->setTranslationDomain('SystemAdmin')
+                    ->setTranslationDomain('System')
                     ->addViolation();
             return;
         }

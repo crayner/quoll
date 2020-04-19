@@ -15,13 +15,17 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Modules\Security\Entity\Role;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Entity\Setting;
 use App\Manager\Traits\EntityTrait;
+use App\Util\CacheHelper;
 
+/**
+ * Class ModuleProvider
+ * @package App\Modules\System\Provider
+ */
 class ModuleProvider implements EntityProviderInterface
 {
     use EntityTrait;
@@ -32,75 +36,62 @@ class ModuleProvider implements EntityProviderInterface
     private $entityName = Module::class;
 
     /**
-     * findByRole
-     * @param Role $role
+     * selectModulesByRole
      * @param bool $byCategory
-     * @return array
+     * @return mixed
      */
-    public function findByRole(Role $role, bool $byCategory = true): array
+    public function buildFastFinder(bool $byCategory = true)
     {
-        $result = $this->getRepository()->findByRole($role);
-        $mainMenuCategoryOrder = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('System', 'mainMenuCategoryOrder');
+        $settingProvider = ProviderFactory::create(Setting::class);
+        $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
 
+        $result = $this->buildMainMenu();
         $sorted = [];
-        foreach($mainMenuCategoryOrder as $category)
+        foreach(explode(',', $mainMenuCategoryOrder) as $category)
         {
             if ($byCategory && !isset($sorted[$category])) {
                 $sorted[$category] = [];
             }
             foreach($result as $module)
             {
-                $module['textDomain'] = $module['type'] === 'Core' ? null : $module['name'];
-                $name = explode('_',$module['name']);
-                $module['name'] = $name[0];
-                if ($module['category'] === $category && $byCategory)
+                $mod = [];
+                $mod['name'] = $module->getName();
+                $mod['category'] = $module->getCategory();
+                $mod['type'] = $module->getType();
+                $mod['entryRoute'] = $module->getEntryRoute();
+                $mod['textDomain'] = $mod['name'];
+                if ($mod['category'] === $category && $byCategory)
                 {
-                    $sorted[$category][] = $module;
+                    $sorted[$category][] = $mod;
                 } elseif (!$byCategory) {
-                    $sorted[] = $module;
+                    $sorted[] = $mod;
                 }
             }
+            if (!$byCategory)
+                break;
         }
 
         return $sorted;
     }
 
     /**
-     * selectModuleActionsByRole
-     * @param Module|int $moduleID
-     * @param Role|int $roleID
-     * @return array
-     * @throws \Exception
+     * @var array|null
      */
-    public function selectModuleActionsByRole($module, $role)
+    private $mainMenu;
+
+    /**
+     * buildMainMenu
+     * @return array
+     */
+    public function buildMainMenu(): array
     {
-        if (null === $role || '' === $role || 0 === $role)
-            return [];
-
-        if (!$module instanceof Module)
-            $module = $this->getRepository()->find($module);
-
-        if (!$role instanceof Role)
-            $role = $this->getRepository(Role::class)->find($role);
-
-        $result = $this->getRepository()->findModuleActionsByRole($module, $role);
-
-        $categories = [];
-        $names = [];
-
-        foreach($result as $q=>$module)
-        {
-            $module['textDomain'] = $module['type'] === 'Core' ? null : $module['moduleName'];
-            $name = explode('_',$module['name']);
-            $module['name'] = $name[0];
-            $result[$q] = $module;
-
-            if (!isset($names[$module['name']])) {
-                $categories[$module['category']][] = $module;
-                $names[$module['name']] = true;
-            }
+        if (null === $this->mainMenu) {
+            if (CacheHelper::isStale('mainMenu', 30)) {
+                $this->mainMenu = $this->getRepository()->findBy(['active' => 'Y'], ['category' => 'ASC', 'name' => 'ASC']);
+                CacheHelper::setCacheValue('mainMenu', $this->mainMenu, 30);
+            } else
+                $this->mainMenu = CacheHelper::getCacheValue('mainMenu');
         }
-
-        return $categories;
+        return $this->mainMenu;
     }
 }

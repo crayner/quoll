@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,19 +15,18 @@
 
 namespace App\Modules\People\Form;
 
+use App\Modules\People\Util\UserHelper;
+use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Setting;
+use App\Modules\System\Entity\Theme;
 use Doctrine\ORM\EntityRepository;
-use Kookaburra\SystemAdmin\Entity\I18n;
-use Kookaburra\UserAdmin\Entity\Person;
-use Kookaburra\SystemAdmin\Entity\Setting;
-use App\Entity\Theme;
+use App\Modules\People\Entity\Person;
 use App\Form\Transform\ToggleTransformer;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Provider\ProviderFactory;
-use Kookaburra\UserAdmin\Util\UserHelper;
-use App\Validator\ReactImage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -154,7 +153,7 @@ class PreferenceSettingsType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Person::class,
-                'translation_domain' => 'UserAdmin',
+                'translation_domain' => 'People',
                 'attr' => [
                     'className' => 'smallIntBorder fullWidth standardForm',
                     'autoComplete' => 'on',

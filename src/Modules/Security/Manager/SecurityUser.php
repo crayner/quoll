@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -25,8 +25,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class SecurityUser
+ * @package App\Modules\Security\Manager
+ */
 class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
 {
+    /**
+     * @var array
+     */
+    private $roles;
+
     /**
      * SecurityUser constructor.
      * @param Person $user
@@ -60,15 +69,18 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
+     * @return (string)[] The user roles
      */
     public function getRoles(): array
     {
-        $roles[] = $this->getMappedRole($this->getPrimaryRole());
-        if ($this->isSystemAdmin())
-            $roles[] = 'ROLE_SYSTEM_ADMIN';
-        foreach($this->getAllRolesAsArray() as $role)
-            $roles[] = $this->getMappedRole($role);
+        if ($this->roles === null) {
+            $roles = [];
+            $roles[] = $this->getPrimaryRole();
+            if ($this->isSystemAdmin())
+                $roles[] = 'ROLE_SYSTEM_ADMIN';
+            foreach ($this->getAllRolesAsArray() as $role)
+                $roles[] = $role;
+        }
         return $this->roles = array_unique($roles);
     }
 
@@ -78,58 +90,29 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getAllRolesAsArray(): array
     {
-        $roleIDs = $this->getAllRoles() ?: [];
-        $roles = [];
-        foreach($roleIDs as $roleID)
-            $roles[] = ProviderFactory::getRepository(Role::class)->find($roleID);
-        return $roles;
+        return $this->getAllRoles() ?: [];
     }
 
     /**
-     * getMappedRole
-     * @param Role $role
-     * @return string
-     */
-    private function getMappedRole(Role $role = null): string
-    {
-        if (is_null($role)) return '';
-        switch (strtoupper($role->getNameShort())) {
-            case 'ADM':
-                return 'ROLE_ADMIN';
-            case 'TCR':
-                return 'ROLE_TEACHER';
-            case 'STD':
-                return 'ROLE_STUDENT';
-            case 'PRT':
-                return 'ROLE_PARENT';
-            case 'SST':
-                return 'ROLE_STAFF';
-            default:
-                return 'ROLE_USER';
-        }
-    }
-
-    /**
-     * @var Role|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\SystemAdmin\Entity\Role")
-     * @ORM\JoinColumn(name="gibbonRoleIDPrimary", referencedColumnName="gibbonRoleID", nullable=false)
+     * @var string|null
      */
     private $primaryRole;
 
     /**
-     * @return Role|null
+     * getPrimaryRole
+     * @return string|null
      */
-    public function getPrimaryRole(): ?Role
+    public function getPrimaryRole(): ?string
     {
         return $this->primaryRole;
     }
 
     /**
      * setPrimaryRole
-     * @param Role|null $primaryRole
+     * @param string|null $primaryRole
      * @return SecurityUser
      */
-    public function setPrimaryRole(?Role $primaryRole): SecurityUser
+    public function setPrimaryRole(?string $primaryRole): SecurityUser
     {
         $this->primaryRole = $primaryRole;
         return $this;
@@ -360,7 +343,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getAllRoles(): ?array
     {
-        return $this->allRoles;
+        return $this->allRoles ?: [];
     }
 
     /**

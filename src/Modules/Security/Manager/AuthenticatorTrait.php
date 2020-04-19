@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,6 +20,7 @@ use App\Modules\System\Entity\I18n;
 use App\Modules\School\Entity\AcademicYear;
 use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
+use App\Twig\FastFinder;
 use App\Util\ErrorHelper;
 use App\Modules\Security\Entity\Role;
 use App\Modules\People\Entity\Person;
@@ -65,16 +66,8 @@ trait AuthenticatorTrait
         $AcademicYear = $AcademicYear === 0 ? ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current') : ProviderFactory::getRepository(AcademicYear::class)->find($AcademicYear);
 
         if ($AcademicYear instanceof AcademicYear) {
-            $session->set('gibbonAcademicYearID', $AcademicYear->getId());
-            $session->set('gibbonAcademicYearID', $AcademicYear->getId());
-            $session->set('gibbonAcademicYearName', $AcademicYear->getName());
-            $session->set('gibbonAcademicYearSequenceNumber', $AcademicYear->getSequenceNumber());
-            $session->set('AcademicYear', $AcademicYear);
+            $session->set('academicYear', $AcademicYear);
         } else {
-            $session->forget('gibbonAcademicYearID');
-            $session->forget('gibbonAcademicYearID');
-            $session->forget('gibbonAcademicYearName');
-            $session->forget('gibbonAcademicYearSequenceNumber');
             $session->forget('AcademicYear');
         }
 
@@ -96,15 +89,16 @@ trait AuthenticatorTrait
         if (0 === $AcademicYear || $AcademicYear === intval($session->get('gibbonAcademicYearID')))
             return $this->setAcademicYear($session, $AcademicYear);
 
-        if (!$person->getPrimaryRole() instanceof Role)
+        if ($person->getPrimaryRole() === null)
             return $this->authenticationFailure('return.fail.9');
 
         $role = $person->getPrimaryRole();
-
+/**
         if (! $role->isFutureYearsLogin() && ! $role->isPastYearsLogin()) {
             LogProvider::setLog($AcademicYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
             return $this->authenticationFailure('return.fail.9');
         }
+*/
         $AcademicYear = ProviderFactory::create(AcademicYear::class)->find($AcademicYear);
 
         if (!$AcademicYear instanceof AcademicYear)
@@ -142,7 +136,7 @@ trait AuthenticatorTrait
         $primaryRole = $userData->getPrimaryRole();
 
         // Cache FF actions on login
-        SessionManager::cacheFastFinderActions($primaryRole,$session);
+        FastFinder::cacheFastFinderActions();
 
         return $userData;
     }

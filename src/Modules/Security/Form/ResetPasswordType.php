@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,14 +15,15 @@
 
 namespace App\Modules\Security\Form;
 
+use App\Form\Type\HeaderType;
 use App\Form\Type\ParagraphType;
-use App\Modules\System\Entity\Setting;
-use Kookaburra\UserAdmin\Form\PasswordGeneratorType;
 use App\Form\Type\ReactFormType;
+use App\Modules\Security\Form\Entity\ResetPassword;
+use App\Modules\Security\Form\PasswordGeneratorType;
+use App\Modules\Security\Validator\CurrentPassword;
+use App\Modules\Security\Validator\Password;
+use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
-use Kookaburra\UserAdmin\Validator\Password;
-use Kookaburra\SystemAdmin\Validator\CurrentPassword;
-use Kookaburra\UserAdmin\Form\Entity\ResetPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -101,8 +102,7 @@ class ResetPasswordType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => ResetPassword::class,
-                'translation_domain' => 'UserAdmin',
-                'default'
+                'translation_domain' => 'Security',
             ]
         );
     }

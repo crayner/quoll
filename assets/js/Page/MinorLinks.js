@@ -22,7 +22,7 @@ export default function MinorLinks(props) {
     content.pop()
 
     return (
-        <div id="minorLinks" className="mx-auto max-w-6xl text-right text-white text-xs md:text-sm px-2 xl:px-0 mt-6">
+        <div id="minorLinks" className="mx-auto max-w-6xl text-right text-white text-xs md:text-sm px-2 xl:px-0 mt-2">
             {content}
         </div>
     )

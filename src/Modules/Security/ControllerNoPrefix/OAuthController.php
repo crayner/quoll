@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OAuthController
- * @package App\Modules\UserAdmin\Controller
+ * @package App\Modules\Security\Controller
  */
 class OAuthController extends AbstractController
 {

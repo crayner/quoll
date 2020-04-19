@@ -16,3 +16,19 @@ return:
         8: 'Google account does not match the email stored in {systemName}. If you have logged in with your school Google account please contact <a href="mailto:{email}">{name}</a> if you have any questions.'
         9: 'Your primary role does not support the ability to log into the specified year.'
 Logout: Logout
+Contain at least one lowercase letter, and one uppercase letter.: Contain at least one lowercase letter, and one uppercase letter.
+Contain at least one number.: Contain at least one number.
+Copy this password if required: Copy this password if required
+Generate: Generate
+Must be at least {oneString} characters in length.: Must be at least {oneString} characters in length.
+'The password policy stipulates that passwords must:': 'The password policy stipulates that passwords must:'
+Confirm New Password: Confirm New Password
+Current Password: Current Password
+New Password: New Password
+Reset Password: Reset Password
+Submit: Submit
+Your request failed due to incorrect current password.: Your request failed due to incorrect current password.
+The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
+The password must contain as least one number.: The password must contain as least one number.
+The password must be a minimum of {minLength} characters long.: The password must be a minimum of {minLength} characters long.
+Your request failed due to non-matching passwords.: Your request failed due to non-matching passwords.

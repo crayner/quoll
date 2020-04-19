@@ -13,8 +13,9 @@
  * Time: 14:21
  */
 
-namespace App\Controller;
+namespace App\Modules\System\Controller;
 
+use App\Controller\AbstractPageController;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
@@ -22,11 +23,10 @@ use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 /**
  * Class HomeController
- * @package App\Controller
+ * @package App\Modules\System\Controller
  */
 class HomeController extends AbstractPageController
 {

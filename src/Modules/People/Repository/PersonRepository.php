@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -51,19 +51,21 @@ class PersonRepository extends ServiceEntityRepository
      *
      * @param string $username The username
      *
-     * @return UserInterface|null
+     * @return Person|null
      */
-    public function loadUserByUsernameOrEmail($username)
+    public function loadUserByUsernameOrEmail($username): ?Person
     {
-        return $this->createQueryBuilder('p')
-            ->select(['p','s','r'])
-            ->leftJoin('p.staff', 's')
-            ->leftJoin('p.primaryRole', 'r')
-            ->where('p.email = :email OR p.username = :username')
-            ->setParameter('email', $username)
-            ->setParameter('username', $username)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('p')
+                ->select(['p', 's'])
+                ->leftJoin('p.staff', 's')
+                ->where('p.email = :username OR p.username = :username')
+                ->setParameter('username', $username)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     /**
@@ -232,7 +234,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         $today = new \DateTime(date('Y-m-d'));
         return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Staff', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Staff', [], 'People')."' AS type", 'p.image_240 AS photo'])
             ->join('p.staff','s')
             ->where('s.id IS NOT NULL')
             ->andWhere('p.status = :full')
@@ -313,7 +315,7 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentParentsAsArray(): array
     {
         return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'UserAdmin')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'People')."' AS type", 'p.image_240 AS photo'])
             ->join('p.adults', 'fa')
             ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
             ->andWhere('p.status = :full')

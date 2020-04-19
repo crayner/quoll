@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -33,29 +33,6 @@ class ModuleRepository extends ServiceEntityRepository
     }
 
     /**
-     * findModulesByRole
-     * @param Role $role
-     * @return array|null
-     */
-    public function findByRole(Role $role)
-    {
-        return $this->createQueryBuilder('m')
-            ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL AS alternateEntryURL'])
-            ->join('m.actions', 'a')
-            ->join('a.roles', 'r')
-            ->where('m.active = :active')
-            ->andWhere('a.menuShow = :active')
-            ->andWhere('r.id = :role_id')
-            ->groupBy('m.name')
-            ->orderBy('m.name')
-            ->addOrderBy('a.name')
-            ->setParameter('active', 'Y')
-            ->setParameter('role_id', intval($role->getId()))
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * findModuleActionsByRole
      * @param Module $module
      * @param Role $role
@@ -64,14 +41,14 @@ class ModuleRepository extends ServiceEntityRepository
     public function findModuleActionsByRole(Module $module, Role $role)
     {
         return $this->createQueryBuilder('m')
-            ->select(['a.category', 'm.name AS moduleName', 'a.name AS actionName', 'm.type', 'a.precedence', 'm.entryURL AS moduleEntry', 'a.entryURL', 'a.URLList', 'a.name AS name'])
+            ->select(['a.category', 'm.name AS moduleName', 'a.name AS actionName', 'm.type', 'a.precedence', 'm.entryRoute AS moduleEntry', 'a.entryRoute', 'a.routeList', 'a.name AS name'])
             ->join('m.actions', 'a')
             ->join('a.roles', 'r')
             ->where('m.id = :module_id')
             ->setParameter('module_id', intval($module->getId()))
             ->andWhere('r.id = :role')
             ->setParameter('role', intval($role->getId()))
-            ->andWhere('a.entryURL != :empty')
+            ->andWhere('a.entryRoute != :empty')
             ->setParameter('empty', '')
             ->andWhere('a.menuShow = :yes')
             ->setParameter('yes', 'Y')
@@ -84,27 +61,17 @@ class ModuleRepository extends ServiceEntityRepository
     }
 
     /**
-     * findFastFinderActions
-     * @param Role $role
-     * @param string $actionTitle
-     * @return mixed
+     * findWithActions
+     * @return array
      */
-    public function findFastFinderActions(Role $role, string $actionTitle)
+    public function findWithActions(): array
     {
         return $this->createQueryBuilder('m')
-            ->select([
-                "CONCAT('Act-', m.name, '/', a.entryURL) AS id",
-                "CONCAT('".$actionTitle."', SUBSTRING_INDEX(a.name, '_', 1)) AS text",
-                'm.name as search'
-            ])
-            ->join('m.actions', 'a')
-            ->join('a.roles', 'r')
-            ->where('m.active = :yes')
-            ->andWhere('a.menuShow = :yes')
-            ->andWhere('r.id = :role')
-            ->orderBy('text', 'ASC')
-            ->setParameters(['yes' => 'Y', 'role' => intval($role->getId())])
-            ->distinct()
+            ->select(['m','a','SUBSTRING_INDEX(a.name, \'_\', 1) as actionName'])
+            ->join('m.actions','a')
+            ->orderBy('m.category')
+            ->addOrderBy('actionName')
+            ->addOrderBy('a.name', 'DESC')
             ->getQuery()
             ->getResult();
     }

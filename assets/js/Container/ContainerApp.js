@@ -286,7 +286,6 @@ export default class ContainerApp extends Component {
             {method: parentForm.method, body: JSON.stringify(data)},
             false)
             .then(data => {
-                console.log(data)
                 if (data.status === 'redirect') {
                     this.functions.getContent(data.redirect)
                 } else if (data.status === 'newPage') {

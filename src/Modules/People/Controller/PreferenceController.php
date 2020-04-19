@@ -29,7 +29,6 @@ use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PreferenceController extends AbstractPageController
 {
@@ -37,13 +36,12 @@ class PreferenceController extends AbstractPageController
      * preference
      * @param ContainerManager $manager
      * @param PasswordManager $passwordManager
-     * @param TranslatorInterface $translator
      * @param string $tabName
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/preferences/{tabName}", name="preferences")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function preferences(ContainerManager $manager, PasswordManager $passwordManager, TranslatorInterface $translator, string $tabName = 'Settings')
+    public function preferences(ContainerManager $manager, PasswordManager $passwordManager, string $tabName = 'Settings')
     {
         $pageManager = $this->getPageManager();
         if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
@@ -52,8 +50,8 @@ class PreferenceController extends AbstractPageController
         $rp = new ResetPassword();
         $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
             [
-                'action' => $this->generateUrl('user_admin__preferences', ['tabName' => 'Reset Password']),
-                'policy' => $this->renderView('@KookaburraUserAdmin/components/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
+                'action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password']),
+                'policy' => $this->renderView('security/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
             ]
         );
 
@@ -64,8 +62,8 @@ class PreferenceController extends AbstractPageController
                 $data = $passwordManager->changePassword($rp, $this->getUser());
                 $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
                     [
-                        'action' => $this->generateUrl('user_admin__preferences', ['tabName' => 'Reset Password']),
-                        'policy' => $this->renderView('@KookaburraUserAdmin/components/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
+                        'action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password']),
+                        'policy' => $this->renderView('security/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
                     ]
                 );
                 $manager->singlePanel($passwordForm->createView());
@@ -80,14 +78,14 @@ class PreferenceController extends AbstractPageController
         }
 
 
-        $manager->setTranslationDomain('UserAdmin');
+        $manager->setTranslationDomain('People');
         $container = new Container();
         $container->setSelectedPanel($tabName);
         $passwordPanel = new Panel('Reset Password');
         $container->addForm('Reset Password', $passwordForm->createView());
 
         $person = $this->getUser()->getPerson();
-        $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('user_admin__preferences', ['tabName' => 'Settings'])]);
+        $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
 
         if ($request->getContent() !== '' && $tabName === 'Settings') {
             $settingsForm->submit(json_decode($request->getContent(), true));
@@ -98,7 +96,7 @@ class PreferenceController extends AbstractPageController
                 $em->flush();
                 $em->refresh($person);
                 $data = ErrorMessageHelper::getSuccessMessage($data, true);
-                $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('user_admin__preferences', ['tabName' => 'Settings'])]);
+                $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
                 $manager->singlePanel($settingsForm->createView());
                 $data['form'] = $manager->getFormFromContainer('formContent', 'single');
                 return new JsonResponse($data, 200);

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -12,6 +12,7 @@
  */
 namespace App\Modules\System\Repository;
 
+use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -37,45 +38,26 @@ class ActionRepository extends ServiceEntityRepository
     }
 
     /**
-     * findOneByURLListModuleNameRoleID
-     * @param string $URLList
-     * @param string $moduleName
-     * @param string|null $roleID
-     * @return array
-     */
-    public function findOneByURLListModuleNameRoleID(string $URLList, string $moduleName, string $roleID = null)
-    {
-        if ('' === $moduleName)
-            return [];
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.module', 'm')
-            ->leftJoin('a.permissions', 'p')
-            ->where('a.URLList = :urlList')
-            ->andWhere('p.role = :roleID')
-            ->andWhere('m.name = :moduleName')
-            ->setParameters(['urlList' => $URLList, 'moduleName' => $moduleName, 'roleID' => $roleID])
-            ->getQuery()
-            ->getArrayResult();
-    }
-
-    /**
      * findOneByModuleContainsURL
      * @param Module $module
-     * @param string $address
+     * @param string $route
      * @return Action|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneByModuleContainsURL(Module $module, string $address): ?Action
+    public function findOneByModuleRoute(Module $module, string $route): ?Action
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.module = :module')
-            ->setParameter('module', $module)
-            ->andWhere('a.URLList LIKE :route')
-            ->setParameter('route', '%' . $address . '%')
-            ->orderBy('a.precedence', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('a')
+                ->where('a.module = :module')
+                ->setParameter('module', $module)
+                ->andWhere('a.routeList LIKE :route')
+                ->setParameter('route', '%' . $route . '%')
+                ->orderBy('a.precedence', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     /**
@@ -109,17 +91,17 @@ class ActionRepository extends ServiceEntityRepository
     }
 
     /**
-     * findByURLListModuleRole
+     * findByrouteListModuleRole
      * @param array $criteria
      * @return mixed
      */
-    public function findByURLListModuleRole(array $criteria)
+    public function findByrouteListModuleRole(array $criteria)
     {
         $criteria['roleId'] = $criteria['role']->getId();
         unset($criteria['role']);
         $result = $this->createQueryBuilder('a')
             ->leftJoin('a.roles', 'r')
-            ->where('a.URLList LIKE :name')
+            ->where('a.routeList LIKE :name')
             ->andWhere('a.module = :module')
             ->andWhere('r.id = :roleId')
             ->andWhere('a.name LIKE :sub')
@@ -141,7 +123,7 @@ class ActionRepository extends ServiceEntityRepository
             $result = $this->createQueryBuilder('a')
             ->select('a.name')
             ->join('a.roles', 'r')
-            ->where('a.URLList LIKE :actionName')
+            ->where('a.routeList LIKE :actionName')
             ->setParameter('actionName', '%'.$route.'%')
             ->andWhere('a.module = :module')
             ->setParameter('module', $module)
@@ -164,29 +146,9 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByRoute(string $route): ?Action
     {
-        if (mb_strpos($route, '__') !== false) {
-            $module = explode('__', $route);
-            $route = $module[1];
-            $module = ucwords(str_replace('_', ' ', $module[0]));
-            try {
-                return $this->createQueryBuilder('a')
-                    ->where('a.URLList LIKE :route')
-                    ->join('a.module', 'm')
-                    ->andWhere('m.name = :module')
-                    ->setParameter('module', $module)
-                    ->setParameter('route', '%' . $route . '%')
-                    ->orderBy('a.precedence', 'ASC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getOneOrNullResult();
-            } catch (NonUniqueResultException | DriverException $e) {
-                return null;
-            }
-        }
-
         try {
             return $this->createQueryBuilder('a')
-                ->where('a.URLList LIKE :route')
+                ->where('(a.routeList LIKE :route OR a.entryRoute LIKE :route)')
                 ->setParameter('route', '%' . $route . '%')
                 ->orderBy('a.precedence', 'ASC')
                 ->setMaxResults(1)
@@ -227,4 +189,37 @@ class ActionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findAllWithRolesAndModules
+     * @return array
+     */
+    public function findAllWithRolesAndModules()
+    {
+        return $this->createQueryBuilder('a')
+            ->select(['a','m', 'r'])
+            ->leftJoin('a.roles', 'r')
+            ->join('a.module', 'm')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findFastFinderActions
+     * @return array
+     */
+    public function findFastFinderActions(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select(['a','m'])
+            ->join('a.module', 'm')
+            ->where('m.active = :yes')
+            ->andWhere('a.menuShow = :yes')
+            ->orderBy('a.name', 'ASC')
+            ->setParameters(['yes' => 'Y'])
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
 }

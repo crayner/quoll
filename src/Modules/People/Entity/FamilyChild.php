@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -189,7 +189,7 @@ class FamilyChild implements EntityInterface
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
             'fullName' => $person->formatName(['style' => 'long', 'preferredName' => false]),
-            'status' => TranslationHelper::translate($person->getStatus(), [], 'UserAdmin'),
+            'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),
             'family_id' => $this->getFamily()->getId(),

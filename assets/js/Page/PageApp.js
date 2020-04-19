@@ -57,7 +57,6 @@ export default class PageApp extends Component {
         this.getContentFromServer(this.url)
         window.addEventListener('resize', this.functions.getContentSize, false);
         document.addEventListener('mousedown', this.handleClickOffSidebar, false)
-
     }
 
     componentWillUnmount() {

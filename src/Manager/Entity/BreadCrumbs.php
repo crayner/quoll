@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,6 +15,7 @@
 
 namespace App\Manager\Entity;
 
+use App\Modules\System\Entity\Action;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,23 +49,20 @@ class BreadCrumbs
     private $trans_params = [];
 
     /**
-     * @var bool
-     */
-    private $legacy = false;
-
-    /**
      * @var string
      */
     private $domain;
+
+    /**
+     * @var Action
+     */
+    private $action;
 
     /**
      * @return BreadCrumbItem[]|ArrayCollection
      */
     public function getItems(): ArrayCollection
     {
-        if ($this->isLegacy())
-            return $this->getCrumbs();
-
         if (null === $this->items)
             $this->items = new ArrayCollection();
 
@@ -143,8 +141,9 @@ class BreadCrumbs
      * @param array $module
      * @return BreadCrumbItem[]|ArrayCollection
      */
-    public function create(array $module)
+    public function create(array $module, Action $action)
     {
+        $this->setAction($action);
         $resolver = new OptionsResolver();
         $resolver->setRequired([
             'baseURL',
@@ -154,11 +153,10 @@ class BreadCrumbs
         ]);
         $resolver->setDefaults([
             'trans_params' => [],
-            'domain' => 'messages',
+            'domain' => $this->getAction()->getModule()->getName(),
         ]);
 
         $module = $resolver->resolve($module);
-
 
         $this->setItems(new ArrayCollection());
         $item = new BreadCrumbItem();
@@ -170,7 +168,7 @@ class BreadCrumbs
         $this->setDomain($module['domain']);
 
         $item = new BreadCrumbItem();
-        $item->setName($module['module'])->setUri($this->getBaseURL() . '__default')->setDomain($this->getDomain());
+        $item->setName($this->getAction()->getModule()->getName())->setUri($this->getAction()->getModule()->getentryRoute())->setDomain($this->getDomain());
         $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
@@ -198,7 +196,7 @@ class BreadCrumbs
      * @param array  $params  Additional URL params to append to the route
      * @return self
      */
-    public function add(string $title, string $route = '', array $uriParams = [], array $transParams = [])
+    public function add(string $title, string $route = '', array $uriParams = [], array $transParams = []): self
     {
         if (count($this->getCrumbs()) === 0 && $title !== 'Home')
             $this->add('Home', 'home', []);
@@ -211,7 +209,7 @@ class BreadCrumbs
 
         $this->addCrumb($title, $route, $uriParams, $transParams);
 
-        return $this->setLegacy(true);
+        return $this;
     }
 
     /**
@@ -285,26 +283,6 @@ class BreadCrumbs
     }
 
     /**
-     * @return bool
-     */
-    public function isLegacy(): bool
-    {
-        return $this->legacy;
-    }
-
-    /**
-     * Legacy.
-     *
-     * @param bool $legacy
-     * @return BreadCrumbs
-     */
-    public function setLegacy(bool $legacy): BreadCrumbs
-    {
-        $this->legacy = $legacy;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getTransParams(): array
@@ -338,9 +316,9 @@ class BreadCrumbs
      * @param string $domain
      * @return BreadCrumbs
      */
-    public function setDomain(string $domain): BreadCrumbs
+    public function setDomain(?string $domain): BreadCrumbs
     {
-        $this->domain = $domain;
+        $this->domain = $domain ?: 'messages';
         return $this;
     }
 
@@ -350,8 +328,6 @@ class BreadCrumbs
      */
     public function isValid(): bool
     {
-        if ($this->isLegacy())
-            return false;
         if ($this->getItems()->count() === 0)
             return false;
         if (empty($this->getTitle()))
@@ -366,6 +342,7 @@ class BreadCrumbs
     public function toArray(): array
     {
         $result = [];
+        dump($this->getItems());
         foreach($this->getItems() as $item) {
             $crumb = [];
             $crumb['name'] = TranslationHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());
@@ -374,5 +351,25 @@ class BreadCrumbs
             $result[$item->getName()] = $crumb;
         }
         return $result;
+    }
+
+    /**
+     * @return Action
+     */
+    public function getAction(): Action
+    {
+        return $this->action;
+    }
+
+    /**
+     * Action.
+     *
+     * @param Action $action
+     * @return BreadCrumbs
+     */
+    public function setAction(Action $action): BreadCrumbs
+    {
+        $this->action = $action;
+        return $this;
     }
 }

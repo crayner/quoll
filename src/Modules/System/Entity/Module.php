@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -15,8 +15,10 @@ namespace App\Modules\System\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Comms\Entity\NotificationEvent;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use App\Modules\Comms\Entity\Notification;
+use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -59,9 +61,9 @@ class Module implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="entryURL", options={"default": "index.php"})
+     * @ORM\Column(name="entry_route")
      */
-    private $entryURL;
+    private $entryRoute;
 
     /**
      * @var string|null
@@ -207,18 +209,18 @@ class Module implements EntityInterface
     /**
      * @return string|null
      */
-    public function getEntryURL(): ?string
+    public function getEntryRoute(): ?string
     {
-        return $this->entryURL;
+        return $this->entryRoute;
     }
 
     /**
-     * @param string|null $entryURL
+     * @param string|null $entryRoute
      * @return Module
      */
-    public function setEntryURL(?string $entryURL): Module
+    public function setEntryRoute(?string $entryRoute): Module
     {
-        $this->entryURL = $entryURL;
+        $this->entryRoute = $entryRoute;
         return $this;
     }
 
@@ -344,12 +346,21 @@ class Module implements EntityInterface
      */
     public function toArray(?string $name = NULL): array
     {
+        if ($name === 'mainMenu') {
+            return [
+                'route' => SecurityHelper::isRouteAccessible($this->getEntryRoute()) ? $this->getEntryRoute() : null,
+                'name' => TranslationHelper::translate($this->getName(), [] , $this->getName()),
+                'textDomain' => $this->getName(),
+                'category' => $this->getCategory(),
+                'type' => $this->getType(),
+                'url' => UrlGeneratorHelper::getUrl($this->getEntryRoute()),
+            ];
+        }
         return [
-            'gibbonModuleID' => $this->id,
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'entryURL' => $this->entryURL,
+            'entryRoute' => $this->entryRoute,
             'type' => $this->getType(),
             'active' => $this->active,
             'category' => $this->category,
@@ -389,12 +400,13 @@ class Module implements EntityInterface
     }
 
     /**
-     * getEntryURLFullRoute
+     * getFullEntryRoute
+     * @param string|null $entryRoute
      * @return string
      */
-    public function getEntryURLFullRoute(?string $entryURL = null): string
+    public function getFullEntryRoute(?string $entryRoute = null): string
     {
-        return Action::getRouteName($this->getName(), ($entryURL ?: $this->getEntryURL()));
+        return Action::getRouteName($this->getName(), ($entryRoute ?: $this->getEntryRoute()));
     }
 
     /**
@@ -556,13 +568,17 @@ class Module implements EntityInterface
         return $this->getName();
     }
 
+    /**
+     * create
+     * @return string
+     */
     public function create(): string
     {
         return 'CREATE TABLE `__prefix__Module` (
                     `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'This name should be globally unique preferably, but certainly locally unique\',
                     `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `entryURL` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'index.php\',
+                    `entry_route` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `type` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Core\',
                     `active` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
                     `category` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -570,7 +586,8 @@ class Module implements EntityInterface
                     `author` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`)
+                    UNIQUE KEY `name` (`name`),
+                    KEY `category` (`category`) USING BTREE
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 

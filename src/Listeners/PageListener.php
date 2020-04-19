@@ -16,6 +16,7 @@
 namespace App\Listeners;
 
 use App\Manager\PageManager;
+use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -41,6 +42,7 @@ class PageListener implements EventSubscriberInterface
      * @param ProviderFactory $factory Pre load to Container
      * @param TranslationHelper $helper
      * @param CacheHelper $cache
+     * @param UserHelper $userHelper
      * @param SecurityHelper $securityHelper
      */
     public function __construct(
@@ -48,6 +50,7 @@ class PageListener implements EventSubscriberInterface
         ProviderFactory $factory,
         TranslationHelper $helper,
         CacheHelper $cache,
+        UserHelper $userHelper,
         SecurityHelper $securityHelper
     ) {
         $this->pageManager = $pageManager;

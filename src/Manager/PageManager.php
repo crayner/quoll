@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,6 +15,7 @@
 
 namespace App\Manager;
 
+use App\Exception\MissingModuleException;
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -26,9 +27,7 @@ use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
-use App\Util\ErrorMessageHelper;
 use App\Util\Format;
-use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Util\LocaleHelper;
@@ -152,6 +151,16 @@ class PageManager
     private $popup = false;
 
     /**
+     * @var Action|null
+     */
+    private $action;
+
+    /**
+     * @var Module|null
+     */
+    private $module;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -163,7 +172,6 @@ class PageManager
      * @param Environment $twig
      * @param IdleTimeout $idleTimeout
      * @param FastFinder $fastFinder
-     * @param GlobalHelper $helper
      * @param Format $format
      * @param ImageHelper $imageHelper
      * @param UrlGeneratorHelper $urlGeneratorHelper
@@ -180,7 +188,6 @@ class PageManager
         Environment $twig,
         IdleTimeout $idleTimeout,
         FastFinder $fastFinder,
-//        GlobalHelper $helper,
         Format $format,
         ImageHelper $imageHelper,
         UrlGeneratorHelper $urlGeneratorHelper,
@@ -272,8 +279,8 @@ class PageManager
             'minorLinks' => $this->minorLinks->getContent(),
             'headerDetails' => $this->getHeaderDetails(),
             'route' => $this->getRoute(),
-            'action' => $this->getRoute() !== 'home' ? $this->getAction() : [],
-            'module' => $this->getRoute() !== 'home' ? $this->getModule() : [],
+            'action' => $this->getAction() ? $this->getAction()->toArray() : [],
+            'module' => $this->getModule() ? $this->getModule()->toArray() : [],
             'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []) ?: '',
             'footer' => $this->getFooter(),
             'translations' => $this->getTranslations(),
@@ -293,18 +300,20 @@ class PageManager
 
     /**
      * getAction
-     * @return array
+     * @return Action|null
      */
-    private function getAction(): array
+    private function getAction(): ?Action
     {
+        if (in_array($this->getRoute(), [null]))
+            return null;
         return SecurityHelper::getActionFromRoute($this->getRoute());
     }
 
     /**
-     * getAction
-     * @return array
+     * getModule
+     * @return Module|null
      */
-    private function getModule(): array
+    private function getModule(): ?Module
     {
         return SecurityHelper::getModuleFromRoute($this->getRoute());
     }
@@ -418,15 +427,15 @@ class PageManager
             $params = [];
         }
 
-        $moduleName = $this->getModule()['name'];
-        $domain = str_replace(' ','',$moduleName);
+        $moduleName = $this->getModule() ? $this->getModule()->getName() : '';
+        $domain = $moduleName === '' ? null : str_replace(' ','',$moduleName);
         $result['title'] = TranslationHelper::translate($title, $params, $domain);
         $result['crumbs'] = $crumbs;
-        $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
+        $result['baseURL'] = strtolower($moduleName);
         $result['domain'] = $domain;
         $result['module'] = $moduleName;
 
-        $this->breadCrumbs->create($result);
+        $this->breadCrumbs->create($result, $this->getRequest()->attributes->get('action'));
         return $this;
     }
 
@@ -499,48 +508,59 @@ class PageManager
         $this->getRequest()->attributes->set('action', false);
         $route = $this->getRequest()->attributes->get('_route');
         if (false === strpos($route, '_ignore_address') && null !== $route) {
-            $this->setModule($route, $this->getRequest());
+            $this->setModule();
         }
     }
 
     /**
      * setModule
-     * @param string $address
-     * @todo  Rebuild for non Gibbon Address System
      */
-    private function setModule(string $address)
+    private function setModule()
     {
+        $method = explode('::', $this->getRequest()->attributes->get('_controller'));
+        $controller = explode('\\', $this->getRequest()->attributes->get('_controller'));
+        $module = null;
+        if (in_array($method[1], ['urlRedirectAction'])) {
+            $this->module = null;
+            $this->action = null;
+            return;
+        } else if ($controller[0] === 'App' && $controller[1] === 'Modules' && $controller[3] === 'Controller')
+            $module = $controller[2];
+        else
+            throw new MissingModuleException(implode('\\', $controller));
 
-
-        if (substr($address, -4) === '.php')
-        {
-            $moduleName = SecurityHelper::getModuleName($address);
-        } else {
-            $moduleName = explode('__', $address)[0];
-            $moduleName = ucwords(str_replace('_', ' ', $moduleName));
-        }
         try {
-            $module = ProviderFactory::getRepository(Module::class)->findOneByName($moduleName);
+            if (! $this->getSession()->has('module') ||
+                ! $this->getSession()->get('module') instanceof Module ||
+                    $this->getSession()->get('module')->getName() !== $module) {
+                $module = ProviderFactory::getRepository(Module::class)->findOneByName($module);
+                $this->getSession()->set('module', $module ?: false);
+            } else if ($this->getSession()->has('module') && $this->getSession()->get('module') instanceof Module)
+                $module = $this->getSession()->get('module');
         } catch (DriverException $e) {
             $module = null;
         }
         $this->getRequest()->attributes->set('module', $module ?: false);
-        $this->getSession()->set('module', $module ? $module->getName() : '');
         if (null !== $module)
-            $this->setAction($address, $module);
+            $this->setAction($module);
     }
 
     /**
      * setAction
-     * @param string $address
      * @param Module $module
      */
-    private function setAction(string $address, Module $module)
+    private function setAction(Module $module)
     {
-        $address = strpos($address, '__') !== false ? explode('__', $address)[1] : basename($address);
-        $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, $address);
-        $this->getRequest()->attributes->set('action', $action);
-        $this->getSession()->set('action', $action ? $address : '');
+        $route = $this->getRequest()->attributes->get('_route');
+        $action = null;
+        if (!$this->getSession()->has('action') ||
+                !$this->getSession()->get('action') instanceof Action ||
+                    !in_array($route, $this->getSession()->get('action')->getrouteList())) {
+            $action = ProviderFactory::getRepository(Action::class)->findOneByModuleRoute($module, $route);
+            $this->getSession()->set('action', $action ?: false);
+        } else if ($this->getSession()->has('action') && $this->getSession()->get('action') instanceof Action)
+            $action = $this->getSession()->get('action');
+        $this->getRequest()->attributes->set('action', $action ?: false);
     }
 
     /**

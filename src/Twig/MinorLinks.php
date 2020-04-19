@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,6 +16,7 @@
 namespace App\Twig;
 
 use App\Modules\School\Entity\House;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
@@ -83,9 +84,9 @@ class MinorLinks implements ContentInterface
                 ];
             }
         } else {
-            $person = $this->getSession()->get('person');
+            $person = SecurityHelper::getCurrentUser()->getPerson();
             $name = $person->formatName(['preferred' => true, 'reverse' => false]);
-            if ($person->getPrimaryRole()->getCategory() === 'Student') {
+            if (SecurityHelper::getRoleCategory($person->getPrimaryRole()) === 'Student') {
                 $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');
                 if ($highestAction == 'View Student Profile_brief') {
                     $name = [

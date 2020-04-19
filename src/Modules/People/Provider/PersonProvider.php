@@ -293,9 +293,9 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
 
             $event->sendNotifications();
 
-            $data['errors'][] = ['class' => 'success', 'message' => ['Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.', [], 'UserAdmin']];
+            $data['errors'][] = ['class' => 'success', 'message' => ['Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.', [], 'People']];
         } else {
-            $data['errors'][] = ['class' => 'success', 'messages' => ['Your registration was successfully submitted, and you may now log into the system using your new username and password.', [], 'UserAdmin']];
+            $data['errors'][] = ['class' => 'success', 'messages' => ['Your registration was successfully submitted, and you may now log into the system using your new username and password.', [], 'People']];
         }
         return $data;
     }

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+* Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -23,6 +23,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\Role;
 use App\Modules\Security\Provider\RoleProvider;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -55,8 +56,8 @@ class FastFinder implements ContentInterface
             return;
 
         $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
-        $person = $this->getSession()->get('person');
-        $this->addAttribute('roleCategory', $person->getPrimaryRole()->getCategory());
+        $person = SecurityHelper::getCurrentUser()->getPerson();;
+        $this->addAttribute('roleCategory', SecurityHelper::getRoleCategory($person->getPrimaryRole()));
 
         $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
         $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')
@@ -68,7 +69,7 @@ class FastFinder implements ContentInterface
         $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
         $this->addAttribute('trans_close', $this->translate('Close', [], 'messages'));
 
-        $actions = $this->getFastFinderActions($this->getSession()->get('gibbonRoleIDCurrent'));
+        $actions = $this->getFastFinderActions();
 
         $classes = $this->accessibleClasses();
 
@@ -89,15 +90,16 @@ class FastFinder implements ContentInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getFastFinderActions(?int $roleID): array
+    public function getFastFinderActions(): array
     {
         $actions = [];
         CacheHelper::setSession($this->getSession());
+        $person = SecurityHelper::getCurrentUser()->getPerson();
+        $role = $person->getPrimaryRole();
         if (CacheHelper::isStale('fastFinderActions'))
         {
             // Get the accessible actions for the current user
-            $role = ProviderFactory::getRepository(Role::class)->find($roleID);
-            $actions = ProviderFactory::getRepository(Module::class)->findFastFinderActions($role, '');
+            $actions = ProviderFactory::create(Action::class)->findFastFinderActions($this->checker);
             CacheHelper::setCacheValue('fastFinderActions', $actions, 10);
         } else {
             $actions = CacheHelper::getCacheValue('fastFinderActions') ?: [];
@@ -207,5 +209,29 @@ class FastFinder implements ContentInterface
     private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
         return TranslationHelper::translate($key, $params, $domain);
+    }
+
+    /**
+     * Cache translated FastFinder actions to allow searching actions with the current locale
+     * @throws \Exception
+     */
+    public static function cacheFastFinderActions()
+    {
+        if (CacheHelper::isStale('fastFinderActions')) {
+            // Get the accessible actions for the current user
+            $result = ProviderFactory::create(Module::class)->buildFastFinder(false);
+            $actions = [];
+            if (count($result) > 0) {
+                // Translate the action names
+                foreach ($result as $row) {
+                    $row['name'] = TranslationHelper::translate($row['name'], [], $row['name']);
+                    $actions[] = $row;
+                }
+            }
+            // Cache the resulting set of translated actions
+            CacheHelper::setCacheValue('fastFinderActions', $actions);
+        } else
+            $actions = CacheHelper::getCacheValue('fastFinderActions');
+        return $actions;
     }
 }

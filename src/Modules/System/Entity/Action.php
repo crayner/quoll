@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+* Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -70,21 +70,21 @@ class Action implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=191)
      */
     private $description;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="text", name="URLList", options={"comment": "Comma seperated list of all URLs that make up this action"})
+     * @var array|null
+     * @ORM\Column(type="simple_array", name="route_List")
      */
-    private $URLList;
+    private $routeList;
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="entryURL")
+     * @ORM\Column(length=191, name="entry_route")
      */
-    private $entryURL;
+    private $entryRoute;
 
     /**
      * @var string
@@ -153,14 +153,10 @@ class Action implements EntityInterface
     private $categoryPermissionOther = 'Y';
 
     /**
-     * @var Collection|Role[]|null
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\Role", inversedBy="actions", cascade={"persist"})
-     * @ORM\JoinTable(name="permission",
-     *      joinColumns={@ORM\JoinColumn(name="action",referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role",referencedColumnName="id")}
-     *      )
+     * @var string|null
+     * @ORM\Column(length=32,nullable=true)
      */
-    private $roles;
+    private $role;
 
     /**
      * @return int|null
@@ -284,39 +280,43 @@ class Action implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getURLList(): ?string
+    public function getRouteList(): array
     {
-        return $this->URLList;
+        if (is_string($this->routeList))
+            $this->routeList = [$this->routeList];
+        return $this->routeList ?: [];
     }
 
     /**
-     * @param string|null $URLList
+     * RouteList.
+     *
+     * @param array|null $RouteList
      * @return Action
      */
-    public function setURLList(?string $URLList): Action
+    public function setRouteList(?array $RouteList): Action
     {
-        $this->URLList = $URLList;
+        $this->routeList = $RouteList;
         return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getEntryURL(): ?string
+    public function getentryRoute(): ?string
     {
-        return $this->entryURL;
+        return $this->entryRoute;
     }
 
     /**
-     * setEntryURL
-     * @param string|null $entryURL
+     * setentryRoute
+     * @param string|null $entryRoute
      * @return Action
      */
-    public function setEntryURL(?string $entryURL): Action
+    public function setentryRoute(?string $entryRoute): Action
     {
-        $this->entryURL = mb_substr($entryURL, 0, 255);
+        $this->entryRoute = mb_substr($entryRoute, 0, 255);
         return $this;
     }
 
@@ -519,61 +519,22 @@ class Action implements EntityInterface
     }
 
     /**
-     * getRoles
-     * @return Collection
+     * @return string|null
      */
-    public function getRoles(): Collection
+    public function getRole(): ?string
     {
-        if (null === $this->roles)
-            $this->roles = new ArrayCollection();
-
-        if ($this->roles instanceof PersistentCollection)
-            $this->roles->initialize();
-
-        return $this->roles;
+        return $this->role;
     }
 
     /**
-     * @param Collection $roles
+     * Role.
+     *
+     * @param string|null $role
      * @return Action
      */
-    public function setRoles(Collection $roles): Action
+    public function setRole(?string $role): Action
     {
-        $this->roles = $roles;
-        return $this;
-    }
-
-    /**
-     * addRole
-     * @param Role $role
-     * @param bool $mirror
-     * @return Action
-     */
-    public function addRole(Role $role, bool $mirror = true): Action
-    {
-        if ($this->getRoles()->contains($role))
-            return $this;
-
-        if ($mirror)
-            $role->addAction($this, false);
-
-        $this->roles->add($role);
-
-        return $this;
-    }
-
-    /**
-     * removeRole
-     * @param Role $role
-     * @param bool $mirror
-     * @return Action
-     */
-    public function removeRole(Role $role, bool $mirror = true): Action
-    {
-        if ($mirror)
-            $role->removeAction($this, false);
-
-        $this->getRoles()->removeElement($role);
+        $this->role = $role;
         return $this;
     }
 
@@ -591,8 +552,8 @@ class Action implements EntityInterface
             'translatedName' => $this->getTranslatedName(),
             'precedence' => $this->precedence,
             'category' => $this->category,
-            'URLList' => $this->URLList,
-            'entryURL' => $this->entryURL,
+            'routeList' => $this->routeList,
+            'entryRoute' => $this->entryRoute,
             'entrySidebar' => $this->entrySidebar,
             'menuShow' => $this->menuShow,
             'defaultPermissionAdmin' => $this->defaultPermissionAdmin,
@@ -630,9 +591,9 @@ class Action implements EntityInterface
                     `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
                     `precedence` int(2) DEFAULT NULL,
                     `category` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `URLList` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Comma separated list of all URLs that make up this action',
-                    `entryURL` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `description` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `route_list` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `entryRoute` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `entrySidebar` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `menuShow` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `defaultPermissionAdmin` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
@@ -644,6 +605,7 @@ class Action implements EntityInterface
                     `categoryPermissionStudent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `categoryPermissionParent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `categoryPermissionOther` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+                    `role` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `module` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `moduleName` (`name`,`module`) USING BTREE,

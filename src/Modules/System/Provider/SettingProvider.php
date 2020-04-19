@@ -481,7 +481,7 @@ class SettingProvider implements EntityProviderInterface
     public function getSettingByName(string $name): ?Setting
     {
         $result = $this->getRepository()->findBy(['name' => $name]);
-        dd($result);
+
         if (count($result) === 1)
         {
             $this->addSetting($result[0]);
