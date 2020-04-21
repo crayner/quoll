@@ -24,29 +24,62 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 class ErrorMessageHelper
 {
     /**
-     * getInvalidInputsMessage
-     * @param array $data
-     * @return array
+     * onlyInvalidInputsMessage
+     * error1 = return.error.1 = Your request failed because your inputs were invalid.
+     * @param bool $translate
+     * @return array|string
      */
-    public static function getInvalidInputsMessage(array $data, bool $translate = false): array
+    public static function onlyInvalidInputsMessage(bool $translate = false)
     {
-        //      error1 = return.error.1 = Your request failed because your inputs were invalid.
-        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.1', [], 'messages') : ['return.error.1', [], 'messages'])];
-        $data['status'] = 'error';
-        return $data;
+        return $translate ? TranslationHelper::translate('return.error.1', [], 'messages') : ['return.error.1', [], 'messages'];
     }
 
     /**
      * getInvalidInputsMessage
      * @param array $data
+     * @param bool $translate
+     * @return array
+     */
+    public static function getInvalidInputsMessage(array $data, bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'error', 'message' => self::onlyInvalidInputsMessage($translate)];
+        $data['status'] = 'error';
+        return $data;
+    }
+
+    /**
+     * onlyDatabaseErrorMessage
+     * error2 = return.error.2 = Your request failed due to a database error.
+     * @param bool $translate
+     * @return array|string
+     */
+    public static function onlyDatabaseErrorMessage(bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.error.2', [], 'messages') : ['return.error.2', [], 'messages'];
+    }
+
+    /**
+     * getInvalidInputsMessage
+     * @param array $data
+     * @param bool $translate
      * @return array
      */
     public static function getDatabaseErrorMessage(array $data, bool $translate = false): array
     {
-        //      error2 = return.error.2 = Your request failed due to a database error.
-        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.2', [], 'messages') : ['return.error.2', [], 'messages'])];
+        $data['errors'][] = ['class' => 'error', 'message' => self::onlyDatabaseErrorMessage($translate)];
         $data['status'] = 'error';
         return $data;
+    }
+
+    /**
+     * onlySuccessMessage
+     * success0 = return.success.0 = Your request was completed successfully.
+     * @param bool $translate
+     * @return array|string
+     */
+    public static function onlySuccessMessage(bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.success.0', [], 'messages') : ['return.success.0', [], 'messages'];
     }
 
     /**
@@ -57,8 +90,7 @@ class ErrorMessageHelper
      */
     public static function getSuccessMessage(array $data, bool $translate = false): array
     {
-        //      success0 = return.success.0 = Your request was completed successfully.
-        $data['errors'][] = ['class' => 'success', 'message' => ($translate ? TranslationHelper::translate('return.success.0', [], 'messages') : ['return.success.0', [], 'messages'])];
+        $data['errors'][] = ['class' => 'success', 'message' => self::onlySuccessMessage($translate)];
         $data['status'] = 'success';
         return $data;
     }
@@ -110,6 +142,31 @@ class ErrorMessageHelper
             $flashBag->add($error['class'], $error['message']);
         }
     }
+
+    /**
+     * onlyFileTransferMessage
+     * return.error.file_transfer = Your request failed due to a file transfer issue.
+     * @param bool $translate
+     * @return array|string
+     */
+    public static function onlyFileTransferMessage(bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.error.file_transfer', [], 'messages') : ['return.error.file_transfer', [], 'messages'];
+    }
+
+    /**
+     * getInvalidInputsMessage
+     * @param array $data
+     * @param bool $translate
+     * @return array
+     */
+    public static function getFileTransferMessage(array $data, bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'error', 'message' => self::onlyFileTransferMessage($translate)];
+        $data['status'] = 'error';
+        return $data;
+    }
+
 
     /**
      *

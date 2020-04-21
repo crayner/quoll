@@ -15,24 +15,23 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Provider\EntityProviderInterface;
-use Doctrine\DBAL\Exception\DriverException;
-use App\Modules\System\Entity\I18n;
-use Doctrine\Common\Collections\Collection;
+use App\Manager\EntityInterface;
+use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Person;
+use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
-use App\Manager\EntityInterface;
-use App\Manager\Traits\EntityTrait;
+use App\Provider\EntityProviderInterface;
+use App\Util\Format;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gibbon\Contracts\Services\Session;
-use Gibbon\Services\Format;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingProvider implements EntityProviderInterface
 {
@@ -367,20 +366,19 @@ class SettingProvider implements EntityProviderInterface
      * handleSettingsForm
      * @param FormInterface $form
      * @param Request $request
-     * @param TranslatorInterface $translator
      * @return array
      */
-    public function handleSettingsForm(FormInterface $form, Request $request, TranslatorInterface $translator): array
+    public function handleSettingsForm(FormInterface $form, Request $request): array
     {
         $content = json_decode($request->getContent(), true);
 
         $form->submit($content);
 
         if ($form->isValid()) {
-            $this->saveSettings($form, $content, $translator);
+            $this->saveSettings($form, $content);
             if (count($this->getErrors()) === 0) {
                 $data['status'] = 'success';
-                return $this->addError(['class' => 'success', 'message' => $translator->trans('return.success.0', [], 'messages')])->getErrors();
+                return $this->addError(['class' => 'success', 'message' => TranslationHelper::translate('return.success.0', [], 'messages')])->getErrors();
             }
             else
                 return $this->getErrors();
@@ -390,7 +388,7 @@ class SettingProvider implements EntityProviderInterface
             $this->addError(['class' => 'error', 'message' => $error->getOrigin()->getName() . ': ' . $error->getMessage()]);
         }
 
-        return $this->addError(['class' => 'error', 'message' => $translator->trans('return.error.1', [], 'messages')])->getErrors();
+        return $this->addError(['class' => 'error', 'message' => TranslationHelper::translate('return.error.1', [], 'messages')])->getErrors();
     }
 
     /**
@@ -398,8 +396,9 @@ class SettingProvider implements EntityProviderInterface
      *
      * Recursive
      * @param FormInterface $form
+     * @param array $content
      */
-    private function saveSettings(FormInterface $form, array $content, TranslatorInterface $translator)
+    private function saveSettings(FormInterface $form, array $content)
     {
         foreach($form->all() as $child)
         {
@@ -433,7 +432,7 @@ class SettingProvider implements EntityProviderInterface
                     $this->setSettingByScope($setting['scope'], $setting['name'], $data);
                 }
             }
-            $this->saveSettings($child, $content, $translator);
+            $this->saveSettings($child, $content);
         }
     }
 
