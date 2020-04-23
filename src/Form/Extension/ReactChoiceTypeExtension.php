@@ -53,6 +53,7 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
                 'add_url'               => null,
                 'chained_child'         => null,
                 'chained_values'        => [],
+                'visible_by_choice'     => false,
             ]
         );
 
@@ -61,8 +62,7 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('add_url', ['null','string','array']);
         $resolver->setAllowedTypes('chained_child', ['null','string']);
         $resolver->setAllowedTypes('chained_values', ['array']);
-
-
+        $resolver->setAllowedTypes('visible_by_choice', ['boolean']);
     }
 
     /**
@@ -78,5 +78,6 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
         $view->vars['add_url'] = $options['add_url'];
         $view->vars['chained_child'] = $options['chained_child'];
         $view->vars['chained_values'] = $options['chained_values'];
+        $view->vars['visible_by_choice'] = $options['visible_by_choice'];
     }
 }

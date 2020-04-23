@@ -162,8 +162,6 @@ export function changeFormValue(form, find, value) {
             if (child.id === find.id) {
                 child.value = value
                 Object.assign(george[key], {...child})
-                if (typeof child.visibleByClass !== 'undefined')
-                    toggleRowsOnValue(value,child)
             } else {
                 Object.assign(george[key], changeFormValue({...child}, find, value))
             }
@@ -225,41 +223,14 @@ function visibleByClassInitial(form, visibleSets) {
     Object.keys(visibleSets).map(name => {
         let x = visibleSets[name]
         if (typeof form.row_class === 'string' && form.row_class.includes(name)) {
-            let row_class = form.row_class
-            if (!row_class.includes('hiddenSlider'))
-                row_class = row_class + ' hiddenSlider'
-            if (!x && !row_class.includes('close'))
-                row_class = row_class + ' close'
-            form.row_class = row_class
+            if (!x && form.row_style !== 'hidden') {
+                form.row_style_visible = form.visible
+                form.row_style = 'hidden'
+            }
         }
     })
 
-    return form
-}
-
-export function toggleRowsOnValue(value, form) {
-    let elements = document.getElementsByClassName(form.visibleByClass)
-    Object.keys(elements).map(key => {
-        let child = elements[key]
-        if (!child.classList.contains('hiddenSlider'))
-            child.classList.toggle('hiddenSlider')
-    })
-
-    if (value === form.visibleWhen) {
-        // Show the elements
-        Object.keys(elements).map(key => {
-            let child = elements[key]
-            if (child.classList.contains('close'))
-                child.classList.toggle('close')
-        })
-    } else {
-        // Hide the elements
-        Object.keys(elements).map(key => {
-            let child = elements[key]
-            if (!child.classList.contains('close'))
-                child.classList.toggle('close')
-        })
-    }
+    return {...form}
 }
 
 export function isSubmit(submit) {
@@ -387,4 +358,89 @@ export function setChainedSelect(form, forms, formNames)
     }
     forms = {...mergeParentForm(forms,parentName,parent)}
     return {...forms}
+}
+
+export function checkVisibleByChoice(forms) {
+    Object.keys(forms).map(key => {
+        Object.assign(forms[key], checkVisibleByChoiceInForm(forms[key], {...forms[key]}))
+    })
+
+    return {...forms}
+}
+
+function checkVisibleByChoiceInForm(form, parentForm) {
+    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
+        Object.keys(form.children).map(childKey => {
+            form.children[childKey] = checkVisibleByChoiceInForm(form.children[childKey], parentForm)
+        })
+    }
+
+    if (form.type === 'toggle' && form.visible_by_choice !== false) {
+        parentForm = setVisibleByChoiceElements(form, parentForm)
+    }
+
+    if (form.type === 'choice' && form.visible_by_choice === true) {
+        parentForm = setVisibleByChoiceElements(form, parentForm)
+    }
+    return {...form}
+}
+
+function setVisibleByChoiceElements(condition, parentForm)
+{
+    Object.keys(condition.choices).map(key => {
+        let choice = condition.choices[key].data
+        parentForm = hideVisibleChoice(choice, parentForm)
+    })
+
+    Object.keys(condition.choices).map(key => {
+        let choice = condition.choices[key]
+        if (choice.value === condition.value)
+            parentForm = showVisibleChoice(choice.data, parentForm)
+    })
+
+    return {...parentForm}
+}
+
+function hideVisibleChoice(choice, form) {
+    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
+        Object.keys(form.children).map(childKey => {
+            Object.assign(form.children[childKey], hideVisibleChoice(choice, form.children[childKey]))
+        })
+    }
+    if (typeof form.visible_values !== 'undefined' && Object.keys(form.visible_values).length > 0) {
+        if (form.row_style !== 'hidden')
+            form.row_style_visible = form.row_style
+        form.row_style = 'hidden'
+    }
+
+    return {...form}
+}
+
+function showVisibleChoice(choice, form) {
+    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
+        Object.keys(form.children).map(childKey => {
+            Object.assign(form.children[childKey], showVisibleChoice(choice, form.children[childKey]))
+        })
+    }
+    if (typeof form.visible_values !== 'undefined' && Object.keys(form.visible_values).length > 0 && form.visible_values.includes(choice)) {
+        if (form.row_style === 'hidden') {
+            if (typeof form.row_style_visible === 'undefined') {
+                form.row_style = 'standard'
+            } else {
+                form.row_style = form.row_style_visible
+                delete form.row_style_visible
+            }
+        }
+
+        if (Object.keys(form.visible_labels).length > 0 && typeof form.visible_labels[choice] !== 'undefined') {
+            form.label = form.visible_labels[choice].label
+            if (typeof form.visible_labels[choice].help === 'string') {
+                form.help = form.visible_labels[choice].help
+            } else {
+                form.help = null
+            }
+        }
+    }
+
+    return {...form}
 }

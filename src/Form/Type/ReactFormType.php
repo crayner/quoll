@@ -191,6 +191,16 @@ class ReactFormType extends AbstractType
                 $vars['chained_values'] = [];
             }
             $vars['data'] = $view->vars['data'];
+            $vars['visible_by_choice'] = $view->vars['visible_by_choice'];
+        }
+
+        if ($vars['type'] === 'toggle') {
+            $vars['visible_by_choice'] = $view->vars['visible_by_choice'];
+        }
+
+        if (isset($view->vars['visible_values'])) {
+            $vars['visible_values'] = $view->vars['visible_values'];
+            $vars['visible_labels'] = $view->vars['visible_labels'];
         }
 
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {

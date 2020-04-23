@@ -19,7 +19,7 @@ export default function PaginationSearch(props) {
     return (<tr className={'flex flex-col sm:flex-row justify-between content-center p-0'}>
                 <td className={'flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0'}>
                     <label htmlFor="search_input">{messages['Search for']}</label>
-                    <span id="manage_search_search_help" className="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0 help-text">{messages['Search in']}</span>
+                    <span id="manage_search_search_help" className="text-xs text-gray-600 italic font-normal mt-1 sm:mt-0 help-text">{messages['Search in']}</span>
                 </td>
                 <td className={'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0'}>
                     <div className={'flex-1 relative'}>

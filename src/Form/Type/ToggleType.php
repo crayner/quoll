@@ -1,7 +1,8 @@
 <?php
 namespace App\Form\Type;
 
-use App\Form\Transform\ToggleToBooleanTransformer;
+use App\Form\Transform\ToggleTransformer;
+use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,12 +10,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ToggleType
+ * @package App\Form\Type
+ */
 class ToggleType extends AbstractType
 {
+    /**
+     * buildForm
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['use_boolean_values'])
-            $builder->addModelTransformer(new ToggleToBooleanTransformer());
+        $builder->addModelTransformer(new ToggleTransformer($options['use_boolean_values']));
     }
 
     /**
@@ -42,17 +51,18 @@ class ToggleType extends AbstractType
     {
        $resolver->setDefaults(
            [
-               'visibleByClass' => false,
-               'visibleWhen' => 'Y',
-               'values' => ['Y', 'N'],
+               'visible_by_choice' => false,
+               'values' => [
+                   'Y',
+                   'N'
+               ],
                'wrapper_class' => 'text-right',
                'label_class' => 'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs',
                'required' => false,
                'use_boolean_values' => false,
            ]
        );
-        $resolver->setAllowedTypes('visibleByClass', ['boolean', 'string']);
-        $resolver->setAllowedTypes('visibleWhen', ['string']);
+        $resolver->setAllowedTypes('visible_by_choice', ['boolean', 'string']);
     }
 
     /**
@@ -63,8 +73,17 @@ class ToggleType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['visibleByClass'] = $options['visibleByClass'];
-        $view->vars['visibleWhen'] = $options['visibleWhen'];
+        if (false === $options['visible_by_choice']) {
+            $view->vars['visible_by_choice'] = $options['visible_by_choice'];
+            $view->vars['visible_values'] = [];
+        } else {
+            $view->vars['visible_by_choice'] = $options['visible_by_choice'];
+            $view->vars['choices'] = [
+                'Y' => ['data' => $options['visible_by_choice'], 'value' => 'Y', 'label' => TranslationHelper::translate('Yes', [], 'messages')],
+                'N' => ['value' => 'N', 'data' => 'N', 'label' => TranslationHelper::translate('No', [], 'messages')],
+            ];
+        }
+        $view->vars['choice_translation_domain'] = false;
         $view->vars['values'] = $options['values'];
         $view->vars['errors'] = $form->getParent()->getErrors();
     }

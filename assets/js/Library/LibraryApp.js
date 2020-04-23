@@ -21,8 +21,7 @@ import {
     findElementById,
     buildFormData,
     isSubmit,
-    checkHiddenRows,
-    toggleRowsOnValue
+    checkHiddenRows
 } from "../Container/ContainerFunctions"
 
 export default class LibraryApp extends Component {
@@ -53,7 +52,6 @@ export default class LibraryApp extends Component {
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
             selectLibraryAndType: this.selectLibraryAndType.bind(this),
-            toggleVisibleByClass: toggleRowsOnValue.bind(this),
             loadGoogleBookData: this.loadGoogleBookData.bind(this),
             renderImageLocation: this.renderImageLocation.bind(this)
         }

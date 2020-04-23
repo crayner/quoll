@@ -102,7 +102,7 @@ export default function RenderPeople(props) {
             <tbody>
                 <tr className="flex flex-col sm:flex-row justify-between content-center p-0">
                     <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
-                        <label htmlFor={'people_drop'} className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Target Person']}<br/><span className={'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0'}>{messages['target_person_help']}</span></label>
+                        <label htmlFor={'people_drop'} className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Target Person']}<br/><span className={'text-xs text-gray-600 italic font-normal mt-1 sm:mt-0'}>{messages['target_person_help']}</span></label>
                     </td>
                     <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 ">
                         <div className="flex-1 relative">

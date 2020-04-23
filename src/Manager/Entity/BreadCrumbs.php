@@ -342,7 +342,6 @@ class BreadCrumbs
     public function toArray(): array
     {
         $result = [];
-        dump($this->getItems());
         foreach($this->getItems() as $item) {
             $crumb = [];
             $crumb['name'] = TranslationHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());

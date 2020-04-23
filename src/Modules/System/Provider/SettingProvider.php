@@ -23,8 +23,8 @@ use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\EntityProviderInterface;
+use App\Util\ErrorMessageHelper;
 use App\Util\Format;
-use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\DriverException;
@@ -97,42 +97,10 @@ class SettingProvider implements EntityProviderInterface
      * getSystemSettings
      * @throws \Exception
      */
-    public function getSystemSettings(Session $session)
+    public function getSystemSettings()
     {
-        $session->set('systemSettingsSet', false);
-        //System settings from gibbonSetting
-        $result = $this->findBy(['scope' => 'System']);
-
-        foreach($result as $setting)
-        {
-            $session->set($setting->getName(), $setting->getValue());
-        }
-
-        //Get names and emails for administrator, dba, admissions
-        //System Administrator
-        $result = $this->getRepository(Person::class)->findOneBy(['id' => $session->get('organisationAdministrator')]);
-        $session->set('organisationAdministratorName', Format::name('', $result->getPreferredName(), $result->getSurname(), 'Staff', false, true));
-        $session->set('organisationAdministratorEmail', $result->getEmail());
-
-        //DBA
-        $result = $this->getRepository(Person::class)->findOneBy(['id' => $session->get('organisationDBA')]);
-        $session->set('organisationDBAName', Format::name('', $result->getPreferredName(), $result->getSurname(), 'Staff', false, true));
-        $session->set('organisationDBAEmail', $result->getEmail());
-
-        //Admissions
-        $result = $this->getRepository(Person::class)->findOneBy(['id' => $session->get('organisationAdmissions')]);
-        $session->set('organisationAdmissionsName', Format::name('', $result->getPreferredName(), $result->getSurname(), 'Staff', false, true));
-        $session->set('organisationAdmissionsEmail', $result->getEmail());
-
-        //HR Administraotr
-        $result = $this->getRepository(Person::class)->findOneBy(['id' => $session->get('organisationHR')]);
-        $session->set('organisationHRName', Format::name('', $result->getPreferredName(), $result->getSurname(), 'Staff', false, true));
-        $session->set('organisationHREmail', $result->getEmail());
-
-        //Language settings from gibboni18n
-        $result = $this->getProviderFactory()->getProvider(I18n::class)->setLanguageSession($session);
-
-        $session->set('systemSettingsSet',true);
+        //System settings
+        $result = $this->getSettingsByScope('System');
     }
 
     /**
@@ -378,7 +346,7 @@ class SettingProvider implements EntityProviderInterface
             $this->saveSettings($form, $content);
             if (count($this->getErrors()) === 0) {
                 $data['status'] = 'success';
-                return $this->addError(['class' => 'success', 'message' => TranslationHelper::translate('return.success.0', [], 'messages')])->getErrors();
+                return $this->addError(['class' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true)])->getErrors();
             }
             else
                 return $this->getErrors();
@@ -388,7 +356,7 @@ class SettingProvider implements EntityProviderInterface
             $this->addError(['class' => 'error', 'message' => $error->getOrigin()->getName() . ': ' . $error->getMessage()]);
         }
 
-        return $this->addError(['class' => 'error', 'message' => TranslationHelper::translate('return.error.1', [], 'messages')])->getErrors();
+        return $this->addError(['class' => 'error', 'message' => ErrorMessageHelper::onlyInvalidInputsMessage(true)])->getErrors();
     }
 
     /**

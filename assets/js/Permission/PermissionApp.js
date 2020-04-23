@@ -43,7 +43,7 @@ export default class PermissionApp extends Component {
                         <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0">
                             <label htmlFor="search_input">{this.translations['Search for']}</label>
                             <span id="manage_search_search_help"
-                                  className="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0 help-text" />
+                                  className="text-xs text-gray-600 italic font-normal mt-1 sm:mt-0 help-text" />
                         </td>
                         <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0">
                             <div className="flex-1 relative">

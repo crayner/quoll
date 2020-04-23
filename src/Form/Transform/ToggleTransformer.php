@@ -18,11 +18,25 @@ namespace App\Form\Transform;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Class ToggleToBooleanTransformer
+ * Class ToggleTransformer
  * @package App\Form\Transform
  */
-class ToggleToBooleanTransformer implements DataTransformerInterface
+class ToggleTransformer implements DataTransformerInterface
 {
+    /**
+     * @var boolean
+     */
+    private $useBoolean;
+
+    /**
+     * ToggleToBooleanTransformer constructor.
+     * @param bool $useBoolean
+     */
+    public function __construct(bool $useBoolean)
+    {
+        $this->useBoolean = $useBoolean;
+    }
+
     /**
      * transform
      * @param mixed $value
@@ -30,7 +44,9 @@ class ToggleToBooleanTransformer implements DataTransformerInterface
      */
     public function transform($value): string
     {
-        return $value ? 'Y' : 'N';
+        if ($this->useBoolean && is_bool($value))
+            return $value ? 'Y' : 'N';
+        return $value !=='N' ? 'Y' : 'N';
     }
 
     /**
@@ -40,7 +56,10 @@ class ToggleToBooleanTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): string
     {
-        return $value === 'Y';
+        if ($this->useBoolean)
+            return $value === 'N' ? false : true;
+
+        return $value === 'N' ? 'N' : 'Y';
     }
 
 }

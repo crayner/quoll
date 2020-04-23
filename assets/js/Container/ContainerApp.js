@@ -22,9 +22,9 @@ import {
     buildFormData,
     isSubmit,
     checkHiddenRows,
-    toggleRowsOnValue,
     initialContentLoaders,
     checkChainedElements,
+    checkVisibleByChoice,
     getControlButtons,
     setChainedSelect
 } from "./ContainerFunctions"
@@ -61,7 +61,6 @@ export default class ContainerApp extends Component {
             addElement: this.addElement.bind(this),
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
-            toggleVisibleByClass: toggleRowsOnValue.bind(this),
             refreshChoiceList: this.refreshChoiceList.bind(this),
             addElementToChoice: this.addElementToChoice.bind(this),
             removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
@@ -99,6 +98,7 @@ export default class ContainerApp extends Component {
         initialContentLoaders(this.contentLoaders, this.contentManager)
         let forms = checkHiddenRows({...this.state.forms})
         forms = checkChainedElements(forms, this.formNames)
+        forms = checkVisibleByChoice(forms, this.formNames)
         this.setMyState(forms, panelErrors)
     }
 
@@ -212,8 +212,10 @@ export default class ContainerApp extends Component {
         let parentForm = getParentForm(forms,form,this.formNames)
         const parentName = getParentFormName(this.formNames,form)
         if (form.type === 'toggle') {
-            let value = form.value === 'Y' ? 'N' : 'Y'
-            this.setMyState(buildState(mergeParentForm(forms,parentName, changeFormValue(parentForm,form,value)), this.singleForm))
+            let value = form.value === 'N' ? 'Y' : 'N'
+            forms = mergeParentForm(forms, parentName, changeFormValue(parentForm, form, value))
+            forms = checkVisibleByChoice(forms)
+            this.setMyState(buildState(forms, this.singleForm))
             return
         }
         if (form.type === 'file') {
@@ -244,8 +246,11 @@ export default class ContainerApp extends Component {
 
         forms = {...mergeParentForm({...forms},parentName,changeFormValue(parentForm,form,value))}
 
-        if (form.type === 'choice' && form.chained_child !== null) {
-            forms = setChainedSelect(form,forms,this.formNames)
+        if (form.type === 'choice') {
+            if (form.chained_child !== null)
+                forms = setChainedSelect(form,forms,this.formNames)
+            if (form.visible_by_choice === true)
+                forms = checkVisibleByChoice(forms)
         }
 
         this.setMyState(buildState(forms, this.singleForm))
