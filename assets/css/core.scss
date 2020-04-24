@@ -37,16 +37,14 @@ body {
         width: 72%;
     }
 }
-
-h1:not([class]), h2:not([class]), h3:not([class]), h4:not([class]), h5:not([class]), h6:not([class]) {
+h1, h2, h3, h4, h5, h6 {
     margin: 20px 0 10px 0;
-    position: relative;
     color: #444;
-    background: none;
+    background-color: transparent;
+    padding: 0 0 0 5px;
     text-align: left;
     text-transform: uppercase;
-    border-bottom: 1px solid black;
-    padding: 0 0 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 .half-underline:after {
     content: "";

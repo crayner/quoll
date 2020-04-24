@@ -1,0 +1,177 @@
+{% trans_default_domain 'System' %}
+<table class="smallIntBorder w-full relative">
+    <tbody>
+        <tr class="break ">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                <h3>{{ 'System Requirements'|trans }}</h3>
+            </td>
+        </tr>
+        <tr>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'PHP Version'|trans }}<br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ '{name} requires {software} version {version} or higher'|trans({'{name}': ('Kookaburra'|trans ~ ' ' ~ manager.configValue('version')), '{software}': 'PHP', '{version}': manager.configValue('php')}) }}</span></label>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <div class="flex-1 relative">
+                   {{ manager.PHPVersion }}
+                </div>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                {% if manager.versionValid(manager.PHPVersion, manager.configValue('php')) is same as(true) %}
+                    <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                {% else %}
+                    <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <label  class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'MySQL Version'|trans }} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ '{name} requires {software} version {version} or higher'|trans({'{name}': ('Kookaburra'|trans ~ ' ' ~ manager.configValue('version')), '{software}': 'MySQL', '{version}': manager.configValue('mysql')}) }}</span></label>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <div class="flex-1 relative">
+                    {{ manager.mySQLVersion }}
+                </div>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                {% if manager.versionValid(manager.mySQLVersion, manager.configValue('mysql')) is same as(true) %}
+                    <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                {% else %}
+                    <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'MySQL Collation'|trans }} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ 'Database collation should be set to {collation}'|trans({"{collation}": 'utf8_general_ci'}) }}</span></label>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <div class="flex-1 relative">
+                    {{ manager.collation }}
+                </div>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                {% if manager.collation is same as('utf8_general_ci') %}
+                    <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                {% else %}
+                    <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                {% endif %}
+            </td>
+        </tr>
+        {% if manager.apache %}
+            <tr class="break ">
+                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                    <h3>{{ 'Apache Modules'|trans }}</h3>
+                </td>
+            </tr>
+            {% for moduleName in manager.configValue('apache') %}
+                <tr>
+                    <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                        <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ moduleName }}</label>
+                    </td>
+                    <td class="px-2 border-b-0 sm:border-b border-t-0">
+                        <div class="flex-1 relative">
+                            {{ moduleName in manager.apacheModules ? 'Enabled'|trans : 'N/A'|trans }}
+                        </div>
+                    </td>
+                    <td class="px-2 border-b-0 sm:border-b border-t-0">
+                        {% if moduleName in manager.apacheModules %}
+                            <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                        {% else %}
+                            <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        <tr class="break ">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                <h3>{{ 'PHP Extensions'|trans }}</h3>
+            </td>
+        </tr>
+        {% for extensionName in manager.configValue('extensions') %}
+            <tr>
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                    <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ extensionName }}</label>
+                </td>
+                <td class="px-2 border-b-0 sm:border-b border-t-0">
+                    <div class="flex-1 relative">
+                        {{ manager.extensionInstalled(extensionName) ? 'Enabled'|trans : 'N/A'|trans }}
+                    </div>
+                </td>
+                <td class="px-2 border-b-0 sm:border-b border-t-0">
+                    {% if manager.extensionInstalled(extensionName) %}
+                        <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                    {% else %}
+                        <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr class="break ">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                <h3>{{ 'PHP Settings'|trans }}</h3>
+                <p>{{ 'Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.'|trans }}</p>
+            </td>
+        </tr>
+        {% for name, value in manager.configValue('settings') %}
+            <tr>
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                    <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ name }}<br/><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ 'Must be {operator} {required}'|trans({'{operator}': value[1], '{required}': value[0]}) }}</span></label>
+                </td>
+                <td class="px-2 border-b-0 sm:border-b border-t-0">
+                    <div class="flex-1 relative">
+                        {{ manager.settingOK(name, value[0], value[1]) ? 'Enabled'|trans : 'N/A'|trans }}
+                    </div>
+                </td>
+                <td class="px-2 border-b-0 sm:border-b border-t-0">
+                    {% if manager.settingOK(name, value[0], value[1]) %}
+                        <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                    {% else %}
+                        <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr class="break ">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                <h3>{{ 'File Permissions'|trans }}</h3>
+            </td>
+        </tr>
+        <tr>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'System not publicly writeable'|trans }}<br/><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ 'count files checked'|trans({'count': manager.fileCount}) }}</span></label>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <div class="flex-1 relative">
+                    {{ 'Files publicly writeable'|trans({'count': manager.publicWriteCount}) }}
+                </div>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                {% if  manager.publicWriteCount is same as(0) %}
+                    <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                {% else %}
+                    <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'Uploads folder server writeable'|trans }}</label>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                <div class="flex-1 relative">
+                    {{ absolute_url('/') }}
+                </div>
+            </td>
+            <td class="px-2 border-b-0 sm:border-b border-t-0">
+                {% if manager.uploadWriteable %}
+                    <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
+                {% else %}
+                    <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
