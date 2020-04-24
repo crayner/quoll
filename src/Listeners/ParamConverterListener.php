@@ -61,6 +61,7 @@ class ParamConverterListener implements EventSubscriberInterface
     /**
      * processException
      * @param ExceptionEvent $event
+     * @return void
      */
     public function processException(ExceptionEvent $event)
     {
@@ -68,6 +69,9 @@ class ParamConverterListener implements EventSubscriberInterface
             return;
 
         $exception = $event->getThrowable();
+
+        if (strpos($exception->getMessage(),'@ParamConverter') === false)
+            return;
 
         $response = new RedirectResponse('/');
 
