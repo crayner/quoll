@@ -3161,7 +3161,7 @@ class Person implements EntityInterface
      */
     public function hasRole(string $role): bool
     {
-        return ProviderFactory::create(Role::class)->hasRole($role, $this->getAllRoles());
+        return $role === $this->getPrimaryRole() || in_array($role, $this->getAllRoles());
     }
 
     /**

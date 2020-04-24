@@ -281,7 +281,7 @@ class NotificationEventProvider implements EntityProviderInterface
      */
     private function getModuleName(): string
     {
-        return $this->getEntity()->getModuleName();
+        return $this->getEntity()->getName();
     }
 
     /**

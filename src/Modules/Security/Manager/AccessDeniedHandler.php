@@ -12,12 +12,13 @@
  */
 namespace App\Modules\Security\Manager;
 
+use App\Modules\System\Entity\Action;
+use App\Provider\ProviderFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authorization\AccessDeniedHandlerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AccessDeniedHandler
@@ -26,20 +27,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AccessDeniedHandler implements AccessDeniedHandlerInterface
 {
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * AccessDeniedHandler constructor.
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
      * handle
      * @param Request $request
      * @param AccessDeniedException $accessDeniedException
@@ -47,13 +34,12 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
      */
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        // If Route is api_*
-        if ($request->getContentType() === 'json'){
-            return new JsonResponse(
-                [
-                    'error' => $this->translator->trans('return.error.0'),
-                ],
-                200);
+        if ($request->attributes->get('action') === false) {
+            $action = ProviderFactory::getRepository(Action::class)->findOneByRoute($request->attributes->get('_route'));
+            if (!$action) {
+                $request->getSession()->getFlashBag()->add('error', sprintf('The route "%s" is not defined in the action database.', $request->attributes->get('_route')));
+                return new RedirectResponse('/');
+            }
         }
 
         $request->getSession()->getFlashBag()->add('warning', 'return.error.0');

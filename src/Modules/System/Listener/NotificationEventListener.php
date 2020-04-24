@@ -1,0 +1,64 @@
+<?php
+/**
+ * Created by PhpStorm.
+ *
+ * kookaburra
+ * (c) 2019 Craig Rayner <craig@craigrayner.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * User: craig
+ * Date: 25/10/2019
+ * Time: 16:02
+ */
+
+namespace App\Modules\System\Listener;
+
+use App\Modules\System\Manager\NotificationSender;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+/**
+ * Class NotificationListener
+ * @package App\Modules\System\Listener
+ */
+class NotificationEventListener implements EventSubscriberInterface
+{
+
+    /**
+     * @var NotificationSender
+     */
+    private $notificationSender;
+
+    /**
+     * NotificationListener constructor.
+     * @param NotificationSender $notificationSender
+     */
+    public function __construct(NotificationSender $notificationSender)
+    {
+        $this->notificationSender = $notificationSender;
+    }
+
+    /**
+     * getSubscribedEvents
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::RESPONSE => [ 'sendNotifications' ]
+        ];
+    }
+
+    /**
+     * sendNotifications
+     */
+    public function sendNotifications()
+    {
+        if ($this->notificationSender->hasEvents())
+        {
+            $this->notificationSender->renderEvents();
+        }
+    }
+}

@@ -37,6 +37,8 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -412,5 +414,31 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
     public function isHouseInUse(House $house): bool
     {
         return $this->getRepository()->countPeopleInHouse($house) > 0;
+    }
+
+    /**
+     * findByRole
+     * @param string $role
+     * @param RoleHierarchyInterface $hierarchy
+     * @return array
+     */
+    public function findByRole(string $role, RoleHierarchyInterface $hierarchy): array
+    {
+        $people = $this->getRepository()->findBy([],['surname' => 'ASC', 'firstName' => 'ASC']);
+        $found = [];
+        $reachable = $hierarchy->getReachableRoleNames([$role]);
+
+        foreach($people as $person) {
+            if (in_array($person->getPrimaryRole(), $reachable)) {
+                $found[] = $person;
+                continue;
+            }
+
+            foreach ($person->getAllRoles() as $secondaryRole)
+                if (in_array($secondaryRole, $reachable))
+                    $found[] = $person;
+
+        }
+        return $found;
     }
 }

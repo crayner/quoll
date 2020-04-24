@@ -55,25 +55,11 @@ class NotificationEvent implements EntityInterface
     private $event;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=30, name="moduleName",nullable=true)
-     * @deprecated
-     */
-    private $moduleName;
-
-    /**
      * @var Module|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="events")
      * @ORM\JoinColumn(name="module", referencedColumnName="id", nullable=true)
      */
     private $module;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=50, name="actionName",nullable=true)
-     * @deprecated
-     */
-    private $actionName;
 
     /**
      * @var Action|null
@@ -158,44 +144,18 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @return string|null
-     * @deprecated 10 Sep/2019  Use getModule()->getName()
      */
     public function getModuleName(): ?string
     {
-        trigger_error(sprintf('The method %s is deprecated in %s', __METHOD__, __CLASS__), E_USER_DEPRECATED);
-        return $this->moduleName ?: ($this->getModule() ? $this->getModule()->getName() : null);
-    }
-
-    /**
-     * @param string|null $moduleName
-     * @return NotificationEvent
-     * @deprecated 10 Sep/2019  Use getModule()->setName()
-     */
-    public function setModuleName(?string $moduleName): NotificationEvent
-    {
-        $this->moduleName = $moduleName;
-        return $this;
+        return $this->getModule() ? $this->getModule()->getName() : null;
     }
 
     /**
      * @return string|null
-     * @deprecated 10 Sep/2019  Use getAction()->getName()
      */
     public function getActionName(): ?string
     {
-        trigger_error(sprintf('The method %s is deprecated in %s', __METHOD__, __CLASS__), E_USER_DEPRECATED);
-        return $this->actionName ?: ($this->getAction() ? $this->getAction()->getName() : null);
-    }
-
-    /**
-     * @param string|null $actionName
-     * @return NotificationEvent
-     * @deprecated 10 Sep/2019  Use getAction()->setName()
-     */
-    public function setActionName(?string $actionName): NotificationEvent
-    {
-        $this->actionName = $actionName;
-        return $this;
+        return $this->getAction() ? $this->getAction()->getName() : null;
     }
 
     /**
