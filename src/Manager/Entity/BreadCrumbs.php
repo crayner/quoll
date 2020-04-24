@@ -34,11 +34,6 @@ class BreadCrumbs
     private $items;
 
     /**
-     * @var null:string
-     */
-    private $baseURL;
-
-    /**
      * @var
      */
     private $title;
@@ -97,26 +92,6 @@ class BreadCrumbs
     }
 
     /**
-     * @return null
-     */
-    public function getBaseURL()
-    {
-        return trim($this->baseURL, '/');
-    }
-
-    /**
-     * BaseURL.
-     *
-     * @param null $baseURL
-     * @return BreadCrumbs
-     */
-    public function setBaseURL($baseURL): BreadCrumbs
-    {
-        $this->baseURL = $baseURL;
-        return $this->setModule($baseURL);
-    }
-
-    /**
      * @return mixed
      */
     public function getTitle()
@@ -146,7 +121,6 @@ class BreadCrumbs
         $this->setAction($action);
         $resolver = new OptionsResolver();
         $resolver->setRequired([
-            'baseURL',
             'crumbs',
             'title',
             'module',
@@ -164,7 +138,6 @@ class BreadCrumbs
         $this->addItem($item);
         $this->setTitle($module['title']);
         $this->setTransParams($module['trans_params']);
-        $this->setBaseURL($module['baseURL']);
         $this->setDomain($module['domain']);
 
         $item = new BreadCrumbItem();
@@ -172,8 +145,6 @@ class BreadCrumbs
         $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
-            if (false === strpos($crumb['uri'], '__'))
-                $crumb['uri'] =  $this->getModule() . '__' . $crumb['uri'];
             $crumb['domain'] = $this->getDomain();
             $item = new BreadCrumbItem($crumb);
             $this->addItem($item);
@@ -191,9 +162,10 @@ class BreadCrumbs
     /**
      * Add a named route to the trail.
      *
-     * @param string $title   Name to display on this route's link
-     * @param string $route   URL relative to the trail's BaseURL
-     * @param array  $params  Additional URL params to append to the route
+     * @param string $title Name to display on this route's link
+     * @param string $route Actually URL ?
+     * @param array $uriParams
+     * @param array $transParams
      * @return self
      */
     public function add(string $title, string $route = '', array $uriParams = [], array $transParams = []): self
@@ -203,7 +175,7 @@ class BreadCrumbs
 
         if ($title === 'Home')
         {
-            $this->crumbs = ['baseURL' => $this->getBaseURL(), 'crumbs' => ['Home' => UrlGeneratorHelper::getPath('home')], 'title' => $title];
+            $this->crumbs = ['crumbs' => ['Home' => UrlGeneratorHelper::getPath('home')], 'title' => $title];
             return $this;
         }
 
@@ -216,19 +188,14 @@ class BreadCrumbs
      * addCrumb
      * @param string $title
      * @param string $route
-     * @param array $params
+     * @param array $uriParams
+     * @param array $transParams
      * @return BreadCrumbs
      */
     private function addCrumb(string $title, string $route = '', array $uriParams = [], array $transParams = []): BreadCrumbs
     {
         if ('' !== $route) {
-            if (strpos($route, '.php') !== false) {
-                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => str_replace('index.php?q=','', $this->getBaseURL()) . '/' . $route], $uriParams));
-            } else {
-                if (false === strpos($route, '__'))
-                    $route = strtolower(str_replace(' ', '_', $this->getModule())) . '__' . $route;
-                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $uriParams);
-            }
+            $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $uriParams);
         }
 
         $this->crumbs['title'] = $title;

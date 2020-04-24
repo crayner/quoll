@@ -78,8 +78,8 @@ class ModuleMenu implements SidebarContentInterface
                 $moduleMenuItems = ProviderFactory::create(Action::class)->moduleMenuItems($currentModule, $this->getChecker());
                 foreach ($moduleMenuItems as $category => &$items) {
                     foreach ($items as &$item) {
-                        $item['category'] = $this->translate($item['category']);
-                        $item['name'] = $this->translate($item['name']);
+                        $item['category'] = $this->translate($item['category'], [], $item['moduleName']);
+                        $item['name'] = $this->translate($item['name'], [], $item['moduleName']);
                         $item['active'] = $request->attributes->get('action') ? in_array($request->attributes->get('action')->getEntryRoute(), $item['routeList']) : false;
                         $item['route'] = $item['entryRoute'];
                         $item['url'] = $this->checkURL($item);

@@ -19,7 +19,7 @@ use App\Form\EventSubscriber\ReactFileListener;
 use App\Form\Transform\ReactFileTransformer;
 use App\Manager\EntityInterface;
 use App\Twig\Sidebar\Photo;
-use App\Util\TranslationsHelper;
+use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;

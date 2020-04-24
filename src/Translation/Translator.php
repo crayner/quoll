@@ -17,8 +17,10 @@ namespace App\Translation;
 
 use App\Modules\System\Entity\StringReplacement;
 use App\Provider\ProviderFactory;
+use App\Util\CacheHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
@@ -129,26 +131,26 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
             return new ArrayCollection();
         if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0)
             return new ArrayCollection();
-        $provider = ProviderFactory::create(StringReplacement::class);
-        if (null === $this->strings && ! $refresh)
-            $this->strings = $this->stack->getCurrentRequest()->getSession()->get('stringReplacement', null);
-        else
+
+        if ($this->strings !== null && ! $refresh)
             return $this->strings;
 
-        if ((empty($this->strings) || $refresh) && $provider->isValidEntityManager())
-            try {
-                $this->strings = new ArrayCollection($provider->getRepository()->findBy([], ['priority' => 'DESC', 'original' => 'ASC']));
-            } catch (TableNotFoundException $e) {
-                $this->strings = new ArrayCollection();
-            }
-        else
-            return $this->strings = $this->strings instanceof ArrayCollection ? $this->strings : new ArrayCollection();
+        if (!CacheHelper::isStale('stringReplacement') && !$refresh)
+            return CacheHelper::getCacheValue('stringReplacement');
+
+        $provider = ProviderFactory::create(StringReplacement::class);
+
+        try {
+            $this->strings = new ArrayCollection($provider->getRepository()->findBy([], ['priority' => 'DESC', 'original' => 'ASC']));
+        } catch (PDOException | TableNotFoundException $e) {
+            $this->strings = new ArrayCollection();
+        }
 
         $sr = new StringReplacement();
-        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Whole')->setCaseSensitive('N')->setPriority(1);
+        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Whole')->setCaseSensitive('N')->setPriority(99);
         $this->strings->add($sr);
 
-        $this->stack->getCurrentRequest()->getSession()->set('stringReplacement', $this->strings);
+        CacheHelper::setCacheValue('stringReplacement', $this->strings);
 
         return $this->strings;
     }

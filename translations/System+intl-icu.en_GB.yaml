@@ -136,5 +136,48 @@ Timezone: Timezone
 Username to use for SMTP authentication. Leave blank for no authentication.: Username to use for SMTP authentication. Leave blank for no authentication.
 'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}': 'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}'
 Your requested did not included a valid Google Secret File. All other Google changes where saved.: Your requested did not included a valid Google Secret File. All other Google changes where saved.
-ssl: ssl
+ssl: SSL
 tls: TLS
+Actions: Actions
+Add String: Add String
+Apache Modules: Apache Modules
+Case Sensitive: Case Sensitive
+Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.: Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.
+Database collation should be set to {collation}: Database collation should be set to {collation}
+Delete: Delete
+Edit String: Edit String
+Edit: Edit
+Enabled: Enabled
+File Permissions: File Permissions
+Files publicly writeable: Files publicly writeable
+First Page: First Page
+Higher priorities are substituted first.: Higher priorities are substituted first.
+Kookaburra: Kookaburra
+Last Page: Last Page
+Manage String Replacements: Manage String Replacements
+Mode: Mode
+Must be {operator} {required}: Must be {operator} {required}
+MySQL Collation: MySQL Collation
+MySQL Version: MySQL Version
+Next Page: Next Page
+Original String: Original String
+PHP Extensions: PHP Extensions
+PHP Settings: PHP Settings
+PHP Version: PHP Version
+Partial: Partial
+Previous Page: Previous Page
+Priority: Priority
+Records {start}-{end} of {total}: Records {start}-{end} of {total}
+Replacement String: Replacement String
+String Replacement: String Replacement
+String Replacements: String Replacements
+System Check: System Check
+System Requirements: System Requirements
+System not publicly writeable: System not publicly writeable
+There are no records to display.: There are no records to display.
+Uploads folder server writeable: Uploads folder server writeable
+Whole: Whole
+count files checked: count files checked
+'{name} requires {software} version {version} or higher': '{name} requires {software} version {version} or higher'
+Extend & Update: Extend & Update
+Settings: Settings

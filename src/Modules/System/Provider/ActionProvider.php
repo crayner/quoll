@@ -137,7 +137,7 @@ class ActionProvider implements EntityProviderInterface
             {
                 if (!key_exists($action->getDisplayName(), $names))
                 {
-                    $categories[$action->getCategory()][] = $action->toArray();
+                    $categories[$action->getCategory()][] = $action->toArray('module_menu');
                     $names[$action->getDisplayName()] = true;
                 }
             }

@@ -20,6 +20,7 @@ use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\System\Entity\I18n;
+use App\Modules\System\Pagination\StringReplacementPagination;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
@@ -139,7 +140,7 @@ class PageManager
     /**
      * @var array
      */
-    private $messages;
+    private $messages = [];
 
     /**
      * @var TokenStorageInterface
@@ -440,7 +441,6 @@ class PageManager
         $domain = $moduleName === '' ? null : str_replace(' ','',$moduleName);
         $result['title'] = TranslationHelper::translate($title, $params, $domain);
         $result['crumbs'] = $crumbs;
-        $result['baseURL'] = strtolower($moduleName);
         $result['domain'] = $domain;
         $result['module'] = $moduleName;
 
@@ -686,6 +686,18 @@ class PageManager
     public function setMessages(array $messages): PageManager
     {
         $this->messages = $messages;
+        return $this;
+    }
+
+    /**
+     * addMessage
+     * @param string $class
+     * @param string $message
+     * @return PageManager
+     */
+    public function addMessage(string $class, string $message): PageManager
+    {
+        $this->messages[] = ['class' => $class, 'message' => $message];
         return $this;
     }
 
