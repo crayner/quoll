@@ -18,7 +18,9 @@ namespace App\Modules\System\Provider;
 use App\Manager\Traits\EntityTrait;
 use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Action;
+use App\Modules\System\Entity\Module;
 use App\Provider\EntityProviderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -39,7 +41,7 @@ class ActionProvider implements EntityProviderInterface
      * @param array $criteria
      * @return mixed
      */
-    public function findByrouteListModuleRole(array $criteria)
+    public function findByRouteListModuleRole(array $criteria)
     {
         return $this->getRepository()->findByrouteListModuleRole($criteria);
     }
@@ -115,22 +117,32 @@ class ActionProvider implements EntityProviderInterface
         });
 
         return $answer;
+    }
 
-         /*   ->select([
-                "CONCAT('Act-', m.name, '/', a.entryRoute) AS id",
-                "CONCAT('" . $actionTitle . "', SUBSTRING_INDEX(a.name, '_', 1)) AS text",
-                'm.name as search'
-            ])
-            ->join('a.module', 'm')
-//           ->leftJoin('a.roles', 'r')
-            ->where('m.active = :yes')
-            ->andWhere('a.menuShow = :yes')
-//            ->andWhere('r.id = :role')
-            ->orderBy('text', 'ASC')
-            ->setParameter('yes', 'Y')
-//            ->setParameters(['yes' => 'Y', 'role' => intval($role->getId())])
-            ->distinct()
-            ->getQuery()
-            ->getResult(); */
+    /**
+     * moduleMenuItems
+     * @param Module $module
+     * @param AuthorizationCheckerInterface $checker
+     * @return array
+     */
+    public function moduleMenuItems(Module $module, AuthorizationCheckerInterface $checker): array
+    {
+        $result = $this->getRepository()->findByModule($module);
+
+        $categories = [];
+        $names = [];
+        foreach($result as $action)
+        {
+            if ($action->isEntrySidebar() && $checker->isGranted($action->getRole()))
+            {
+                if (!key_exists($action->getDisplayName(), $names))
+                {
+                    $categories[$action->getCategory()][] = $action->toArray();
+                    $names[$action->getDisplayName()] = true;
+                }
+            }
+        }
+
+        return $categories;
     }
 }

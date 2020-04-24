@@ -25,6 +25,7 @@ use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
+use App\Twig\ModuleMenu;
 use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
@@ -161,10 +162,16 @@ class PageManager
     private $module;
 
     /**
+     * @var ModuleMenu
+     */
+    private $moduleMenu;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
      * @param MainMenu $mainMenu
+     * @param ModuleMenu $moduleMenu
      * @param AuthorizationCheckerInterface $checker
      * @param TokenStorageInterface $storage
      * @param SidebarContent $sidebar
@@ -181,6 +188,7 @@ class PageManager
         RequestStack $stack,
         MinorLinks $minorLinks,
         MainMenu $mainMenu,
+        ModuleMenu $moduleMenu,
         AuthorizationCheckerInterface $checker,
         TokenStorageInterface $storage,
         SidebarContent $sidebar,
@@ -204,6 +212,7 @@ class PageManager
         $this->fastFinder = $fastFinder;
         $this->format = $format;
         $this->storage = $storage;
+        $this->moduleMenu = $moduleMenu;
     }
 
     /**
@@ -510,6 +519,8 @@ class PageManager
         if (false === strpos($route, '_ignore_address') && null !== $route) {
             $this->setModule();
         }
+
+        $this->setModuleMenu();
     }
 
     /**
@@ -697,4 +708,37 @@ class PageManager
         $this->popup = $popup;
         return $this;
     }
+
+    /**
+     * @return ModuleMenu
+     */
+    public function getModuleMenu(): ModuleMenu
+    {
+        return $this->moduleMenu;
+    }
+
+    /**
+     * setModuleMenu
+     * @return PageManager
+     */
+    private function setModuleMenu(): PageManager
+    {
+        if (!$this->getModule())
+            return $this;
+
+        $this->getModuleMenu()->setRequest($this->getRequest())->setChecker($this->getChecker())->execute();
+
+        $this->getSidebar()->addContent($this->getModuleMenu());
+
+        return $this;
+    }
+
+    /**
+     * @return AuthorizationCheckerInterface
+     */
+    public function getChecker(): AuthorizationCheckerInterface
+    {
+        return $this->checker;
+    }
+
 }

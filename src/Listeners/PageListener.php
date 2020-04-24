@@ -92,5 +92,7 @@ class PageListener implements EventSubscriberInterface
         if ($request->getContentType() !== 'json')
             $event->setResponse($this->pageManager->getBaseResponse());
 
+
+
     }
 }

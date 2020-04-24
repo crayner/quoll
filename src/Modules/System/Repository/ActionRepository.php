@@ -222,4 +222,22 @@ class ActionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * findByModule
+     * @param Module $module
+     * @return int|mixed|string
+     */
+    public function findByModule(Module $module)
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.module', 'm')
+            ->select(['a','m'])
+            ->orderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')
+            ->addOrderBy('a.precedence', 'DESC')
+            ->where('a.module = :module')
+            ->setParameter('module', $module)
+            ->getQuery()
+            ->getResult();
+    }
 }

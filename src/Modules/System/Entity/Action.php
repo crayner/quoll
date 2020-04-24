@@ -203,6 +203,18 @@ class Action implements EntityInterface
     }
 
     /**
+     * getDisplayName
+     * @return string|null
+     */
+    public function getDisplayName(): ?string
+    {
+        if (null === $this->getName())
+            return null;
+        $name = explode('_', $this->name);
+        return $name[0];
+    }
+
+    /**
      * @param string|null $name
      * @return Action
      */
@@ -321,11 +333,20 @@ class Action implements EntityInterface
     }
 
     /**
+     * isEntrySidebar
+     * @return bool
+     */
+    public function isEntrySidebar(): bool
+    {
+        return $this->getEntrySidebar() === 'Y';
+    }
+
+    /**
      * @return string
      */
     public function getEntrySidebar(): string
     {
-        return $this->entrySidebar;
+        return self::checkBoolean($this->entrySidebar);
     }
 
     /**
@@ -334,7 +355,7 @@ class Action implements EntityInterface
      */
     public function setEntrySidebar(string $entrySidebar): Action
     {
-        $this->entrySidebar = in_array($entrySidebar, self::getBooleanList()) ? $entrySidebar : 'Y';
+        $this->entrySidebar = self::checkBoolean($entrySidebar);
         return $this;
     }
 
@@ -545,9 +566,21 @@ class Action implements EntityInterface
      */
     public function toArray(?string $name = NULL): array
     {
+        if ($name === 'module_menu') {
+            return [
+                'category' => $this->getCategory(),
+                'moduleName' => $this->getModule()->getName(),
+                'actionName' => $this->getName(),
+                'type' => $this->getModule()->getType(),
+                'precedence' => $this->getPrecedence(),
+                'moduleEntry' => $this->getModule()->getEntryRoute(),
+                'entryRoute' => $this->getentryRoute(),
+                'routeList' => $this->getRouteList(),
+                'name' => $this->getDisplayName(),
+            ];
+        }
         return [
             'id' => $this->id,
-            '__prefix__ActionID' => $this->id,
             'name' => $this->name,
             'translatedName' => $this->getTranslatedName(),
             'precedence' => $this->precedence,
