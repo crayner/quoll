@@ -29,7 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class GoogleIntegrationType
- * @package App\Form\Modules\SystemAdmin
+ * @package App\Modules\System\Form
  */
 class GoogleIntegrationType extends AbstractType
 {

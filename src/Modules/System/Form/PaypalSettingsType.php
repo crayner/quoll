@@ -26,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PaypalSettingsType
- * @package App\Form\Modules\SystemAdmin
+ * @package App\Modules\System\Form
  */
 class PaypalSettingsType extends AbstractType
 {

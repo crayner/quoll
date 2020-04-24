@@ -32,3 +32,4 @@ The password must contain both lower and uppercase characters.: The password mus
 The password must contain as least one number.: The password must contain as least one number.
 The password must be a minimum of {minLength} characters long.: The password must be a minimum of {minLength} characters long.
 Your request failed due to non-matching passwords.: Your request failed due to non-matching passwords.
+Your request failed because your new password is the same as your current password.: Your request failed because your new password is the same as your current password.

@@ -54,7 +54,9 @@ class HomeController extends AbstractPageController
 
         $sidebar = $pageManager->getSidebar();
         $sidebar->addContent(new Flash());
-        $sidebar->addContent(new Login());
+        $login = new Login();
+        $login->setToken($this->get('security.csrf.token_manager')->getToken('authenticate'));
+        $sidebar->addContent($login);
 
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();

@@ -24,7 +24,7 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
-use App\Modules\Security\Entity\Role;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
@@ -511,7 +511,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=32)
+     * @ORM\Column(length=32,nullable=true)
      * @ASSERT\NotBlank()
      */
     private $primaryRole;
@@ -2716,7 +2716,7 @@ class Person implements EntityInterface
      */
     public function isSystemAdmin(): bool
     {
-        return $this->getId() === 1;
+        return $this->getPrimaryRole() === 'ROLE_SYSTEM_ADMIN';
     }
 
     /**
@@ -3356,7 +3356,7 @@ class Person implements EntityInterface
                     `googleAPIRefreshToken` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `receiveNotificationEmails` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `fields` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Serialised array of custom field values(DC2Type:array)',
-                    `primary_role` int(3) UNSIGNED DEFAULT NULL,
+                    `primary_role` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `house` int(3) UNSIGNED DEFAULT NULL,
                     `class_of_academic_year` int(3) UNSIGNED DEFAULT NULL,
                     `application_form` int(12) UNSIGNED DEFAULT NULL,
@@ -3365,7 +3365,7 @@ class Person implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `username` (`username`),
                     KEY `username_2` (`username`,`email`) USING BTREE,
-                    KEY `primaryRole` (`primary_role`) USING BTREE,
+                    KEY `primaryRole` (`primary_role`),
                     KEY `house` (`house`) USING BTREE,
                     KEY `classOfAcademicYear` (`class_of_academic_year`) USING BTREE,
                     KEY `applicationForm` (`application_form`) USING BTREE,

@@ -61,11 +61,6 @@ class AcademicYearProvider implements EntityProviderInterface
         }
         
         $session->set('academicYear', $year);
-        // Legacy
-        $session->set('gibbonSchoolYearID',$year->getId());
-        $session->set('gibbonSchoolYearSequenceNumber', $year->getSequenceNumber());
-        $session->set('gibbonSchoolYearFirstDay', $year->getFirstDay());
-        $session->set('gibbonSchoolYearLastDay', $year->getLastDay());
         return $year;
     }
 

@@ -12,7 +12,6 @@
  */
 namespace App\Modules\Security\Util;
 
-use App\Exception\RouteConfigurationException;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
@@ -23,10 +22,8 @@ use App\Modules\System\Provider\ActionProvider ;
 use App\Modules\System\Provider\ModuleProvider ;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -89,22 +86,6 @@ class SecurityHelper
     }
 
     /**
-     * @return ActionProvider
-     */
-    public static function getActionProvider(): ActionProvider
-    {
-        return ProviderFactory::create(Action::class);
-    }
-
-    /**
-     * @return ModuleProvider
-     */
-    public static function getModuleProvider(): ModuleProvider
-    {
-        return ProviderFactory::create(Module::class);
-    }
-
-    /**
      * @var array
      */
     private static $highestGroupedActionList = [];
@@ -123,7 +104,7 @@ class SecurityHelper
             return self::$highestGroupedActionList[$route];
         if ($user = UserHelper::getCurrentUser() === null)
             return self::$highestGroupedActionList[$route] = false;
-        $result = self::getActionProvider()->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
+        $result = ProviderFactory::create(Action::class)->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
         return self::$highestGroupedActionList[$route] = $result ? $result['name'] : false;
     }
 
@@ -142,7 +123,7 @@ class SecurityHelper
         if (isset(self::$checkModuleReadyList[$route]))
             return self::$checkModuleReadyList[$route];
         try {
-            return self::$checkModuleReadyList[$route] = self::getModuleProvider()->findOneBy(['name' => self::getModuleName($route), 'active' => 'Y']);
+            return self::$checkModuleReadyList[$route] = ProviderFactory::create(Module::class)->findOneBy(['name' => self::getModuleName($route), 'active' => 'Y']);
         } catch (PDOException | \PDOException $e) {
         }
 

@@ -89,7 +89,8 @@ export default function LoginContent(props) {
                 <tr className=" flex flex-col sm:flex-row justify-between content-center p-0">
                     <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 right"
                         colSpan="2">
-                        <input type="submit" value="Login"/>
+                        <input type="submit" defaultValue="Login" />
+                        <input type="hidden" name="token" id="token" defaultValue={login.token} />
                     </td>
                 </tr>
                 </tbody>

@@ -17,6 +17,7 @@ namespace App\Listeners;
 
 use App\Manager\PageManager;
 use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -24,6 +25,7 @@ use App\Util\TranslationHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class PageListener

@@ -1,0 +1,140 @@
+API Key: API Key
+API Password provided by PayPal.: API Password provided by PayPal.
+API Secret/Auth Token: API Secret/Auth Token
+API Signature provided by PayPal.: API Signature provided by PayPal.
+API Username provided by PayPal.: API Username provided by PayPal.
+Adds PHPMailer settings for servers with an SMTP connection.: Adds PHPMailer settings for servers with an SMTP connection.
+Admissions Administrator: Admissions Administrator
+Analytics: Analytics
+Automatic: Automatic
+Automatically sets the encryption based on the port, otherwise select one manually.: Automatically sets the encryption based on the port, otherwise select one manually.
+Background: Background
+Base Path: Base Path
+Base URL: Base URL
+Country: Country
+Currency: Currency
+Database Administrator: Database Administrator
+Default Assessment Scale: Default Assessment Scale
+Development: Development
+Display Settings: Display Settings
+E-Mail: E-Mail
+EMail: EMail
+Enable Gibbon-wide integration with the Google APIs?: Enable Gibbon-wide integration with the Google APIs?
+Enable Payments: Enable Payments
+Enable SMTP Mail: Enable SMTP Mail
+First Day Of The Week: First Day Of The Week
+GMail Account: GMail Account
+GMail Password: GMail Password
+GMail: GMail
+General email address for the school: General email address for the school
+Gmail uses the full email address for the account name.: Gmail uses the full email address for the account name.
+Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.: Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.
+Google Developers Developer Key: Google Developers Developer Key
+Google Integration: Google Integration
+Google OAuth Download File: Google OAuth Download File
+Google: Google
+Human Resources Administrator: Human Resources Administrator
+If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}.: If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}.
+Index Page Text: Index Page Text
+Install Type: Install Type
+Javascript code to integrate statistics, such as Google Analytics: Javascript code to integrate statistics, such as Google Analytics
+Kookaburra can use a number of different gateways to send out SMS messages. These are paid services, not affiliated with Kookaburra, and you must create your own account with them before being able to send out SMSs using the Messenger module.: Kookaburra can use a number of different gateways to send out SMS messages. These are paid services, not affiliated with Kookaburra, and you must create your own account with them before being able to send out SMSs using the Messenger module.
+Link To Email: Link To Email
+Link To Web: Link To Web
+Localisation: Localisation
+Logo: Logo
+Minimum acceptable password length.: Minimum acceptable password length.
+Miscellaneous: Miscellaneous
+Monday: Monday
+Must be numeric. Number of records shown per page.: Must be numeric. Number of records shown per page.
+No E-Mail Settings: No E-Mail Settings
+No EMail: No EMail
+No SMS Settings: No SMS Settings
+No SMTP EMail: No SMTP EMail
+No: No
+None: None
+On which day should the week begin?: On which day should the week begin?
+Organisation Email: Organisation Email
+Organisation Initials: Organisation Initials
+Organisation Name: Organisation Name
+Organisation Settings: Organisation Settings
+Organisation: Organisation
+Pagination Count: Pagination Count
+Password - Alpha Requirement: Password - Alpha Requirement
+Password - Minimum Length: Password - Minimum Length
+Password - Non-Alphanumeric Requirement: Password - Non-Alphanumeric Requirement
+Password - Numeric Requirement: Password - Numeric Requirement
+Password Policy: Password Policy
+Password to use for SMTP authentication. Leave blank for no authentication.: Password to use for SMTP authentication. Leave blank for no authentication.
+PayPal API Password: PayPal API Password
+PayPal API Signature: PayPal API Signature
+PayPal API Username: PayPal API Username
+PayPal Payment Gateway: PayPal Payment Gateway
+PayPal: PayPal
+Please Select...: Please Select...
+Production: Production
+Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}: Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}
+Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}: Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}
+Relative path to background image. Overrides theme background.: Relative path to background image. Overrides theme background.
+Relative path to site logo (400 x 100px): Relative path to site logo (400 x 100px)
+Require at least one non-alphanumeric character (e.g. punctuation mark or space)?: Require at least one non-alphanumeric character (e.g. punctuation mark or space)?
+Require at least one numeric character?: Require at least one numeric character?
+Require both upper and lower case alpha characters?: Require both upper and lower case alpha characters?
+SMS Domain: SMS Domain
+SMS Gateway: SMS Gateway
+SMS Password: SMS Password
+SMS Sender ID: SMS Sender ID
+SMS Settings: SMS Settings
+SMS URL Credit: SMS URL Credit
+SMS URL: SMS URL
+SMS Username: SMS Username
+SMS gateway URL for checking credit.: SMS gateway URL for checking credit.
+SMS gateway URL for send requests.: SMS gateway URL for send requests.
+SMS gateway password.: SMS gateway password.
+SMS gateway password: SMS gateway password
+SMS gateway username.: SMS gateway username.
+SMS gateway username: SMS gateway username
+SMS: SMS
+SMTP Encryption: SMTP Encryption
+SMTP Host: SMTP Host
+SMTP Password: SMTP Password
+SMTP Port: SMTP Port
+SMTP Username: SMTP Username
+SMTP: SMTP
+School Google Calendar ID: School Google Calendar ID
+Security Settings: Security Settings
+Security: Security
+Session Duration: Session Duration
+Set the SMTP port number - likely to be 25, 465 or 587.: Set the SMTP port number - likely to be 25, 465 or 587.
+Set the hostname of the mail server.: Set the hostname of the mail server.
+Should payments be enabled across the system?: Should payments be enabled across the system?
+Submit: Submit
+Sunday: Sunday
+System Administrator: System Administrator
+System Name: System Name
+System Settings: System Settings
+'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.': 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
+System: System
+Testing: Testing
+Text displayed in system's welcome page.: Text displayed in system's welcome page.
+The address at which the whole system resides.: The address at which the whole system resides.
+The country the school is located in: The country the school is located in
+The link that points to the school/'s email system: The link that points to the school/'s email system
+The link that points to the school/'s website: The link that points to the school/'s website
+The local FS path to the system: The local FS path to the system
+The purpose of this installation of Kookaburra: The purpose of this installation of Kookaburra
+The sender name or phone number. Depends on the gateway used.: The sender name or phone number. Depends on the gateway used.
+The staff member who receives notifications for admissions events.: The staff member who receives notifications for admissions events.
+The staff member who receives notifications for data events.: The staff member who receives notifications for data events.
+The staff member who receives notifications for staffing events.: The staff member who receives notifications for staffing events.
+The staff member who receives notifications for system events.: The staff member who receives notifications for system events.
+The timezone where the school is located: The timezone where the school is located
+Third Party Settings: Third Party Settings
+This is the scale used as a default where assessment scales need to be selected.: This is the scale used as a default where assessment scales need to be selected.
+Time, in seconds, before system logs a user out. Should be less than PHP's session.gc_maxlifetime option.: Time, in seconds, before system logs a user out. Should be less than PHP's session.gc_maxlifetime option.
+Timezone: Timezone
+Username to use for SMTP authentication. Leave blank for no authentication.: Username to use for SMTP authentication. Leave blank for no authentication.
+'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}': 'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}'
+Your requested did not included a valid Google Secret File. All other Google changes where saved.: Your requested did not included a valid Google Secret File. All other Google changes where saved.
+ssl: ssl
+tls: TLS

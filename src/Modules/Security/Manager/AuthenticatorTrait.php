@@ -24,10 +24,13 @@ use App\Twig\FastFinder;
 use App\Util\ErrorHelper;
 use App\Modules\Security\Entity\Role;
 use App\Modules\People\Entity\Person;
+use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Trait AuthenticatorTrait
@@ -140,4 +143,21 @@ trait AuthenticatorTrait
 
         return $userData;
     }
+
+    /**
+     * authenticationFailure
+     * @param string $message
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function authenticationFailure(string $message, Request $request)
+    {
+        if ($request->hasSession()) {
+            $request->getSession()->clear();
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, new AuthenticationException(TranslationHelper::translate($message, [],'Security')));
+            $request->getSession()->getBag('flashes')->add('warning', [$message, [], 'Security']);
+        }
+        return new RedirectResponse($this->getLoginUrl());
+    }
+
 }

@@ -13,13 +13,13 @@
 
 namespace App\Modules\Security\Manager;
 
-use App\Exception\MissingClassException;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Entity\Role;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -44,16 +44,15 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     {
         if ($this->isUser($user))
         {
+            $this->person = $user;
             $this->setId($user->getId());
             $this->setUserPassword($user);
             $this->setUsername($user->getUsername());
-            $this->setSystemAdmin($user->isSystemAdmin());
             $this->setAllRoles($user->getAllRoles());
             $this->setPrimaryRole($user->getPrimaryRole());
             $this->setEmail($user->getEmail());
             $this->setGoogleAPIRefreshToken($user->getGoogleAPIRefreshToken());
             $this->setLocale($user->getI18nPersonal());
-            $this->person = $user;
         }
     }
 
@@ -312,23 +311,25 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     /**
      * @var bool
      */
-    private $systemAdmin = false;
+    private $systemAdmin;
 
     /**
+     * isSystemAdmin
      * @return bool
      */
     public function isSystemAdmin(): bool
     {
+        if ($this->systemAdmin === null)
+            $this->setSystemAdmin();
         return $this->systemAdmin;
     }
 
     /**
-     * @param bool $systemAdmin
-     * @return SecurityUser
+     * setSystemAdmin
      */
-    public function setSystemAdmin(bool $systemAdmin): SecurityUser
+    public function setSystemAdmin(): SecurityUser
     {
-        $this->systemAdmin = $systemAdmin;
+        $this->systemAdmin = $this->getPerson() ? $this->getPerson()->isSystemAdmin() : null;
         return $this;
     }
 

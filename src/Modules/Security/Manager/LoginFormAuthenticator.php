@@ -105,7 +105,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             $authenticate['_password'] =   $request->request->get('password');
             $authenticate['academicYear'] = $request->request->get('academicYear');
             $authenticate['i18n'] = $request->request->get('i18n');
-            $authenticate['_token'] = 'legacy';
+            $authenticate['_token'] = $request->request->get('token');
         }
 
         $credentials = [
@@ -133,9 +133,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if ('legacy' !== $credentials['csrf_token'] && !$this->csrfTokenManager->isTokenValid($token)) {
+
+        if (!$this->csrfTokenManager->isTokenValid($token))
             throw new InvalidCsrfTokenException();
-        }
 
         $provider = ProviderFactory::create(Person::class);
         $user = $provider->loadUserByUsername($credentials['email']);
@@ -204,22 +204,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->router->generate('login');
-    }
-
-    /**
-     * authenticationFailure
-     * @param string $message
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function authenticationFailure(string $message, Request $request)
-    {
-        if ($request->hasSession()) {
-            $request->getSession()->clear();
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, new AuthenticationException(TranslationHelper::translate($message, [],'Security')));
-            $request->getSession()->getBag('flashes')->add('warning', [$message, [], 'Security']);
-        }
-        return new RedirectResponse($this->getLoginUrl());
     }
 
     /**

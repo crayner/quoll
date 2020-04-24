@@ -179,7 +179,6 @@ class GoogleAuthenticator implements AuthenticatorInterface
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
 		$this->logger->notice("Google Authentication Failure: ".  $exception->getMessage());
-        LogProvider::setLog($request->getSession()->get('gibbonAcademicYearIDCurrent'), null, null, 'Google Login - Failed', ['username' => $this->google_user, 'message' => $exception->getMessage()], $request->server->get('REMOTE_ADDR'));
 
         $this->authenticationFailure($request->query->all());
 

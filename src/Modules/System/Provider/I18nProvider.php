@@ -46,7 +46,6 @@ class I18nProvider implements EntityProviderInterface
      * @param SessionInterface $session
      * @param array $criteria
      * @param bool $defaultLanguage
-     * @todo Legacy Removal
      */
     public function setLanguageSession(SessionInterface $session, array $criteria = ['systemDefault' => 'Y'], $defaultLanguage = true)
     {
@@ -57,26 +56,6 @@ class I18nProvider implements EntityProviderInterface
         $result->setDefaultLanguage($defaultLanguage);
 
         $session->set('i18n', $result);
-
-        // Legacy stuff that need to be interpreted from entity.
-        /*
-        $data = [];
-        $data['gibboni18nID'] = $result->getId();
-        $data['id'] = $result->getId();
-        $data['code'] = $result->getCode();
-        $data['name'] = $result->getName();
-        $data['dateFormat'] = $result->getDateFormat();
-        $data['dateFormatRegEx'] = $result->getDateFormatRegEx();
-        $data['dateFormatPHP'] = $result->getDateFormatPHP();
-        $data['rtl'] = $result->getRtl();
-
-        if ($defaultLanguage) {
-            $data['default']['code'] = $result->getCode();
-            $data['default']['name'] = $result->getName();
-        }
-        
-        $session->set('i18n', $data);
-        */
     }
 
     /**

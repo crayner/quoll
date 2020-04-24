@@ -31,7 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class SMSSettingsType
- * @package App\Form\Modules\SystemAdmin
+ * @package App\Modules\System\Form
  */
 class SMSSettingsType extends AbstractType
 {

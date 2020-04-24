@@ -106,7 +106,7 @@ class SettingsType extends AbstractType
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
             $data =  $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue();
 
-            if ($setting['entry_type'] === 'Kookaburra\SystemAdmin\Form\SettingCollectionType' && empty($setting['setting']->getValue()))
+            if ($setting['entry_type'] === 'App\Modules\System\Form\SettingCollectionType' && empty($setting['setting']->getValue()))
                 $data = [];
             if ($setting['entry_type'] === 'App\Form\Type\SimpleArrayType') {
                 if (empty($setting['setting']->getValue()))

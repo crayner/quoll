@@ -25,6 +25,7 @@ use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -41,6 +42,11 @@ class Login implements SidebarContentInterface
 
     private $position = 'top';
 
+    /**
+     * @var CsrfToken
+     */
+    private $token;
+
     public function render(array $options): string
     {
         return '';
@@ -53,6 +59,7 @@ class Login implements SidebarContentInterface
     public function toArray(): array
     {
         $lang = ProviderFactory::create(I18n::class)->findOneBy(['systemDefault' => 'Y']);
+
         return [
             'googleOAuth' => $this->getGoogleOAuth(),
             'login' => [
@@ -61,6 +68,7 @@ class Login implements SidebarContentInterface
                 'academicYear' => AcademicYearHelper::getCurrentAcademicYear()->getId(),
                 'languages' => ProviderFactory::create(I18n::class)->getSelectedLanguages(),
                 'language' => $lang ? $lang->getId() : 0,
+                'token' => $this->getToken()->getValue(),
             ],
             'translations' => $this->getTranslations(),
         ];
@@ -91,5 +99,25 @@ class Login implements SidebarContentInterface
             'Language' => TranslationHelper::translate('Language', [], 'Security'),
             'Academic Year' => TranslationHelper::translate('Academic Year', [], 'School'),
         ];
+    }
+
+    /**
+     * @return CsrfToken
+     */
+    public function getToken(): CsrfToken
+    {
+        return $this->token;
+    }
+
+    /**
+     * Token.
+     *
+     * @param CsrfToken $token
+     * @return Login
+     */
+    public function setToken(CsrfToken $token): Login
+    {
+        $this->token = $token;
+        return $this;
     }
 }

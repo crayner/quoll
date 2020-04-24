@@ -61,7 +61,7 @@ There are no records to display.: There are no records to display.
 Yes/No: Yes/No
 single: single
 Confirm Password: Confirm Password
-Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.: Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.
+'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.'
 Dr: Dr
 Email: E-Mail
 Family name as shown in ID documents.: Family name as shown in ID documents.
@@ -77,3 +77,12 @@ Surname: Surname
 Title: Title
 User Account: User Account
 Username: Username
+Display Settings: Display Settings
+Manage People: Manage People
+Module Menu: Module Menu
+No: No
+People Management: People Management
+Personal Preferences: Personal Preferences
+Settings: Settings
+Third Party Settings: Third Party Settings
+Yes: Yes
