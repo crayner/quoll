@@ -30,12 +30,13 @@ class ReactFileValidator extends FileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ReactFile)
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\ReactFile');
-
+        dump($value);
         if (null === $value || '' === $value) {
             return;
         }
+
+        if (!$constraint instanceof ReactFile)
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\ReactFile');
 
         $value = realpath($value) ?: realpath(__DIR__ . '/../../public' . $value) ?: '';
         parent::validate($value, $constraint);

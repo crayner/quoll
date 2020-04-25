@@ -27,11 +27,12 @@ class ReactImageValidator extends ImageValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ReactImage)
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\ReactImage');
-
+        dump($value);
         if (null === $value || '' === $value)
             return;
+
+        if (!$constraint instanceof ReactImage)
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\ReactImage');
 
         $value = realpath($value) ?: realpath(__DIR__ . '/../../public' . $value) ?: '';
         parent::validate($value, $constraint);

@@ -8,6 +8,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Class FilePathType
+ * @package App\Form\Type
+ * @deprecated 25th Apr 2020.  Please use App\Form\ReactFileType.
+ */
 class FilePathType extends AbstractType
 {
 	/**
@@ -23,6 +28,8 @@ class FilePathType extends AbstractType
 	public function __construct(FileSubscriber $fileSubscriber)
 	{
 		$this->fileSubscriber = $fileSubscriber;
+
+		trigger_error('This class is deprecated.  Please use App\Form\ReactFileType.', E_USER_DEPRECATED);
 	}
 
 	/**

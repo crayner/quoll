@@ -182,3 +182,13 @@ count files checked: count files checked
 Extend & Update: Extend & Update
 Settings: Settings
 Notification Settings: Notification Settings
+A comma separated list of module categories in display order.: A comma separated list of module categories in display order.
+Active: Active
+'Active: No': 'Active: No'
+'Active: Yes': 'Active: Yes'
+Listening Count: Listening Count
+Main Menu Category Order: Main Menu Category Order
+Module: Module
+Name: Name
+Notification Events: Notification Events
+'The settings used here are cached and changes will not be reflected in the display configuration immediately.': 'The settings used here are cached and changes will not be reflected in the display configuration immediately.'

@@ -20,6 +20,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Controller\AbstractPageController;
 use App\Modules\System\Entity\Setting;
+use App\Modules\System\Form\DisplaySettingsType;
 use App\Modules\System\Form\LocalisationSettingsType;
 use App\Modules\System\Form\MiscellaneousSettingsType;
 use App\Modules\System\Form\OrganisationSettingsType;
@@ -185,4 +186,39 @@ class SettingController extends AbstractPageController
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 
+    /**
+     * systemSettings
+     * @param ContainerManager $manager
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/display/settings/", name="display_settings")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function displaySettings(ContainerManager $manager)
+    {
+        $request = $this->getPageManager()->getRequest();
+
+        $settingProvider = ProviderFactory::create(Setting::class);
+
+        // System Settings
+        $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('display_settings')]);
+
+        if ($request->getContent() !== '') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
+            } catch (\Exception $e) {
+                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data, 200);
+        }
+
+        $manager->singlePanel($form->createView());
+
+        return $this->getPageManager()->createBreadcrumbs('Display Settings')
+            ->render(['containers' => $manager->getBuiltContainers()]);
+    }
 }

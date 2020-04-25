@@ -120,7 +120,7 @@ class NotificationListenerType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => NotificationListener::class,
-                'translation_domain' => 'SystemAdmin',
+                'translation_domain' => 'System',
             ]
         );
     }
