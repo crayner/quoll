@@ -40,7 +40,7 @@ services:
 
     App\Logger\UserDetailProcessor:
         tags:
-            - { name: monolog.processor }
+            - { name: 'monolog.processor' }
 
     App\Translation\Logger:
         arguments:
@@ -53,10 +53,11 @@ services:
             $caching: '%caching%'
 
     App\Manager\RouterLoader:
-        tags: [ routing.loader ]
+        tags: [ 'routing.loader' ]
 
     App\Listeners\ParamConverterListener:
         arguments:
             $logger: '@monolog.logger.request'
 
-
+    App\Modules\Security\Manager\RoleHierarchy:
+        decorates: 'security.role_hierarchy'

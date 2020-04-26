@@ -28,17 +28,19 @@ parameters:
             - ROLE_STAFF
         ROLE_LIBRARIAN:
             - ROLE_STAFF
+        ROLE_FINANCE:
+            - ROLE_STAFF
         ROLE_HEAD_TEACHER:
             - ROLE_TEACHER
         ROLE_PRINCIPAL:
             - ROLE_HEAD_TEACHER
             - ROLE_PAST_YEARS
-        ROLE_ADMIN:
+        ROLE_SUPPORT:
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_STAFF
         ROLE_REGISTRAR:
             - ROLE_PRINCIPAL
-            - ROLE_ADMIN
+            - ROLE_SUPPORT
             - ROLE_FUTURE_YEARS
             - ROLE_PAST_YEARS
         ROLE_SYSTEM_ADMIN:

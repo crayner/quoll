@@ -16,8 +16,8 @@
 namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
+use App\Form\Extension\ChoiceTranslations;
 use App\Manager\EntityInterface;
-use App\Util\GlobalHelper;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
@@ -128,11 +128,13 @@ class ReactFormType extends AbstractType
 
     /**
      * getTranslationDomain
-     * @param string|null $domain
+     * @param string|boolean|null $domain
      * @return string|null
      */
-    public function getTranslationDomain(?string $domain = null): ?string
+    public function getTranslationDomain($domain = null): ?string
     {
+        if ($domain === false)
+            return null;
         return $domain !== null && $domain !== $this->translationDomain ? $domain : $this->translationDomain;
     }
 
@@ -157,6 +159,10 @@ class ReactFormType extends AbstractType
       */
      private function translate(string $id, array $params = [], ?string $domain = 'messages'): string
      {
+         if (is_null($domain))
+         {
+             return str_replace(array_keys($params), array_values($params), $id);
+         }
          return $this->translator->trans($id, $params, $domain);
      }
 
@@ -248,11 +254,7 @@ class ReactFormType extends AbstractType
         $vars['row_id'] = $view->vars['row_id'];
         $vars['wrapper_class'] = $view->vars['wrapper_class'];
         $vars['errors'] = isset($view->vars['errors']) ? $this->renderErrors($view->vars['errors']) : [];
-        if (isset($view->vars['visibleByClass'])) {
-            $vars['visibleByClass'] = $view->vars['visibleByClass'];
-            $vars['visibleWhen'] = $view->vars['visibleWhen'];
-            $vars['values'] = $view->vars['values'];
-        }
+
         if (in_array($vars['type'], ['collection','unknown'])) {
             $vars['value'] = null;
         }
@@ -313,19 +315,24 @@ class ReactFormType extends AbstractType
         if (isset($view->vars['placeholder']))
             $vars['placeholder'] = $view->vars['placeholder'] ? $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain'])) : false;
 
-        if (isset($view->vars['choices'])) {
+        if (key_exists('choices', $view->vars)) {
             if (false !== $view->vars['choice_translation_domain']) {
                 foreach ($view->vars['choices'] as $q => $choice) {
-                    $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                    if (!key_exists('translated', $choice->attr)) {
+                        $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                        $choice->attr['translated'] = true;
+                    }
                     if (isset($choice->choices)) {
-                        foreach ($choice->choices as $w) {
-                            $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                        foreach ($choice->choices as $e => $w) {
+                            if (!key_exists('translated', $w->attr)) {
+                                $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                                $w->attr['translated'] = true;
+                            }
                         }
                     }
                 }
             }
 
-            $vars['choice_translation_domain'] = false;
             // json_encode will sort if the index is not in order, so some work to do.
             $result = [];
             foreach($view->vars['choices'] as $q=>$choice) {

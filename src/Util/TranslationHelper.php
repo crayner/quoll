@@ -73,7 +73,7 @@ class TranslationHelper
      */
     public static function addTranslation(?string $id, array $options = [], ?string $domain = null)
     {
-        if (null !== $id) {
+        if (!in_array($id, [null,''])) {
             self::getTranslations();
             self::$translations[$id] = self::translate($id, $options, $domain ?: self::getDomain());
         }
@@ -82,12 +82,13 @@ class TranslationHelper
     /**
      * addTranslation
      * @param string|null $id
+     * @param string $value
      * @param array $options
      * @param string|null $domain
      */
     public static function setTranslation(string $id, string $value, array $options = [], ?string $domain = null)
     {
-        if (null !== $id && null !== $value) {
+        if (!in_array($value , [null, ''])) {
             self::getTranslations();
             self::$translations[$id] = self::translate($value, $options, $domain ?: self::getDomain());
         }

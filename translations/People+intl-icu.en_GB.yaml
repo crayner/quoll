@@ -17,3 +17,170 @@ Settings: Settings
 Submit: Submit
 System Default: System Default
 Manage People: Manage People
+Address 1 Country: Address 1 Country
+Address 1 Locality: Address 1 Locality
+Address 1: Address 1
+Address 2 Country: Address 2 Country
+Address 2 Locality: Address 2 Locality
+Address 2: Address 2
+All Roles: All Roles
+Alternate Email: Alternate Email
+Background Information: {name}: Background Information: {name}
+Background: Background
+Basic Information: Basic Information
+Basic: Basic
+Birth Certificate Scan: Birth Certificate Scan
+Can Login?: Can Login?
+Chinese or other character-based name.: Chinese or other character-based name.
+Citizenship 1 Passport Number: Citizenship 1 Passport Number
+Citizenship 1 Passport Scan: Citizenship 1 Passport Scan
+Citizenship 1: Citizenship 1
+Citizenship 2 Passport Number: Citizenship 2 Passport Number
+Citizenship 2: Citizenship 2
+City, Suburb or Town, State, Postcode (ZIP): City, Suburb or Town, State, Postcode (ZIP)
+Contact 1 Name: Contact 1 Name
+Contact 1 Number 1: Contact 1 Number 1
+Contact 1 Number 2: Contact 1 Number 2
+Contact 1 Relationship: Contact 1 Relationship
+Contact 2 Name: Contact 2 Name
+Contact 2 Number 1: Contact 2 Number 1
+Contact 2 Number 2: Contact 2 Number 2
+Contact 2 Relationship: Contact 2 Relationship
+Contact Information: {name}: Contact Information: {name}
+Contact: Contact
+Controls what a user can do and see. Use Control, Command and/or Shift to select multiple.: Controls what a user can do and see. Use Control, Command and/or Shift to select multiple.
+Controls what a user can do and see.: Controls what a user can do and see.
+Country of Birth: Country of Birth
+Date of Birth: Date of Birth
+Departure Reason: Departure Reason
+    Displayed at 240px by 320px.
+Edit Person: Edit Person
+Email: Email
+Emergency Contacts: {name}: Emergency Contacts: {name}
+Emergency: Emergency
+End Date: End Date
+Enter Personal Address: Enter Personal Address
+Ethnicity selection can be altered at {anchor}People Settings{endAnchor}: Ethnicity selection can be altered at {anchor}People Settings{endAnchor}
+Ethnicity: Ethnicity
+Family name as shown in ID documents.: Family name as shown in ID documents.
+First Language: First Language
+Force Password Reset: Force Password Reset
+Full name as shown in ID documents.: Full name as shown in ID documents.
+Gender: Gender
+Given Names: Given Names
+Given names as shown in ID documents.: Given names as shown in ID documents.
+House: House
+If relevant: If relevant
+Last School: Last School
+Less than 2M,  Accepts PDF and image files only.: Less than 2M,  Accepts PDF and image files only.
+Locker Number: Locker Number
+Miscellaneous: Miscellaneous
+'Miscellaneous: {name}': 'Miscellaneous: {name}'
+Most common name, alias, nickname, etc.: Most common name, alias, nickname, etc.
+Name In Characters: Name In Characters
+Next School: Next School
+Official Name: Official Name
+People Management: People Management
+Personal Photo: Personal Photo
+Please Select...: Please Select...
+Preferred Name: Preferred Name
+Primary Role: Primary Role
+Religion selection can be altered at {anchor}People Settings{endAnchor}: Religion selection can be altered at {anchor}People Settings{endAnchor}
+Religion: Religion
+School Information: {name}: School Information: {name}
+School: School
+Second Language: Second Language
+Start Date: Start Date
+Status: Status
+Surname: Surname
+System Access: {name}: System Access: {name}
+System login name.: System login name.
+System: System
+The first day at school for this person.: The first day at school for this person.
+The last day at school for this person.: The last day at school for this person.
+These details are used when immediate family members (e.g. parent, spouse) cannot be reached first. Please try to avoid listing immediate family members.: These details are used when immediate family members (e.g. parent, spouse) cannot be reached first. Please try to avoid listing immediate family members.
+Third Language: Third Language
+This determines visibility within the system.: This determines visibility within the system.
+Title: Title
+Transport Notes: Transport Notes
+Transport: Transport
+Unit, Building, Street: Unit, Building, Street
+User will be prompted on next login.: User will be prompted on next login.
+Username: Username
+Vehicle Registration: Vehicle Registration
+Website: Website
+family:
+    relationship:
+        adoptive parent: Adoptive Parent
+        aunt: Aunt
+        father: Father
+        grandfather: Grandfather
+        grandmother: Grandmother
+        guardian: Guardian
+        mother: Mother
+        nanny/helper: Nanny / Helper
+        other: Other
+        step-father: Step Father
+        step-mother: Step Mother
+        uncle: Uncle
+person:
+    address:
+        warning: '<div class="warning">Address information for an individual only needs to be set under the following conditions:<ol><li>If the person is not in a family.</li><li>If the person`s family does not have a home address set.</li><li>If the person needs an address in addition to their family`s home address.</li></ol></div>'
+    gender:
+        f: Female
+        m: Male
+        other: Other
+        unspecified: Unspecified
+    status:
+        expected: Expected
+        full: Full
+        left: Left
+        pending approval: Pending approval
+    title:
+        dr: Dr
+        miss: Miss
+        mr: Mr
+        mrs: Mrs
+        ms: Ms
+    image:
+        help: "Displayed at 240px by 320px.<br/>>Accepts images up to 360px by 480px.<br/>Accepts aspect ratio between 1:1.2 and 1:1.4."
+    phonetypelist:
+        '': ''
+        fax: Fax
+        home: Home
+        mobile: Mobile
+        other: Other
+        pager: Pager
+        work: Work
+'{name} ID Card Number': '{name} ID Card Number'
+'{name} ID Card Scan': '{name} ID Card Scan'
+'{name} Residency/Visa Type': '{name} Residency/Visa Type'
+'{name} Visa Expiry Date': '{name} Visa Expiry Date'
+'Background Information: {name}': 'Background Information: {name}'
+'Contact Information: {name}': 'Contact Information: {name}'
+'Displayed at 240px by 320px.': 'Displayed at 240px by 320px.'
+'Emergency Contacts: {name}': 'Emergency Contacts: {name}'
+'Preferred, surname, username, role, student ID, email, phone number, vehicle registration': 'Preferred, surname, username, role, student ID, email, phone number, vehicle registration'
+Phone 1: Phone 1
+Phone 2: Phone 2
+Phone 3: Phone 3
+Phone 4: Phone 4
+Please select...: Please select...
+'School Information: {name}': 'School Information: {name}'
+'System Access: {name}': 'System Access: {name}'
+Type, country code, number.: Type, country code, number.
+'Role: Parent': 'Role: Parent'
+Role: Role
+'Role: Staff': 'Role: Staff'
+'Role: Student': 'Role: Student'
+'Status: Expected': 'Status: Expected'
+'Status: Full': 'Status: Full'
+'Status: Left': 'Status: Left'
+After End Date: After End Date
+Before Start Date: Before Start Date
+Date: Date
+Delete Person: Delete Person
+Family: Family
+Full: Full
+Name: Name
+Photo: Photo

@@ -28,6 +28,7 @@ return:
         0: 'Your request was completed successfully.'
 Action: Action
 Actions: Actions
+Submit: Submit
 Class: Class
 Classes: Classes
 Fast Finder: Fast Finder
@@ -100,3 +101,8 @@ String Replacement: String Replacement
 System Check: System Check
 System Settings: System Settings
 'This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!': 'This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!'
+First Page: First Page
+Last Page: Last Page
+Next Page: Next Page
+Previous Page: Previous Page
+'Records {start}-{end} of {total}': 'Records {start}-{end} of {total}'
