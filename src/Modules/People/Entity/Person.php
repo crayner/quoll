@@ -679,21 +679,7 @@ class Person implements EntityInterface
      */
     public function setImage240(?string $image_240): Person
     {
-        $this->setExistingImage();
-        $image_240 = ImageHelper::getRelativePath($image_240);
-        $this->image_240 = mb_substr($image_240, 0, 75);
-        return $this;
-    }
-
-    /**
-     * removeImage240
-     * @return Person
-     * @ORM\PostRemove()
-     */
-    public function removeImage240(): Person
-    {
-        if (ImageHelper::isFileInPublic($this->getImage240(false)))
-            ImageHelper::deleteImage($this->getImage240(false));
+        $this->image_240  = ImageHelper::getRelativePath($image_240);
         return $this;
     }
 
@@ -1430,18 +1416,6 @@ class Person implements EntityInterface
     }
 
     /**
-     * removeBirthCertificateScan
-     * @return Person
-     * @ORM\PostRemove()
-     */
-    public function removeBirthCertificateScan(): Person
-    {
-        if (ImageHelper::isFileInPublic($this->getBirthCertificateScan()))
-            ImageHelper::deleteImage($this->getBirthCertificateScan());
-        return $this;
-    }
-
-    /**
      * @var string|null
      * @ORM\Column(length=191)
      */
@@ -1590,18 +1564,6 @@ class Person implements EntityInterface
     }
 
     /**
-     * removeCitizenship1PassportScan
-     * @return Person
-     * @ORM\PostRemove()
-     */
-    public function removeCitizenship1PassportScan(): Person
-    {
-        if (ImageHelper::isFileInPublic($this->getCitizenship1PassportScan()))
-            ImageHelper::deleteImage($this->getCitizenship1PassportScan());
-        return $this;
-    }
-
-    /**
      * @var string|null
      * @ORM\Column(length=191)
      */
@@ -1729,19 +1691,7 @@ class Person implements EntityInterface
         $this->nationalIDCardScan = mb_substr($nationalIDCardScan, 0, 191);
         return $this;
     }
-    
-    /**
-     * removeNationalIDCardScan
-     * @return Person
-     * @ORM\PostRemove()
-     */
-    public function removeNationalIDCardScan(): Person
-    {
-        if (ImageHelper::isFileInPublic($this->getNationalIDCardScan()))
-            ImageHelper::deleteImage($this->getNationalIDCardScan());
-        return $this;
-    }
-    
+
     /**
      * @var string|null
      * @ORM\Column(length=191, name="residencyStatus")
@@ -3266,44 +3216,6 @@ class Person implements EntityInterface
         if ($this->getStudentEnrolments()->count() > 0)
             return 'Student';
         return 'Other';
-    }
-
-    /**
-     * @var string|null
-     */
-    private $existingImage;
-
-    /**
-     * @return string|null
-     */
-    public function getExistingImage(): ?string
-    {
-        return $this->existingImage;
-    }
-
-    /**
-     * ExistingImage.
-     *
-     * @return Person
-     */
-    public function setExistingImage(): Person
-    {
-        $this->existingImage = $this->getImage240(false);
-        return $this;
-    }
-
-    /**
-     * clearExistingImage
-     * @return Person
-     * @ORM\PostUpdate())
-     */
-    public function clearExistingImage(): Person
-    {
-        if (empty($this->getExistingImage()))
-            return $this;
-
-        ImageHelper::deleteImage($this->getExistingImage());
-        return $this;
     }
 
     /**

@@ -44,3 +44,8 @@ ROLE_STAFF: Staff
 ROLE_STUDENT: Student
 ROLE_TEACHER: Teacher
 ROLE_USER: User
+Force Reset Password?: Force Reset Password?
+Person: Person
+Reset the password for this person.: Reset the password for this person.
+The person will need to change their password at the next attempt to sign in.: The person will need to change their password at the next attempt to sign in.
+Your account has been successfully updated. You can now continue to use the system as per normal.: Your account has been successfully updated. You can now continue to use the system as per normal.

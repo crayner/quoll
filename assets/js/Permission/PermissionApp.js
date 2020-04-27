@@ -178,7 +178,7 @@ export default class PermissionApp extends Component {
 
     togglePermission(action,role)
     {
-        let url = '/user/admin/permission/' + action + '/' + role +'/toggle/'
+        let url = '/permission/' + action + '/' + role +'/toggle/'
 
         fetchJson(
             url,

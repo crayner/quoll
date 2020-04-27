@@ -69,7 +69,7 @@ export default class PhotoLoaderApp extends Component {
     }
 
     validateImage({meta} = filexhrmeta) {
-        if (meta.height > 480 || meta.height < 240 || meta.width > 360)
+        if (meta.height > 960 || meta.height < 240 || meta.width > 720)
             return true
         const ratio = meta.width / meta.height
         if (ratio < 0.7 || ratio > 0.84)
@@ -99,7 +99,7 @@ export default class PhotoLoaderApp extends Component {
     }
 
     removePhoto(person){
-        let url = this.absolute_url + '/user/admin/personal/photo/{person}/remove/'
+        let url = this.absolute_url + '/personal/photo/{person}/remove/'
         url = url.replace('{person}', person.id)
         fetchJson(url,
             {},
@@ -135,7 +135,7 @@ export default class PhotoLoaderApp extends Component {
                         <li>{this.messages['File Name - The system modifies the filename when linked to the correct person.']}</li>
                         <li>{this.messages['File Type * - Images must be formatted as JPG or PNG.']}</li>
                         <li>{this.messages['Image Size * - Displayed at 240px by 320px.']}</li>
-                        <li>{this.messages['Size Range * - Accepts images up to 360px by 480px.']}</li>
+                        <li>{this.messages['Size Range * - Accepts images up to 720px by 960px.']}</li>
                         <li>{this.messages['Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.']}</li>
                     </ol>
                 </div>

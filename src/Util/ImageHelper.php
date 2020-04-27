@@ -48,9 +48,9 @@ class ImageHelper
     public static function getAbsolutePath(): ?string
     {
         if (null === self::$absolutePath) {
-            self::$absolutePath = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'absolutePath');
+            self::$absolutePath = __DIR__ . '/../../public';
         }
-        return self::$absolutePath;
+        return self::$absolutePath = realpath(self::$absolutePath);
     }
 
     /**
@@ -76,9 +76,7 @@ class ImageHelper
         if ($type === 'Link' || null === $link)
             return $link;
 
-
-        $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
-        return self::getAbsoluteURL() . '/' . str_replace('\\', '/', $link);
+        return self::getAbsoluteURL() . '/' .  self::getRelativeImageURL($link);
     }
 
     /**
@@ -91,9 +89,8 @@ class ImageHelper
         if (null === $link)
             return $link;
 
-
         $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
-        return  str_replace('\\', '/', $link);
+        return str_replace('\\', '/', $link);
     }
 
     /**
@@ -159,12 +156,14 @@ class ImageHelper
      * deleteImage
      *
      * retuens false only when the file can be deleted and is available to delete and fails to delete.
-     * @param string $image
+     * @param string|null $image
      * @return bool
      * @throws IOException
      */
-    public static function deleteImage(string $image): bool
+    public static function deleteImage(?string $image): bool
     {
+        if (in_array($image, ['',null]))
+            return true;
         if (!is_file(self::getAbsoluteImagePath($image)))
             return true;
         if (strpos($image, '/static/') !== false)
@@ -187,13 +186,15 @@ class ImageHelper
      * @param string|null $image
      * @return string
      */
-    public static function getRelativePath(?string $image)
+    public static function getRelativePath(?string $image): ?string
     {
-        if (empty($image)) return '';
-        $image = str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '|', $image);
-        $abs = str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '|', self::getAbsolutePath());
+        if (empty($image))
+            return null;
 
-        return str_replace('|', DIRECTORY_SEPARATOR, str_replace($abs, '', $image));
+        if (self::isFileInPublic($image))
+            return self::getRelativeImageURL($image);
+
+        return null;
     }
 
     /**

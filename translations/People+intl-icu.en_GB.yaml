@@ -143,7 +143,7 @@ person:
         mrs: Mrs
         ms: Ms
     image:
-        help: "Displayed at 240px by 320px.<br/>>Accepts images up to 360px by 480px.<br/>Accepts aspect ratio between 1:1.2 and 1:1.4."
+        help: "Displayed at 240px by 320px.<br/>>Accepts images up to 720px by 960px.<br/>Accepts aspect ratio between 0.7:1 and 0.84:1."
     phonetypelist:
         '': ''
         fax: Fax
@@ -185,3 +185,34 @@ Full: Full
 Name: Name
 Photo: Photo
 'Use the {anchor}preferences{endAnchor} details to change your own password.': 'Use the {anchor}preferences{endAnchor} details to change your own password.'
+Add Person: Add Person
+Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.: Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.
+Drop Image Here: Drop Image Here
+Expected: Expected
+File Name - The system modifies the filename when linked to the correct person.: File Name - The system modifies the filename when linked to the correct person.
+File Type * - Images must be formatted as JPG, GIF or PNG.: File Type * - Images must be formatted as JPG, GIF or PNG.
+Image Size * - Displayed at 240px by 320px.: Image Size * - Displayed at 240px by 320px.
+Images [.jpg, .png, .jpeg, .gif] only: Images [.jpg, .png, .jpeg, .gif] only
+Import Images: Import Images
+Import People Photos: Import People Photos
+Import Personal Photos: Import Personal Photos
+Import: Import
+Notes: Notes
+Parent: Parent
+Remove Photo: Remove Photo
+Replace this image: Replace this image
+Select the person, then drag the image from your computer to set the image for this person.: Select the person, then drag the image from your computer to set the image for this person.
+Size Range * - Accepts images up to 720px by 960px.: Size Range * - Accepts images up to 720px by 960px.
+Staff: Staff
+Target Person: Target Person
+Target this person...: Target this person...
+The file is too big. Max 350k. File size given is {size}.: The file is too big. Max 350k. File size given is {size}.
+The file is too big. Max 750k. File size given is {size}.: The file is too big. Max 750k. File size given is {size}.
+The height and width maximum is 480 x 360px. The image supplied was {height} x {width}px.: The height and width maximum is 480 x 360px. The image supplied was {height} x {width}px.
+The height and width maximum is 960px x 720px. The image supplied was {height} x {width}px.: The height and width maximum is 960px x 720px. The image supplied was {height} x {width}px.
+The height and width minimum is 320 x 240px. The image supplied was {height} x {width}px.: The height and width minimum is 320 x 240px. The image supplied was {height} x {width}px.
+The height and width minimum is 320px x 240px. The image supplied was {height} x {width}px.: The height and width minimum is 320px x 240px. The image supplied was {height} x {width}px.
+The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.: The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.
+Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.: Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.
+'{name} upload failed...': '{name} upload failed...'
+

@@ -258,7 +258,12 @@ class PeopleController extends AbstractPageController
             ->setContentLoader($this->generateUrl('people_content_loader'));
 
         return $this->getPageManager()->createBreadcrumbs('Manage People')
-            ->render(['pagination' => $pagination->toArray()]);
+            ->render(
+                [
+                    'pagination' => $pagination->toArray(),
+                    'url' => $this->generateUrl('people_list'),
+                ]
+            );
     }
 
     /**

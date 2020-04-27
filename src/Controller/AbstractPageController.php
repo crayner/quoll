@@ -18,6 +18,7 @@ namespace App\Controller;
 use App\Manager\PageManager;
 use MongoDB\Driver\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AbstractPageController
@@ -63,4 +64,12 @@ abstract class AbstractPageController extends AbstractController
         $this->container->get('session')->getFlashBag()->add($type, $message);
     }
 
+    /**
+     * getRequest
+     * @return Request
+     */
+    protected function getRequest(): Request
+    {
+        return $this->getPageManager()->getRequest();
+    }
 }

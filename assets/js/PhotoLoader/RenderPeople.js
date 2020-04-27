@@ -33,7 +33,7 @@ export default function RenderPeople(props) {
     const SingleFileAutoSubmit = () => {
 
         const getUploadParams = () => {
-            let url = absolute_url + '/user/admin/personal/photo/{person}/upload/'
+            let url = absolute_url + '/personal/photo/{person}/upload/'
             url = url.replace('{person}', chosen.id)
             return {url: url}
         }
@@ -55,7 +55,7 @@ export default function RenderPeople(props) {
                 remove()
             } else if (status === 'error_validation') {
                 let message = ''
-                if (meta.height > 480 || meta.width > 360 )
+                if (meta.height > 960 || meta.width > 720 )
                     message = messages['error_height_width'].replace('{height}', meta.height).replace('{width}', meta.width)
                 if (meta.height < 320 || meta.width < 240)
                     message = messages['error_height_width_minimum'].replace('{height}', meta.height).replace('{width}', meta.width)
