@@ -344,7 +344,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getAllRoles(): ?array
     {
-        return $this->allRoles ?: [];
+        return $this->getPerson()->getAllRoles() ?: [];
     }
 
     /**

@@ -351,7 +351,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function setStoreFilterURL(?string $storeFilterURL): AbstractPaginationManager
     {
         $this->storeFilterURL = $storeFilterURL;
-        $this->readInitialFilter();
+        $this->readFilter();
         return $this;
     }
 
@@ -447,7 +447,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * readInitialFilter
      * @return array
      */
-    public function readInitialFilter(): array
+    public function readFilter(): array
     {
         $session = $this->getSession();
         $name = StringHelper::toSnakeCase(basename(get_class($this)));
@@ -464,7 +464,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @param array $filter
      * @return AbstractPaginationManager
      */
-    public function writeInitialFilter(array $filter): AbstractPaginationManager
+    public function writeFilter(array $filter): AbstractPaginationManager
     {
         $session = $this->getSession();
         $name = StringHelper::toSnakeCase(basename(get_class($this)));

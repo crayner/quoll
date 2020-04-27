@@ -376,9 +376,8 @@ class PersonRepository extends ServiceEntityRepository
     public function findBySearch(): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select(['p','fa','fc','fama','famc','s', 'r'])
+            ->select(['p','fa','fc','fama','famc','s'])
             ->leftJoin('p.adults', 'fa')
-            ->leftJoin('p.primaryRole', 'r')
             ->leftJoin('p.children', 'fc')
             ->leftJoin('fa.family', 'fama')
             ->leftJoin('fc.family', 'famc')

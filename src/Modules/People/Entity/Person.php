@@ -550,9 +550,10 @@ class Person implements EntityInterface
         if ($this->getPrimaryRole() !== null) {
             if ($this->allRoles === null)
                 $this->allRoles = [];
-            $this->allRoles[] = $this->getPrimaryRole();
+            array_unshift($this->allRoles, $this->getPrimaryRole());
         }
-        return $this->allRoles = array_unique($this->allRoles ?: []);
+        $this->allRoles = array_unique($this->allRoles ?: []);
+        return $this->allRoles;
     }
 
     /**
@@ -653,9 +654,9 @@ class Person implements EntityInterface
      *     maxRatio = 0.84,
      *     minRatio = 0.7,
      *     minWidth = 240,
-     *     maxWidth = 360,
-     *     maxHeight = 480,
-     *     minHeight = 320
+     *     minHeight = 320,
+     *     maxWidth = 720,
+     *     maxHeight = 960
      * )
      */
     private $image_240;
@@ -667,7 +668,7 @@ class Person implements EntityInterface
      */
     public function getImage240(bool $default = true): ?string
     {
-        if ((null === $this->image_240 || '' === $this->image_240) && $default)
+        if (in_array($this->image_240, ['', null]) && $default)
             return ImageHelper::getRelativePath('/build/static/DefaultPerson.png');
         return $this->image_240;
     }
@@ -678,10 +679,21 @@ class Person implements EntityInterface
      */
     public function setImage240(?string $image_240): Person
     {
-        dump($image_240);
         $this->setExistingImage();
         $image_240 = ImageHelper::getRelativePath($image_240);
         $this->image_240 = mb_substr($image_240, 0, 75);
+        return $this;
+    }
+
+    /**
+     * removeImage240
+     * @return Person
+     * @ORM\PostRemove()
+     */
+    public function removeImage240(): Person
+    {
+        if (ImageHelper::isFileInPublic($this->getImage240(false)))
+            ImageHelper::deleteImage($this->getImage240(false));
         return $this;
     }
 
@@ -1418,6 +1430,18 @@ class Person implements EntityInterface
     }
 
     /**
+     * removeBirthCertificateScan
+     * @return Person
+     * @ORM\PostRemove()
+     */
+    public function removeBirthCertificateScan(): Person
+    {
+        if (ImageHelper::isFileInPublic($this->getBirthCertificateScan()))
+            ImageHelper::deleteImage($this->getBirthCertificateScan());
+        return $this;
+    }
+
+    /**
      * @var string|null
      * @ORM\Column(length=191)
      */
@@ -1566,6 +1590,18 @@ class Person implements EntityInterface
     }
 
     /**
+     * removeCitizenship1PassportScan
+     * @return Person
+     * @ORM\PostRemove()
+     */
+    public function removeCitizenship1PassportScan(): Person
+    {
+        if (ImageHelper::isFileInPublic($this->getCitizenship1PassportScan()))
+            ImageHelper::deleteImage($this->getCitizenship1PassportScan());
+        return $this;
+    }
+
+    /**
      * @var string|null
      * @ORM\Column(length=191)
      */
@@ -1693,7 +1729,19 @@ class Person implements EntityInterface
         $this->nationalIDCardScan = mb_substr($nationalIDCardScan, 0, 191);
         return $this;
     }
-
+    
+    /**
+     * removeNationalIDCardScan
+     * @return Person
+     * @ORM\PostRemove()
+     */
+    public function removeNationalIDCardScan(): Person
+    {
+        if (ImageHelper::isFileInPublic($this->getNationalIDCardScan()))
+            ImageHelper::deleteImage($this->getNationalIDCardScan());
+        return $this;
+    }
+    
     /**
      * @var string|null
      * @ORM\Column(length=191, name="residencyStatus")
@@ -3095,8 +3143,8 @@ class Person implements EntityInterface
             'family' => $this->getFamilyName(),
             'family_id' => $this->getFamilyId(),
             'username' => $this->getUsername(),
-            '_role' => $this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : '',
-            'role' => $this->getPrimaryRole() ? $this->getPrimaryRole()->getName() : '',
+            '_role' => $this->getHumanisedRole(),
+            'role' => TranslationHelper::translate($this->getPrimaryRole(), [], 'Security'),
             'canDelete' => $this->canDelete(),
             'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTime() ? false : true,
             'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTime() ? false : true,
@@ -3105,7 +3153,7 @@ class Person implements EntityInterface
             'phone' => trim($this->getPhone1().$this->getPhone2().$this->getPhone3().$this->getPhone4()) ?: '',
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
-            'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()),
+            'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()) && $this->isCanLogin(),
         ];
     }
 
@@ -3273,7 +3321,7 @@ class Person implements EntityInterface
                     `officialName` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `nameInCharacters` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `gender` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unspecified',
-                    `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `password` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `passwordForceReset` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
                     `status` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Full',
@@ -3406,5 +3454,23 @@ class Person implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    /**
+     * getHumanisedRole
+     * @return string
+     */
+    public function getHumanisedRole(): string
+    {
+        switch ($this->getPrimaryRole()) {
+            case 'ROLE_STUDENT':
+                return 'Student';
+                break;
+            case 'ROLE_PARENT':
+                return 'Parent';
+                break;
+            default:
+                return 'Staff';
+        }
     }
 }

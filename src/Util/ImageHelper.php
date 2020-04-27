@@ -142,18 +142,23 @@ class ImageHelper
 
     /**
      * getAbsoluteImageURL
-     * @param string $type
      * @param string|null $link
      * @return string|null
      */
     public static function getAbsoluteImagePath(?string $link): ?string
     {
         $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
-        return self::getAbsolutePath() . '/' . str_replace('\\', '/', $link);
+        if (is_file($link)) {
+            $file = new File($link);
+            return $file->getRealPath();
+        }
+        return null;
     }
 
     /**
      * deleteImage
+     *
+     * retuens false only when the file can be deleted and is available to delete and fails to delete.
      * @param string $image
      * @return bool
      * @throws IOException
@@ -166,10 +171,15 @@ class ImageHelper
             return true;
         if (strpos($image, '\\static\\') !== false)
             return true;
+
         $file = new File(self::getAbsoluteImagePath($image));
-        $fs = new Filesystem();
-        $fs->remove($file->getRealPath());
-        return true;
+        try {
+            $fs = new Filesystem();
+            $fs->remove($file->getRealPath());
+            return true;
+        } catch (IOException $e) {
+            return false;
+        }
     }
 
     /**
@@ -193,7 +203,7 @@ class ImageHelper
      */
     public static function isFileInPublic(?string $file): bool
     {
-        if (empty($file))
+        if (in_array($file, ['',null]))
             return false;
 
         $file = self::getAbsoluteImagePath($file);

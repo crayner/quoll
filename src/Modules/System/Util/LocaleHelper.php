@@ -18,6 +18,7 @@ namespace App\Modules\System\Util;
 use App\Modules\System\Entity\I18n;
 use App\Provider\ProviderFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Intl\Countries;
 
 /**
  * Class LocaleHelper
@@ -45,4 +46,13 @@ class LocaleHelper
         return ProviderFactory::create(I18n::class)->isValidLocaleCode(self::$locale) ? self::$locale : 'en_GB';
     }
 
+    /**
+     * getCountryName
+     * @param string $code
+     * @return string
+     */
+    public static function getCountryName(string $code): string
+    {
+        return Countries::getName($code);
+    }
 }

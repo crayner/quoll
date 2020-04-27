@@ -20,7 +20,7 @@ return:
         9: 'The highest grouped action cannot be determined.'
         csrf: 'Invalid Cross Site Request Forgery Token.'
     warning:
-        3: 'The request failed as the record has a deletion lock.'
+        3: 'The record "{id}" is locked and will not be deleted from class "{class}".'
     error1: 'Your request failed because your inputs were invalid.'
     error2: 'Your request failed due to a database error.'
     success0: 'Your request was completed successfully.'

@@ -15,8 +15,25 @@
 
 namespace App\Modules\People\Controller;
 
+use App\Container\Container;
+use App\Container\ContainerManager;
+use App\Container\Panel;
 use App\Controller\AbstractPageController;
+use App\Modules\People\Entity\Person;
+use App\Modules\People\Form\ChangePasswordType;
+use App\Modules\People\Form\PersonType;
+use App\Modules\People\Pagination\PeoplePagination;
+use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
+use App\Provider\ProviderFactory;
+use App\Twig\Sidebar\Photo;
+use App\Twig\SidebarContent;
+use App\Util\ErrorMessageHelper;
+use App\Util\TranslationHelper;
+use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -26,10 +43,302 @@ use Symfony\Component\Routing\Annotation\Route;
 class PeopleController extends AbstractPageController
 {
     /**
-     * list
-     * @Route("/people/list/",name="people_list")
+     * manage
+     * @param PeoplePagination $pagination
+     * @return JsonResponse
+     * @Route("/people/list/", name="people_list")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function list()
-    {}
+    public function manage(PeoplePagination $pagination)
+    {
+        $pagination->setStack($this->getPageManager()->getStack())
+            ->setContent([])
+            ->setAddElementRoute($this->generateUrl('person_add'))
+            ->setStoreFilterURL($this->generateUrl('people_list_filter'))
+            ->setContentLoader($this->generateUrl('people_content_loader'));
+
+        return $this->getPageManager()->createBreadcrumbs('Manage People')
+            ->render(['pagination' => $pagination->toArray()]);
+    }
+
+    /**
+     * manageContent
+     * @param PeoplePagination $pagination
+     * @Route("/people/content/loader/", name="people_content_loader")
+     * @return JsonResponse
+     */
+    public function manageContent(PeoplePagination $pagination)
+    {
+        try {
+            $repository = ProviderFactory::getRepository(Person::class);
+            $content = $repository->findBySearch();
+            $pagination->setContent($content);
+            return new JsonResponse(['content' => $pagination->getContent(), 'pageMax' => $pagination->getPageMax(), 'status' => 'success'], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse(['class' => 'error', 'message' => $e->getMessage()], 200);
+        }
+    }
+
+    /**
+     * edit
+     * @param ContainerManager $manager
+     * @param SidebarContent $sidebar
+     * @param Person|null $person
+     * @param string $tabName
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/person/{person}/edit/{tabName}", name="person_edit")
+     * @Route("/person/add/{tabName}", name="person_add")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function edit(ContainerManager $manager, SidebarContent $sidebar, ?Person $person = null, string $tabName = 'Basic')
+    {
+        $request = $this->getPageManager()->getRequest();
+
+        if (is_null($person)) {
+            $person = new Person();
+            $person->setStatus('Expected')
+                ->setPrimaryRole('ROLE_USER')
+                ->setCanLogin('N')
+                ->setPasswordForceReset('N');
+        }
+        $photo = new Photo($person, 'getImage240', '200', 'user max200');
+        $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
+        $sidebar->addContent($photo);
+
+        $container = new Container();
+        $container->setSelectedPanel($tabName);
+        TranslationHelper::setDomain('People');
+
+        $form = $this->createForm(PersonType::class, $person,
+            [
+                'action' => $this->generateUrl('person_edit', ['person' => intval($person->getID()), 'tabName' => $tabName]),
+                'user_roles' => $this->getUser()->getAllRoles(),
+            ]
+        );
+
+        if ($request->getContent() !== '') {
+            $content = json_decode($request->getContent(), true);
+            $errors = [];
+            $status = 'success';
+            $redirect = '';
+            $form->submit($content);
+            if ($form->isValid())
+            {
+                $id = $person->getId();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($person);
+                $em->flush();
+                if ($id !== $person->getId())
+                {
+                    $status = 'redirect';
+                    $redirect = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => $tabName]);
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                } else {
+                    $data = ErrorMessageHelper::getSuccessMessage([], true);
+                    $status = $data['status'];
+                    $errors = $data['errors'];
+                }
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $status = $data['status'];
+                $errors = $data['errors'];
+            }
+
+            $panel = new Panel('Basic', 'People');
+            $container->addForm('single', $form->createView())->addPanel($panel);
+
+            $panel = new Panel('System', 'People');
+            $container->addPanel($panel);
+
+            if ($person->getId() > 0) {
+                $panel = new Panel('Contact', 'People');
+                $container->addPanel($panel);
+
+                $panel = new Panel('School', 'People');
+                $container->addPanel($panel);
+
+                $panel = new Panel('Background', 'People');
+                $container->addPanel($panel);
+
+                if (UserHelper::isParent($person)) {
+                    $panel = new Panel('Employment', 'People');
+                    $container->addPanel($panel);
+                }
+
+                if (UserHelper::isStudent($person) || UserHelper::isStaff($person)) {
+                    $panel = new Panel('Emergency', 'People');
+                    $container->addPanel($panel);
+                }
+
+                $panel = new Panel('Miscellaneous', 'People');
+                $container->addPanel($panel);
+            }
+
+            $manager->addContainer($container)->buildContainers();
+
+            return new JsonResponse(
+                [
+                    'form' => $manager->getFormFromContainer(),
+                    'errors' => $errors,
+                    'status' => $status,
+                    'redirect' => $redirect,
+                ],
+                200);
+        }
+
+        $panel = new Panel('Basic', 'People');
+        $container->addForm('single', $form->createView())->addPanel($panel);
+
+        $panel = new Panel('System', 'People');
+        $container->addPanel($panel);
+
+        if ($person->getId() > 0) {
+            $panel = new Panel('Contact', 'People');
+            $container->addPanel($panel);
+
+            $panel = new Panel('School', 'People');
+            $container->addPanel($panel);
+
+            $panel = new Panel('Background', 'People');
+            $container->addPanel($panel);
+
+            if (UserHelper::isParent($person)) {
+                $panel = new Panel('Employment', 'People');
+                $container->addPanel($panel);
+            }
+
+            if (UserHelper::isStudent($person) || UserHelper::isStaff($person)) {
+                $panel = new Panel('Emergency', 'People');
+                $container->addPanel($panel);
+            }
+
+            $panel = new Panel('Miscellaneous', 'People');
+            $container->addPanel($panel);
+        }
+
+        $manager->setReturnRoute($this->generateUrl('people_list'));
+        $manager->addContainer($container)->buildContainers();
+
+        return $this->getPageManager()->createBreadcrumbs($person->getId() > 0 ? 'Edit Person' : 'Add Person')
+            ->render(
+                [
+                    'containers' => $manager->getBuiltContainers(),
+                ]
+            );
+    }
+
+
+    /**
+     * delete
+     * @param Person $person
+     * @param PeoplePagination $pagination
+     * @Route("/person/{person}/delete/",name="person_delete")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function delete(Person $person, PeoplePagination $pagination)
+    {
+        if ($person->canDelete()) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($person);
+                $em->flush();
+                $this->getPageManager()->addMessage('success', ErrorMessageHelper::onlySuccessMessage(true));
+            } catch (PDOException $e) {
+                $this->getPageManager()->addMessage('error', ErrorMessageHelper::onlyDatabaseErrorMessage(true));
+            }
+        } else {
+            $this->getPageManager()->addMessage('warning', ErrorMessageHelper::onlyLockedRecordMessage($person->formatName(['informal' => true]), get_class($person), true));
+        }
+
+        $pagination->setStack($this->getPageManager()->getStack())
+            ->setContent([])
+            ->setAddElementRoute($this->generateUrl('person_add'))
+            ->setStoreFilterURL($this->generateUrl('people_list_filter'))
+            ->setContentLoader($this->generateUrl('people_content_loader'));
+
+        return $this->getPageManager()->createBreadcrumbs('Manage People')
+            ->render(['pagination' => $pagination->toArray()]);
+    }
+
+    /**
+     * writePeopleFilter
+     * @param PeoplePagination $pagination
+     * @return JsonResponse
+     * @Route("/people/filter/list", name="people_list_filter")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function writePeopleFilter(PeoplePagination $pagination)
+    {
+        if ($this->getPageManager()->getRequest()->getContent() !== '') {
+            $filter = json_decode($this->getPageManager()->getRequest()->getContent(), true);
+            $pagination->setStack($this->getPageManager()->getStack())
+                ->writeFilter($filter);
+        }
+        return new JsonResponse([]);
+    }
+
+    /**
+     * resetPassword
+     * @param Person $person
+     * @param ContainerManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/password/{person}/reset/",name="person_reset_password")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function resetPassword(Person $person, ContainerManager $manager)
+    {
+        $request = $this->getPageManager()->getRequest();
+
+        if ($this->getUser()->getPerson()->isEqualto($person)) {
+            $this->addFlash('info', TranslationHelper::translate('Use the {anchor}preferences{endAnchor} details to change your own password.', ['{endAnchor}' => '</a>', '{anchor}' => '<a href="'.$this->generateUrl('preferences', ['tabName' => 'Reset Password']).'">'], 'People'));
+            return $this->redirectToRoute('people_list');
+        }
+
+        $form = $this->createForm(ChangePasswordType::class, $person,
+            [
+                'action' => $this->generateUrl('person_reset_password', ['person' => $person->getId()]),
+                'policy' => $this->renderView('security/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
+            ]
+        );
+
+        if ($request->getContent() !== '')
+        {
+            $content = json_decode($request->getContent(), true);
+            $form->submit($content);
+            $data = [];
+            if ($form->isValid()) {
+                $user = new SecurityUser($person);
+                $user->changePassword($content['raw']['first']);
+                $data['status'] = 'success';
+                $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('Your account has been successfully updated. You can now continue to use the system as per normal.', [], 'Security')];
+                $manager->singlePanel($form->createView());
+                $person->setPasswordForceReset($content['passwordForceReset']);
+                $this->getDoctrine()->getManager()->persist($person);
+                $this->getDoctrine()->getManager()->flush();
+                $data['form'] = $manager->getFormFromContainer();
+                return new JsonResponse($data, 200);
+            } else {
+                $manager->singlePanel($form->createView());
+                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data['form'] = $manager->getFormFromContainer();
+                return new JsonResponse($data, 200);
+            }
+
+        }
+
+        $manager->setReturnRoute($this->generateUrl('people_list'));
+        $manager->singlePanel($form->createView());
+
+        return $this->getPageManager()->createBreadcrumbs('Reset Password')
+            ->render(['containers' => $manager->getBuiltContainers()]);
+    }
+
+    /**
+     * stuff
+     * @Route("/", name="family_edit")
+     * @Route("/", name="people_settings")
+     */
+    public function stuff(){}
+
 }

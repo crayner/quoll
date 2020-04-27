@@ -167,6 +167,34 @@ class ErrorMessageHelper
         return $data;
     }
 
+    /**
+     * onlyLockedRecordMessage
+     * return.warning.3 = warning3 = The record "{id}" is locked and will not be deleted from class "{class}"
+     * @param string $id
+     * @param string $class
+     * @param bool $translate
+     * @return string|array
+     */
+    public static function onlyLockedRecordMessage(string $id, string $class, bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.warning.3', ['{id}' => $id, '{class}' => $class], 'messages') : ['return.warning.3', ['{id}' => $id, '{class}' => $class], 'messages'];
+    }
+
+    /**
+     * getLockedRecordMessage
+     * @param array $data
+     * @param string $id
+     * @param string $class
+     * @param bool $translate
+     * @return array
+     */
+    public static function getLockedRecordMessage(array $data, string $id, string $class, bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'warning', 'message' => self::onlyLockedRecordMessage($id, $class, $translate)];
+        $data['status'] = 'warning';
+        return $data;
+    }
+
 
     /**
      *

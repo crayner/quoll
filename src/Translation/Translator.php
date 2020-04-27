@@ -51,9 +51,12 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
         if (null === $domain)
             $domain = 'messages';
 
-        $id = trim($id);
         if (null === $id || '' === $id)
             return '';
+        if (trim($id) === '')
+            return $id;
+
+        $id = trim($id);
 
         // Change translation domain to 'messages' if a translation can't be found in the
         // current domain

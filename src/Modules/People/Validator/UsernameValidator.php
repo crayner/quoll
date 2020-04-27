@@ -32,7 +32,6 @@ class UsernameValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
         if (!$value instanceof Person || $value->isCanLogin() === false)
             return;
 
