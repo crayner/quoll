@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class FamilyAdult
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyAdultRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FamilyAdult", indexes={@ORM\Index(name="person", columns={"person"})}, uniqueConstraints={@ORM\UniqueConstraint(name="familyContactPriority", columns={"family","contactPriority"}), @ORM\UniqueConstraint(name="familymember", columns={"family","person"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="FamilyAdult", indexes={@ORM\Index(name="person", columns={"person"})}, uniqueConstraints={@ORM\UniqueConstraint(name="family_contact", columns={"family","contactPriority"}), @ORM\UniqueConstraint(name="family_member", columns={"family","person"})})
  * @UniqueEntity(fields={"family","person"},errorPath="person")
  * @UniqueEntity(fields={"family","contactPriority"},errorPath="contactPriority")
  */
@@ -443,10 +443,10 @@ class FamilyAdult implements EntityInterface
                     `family` int(7) UNSIGNED DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `familyMember` (`family`,`person`),
+                    UNIQUE KEY `family_member` (`family`,`person`),
+                    UNIQUE KEY `family_contact` (`family`,`contactPriority`),
                     KEY `family` (`family`),
-                    KEY `person` (`person`),
-                    KEY `family_contact` (`family`,`contactPriority`) USING BTREE
+                    KEY `person` (`person`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ";
     }

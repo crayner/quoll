@@ -18,6 +18,7 @@ namespace App\Modules\System\Manager;
 use App\Manager\EntityInterface;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
+use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
 use App\Provider\ProviderFactory;
@@ -63,6 +64,7 @@ class DemoDataManager
         'person2' => Person::class,
         'family' => Family::class,
         'family_adult' => FamilyAdult::class,
+        'family_child' => FamilyChild::class,
     ];
 
     /**

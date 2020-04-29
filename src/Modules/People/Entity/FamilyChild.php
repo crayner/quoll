@@ -15,6 +15,7 @@ namespace App\Modules\People\Entity;
 use App\Manager\EntityInterface;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\People\Util\StudentHelper;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyChildRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="FamilyChild",
  *     indexes={@ORM\Index(name="family", columns={"family"}),@ORM\Index(name="person", columns={"person"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="familyMember", columns={"family","person"})})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="family_member", columns={"family","person"})})
  * @UniqueEntity(fields={"family","person"}, errorPath="person")
  */
 class FamilyChild implements EntityInterface
@@ -75,6 +76,7 @@ class FamilyChild implements EntityInterface
     public function __construct(?Family $family = null)
     {
         $this->family = $family;
+        $this->relationships = new ArrayCollection();
     }
 
     /**
@@ -175,7 +177,13 @@ class FamilyChild implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+        if ($this->getFamily() && $this->getPerson())
+            return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+        if ($this->getFamily())
+            return $this->getFamily()->getName() . ': UunKnown ' . $this->getId();
+        if ($this->getPerson())
+            return 'Unknown : ' . $this->getPerson()->formatName() . ' ' . $this->getId();
+        return 'No Idea';
     }
 
     /**
@@ -223,11 +231,11 @@ class FamilyChild implements EntityInterface
     {
         return "CREATE TABLE `__prefix__FamilyChild` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `family` int(7) UNSIGNED DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `familyMember` (`family`,`person`),
+                    UNIQUE KEY `family_member` (`family`,`person`),
                     KEY `family` (`family`),
                     KEY `person` (`person`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
