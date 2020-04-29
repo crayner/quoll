@@ -19,7 +19,12 @@ use App\Manager\Traits\EntityTrait;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Provider\EntityProviderInterface;
 
+/**
+ * Class CourseClassPersonProvider
+ * @package App\Modules\Enrolment\Provider
+ */
 class CourseClassPersonProvider implements EntityProviderInterface
 {
     use EntityTrait;

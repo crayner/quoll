@@ -1,0 +1,46 @@
+{% trans_default_domain 'People' %}
+
+{% form_theme relationship
+    'form/kookaburra_form.html.twig'
+%}
+
+{{ form_start(relationship) }}
+    <table class="smallIntBorder fullWidth standardForm relative striped">
+        <tr class="break">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                <h3 id="relationships">{{ 'Relationships'|trans({name: family.name}) }}<br />
+                    <span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ '{name}'|trans({'{name}': family.name}) }}</span></h3>
+            </td>
+        </tr>
+        {% for item in relationship.relationships %}
+            <tr>
+                <td class="px-2 border-b-0 sm:border-b border-t-0" style="text-align: right;">
+                    {{ '{name} is the'|trans({'{name}': item.adult.vars.data.person.formatName({style: 'formal'})}) }}
+                    {{ form_widget(item.adult) }}
+                </td>
+                <td width="15%">
+                    {{ form_widget(item.relationship) }}
+                    {{ form_widget(item.family, {value: family.id}) }}
+                </td>
+                <td class="px-2 border-b-0 sm:border-b border-t-0">
+                    &nbsp;{{ 'of {name}'|trans({'{name}': item.child.vars.data.person.formatName({style: 'long', preferredName: false})}) }}
+                    {{ form_widget(item.child) }}
+                </td>
+            </tr>
+        {% endfor %}
+        {% if relationship.relationships|length is same as(0) %}
+            <tr>
+                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                    <div class="secondary">{{ 'There are not enough people in this family to form relationships.'|trans }}</div>
+                </td>
+            </tr>
+
+        {% endif %}
+        {% do relationship.relationships.setRendered() %}
+        <tr class="break">
+            <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="3">
+                {{ form_widget(relationship.submit) }}
+            </td>
+        </tr>
+    </table>
+{{ form_end(relationship) }}

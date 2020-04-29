@@ -65,3 +65,7 @@ services:
     App\Listeners\ImageListener:
         tags:
             - { name: 'doctrine.event_subscriber' }
+
+    App\Modules\System\Manager\DemoDataManager:
+        arguments:
+            $logger: '@monolog.logger.installation'

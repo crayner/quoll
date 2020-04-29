@@ -30,7 +30,6 @@ class ReactFileValidator extends FileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
         if (null === $value || '' === $value) {
             return;
         }

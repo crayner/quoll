@@ -14,10 +14,7 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use App\Modules\People\Manager\FamilyManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,7 +40,7 @@ class Family implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, unique=true)
+     * @ORM\Column(length=100,unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -51,7 +48,7 @@ class Family implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, name="nameAddress", options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
+     * @ORM\Column(length=100,name="nameAddress",options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -59,7 +56,7 @@ class Family implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", name="homeAddress")
+     * @ORM\Column(type="text",name="homeAddress",nullable=true)
      */
     private $homeAddress;
 
@@ -72,7 +69,7 @@ class Family implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="homeAddressCountry")
+     * @ORM\Column(name="homeAddressCountry",nullable=true,length=191)
      * @Assert\Country()
      */
     private $homeAddressCountry;
@@ -339,27 +336,27 @@ class Family implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Famliy` (
+        return 'CREATE TABLE `__prefix__Family` (
                     `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `nameAddress` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
-                    `homeAddress` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `homeAddress` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `homeAddressDistrict` int(6) UNSIGNED DEFAULT NULL,
-                    `homeAddressCountry` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `homeAddressCountry` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `status` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `languageHomePrimary` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `languageHomePrimary` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `languageHomeSecondary` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `familySync` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `familySync` (`familySync`),
                     KEY `homeAddressDistrict` (`homeAddressDistrict`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__Famliy`
+        return 'ALTER TABLE `__prefix__Family`
                     ADD CONSTRAINT FOREIGN KEY (`homeAddressDistrict`) REFERENCES `__prefix__District` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
     }
 

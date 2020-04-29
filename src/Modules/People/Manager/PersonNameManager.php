@@ -162,7 +162,7 @@ class PersonNameManager
                 $template = 'preferred';
 
             if ($template === 'formal')
-                $template = $styles['formal'];
+                $template = 'title first surname';
             else
                 $template = isset($styles[$template][$length][$direction]) ? $styles[$template][$length][$direction] : 'title first surname';
 

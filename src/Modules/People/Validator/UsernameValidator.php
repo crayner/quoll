@@ -39,9 +39,15 @@ class UsernameValidator extends ConstraintValidator
             $value->setUsername($value->getEmail());
 
         if ($value->getUsername() === null || $value->getUsername() === '')
-            $this->context->buildViolation('This value is not valid.')
-                ->setTranslationDomain('People')
+            $this->context->buildViolation('This value should not be blank.')
+                ->setTranslationDomain('validators')
                 ->atPath('username')
+                ->addViolation();
+
+        if (in_array($value->getPrimaryRole(), [null, '']))
+            $this->context->buildViolation('This value should not be blank.')
+                ->setTranslationDomain('validators')
+                ->atPath('primaryRole')
                 ->addViolation();
     }
 }

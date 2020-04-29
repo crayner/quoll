@@ -215,4 +215,8 @@ The height and width minimum is 320px x 240px. The image supplied was {height} x
 The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.: The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.
 Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.: Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.
 '{name} upload failed...': '{name} upload failed...'
-
+Adults: Adults
+Children: Children
+Manage Families: Manage Families
+Name, Adults & Students: Name, Adults & Students
+Relationship Status: Relationship Status

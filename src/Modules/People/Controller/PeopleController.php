@@ -341,7 +341,6 @@ class PeopleController extends AbstractPageController
 
     /**
      * stuff
-     * @Route("/", name="family_edit")
      * @Route("/", name="people_settings")
      */
     public function stuff(){}

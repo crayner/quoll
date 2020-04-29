@@ -1,0 +1,4 @@
+defaults:
+    nameAddress: 'name'
+constants:
+    languageHomePrimary: 'en'

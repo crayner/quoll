@@ -536,4 +536,16 @@ trait EntityTrait
         }
         return $data;
     }
+
+    /**
+     * count
+     * @return int
+     */
+    public function count(): int
+    {
+        return intval($this->getRepository()->createQueryBuilder('e')
+            ->select("COUNT('id') as result")
+            ->getQuery()
+            ->getSingleScalarResult());
+    }
 }

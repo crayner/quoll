@@ -17,7 +17,12 @@ namespace App\Modules\People\Provider;
 
 use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Staff;
+use App\Provider\EntityProviderInterface;
 
+/**
+ * Class StaffProvider
+ * @package App\Modules\People\Provider
+ */
 class StaffProvider implements EntityProviderInterface
 {
     use EntityTrait;

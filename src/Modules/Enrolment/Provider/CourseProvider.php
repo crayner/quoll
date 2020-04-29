@@ -18,6 +18,7 @@ namespace App\Modules\Enrolment\Provider;
 use App\Manager\Traits\EntityTrait;
 use App\Modules\Enrolment\Entity\Course;
 use App\Modules\School\Entity\Department;
+use App\Provider\EntityProviderInterface;
 
 /**
  * Class CourseProvider

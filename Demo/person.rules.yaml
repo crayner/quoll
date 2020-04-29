@@ -1,0 +1,12 @@
+empty_count: 1
+associated:
+    house:
+        entityName: 'App\Modules\School\Entity\House'
+    phone1CountryCode : 'App\Modules\System\Entity\Country'
+    phone2CountryCode : 'App\Modules\System\Entity\Country'
+    phone3CountryCode : 'App\Modules\System\Entity\Country'
+properties:
+    dob: 'DateTimeImmutable'
+    visaExpiryDate: 'DateTimeImmutable'
+    dateStart: 'DateTimeImmutable'
+    dateEnd: 'DateTimeImmutable'

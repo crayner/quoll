@@ -24,7 +24,7 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\System\Entity\Country;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
@@ -512,7 +512,6 @@ class Person implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=32,nullable=true)
-     * @ASSERT\NotBlank()
      */
     private $primaryRole;
 
