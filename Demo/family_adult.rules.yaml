@@ -1,0 +1,5 @@
+associated:
+    family:
+        entityName: 'App\Modules\People\Entity\Family'
+    person:
+        entityName: 'App\Modules\People\Entity\Person'

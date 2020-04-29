@@ -15,6 +15,7 @@ namespace App\Modules\People\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Util\TranslationHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -118,6 +119,7 @@ class FamilyAdult implements EntityInterface
     public function __construct(?Family $family = null)
     {
         $this->family = $family;
+        $this->relationships = new ArrayCollection();
     }
 
     /**
@@ -372,7 +374,13 @@ class FamilyAdult implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+        if ($this->getFamily() && $this->getPerson())
+            return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+        if ($this->getFamily())
+            return $this->getFamily()->getName() . ': UunKnown ' . $this->getId();
+        if ($this->getPerson())
+            return 'Unknown : ' . $this->getPerson()->formatName() . ' ' . $this->getId();
+        return 'No Idea';
     }
 
     /**
@@ -425,7 +433,7 @@ class FamilyAdult implements EntityInterface
     {
         return "CREATE TABLE `__prefix__FamilyAdult` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `childDataAccess` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `contactPriority` int(2) DEFAULT NULL,
                     `contactCall` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -438,7 +446,7 @@ class FamilyAdult implements EntityInterface
                     UNIQUE KEY `familyMember` (`family`,`person`),
                     KEY `family` (`family`),
                     KEY `person` (`person`),
-                    KEY `familyContactPriority` (`family`,`contactPriority`) USING BTREE
+                    KEY `family_contact` (`family`,`contactPriority`) USING BTREE
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ";
     }
