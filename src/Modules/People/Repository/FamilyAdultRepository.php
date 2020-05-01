@@ -19,6 +19,8 @@ use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -152,5 +154,26 @@ class FamilyAdultRepository extends ServiceEntityRepository
             ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS id'])
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * getNextContactPriority
+     * @param Family $family
+     * @return int
+     */
+    public function getNextContactPriority(Family $family): int
+    {
+        try {
+            return $this->createQueryBuilder('a')
+                    ->select('a.contactPriority')
+                    ->orderBy('a.contactPriority', 'DESC')
+                    ->where('a.family = :family')
+                    ->setParameter('family', $family)
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getSingleScalarResult() + 1;
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 1;
+        }
     }
 }

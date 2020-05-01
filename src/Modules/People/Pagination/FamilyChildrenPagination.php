@@ -73,7 +73,7 @@ class FamilyChildrenPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $action = new PaginationAction();
-        $action->setTitle('Edit Student in family')
+        $action->setTitle('Edit Student in Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-700')

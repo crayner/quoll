@@ -49,11 +49,11 @@ class FamilyAdultProvider implements EntityProviderInterface
         try {
             $table = $sm->listTableDetails($prefix. 'FamilyAdult');
             $indexes = $sm->listTableIndexes($prefix. 'FamilyAdult');
-            if (key_exists('familyContactPriority', $indexes) || key_exists('familycontactpriority', $indexes)) {
-                $index = $table->getIndex('familyContactPriority');
+            if (key_exists('family_contact', $indexes) || key_exists('family_contact', $indexes)) {
+                $index = $table->getIndex('family_contact');
                 $sm->dropIndex($index, $table);
             } else {
-                $index = new Index('familyContactPriority', ['family','contactPriority'], true);
+                $index = new Index('family_contact', ['family','contactPriority'], true);
             }
 
             foreach ($adults as $adult)
@@ -61,9 +61,10 @@ class FamilyAdultProvider implements EntityProviderInterface
             $this->getEntityManager()->flush();
 
             $sm->createIndex($index, $table);
+            $data = ErrorMessageHelper::getSuccessMessage($data, true);
         } catch (SchemaException | \Exception $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
+ //           $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
         }
 
         return $data;

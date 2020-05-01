@@ -28,6 +28,7 @@ use App\Modules\People\Form\FamilyGeneralType;
 use App\Modules\People\Form\RelationshipsType;
 use App\Modules\People\Manager\FamilyManager;
 use App\Modules\People\Manager\FamilyRelationshipManager;
+use App\Modules\People\Manager\Hidden\FamilyAdultSort;
 use App\Modules\People\Pagination\FamilyAdultsPagination;
 use App\Modules\People\Pagination\FamilyChildrenPagination;
 use App\Modules\People\Pagination\FamilyPagination;
@@ -218,11 +219,125 @@ class FamilyController extends AbstractPageController
         return new JsonResponse($data);
     }
 
+
     /**
-     * @Route("/", name="family_adult_add")
-     * @Route("/", name="family_adult_edit")
-     * @Route("/", name="family_adult_sort")
-     * @Route("/", name="family_adult_remove")
+     * familyAdultEdit
+     * @param ContainerManager $manager
+     * @param Family $family
+     * @param FamilyAdult|null $adult
+     * @return JsonResponse
+     * @Route("/family/{family}/adult/{adult}/edit/",name="family_adult_edit")
+     * @Route("/family/{family}/adult/add/",name="family_adult_add")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function familyAdultEdit(ContainerManager $manager, Family $family, ?FamilyAdult $adult = null)
+    {
+        $request = $this->getPageManager()->getRequest();
+        $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
+        if ($request->get('_route') === 'family_adult_add') {
+            $adult = new FamilyAdult($family);
+            $action = $this->generateUrl('family_adult_add', ['family' => $family->getId()]);
+        }
+        dump($adult);
+        $form = $this->createForm(FamilyAdultType::class, $adult, ['action' => $action]);
+
+        if ($request->getContent() !== '') {
+            $data = [];
+            $data['status'] = 'success';
+            $data['errors'] = [];
+            $content = json_decode($request->getContent(), true);
+            if ($content['contactPriority'] === '' || $adult->getId() == 0)
+                $content['contactPriority'] = ProviderFactory::getRepository(FamilyAdult::class)->getNextContactPriority($family);
+            if (key_exists('showHideForm', $content))
+                unset($content['showHideForm']);
+            $form->submit($content);
+            dump($content, $form, $adult);
+            if ($form->isValid()) {
+                $data = ProviderFactory::create(FamilyAdult::class)->persistFlush($adult, $data);
+
+                $manager->singlePanel($form->createView());
+                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                if ($data['status'] === 'success') {
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']);
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
+                }
+                return new JsonResponse($data);
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
+                $manager->singlePanel($form->createView());
+                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                return new JsonResponse($data);
+            }
+        }
+        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']))->singlePanel($form->createView());
+
+        return $this->getPageManager()->createBreadcrumbs('Edit Adult',
+            [
+                ['uri' => 'family_list', 'name' => 'Manage Families'],
+                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'Adults'] , 'name' => 'Edit Family']
+            ]
+        )
+            ->render(
+                [
+                    'containers' => $manager->getBuiltContainers(),
+                ]
+            );
+    }
+
+
+    /**
+     * familyAdultSort
+     * @param FamilyAdult $source
+     * @param FamilyAdult $target
+     * @param FamilyAdultsPagination $pagination
+     * @param FamilyManager $familyManager
+     * @return JsonResponse
+     * @Route("/family/adult/{source}/{target}/sort/", name="family_adult_sort")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function familyAdultSort(FamilyAdult $source, FamilyAdult $target, FamilyAdultsPagination $pagination, FamilyManager $familyManager)
+    {
+        $manager = new FamilyAdultSort($source, $target, $pagination);
+        $manager->setContent($familyManager::getAdults($source->getFamily(), true));
+
+        return new JsonResponse($manager->getDetails());
+    }
+
+    /**
+     * familyAdultRemove
+     * @Route("/family/{family}/remove/{adult}/adult/",name="family_adult_remove")
+     * @IsGranted("ROLE_ROUTE")
+     * @param Family $family
+     * @param FamilyAdult $adult
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function familyAdultRemove(Family $family, FamilyAdult $adult)
+    {
+        $request = $this->getPageManager();
+        if ($adult->getFamily()->isEqualTo($family)) {
+
+            $data = ProviderFactory::create(FamilyAdult::class)->remove($adult, []);
+
+            $messages = array_unique($data['errors'], SORT_REGULAR);
+            foreach($messages as $message)
+                $request->getSession()->getBag('flashes')->add($message['class'], $message['message']);
+            if ($data['status'] === 'success') {
+                $priority = 1;
+                foreach (FamilyManager::getAdults($family, false) as $q => $adult) {
+                    ProviderFactory::create(FamilyAdult::class)->persistFlush($adult->setContactPriority($priority++), [], false);
+                    $result[$q] = $adult;
+                }
+                ProviderFactory::create(FamilyAdult::class)->flush();
+            }
+        } else {
+            $request->getSession()->getBag('flashes')->add('error', ErrorMessageHelper::onlyInvalidInputsMessage(true));
+        }
+
+        return $this->redirectToRoute('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']);
+    }
+
+    /**
      * @Route("/", name="family_delete")
      * @Route("/", name="family_student_edit")
      * @Route("/", name="family_student_add")

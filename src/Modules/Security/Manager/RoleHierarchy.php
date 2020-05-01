@@ -26,15 +26,23 @@ class RoleHierarchy implements RoleHierarchyInterface
     /**
      * @var \Symfony\Component\Security\Core\Role\RoleHierarchy
      */
+    private $roleHierarchy;
+
+    /**
+     * @var array
+     */
     private $hierarchy;
 
     /**
      * RoleHierarchy constructor.
      * @param RoleHierarchyInterface $roleHierarchy
+     * @param array $hierarchy
      */
-    public function __construct(RoleHierarchyInterface $roleHierarchy)
+    public function __construct(RoleHierarchyInterface $roleHierarchy, array $hierarchy)
     {
-        $this->hierarchy = $roleHierarchy;
+        $this->roleHierarchy = $roleHierarchy;
+
+        $this->hierarchy = $hierarchy;
     }
 
     /**
@@ -64,6 +72,20 @@ class RoleHierarchy implements RoleHierarchyInterface
      */
     public function getReachableRoleNames(array $roles): array
     {
-        return $this->hierarchy->getReachableRoleNames($roles);
+        return $this->roleHierarchy->getReachableRoleNames($roles);
+    }
+
+    /**
+     * getStaffRoles
+     * @return array
+     */
+    public function getStaffRoles(): array
+    {
+        $result = [];
+        foreach($this->hierarchy as $name => $w)
+            if (in_array('ROLE_STAFF', $this->getReachableRoleNames([$name])))
+                $result[] = $name;
+        array_unique($result);
+        return $result;
     }
 }

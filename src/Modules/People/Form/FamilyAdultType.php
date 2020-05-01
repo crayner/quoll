@@ -25,7 +25,9 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\Subscriber\FamilyAdultSubscriber;
+use App\Modules\Security\Manager\RoleHierarchy;
 use App\Provider\ProviderFactory;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -111,12 +113,6 @@ class FamilyAdultType extends AbstractType
                         ],
                     ]
                 )
-                ->add('adultNote', ParagraphType::class,
-                    [
-                        'wrapper_class' => 'warning',
-                        'help' => 'contact_priority_logic'
-                    ]
-                )
                 ->add('showHideForm', ToggleType::class,
                     [
                         'label' => 'Add Adult to family',
@@ -136,14 +132,16 @@ class FamilyAdultType extends AbstractType
                     [
                         'label' => 'Adult\'s Name',
                         'class' => Person::class,
-                        'choice_label' => 'fullName',
+                        'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
                         'query_builder' => function(EntityRepository $er) {
                             return $er->createQueryBuilder('p')
                                 ->select(['p','s'])
-                                ->leftjoin('p.studentEnrolments','se')
                                 ->leftJoin('p.staff', 's')
-                                ->where('se.id IS NOT NULL')
+                                ->where('p.primaryRole = :staffRole')
+                                ->setParameter('staffRole', 'ROLE_PARENT')
+                                ->orWhere('p.allRoles LIKE :staff')
+                                ->setParameter('staff', '%ROLE_PARENT%')
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');
