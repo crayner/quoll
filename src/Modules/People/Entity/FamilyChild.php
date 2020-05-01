@@ -196,7 +196,7 @@ class FamilyChild implements EntityInterface
 
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
-            'fullName' => $person->formatName(['style' => 'long', 'preferredName' => false]),
+            'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
             'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),

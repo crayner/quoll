@@ -7,6 +7,7 @@ import '../../css/react-tabs.scss';
 import Parser from "html-react-parser"
 import FormApp from "../Form/FormApp"
 import PaginationApp from "../Pagination/PaginationApp"
+import SpecialApp from '../Special/SpecialApp'
 
 export default function Panels(props) {
     const {
@@ -38,12 +39,17 @@ export default function Panels(props) {
         const panelContent = renderPanelContent(panel, props)
         let preContent = []
         let postContent = []
+        let special = []
         if (panel.preContent !== null) {
             preContent = panel.preContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
                 return ''
             })
+        }
+
+        if (panel.special !== null) {
+            special.push(<SpecialApp {...panel.special} functions={functions} key={'special'} />)
         }
 
         if (panel.postContent !== null) {
@@ -57,6 +63,7 @@ export default function Panels(props) {
         return (
             <TabPanel key={name}>
                 {preContent}
+                {special}
                 {panelContent}
                 {postContent}
             </TabPanel>

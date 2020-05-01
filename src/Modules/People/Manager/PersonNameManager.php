@@ -106,7 +106,7 @@ class PersonNameManager
                 'preferred' => true,
                 'preferredName' => true,
                 'reverse' => false,
-                'informal' => false,
+                'informal' => true,
                 'initial' => false,
                 'title' => false,
                 'style' => null,
@@ -117,7 +117,7 @@ class PersonNameManager
         $resolver->setAllowedValues('style', ['long','short','formal',null]);
 
         $options = $resolver->resolve($options);
-
+        if ($options['debug'])
         // Backwards Compat
         $options['preferred'] = $options['preferredName'] = $options['preferred'] && $options['preferredName'];
 

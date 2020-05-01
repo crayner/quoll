@@ -71,41 +71,48 @@ class FamilyGeneralType extends AbstractType
             ->add('general', HeaderType::class,
                 [
                     'label' => 'General Information',
+                    'panel' => 'General',
                 ]
             )
             ->add('name', TextType::class,
                 [
                     'label' => 'Family Name',
+                    'panel' => 'General',
                 ]
             )
             ->add('status', EnumType::class,
                 [
                     'label' => 'Relationship Status',
                     'placeholder' => 'Please select...',
+                    'panel' => 'General',
                 ]
             )
             ->add('languageHomePrimary', LanguageType::class,
                 [
                     'label' => 'Home Language - Primary',
                     'placeholder' => ' ',
+                    'panel' => 'General',
                 ]
             )
             ->add('languageHomeSecondary', LanguageType::class,
                 [
                     'label' => 'Home Language - Secondary',
                     'placeholder' => ' ',
+                    'panel' => 'General',
                     'required' => false,
                 ]
             )
             ->add('nameAddress', TextType::class,
                 [
                     'label' => 'Formal Family Name',
+                    'panel' => 'General',
                     'help' => 'Used to address correspondence sent to the parents/guardians of this family.'
                 ]
             )
             ->add('homeAddress', TextType::class,
                 [
                     'label' => 'Residential Address',
+                    'panel' => 'General',
                     'help' => 'Unit, Building & Street',
                      'required' => false,
                ]
@@ -114,6 +121,7 @@ class FamilyGeneralType extends AbstractType
                 [
                     'label' => 'Residential Address (District)',
                     'help' => 'Suburb, Town, City, State (Postcode)',
+                    'panel' => 'General',
                     'required' => false,
                     'class' => District::class,
                     'data' => $options['data']->getHomeAddressDistrict() !== null ? $options['data']->getHomeAddressDistrict()->getId() : null,
@@ -135,17 +143,20 @@ class FamilyGeneralType extends AbstractType
                 [
                     'label' => 'Residential Address (Country)',
                     'placeholder' => ' ',
+                    'panel' => 'General',
                     'required' => false,
                 ]
             )
             ->add('panelName', HiddenType::class,
                 [
                     'data' => 'General',
+                    'panel' => 'General',
                     'mapped' => false,
                 ]
             )
             ->add('submit', SubmitType::class,
                 [
+                    'panel' => 'General',
                     'label' => 'Submit',
                 ]
             )

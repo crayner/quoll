@@ -66,7 +66,7 @@ class Staff implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,name="jobTitle")
+     * @ORM\Column(length=100,name="jobTitle",nullable=true)
      */
     private $jobTitle;
 
@@ -85,8 +85,8 @@ class Staff implements EntityInterface
     private $firstAidQualified = 'N';
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="date", name="firstAidExpiry", nullable=true)
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="date_immutable",name="firstAidExpiry",nullable=true)
      */
     private $firstAidExpiry;
 
@@ -117,7 +117,7 @@ class Staff implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(name="biographicalGroupingPriority", type="smallint", columnDefinition="INT(3)")
+     * @ORM\Column(name="biographicalGroupingPriority", type="smallint", columnDefinition="INT(3)", nullable=true)
      */
     private $biographicalGroupingPriority;
 
@@ -260,18 +260,20 @@ class Staff implements EntityInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTimeImmutable|null
      */
-    public function getFirstAidExpiry(): ?\DateTime
+    public function getFirstAidExpiry(): ?\DateTimeImmutable
     {
         return $this->firstAidExpiry;
     }
 
     /**
-     * @param \DateTime|null $firstAidExpiry
+     * FirstAidExpiry.
+     *
+     * @param \DateTimeImmutable|null $firstAidExpiry
      * @return Staff
      */
-    public function setFirstAidExpiry(?\DateTime $firstAidExpiry): Staff
+    public function setFirstAidExpiry(?\DateTimeImmutable $firstAidExpiry): Staff
     {
         $this->firstAidExpiry = $firstAidExpiry;
         return $this;
@@ -381,7 +383,9 @@ class Staff implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getPerson()->formatName();
+        if ($this->getPerson())
+            return $this->getPerson()->formatName();
+        return $this->getId() ?: 'New Record.';
     }
 
     /**
@@ -404,7 +408,7 @@ class Staff implements EntityInterface
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `initials` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `jobTitle` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `jobTitle` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `smartWorkflowHelp` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
                     `firstAidQualified` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
                     `firstAidExpiry` date DEFAULT NULL,

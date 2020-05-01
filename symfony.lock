@@ -97,13 +97,13 @@
         ]
     },
     "google/apiclient-services": {
-        "version": "v0.130"
+        "version": "v0.132"
     },
     "google/auth": {
         "version": "v1.8.0"
     },
     "guzzlehttp/guzzle": {
-        "version": "6.5.2"
+        "version": "6.5.3"
     },
     "guzzlehttp/promises": {
         "version": "v1.3.1"

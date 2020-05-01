@@ -15,23 +15,29 @@
 
 namespace App\Modules\People\Manager;
 
+use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Driver\PDOException;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class FamilyRelationshipManager
  * @package App\Modules\People\Manager
  */
-class FamilyRelationshipManager
+class FamilyRelationshipManager implements SpecialInterface
 {
     /**
      * @var ValidatorInterface
@@ -39,31 +45,43 @@ class FamilyRelationshipManager
     private $validator;
 
     /**
+     * @var array
+     */
+    private $form;
+
+    /**
+     * @var Family
+     */
+    private $family;
+
+    /**
      * FamilyRelationshipManager constructor.
      * @param ValidatorInterface $validator
      */
-    public function __construct(ValidatorInterface $validator)
-    {
+    public function __construct(
+        ValidatorInterface $validator
+    ) {
         $this->validator = $validator;
     }
 
     /**
      * handleRequest
-     * @param Request $request
+     * @param array $content
      * @param Family $family
+     * @param FormInterface $form
+     * @return array
      */
-    public function handleRequest(Request $request, Family $family)
+    public function handleRequest(array $content, Family $family, FormInterface $form)
     {
-        $rels = $request->request->get('family_relationships');
-        if (is_null($rels))
-            return ;
+        $this->setFamily($family);
 
         $provider = ProviderFactory::create(FamilyRelationship::class);
         $relationships = [];
         $ok = true;
-        if (!isset($rels['relationships']))
-            return;
-        foreach($rels['relationships'] as $item)
+        if (!key_exists('relationships', $content))
+            return ErrorMessageHelper::getInvalidInputsMessage([], true);
+
+        foreach($content['relationships'] as $q=>$item)
         {
             $fr = $provider->findOneRelationship($item);
             $fr->setFamily($family)
@@ -75,23 +93,22 @@ class FamilyRelationshipManager
             $errors = $this->getValidator()->validate($fr);
             if ($errors->count() > 0)
             {
-                $request->getSession()->getBag('flashes')->add('error', ['return.error.1', [], 'messages']);
-                $ok = false;
+                $error = $errors->get(0);
+                $form->get('relationships')->get($q)->get('relationship')->addError(new FormError($error->getMessage()));
+                return ErrorMessageHelper::getInvalidInputsMessage([],true);
                 break;
             }
             $relationships[] = $fr;
         }
 
-        if ($ok) {
-            try {
-                $em = ProviderFactory::getEntityManager();
-                foreach($relationships as $fr)
-                    $em->persist($fr);
-                $em->flush();
-                $request->getSession()->getBag('flashes')->add('success', ErrorMessageHelper::onlySuccessMessage(true));
-            } catch (\PDOException | PDOException | \Exception $e) {
-                $request->getSession()->getBag('flashes')->add('error', ErrorMessageHelper::onlyDatabaseErrorMessage(true));
-            }
+        try {
+            $em = ProviderFactory::getEntityManager();
+            foreach($relationships as $fr)
+                $em->persist($fr);
+            $em->flush();
+            return ErrorMessageHelper::getSuccessMessage([],true);
+        } catch (\PDOException | PDOException | \Exception $e) {
+            return ErrorMessageHelper::getDatabaseErrorMessage([],true);
         }
     }
 
@@ -105,13 +122,15 @@ class FamilyRelationshipManager
 
     /**
      * getRelationships
-     * @param Family $family
+     * @param Family|null $family
      * @return Collection
      */
-    public function getRelationships(Family $family): Collection
+    public function getRelationships(?Family $family = null): Collection
     {
-        $adults = FamilyManager::getAdults($family);
-        $children = FamilyManager::getChildren($family);
+        if (!$family)
+            $family = $this->getFamily();
+        $adults = FamilyManager::getAdults($family, false);
+        $children = FamilyManager::getChildren($family, false);
         $relationships = $this->getExistingRelationships($family);
         if (count($adults) * count($children) === $relationships->count())
             return $relationships;
@@ -144,4 +163,93 @@ class FamilyRelationshipManager
         $result = new ArrayCollection($result);
         return $result;
     }
+
+    /**
+     * getName
+     * @return string
+     */
+    public function getName(): string
+    {
+        return StringUtil::fqcnToBlockPrefix(static::class) ?: '';
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'form' => $this->getForm(),
+            'name' => $this->getName(),
+            'messages' => $this->getTranslations(),
+            'relationships' => $this->getRelationshipsAsArray(),
+        ];
+    }
+
+    /**
+     * getRelationshipsAsArray
+     * @return array
+     */
+    private function getRelationshipsAsArray(): array
+    {
+        $result = [];
+        foreach($this->getRelationships($this->getFamily())->toArray() as $relationship)
+            $result[] = $relationship->toArray('form');
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getForm(): array
+    {
+        return $this->form;
+    }
+
+    /**
+     * Form.
+     *
+     * @param array $form
+     * @return FamilyRelationshipManager
+     */
+    public function setForm(array $form): FamilyRelationshipManager
+    {
+        $this->form = $form;
+        return $this;
+    }
+
+    /**
+     * getTranslations
+     * @return array
+     */
+    private function getTranslations(): array
+    {
+        return [
+            'Relationships' => TranslationHelper::translate('Relationships', [], 'People'),
+            'loadingContent' => TranslationHelper::translate('Let me ponder your request', [], 'messages'),
+        ];
+    }
+
+    /**
+     * @return Family
+     */
+    public function getFamily(): Family
+    {
+        return $this->family;
+    }
+
+    /**
+     * Family.
+     *
+     * @param Family $family
+     * @return FamilyRelationshipManager
+     */
+    public function setFamily(Family $family): FamilyRelationshipManager
+    {
+        $this->family = $family;
+        return $this;
+    }
+
 }

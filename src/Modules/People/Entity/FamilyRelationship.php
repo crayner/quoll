@@ -14,6 +14,7 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -231,6 +232,14 @@ class FamilyRelationship implements EntityInterface
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'form')
+        {
+            TranslationHelper::setDomain('People');
+            return [
+                'parent' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getAdult()->getPerson()->formatName(['style'=> 'formal'])]),
+                'child' => TranslationHelper::translate('of {name}', ['{name}' => $this->getChild()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),
+            ];
+        }
         return [];
     }
 

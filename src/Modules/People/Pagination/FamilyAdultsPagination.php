@@ -37,7 +37,7 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $column->setLabel('Name')
             ->setContentKey(['fullName'])
             ->setContentType('link')
-            ->setOptions(['route' => 'person_edit', 'route_options' => ['person' => 'person']])
+            ->setOptions(['route' => 'person_edit', 'route_options' => ['person' => 'person_id'], 'title' => TranslationHelper::translate('Edit Personal Details')])
             ->setClass('column relative pr-4 cursor-pointer');
         $row->addColumn($column);
 
@@ -90,7 +90,7 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $action = new PaginationAction();
-        $action->setTitle('Edit')
+        $action->setTitle('Edit Adult in Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-700')
@@ -109,12 +109,12 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
-        $action->setTitle('Change Password')
+        $action->setTitle('Reset Password')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-700')
             ->setRoute('person_reset_password')
-            ->setRouteParams(['person' => 'person']);
+            ->setRouteParams(['person' => 'person_id']);
         $row->addAction($action);
 
         $this->setRow($row);

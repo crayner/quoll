@@ -77,12 +77,11 @@ class FamilyAdultType extends AbstractType
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Edit Adult',
+                        'label' => 'Edit Adult / Guardian',
                     ]
                 )
                 ->add('adultNote', ParagraphType::class,
                     [
-                        'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 showAdultAdd',
                         'wrapper_class' => 'warning',
                         'help' => 'contact_priority_logic'
                     ]
@@ -103,17 +102,27 @@ class FamilyAdultType extends AbstractType
             ;
         } else {
             $builder
-                ->add('showHideForm', ToggleType::class,
+                ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Add Adult / Guardian',
-                        'help' => '{name}',
+                        'label' => 'Edit Adult / Guardian',
+                        'help' => 'Family name: {name}',
                         'help_translation_parameters' => [
                             '{name}' => $options['data']->getFamily()->getName(),
                         ],
-                        'label_class' => 'h3',
+                    ]
+                )
+                ->add('adultNote', ParagraphType::class,
+                    [
+                        'wrapper_class' => 'warning',
+                        'help' => 'contact_priority_logic'
+                    ]
+                )
+                ->add('showHideForm', ToggleType::class,
+                    [
+                        'label' => 'Add Adult to family',
                         'visible_by_choice' => 'showAdultAdd',
                         'mapped' => false,
-                        'row_class' => 'break flex flex-col sm:flex-row justify-between content-center p-0',
+                        'data' => 'N',
                     ]
                 )
                 ->add('adultNote', ParagraphType::class,

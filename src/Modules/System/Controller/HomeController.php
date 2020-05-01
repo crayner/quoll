@@ -31,10 +31,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractPageController
 {
     /**
-     * @Route("/home/", name="home")
+     * @Route("/home/{timeout}", name="home")
      * @Route("/", name="unauthenticated")
      */
-    public function home()
+    public function home(string $timeout = '')
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('personal_page');
@@ -49,7 +49,7 @@ class HomeController extends AbstractPageController
                 ]
             );
 
-        if ($request->query->get('timeout') === 'true')
+        if ($timeout === 'true')
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
         $sidebar = $pageManager->getSidebar();

@@ -91,17 +91,21 @@ class FamilyChildType extends AbstractType
             ;
         } else {
             $builder
-                ->add('showHideForm', ToggleType::class,
+                ->add('studentEditHeader', HeaderType::class,
                     [
-                        'label' => 'Add Student',
-                        'help' => '{name}',
+                        'label' => 'Edit Student',
+                        'help' => 'Family name: {name}',
                         'help_translation_parameters' => [
                             '{name}' => $options['data']->getFamily()->getName(),
                         ],
+                    ]
+                )
+                ->add('showHideForm', ToggleType::class,
+                    [
+                        'label' => 'Add student to family',
                         'visible_by_choice' => 'showChildAdd',
-                        'label_class' => 'h3',
+                        'data' => 'N',
                         'mapped' => false,
-                        'row_class' => 'break flex flex-col sm:flex-row justify-between content-center p-0',
                     ]
                 )
                 ->add('person', EntityType::class,
@@ -131,7 +135,7 @@ class FamilyChildType extends AbstractType
                 [
                     'label' => 'Comment'   ,
                     'required' => false,
-                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 showChildAdd',
+                    'visible_values' => ['showChildAdd'],
                     'attr' => [
                         'rows' => 5,
                         'class' => 'w-full',
@@ -146,7 +150,7 @@ class FamilyChildType extends AbstractType
             )
             ->add('submit', SubmitType::class,
                 [
-                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 showChildAdd',
+                    'visible_values' => ['showChildAdd'],
                     'label' => 'Submit',
                 ]
             )

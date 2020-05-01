@@ -4,4 +4,4 @@ framework:
         default_path: '%kernel.project_dir%/translations'
         fallbacks:
             - en_GB
-        logging: true
+        logging: false

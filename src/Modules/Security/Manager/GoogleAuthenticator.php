@@ -6,7 +6,6 @@ use App\Modules\People\Entity\Person;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Provider\SettingProvider;
 use App\Provider\ProviderFactory;
-use App\Util\EntityHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -77,6 +76,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
      * @param MessageManager $messageManager
      * @param LoggerInterface $logger
      * @param SecurityUserProvider $provider
+     * @param RequestStack $request
+     * @param ProviderFactory $factory
      */
 	public function __construct(
 	    RouterInterface $router,
@@ -98,8 +99,6 @@ class GoogleAuthenticator implements AuthenticatorInterface
             $this->getClient()->setLogger($logger);
         }
 	}
-
-
 
     /**
      * getCredentials

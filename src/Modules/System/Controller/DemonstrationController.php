@@ -17,7 +17,6 @@ namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Modules\System\Manager\DemoDataManager;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,9 +28,9 @@ class DemonstrationController extends AbstractPageController
     /**
      * load
      * @param DemoDataManager $manager
-     * @Route("/demonstration/load/", name="demonstration_load")
+     * @Route("/demonstration/load/{raw_page}", name="demonstration_load")
      */
-    public function load(DemoDataManager $manager)
+    public function load(DemoDataManager $manager, string $raw_page = 'true')
     {
         $manager->execute();
 

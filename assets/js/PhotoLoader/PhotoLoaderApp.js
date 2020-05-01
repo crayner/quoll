@@ -23,7 +23,6 @@ export default class PhotoLoaderApp extends Component {
             chosen: {},
             messages: [],
         }
-        console.log(this)
     }
 
     addMessage(message, status)

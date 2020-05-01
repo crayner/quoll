@@ -146,9 +146,9 @@ class FamilyController extends AbstractPageController
         $panel = new Panel('General', 'People');
         $container->addForm('General', $form->createView())->addPanel($panel);
 
-        $childrenPagination->setContent(FamilyManager::getChildren($family, true))->setPageMax(25)->setTargetElement('pagination');
+        $childrenPagination->setContent(FamilyManager::getChildren($family))->setPageMax(25)->setTargetElement('pagination');
         $child = new FamilyChild($family);
-        $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_child_add', ['family' => $family->getId() ?: 0]), 'postFormContent' => $childrenPagination->toArray()]);
+        $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ?: 0]), 'postFormContent' => $childrenPagination->toArray()]);
 
         $panel = new Panel('Students', 'People');
         $container->addPanel($panel->setDisabled(intval($family->getId()) === 0))->addForm('Students', $addChild->createView());
@@ -167,12 +167,13 @@ class FamilyController extends AbstractPageController
         $relationship = $this->createForm(RelationshipsType::class, $relationshipManager->getRelationships($family),
             ['action' => $this->generateUrl('family_relationships', ['family' => $family->getId() ?: 0])]
         );
+
+        $relationshipManager->setFamily($family)->setForm($relationship->createView()->vars['toArray']);
         $panel = new Panel('Relationships', 'People');
-        $content = $this->renderView('people/family/relationships.html.twig', [
-            'relationship' => $relationship->createView(),
-            'family' => $family,
-        ]);
-        $container->addPanel($panel->setDisabled(intval($family->getId()) === 0)->setContent($content));
+        $panel->setSpecial($relationshipManager)
+            ->setDisabled(intval($family->getId()) === 0);
+
+        $container->addPanel($panel);
 
         $manager->setReturnRoute($this->generateUrl('family_list'));
         $manager->addContainer($container)->buildContainers();
@@ -185,11 +186,49 @@ class FamilyController extends AbstractPageController
             );
     }
 
+
     /**
-     * @Route("/", name="family_child_add")
-     * @Route("/", name="family_adult_add")
-     * @Route("/", name="family_relationships")
-     * @Route("/", name="family_adult_sort")
+     * familyManage
+     * @Route("/family/{family}/relationships/",name="family_relationships", methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @param Family $family
+     * @param FamilyRelationshipManager $manager
+     * @return JsonResponse
      */
-    public function stiff(){}
+    public function familyRelationships(Family $family, FamilyRelationshipManager $manager)
+    {
+        $content = json_decode($this->getPageManager()->getRequest()->getContent(), true);
+        $form = $this->createForm(RelationshipsType::class, $manager->getRelationships($family),
+            ['action' => $this->generateUrl('family_relationships', ['family' => $family->getId() ?: 0])]
+        );
+
+        $form->submit($content);
+
+        if ($form->isValid())
+            $data = $manager->handleRequest($content, $family, $form);
+        else {
+            $manager->setFamily($family);
+            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+        }
+
+        $manager->setForm($form->createView()->vars['toArray']);
+
+        $data['special'] = $manager->toArray();
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/", name="family_adult_add")
+     * @Route("/", name="family_adult_edit")
+     * @Route("/", name="family_adult_sort")
+     * @Route("/", name="family_adult_remove")
+     * @Route("/", name="family_delete")
+     * @Route("/", name="family_student_edit")
+     * @Route("/", name="family_student_add")
+     * @Route("/", name="family_student_remove")
+     */
+    public function stiff(){
+        return new Response('<h3>Nothing to see here.</h3>');
+    }
 }

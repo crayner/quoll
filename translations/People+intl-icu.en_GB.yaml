@@ -123,6 +123,12 @@ family:
         step-father: Step Father
         step-mother: Step Mother
         uncle: Uncle
+    status:
+        de facto: De Facto
+        divorced: Divorced
+        married: Married
+        other: Other
+        separated: Separated
 person:
     address:
         warning: '<div class="warning">Address information for an individual only needs to be set under the following conditions:<ol><li>If the person is not in a family.</li><li>If the person`s family does not have a home address set.</li><li>If the person needs an address in addition to their family`s home address.</li></ol></div>'
@@ -220,3 +226,60 @@ Children: Children
 Manage Families: Manage Families
 Name, Adults & Students: Name, Adults & Students
 Relationship Status: Relationship Status
+Access data on family members?: Access data on family members?
+Add Adult / Guardian: Add Adult / Guardian
+Add Student: Add Student
+Adult's Name: Adult's Name
+Change Password: Change Password
+Comment: Comment
+Contact Priority: Contact Priority
+Contact by Email: Contact by Email
+Contact by Email?: Contact by Email?
+Contact by Mail: Contact by Mail
+Contact by Mail?: Contact by Mail?
+Contact by Phone: Contact by Phone
+Contact by SMS: Contact by SMS
+Contact by SMS?: Contact by SMS?
+Contact by phone call?: Contact by phone call?
+Data Access: Data Access
+Data Access?: Data Access?
+Delete: Delete
+Edit Family: Edit Family
+Edit: Edit
+Family Name: Family Name
+Formal Family Name: Formal Family Name
+General Information: General Information
+General: General
+Home Language - Primary: Home Language - Primary
+Home Language - Secondary: Home Language - Secondary
+Receive non-emergency SMS messages from school?: Receive non-emergency SMS messages from school?
+Receive non-emergency emails from school?: Receive non-emergency emails from school?
+Receive non-emergency phone calls from school?: Receive non-emergency phone calls from school?
+Receive postage mail from school?: Receive postage mail from school?
+Relationships: Relationships
+Remove Child from Family: Remove Child from Family
+Remove adult from family: Remove adult from family
+Residential Address (Country): Residential Address (Country)
+Residential Address (District): Residential Address (District)
+Residential Address: Residential Address
+Roll Group: Roll Group
+"Student's Name": "Student's Name"
+Students: Students
+Suburb, Town, City, State (Postcode): Suburb, Town, City, State (Postcode)
+The order in which school should contact family members.: The order in which school should contact family members.
+Unit, Building & Street: Unit, Building & Street
+Used to address correspondence sent to the parents/guardians of this family.: Used to address correspondence sent to the parents/guardians of this family.
+contact_priority_logic: Logic exists to try and ensure that there is always one and only one parent with Contact Priority set to 1. This may result in values being set which are not exactly what you chose.
+'{name}': '{name}'
+Add Adult to family: Add Adult to Family
+Add student to family: Add Student to Family
+Edit Adult / Guardian: Edit Adult / Guardian
+Edit Adult in Family: Edit Adult in Family
+Edit Personal Details: Edit Personal Details
+Edit Student in Family: Edit Student in Family
+Edit Student: Edit Student
+'Family name: {name}': 'Family name: {name}'
+Left: Left
+Remove Student from Family: Remove Student from Family
+of {name}: of {name}
+'{name} is the': '{name} is the'

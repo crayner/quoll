@@ -122,17 +122,12 @@ class FamilyManager
      * @param bool $asArray
      * @return array
      */
-    public static function getAdults(Family $family, bool $asArray = false): array
+    public static function getAdults(Family $family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyAdult::class)->findByFamily($family, $asArray);
-        if ($asArray) {
-            foreach($result as $q=>$adult) {
-                $adult['personType'] = 'Parent';
-                $adult['fullName'] = PersonNameManager::formatName($adult, ['style' => 'formal']);
-                $adult['status'] = TranslationHelper::translate($adult['status'], [], 'UserAdmin');
-                $result[$q] = $adult;
-            }
-        }
+        $result = ProviderFactory::getRepository(FamilyAdult::class)->findByFamily($family);
+        if ($asArray)
+            foreach($result as $q=>$adult)
+                $result[$q] = $adult->toArray();
         return $result;
     }
 
@@ -142,21 +137,12 @@ class FamilyManager
      * @param bool $asArray
      * @return array
      */
-    public static function getChildren($family, bool $asArray = false): array
+    public static function getChildren($family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyChild::class)->findByFamily($family, $asArray);
-        if ($asArray) {
-            foreach($result as $q=>$child) {
-                $child['personType'] = 'Student';
-                $child['fullName'] = PersonNameManager::formatName($child, ['style' => 'long', 'preferredName' => false]);
-                if ($family instanceof Family)
-                    $child['roll'] = StudentHelper::getCurrentRollGroup($child['person']);
-                $child['status'] = TranslationHelper::translate($child['status'], [], 'UserAdmin');
-                $child['photo'] = ImageHelper::getAbsoluteImageURL('File', $child['photo'] ?: '/build/static/DefaultPerson.png');
-
-                $result[$q] = $child;
-            }
-        }
+        $result = ProviderFactory::getRepository(FamilyChild::class)->findByFamily($family);
+        if ($asArray)
+            foreach($result as $q=>$child)
+                $result[$q] = $child->toArray();
         return $result;
     }
 

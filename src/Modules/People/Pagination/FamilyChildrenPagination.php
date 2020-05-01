@@ -46,7 +46,7 @@ class FamilyChildrenPagination extends AbstractPaginationManager
         $column->setLabel('Name')
             ->setContentKey(['fullName'])
             ->setContentType('link')
-            ->setOptions(['route' => 'person_edit', 'route_options' => ['person' => 'person']])
+            ->setOptions(['route' => 'person_edit', 'route_options' => ['person' => 'person_id'], 'title' => TranslationHelper::translate('Edit Personal Details')])
             ->setSort(true)
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
@@ -73,7 +73,7 @@ class FamilyChildrenPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $action = new PaginationAction();
-        $action->setTitle('Edit')
+        $action->setTitle('Edit Student in family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-700')
@@ -82,7 +82,7 @@ class FamilyChildrenPagination extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
-        $action->setTitle('Remove Child from Family')
+        $action->setTitle('Remove Student from Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-700')
@@ -92,12 +92,12 @@ class FamilyChildrenPagination extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
-        $action->setTitle('Change Password')
+        $action->setTitle('Reset Password')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-700')
             ->setRoute('person_reset_password')
-            ->setRouteParams(['person' => 'person']);
+            ->setRouteParams(['person' => 'person_id']);
         $row->addAction($action);
 
         $this->setRow($row);

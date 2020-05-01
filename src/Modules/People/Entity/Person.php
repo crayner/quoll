@@ -2790,10 +2790,11 @@ class Person implements EntityInterface
 
     /**
      * formatName
-     * @param bool|array $preferredName
+     * @param bool|array $options
      * @param bool $reverse
      * @param bool $informal
      * @param bool $initial
+     * @param bool $title
      * @return string
      */
     public function formatName($options = true, bool $reverse = false, bool $informal = false, bool $initial = false, bool $title = false): string
@@ -3085,7 +3086,7 @@ class Person implements EntityInterface
     public function toArray(?string $name = NULL): array
     {
         return [
-            'fullName' => $this->formatName(['informal' => true, 'reverse' => true, 'style' => 'long']),
+            'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
             'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getImage240()),
             'status' => TranslationHelper::translate($this->getStatus()),
             '_status' => $this->getStatus(),

@@ -73,11 +73,9 @@ class ToggleType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if (false === $options['visible_by_choice']) {
-            $view->vars['visible_by_choice'] = $options['visible_by_choice'];
-            $view->vars['visible_values'] = [];
-        } else {
-            $view->vars['visible_by_choice'] = $options['visible_by_choice'];
+        $view->vars['visible_by_choice'] = $options['visible_by_choice'];
+        $view->vars['visible_values'] = $options['visible_values'];
+        if (is_string($options['visible_by_choice'])) {
             $view->vars['choices'] = [
                 'Y' => ['data' => $options['visible_by_choice'], 'value' => 'Y', 'label' => TranslationHelper::translate('Yes', [], 'messages')],
                 'N' => ['value' => 'N', 'data' => 'N', 'label' => TranslationHelper::translate('No', [], 'messages')],

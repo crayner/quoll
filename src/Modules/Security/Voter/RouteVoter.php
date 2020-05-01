@@ -15,6 +15,7 @@
 
 namespace App\Modules\Security\Voter;
 
+use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use Psr\Log\LoggerInterface;
@@ -86,9 +87,12 @@ class RouteVoter extends RoleHierarchyVoter
             if ($result === VoterInterface::ACCESS_ABSTAIN)
                 $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, $action->getRole()), $action);
 
-            if ($result === VoterInterface::ACCESS_DENIED)
-                $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $route), $action);
-
+            if ($result === VoterInterface::ACCESS_DENIED) {
+                if ($token->getUser() instanceof SecurityUser)
+                    $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $route), [$action]);
+                else
+                    $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', 'anon.', $route), [$action]);
+            }
             return $result;
         }
         return VoterInterface::ACCESS_ABSTAIN;

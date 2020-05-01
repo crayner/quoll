@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PhotoLoaderApp from "../PhotoLoader/PhotoLoaderApp"
 import PermissionApp from "../Permission/PermissionApp"
+import RelationshipApp from '../Family/RelationshipApp'
 
 export default class SpecialApp extends Component {
     constructor (props) {
@@ -23,6 +24,8 @@ export default class SpecialApp extends Component {
             result.push(<PhotoLoaderApp {...this.content} key={'photo_importer'} />)
         if (this.name === 'permission_manager')
             result.push(<PermissionApp {...this.content} key={'permission_manager'} />)
+        if (this.name === 'family_relationship_manager')
+            result.push(<RelationshipApp {...this.content} key={'family_relationship_manager'} />)
         return result
     }
 

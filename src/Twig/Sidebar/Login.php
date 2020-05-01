@@ -74,6 +74,10 @@ class Login implements SidebarContentInterface
         ];
     }
 
+    /**
+     * getGoogleOAuth
+     * @return array
+     */
     private function getGoogleOAuth(): array
     {
         return [

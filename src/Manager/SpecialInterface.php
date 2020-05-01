@@ -26,4 +26,10 @@ interface SpecialInterface
      * @return string
      */
     public function getName(): string;
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array;
 }

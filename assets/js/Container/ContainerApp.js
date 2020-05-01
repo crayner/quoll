@@ -33,7 +33,6 @@ import {isEmpty} from "../component/isEmpty"
 export default class ContainerApp extends Component {
     constructor (props) {
         super(props)
-        this.panels = props.panels ? props.panels : {}
         this.content = props.content ? props.content : null
         this.returnRoute = props.returnRoute
         this.addElementRoute = props.addElementRoute
@@ -41,13 +40,6 @@ export default class ContainerApp extends Component {
         this.actionRoute = props.actionRoute
         this.showSubmitButton = props.showSubmitButton ? props.showSubmitButton : false
         this.hideSingleFormWarning = props.hideSingleFormWarning
-
-        if (Object.keys(this.panels).length === 0 && this.content !== null) {
-            this.panels['default'] = {}
-            this.panels.default['name'] = 'default'
-            this.panels.default['disabled'] = true
-            this.panels.default['content'] = this.content
-        }
 
         this.functions = {
             translate: this.translate.bind(this),
@@ -67,9 +59,17 @@ export default class ContainerApp extends Component {
             addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
             toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this),
             handleAddClick: props.functions.handleAddClick,
+            replaceSpecialContent: this.replaceSpecialContent.bind(this),
             getContent: props.functions.getContent
         }
         this.contentManager = this.contentManager.bind(this)
+
+        if (Object.keys(props.panels).length === 0 && this.content !== null) {
+            props.panels['default'] = {}
+            props.panels.default['name'] = 'default'
+            props.panels.default['disabled'] = true
+            props.panels.default['content'] = this.content
+        }
 
         this.state = {
             selectedPanel: props.selectedPanel,
@@ -77,7 +77,9 @@ export default class ContainerApp extends Component {
             panelErrors: {},
             submit: false,
             content: {},
+            panels: props.panels ? props.panels : {}
         }
+
         this.formNames = {}
         this.submit = {}
         this.expandedAllNoneChecked = {}
@@ -138,7 +140,7 @@ export default class ContainerApp extends Component {
     {
         let selectedPanel = this.state.selectedPanel
         let i = 0
-        Object.keys(this.panels).map(key => {
+        Object.keys(this.state.panels).map(key => {
             if (i === tabIndex)
                 selectedPanel = key
             i++
@@ -367,6 +369,23 @@ export default class ContainerApp extends Component {
         }
     }
 
+    replaceSpecialContent(name, content)
+    {
+        let panels = {...this.state.panels}
+        if (typeof panels[name] === 'object' && typeof panels[name].special === 'object') {
+            let special = {...panels[name].special}
+            Object.keys(content).map(key => {
+                if (typeof special[key] !== 'undefined') {
+                    Object.assign(special[key], content[key])
+                }
+            })
+            Object.assign(panels[name].special, {...special})
+            this.setState({
+                panels: {...panels}
+            })
+        }
+    }
+
     addElement(form) {
         const uuidv4 = require('uuid/v4')
         let id = uuidv4()
@@ -475,7 +494,7 @@ export default class ContainerApp extends Component {
             <section>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 {getControlButtons(this.returnRoute,this.addElementRoute,this.functions)}
-                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
+                <PanelApp panels={this.state.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
             </section>
         )
     }

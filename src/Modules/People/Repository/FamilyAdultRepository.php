@@ -129,7 +129,7 @@ class FamilyAdultRepository extends ServiceEntityRepository
             return $query->select(['a.comment','a.contactPriority','a.contactSMS AS sms','a.contactMail AS mail','a.contactEmail AS email','a.contactCall AS phone','a.id AS adult_id','a.childDataAccess', 'p.status', 'p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS family_id', 'p.id AS person', 'a.id'])
                 ->getQuery()
                 ->getResult();
-        return $query->select(['a','p', 's'])
+        return $query->select(['a','p','s'])
             ->leftJoin('p.staff', 's')
             ->getQuery()
             ->getResult();

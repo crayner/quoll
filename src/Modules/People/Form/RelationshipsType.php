@@ -15,9 +15,10 @@
 
 namespace App\Modules\People\Form;
 
-use App\Modules\People\Form\FamilyRelationshipType;
+use App\Form\Type\ReactCollectionType;
+use App\Form\Type\ReactFormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,12 +51,13 @@ class RelationshipsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('relationships', CollectionType::class,
+            ->add('relationships', ReactCollectionType::class,
                 [
                     'entry_type' => FamilyRelationshipType::class,
                     'allow_add' => false,
                     'allow_delete' => false,
                     'data' => $options['data'],
+                    'element_delete_route' => false,
                 ]
             )
             ->add('submit', SubmitType::class,
@@ -76,5 +78,14 @@ class RelationshipsType extends AbstractType
     public function getBlockPrefix()
     {
         return 'family_relationships';
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

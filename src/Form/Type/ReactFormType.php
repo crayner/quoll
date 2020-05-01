@@ -16,7 +16,6 @@
 namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
-use App\Form\Extension\ChoiceTranslations;
 use App\Manager\EntityInterface;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
@@ -273,7 +272,7 @@ class ReactFormType extends AbstractType
             if (isset($view->vars['prototype']))
                 $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
             $vars['collection_key'] = uniqid('collection', true);
-            $vars['header_row'] = $view->vars['header_row'];
+            $vars['header_row'] = $view->vars['header_row'] ;
             $vars['allow_delete'] = $view->vars['allow_delete'];
             $vars['allow_add'] = $view->vars['allow_add'];
             $vars['element_delete_route'] = $view->vars['element_delete_route'];

@@ -1,0 +1,5 @@
+empty_count: 1
+associated:
+    person: 'App\Modules\People\Entity\Person'
+constants:
+    biographicalGroupingPriority: 0

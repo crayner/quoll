@@ -16,6 +16,8 @@
 namespace App\Container;
 
 use App\Manager\PaginationInterface;
+use App\Manager\SpecialInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Class Panel
@@ -67,6 +69,11 @@ class Panel
      * @var PaginationInterface
      */
     private $pagination;
+
+    /**
+     * @var SpecialInterface|null
+     */
+    private $special;
 
     /**
      * Panel constructor.
@@ -160,6 +167,7 @@ class Panel
             'preContent' => $this->getPreContent(),
             'postContent' => $this->getPostContent(),
             'pagination' => $this->getPagination() ? $this->getPagination()->toArray() : [],
+            'special' => $this->getSpecial() ? $this->getSpecial()->toArray() : null,
         ];
 
         return $result;
@@ -290,4 +298,25 @@ class Panel
         $this->pagination = $pagination;
         return $this;
     }
+
+    /**
+     * @return SpecialInterface|null
+     */
+    public function getSpecial(): ?SpecialInterface
+    {
+        return $this->special;
+    }
+
+    /**
+     * Special.
+     *
+     * @param SpecialInterface|null $special
+     * @return Panel
+     */
+    public function setSpecial(?SpecialInterface $special): Panel
+    {
+        $this->special = $special;
+        return $this;
+    }
+
 }

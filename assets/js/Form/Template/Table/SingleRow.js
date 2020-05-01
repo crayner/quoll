@@ -15,7 +15,12 @@ export default function SingleRow(props) {
     if (form.column_attr === false && columns > 1) form.column_attr = {}
     if (columns > 1) form.column_attr.colSpan = columns
 
-    let row_attr = rowAttr(form, 'flex flex-col sm:flex-row justify-between content-center p-0')
+    let row_class = 'flex flex-col sm:flex-row justify-between content-center p-0'
+    if (form.row_style === 'hidden') {
+        row_class = 'flex flex-col sm:flex-row justify-between content-center p-0 hidden'
+    }
+
+    let row_attr = rowAttr(form, row_class)
     let column_attr = columnAttr(form, 'flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0')
 
     return (<tr {...row_attr}>

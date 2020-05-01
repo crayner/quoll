@@ -13,6 +13,7 @@
 namespace App\Modules\Timetable\Entity;
 
 use App\Manager\EntityInterface;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\Facility;
 use App\Util\EntityHelper;
 use Doctrine\ORM\Mapping as ORM;
