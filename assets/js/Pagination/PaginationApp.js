@@ -140,6 +140,15 @@ export default class PaginationApp extends Component {
                         results: result,
                         filteredContent: this.content
                     })
+                    this.setInitialFilter()
+
+                    if (this.initialSearch !== '') {
+                        let x = {}
+                        x.target = {}
+                        x.target.value = this.initialSearch
+                        this.changeSearch(x)
+                    }
+
                 } else {
                     this.setState({
                         messages: [data]

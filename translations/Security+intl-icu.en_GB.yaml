@@ -27,6 +27,7 @@ Current Password: Current Password
 New Password: New Password
 Reset Password: Reset Password
 Submit: Submit
+role_route_error: 'The route "{route}" has not been entered into the Action table.'
 Your request failed due to incorrect current password.: Your request failed due to incorrect current password.
 The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
 The password must contain as least one number.: The password must contain as least one number.

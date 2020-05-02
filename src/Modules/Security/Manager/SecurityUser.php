@@ -403,14 +403,14 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
 
     /**
      * formatName
-     * @param bool $preferredName
+     * @param bool|array $preferredName
      * @param bool $reverse
      * @param bool $informal
      * @param bool $initial
      * @return string
      * @throws \Exception
      */
-    public function formatName(bool $preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false)
+    public function formatName($preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false)
     {
         return UserHelper::getCurrentUser()->formatName($preferredName, $reverse, $informal, $initial);
     }

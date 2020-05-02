@@ -49,7 +49,7 @@ class HomeController extends AbstractPageController
                 ]
             );
 
-        if ($timeout === 'true')
+        if ($timeout !== '')
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
         $sidebar = $pageManager->getSidebar();

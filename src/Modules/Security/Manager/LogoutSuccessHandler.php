@@ -67,7 +67,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
         $query = [];
         if ($request->query->has('timeout') && $request->query->get('timeout') === 'true')
         {
-            $query['timeout'] = 'true';
+            $query['timeout'] = 'timeout';
         }
 
 		return new RedirectResponse($this->router->generate('home', $query));

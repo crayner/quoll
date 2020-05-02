@@ -88,7 +88,7 @@ class FamilyChildrenPagination extends AbstractPaginationManager
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-700')
             ->setRoute('family_student_remove')
             ->setOnClick('areYouSure')
-            ->setRouteParams(['family' => 'family_id', 'child' => 'child_id']);
+            ->setRouteParams(['family' => 'family_id', 'student' => 'child_id']);
         $row->addAction($action);
 
         $action = new PaginationAction();

@@ -1,5 +1,7 @@
 'use strict'
 
+import { openUrl } from '../Container/ContainerFunctions'
+
 export function fetchJson(url, options, locale) {
 
     var headers = {}
@@ -45,8 +47,15 @@ export function fetchJson(url, options, locale) {
 }
 
 function checkStatus(response) {
+
     if (response.status >= 200 && response.status < 400) {
         return response;
+    }
+
+    if (response.status === 403) {
+        let host = window.location.protocol + '//' + window.location.hostname
+        let route = btoa(response.url)
+        openUrl(host + '/route/' + route + '/error/', '_self')
     }
 
     const error = new Error(response.statusText);

@@ -15,6 +15,7 @@
 
 namespace App\Modules\Security\Voter;
 
+use App\Modules\Security\Exception\RoleRouteException;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
@@ -72,8 +73,9 @@ class RouteVoter extends RoleHierarchyVoter
             $route = $this->getRequest()->attributes->get('_route');
 
             if (!$action instanceof Action) {
-                $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied as the ACTION was not set correctly.', $token->getUser()->formatName(),
+                $this->logger->warning(sprintf('The user "%s" attempted to access the route "%s" and was denied as the ACTION was not set correctly.', $token->getUser()->formatName(['title' => false]),
                 $route));
+//                throw new RoleRouteException($route);
                 return VoterInterface::ACCESS_DENIED;
             }
 

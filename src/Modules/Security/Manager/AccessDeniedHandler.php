@@ -14,6 +14,7 @@ namespace App\Modules\Security\Manager;
 
 use App\Modules\System\Entity\Action;
 use App\Provider\ProviderFactory;
+use App\Util\ErrorMessageHelper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,15 +35,23 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
      */
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        if ($request->attributes->get('action') === false) {
-            $action = ProviderFactory::getRepository(Action::class)->findOneByRoute($request->attributes->get('_route'));
-            if (!$action) {
-                $request->getSession()->getFlashBag()->add('error', sprintf('The route "%s" is not defined in the action database.', $request->attributes->get('_route')));
-                return new RedirectResponse('/');
+        dump($request->getContentType());
+        if (!$request->attributes->get('action') instanceof Action && $request->getContentType() === 'json') {
+            $route = $request->attributes->get('_route');
+            $action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);
+            if (!$action instanceof Action) {
+
+                $data = [];
+                $data['status'] = 'redirect';
+                $data['check'] = 'Handler';
+
+                $data['redirect'] = sprintf('/route/%s/error/', $route);
+
+                return new JsonResponse($data);
             }
         }
 
-        $request->getSession()->getFlashBag()->add('warning', 'return.error.0');
-        return new RedirectResponse('/');
+        $request->getSession()->getFlashBag()->add('warning', ErrorMessageHelper::getInvalidInputsMessage([]));
+        return new RedirectResponse('/home/');
     }
 }

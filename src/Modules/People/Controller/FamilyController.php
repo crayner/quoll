@@ -56,7 +56,9 @@ class FamilyController extends AbstractPageController
     public function familyManage(FamilyPagination $pagination)
     {
         $pagination->setContent([])
+            ->setStack($this->getPageManager()->getStack())
             ->setAddElementRoute($this->generateUrl('family_add'))
+            ->setStoreFilterURL($this->generateUrl('family_filter_store'))
             ->setContentLoader($this->generateUrl('family_content_loader'));
 
         return $this->getPageManager()->createBreadcrumbs('Manage Families')
@@ -234,11 +236,11 @@ class FamilyController extends AbstractPageController
     {
         $request = $this->getPageManager()->getRequest();
         $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
-        if ($request->get('_route') === 'family_adult_add') {
+        if (is_null($adult) || $request->get('_route') === 'family_adult_add') {
             $adult = new FamilyAdult($family);
             $action = $this->generateUrl('family_adult_add', ['family' => $family->getId()]);
         }
-        dump($adult);
+
         $form = $this->createForm(FamilyAdultType::class, $adult, ['action' => $action]);
 
         if ($request->getContent() !== '') {
@@ -338,12 +340,120 @@ class FamilyController extends AbstractPageController
     }
 
     /**
-     * @Route("/", name="family_delete")
-     * @Route("/", name="family_student_edit")
-     * @Route("/", name="family_student_add")
-     * @Route("/", name="family_student_remove")
+     * familyStudentEdit
+     * @param Family $family
+     * @param ContainerManager $manager
+     * @param FamilyChild|null $student
+     * @return JsonResponse
+     * @Route("/family/{family}/student/{student}/edit/",name="family_student_edit")
+     * @Route("/family/{family}/student/add/",name="family_student_add")
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function stiff(){
-        return new Response('<h3>Nothing to see here.</h3>');
+    public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyChild $student = null)
+    {
+        $request = $this->getPageManager()->getRequest();
+
+        $action = $this->generateUrl('family_student_edit', ['family' => $family->getId(), 'student' => $student->getId()]);
+        if (is_null($student) || $request->get('_route') === 'family_student_add') {
+            $student = new FamilyChild($family);
+            $action = $this->generateUrl('family_student_add', ['family' => $family->getId()]);
+        }
+
+        $form = $this->createForm(FamilyChildType::class, $student, ['action' => $action]);
+
+        if ($request->getContent() !== '')
+        {
+            $content = json_decode($request->getContent(), true);
+            $form->submit($content);
+dump($content,$student,$form);
+            if ($form->isValid()) {
+                dump($content,$student,$form);
+                $data = ProviderFactory::create(FamilyChild::class)->persistFlush($student, []);
+
+                $manager->singlePanel($form->createView());
+                $data['form'] = $manager->getFormFromContainer();
+                if ($data['status'] === 'success') {
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']);
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
+                }
+                return new JsonResponse($data, 200);
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $manager->singlePanel($form->createView());
+                $data['form'] = $manager->getFormFromContainer();
+                return new JsonResponse($data, 200);
+            }
+        }
+        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']))->singlePanel($form->createView());
+
+        return $this->getPageManager()->createBreadcrumbs($student->getId() > 0 ? 'Edit Student' : 'Add Student',
+            [
+                ['uri' => 'family_list', 'name' => 'Manage Families'],
+                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'Students'] , 'name' => 'Edit Family']
+            ]
+        )
+            ->render(
+                [
+                    'containers' => $manager->getBuiltContainers(),
+                ]
+            );
+    }
+
+
+    /**
+     * familyStudentRemove
+     * @Route("/family/{family}/remove/{student}/student/",name="family_student_remove")
+     * @IsGranted("ROLE_ROUTE")
+     * @param Family $family
+     * @param FamilyChild $student
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function familyStudentRemove(Family $family, FamilyChild $student)
+    {
+        $request = $this->getPageManager()->getRequest();
+        if ($student->getFamily()->isEqualTo($family)) {
+
+            $data = ProviderFactory::create(FamilyChild::class)->remove($student, []);
+
+            $messages = array_unique($data['errors'], SORT_REGULAR);
+            foreach($messages as $message)
+                $request->getSession()->getBag('flashes')->add($message['class'], $message['message']);
+        } else {
+            $request->getSession()->getBag('flashes')->add('error', ['return.error.1',[],'messages']);
+        }
+
+        return $this->redirectToRoute('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']);
+    }
+
+    /**
+     * familyDelete
+     * @Route("/family/{family}/delete/",name="family_delete")
+     * @IsGranted("ROLE_ROUTE")
+     * @param Family $family
+     * @param FamilyManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function familyDelete(Family $family, FamilyManager $manager)
+    {
+        $manager->deleteFamily($family, $this->getRequest()->getSession()->getFlashBag());
+
+        return $this->redirectToRoute('family_list');
+    }
+
+    /**
+     * Family Filter Store
+     * @Route("/family/filter/store/",name="family_filter_store")
+     * @param FamilyPagination $pagination
+     * @return JsonResponse
+     */
+    public function familyFilterStore(FamilyPagination $pagination)
+    {
+        if ($this->getPageManager()->getRequest()->getContent() !== '') {
+            $filter = json_decode($this->getPageManager()->getRequest()->getContent(), true);
+            $pagination->setStack($this->getPageManager()->getStack())
+                ->writeFilter($filter);
+        }
+        return new JsonResponse([]);
     }
 }

@@ -112,14 +112,15 @@ class FamilyChildType extends AbstractType
                     [
                         'label' => 'Student\'s Name',
                         'class' => Person::class,
-                        'choice_label' => 'fullName',
+                        'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
                         'query_builder' => function(EntityRepository $er) {
                             return $er->createQueryBuilder('p')
                                 ->select(['p','s'])
-                                ->leftjoin('p.studentEnrolments','se')
                                 ->leftJoin('p.staff', 's')
-                                ->where('se.id IS NOT NULL')
+                                ->where('p.primaryRole = :role')
+                                ->orWhere('p.allRoles LIKE :role1')
+                                ->setParameters(['role' => 'ROLE_STUDENT', 'role1' => '%ROLE_STUDENT%'])
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');
