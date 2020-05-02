@@ -283,3 +283,30 @@ Left: Left
 Remove Student from Family: Remove Student from Family
 of {name}: of {name}
 '{name} is the': '{name} is the'
+Are primary email addresses required to be unique?: Are primary email addresses required to be unique?
+Comma-separated list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.: Choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.
+Comma-separated list of ethnicities available in system: Ethnicities available in system
+Comma-separated list of nationalities available in system. If blank, system will default to list of countries: Nationalities available in system. If blank, system will default to list of countries
+Comma-separated list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.: Options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.
+Comma-separated list of reasons for departure from school. If blank, user can enter any text.: Reasons for departure from school. If blank, user can enter any text.
+Comma-separated list of religions available in system: Religions available in system
+Comma-separated list of residency status available in system. If blank, system will allow text input: Residency status available in system. If blank, system will allow text input
+Day-Type Options: Day-Type Options
+Day-Type Text: Day-Type Text
+Departure Reasons: Departure Reasons
+Descriptive text to accompany image privacy option when shown to users.: Descriptive text to accompany image privacy option when shown to users.
+Edit Adult: Edit Adult
+Explanatory text to include with Day-Type Options.: Explanatory text to include with Day-Type Options.
+Field Values: Field Values
+Nationality: Nationality
+eople Data Options: People Data Options
+People Settings: People Settings
+Privacy Blurb: Privacy Blurb
+Privacy Options: Privacy Options
+Privacy: Privacy
+Religions: Religions
+Residency Status: Residency Status
+Should privacy options be turned on across the system?: Should privacy options be turned on across the system?
+Should users be allowed to set their own personal backgrounds?: Should users be allowed to set their own personal backgrounds?
+This value cannot be changed: This value cannot be changed
+Unique Email Address: Unique Email Address

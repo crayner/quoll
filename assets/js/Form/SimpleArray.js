@@ -13,6 +13,8 @@ export default function SimpleArray(props) {
     } = props
 
     let children = []
+    if (typeof form.children !== 'object')
+        form.children = {}
     Object.keys(form.children).map(key => {
         let child = form.children[key]
         children.push(child)

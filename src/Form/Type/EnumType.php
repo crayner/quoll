@@ -30,12 +30,12 @@ class EnumType extends AbstractType
                  'choice_list_prefix' => null,
                  'choice_list_class' => null,
                  'choice_list_method' => null,
-                 'visibleByClass' => false,
+                 'visible_by_choice' => false,
                  'visibleWhen' => null,
                  'values' => [],
              ]
          );
-        $resolver->setAllowedTypes('visibleByClass', ['boolean', 'string']);
+        $resolver->setAllowedTypes('visible_by_choice', ['boolean', 'string']);
         $resolver->setAllowedTypes('visibleWhen', ['string','null']);
     }
 
@@ -64,7 +64,7 @@ class EnumType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['visibleByClass'] = $options['visibleByClass'];
+        $view->vars['visible_by_choice'] = $options['visible_by_choice'];
         $view->vars['visibleWhen'] = $options['visibleWhen'];
         $view->vars['values'] = $options['values'];
     }

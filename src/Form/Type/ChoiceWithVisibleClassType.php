@@ -37,12 +37,12 @@ class ChoiceWithVisibleClassType extends AbstractType
         $resolver->setDefaults(
             [
                 // Translations Prefix
-                'visibleByClass' => false,
+                'visible_by_choice' => false,
                 'visibleWhen' => null,
                 'values' => [],
             ]
         );
-        $resolver->setAllowedTypes('visibleByClass', ['boolean', 'string']);
+        $resolver->setAllowedTypes('visible_by_choice', ['boolean', 'string']);
         $resolver->setAllowedTypes('visibleWhen', ['string','null']);
     }
 
@@ -54,7 +54,7 @@ class ChoiceWithVisibleClassType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['visibleByClass'] = $options['visibleByClass'];
+        $view->vars['visible_by_choice'] = $options['visible_by_choice'];
         $view->vars['visibleWhen'] = $options['visibleWhen'];
         $view->vars['values'] = $options['values'];
     }
