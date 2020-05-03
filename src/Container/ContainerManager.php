@@ -271,6 +271,17 @@ class ContainerManager
     }
 
     /**
+     * setContent
+     * @param string $content
+     */
+    public function setContent(string $content, string $domain = 'messages')
+    {
+        $container = new Container();
+        $container->setContent($content);
+        $this->setTranslationDomain($domain)->addContainer($container)->buildContainers();
+    }
+
+    /**
      * getFormFromContainer
      * @param string $containerName
      * @param string $panelName

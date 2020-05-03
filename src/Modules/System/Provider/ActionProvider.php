@@ -130,15 +130,16 @@ class ActionProvider implements EntityProviderInterface
         $result = $this->getRepository()->findByModule($module);
 
         $categories = [];
-        $names = [];
+        $precedence = [];
         foreach($result as $action)
         {
-            if ($action->isEntrySidebar() && $checker->isGranted($action->getRole()))
-            {
-                if (!key_exists($action->getDisplayName(), $names))
-                {
-                    $categories[$action->getCategory()][] = $action->toArray('module_menu');
-                    $names[$action->getDisplayName()] = true;
+            foreach($action->getRole() as $role) {
+                if ($action->isEntrySidebar() && $checker->isGranted($role)) {
+                    if ((key_exists($action->getDisplayName(), $precedence) && $action->getPrecedence() > $precedence[$action->getDisplayName()])
+                        || !key_exists($action->getDisplayName(), $precedence)) {
+                        $categories[$action->getCategory()][$action->getDisplayName()] = $action->toArray('module_menu');
+                        $precedence[$action->getDisplayName()] = $action->getPrecedence();
+                    }
                 }
             }
         }

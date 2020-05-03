@@ -8,6 +8,7 @@ monolog:
         - 'notification'
         - 'installation'
         - 'translation'
+        - 'page'
     handlers:
         security:
             # log all messages (since debug is the lowest level)
@@ -33,6 +34,12 @@ monolog:
             type:     rotating_file
             path:     '%kernel.logs_dir%/doctrine.%kernel.environment%.log'
             channels: [doctrine]
+            max_files: 7
+        page:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/page.%kernel.environment%.log'
+            channels: [page]
             max_files: 7
         demonstration:
             level:    debug

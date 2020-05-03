@@ -153,8 +153,8 @@ class Action implements EntityInterface
     private $categoryPermissionOther = 'Y';
 
     /**
-     * @var string|null
-     * @ORM\Column(length=32,nullable=true)
+     * @var array|null
+     * @ORM\Column(type="simple_array",nullable=true)
      */
     private $role;
 
@@ -540,9 +540,9 @@ class Action implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getRole(): ?string
+    public function getRole(): ?array
     {
         return $this->role;
     }
@@ -550,10 +550,10 @@ class Action implements EntityInterface
     /**
      * Role.
      *
-     * @param string|null $role
+     * @param array|null $role
      * @return Action
      */
-    public function setRole(?string $role): Action
+    public function setRole(?array $role): Action
     {
         $this->role = $role;
         return $this;

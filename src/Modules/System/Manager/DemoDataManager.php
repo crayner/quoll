@@ -20,7 +20,7 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Entity\Staff;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;

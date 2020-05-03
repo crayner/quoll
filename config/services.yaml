@@ -59,6 +59,10 @@ services:
         arguments:
             $logger: '@monolog.logger.request'
 
+    App\Manager\PageManager:
+        arguments:
+            $logger: '@monolog.logger.page'
+
     App\Modules\Security\Manager\RoleHierarchy:
         decorates: 'security.role_hierarchy'
         arguments:

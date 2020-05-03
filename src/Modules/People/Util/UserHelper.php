@@ -16,7 +16,7 @@
 namespace App\Modules\People\Util;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Entity\Staff;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;

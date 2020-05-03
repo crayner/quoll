@@ -85,21 +85,20 @@ class ActionRepository extends ServiceEntityRepository
             ->where('a.name = :name')
             ->andWhere('a.module = :module')
             ->setParameters(['name' => $name, 'module' => $module])
-            ->orderBy('a.precedence', 'ASC')
+            ->orderBy('a.precedence', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }
 
     /**
-     * findByrouteListModuleRole
+     * findByRouteListModuleRole
      * @param array $criteria
      * @return mixed
      */
-    public function findByrouteListModuleRole(array $criteria)
+    public function findByRouteListModuleRole(array $criteria)
     {
-        $criteria['roleId'] = $criteria['role']->getId();
-        unset($criteria['role']);
+        dd($this);
         $result = $this->createQueryBuilder('a')
             ->leftJoin('a.roles', 'r')
             ->where('a.routeList LIKE :name')
@@ -121,19 +120,30 @@ class ActionRepository extends ServiceEntityRepository
     public function findHighestGroupedAction(string $route, Module $module)
     {
         try {
-            $result = $this->createQueryBuilder('a')
-            ->select('a.name')
-            ->where('a.routeList LIKE :actionName')
-            ->setParameter('actionName', '%'.$route.'%')
-            ->andWhere('a.module = :module')
-            ->setParameter('module', $module)
-            ->andWhere('a.role IN (:currentRoles)')
-            ->setParameter('currentRoles', UserHelper::getCurrentUser()->getAllRoles(), Connection::PARAM_STR_ARRAY)
-            ->orderBy('a.precedence', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-            return $result;
+            $result = null;
+            $roles = UserHelper::getCurrentUser()->getAllRoles();
+            foreach($roles as $role) {
+                $w = $this->createQueryBuilder('a')
+                    ->where('a.routeList LIKE :route')
+                    ->setParameter('route', '%' . $route . '%')
+                    ->andWhere('a.module = :module')
+                    ->setParameter('module', $module)
+                    ->andWhere('a.role LIKE :role')
+                    ->setParameter('role', '%'.$role.'%')
+                    ->orderBy('a.precedence', 'DESC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+                if ($w instanceof Action) {
+                    if ($result === null) {
+                        $result = $w;
+                        continue;
+                    }
+                    if ($w->getPrecedence() > $result->getPrecedence())
+                        $result = $w;
+                }
+            }
+            return $result ? [$result->getName()] : null;
         } catch (NonUniqueResultException | PDOException | \PDOException $e) {
             return null;
         }
@@ -166,7 +176,7 @@ class ActionRepository extends ServiceEntityRepository
     public function findPermissionPagination()
     {
         return $this->createQueryBuilder('a')
-            ->select(['a.name AS actionName','r.id as role','m.name AS moduleName', 'a.id', 'a.categoryPermissionStaff', 'a.categoryPermissionStudent', 'a.categoryPermissionParent', 'a.categoryPermissionOther'])
+            ->select(['a.name AS route','r.id as role','m.name AS moduleName', 'a.id', 'a.categoryPermissionStaff', 'a.categoryPermissionStudent', 'a.categoryPermissionParent', 'a.categoryPermissionOther'])
             ->leftJoin('a.roles', 'r')
             ->leftJoin('a.module', 'm')
             ->orderBy('m.name', 'ASC')

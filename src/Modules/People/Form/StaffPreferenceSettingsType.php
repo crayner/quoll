@@ -16,7 +16,7 @@
 namespace App\Modules\People\Form;
 
 use App\Form\Type\ToggleType;
-use App\Modules\People\Entity\Staff;
+use App\Modules\Staff\Entity\Staff;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

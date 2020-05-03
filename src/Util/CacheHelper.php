@@ -61,17 +61,19 @@ class CacheHelper
      * @param string $name
      * @param int $interval
      * @return bool
-     * @throws \Exception
      */
     public static function isStale(string $name, int $interval = 10): bool
     {
-        if (!self::isCaching())
-            return true;
-        $interval = $interval + rand(0, $interval) - intval($interval/2);
-        $cacheTime = self::getSession()->get(self::getCacheName($name), null);
-        if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp())
-            return true;
-        return false;
+        try {
+            if (!self::isCaching())
+                return true;
+            $interval = $interval + rand(0, $interval) - intval($interval / 2);
+            $cacheTime = self::getSession()->get(self::getCacheName($name), null);
+            if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp())
+                return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -90,13 +92,16 @@ class CacheHelper
      * @param string $name
      * @param $content
      * @param int $interval
-     * @throws \Exception
      */
     public static function setCacheValue(string $name, $content, int $interval = 10)
     {
         if (self::isCaching()) {
             self::getSession()->set($name, $content);
-            self::getSession()->set(self::getCacheName($name), new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
+            try {
+                self::getSession()->set(self::getCacheName($name), new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
+            } catch (\Exception $e) {
+                self::getSession()->clear(self::getCacheName($name));
+            }
         }
     }
 

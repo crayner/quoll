@@ -501,8 +501,14 @@ export default class ContainerApp extends Component {
 }
 
 ContainerApp.propTypes = {
-    panels: PropTypes.object,
-    forms: PropTypes.object,
+    panels: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]),
+    forms: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]),
     translations: PropTypes.object,
     content: PropTypes.string,
     actionRoute: PropTypes.string,
@@ -512,7 +518,7 @@ ContainerApp.propTypes = {
 }
 
 ContainerApp.defaultProps = {
-    functions: {},
+    panels: {},
     translations: {},
     forms: {},
     returnRoute: '',

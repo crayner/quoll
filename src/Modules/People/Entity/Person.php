@@ -24,9 +24,10 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\Country;
-use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
@@ -2718,7 +2719,7 @@ class Person implements EntityInterface
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="Staff", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff", mappedBy="person")
      */
     private $staff;
 

@@ -10,15 +10,15 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\People\Repository;
+namespace App\Modules\Staff\Repository;
 
-use App\Modules\People\Entity\Staff;
+use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class StaffRepository
- * @package App\Modules\People\Repository
+ * @package App\Modules\Staff\Repository
  */
 class StaffRepository extends ServiceEntityRepository
 {

@@ -76,21 +76,22 @@ class ModuleMenu implements SidebarContentInterface
             $currentModule = $request->attributes->get('module');
             if (CacheHelper::isStale('moduleMenu_'.$currentModule->getName())) {
                 $moduleMenuItems = ProviderFactory::create(Action::class)->moduleMenuItems($currentModule, $this->getChecker());
+                $menuItems = [];
                 foreach ($moduleMenuItems as $category => &$items) {
                     foreach ($items as &$item) {
-                        $item['category'] = $this->translate($item['category'], [], $item['moduleName']);
                         $item['name'] = $this->translate($item['name'], [], $item['moduleName']);
                         $item['active'] = $request->attributes->get('action') ? in_array($request->attributes->get('action')->getEntryRoute(), $item['routeList']) : false;
                         $item['route'] = $item['entryRoute'];
                         $item['url'] = $this->checkURL($item);
                     }
+                    $menuItems[TranslationHelper::translate($category, [], $currentModule->getName())] = $items;
                 }
-                CacheHelper::setCacheValue('moduleMenu_'.$currentModule->getName(), $moduleMenuItems);
+                CacheHelper::setCacheValue('moduleMenu_'.$currentModule->getName(), $menuItems);
             } else {
-                $moduleMenuItems = CacheHelper::getCacheValue('moduleMenu_'.$currentModule->getName());
+                $menuItems = CacheHelper::getCacheValue('moduleMenu_'.$currentModule->getName());
             }
 
-            $data = ['data' => $moduleMenuItems];
+            $data = ['data' => $menuItems];
             $data['showSidebar'] = $this->isShowSidebar();
             $data['trans_module_menu'] = $this->translate('Module Menu', [], 'messages');
             $this->setContent($data);

@@ -38,6 +38,7 @@ use App\Util\UrlGeneratorHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Modules\Security\Util\SecurityHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -168,6 +169,11 @@ class PageManager
     private $moduleMenu;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -183,6 +189,7 @@ class PageManager
      * @param Format $format
      * @param ImageHelper $imageHelper
      * @param UrlGeneratorHelper $urlGeneratorHelper
+     * @param LoggerInterface $logger
      * @param AcademicYearHelper $academicYearHelper
      */
     public function __construct(
@@ -200,6 +207,7 @@ class PageManager
         Format $format,
         ImageHelper $imageHelper,
         UrlGeneratorHelper $urlGeneratorHelper,
+        LoggerInterface $logger,
         AcademicYearHelper $academicYearHelper
     ) {
         $this->stack = $stack;
@@ -214,6 +222,7 @@ class PageManager
         $this->format = $format;
         $this->storage = $storage;
         $this->moduleMenu = $moduleMenu;
+        $this->logger = $logger;
     }
 
     /**
@@ -537,14 +546,20 @@ class PageManager
             return;
         } else if ($controller[0] === 'App' && $controller[1] === 'Modules' && $controller[3] === 'Controller')
             $module = $controller[2];
-        else
+        else {
+            $this->logger->error(sprintf('The page did not find a valid module for the route: %s', $this->getRequest()->attributes->get('_route')), [$controller]);
             throw new MissingModuleException(implode('\\', $controller));
+        }
 
         try {
             if (! $this->getSession()->has('module') ||
                 ! $this->getSession()->get('module') instanceof Module ||
                     $this->getSession()->get('module')->getName() !== $module) {
+                $moduleName = $module;
                 $module = ProviderFactory::getRepository(Module::class)->findOneByName($module);
+                if (!$module)
+                    $this->logger->error(sprintf('The page did not find a valid module for the module name: %s', $moduleName));
+
                 $this->getSession()->set('module', $module ?: false);
             } else if ($this->getSession()->has('module') && $this->getSession()->get('module') instanceof Module)
                 $module = $this->getSession()->get('module');
@@ -568,6 +583,8 @@ class PageManager
                 !$this->getSession()->get('action') instanceof Action ||
                     !in_array($route, $this->getSession()->get('action')->getrouteList())) {
             $action = ProviderFactory::getRepository(Action::class)->findOneByModuleRoute($module, $route);
+            if (!$action)
+                $this->logger->error(sprintf('The action was not found for route %s',$route));
             $this->getSession()->set('action', $action ?: false);
         } else if ($this->getSession()->has('action') && $this->getSession()->get('action') instanceof Action)
             $action = $this->getSession()->get('action');

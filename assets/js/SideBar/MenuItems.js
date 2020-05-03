@@ -2,7 +2,6 @@
 
 import React from "react"
 import PropTypes from 'prop-types'
-import ModuleMenu from "./ModuleMenuApp"
 
 export default function MenuItems(props) {
     const {
@@ -10,7 +9,8 @@ export default function MenuItems(props) {
         getContent
     } = props
 
-    const itemsReturn = items.map((item, key) => {
+    const itemsReturn = Object.keys(items).map(key => {
+        let item = items[key]
         return (<li className="p-0 leading-normal lg:leading-tight" key={key}>
             <a onClick={() => getContent(item.url)} className={item.active ? 'active pointer-hover' : 'pointer-hover' }>{ item.name }</a>
         </li>)
@@ -21,6 +21,6 @@ export default function MenuItems(props) {
 }
 
 MenuItems.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.object.isRequired,
     getContent: PropTypes.func.isRequired,
 }

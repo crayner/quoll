@@ -13,15 +13,15 @@
  * Time: 15:33
  */
 
-namespace App\Modules\People\Provider;
+namespace App\Modules\Staff\Provider;
 
 use App\Manager\Traits\EntityTrait;
-use App\Modules\People\Entity\Staff;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\EntityProviderInterface;
 
 /**
  * Class StaffProvider
- * @package App\Modules\People\Provider
+ * @package App\Modules\Staff\Provider
  */
 class StaffProvider implements EntityProviderInterface
 {

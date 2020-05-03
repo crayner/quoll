@@ -11,17 +11,18 @@
  * Time: 15:27
  */
 
-namespace App\Modules\People\Entity;
+namespace App\Modules\Staff\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Staff
  * @package App\Modules\People\Entity
- * @ORM\Entity(repositoryClass="App\Modules\People\Repository\StaffRepository")
+ * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
  */
 class Staff implements EntityInterface
@@ -38,7 +39,7 @@ class Staff implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="Person", inversedBy="staff")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="staff")
      * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=false)
      */
     private $person;
