@@ -39,7 +39,7 @@ class RouterLoader extends Loader
     public function load($resource, string $type = null)
     {
         if (true === $this->isLoaded)
-            throw new \RuntimeException('Do not add the "kookaburra" loader twice');
+            throw new \RuntimeException('Do not add the "quoll" loader twice');
 
         $routes = new RouteCollection();
         $finder = new Finder();

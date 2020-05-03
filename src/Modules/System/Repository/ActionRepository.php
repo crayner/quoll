@@ -16,6 +16,7 @@ use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -122,13 +123,12 @@ class ActionRepository extends ServiceEntityRepository
         try {
             $result = $this->createQueryBuilder('a')
             ->select('a.name')
-            ->join('a.roles', 'r')
             ->where('a.routeList LIKE :actionName')
             ->setParameter('actionName', '%'.$route.'%')
             ->andWhere('a.module = :module')
             ->setParameter('module', $module)
-            ->andWhere('r.id = :currentRole')
-            ->setParameter('currentRole', UserHelper::getCurrentUser()->getPrimaryRole()->getId())
+            ->andWhere('a.role IN (:currentRoles)')
+            ->setParameter('currentRoles', UserHelper::getCurrentUser()->getAllRoles(), Connection::PARAM_STR_ARRAY)
             ->orderBy('a.precedence', 'DESC')
             ->setMaxResults(1)
             ->getQuery()

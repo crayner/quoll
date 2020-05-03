@@ -53,6 +53,7 @@ class SettingsType extends AbstractType
                 'mapped' => false,
                 'data_class' => null,
                 'settings' => [],
+                'panel' => null,
             ]
         );
     }

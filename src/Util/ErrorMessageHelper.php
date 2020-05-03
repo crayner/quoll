@@ -40,7 +40,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function getInvalidInputsMessage(array $data, bool $translate = false): array
+    public static function getInvalidInputsMessage(array $data = [], bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyInvalidInputsMessage($translate)];
         $data['status'] = 'error';
@@ -64,7 +64,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function getDatabaseErrorMessage(array $data, bool $translate = false): array
+    public static function getDatabaseErrorMessage(array $data = [], bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyDatabaseErrorMessage($translate)];
         $data['status'] = 'error';
@@ -88,7 +88,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function getSuccessMessage(array $data, bool $translate = false): array
+    public static function getSuccessMessage(array $data = [], bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'success', 'message' => self::onlySuccessMessage($translate)];
         $data['status'] = 'success';
@@ -100,7 +100,7 @@ class ErrorMessageHelper
      * @param array $data
      * @return array
      */
-    public static function getInvalidTokenMessage(array $data, bool $translate = false): array
+    public static function getInvalidTokenMessage(array $data = [], bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.csrf', [], 'messages') : ['return.error.csrf', [], 'messages'])];
         $data['status'] = 'error';
@@ -160,7 +160,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function getFileTransferMessage(array $data, bool $translate = false): array
+    public static function getFileTransferMessage(array $data = [], bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyFileTransferMessage($translate)];
         $data['status'] = 'error';
@@ -188,7 +188,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function getLockedRecordMessage(array $data, string $id, string $class, bool $translate = false): array
+    public static function getLockedRecordMessage(array $data = [], string $id, string $class, bool $translate = false): array
     {
         $data['errors'][] = ['class' => 'warning', 'message' => self::onlyLockedRecordMessage($id, $class, $translate)];
         $data['status'] = 'warning';

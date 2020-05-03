@@ -87,6 +87,7 @@ class PageListener implements EventSubscriberInterface
             return;
 
         $this->pageManager->configurePage();
+
         if (preg_match("#(api)#", $route))
             return;
 

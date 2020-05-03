@@ -31,7 +31,7 @@ export default function HeaderRow(props) {
     })
 
     if (row.actions.length > 0) {
-        columns.push(<th className={'column width1'} key={'actions'}>{row.actionTitle}</th>)
+        columns.push(<th className={'column width1 text-right'} key={'actions'}>{row.actionTitle}</th>)
     }
 
     return (<tr className={'head text-xs'}>{columns}</tr>)

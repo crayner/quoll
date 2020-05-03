@@ -12,6 +12,8 @@
  */
 namespace App\Manager\Traits;
 
+use App\Util\TranslationHelper;
+
 /**
  * Traits BooleanList
  * @package App\Manager\Traits
@@ -54,5 +56,15 @@ trait BooleanList
     private function isTrueOrFalse(string $yesOrNo): bool
     {
         return $yesOrNo === 'Y';
+    }
+
+    /**
+     * getYesNo
+     * @param bool $w
+     * @return string
+     */
+    private static function getYesNo(bool $w): string
+    {
+        return $w ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages');
     }
 }

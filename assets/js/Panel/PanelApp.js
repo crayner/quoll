@@ -16,7 +16,9 @@ export default function PanelApp(props) {
         content
     } = props
 
-    const tabIndex = panels[selectedPanel].index
+    let tabIndex = 0
+    if (typeof panels[selectedPanel] !== 'undefined')
+        tabIndex = panels[selectedPanel].index
 
     if (Object.keys(panels).length === 1) {
         const name = Object.keys(panels)[0]

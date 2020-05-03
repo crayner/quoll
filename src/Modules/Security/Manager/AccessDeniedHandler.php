@@ -35,7 +35,6 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
      */
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        dump($request->getContentType());
         if (!$request->attributes->get('action') instanceof Action && $request->getContentType() === 'json') {
             $route = $request->attributes->get('_route');
             $action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);

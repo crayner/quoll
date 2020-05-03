@@ -69,5 +69,4 @@ class SettingController extends AbstractPageController
         return $this->getPageManager()->createBreadcrumbs('People Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
-
 }

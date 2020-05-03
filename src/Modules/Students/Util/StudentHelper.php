@@ -13,15 +13,16 @@
  * Time: 16:28
  */
 
-namespace App\Modules\People\Util;
+namespace App\Modules\Students\Util;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 
 /**
  * Class StudentHelper
- * @package App\Modules\People\Util
+ * @package App\Modules\Students\Util
  */
 class StudentHelper
 {

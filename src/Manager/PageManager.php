@@ -656,7 +656,11 @@ class PageManager
         foreach($flashBag->All() as $status => $list) { // Read and clear
             foreach ($list as $content) {
                 if (is_array($content)) {
-                    $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
+                    if (key_exists('errors', $content)) {
+                        foreach($content['errors'] as $error)
+                            $messages[] = ['class' => $error['class'], 'message' => TranslationHelper::translate($error['message'][0], $error['message'][1], $error['message'][2])];
+                    } else
+                        $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
                 } else
                     $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content, [], 'messages')];
             }

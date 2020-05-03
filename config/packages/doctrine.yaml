@@ -77,6 +77,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules\Staff\Entity'
                 prefix: 'App\Modules\Staff\Entity'
                 alias: Staff
+            Students:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules\Students\Entity'
+                prefix: 'App\Modules\Students\Entity'
+                alias: Students
             System:
                 is_bundle: false
                 type: annotation
