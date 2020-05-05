@@ -8,20 +8,19 @@
     "packages": [
         {
             "name": "crayner/doctrine-bundle",
-            "version": "1.0.06",
+            "version": "1.0.07",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/doctrine-bundle.git",
-                "reference": "d022f1760fcd1cfdcecd4da5d5aaca44ec3df72f"
+                "reference": "a219bbff62a788655820ae686bb20b21ed84ea90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/doctrine-bundle/zipball/d022f1760fcd1cfdcecd4da5d5aaca44ec3df72f",
-                "reference": "d022f1760fcd1cfdcecd4da5d5aaca44ec3df72f",
+                "url": "https://api.github.com/repos/crayner/doctrine-bundle/zipball/a219bbff62a788655820ae686bb20b21ed84ea90",
+                "reference": "a219bbff62a788655820ae686bb20b21ed84ea90",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "^2.0",
                 "doctrine/orm": "^2.7",
                 "php": "^7.2"
             },
@@ -51,7 +50,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-04-11T04:09:55+00:00"
+            "time": "2020-04-11T04:13:24+00:00"
         },
         {
             "name": "doctrine/annotations",

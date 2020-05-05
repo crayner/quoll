@@ -170,6 +170,8 @@ export default function Widget(props) {
 
     if (form.type === 'date') {
         let value = form.value
+        if (typeof value === 'undefined')
+            value = ''
         if (form.value !== null && typeof form.value === 'object') {
             if (typeof form.value.year !== "undefined")
                 value = ('0000' + form.value.year).slice(-4) + '-' + ('00' + form.value.month).slice(-2) + '-' + ('00' + form.value.day).slice(-2)

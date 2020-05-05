@@ -83,7 +83,7 @@ export default class ContainerApp extends Component {
         this.formNames = {}
         this.submit = {}
         this.expandedAllNoneChecked = {}
-        this.singleForm = (Object.keys(props.forms).length === 1)
+        this.singleForm = (Object.keys(props.forms).length === 1 && Object.keys(props.forms)[0] === 'single')
         this.contentLoaders = props.contentLoader
     }
 

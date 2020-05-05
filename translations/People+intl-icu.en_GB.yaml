@@ -312,4 +312,74 @@ This value cannot be changed: This value cannot be changed
 Unique Email Address: Unique Email Address
 People Data Options: People Data Options
 Student Settings: Student Settings
+Cutoff Date: Cutoff Date
+Data Updater Redirect: Data Updater Redirect
+Data Updater Settings: Data Updater Settings
+Earliest acceptable date when checking if data updates are required.: Earliest acceptable date when checking if data updates are required.
+Field: Field
+Hidden: Hidden
+Other: Other
+Read Only: Read Only
+Required Update Types: Required Update Types
+Required Updates?: Required Updates?
+Required: Required
+Should the data updater highlight updates that are required?: Should the data updater highlight updates that are required?
+Student: Student
+Updater Settings: Updater Settings
+Which type of data updates should be required.: Which type of data updates should be required.
+Which types of users should be redirected to the Data Updater if updates are required.: Which types of users should be redirected to the Data Updater if updates are required.
+address1: Address 1
+address1Country: Address 1 Country
+address1District: Address 1 District
+address2: Address 2
+address2Country: Address 2 Country
+address2District: Address 2 District
+citizenship1: Citizenship 1
+citizenship1Passport: Citizenship 1 Passport
+citizenship2: Citizenship 2
+citizenship2Passport: Citizenship 2 Passport
+countryOfBirth: Country of Birth
+dob: Date of Birth
+email: E-Mail
+emailAlternate: E-Mail Alternate
+emergency1Name: Emergency 1 Name
+emergency1Number1: Emergency 1 Number1
+emergency1Number2: Emergency 1 Number2
+emergency1Relationship: Emergency 1 Relationship
+emergency2Name: Emergency 2 Name
+emergency2Number1: Emergency 2 Number 1
+emergency2Number2: Emergency 2 Number 2
+emergency2Relationship: Emergency 2 Relationship
+employer: Employer
+ethnicity: Ethnicity
+firstName: Given Names
+jobTitle: Job Title
+languageFirst: First Language
+languageSecond: Second Language
+languageThird: Third Language
+nameInCharacters: Name in Characters
+nationalIDCardNumber: National ID Card Number
+never_required: This field cannot be required
+officialName: Official Name
+phone1: Phone 1
+phone2: Phone 2
+phone3: Phone 3
+phone4: Phone 4
+preferredName: Preferred Name
+profession: Profession
+read_only: Read Only
+religion: Religion
+required_fields_header: Required Fields for Personal Updates
+required_fields_help: These required field settings apply to all users, except those who hold the ability to submit a data update request for all users in the system (generally just admins).
+residencyStatus: Residency Status
+surname: Family Name
+title: Title
+updater:
+    bytype:
+        family: Family
+        finance: Finance
+        medical: Medical
+        personal: Personal
+vehicleRegistration: Vehicle Registration
+visaExpiryDate: Visa Expiry Date
 

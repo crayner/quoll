@@ -270,8 +270,13 @@ export function buildFormData(data, form) {
         return form.value
     }
     if (form.type === 'date') {
-        if (typeof form.value.date !== 'undefined')
-            return form.value.date.toString().slice(0,10)
+        if (typeof form.value === 'undefined') {
+            form.value = null
+        } else {
+            console.log(form.value)
+            if (typeof form.value.date !== 'undefined')
+                return form.value.date.toString().slice(0, 10)
+        }
         return form.value
     }
     if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
