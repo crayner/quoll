@@ -13,8 +13,8 @@ export default function LabelHelp(props) {
     let help = []
     let label_attr = labelAttr(form, 'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs')
     if (typeof form.help === 'string') {
-        help.push(<br key={'newLine'}/>)
-        help.push(<span key={'message'} className={'text-xs text-gray-600 italic font-normal mt-1 sm:mt-0'}>{Parser(form.help)}</span>)
+        help.push(<br key={'newLine'} />)
+        help.push(<span key={'message'} className={'text-xs text-gray-600 italic font-normal mt-1 sm:mt-0'} id={form.id + '_help'}>{Parser(form.help)}</span>)
     }
     let required = ''
     if (form.required === true)

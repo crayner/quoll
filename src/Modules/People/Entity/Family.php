@@ -16,6 +16,7 @@ namespace App\Modules\People\Entity;
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\People\Manager\FamilyManager;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,6 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="familySync",columns={"familySync"})},
  *     indexes={@ORM\Index(name="homeAddressDistrict", columns={"homeAddressDistrict"})})
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"familySync"},
+ *     ignoreNull=true
+ * )
+ * @UniqueEntity(fields={"name"})
  */
 class Family implements EntityInterface
 {

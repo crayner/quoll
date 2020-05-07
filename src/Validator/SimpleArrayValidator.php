@@ -52,7 +52,7 @@ class SimpleArrayValidator extends ConstraintValidator
         } catch (\Exception $e) {
             $this->context->buildViolation('The list is not correctly formatted.')
                 ->setTranslationDomain($constraint->transDomain)
-                ->setCode($constraint->code)
+                ->setCode(SimpleArray::SIMPLE_ARRAY_ERROR)
                 ->addViolation();
         }
     }

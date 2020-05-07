@@ -136,7 +136,6 @@ export default class RequiredDataUpdates extends Component {
             {method: 'POST', body: JSON.stringify(data)},
             false)
             .then(data => {
-                console.log(data)
                 this.setState({
                     loading: false,
                     settings: data.settings.settings,

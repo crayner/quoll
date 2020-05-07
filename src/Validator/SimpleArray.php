@@ -23,7 +23,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class SimpleArray extends Constraint
 {
-    public $code = '300285a1-bed2-43e8-bd4d-2c41d4283dd9';
+    const SIMPLE_ARRAY_ERROR = '300285a1-bed2-43e8-bd4d-2c41d4283dd9';
+
+    protected static $errorNames = [
+        self::SIMPLE_ARRAY_ERROR => 'SIMPLE_ARRAY_ERROR',
+    ];
 
     public $transDomain = 'messages';
 

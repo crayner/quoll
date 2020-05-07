@@ -330,6 +330,20 @@ class ReactFormType extends AbstractType
                         }
                     }
                 }
+                foreach ($view->vars['preferred_choices'] as $q => $choice) {
+                    if (!key_exists('translated', $choice->attr)) {
+                        $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                        $choice->attr['translated'] = true;
+                    }
+                    if (isset($choice->choices)) {
+                        foreach ($choice->choices as $e => $w) {
+                            if (!key_exists('translated', $w->attr)) {
+                                $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                                $w->attr['translated'] = true;
+                            }
+                        }
+                    }
+                }
             }
 
             // json_encode will sort if the index is not in order, so some work to do.
@@ -348,6 +362,7 @@ class ReactFormType extends AbstractType
             }
 
             $vars['choices'] = $result;
+            $vars['preferred_choices'] = $view->vars['preferred_choices'];
         }
 
         if (in_array('submit', $view->vars['block_prefixes']))

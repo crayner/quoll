@@ -773,3 +773,7 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+.less32 {
+    width: calc(100% - 32px);
+}

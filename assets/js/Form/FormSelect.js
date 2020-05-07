@@ -17,6 +17,25 @@ export default function FormSelect(props) {
         options.push(<option key={'placeholder'} className={'text-gray-500'}>{form.placeholder}</option>)
     }
 
+    Object.keys(form.preferred_choices).map(choice => {
+        if (typeof form.preferred_choices[choice].choices === 'undefined') {
+            options.push(<option value={form.preferred_choices[choice].value}
+                                 key={form.preferred_choices[choice].value}>{form.preferred_choices[choice].label}</option>)
+            delete form.choices[choice]
+        } else {
+            const groupName = form.preferred_choices[choice].label
+            let subOptions = []
+            Object.keys(form.preferred_choices[choice].choices).map(subChoice => {
+                subOptions.push(<option value={form.preferred_choices[choice].choices[subChoice].value}
+                                        key={form.preferred_choices[choice].choices[subChoice].value}>{form.preferred_choices[choice].choices[subChoice].label}</option>)
+            })
+            options.push(<optgroup key={groupName} label={groupName}>{subOptions}</optgroup>)
+        }
+    })
+    if (Object.keys(form.preferred_choices).length > 0) {
+        options.push(<option key={'bars'}> ---</option>)
+    }
+
     Object.keys(form.choices).map(choice => {
         if (typeof form.choices[choice].choices === 'undefined') {
             options.push(<option value={form.choices[choice].value}
@@ -26,7 +45,7 @@ export default function FormSelect(props) {
             let subOptions = []
             Object.keys(form.choices[choice].choices).map(subChoice => {
                 subOptions.push(<option value={form.choices[choice].choices[subChoice].value}
-                                     key={form.choices[choice].choices[subChoice].value}>{form.choices[choice].choices[subChoice].label}</option>)
+                                        key={form.choices[choice].choices[subChoice].value}>{form.choices[choice].choices[subChoice].label}</option>)
             })
             options.push(<optgroup key={groupName} label={groupName}>{subOptions}</optgroup>)
         }
@@ -39,6 +58,10 @@ export default function FormSelect(props) {
         if (form.add_url !== null)
             buttons.push(<button title={functions.translate('Add Element to List')} key={'add'} onClick={(e) => functions.addElementToChoice(e,form.add_url)}
                                  className="button" style={{marginRight: '20px'}}><span className={'fas fa-plus fa-fw'} /></button>)
+    }
+
+    if (typeof form.value === 'undefined') {
+        form.value = null
     }
 
     return (

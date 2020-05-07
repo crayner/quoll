@@ -42,11 +42,13 @@ class UsernameValidator extends ConstraintValidator
             $this->context->buildViolation('This value should not be blank.')
                 ->setTranslationDomain('validators')
                 ->atPath('username')
+                ->setCode(Username::USERNAME_UNIQUE_ERROR)
                 ->addViolation();
 
         if (in_array($value->getPrimaryRole(), [null, '']))
             $this->context->buildViolation('This value should not be blank.')
                 ->setTranslationDomain('validators')
+                ->setCode(Username::PRIMARY_ROLE_NOT_SET_ERROR)
                 ->atPath('primaryRole')
                 ->addViolation();
     }

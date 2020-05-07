@@ -6,6 +6,7 @@ import PhotoLoaderApp from "../PhotoLoader/PhotoLoaderApp"
 import PermissionApp from "../Permission/PermissionApp"
 import RelationshipApp from '../Family/RelationshipApp'
 import RequiredDataUpdates from './RequiredDataUpdates'
+import AddressApp from './AddressApp'
 
 export default class SpecialApp extends Component {
     constructor (props) {
@@ -29,6 +30,8 @@ export default class SpecialApp extends Component {
             result.push(<RelationshipApp {...this.content} key={'family_relationship_manager'} />)
         } else if (this.name === 'required_data_updates') {
             result.push(<RequiredDataUpdates {...this.content} key={'required_data_updates'} />)
+        } else if (this.name === 'address_manager') {
+            result.push(<AddressApp {...this.content} key={'address_manager'} />)
         } else {
             console.log(this)
         }
