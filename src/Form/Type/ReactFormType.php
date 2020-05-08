@@ -362,7 +362,12 @@ class ReactFormType extends AbstractType
             }
 
             $vars['choices'] = $result;
-            $vars['preferred_choices'] = $view->vars['preferred_choices'];
+            $vars['preferred_choices'] = key_exists('preferred_choices', $view->vars) ? $view->vars['preferred_choices'] : [];
+        }
+
+
+        if ($vars['type'] === 'auto_suggest') {
+            $vars['buttons'] = $view->vars['buttons'];
         }
 
         if (in_array('submit', $view->vars['block_prefixes']))

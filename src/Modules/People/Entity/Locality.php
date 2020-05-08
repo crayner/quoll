@@ -66,7 +66,7 @@ class Locality implements EntityInterface
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
      * @Assert\Length(max=3)
-     * @Country(alpha3=true,strict=true)
+     * @Country(alpha3=true)
      */
     private $country;
 

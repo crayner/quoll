@@ -11,6 +11,7 @@ import FormSelect from "./FormSelect"
 import Parser from "react-html-parser"
 import SimpleArray from "./SimpleArray"
 import FormExpandedSelect from "./FormExpandedSelect"
+import FormAutoSuggest from './FormAutoSuggest'
 
 export default function Widget(props) {
     const {
@@ -232,6 +233,10 @@ export default function Widget(props) {
         if (typeof form.children === 'undefined')
             form.children = []
         return (<CollectionApp form={form} functions={functions} key={form.collection_key} />)
+    }
+
+    if (form.type === 'auto_suggest') {
+        return (<FormAutoSuggest form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors} functions={functions} />)
     }
 
     if (form.type === 'choice') {

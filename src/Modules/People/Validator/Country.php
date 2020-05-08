@@ -35,7 +35,7 @@ class Country extends Constraint
 
     public $alpha3 = false;
 
-    public $strict = false;
+    public $strict = true;
 
     public function __construct($options = null)
     {

@@ -271,8 +271,9 @@ class Address implements EntityInterface
      */
     public function toString(?string $style = null): string
     {
-        $result = $this->getStreetName() . ' ' . $this->getPropertyName() . ' ' . ($this->getLocality() ? $this->getLocality()->toString() : null);
-        if (trim($result) === '')
+        $result = $this->getFlatUnitDetails() . '/' . $this->getStreetNumber() . ' ' . $this->getStreetName() . ' ' . $this->getPropertyName() . ' ' . ($this->getLocality() ? $this->getLocality()->toString() : null);
+        $result = str_replace('  ',' ', trim(trim($result), '/'));
+        if ($result === '')
             return '';
         if (!is_null($style)) {
             $locality = $this->getLocality()->toString($style);

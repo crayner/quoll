@@ -36,7 +36,7 @@ export default class PaginationApp extends Component {
         this.storeFilterURL = props.storeFilterURL
         this.draggableRoute = props.draggableRoute
         this.preContent = props.preContent
-        this.storeFilterWait = false
+        this.storeFilterWait = true
         this.functions = props.functions
         this.functions.handleAddClick = typeof this.functions.handleAddClick === 'function' ? this.functions.handleAddClick : this.handleAddClick.bind(this)
         this.functions.areYouSure = this.areYouSure.bind(this)
@@ -89,6 +89,8 @@ export default class PaginationApp extends Component {
         if (this.contentLoader !== false) {
             this.row.emptyContent = this.messages['Loading Content...']
             this.loadContent()
+        } else {
+            this.storeFilterWait = false
         }
 
         this.changeFilter(null)
@@ -141,14 +143,12 @@ export default class PaginationApp extends Component {
                         filteredContent: this.content
                     })
                     this.setInitialFilter()
-
                     if (this.initialSearch !== '') {
                         let x = {}
                         x.target = {}
                         x.target.value = this.initialSearch
                         this.changeSearch(x)
-                    }
-
+                    } this.storeFilterWait = false
                 } else {
                     this.setState({
                         messages: [data]
@@ -548,7 +548,7 @@ export default class PaginationApp extends Component {
 
     storeFilter()
     {
-        if ('' === this.storeFilterURL || null === this.storeFilterURL)
+        if ('' === this.storeFilterURL || null === this.storeFilterURL || this.storeFilterWait)
             return
         let data = {}
         data.filter = this.state.filter

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+ * Quoll
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,6 +16,7 @@
 namespace App\Modules\People\Form;
 
 use App\Form\Extension\ChoiceTranslations;
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\EntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
@@ -24,6 +25,7 @@ use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
+use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
@@ -31,6 +33,7 @@ use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
@@ -350,61 +353,62 @@ class PersonType extends AbstractType
                     'panel' => 'Contact',
                     'mapped' => false,
                     'visible_by_choice' => 'address_info',
-                    'data' => 'N',
+                    'data' => $options['data']->getAddress() || $options['data']->getPostalAddress() ? 'Y' : 'N',
                 ]
             )
-            ->add('address1', TextareaType::class,
+            ->add('address', AutoSuggestEntityType::class,
                 [
-                    'label' => 'Address 1',
-                    'help' => 'Unit, Building, Street',
+                    'label' => 'Physical Address',
+                    'placeholder' => ' ',
+                    'class' => Address::class,
+                    'choice_label' => 'toString',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->select(['a','l'])
+                            ->leftJoin('a.locality','l')
+                            ->orderBy('a.streetNumber', 'ASC')
+                            ->addOrderBy('a.streetName', 'ASC')
+                            ->addOrderBy('l.name', 'ASC')
+                        ;
+                    },
                     'panel' => 'Contact',
                     'visible_values' => ['address_info'],
-                    'attr' => [
-                        'rows' => 2,
-                    ]
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/address/add/' . base64_encode('/person/' . $options['data']->getId() . '/edit/Contact'),
+                            'target' => '_self',
+                            'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                    ],
                 ]
             )
-            ->add('address1District', TextType::class,
+            ->add('postalAddress', AutoSuggestEntityType::class,
                 [
-                    'label' => 'Address 1 Locality',
-                    'help' => 'City, Suburb or Town, State, Postcode (ZIP)',
-                    'visible_values' => ['address_info'],
-                    'panel' => 'Contact',
-                ]
-            )
-            ->add('address1Country', CountryType::class,
-                [
-                    'label' => 'Address 1 Country',
-                    'visible_values' => ['address_info'],
-                    'panel' => 'Contact',
-                    'placeholder' => ' '
-                ]
-            )
-            ->add('address2', TextareaType::class,
-                [
-                    'label' => 'Address 2',
-                    'help' => 'Unit, Building, Street',
+                    'label' => 'Postal Address',
+                    'help' => 'Should only be used if the physical address is not the postal address.',
+                    'placeholder' => ' ',
+                    'class' => Address::class,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->select(['a','l'])
+                            ->leftJoin('a.locality','l')
+                            ->orderBy('a.streetNumber', 'ASC')
+                            ->addOrderBy('a.streetName', 'ASC')
+                            ->addOrderBy('l.name', 'ASC')
+                        ;
+                    },
+                    'choice_label' => 'toString',
                     'panel' => 'Contact',
                     'visible_values' => ['address_info'],
-                    'attr' => [
-                        'rows' => 2,
-                    ]
-                ]
-            )
-            ->add('address2District', TextType::class,
-                [
-                    'label' => 'Address 2 Locality',
-                    'help' => 'City, Suburb or Town, State, Postcode (ZIP)',
-                    'visible_values' => ['address_info'],
-                    'panel' => 'Contact',
-                ]
-            )
-            ->add('address2Country', CountryType::class,
-                [
-                    'label' => 'Address 2 Country',
-                    'visible_values' => ['address_info'],
-                    'panel' => 'Contact',
-                    'placeholder' => ' '
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/address/add/' . base64_encode('/person/' . $options['data']->getId() . '/edit/Contact'),
+                            'target' => '_self',
+                            'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                    ],
                 ]
             )
             ->add('phonea', PhoneType::class,

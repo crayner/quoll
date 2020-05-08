@@ -55,6 +55,7 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="phone_code_3",columns={"phone3CountryCode"}),
  *     @ORM\Index(name="phone_code_4",columns={"phone4CountryCode"}),
  *     @ORM\Index(name="house",columns={"house"}),
+ *     @ORM\Index(name="address",columns={"address"}),
  *     @ORM\Index(name="academic_year_class_of",columns={"class_of_academic_year"}),
  *     @ORM\Index(name="application_form",columns={"application_form"}),
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
@@ -823,146 +824,56 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(type="text", nullable=true)
+     * @var Address|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
+     * @ORM\JoinColumn(name="address",referencedColumnName="id",nullable=true)
      */
-    private $address1 = '';
+    private $address;
 
     /**
-     * @return null|string
+     * @return Address|null
      */
-    public function getAddress1(): ?string
+    public function getAddress(): ?Address
     {
-        return $this->address1;
+        return $this->address;
     }
 
     /**
-     * @param null|string $address1
+     * Address.
+     *
+     * @param Address|null $address
      * @return Person
      */
-    public function setAddress1(?string $address1): Person
+    public function setAddress(?Address $address): Person
     {
-        $this->address1 = $address1;
+        $this->address = $address;
         return $this;
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=191, name="address1District",nullable=true)
+     * @var Address|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
+     * @ORM\JoinColumn(name="postal_address",referencedColumnName="id",nullable=true)
      */
-    private $address1District = '';
+    private $postalAddress;
 
     /**
-     * @return null|string
+     * @return Address|null
      */
-    public function getAddress1District(): ?string
+    public function getPostalAddress(): ?Address
     {
-        return $this->address1District;
+        return $this->postalAddress;
     }
 
     /**
-     * @param null|string $address1District
+     * PostalAddress.
+     *
+     * @param Address|null $postalAddress
      * @return Person
      */
-    public function setAddress1District(?string $address1District): Person
+    public function setPostalAddress(?Address $postalAddress): Person
     {
-        $this->address1District = mb_substr($address1District, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191, name="address1Country",nullable=true)
-     */
-    private $address1Country = '';
-
-    /**
-     * @return null|string
-     */
-    public function getAddress1Country(): ?string
-    {
-        return $this->address1Country;
-    }
-
-    /**
-     * @param null|string $address1Country
-     * @return Person
-     */
-    public function setAddress1Country(?string $address1Country): Person
-    {
-        $this->address1Country = mb_substr($address1Country, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(type="text",nullable=true)
-     */
-    private $address2 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getAddress2(): ?string
-    {
-        return $this->address2;
-    }
-
-    /**
-     * @param null|string $address2
-     * @return Person
-     */
-    public function setAddress2(?string $address2): Person
-    {
-        $this->address2 = $address2;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191, name="address2District",nullable=true)
-     */
-    private $address2District = '';
-
-    /**
-     * @return null|string
-     */
-    public function getAddress2District(): ?string
-    {
-        return $this->address2District;
-    }
-
-    /**
-     * @param null|string $address2District
-     * @return Person
-     */
-    public function setAddress2District(?string $address2District): Person
-    {
-        $this->address2District = mb_substr($address2District, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191, name="address2Country",nullable=true)
-     */
-    private $address2Country = '';
-
-    /**
-     * @return null|string
-     */
-    public function getAddress2Country(): ?string
-    {
-        return $this->address2Country;
-    }
-
-    /**
-     * @param null|string $address2Country
-     * @return Person
-     */
-    public function setAddress2Country(?string $address2Country): Person
-    {
-        $this->address2Country = mb_substr($address2Country, 0, 191);
+        $this->postalAddress = $postalAddress;
         return $this;
     }
 
@@ -3249,12 +3160,8 @@ class Person implements EntityInterface
                     `lastFailIPAddress` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `lastFailTimestamp` datetime DEFAULT NULL,
                     `failCount` int(1) DEFAULT NULL,
-                    `address1` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-                    `address1District` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `address1Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `address2` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-                    `address2District` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `address2Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `address` int(10) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `postal_address` int(10) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
                     `phone1Type` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `phone1CountryCode` int(4) UNSIGNED DEFAULT NULL,
                     `phone1` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
