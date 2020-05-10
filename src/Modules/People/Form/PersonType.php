@@ -411,13 +411,22 @@ class PersonType extends AbstractType
                     ],
                 ]
             )
-            ->add('phonea', PhoneType::class,
+            ->add('personalPhone', PhoneType::class,
                 [
                     'label' => 'Phone 1',
                     'help' => 'Type, country code, number.',
                     'data' => $options['data'],
                     'panel' => 'Contact',
                     'mapped' => false,
+                ]
+            )
+            ->add('additionsPhones', ToggleType::class,
+                [
+                    'label' => 'Additional Personal Phone Details',
+                    'panel' => 'Contact',
+                    'mapped' => false,
+                    'visible_by_choice' => 'phone_info',
+                    'data' => $options['data']->getAddress() || $options['data']->getPostalAddress() ? 'Y' : 'N',
                 ]
             )
             ->add('phoneb', PhoneType::class,

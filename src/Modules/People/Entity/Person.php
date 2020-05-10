@@ -42,20 +42,18 @@ use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as ASSERT;
 
 /**
- * Class __prefix__Person
+ * Class Person
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PersonRepository")
  * @ORM\Table(
  *     options={"auto_increment": 1},
  *     name="Person",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"})},
- *     indexes={@ORM\Index(name="username_2", columns={"username", "email"}),
- *     @ORM\Index(name="phone_code_1",columns={"phone1CountryCode"}),
- *     @ORM\Index(name="phone_code_2",columns={"phone2CountryCode"}),
- *     @ORM\Index(name="phone_code_3",columns={"phone3CountryCode"}),
- *     @ORM\Index(name="phone_code_4",columns={"phone4CountryCode"}),
+ *     indexes={@ORM\Index(name="username_email", columns={"username", "email"}),
+ *     @ORM\Index(name="personal_phone",columns={"personal_phone"}),
  *     @ORM\Index(name="house",columns={"house"}),
- *     @ORM\Index(name="address",columns={"address"}),
+ *     @ORM\Index(name="physical_address",columns={"physical_address"}),
+ *     @ORM\Index(name="postal_address",columns={"postal_address"}),
  *     @ORM\Index(name="academic_year_class_of",columns={"class_of_academic_year"}),
  *     @ORM\Index(name="application_form",columns={"application_form"}),
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
@@ -97,14 +95,6 @@ class Person implements EntityInterface
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @return array
-     */
-    public static function getPhoneTypeList(): array
-    {
-        return self::$phoneTypeList;
-    }
 
     /**
      * @return array
@@ -826,16 +816,16 @@ class Person implements EntityInterface
     /**
      * @var Address|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="address",referencedColumnName="id",nullable=true)
+     * @ORM\JoinColumn(name="physical_address",referencedColumnName="id",nullable=true)
      */
-    private $address;
+    private $physicalAddress;
 
     /**
      * @return Address|null
      */
-    public function getAddress(): ?Address
+    public function getPhysicalAddress(): ?Address
     {
-        return $this->address;
+        return $this->physicalAddress;
     }
 
     /**
@@ -844,9 +834,9 @@ class Person implements EntityInterface
      * @param Address|null $address
      * @return Person
      */
-    public function setAddress(?Address $address): Person
+    public function setPhysicalAddress(?Address $address): Person
     {
-        $this->address = $address;
+        $this->physicalAddress = $address;
         return $this;
     }
 
@@ -878,303 +868,91 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var array
+     * @var Phone|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Phone")
+     * @ORM\JoinColumn(name="personal_phone", referencedColumnName="id",nullable=true)
      */
-    private static $phoneTypeList = ['','Mobile','Home','Work','Fax','Pager','Other'];
+    private $personalPhone;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=6, name="phone1Type")
+     * @return Phone|null
      */
-    private $phone1Type = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone1Type(): ?string
+    public function getPersonalPhone(): ?Phone
     {
-        return $this->phone1Type = in_array($this->phone1Type, self::getPhoneTypeList()) ? $this->phone1Type : '' ;
+        return $this->personalPhone;
     }
 
     /**
-     * @param null|string $phone1Type
+     * PersonalPhone.
+     *
+     * @param Phone|null $personalPhone
      * @return Person
      */
-    public function setPhone1Type(?string $phone1Type): Person
+    public function setPersonalPhone(?Phone $personalPhone): Person
     {
-        $this->phone1Type = in_array($phone1Type, self::getPhoneTypeList()) ? $phone1Type : '' ;
+        $this->personalPhone = $personalPhone;
         return $this;
     }
 
     /**
-     * @var Country|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Country")
-     * @ORM\JoinColumn(name="phone1CountryCode", referencedColumnName="id",nullable=true)
+     * @var Collection|null
+     * @ORM\ManyToMany(targetEntity="App\Modules\People\Entity\Phone")
+     * @ORM\JoinTable(name="PersonalPhone",
+     *      joinColumns={@ORM\JoinColumn(name="person",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phone",referencedColumnName="id")}
+     *      )
      */
-    private $phone1CountryCode;
+    private $additionalPhones;
 
     /**
-     * @return null|Country
+     * @return Collection
      */
-    public function getPhone1CountryCode(): ?Country
+    public function getAdditionalPhones(): Collection
     {
-        return $this->phone1CountryCode;
+        if (null === $this->additionalPhones)
+            $this->additionalPhones = new ArrayCollection();
+
+        if ($this->additionalPhones instanceof PersistentCollection)
+            $this->additionalPhones->initialize();
+
+        return $this->additionalPhones;
     }
 
     /**
-     * setPhone1CountryCode
-     * @param Country|null $phone1CountryCode
+     * AdditionalPhones.
+     *
+     * @param Collection|null $additionalPhones
      * @return Person
      */
-    public function setPhone1CountryCode(?Country $phone1CountryCode): Person
+    public function setAdditionalPhones(?Collection $additionalPhones): Person
     {
-        $this->phone1CountryCode = $phone1CountryCode;
+        $this->additionalPhones = $additionalPhones;
         return $this;
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=20)
+     * addAdditionalPhone
+     * @param Phone $phone
+     * @return $this
      */
-    private $phone1 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone1(): ?string
+    public function addAdditionalPhone(Phone $phone): Person
     {
-        return $this->phone1;
-    }
+        if ($this->getAdditionalPhones()->contains($phone))
+            return $this;
 
-    /**
-     * @param null|string $phone1
-     * @return Person
-     */
-    public function setPhone1(?string $phone1): Person
-    {
-        $this->phone1 = mb_substr($phone1, 0, 20);
+        $this->additionalPhones->add($phone);
+
         return $this;
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=6, name="phone2Type")
+     * removeAdditionalPhone
+     * @param Phone $phone
+     * @return $this
      */
-    private $phone2Type = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone2Type(): ?string
+    public function removeAdditionalPhone(Phone $phone): Person
     {
-        return $this->phone2Type = in_array($this->phone2Type, self::getPhoneTypeList()) ? $this->phone2Type : '' ;
-    }
-
-    /**
-     * @param null|string $phone2Type
-     * @return Person
-     */
-    public function setPhone2Type(?string $phone2Type): Person
-    {
-        $this->phone2Type = in_array($phone2Type, self::getPhoneTypeList()) ? $phone2Type : '' ;
-        return $this;
-    }
-
-    /**
-     * @var Country|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Country")
-     * @ORM\JoinColumn(name="phone2CountryCode", referencedColumnName="id",nullable=true)
-     */
-    private $phone2CountryCode;
-
-    /**
-     * @return null|Country
-     */
-    public function getPhone2CountryCode(): ?Country
-    {
-        return $this->phone2CountryCode;
-    }
-
-    /**
-     * setPhone2CountryCode
-     * @param Country|null $phone2CountryCode
-     * @return Person
-     */
-    public function setPhone2CountryCode(?Country $phone2CountryCode): Person
-    {
-        $this->phone2CountryCode = $phone2CountryCode;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20)
-     */
-    private $phone2 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone2(): ?string
-    {
-        return $this->phone2;
-    }
-
-    /**
-     * @param null|string $phone2
-     * @return Person
-     */
-    public function setPhone2(?string $phone2): Person
-    {
-        $this->phone2 = mb_substr($phone2, 0, 20);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=6, name="phone3Type")
-     */
-    private $phone3Type = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone3Type(): ?string
-    {
-        return $this->phone3Type = in_array($this->phone3Type, self::getPhoneTypeList()) ? $this->phone3Type : '' ;
-    }
-
-    /**
-     * @param null|string $phone3Type
-     * @return Person
-     */
-    public function setPhone3Type(?string $phone3Type): Person
-    {
-        $this->phone3Type = in_array($phone3Type, self::getPhoneTypeList()) ? $phone3Type : '' ;
-        return $this;
-    }
-
-    /**
-     * @var Country|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Country")
-     * @ORM\JoinColumn(name="phone3CountryCode", referencedColumnName="id",nullable=true)
-     */
-    private $phone3CountryCode;
-
-    /**
-     * @return null|Country
-     */
-    public function getPhone3CountryCode(): ?Country
-    {
-        return $this->phone3CountryCode;
-    }
-
-    /**
-     * setPhone3CountryCode
-     * @param Country|null $phone3CountryCode
-     * @return Person
-     */
-    public function setPhone3CountryCode(?Country $phone3CountryCode): Person
-    {
-        $this->phone3CountryCode = $phone3CountryCode;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20)
-     */
-    private $phone3 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone3(): ?string
-    {
-        return $this->phone3;
-    }
-
-    /**
-     * @param null|string $phone3
-     * @return Person
-     */
-    public function setPhone3(?string $phone3): Person
-    {
-        $this->phone3 = mb_substr($phone3, 0, 20);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=6, name="phone4Type")
-     */
-    private $phone4Type = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone4Type(): ?string
-    {
-        return $this->phone4Type = in_array($this->phone4Type, self::getPhoneTypeList()) ? $this->phone4Type : '' ;
-    }
-
-    /**
-     * @param null|string $phone4Type
-     * @return Person
-     */
-    public function setPhone4Type(?string $phone4Type): Person
-    {
-        $this->phone4Type = in_array($phone4Type, self::getPhoneTypeList()) ? $phone4Type : '' ;
-        return $this;
-    }
-
-    /**
-     * @var Country
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Country")
-     * @ORM\JoinColumn(name="phone4CountryCode", referencedColumnName="id",nullable=true)
-     */
-    private $phone4CountryCode;
-
-    /**
-     * @return null|Country
-     */
-    public function getPhone4CountryCode(): ?Country
-    {
-        return $this->phone4CountryCode;
-    }
-
-    /**
-     * setPhone4CountryCode
-     * @param Country|null $phone4CountryCode
-     * @return Person
-     */
-    public function setPhone4CountryCode(?Country $phone4CountryCode): Person
-    {
-        $this->phone4CountryCode = $phone4CountryCode;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20)
-     */
-    private $phone4 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getPhone4(): ?string
-    {
-        return $this->phone4;
-    }
-
-    /**
-     * @param null|string $phone4
-     * @return Person
-     */
-    public function setPhone4(?string $phone4): Person
-    {
-        $this->phone4 = mb_substr($phone4, 0, 20);
+        $this->getAdditionalPhones()->removeElement($phone);
         return $this;
     }
 
@@ -3154,26 +2932,15 @@ class Person implements EntityInterface
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `email` varchar(75) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `emailAlternate` varchar(75) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `image_240` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `image_240` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
                     `lastIPAddress` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `lastTimestamp` datetime DEFAULT NULL,
+                    `lastTimestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `lastFailIPAddress` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `lastFailTimestamp` datetime DEFAULT NULL,
+                    `lastFailTimestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `failCount` int(1) DEFAULT NULL,
-                    `address` int(10) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
-                    `postal_address` int(10) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
-                    `phone1Type` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone1CountryCode` int(4) UNSIGNED DEFAULT NULL,
-                    `phone1` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone2Type` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone2CountryCode` int(4) UNSIGNED DEFAULT NULL,
-                    `phone2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone3Type` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone3CountryCode` int(4) UNSIGNED DEFAULT NULL,
-                    `phone3` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone4Type` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phone4CountryCode` int(4) UNSIGNED DEFAULT NULL,
-                    `phone4` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `physical_address` int(10) UNSIGNED DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `postal_address` int(10) UNSIGNED DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `personal_phone` int(10) UNSIGNED DEFAULT NULL,
                     `website` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `languageFirst` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                     `languageSecond` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -3232,19 +2999,24 @@ class Person implements EntityInterface
                     `personal_i18n` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `username` (`username`),
-                    KEY `username_2` (`username`,`email`) USING BTREE,
-                    KEY `primaryRole` (`primary_role`),
                     KEY `house` (`house`) USING BTREE,
-                    KEY `classOfAcademicYear` (`class_of_academic_year`) USING BTREE,
-                    KEY `applicationForm` (`application_form`) USING BTREE,
-                    KEY `personalTheme` (`personal_theme`) USING BTREE,
-                    KEY `personalI18n` (`personal_i18n`) USING BTREE,
-                    KEY `phone_code_1` (`phone1CountryCode`) USING BTREE,
-                    KEY `phone_code_2` (`phone2CountryCode`) USING BTREE,
-                    KEY `phone_code_3` (`phone3CountryCode`) USING BTREE,
-                    KEY `phone_code_4` (`phone4CountryCode`) USING BTREE
+                    KEY `theme` (`personal_theme`) USING BTREE,
+                    KEY `i18n` (`personal_i18n`) USING BTREE,
+                    KEY `academic_year_class_of` (`class_of_academic_year`) USING BTREE,
+                    KEY `application_form` (`application_form`) USING BTREE,
+                    KEY `primary_role` (`primary_role`),
+                    KEY `personal_phone` (`personal_phone`) USING BTREE,
+                    KEY `username_email` (`username`,`email`) USING BTREE,
+                    KEY `physical_address` (`physical_address`),
+                    KEY `postal_address` (`postal_address`)
                     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-                ";
+                CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
+                    `person` int(10) UNSIGNED NOT NULL,
+                    `phone` int(10) UNSIGNED NOT NULL,
+                    PRIMARY KEY (`person`,`phone`),
+                    KEY `IDX_F911F9D734DCD176` (`person`),
+                    KEY `IDX_F911F9D7444F97DD` (`phone`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**
@@ -3253,18 +3025,18 @@ class Person implements EntityInterface
      */
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `++prefix__Person`
-                    ADD CONSTRAINT FOREIGN KEY (`primary_role`) REFERENCES `gibbonrole` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`phone4CountryCode`) REFERENCES `gibboncountry` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `gibbonhouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`class_of_academic_year`) REFERENCES `gibbonacademicyear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `gibbonapplicationform` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`personal_theme`) REFERENCES `gibbontheme` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`personal_i18n`) REFERENCES `gibboni18n` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`phone1CountryCode`) REFERENCES `gibboncountry` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`phone2CountryCode`) REFERENCES `gibboncountry` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`phone3CountryCode`) REFERENCES `gibboncountry` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-                ";
+        return "ALTER TABLE `__prefix__Person`
+                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__house` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`class_of_academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`personal_theme`) REFERENCES `__prefix__Theme` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`personal_i18n`) REFERENCES `__prefix__I18n` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+                ALTER TABLE `__prefix__PersonalPhone`
+                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
     }
 
     /**

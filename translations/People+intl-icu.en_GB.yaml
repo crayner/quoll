@@ -38,6 +38,7 @@ Citizenship 1: Citizenship 1
 Citizenship 2 Passport Number: Citizenship 2 Passport Number
 Citizenship 2: Citizenship 2
 City, Suburb or Town, State, Postcode (ZIP): City, Suburb or Town, State, Postcode (ZIP)
+Manage Addresses: Manage Addresses
 Contact 1 Name: Contact 1 Name
 Contact 1 Number 1: Contact 1 Number 1
 Contact 1 Number 2: Contact 1 Number 2
@@ -382,4 +383,11 @@ updater:
         personal: Personal
 vehicleRegistration: Vehicle Registration
 visaExpiryDate: Visa Expiry Date
-
+Add Address: Add Address
+Locality: Locality
+Physical Address: Physical Address
+Postal Address: Postal Address
+Property Name: Property Name
+Should only be used if the physical address is not the postal address.: Should only be used if the physical address is not the postal address.
+Street Name: Street Name
+Street Number: Street Number

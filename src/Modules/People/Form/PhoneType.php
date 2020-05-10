@@ -12,15 +12,13 @@
  * Date: 24/11/2019
  * Time: 17:08
  */
-
 namespace App\Modules\People\Form;
 
 use App\Form\Type\EnumType;
-use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Country;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Manager\PhoneCodes;
+use App\Modules\People\Entity\Phone;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,51 +36,47 @@ class PhoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $method = 'getPhone'.$options['phone_position'].'CountryCode';
-        $codeValue = $options['data']->$method() ? $options['data']->$method()->getId() : null;
         $builder
-            ->add('phone'.$options['phone_position'].'Type', EnumType::class,
+            ->add('type', EnumType::class,
                 [
-                    'label' => false,
+                    'label' => 'Phone Type',
                     'choice_list_method' => 'getPhoneTypeList',
-                    'choice_list_prefix' => 'person.phoneTypeList',
+                    'choice_list_prefix' => 'phone.type.',
                 ]
             )
-            ->add('phone'.$options['phone_position'].'CountryCode', EntityType::class,
+            ->add('phoneNumber', TextType::class,
                 [
-                    'label' => false,
-                    'class' => Country::class,
-                    'choice_label' => 'nameWithCode',
-                    'placeholder' => ' ',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('c')
-                            ->orderBy('c.printable_name', 'ASC')
-                        ;
-                    },
+                    'label' => 'National Phone Number',
                 ]
             )
-            ->add('phone'.$options['phone_position'], TextType::class,
+            ->add('country', ChoiceType::class,
                 [
-                    'label' => false,
-                    'wrapper_class' => 'flex-1 relative width40',
+                    'label' => 'International Direct Dial Code',
+                    'choices' => PhoneCodes::getIddCodeChoices(true),
                 ]
             )
         ;
     }
 
+    /**
+     * getBlockPrefix
+     * @return string|null
+     */
     public function getBlockPrefix()
     {
         return 'kook_phone';
     }
 
+    /**
+     * configureOptions
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => Person::class,
-                'row_style' => 'multiple_widget',
-                'phone_position' => 1,
+                'data_class' => Phone::class,
             ]
         );
     }

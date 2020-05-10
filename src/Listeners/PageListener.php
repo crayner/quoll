@@ -83,7 +83,7 @@ class PageListener implements EventSubscriberInterface
         $route = $request->attributes->get('_route');
 
         // Ignore Debug Screens
-        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google)#", $route))
+        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route))
             return;
 
         $this->pageManager->configurePage();

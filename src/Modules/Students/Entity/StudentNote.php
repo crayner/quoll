@@ -21,9 +21,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Modules\Students\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="StudentNote",
- *     @ORM\Indexes({@ORM\Index("person", columns={"person"}),
+ *     indexes={@ORM\Index("person", columns={"person"}),
  *     @ORM\Index("student_note_category",columns={"student_note_category"}),
- *     @ORM\Index("person_creator",columns={"person_creator"}})
+ *     @ORM\Index("person_creator",columns={"person_creator"})}
  * )
  */
 class StudentNote implements EntityInterface
@@ -45,7 +45,7 @@ class StudentNote implements EntityInterface
 
     /**
      * @var StudentNoteCategory|null
-     * @ORM\ManyToOne(targetEntity="App\Moduyles\Students\Entity\StudentNoteCategory")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Students\Entity\StudentNoteCategory")
      * @ORM\JoinColumn(name="student_note_category",referencedColumnName="id")
      */
     private $studentNoteCategory;
@@ -217,7 +217,7 @@ class StudentNote implements EntityInterface
                     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
                     `note` longtext COLLATE utf8_unicode_ci NOT NULL,
-                    `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type: datetime_immutable)',
+                    `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     `student_note_category` int(5) UNSIGNED DEFAULT NULL,
                     `person_creator` int(10) UNSIGNED DEFAULT NULL,
