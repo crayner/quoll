@@ -409,3 +409,26 @@ phone:
 Edit Phone: Edit Phone
 Manage Phones: Manage Phones
 Only numbers are accepted.: Only numbers are accepted.
+Add Locality: Add Locality
+Address: Address
+Country: Country
+Details the official place name or common usage name for an address site, including the name of a building, Indigenous community, homestead, building complex, agricultural property, park or unbounded address site.: Details the official place name or common usage name for an address site, including the name of a building, Indigenous community, homestead, building complex, agricultural property, park or unbounded address site.
+Edit Address: Edit Address
+Editing an existing address will change that address for every person or family that uses that address.: Editing an existing address will change that address for every person or family that uses that address.
+Enter any part of a Locality...: Enter any part of a Locality...
+Enter any part of a phone number: Enter any part of a phone number
+Enter any part of an address: Enter any part of an address
+Flat / Unit Details: Flat / Unit Details
+Identifies an address within a building/sub-complex.: Identifies an address within a building/sub-complex.
+Identifies the name and type of the street to the address site.: Identifies the name and type of the street to the address site.
+Identifies the number of the address in the street. : Identifies the number of the address in the street.
+Locality Name: Locality Name
+Post Code: Post Code
+Property / Building Details: Property / Building Details
+Refresh Address List: Refresh Address List
+Refresh Locality List: Refresh Locality List
+Refresh Phone List: Refresh Phone List
+Select Locality...: Select Locality...
+State / Provence : State / Provence
+Street Name and Type: Street Name and Type
+Suburb, Locality, District or Town.: Suburb, Locality, District or Town.
