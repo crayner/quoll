@@ -14,10 +14,12 @@
  */
 namespace App\Modules\People\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -52,16 +54,14 @@ class AddressType extends AbstractType
         $builder
             ->add('addressHeader', HeaderType::class,
                 [
-                    'label' => 'Address',
+                    'label' => $options['data']->getId() > 0 ? 'Edit Address' : 'Add Address',
                     'help' => 'Editing an existing address will change that address for every person or family that uses that address.'
                 ]
             )
-            ->add('id', HiddenType::class)
             ->add('flatUnitDetails', TextType::class,
                 [
                     'label' => 'Flat / Unit Details',
                     'help' => 'Identifies an address within a building/sub-complex.',
-                    'on_change' => 'changeAddress',
                     'required' => false,
                 ]
             )
@@ -70,14 +70,13 @@ class AddressType extends AbstractType
                     'label' => 'Street Number',
                     'help' => 'Identifies the number of the address in the street. ',
                     'required' => false,
-                    'on_change' => 'changeAddress',
                 ]
             )
             ->add('streetName', TextType::class,
                 [
                     'label' => 'Street Name and Type',
                     'help' => 'Identifies the name and type of the street to the address site.',
-                    'on_change' => 'changeAddress',
+                    'parse_value' => 'changeAddress',
                 ]
             )
             ->add('propertyName', TextType::class,
@@ -85,27 +84,36 @@ class AddressType extends AbstractType
                     'label' => 'Property / Building Details',
                     'help' => 'Details the official place name or common usage name for an address site, including the name of a building, Indigenous community, homestead, building complex, agricultural property, park or unbounded address site.',
                     'required' => false,
-                    'on_change' => 'changeAddress',
                 ]
             )
-            ->add('locality', EntityType::class,
+            ->add('locality', AutoSuggestEntityType::class,
                 [
                     'label' => 'Locality',
                     'help' => 'Suburb, Locality, District or Town.',
                     'class' => Locality::class,
+                    'placeholder' => 'Enter any part of a Locality...',
                     'choice_label' => 'toString',
-                    'on_change' => 'changeAddress',
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('a')
                             ->orderBy('a.name', 'ASC');
                     },
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/locality/add/popup/',
+                            'target' => 'Locality_Details',
+                            'specs' => 'width=800,height=450',
+                            'title' => TranslationHelper::translate('Add Locality', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/locality/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Locality List', [], 'People'),
+                        ],
+                    ],
                 ]
             )
-            ->add('submit', SubmitType::class,
-                [
-                    'on_click' => 'submitAddress',
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 

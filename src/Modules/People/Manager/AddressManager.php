@@ -38,11 +38,6 @@ class AddressManager implements SpecialInterface
     private $localityForm;
 
     /**
-     * @var string
-     */
-    private $return;
-
-    /**
      * @var Address
      */
     private $address;
@@ -81,7 +76,6 @@ class AddressManager implements SpecialInterface
             'locality_choices' => static::getLocalityChoices(),
             'locality_list' => static::getLocalityList(),
             'name' => $this->getName(),
-            'return' => $this->getReturn(),
             'address_id' => $this->getAddress()->getId() > 0 ? $this->getAddress()->getId() : 0,
             'locality_id' => $this->getAddress()->getLocality() ? $this->getAddress()->getLocality()->getId() : 0,
         ];
@@ -154,26 +148,6 @@ class AddressManager implements SpecialInterface
     public static function getLocalityChoices(): array
     {
         return ProviderFactory::create(Locality::class)->buildChoiceList();
-    }
-
-    /**
-     * @return string
-     */
-    public function getReturn(): string
-    {
-        return $this->return;
-    }
-
-    /**
-     * Return.
-     *
-     * @param string $return
-     * @return AddressManager
-     */
-    public function setReturn(string $return): AddressManager
-    {
-        $this->return = $return;
-        return $this;
     }
 
     /**

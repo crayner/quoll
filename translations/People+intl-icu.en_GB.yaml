@@ -391,3 +391,21 @@ Property Name: Property Name
 Should only be used if the physical address is not the postal address.: Should only be used if the physical address is not the postal address.
 Street Name: Street Name
 Street Number: Street Number
+Add Phone: Add Phone
+International Direct Dial Code: International Direct Dial Code
+National Phone Number: National Phone Number
+Personal Phone: Personal Phone
+Phone Type: Phone Type
+Usually a mobile phone.: Usually a mobile phone.
+phone:
+    type:
+        '': ''
+        fax: Facsimile
+        home: Home
+        mobile: Mobile
+        other: Other
+        pager: Pager
+        work: Work
+Edit Phone: Edit Phone
+Manage Phones: Manage Phones
+Only numbers are accepted.: Only numbers are accepted.

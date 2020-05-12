@@ -62,6 +62,7 @@ export default class ContainerApp extends Component {
             replaceSpecialContent: this.replaceSpecialContent.bind(this),
             getContent: props.functions.getContent
         }
+
         this.contentManager = this.contentManager.bind(this)
 
         if (Object.keys(props.panels).length === 0 && this.content !== null) {
@@ -85,6 +86,7 @@ export default class ContainerApp extends Component {
         this.expandedAllNoneChecked = {}
         this.singleForm = (Object.keys(props.forms).length === 1 && Object.keys(props.forms)[0] === 'single')
         this.contentLoaders = props.contentLoader
+        this.popup = props.popup
     }
 
     componentDidMount() {
@@ -244,7 +246,13 @@ export default class ContainerApp extends Component {
                 }
             }
         }
-        form.value = value
+        if (form.parse_value === false) {
+            form.value = value
+        } else {
+            let theFunction = require('../Functions/' + form.parse_value + '.js').default
+            parentForm = theFunction(value, form, parentForm)
+            value = parentForm.children[form.name].value
+        }
 
         forms = {...mergeParentForm({...forms},parentName,changeFormValue(parentForm,form,value))}
 

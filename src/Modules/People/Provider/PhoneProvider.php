@@ -15,6 +15,8 @@
 namespace App\Modules\People\Provider;
 
 use App\Manager\Traits\EntityTrait;
+use App\Modules\People\Entity\Family;
+use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Provider\EntityProviderInterface;
 
@@ -28,8 +30,20 @@ class PhoneProvider implements EntityProviderInterface
 
     private $entityName = Phone::class;
 
-    public function listFamilyPhonesOfPerson(Person $person): string
+    /**
+     * getFamilyPhonesOfPerson
+     * @param Person $person
+     * @return array
+     */
+    public function getFamilyPhonesOfPerson(Person $person): array
     {
-
+        $result = [];
+        foreach($this->getRepository(Family::class)->getFamiliesOfPerson($person) as $family) {
+            foreach($family->getFamilyPhones() as $phone) {
+                $result[] = $phone;
+            }
+        }
+        array_unique($result);
+        return $result;
     }
 }

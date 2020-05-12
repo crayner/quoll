@@ -25,7 +25,6 @@ use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
 use App\Modules\Staff\Entity\Staff;
-use App\Modules\System\Entity\Country;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
@@ -954,6 +953,25 @@ class Person implements EntityInterface
     {
         $this->getAdditionalPhones()->removeElement($phone);
         return $this;
+    }
+
+
+    public function getPhoneList(bool $includeFamily = false): array
+    {
+        $result = [];
+        if ($this->getPersonalPhone())
+        {
+            $result[] = $this->getPersonalPhone()->__toString();
+        }
+        foreach($this->getAdditionalPhones() as $phone) {
+            $result[] = $phone->__toString();
+        }
+        if ($includeFamily) {
+            foreach (ProviderFactory::create(Phone::class)->getFamilyPhonesOfPerson($this) as $phone) {
+                $result[] = $phone->__toString();
+            }
+        }
+        return $result;
     }
 
     /**
@@ -2654,67 +2672,58 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var FamilyAdult|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyAdult", mappedBy="person")
+     * @var Collection|FamilyMember[]|null
+     * @ORM\OneToMany(targetEntity="FamilyMember", mappedBy="person")
      */
-    private $adults;
+    private $members;
 
     /**
-     * @return Collection|FamilyAdult[]|null
+     * getMembers
+     * @return Collection
+     */
+    public function getMembers(): Collection
+    {
+        if (null === $this->members)
+            $this->members = new ArrayCollection();
+
+        if ($this->members instanceof PersistentCollection)
+            $this->members->initialize();
+
+        return $this->members;
+    }
+
+    /**
+     * Members.
+     *
+     * @param FamilyMember|null $members
+     * @return Person
+     */
+    public function setMembers(?FamilyMember $members): Person
+    {
+        $this->members = $members;
+        return $this;
+    }
+
+    /**
+     * @return Collection|FamilyMember[]|null
      */
     public function getAdults(): Collection
     {
-        if (!$this->adults)
-            $this->adults = new ArrayCollection();
-        
-        if ($this->adults instanceof PersistentCollection)
-            $this->adults->initialize();
-        
-        return $this->adults;
+        return $this->getMembers()->filter(function(FamilyMember $member) {
+            if ($member instanceof FamilyMemberAdult)
+                return $member;
+        });
     }
 
     /**
-     * Adults.
-     *
-     * @param FamilyAdult|null $adults
-     * @return Person
-     */
-    public function setAdults(?FamilyAdult $adults): Person
-    {
-        $this->adults = $adults;
-        return $this;
-    }
-
-    /**
-     * @var FamilyChild|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyChild", mappedBy="person")
-     */
-    private $children;
-
-    /**
-     * @return Collection|FamilyChild[]|null
+     * @return Collection|FamilyMember[]|null
      */
     public function getChildren(): Collection
     {
-        if (!$this->children)
-            $this->children = new ArrayCollection();
-
-        if ($this->children instanceof PersistentCollection)
-            $this->children->initialize();
-
-        return $this->children;
-    }
-
-    /**
-     * Children.
-     *
-     * @param FamilyChild|null $children
-     * @return Person
-     */
-    public function setChildren(?FamilyChild $children): Person
-    {
-        $this->children = $children;
-        return $this;
+        return $this->getMembers()->filter(function(FamilyMember $member) {
+            if ($member instanceof FamilyMemberChild)
+                return $member;
+        });
     }
 
     /**
@@ -2790,7 +2799,7 @@ class Person implements EntityInterface
             'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTime() ? false : true,
             'email' => $this->getEmail(),
             'studentID' => $this->getStudentID() ?: '',
-            'phone' => trim($this->getPhone1().$this->getPhone2().$this->getPhone3().$this->getPhone4()) ?: '',
+            'phone' => $this->getPersonalPhone(),
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
             'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()) && $this->isCanLogin(),
@@ -2820,7 +2829,7 @@ class Person implements EntityInterface
             if ($child->getFamily() instanceof Family)
                 return $this->family = $child->getFamily();
         }
-        $this->famil = null;
+        $this->family = null;
         return $this->family;
     }
 
@@ -2897,15 +2906,23 @@ class Person implements EntityInterface
      */
     public function getPersonType(): string
     {
-        if ($this->getStaff() instanceof Staff)
-            return 'Staff';
-        if ($this->getAdults()->count() > 0)
-            return 'Parent';
-        if ($this->getPrimaryRole() instanceof Role)
-            return $this->getPrimaryRole()->getCategory();
-        if ($this->getStudentEnrolments()->count() > 0)
-            return 'Student';
-        return 'Other';
+        switch ($this->getPrimaryRole()) {
+            case 'ROLE_STUDENT':
+                return 'Student';
+            case 'ROLE_PARENT':
+                return 'Parent';
+            case 'ROLE_REGISTRAR':
+            case 'ROLE_SUPPORT':
+            case 'ROLE_PRINCIPAL':
+            case 'ROLE_TEACHER':
+            case 'ROLE_HEAD_TEACHER':
+            case 'ROLE_LIBRARIAN':
+            case 'ROLE_FINANCE':
+            case 'ROLE_STAFF':
+                return 'Staff';
+            default:
+                return 'Other';
+        }
     }
 
     /**

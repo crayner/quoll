@@ -83,21 +83,26 @@ class PageListener implements EventSubscriberInterface
         $route = $request->attributes->get('_route');
 
         // Ignore Debug Screens
-        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route))
+        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route)) {
             return;
+        }
 
         $this->pageManager->configurePage();
 
-        if (preg_match("#(api)#", $route))
+        if (preg_match("#(api)#", $route)) {
             return;
+        }
 
-        if ($request->query->has('raw_page'))
-            return ;
+        if ($request->query->has('raw_page')) {
+            return;
+        }
+        if (preg_match("#(popup)#", $route)) {
+            $this->pageManager->setPopup();
+        }
 
-        if ($request->getContentType() !== 'json')
+
+        if ($request->getContentType() !== 'json') {
             $event->setResponse($this->pageManager->getBaseResponse());
-
-
-
+        }
     }
 }

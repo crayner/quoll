@@ -18,6 +18,7 @@ namespace App\Provider;
 use App\Manager\MessageManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -62,19 +63,26 @@ class ProviderFactory
     private static $stack;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private static $parameterBag;
+
+    /**
      * ProviderFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param RouterInterface $router
      * @param RequestStack $stack
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         MessageManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
-        RequestStack $stack
+        RequestStack $stack,
+        ParameterBagInterface $parameterBag
     )  {
         self::$entityManager = $entityManager;
         self::$messageManager = $messageManager;
@@ -82,6 +90,7 @@ class ProviderFactory
         self::$router = $router;
         self::$factory = $this;
         self::$stack = $stack;
+        self::$parameterBag = $parameterBag;
     }
 
     /**
@@ -216,5 +225,13 @@ class ProviderFactory
         self::$instances[$name] = $provider;
 
         return self::$instances[$name];
+    }
+
+    /**
+     * @return ParameterBagInterface
+     */
+    public static function getParameterBag(): ParameterBagInterface
+    {
+        return self::$parameterBag;
     }
 }

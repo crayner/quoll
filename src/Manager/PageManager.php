@@ -605,7 +605,8 @@ class PageManager
      * getBaseResponse
      * @return Response
      */
-    public function getBaseResponse() {
+    public function getBaseResponse()
+    {
 
         try {
             $content = $this->twig->render('react_base.html.twig',
@@ -727,7 +728,7 @@ class PageManager
      */
     public function isPopup(): bool
     {
-        return $this->popup;
+        return (bool)$this->popup;
     }
 
     /**
@@ -736,7 +737,7 @@ class PageManager
      * @param bool $popup
      * @return PageManager
      */
-    public function setPopup(bool $popup): PageManager
+    public function setPopup(bool $popup = true): PageManager
     {
         $this->popup = $popup;
         return $this;

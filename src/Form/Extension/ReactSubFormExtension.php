@@ -60,6 +60,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
                 'submit_on_change' => false,
                 'visible_values' => [],
                 'visible_labels' => [],
+                'parse_value'     => false,
             ]
         );
 
@@ -72,6 +73,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('visible_values', ['array']);
         $resolver->setAllowedTypes('visible_labels', ['array']);
         $resolver->setAllowedTypes('submit_on_change', ['boolean']);
+        $resolver->setAllowedTypes('parse_value', ['string', 'boolean']);
 
         $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget','simple_array']);
     }
@@ -95,5 +97,6 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $view->vars['data'] = isset($options['data']) ? $options['data'] : '';
         $view->vars['visible_values'] = $options['visible_values'];
         $view->vars['visible_labels'] = $options['visible_labels'];
+        $view->vars['parse_value'] = $options['parse_value'];
     }
 }

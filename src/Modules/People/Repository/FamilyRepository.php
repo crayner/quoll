@@ -12,6 +12,7 @@
  */
 namespace App\Modules\People\Repository;
 
+use App\Modules\People\Entity\Person;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use App\Modules\People\Entity\District;
@@ -65,5 +66,21 @@ class FamilyRepository extends ServiceEntityRepository
         } catch (NoResultException | NonUniqueResultException $e) {
             return 0;
         }
+    }
+
+    /**
+     * getFamiliesOfPerson
+     * @param Person $person
+     * @return array
+     */
+    public function getFamiliesOfPerson(Person $person): array
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.adults', 'a')
+            ->leftJoin('f.children', 'c')
+            ->where('(a.person = :person OR c.person = :person)')
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
     }
 }

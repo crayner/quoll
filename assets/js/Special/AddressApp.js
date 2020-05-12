@@ -11,7 +11,6 @@ export default class AddressApp extends Component {
     constructor (props) {
         super(props)
         this.functions = props.functions
-        this.return = props.return
         this.functions['changeAddress'] = this.changeAddress.bind(this)
         this.functions['changeLocality'] = this.changeLocality.bind(this)
         this.functions['submitForm'] = this.submitForm.bind(this)
@@ -135,9 +134,9 @@ export default class AddressApp extends Component {
         data.address['_token'] = address.children._token.value
         data.address['id'] = parseInt(this.state.address_id)
 
-        let url = '/address/' + this.state.address_id + '/edit/' + btoa(this.return)
+        let url = '/address/' + this.state.address_id + '/edit/popup/'
         if (this.state.address_id === 0) {
-            url = '/address/add/' + btoa(this.return)
+            url = '/address/add/popup/'
         }
         fetchJson(
             url,
@@ -236,10 +235,6 @@ export default class AddressApp extends Component {
         if (this.state.showLocality) {
             return (
                 <form className={'smallIntBorder fullWidth standardForm'}>
-                    <a className="close-button gray ml-3" style={{marginTop: '-32px'}} title={this.functions.translate('Return')} onClick={() => this.backToAddress()}>
-                        <span className="fas fa-reply fa-fw text-gray-800 hover:text-purple-500"></span></a>
-                    <a className="close-button gray ml-3" style={{marginTop: '-32px', marginRight: '32px'}} title={this.functions.translate('Add')} onClick={() => this.clearLocality()}>
-                        <span className="fas fa-plus-circle fa-fw text-gray-800 hover:text-green-500"></span></a>
                     <Messages messages={this.state.errors} translate={this.functions.translate} />
                     <Widget form={this.state.locality.children._token} functions={this.functions} />
                     <table className={'smallIntBorder fullWidth standardForm relative'}>
@@ -264,13 +259,7 @@ export default class AddressApp extends Component {
         }
         return (
             <form className={'smallIntBorder fullWidth standardForm'}>
-                <a className="close-button gray ml-3" style={{marginTop: '-32px'}} title={this.functions.translate('Return')} href={this.return}>
-                    <span className="fas fa-reply fa-fw text-gray-800 hover:text-purple-500"></span></a>
-                <a className="close-button gray ml-3" style={{marginTop: '-32px', marginRight: '32px'}} title={this.functions.translate('Add')} onClick={() => this.clearAddress()}>
-                    <span className="fas fa-plus-circle fa-fw text-gray-800 hover:text-green-500"></span></a>
                 <Messages messages={this.state.errors} translate={this.functions.translate} />
-                <Widget form={this.state.address.children._token} functions={this.functions} />
-                <Widget form={this.state.address.children.id} functions={this.functions} />
                 <table className={'smallIntBorder fullWidth standardForm relative'}>
                     <tbody>
                         <Row form={this.state.address.children.addressHeader} functions={this.functions} columns={2} />
@@ -298,6 +287,8 @@ export default class AddressApp extends Component {
                         <Row form={this.state.address.children.submit} functions={this.functions} columns={2} />
                     </tbody>
                 </table>
+                <Widget form={this.state.address.children._token} functions={this.functions} />
+                <Widget form={this.state.address.children.id} functions={this.functions} />
             </form>)
     }
 }
@@ -308,7 +299,6 @@ AddressApp.propTypes = {
     locality_form: PropTypes.object.isRequired,
     locality_list: PropTypes.object,
     locality_choices: PropTypes.array.isRequired,
-    return: PropTypes.string.isRequired,
     address_id: PropTypes.number.isRequired,
     locality_id: PropTypes.number.isRequired,
 }

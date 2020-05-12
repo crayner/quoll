@@ -15,10 +15,14 @@
 namespace App\Modules\People\Form;
 
 use App\Form\Type\EnumType;
+use App\Form\Type\HeaderType;
+use App\Form\Type\ReactFormType;
 use App\Manager\PhoneCodes;
 use App\Modules\People\Entity\Phone;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,6 +34,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PhoneType extends AbstractType
 {
     /**
+     * @var ParameterBagInterface
+     */
+    private $bag;
+
+    /**
+     * PhoneType constructor.
+     * @param ParameterBagInterface $bag
+     */
+    public function __construct(ParameterBagInterface $bag)
+    {
+        $this->bag = $bag;
+    }
+
+    /**
      * buildForm
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -37,24 +55,34 @@ class PhoneType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('phoneHeader', HeaderType::class,
+                [
+                    'label' => $options['data']->getId() > 0 ? 'Edit Phone' : 'Add Phone',
+                ]
+            )
             ->add('type', EnumType::class,
                 [
                     'label' => 'Phone Type',
                     'choice_list_method' => 'getPhoneTypeList',
-                    'choice_list_prefix' => 'phone.type.',
+                    'choice_list_prefix' => 'phone.type',
                 ]
             )
             ->add('phoneNumber', TextType::class,
                 [
                     'label' => 'National Phone Number',
+                    'help' => 'Only numbers are accepted.',
                 ]
             )
             ->add('country', ChoiceType::class,
                 [
                     'label' => 'International Direct Dial Code',
-                    'choices' => PhoneCodes::getIddCodeChoices(true),
+                    'choices' => PhoneCodes::getIddCodeChoices(),
+                    'choice_translation_domain' => false,
+                    'placeholder' => ' ',
+                    'preferred_choices' => PhoneCodes::getIddCodePreferredChoices($this->bag)
                 ]
             )
+            ->add('submit', SubmitType::class)
         ;
     }
 
@@ -79,5 +107,14 @@ class PhoneType extends AbstractType
                 'data_class' => Phone::class,
             ]
         );
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

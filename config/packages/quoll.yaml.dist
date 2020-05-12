@@ -55,3 +55,4 @@ parameters:
     system_name: Quoll
     organisation_name: Organisation Name
     messenger_transport_dsn: 'doctrine://default'
+    preferred_countries: []

@@ -26,6 +26,7 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -81,6 +82,11 @@ trait EntityTrait
     private $stack;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
      * EntityTrait constructor.
      * @param ProviderFactory $providerFactory
      * @throws \Exception
@@ -94,6 +100,7 @@ trait EntityTrait
         $this->router = $providerFactory::getRouter();
         $this->stack = $providerFactory::getStack();
         $this->providerFactory = $providerFactory;
+        $this->parameterBag = ProviderFactory::getParameterBag();
         if (method_exists($this, 'additionalConstruct'))
             $this->additionalConstruct();
     }
@@ -547,5 +554,13 @@ trait EntityTrait
             ->select("COUNT('id') as result")
             ->getQuery()
             ->getSingleScalarResult());
+    }
+
+    /**
+     * @return ParameterBagInterface
+     */
+    public function getParameterBag(): ParameterBagInterface
+    {
+        return $this->parameterBag;
     }
 }

@@ -121,15 +121,30 @@ export default class FormAutoSuggest extends Component {
         let buttons = []
         Object.keys(this.state.form.buttons).map(name => {
             const button = this.state.form.buttons[name]
-            if (name === 'add') {
-                buttons.push(<button type={'button'} key={name} title={button.title} className={'button bg-gray-100 hover:text-indigo-500'} onClick={() => this.functions.openUrl(button.route, button.target)}>
-                    <span className={'fa-fw fas fa-plus-circle'}></span>
+            if (name === 'add' && this.state.form.value === '') {
+                let url = {
+                    url: button.route,
+                    target: button.target,
+                    options: button.specs,
+                }
+                buttons.push(<button type={'button'} key={name} title={button.title} className={'button bg-gray-100 hover:text-indigo-500'} onClick={() => this.functions.openUrl(url)}>
+                    <span className={button.class}></span>
+                </button>)
+            }
+            if (name === 'refresh' && this.state.form.value === '') {
+                this.state.form.auto_refresh_url = button.route
+                buttons.push(<button type={'button'} key={name} title={button.title} className={'button bg-gray-100 hover:text-indigo-500'} onClick={() => this.functions.refreshChoiceList({...this.state.form})}>
+                    <span className={button.class}></span>
                 </button>)
             }
         })
-        buttons.push(<button type="button" key={'clear'} title={this.functions.translate('Refresh List')} key={'refresh'}
-                             className="button bg-gray-100 hover:text-yellow-500" onClick={() => this.clearAutoSuggest()}><span className={'fas fa-eraser fa-fw'} /></button>)
-
+        if (this.state.form.value !== '') {
+            buttons.push(<button type="button" key={'clear'} title={this.functions.translate('Erase Content')}
+                                 key={'refresh'}
+                                 className="button bg-gray-100 hover:text-yellow-500"
+                                 onClick={() => this.clearAutoSuggest()}><span className={'fas fa-eraser fa-fw'}/>
+            </button>)
+        }
         return buttons
     }
 

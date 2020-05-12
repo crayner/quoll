@@ -17,14 +17,19 @@ namespace App\Modules\People\Entity;
 
 
 use App\Manager\EntityInterface;
+use App\Manager\PhoneCodes;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Phone
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PhoneRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Phone")
+ * @ORM\Table(options={"auto_increment": 1}, name="Phone",
+ *     uniqueConstraints={@ORM\UniqueConstraint("number_country",columns={"phone_number","country"})})
+ * @UniqueEntity(fields={"phoneNumber","country"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class Phone implements EntityInterface
 {
@@ -127,7 +132,30 @@ class Phone implements EntityInterface
      */
     public function setPhoneNumber(?string $phoneNumber): Phone
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->phoneNumber = $this->trimPhoneNumber($phoneNumber);
+        return $this;
+    }
+
+    /**
+     * trimPhoneNumber
+     * @param string|null $phoneNumber
+     * @return string|null
+     */
+    public function trimPhoneNumber(?string $phoneNumber): ?string
+    {
+        return preg_replace('/[^0-9.]/', '', $phoneNumber);
+    }
+
+    /**
+     * trimPhone
+     * @return Phone
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function trimPhone(): Phone
+    {
+        $this->setPhoneNumber($this->trimPhoneNumber($this->getPhoneNumber()));
+
         return $this;
     }
 
@@ -194,4 +222,15 @@ class Phone implements EntityInterface
         return '';
     }
 
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        if (null !== $this->getPhoneNumber()) {
+            return '(+' . PhoneCodes::getAlpha3IddCode($this->getCountry()) . ') ' . $this->getPhoneNumber();
+        }
+        return (string)$this->getId();
+    }
 }

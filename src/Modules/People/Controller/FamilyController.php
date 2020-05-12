@@ -22,6 +22,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
+use App\Modules\People\Entity\FamilyMember;
 use App\Modules\People\Form\FamilyAdultType;
 use App\Modules\People\Form\FamilyChildType;
 use App\Modules\People\Form\FamilyGeneralType;
@@ -232,7 +233,7 @@ class FamilyController extends AbstractPageController
      * @Route("/family/{family}/adult/add/",name="family_adult_add")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function familyAdultEdit(ContainerManager $manager, Family $family, ?FamilyAdult $adult = null)
+    public function familyAdultEdit(ContainerManager $manager, Family $family, ?FamilyMember $adult = null)
     {
         $request = $this->getPageManager()->getRequest();
         $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
@@ -290,15 +291,15 @@ class FamilyController extends AbstractPageController
 
     /**
      * familyAdultSort
-     * @param FamilyAdult $source
-     * @param FamilyAdult $target
+     * @param FamilyMember $source
+     * @param FamilyMember $target
      * @param FamilyAdultsPagination $pagination
      * @param FamilyManager $familyManager
      * @return JsonResponse
      * @Route("/family/adult/{source}/{target}/sort/", name="family_adult_sort")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function familyAdultSort(FamilyAdult $source, FamilyAdult $target, FamilyAdultsPagination $pagination, FamilyManager $familyManager)
+    public function familyAdultSort(FamilyMember $source, FamilyMember $target, FamilyAdultsPagination $pagination, FamilyManager $familyManager)
     {
         $manager = new FamilyAdultSort($source, $target, $pagination);
         $manager->setContent($familyManager::getAdults($source->getFamily(), true));
@@ -311,10 +312,10 @@ class FamilyController extends AbstractPageController
      * @Route("/family/{family}/remove/{adult}/adult/",name="family_adult_remove")
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
-     * @param FamilyAdult $adult
+     * @param FamilyMember $adult
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function familyAdultRemove(Family $family, FamilyAdult $adult)
+    public function familyAdultRemove(Family $family, FamilyMember $adult)
     {
         $request = $this->getPageManager();
         if ($adult->getFamily()->isEqualTo($family)) {
@@ -343,13 +344,13 @@ class FamilyController extends AbstractPageController
      * familyStudentEdit
      * @param Family $family
      * @param ContainerManager $manager
-     * @param FamilyChild|null $student
+     * @param FamilyMember|null $student
      * @return JsonResponse
      * @Route("/family/{family}/student/{student}/edit/",name="family_student_edit")
      * @Route("/family/{family}/student/add/",name="family_student_add")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyChild $student = null)
+    public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyMember $student = null)
     {
         $request = $this->getPageManager()->getRequest();
 
@@ -406,10 +407,10 @@ dump($content,$student,$form);
      * @Route("/family/{family}/remove/{student}/student/",name="family_student_remove")
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
-     * @param FamilyChild $student
+     * @param FamilyMember $student
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function familyStudentRemove(Family $family, FamilyChild $student)
+    public function familyStudentRemove(Family $family, FamilyMember $student)
     {
         $request = $this->getPageManager()->getRequest();
         if ($student->getFamily()->isEqualTo($family)) {

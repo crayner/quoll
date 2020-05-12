@@ -78,6 +78,7 @@ class ContainerManager
         TranslationHelper::addTranslation('All fields on all panels are saved together.', [], 'messages');
         TranslationHelper::addTranslation('Return', [], 'messages');
         TranslationHelper::addTranslation('Add', [], 'messages');
+        TranslationHelper::addTranslation('Erase Content', [], 'messages');
     }
 
     /**

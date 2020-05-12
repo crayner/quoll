@@ -15,6 +15,8 @@
  */
 namespace App\Modules\People\Repository;
 
+use App\Modules\People\Util\UserHelper;
+use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\NoResultException;
 use App\Modules\School\Entity\RollGroup;
@@ -369,46 +371,42 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findBySearch
-     * @param ManageSearch $search
+     * getPaginationContent
      * @return array
      */
-    public function findBySearch(): array
+    public function getPaginationContent(): array
     {
-        $query = $this->createQueryBuilder('p')
-            ->select(['p','fa','fc','fama','famc','s'])
-            ->leftJoin('p.adults', 'fa')
-            ->leftJoin('p.children', 'fc')
-            ->leftJoin('fa.family', 'fama')
-            ->leftJoin('fc.family', 'famc')
+        /*
+        'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
+            'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getImage240()),
+            'status' => TranslationHelper::translate($this->getStatus()),
+            '_status' => $this->getStatus(),
+            'family' => $this->getFamilyName(),
+            'family_id' => $this->getFamilyId(),
+            'username' => $this->getUsername(),
+            '_role' => $this->getHumanisedRole(),
+            'role' => TranslationHelper::translate($this->getPrimaryRole(), [], 'Security'),
+            'canDelete' => $this->canDelete(),
+            'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTime() ? false : true,
+            'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTime() ? false : true,
+            'email' => $this->getEmail(),
+            'studentID' => $this->getStudentID() ?: '',
+            'phone' => $this->getPersonalPhone(),
+            'rego' => $this->getVehicleRegistration() ?: '',
+            'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
+            'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()) && $this->isCanLogin(), */
+
+
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.members', 'fm')
+            ->leftJoin('fm.family', 'f')
             ->leftJoin('p.staff', 's')
+            ->leftJoin('p.personalPhone', 'ph')
             ->leftJoin('p.studentEnrolments', 'se')
             ->orderBy('p.surname')
             ->addOrderBy('p.preferredName')
-        ;
-
-        return $query->getQuery()
+            ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * countDistrictUsage
-     * @param District $district
-     * @return int
-     */
-    public function countDistrictUsage(District $district): int
-    {
-        try {
-            return $this->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.address1District = :district')
-                ->orWhere('p.address2District = :district')
-                ->setParameter('district', $district)
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return 0;
-        }
     }
 
     /**

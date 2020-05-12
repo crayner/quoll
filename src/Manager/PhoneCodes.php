@@ -14,7 +14,7 @@
  */
 namespace App\Manager;
 
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
@@ -107,24 +107,50 @@ class PhoneCodes
      * @param bool $useAlpha3
      * @return array
      */
-    public static function getIddCodeChoices(bool $useAlpha3 = false): array
+    public static function getIddCodeChoices(bool $useAlpha3 = true): array
     {
         $result = [];
         foreach(self::readCodes() as $q=>$w) {
             try {
                 $value = $useAlpha3 ? Countries::getAlpha3Code($q) : $q;
-                $result[] = new ChoiceView([$q => $w], $value, Countries::getName($q) . ' (+' . $w . ')');
+                $name = Countries::getName($q) . ' (+' . $w . ')';
+                $result[$name] = $value;
             } catch (MissingResourceException $e) {
                 $alpha3 = array_flip(self::$missing_codes['alpha3alpha2']);
                 $value = $useAlpha3 ? $alpha3[$q] : $q;
-                $name = self::$missing_codes['alpha2Name'][$q];
-                $result[] = new ChoiceView([$q => $w], $value, $name . ' (+' . $w . ')');
+                $name = self::$missing_codes['alpha2Name'][$q] . ' (+' . $w . ')';
+                $result[$name] = $value;
             }
         }
-        uasort($result, function($a,$b) {
-            return $a->label > $b->label ? 1 : -1;
-        });
+        ksort($result);
 
-        return array_values($result);
+        return $result;
+    }
+
+    /**
+     * getIddCodeChoices
+     * @param ParameterBagInterface $bag
+     * @return array
+     */
+    public static function getIddCodePreferredChoices(ParameterBagInterface $bag): array
+    {
+
+        $result = [];
+        if ($bag->has('preferred_countries') && $bag->get('preferred_countries') !== [] && is_array($bag->get('preferred_countries'))) {
+            foreach ($bag->get('preferred_countries') as $q) {
+                try {
+                    $value = strtoupper($q);
+                    $alpha2 = Countries::getAlpha2Code($value);
+                    $name = Countries::getName($alpha2) . ' (+' . self::getAlpha3IddCode($value) . ')';
+                    $result[$name] = $value;
+                } catch (MissingResourceException $e) {
+                    $value = strtoupper($q);
+                    $name = self::$missing_codes['alpha3Name'][$value] . ' (+' . self::getAlpha3IddCode($value) . ')';
+                    $result[$name] = $value;
+                }
+            }
+            ksort($result);
+        }
+        return $result;
     }
 }

@@ -25,6 +25,7 @@ use App\Modules\People\Pagination\AddressPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -53,56 +54,53 @@ class AddressController extends AbstractPageController
 
     /**
      * Manage Address
-     * @Route("/address/add/{return}",name="address_add")
-     * @Route("/address/{address}/edit/{return}",name="address_edit")
+     * @Route("/address/add/",name="address_add")
+     * @Route("/address/add/popup/",name="address_add_popup")
+     * @Route("/address/{address}/edit/",name="address_edit_popup")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @param Address|null $address
-     * @param string|null $return
      * @return JsonResponse
      */
-    public function addressManage(ContainerManager $manager, ?Address $address = null, ?string $return = null)
+    public function addressManage(ContainerManager $manager, ?Address $address = null)
     {
         $request = $this->getRequest();
-        if (is_null($return)) {
-            $return = $this->generateUrl('address_list');
-        } else {
-            $return = base64_decode($return);
-        }
 
         if ($address === null) {
             $address = new Address();
-            $action = $this->generateUrl('address_add', ['return' => base64_encode($return)]);
+            $action = $this->generateUrl('address_add_popup');
             $locality = new Locality();
         } else {
-            $action = $this->generateUrl('address_edit', ['address' => $address->getId(), 'return' => base64_encode($return)]);
+            $action = $this->generateUrl('address_edit_popup', ['address' => $address->getId()]);
             $locality = $address->getLocality();
         }
 
         $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
-            $form->submit($content['address']);
+            $form->submit($content);
             if ($form->isValid()) {
+                $id = $address->getId();
                 $data = ProviderFactory::create(Address::class)->persistFlush($address, []);
-                dump($address);
+                if ($data['status'] === 'success' && $id !== $address->getId()) {
+                    $action = $this->generateUrl('address_edit_popup', ['address' => $address->getId()]);
+                    $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $action;
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                }
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
-            $data['address_id'] = $address->getId() > 0 ? $address->getId() : 0;
-            $data['locality_id'] = $address->getLocality() ? $address->getLocality()->getId() : 0;
             return new JsonResponse($data);
         }
 
         if ($address->getId() > 0)
-            $manager->setAddElementRoute($this->generateUrl('address_add', ['return' => base64_encode($return)]));
+            $manager->setAddElementRoute($this->generateUrl('address_add'));
 
-        $localityForm = $this->createForm(LocalityType::class, $locality, ['action' => $this->generateUrl('locality_edit', ['locality' => $locality->getId() ?: 0])]);
-
-        $addressManager = new AddressManager($address, $form->createView(), $localityForm->createView());
-        $addressManager->setReturn($return);
+        $manager->singlePanel($form->createView());
 
         return $this->getPageManager()->setPopup(true)->createBreadcrumbs($address->getId() > 0 ? 'Edit Address' : 'Add Address',
                 [
@@ -111,7 +109,7 @@ class AddressController extends AbstractPageController
             )
             ->render(
                 [
-                    'special' => $addressManager->toArray(),
+                    'containers' => $manager->getBuiltContainers(),
                 ]
             );
     }
@@ -124,32 +122,72 @@ class AddressController extends AbstractPageController
 
     /**
      * localityEdit
+     * @param ContainerManager $manager
      * @param Locality|null $locality
-     * @Route("/locality/{locality}/edit/",name="locality_edit")
+     * @return JsonResponse
+     * @Route("/locality/{locality}/edit/",name="locality_edit_popup")
      * @Route("/locality/add/",name="locality_add")
+     * @Route("/locality/add/popup/",name="locality_add_popup")
      */
-    public function localityEdit(?Locality $locality = null)
+    public function localityEdit(ContainerManager $manager, ?Locality $locality = null)
     {
         if (is_null($locality)) {
             $locality = new Locality();
-        }
-
-        $form = $this->createForm(LocalityType::class, $locality, ['action' => $this->generateUrl('locality_add')]);
-
-        $content = json_decode($this->getRequest()->getContent(), true);
-
-        $data = [];
-        $form->submit($content['locality']);
-        if ($form->isValid()) {
-            $data = ProviderFactory::create(Locality::class)->persistFlush($locality);
+            $action =  $this->generateUrl('locality_add_popup');
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+            $action = $this->generateUrl('locality_edit_popup', ['locality' => $locality->getId()]);
         }
-        $data['form'] = $form->createView()->vars['toArray'];
-        $data['locality_list'] = AddressManager::getLocalityList();
-        $data['locality_choices'] = AddressManager::getLocalityChoices();
-        $data['locality_id'] = $locality->getId();
 
-        return new JsonResponse($data);
+        $form = $this->createForm(LocalityType::class, $locality, ['action' => $action]);
+
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
+
+            $data = [];
+            $form->submit($content['locality']);
+            if ($form->isValid()) {
+                $data = ProviderFactory::create(Locality::class)->persistFlush($locality);
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+            }
+            
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer();
+
+            return new JsonResponse($data);
+        }
+        
+        $manager->singlePanel($form->createView());
+        
+        return $this->getPageManager()->render(['containers' => $manager->getBuiltContainers()]);
+        
     }
+
+    /**
+     * refreshChoiceList
+     * @Route("/address/list/refresh/",name="address_list_refresh")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function refreshChoiceList()
+    {
+        $result = [];
+        foreach(ProviderFactory::getRepository(Address::class)->findBy([],['streetNumber' => 'ASC','streetName' => 'ASC']) as $address) {
+            $result[] = new ChoiceView($address, $address->getId(), $address->toString());
+        }
+        return new JsonResponse(['choices' => $result]);
+    }
+
+    /**
+     * refreshLocalityChoiceList
+     * @Route("/locality/list/refresh/",name="locality_list_refresh")
+     */
+    public function refreshLocalityChoiceList()
+    {
+        $result = [];
+        foreach(ProviderFactory::getRepository(Locality::class)->findBy([],['name' => 'ASC','territory' => 'ASC']) as $locality) {
+            $result[] = new ChoiceView($locality, $locality->getId(), $locality->toString());
+        }
+        return new JsonResponse(['choices' => $result]);
+    }
+
 }

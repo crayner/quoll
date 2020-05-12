@@ -58,7 +58,7 @@ class Family implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,name="formal_names",options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
+     * @ORM\Column(length=100,name="formal_name",options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -121,6 +121,12 @@ class Family implements EntityInterface
      *      )
      */
     private $familyPhones;
+
+    /**
+     * @var Collection|FamilyMember[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMember", mappedBy="family")
+     */
+    private $members;
 
     /**
      * @return Collection
@@ -357,6 +363,48 @@ class Family implements EntityInterface
     public static function getStatusList(): array
     {
         return self::$statusList;
+    }
+
+    /**
+     * @return FamilyMember[]|Collection|null
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
+     * Members.
+     *
+     * @param FamilyMember[]|Collection|null $members
+     * @return Family
+     */
+    public function setMembers($members)
+    {
+        $this->members = $members;
+        return $this;
+    }
+
+    /**
+     * @return FamilyMember[]|Collection|null
+     */
+    public function getAdults(): Collection
+    {
+        return $this->getMembers()->filter(function (FamilyMember $member) {
+            if ($member instanceof FamilyMemberAdult)
+                return $member;
+        });
+    }
+
+    /**
+     * @return FamilyMember[]|Collection|null
+     */
+    public function getChildren(): Collection
+    {
+        return $this->getMembers()->filter(function (FamilyMember $member) {
+            if ($member instanceof FamilyMemberChild)
+                return $member;
+        });
     }
 
     /**

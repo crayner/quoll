@@ -28,6 +28,7 @@ use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Entity\Phone;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\Setting;
@@ -353,13 +354,13 @@ class PersonType extends AbstractType
                     'panel' => 'Contact',
                     'mapped' => false,
                     'visible_by_choice' => 'address_info',
-                    'data' => $options['data']->getAddress() || $options['data']->getPostalAddress() ? 'Y' : 'N',
+                    'data' => $options['data']->getPhysicalAddress() || $options['data']->getPostalAddress() ? 'Y' : 'N',
                 ]
             )
-            ->add('address', AutoSuggestEntityType::class,
+            ->add('physicalAddress', AutoSuggestEntityType::class,
                 [
                     'label' => 'Physical Address',
-                    'placeholder' => ' ',
+                    'placeholder' => 'Enter any part of an address',
                     'class' => Address::class,
                     'choice_label' => 'toString',
                     'query_builder' => function(EntityRepository $er) {
@@ -376,9 +377,15 @@ class PersonType extends AbstractType
                     'buttons' => [
                         'add' => [
                             'class' => 'fa-fw fas fa-plus-circle',
-                            'route' => '/address/add/' . base64_encode('/person/' . $options['data']->getId() . '/edit/Contact'),
-                            'target' => '_self',
+                            'route' => '/address/add/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
                             'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/address/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Address List', [], 'People'),
                         ],
                     ],
                 ]
@@ -387,7 +394,7 @@ class PersonType extends AbstractType
                 [
                     'label' => 'Postal Address',
                     'help' => 'Should only be used if the physical address is not the postal address.',
-                    'placeholder' => ' ',
+                    'placeholder' => 'Enter any part of an address',
                     'class' => Address::class,
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('a')
@@ -404,61 +411,55 @@ class PersonType extends AbstractType
                     'buttons' => [
                         'add' => [
                             'class' => 'fa-fw fas fa-plus-circle',
-                            'route' => '/address/add/' . base64_encode('/person/' . $options['data']->getId() . '/edit/Contact'),
-                            'target' => '_self',
+                            'route' => '/address/add/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
                             'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/address/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Address List', [], 'People'),
                         ],
                     ],
                 ]
             )
-            ->add('personalPhone', PhoneType::class,
+            ->add('personalPhone', AutoSuggestEntityType::class,
                 [
-                    'label' => 'Phone 1',
-                    'help' => 'Type, country code, number.',
-                    'data' => $options['data'],
+                    'label' => 'Personal Phone',
+                    'help' => 'Usually a mobile phone.',
+                    'class' => Phone::class,
+                    'placeholder' => 'Enter any part of a phone number',
                     'panel' => 'Contact',
-                    'mapped' => false,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('p')
+                            ->orderBy('p.phoneNumber', 'ASC');
+                    },
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/phone/add/popup/',
+                            'target' => 'Phone_Details',
+                            'specs' => 'width=700,height=350',
+                            'title' => TranslationHelper::translate('Add Phone', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/phone/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Phone List', [], 'People'),
+                        ],
+                    ],
                 ]
             )
-            ->add('additionsPhones', ToggleType::class,
+ /*           ->add('additionalPhones', ToggleType::class,
                 [
                     'label' => 'Additional Personal Phone Details',
                     'panel' => 'Contact',
                     'mapped' => false,
                     'visible_by_choice' => 'phone_info',
-                    'data' => $options['data']->getAddress() || $options['data']->getPostalAddress() ? 'Y' : 'N',
+                    'data' => $options['data']->getAddition() || $options['data']->getPostalAddress() ? 'Y' : 'N',
                 ]
-            )
-            ->add('phoneb', PhoneType::class,
-                [
-                    'label' => 'Phone 2',
-                    'help' => 'Type, country code, number.',
-                    'data' => $options['data'],
-                    'phone_position' => 2,
-                    'panel' => 'Contact',
-                    'mapped' => false,
-                ]
-            )
-            ->add('phonec', PhoneType::class,
-                [
-                    'label' => 'Phone 3',
-                    'help' => 'Type, country code, number.',
-                    'data' => $options['data'],
-                    'phone_position' => 3,
-                    'panel' => 'Contact',
-                    'mapped' => false,
-                ]
-            )
-            ->add('phoned', PhoneType::class,
-                [
-                    'label' => 'Phone 4',
-                    'help' => 'Type, country code, number.',
-                    'data' => $options['data'],
-                    'phone_position' => 4,
-                    'panel' => 'Contact',
-                    'mapped' => false,
-                ]
-            )
+            ) */
             ->add('website', UrlType::class,
                 [
                     'label' => 'Website',

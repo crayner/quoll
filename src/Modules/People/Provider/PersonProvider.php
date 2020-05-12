@@ -15,17 +15,11 @@
 
 namespace App\Modules\People\Provider;
 
-use App\Entity\AlertLevel;
-use App\Entity\Behaviour;
-use App\Entity\INPersonDescriptor;
-use App\Entity\MarkbookEntry;
-use App\Entity\PersonMedical;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
-use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Setting;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Manager\SecurityUser;
@@ -37,7 +31,6 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -440,5 +433,14 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
 
         }
         return $found;
+    }
+
+    /**
+     * getPaginationContent
+     * @return array
+     */
+    public function getPaginationContent(): array
+    {
+        return $this->getRepository()->getPaginationContent();
     }
 }

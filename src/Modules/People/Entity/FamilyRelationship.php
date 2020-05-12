@@ -10,7 +10,6 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-
 namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
@@ -45,16 +44,16 @@ class FamilyRelationship implements EntityInterface
     private $family;
 
     /**
-     * @var FamilyAdult|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyAdult",inversedBy="relationships")
+     * @var FamilyMemberAdult|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyMemberAdult",inversedBy="relationships")
      * @ORM\JoinColumn(name="adult",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private $adult;
 
     /**
-     * @var FamilyChild|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyChild",inversedBy="relationships")
+     * @var FamilyMemberChild|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyMemberChild",inversedBy="relationships")
      * @ORM\JoinColumn(name="child",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -88,10 +87,10 @@ class FamilyRelationship implements EntityInterface
     /**
      * FamilyRelationship constructor.
      * @param Family|null $family
-     * @param FamilyAdult|null $adult
-     * @param FamilyChild|null $child
+     * @param FamilyMember|null $adult
+     * @param FamilyMember|null $child
      */
-    public function __construct(?Family $family = null, ?FamilyAdult $adult = null, ?FamilyChild $child = null)
+    public function __construct(?Family $family = null, ?FamilyMember $adult = null, ?FamilyMember $child = null)
     {
         $this->family = $family;
         $this->adult = $adult;
