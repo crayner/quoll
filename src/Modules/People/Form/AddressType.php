@@ -19,6 +19,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
+use App\Modules\People\Manager\AddressManager;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -35,6 +36,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AddressType extends AbstractType
 {
+    /**
+     * @var AddressManager
+     */
+    private $manager;
+
+    /**
+     * AddressType constructor.
+     * @param AddressManager $manager
+     */
+    public function __construct(AddressManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * getParent
      * @return string|null
@@ -86,6 +101,17 @@ class AddressType extends AbstractType
                     'required' => false,
                 ]
             )
+        ;
+        if ($this->manager->isPostCodeHere('street',$options['data']->getLocality() ? $options['data']->getLocality()->getCountry() : null)) {
+            $builder
+                ->add('postCode', TextType::class,
+                    [
+                        'label' => 'Post Code',
+                        'help' => 'This post code identifies the address detail. This is based on country settings.',
+                    ]
+                );
+        }
+        $builder
             ->add('locality', AutoSuggestEntityType::class,
                 [
                     'label' => 'Locality',
@@ -104,6 +130,13 @@ class AddressType extends AbstractType
                             'target' => 'Locality_Details',
                             'specs' => 'width=800,height=450',
                             'title' => TranslationHelper::translate('Add Locality', [], 'People'),
+                        ],
+                        'edit' => [
+                            'class' => 'fa-fw far fa-edit',
+                            'route' => '/locality/__value__/edit/popup/',
+                            'target' => 'Locality_Details',
+                            'specs' => 'width=800,height=450',
+                            'title' => TranslationHelper::translate('Edit Locality', [], 'People'),
                         ],
                         'refresh' => [
                             'class' => 'fa-fw fas fa-sync',

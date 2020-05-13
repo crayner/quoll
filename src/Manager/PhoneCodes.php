@@ -54,7 +54,7 @@ class PhoneCodes
     protected static function readCodes(): array
     {
         if (self::$codes === null) {
-            self::$codes = json_decode(file_get_contents(realpath(__DIR__ . '/../../config/iddcodes/codes.json')), true);
+            self::$codes = json_decode(file_get_contents(realpath(__DIR__ . '/../../config/information/codes.json')), true);
             self::$codes = self::$codes['Names'];
         }
         return self::$codes;

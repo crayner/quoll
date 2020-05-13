@@ -14,152 +14,186 @@
  */
 namespace App\Modules\People\Manager;
 
-use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
-use App\Provider\ProviderFactory;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Util\StringUtil;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AddressManager
  * @package App\Modules\People\Manager
  */
-class AddressManager implements SpecialInterface
+class AddressManager
 {
     /**
-     * @var FormView
+     * @var ParameterBagInterface
      */
-    private $addressForm;
+    private $bag;
 
     /**
-     * @var FormView
+     * @var string
      */
-    private $localityForm;
+    private $country;
 
     /**
-     * @var Address
+     * @var array|null
      */
-    private $address;
+    private $information;
 
     /**
      * AddressManager constructor.
-     * @param Address $address
-     * @param FormView $addressForm
-     * @param FormView $localityForm
+     * @param ParameterBagInterface $bag
      */
-    public function __construct(Address $address, FormView $addressForm, FormView $localityForm)
+    public function __construct(ParameterBagInterface $bag)
     {
-        $this->setAddressForm($addressForm);
-        $this->setLocalityForm($localityForm);
-        $this->setAddress($address);
+        $this->bag = $bag;
+        $this->country = $bag->get('country');
     }
 
     /**
-     * getName
+     * getPreferredCountries
+     * @return array
+     */
+    public function getPreferredCountries(): array
+    {
+        if ($this->bag->has('preferred_countries')) {
+            $cList = $this->bag->get('preferred_countries');
+        } else {
+            $cList = [];
+        }
+        $list = [];
+        foreach($cList as $c)
+            $list[Countries::getAlpha3Name($c)] = $c;
+        return $list;
+    }
+
+    /**
+     * isPostCodeHere
+     * @param string $position
+     * @param string|null $country
+     * @return bool
+     */
+    public function isPostCodeHere(string $position, ?string $country = null): bool
+    {
+        if (null === $this->getCountry($country)) {
+            return true;
+        }
+        $data = $this->getCountryInformation($this->getCountry($country));
+        return in_array($data['postcode']['location'], [$position, 'both']);
+    }
+
+    /**
+     * getAddressInformation
+     * @return array
+     */
+    protected function getInformation(): array
+    {
+        if (null === $this->information) {
+            $this->information = Yaml::parse(file_get_contents(__DIR__ . '/../../../../config/information/address.yaml'));
+        }
+        return $this->information;
+    }
+
+    /**
+     * hasCountryInformation
+     * @param string $country
+     * @return bool
+     */
+    protected function hasCountryInformation(string $country): bool
+    {
+        return key_exists($country, $this->getInformation());
+    }
+
+    /**
+     * getCountryInformation
+     * @param string $country
+     * @return mixed
+     */
+    protected function getCountryInformation(string $country): array
+    {
+        return $this->getInformation()[$country];
+    }
+
+    /**
+     * parseCountry
+     * @param string $country
+     * @return array
+     */
+    protected function parseCountry(string $country): array
+    {
+        $resolver = new OptionsResolver();
+
+        $resolver->setDefaults(
+            [
+                'postcode' => [],
+            ]
+        );
+
+        $data = $resolver->resolve($this->hasCountryInformation($country) ? $this->getCountryInformation($country) : []);
+        $resolver->clear();
+        $resolver->setDefaults(
+            [
+                'location' => 'both',
+                'validation' => '',
+                'style' => null,
+            ]
+        );
+        $resolver->addAllowedValues('location', ['both','street','locality']);
+        $resolver->addAllowedTypes('validation', ['string']);
+        $resolver->addAllowedTypes('style', ['null','string']);
+
+        $data['postcode'] = $resolver->resolve($data['postcode']);
+        return $data;
+    }
+
+    /**
+     * getCountry
+     * @param string|null $country
+     * @return string|null
+     */
+    public function getCountry(?string $country): ?string
+    {
+        return $country ?: $this->country;
+    }
+
+    /**
+     * isValidPostCode
+     * @param Address|Locality $entity
+     * @return bool
+     */
+    public function isValidPostCode($entity) : bool
+    {
+        dump($entity);
+        if ($entity instanceof Address) {
+            $reg = $this->getPostcodeValidation($entity->getLocality()->getCountry());
+            if ($reg === '') {
+                return true;
+            }
+            return ($entity->getPostCode() === null && $entity->getLocality()->getPostCode() === null) || preg_match($reg, $entity->getPostCode() . $entity->getLocality()->getPostCode()) > 0;
+        }
+        if ($entity instanceof Locality) {
+            $reg = $this->getPostcodeValidation($entity->getCountry());
+            if ($reg === '') {
+                return true;
+            }
+            return $entity->getPostCode() === null || preg_match($reg, $entity->getPostCode()) > 0;
+        }
+        return false;
+    }
+
+    /**
+     * getPostCodeValidation
+     * @param string $code
      * @return string
      */
-    public function getName(): string
+    protected function getPostCodeValidation(string $code): string
     {
-        return StringUtil::fqcnToBlockPrefix(static::class);
-    }
-
-    /**
-     * toArray
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'address_form' => $this->getAddressForm()->vars['toArray'],
-            'locality_form' => $this->getLocalityForm()->vars['toArray'],
-            'locality_choices' => static::getLocalityChoices(),
-            'locality_list' => static::getLocalityList(),
-            'name' => $this->getName(),
-            'address_id' => $this->getAddress()->getId() > 0 ? $this->getAddress()->getId() : 0,
-            'locality_id' => $this->getAddress()->getLocality() ? $this->getAddress()->getLocality()->getId() : 0,
-        ];
-    }
-
-    /**
-     * @return Address
-     */
-    public function getAddress(): Address
-    {
-        return $this->address;
-    }
-
-    /**
-     * Address.
-     *
-     * @param Address $address
-     * @return AddressManager
-     */
-    public function setAddress(Address $address): AddressManager
-    {
-        $this->address = $address;
-        return $this;
-    }
-
-    /**
-     * @return FormView
-     */
-    public function getAddressForm(): FormView
-    {
-        return $this->addressForm;
-    }
-
-    /**
-     * AddressForm.
-     *
-     * @param FormView $addressForm
-     * @return AddressManager
-     */
-    public function setAddressForm(FormView $addressForm): AddressManager
-    {
-        $this->addressForm = $addressForm;
-        return $this;
-    }
-
-    /**
-     * @return FormView
-     */
-    public function getLocalityForm(): FormView
-    {
-        return $this->localityForm;
-    }
-
-    /**
-     * LocalityForm.
-     *
-     * @param FormView $localityForm
-     * @return AddressManager
-     */
-    public function setLocalityForm(FormView $localityForm): AddressManager
-    {
-        $this->localityForm = $localityForm;
-        return $this;
-    }
-
-    /**
-     * getLocalityList
-     * @return array
-     */
-    public static function getLocalityChoices(): array
-    {
-        return ProviderFactory::create(Locality::class)->buildChoiceList();
-    }
-
-    /**
-     * getLocalityList
-     * @return array
-     */
-    public static function getLocalityList(): array
-    {
-        $result = [];
-        foreach(ProviderFactory::getRepository(Locality::class)->findBy([],['name' => 'ASC', 'territory' => 'ASC']) as $locality) {
-            $result[$locality->getId()] = $locality->toArray('full');
+        if (!$this->hasCountryInformation($code)) {
+            return '';
         }
-        return $result;
+        $data = $this->getCountryInformation($code);
+        return $data['postcode']['validation'];
     }
 }

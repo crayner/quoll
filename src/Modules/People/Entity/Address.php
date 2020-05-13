@@ -15,8 +15,10 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
+use App\Modules\People\Validator\PostCode;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint("address_in_locality",columns={"street_name","flat_unit_details","street_number","locality"})})
  * @UniqueEntity(fields={"streetName","flatUnitDetails","streetNumber","locality"},message="This address is a load of not unique.")
  * @\App\Modules\People\Validator\Address()
+ * @PostCode()
  */
 class Address implements EntityInterface
 {
@@ -67,6 +70,13 @@ class Address implements EntityInterface
      * @Assert\Length(max=50)
      */
     private $propertyName;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=10,nullable=true,name="post_code")
+     * @Assert\Length(max=10)
+     */
+    private $postCode;
 
     /**
      * @var Locality|null
@@ -177,6 +187,26 @@ class Address implements EntityInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getPostCode(): ?string
+    {
+        return $this->postCode;
+    }
+
+    /**
+     * PostCode.
+     *
+     * @param string|null $postCode
+     * @return Address
+     */
+    public function setPostCode(?string $postCode): Address
+    {
+        $this->postCode = $postCode !== null ? strtoupper($postCode) : null;
+        return $this;
+    }
+
+    /**
      * @return Locality|null
      */
     public function getLocality(): ?Locality
@@ -205,8 +235,14 @@ class Address implements EntityInterface
     {
         if ($name === 'style') {
             return [
-                'streetName' => $this->getStreetName(),
                 'propertyName' => $this->getPropertyName(),
+                'flatUnit' => $this->getFlatUnitDetails(),
+                'streetNumber' => $this->getStreetNumber(),
+                'streetName' => $this->getStreetName(),
+                'territory' => $this->getLocality() ? $this->getLocality()->getTerritory() : '',
+                'locality' => $this->getLocality() ? $this->getLocality()->getName() : '',
+                'country' => $this->getLocality() ? Countries::getAlpha3Names($this->getLocality()->getCountry()) : '',
+                'postCode' => $this->getPostCode() . ($this->getLocality() ? $this->getLocality()->getPostCode() : ''),
             ];
         }
         return [
@@ -243,7 +279,7 @@ class Address implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Address`
-                    ADD CONSTRAINT `FOREIGN KEY (`locality`) REFERENCES `__prefix__Locality` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT `FOREIGN KEY (`locality`) REFERENCES `__prefix__Locality` (`id`);";
     }
 
     /**
@@ -271,14 +307,12 @@ class Address implements EntityInterface
      */
     public function toString(?string $style = null): string
     {
-        $result = $this->getFlatUnitDetails() . '/' . $this->getStreetNumber() . ' ' . $this->getStreetName() . ' ' . $this->getPropertyName() . ' ' . ($this->getLocality() ? $this->getLocality()->toString() : null);
+        $result = $this->getFlatUnitDetails() . '/' . $this->getStreetNumber() . ' ' . $this->getStreetName() . ' ' . $this->getPropertyName() . ' ' . ($this->getLocality() ? $this->getLocality()->toString() : null) . ' ' . $this->getPostCode();
         $result = str_replace('  ',' ', trim(trim($result), '/'));
         if ($result === '')
             return '';
         if (!is_null($style)) {
-            $locality = $this->getLocality()->toString($style);
             $result = str_replace(array_keys($this->toArray('style')), array_values($this->toArray('style')), $style);
-            $result = str_replace('locality', $locality, $result);
         }
         return trim($result);
     }

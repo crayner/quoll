@@ -53,6 +53,9 @@ class LocaleHelper
      */
     public static function getCountryName(string $code): string
     {
+        if (strlen($code) === 3) {
+            return Countries::getAlpha3Name($code);
+        }
         return Countries::getName($code);
     }
 }

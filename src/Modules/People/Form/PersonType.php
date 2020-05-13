@@ -29,6 +29,7 @@ use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
+use App\Modules\People\Manager\AddressManager;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\Setting;
@@ -69,15 +70,21 @@ class PersonType extends AbstractType
     private $hierarchy;
 
     /**
+     * @var AddressManager
+     */
+    private $manager;
+
+    /**
      * PersonType constructor.
      * @param RouterInterface $router
      * @param RoleHierarchyInterface $hierarchy
-     * @param Person $user
+     * @param AddressManager $manager
      */
-    public function __construct(RouterInterface $router, RoleHierarchyInterface $hierarchy)
+    public function __construct(RouterInterface $router, RoleHierarchyInterface $hierarchy, AddressManager $manager)
     {
         $this->router = $router;
         $this->hierarchy = $hierarchy;
+        $this->manager = $manager;
     }
 
 
@@ -382,6 +389,13 @@ class PersonType extends AbstractType
                             'specs' => 'width=800,height=600',
                             'title' => TranslationHelper::translate('Add Address', [], 'People'),
                         ],
+                        'edit' => [
+                            'class' => 'fa-fw fas fa-edit',
+                            'route' => '/address/__value__/edit/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Edit Address', [], 'People'),
+                        ],
                         'refresh' => [
                             'class' => 'fa-fw fas fa-sync',
                             'route' => '/address/list/refresh/',
@@ -416,6 +430,13 @@ class PersonType extends AbstractType
                             'specs' => 'width=800,height=600',
                             'title' => TranslationHelper::translate('Add Address', [], 'People'),
                         ],
+                        'edit' => [
+                            'class' => 'fa-fw fas fa-edit',
+                            'route' => '/address/__value__/edit/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Edit Address', [], 'People'),
+                        ],
                         'refresh' => [
                             'class' => 'fa-fw fas fa-sync',
                             'route' => '/address/list/refresh/',
@@ -442,6 +463,13 @@ class PersonType extends AbstractType
                             'target' => 'Phone_Details',
                             'specs' => 'width=700,height=350',
                             'title' => TranslationHelper::translate('Add Phone', [], 'People'),
+                        ],
+                        'edit' => [
+                            'class' => 'fa-fw fas fa-edit',
+                            'route' => '/phone/__value__/edit/popup/',
+                            'target' => 'Phone_Details',
+                            'specs' => 'width=700,height=350',
+                            'title' => TranslationHelper::translate('Edit Phone', [], 'People'),
                         ],
                         'refresh' => [
                             'class' => 'fa-fw fas fa-sync',
@@ -699,7 +727,7 @@ class PersonType extends AbstractType
             ->add('nationalIDCardNumber', TextType::class,
                 [
                     'label' => '{name} ID Card Number',
-                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'country'))],
+                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName($this->manager->getCountry(null))],
                     'panel' => 'Background',
                     'required' => false,
                 ]
@@ -707,7 +735,7 @@ class PersonType extends AbstractType
             ->add('nationalIDCardScan', ReactFileType::class,
                 [
                     'label' => '{name} ID Card Scan',
-                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'country'))],
+                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName($this->manager->getCountry(null))],
                     'panel' => 'Background',
                     'help' => 'Less than 2M,  Accepts PDF and image files only.',
                     'required' => false,
@@ -718,7 +746,7 @@ class PersonType extends AbstractType
             ->add('residencyStatus', TextType::class,
                 [
                     'label' => '{name} Residency/Visa Type',
-                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'country'))],
+                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName($this->manager->getCountry(null))],
                     'panel' => 'Background',
                     'required' => false,
                 ]
@@ -726,7 +754,7 @@ class PersonType extends AbstractType
             ->add('visaExpiryDate', DateType::class,
                 [
                     'label' => '{name} Visa Expiry Date',
-                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'country'))],
+                    'label_translation_parameters' => ['{name}' => LocaleHelper::getCountryName($this->manager->getCountry(null))],
                     'help' => 'If relevant',
                     'panel' => 'Background',
                     'widget' => 'single_text',

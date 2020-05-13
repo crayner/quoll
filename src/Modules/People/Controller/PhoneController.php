@@ -39,7 +39,7 @@ class PhoneController extends AbstractPageController
      * @Route("/phone/list/",name="phone_delete")
      * @Route("/phone/add/popup/",name="phone_add_popup")
      * @Route("/phone/add/",name="phone_add")
-     * @Route("/phone/{phone}/edit/",name="phone_edit_popup")
+     * @Route("/phone/{phone}/edit/popup/",name="phone_edit_popup")
      * @IsGranted("ROLE_SUPPORT")
      */
     public function edit(ContainerManager $manager, ?Phone $phone)

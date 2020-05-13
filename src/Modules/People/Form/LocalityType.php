@@ -17,6 +17,8 @@ namespace App\Modules\People\Form;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Locality;
+use App\Modules\People\Manager\AddressManager;
+use App\Modules\System\Util\LocaleHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -41,12 +43,17 @@ class LocalityType extends AbstractType
     private $bag;
 
     /**
-     * LocalityType constructor.
-     * @param ParameterBagInterface $bag
+     * @var AddressManager
      */
-    public function __construct(ParameterBagInterface $bag)
+    private $manager;
+
+    /**
+     * AddressType constructor.
+     * @param AddressManager $manager
+     */
+    public function __construct(AddressManager $manager)
     {
-        $this->bag = $bag;
+        $this->manager = $manager;
     }
 
     /**
@@ -65,59 +72,43 @@ class LocalityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($this->bag->has('country_list')) {
-            $cList = $this->bag->get('country_list');
-        } else {
-            $cList = [];
-        }
-        $cList = [
-            'AUS',
-            'NZL'
-        ];
-        $list = [];
-        foreach($cList as $c)
-            $list[$c] = Countries::getAlpha3Name($c);
-        $list = array_flip($list);
         $builder
             ->add('localityHeader', HeaderType::class,
                 [
-                    'label' => 'Locality',
+                    'label' => $options['data']->getId() > 0 ? 'Edit Locality' : 'Add Locality',
                     'help' => 'Editing an existing address will change that address for every person or family that uses that address.'
                 ]
             )
             ->add('name', TextType::class,
                 [
                     'label' => 'Locality Name',
-                    'help' => '',
-                    'on_change' => 'changeLocality',
+                    'help' => 'Suburb, Locality or Town',
                 ]
             )
             ->add('territory', TextType::class,
                 [
                     'label' => 'State / Provence ',
-                    'on_change' => 'changeLocality',
                 ]
-            )
-            ->add('postCode', TextType::class,
-                [
-                    'label' => 'Post Code',
-                    'on_change' => 'changeLocality',
-                ]
-            )
+            );
+        if ($this->manager->isPostCodeHere('locality', $options['data']->getCountry())) {
+            $builder
+                ->add('postCode', TextType::class,
+                    [
+                        'label' => 'Post Code',
+                        'help' => 'This post code applies to the entire locality. This can be changed in country settings.',
+                    ]
+                );
+        }
+        $builder
             ->add('country', CountryType::class,
                 [
                     'label' => 'Country',
                     'alpha3' => true,
                     'placeholder' => ' ',
-                    'on_change' => 'changeLocality',
-                    'preferred_choices' => $list,
+                    'preferred_choices' => $this->manager->getPreferredCountries(),
                 ]
             )
-            ->add('submit', SubmitType::class,
-                [
-                    'on_click' => 'submitLocality',
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 

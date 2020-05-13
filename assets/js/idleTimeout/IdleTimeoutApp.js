@@ -105,6 +105,7 @@ export default class IdleTimeoutApp extends Component {
     }
 
     logout () {
+        window.localStorage.setItem('logged_in', 'false')
         openPage(this.route, {method: 'GET'}, false)
     }
 }

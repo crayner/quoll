@@ -40,6 +40,16 @@ export default class FormAutoSuggest extends Component {
         }
     }
 
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        if (Object.values(this.props.form.choices).length !== this.state.form.choices.length || JSON.stringify(Object.values(this.props.form.choices)) !== JSON.stringify(this.state.form.choices)) {
+            let form = { ...this.props.form }
+            form.choices = Object.values(this.props.form.choices)
+            this.setState({
+                form: form,
+            })
+        }
+    }
+
     onChange(event) {
         if (event.target.value !== undefined)
         {
@@ -113,7 +123,7 @@ export default class FormAutoSuggest extends Component {
             suggestionsClass = 'md:block absolute md:static top-0 right-0 w-full hidden'
         }
         this.setState({
-            suggestionsClass: suggestionsClass
+            suggestionsClass: suggestionsClass,
         })
     }
 
@@ -137,10 +147,21 @@ export default class FormAutoSuggest extends Component {
                     <span className={button.class}></span>
                 </button>)
             }
+            if (name === 'edit' && this.state.form.value !== '') {
+                let route = button.route.replace("__value__", this.state.form.value)
+                let url = {
+                    url: route,
+                    target: button.target,
+                    options: button.specs,
+                }
+                buttons.push(<button type="button" key={name} title={button.title}
+                                     className="button bg-gray-100 hover:text-green-500"
+                                     onClick={() => this.functions.openUrl(url)}><span className={button.class}/>
+                </button>)
+            }
         })
         if (this.state.form.value !== '') {
-            buttons.push(<button type="button" key={'clear'} title={this.functions.translate('Erase Content')}
-                                 key={'refresh'}
+            buttons.push(<button type="button" title={this.functions.translate('Erase Content')} key={'refresh'}
                                  className="button bg-gray-100 hover:text-yellow-500"
                                  onClick={() => this.clearAutoSuggest()}><span className={'fas fa-eraser fa-fw'}/>
             </button>)
@@ -154,9 +175,7 @@ export default class FormAutoSuggest extends Component {
                 <div className="z-10 rounded border border-solid border-gray-300 w-full">
                     <a data-toggle={this.state.form.id + '_auto_suggest'} className="float-right text-xs underline md:hidden text-gray-600"
                        href="#" onClick={() => this.toggleAutoSuggestList()}><span className={'far fa-times-circle fa-fw'} title={'Close'}/></a>
-
                     <div className="w-full sm:py-2">
-
                         <div {...this.wrapper_attr}>
                             <Autosuggest
                                 id={this.state.form.id}
@@ -168,6 +187,7 @@ export default class FormAutoSuggest extends Component {
                                 inputProps={{
                                     value: this.state.value,
                                     placeholder: this.state.form.placeholder,
+                                    autoComplete: 'stop_all_stuff',
                                     onChange: this.onChange,
                                 }}
                             />

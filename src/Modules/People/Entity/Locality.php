@@ -14,6 +14,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\EntityInterface;
 use App\Modules\People\Validator\Country;
+use App\Modules\People\Validator\PostCode;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -29,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="locality",columns={"name","territory","post_code","country"})}
  * )
  * @UniqueEntity({"name","territory","postCode","country"})
+ * @PostCode()
  */
 class Locality implements EntityInterface
 {
@@ -137,12 +139,12 @@ class Locality implements EntityInterface
     /**
      * PostalCode.
      *
-     * @param string|null $postalCode
-     * @return District
+     * @param string|null $postCode
+     * @return Locality
      */
     public function setPostCode(?string $postCode): Locality
     {
-        $this->postCode = $postCode;
+        $this->postCode = $postCode !== null ? strtoupper($postCode) : null;
         return $this;
     }
 
@@ -238,8 +240,9 @@ class Locality implements EntityInterface
      */
     public function toString(?string $style = null): string
     {
-        $result = $this->getName() . ' ' . $this->getTerritory() . ' ' . $this->getPostCode();
-        $result .= ' ' . Countries::getAlpha3Name($this->getCountry());
+        $result = $this->getName() . ' ' . $this->getTerritory();
+        $result .= ' ' . Countries::getAlpha3Name($this->getCountry()) . ' ' . $this->getPostCode();
+        $result = str_replace('  ', ' ', $result);
         if (trim($result) === '')
             return '';
         if (!is_null($style)) {

@@ -50,14 +50,6 @@ class LocalisationSettingsType extends AbstractType
                     'settings' => [
                         [
                             'scope' => 'System',
-                            'name' => 'country',
-                            'entry_type' => CountryType::class,
-                            'entry_options' => [
-                                'placeholder' => ' ',
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
                             'name' => 'firstDayOfTheWeek',
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
@@ -70,14 +62,6 @@ class LocalisationSettingsType extends AbstractType
                         ],
                         [
                             'scope' => 'System',
-                            'name' => 'timezone',
-                            'entry_type' => TimezoneType::class,
-                            'entry_options' => [
-                                'placeholder' => ' ',
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
                             'name' => 'currency',
                             'entry_type' => CurrencyType::class,
                             'entry_options' => [
@@ -85,6 +69,19 @@ class LocalisationSettingsType extends AbstractType
                             ],
                         ],
                     ],
+                ]
+            )
+            ->add('country', CountryType::class,
+                [
+                    'label' => 'country',
+                    'placeholder' => ' ',
+                    'alpha3' => true,
+                ]
+            )
+            ->add('timezone', TimezoneType::class,
+                [
+                    'label' => 'country',
+                    'placeholder' => ' ',
                 ]
             )
             ->add('submit', SubmitType::class);

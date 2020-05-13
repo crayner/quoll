@@ -56,7 +56,7 @@ class AddressController extends AbstractPageController
      * Manage Address
      * @Route("/address/add/",name="address_add")
      * @Route("/address/add/popup/",name="address_add_popup")
-     * @Route("/address/{address}/edit/",name="address_edit_popup")
+     * @Route("/address/{address}/edit/popup/",name="address_edit_popup")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @param Address|null $address
@@ -125,7 +125,7 @@ class AddressController extends AbstractPageController
      * @param ContainerManager $manager
      * @param Locality|null $locality
      * @return JsonResponse
-     * @Route("/locality/{locality}/edit/",name="locality_edit_popup")
+     * @Route("/locality/{locality}/edit/popup/",name="locality_edit_popup")
      * @Route("/locality/add/",name="locality_add")
      * @Route("/locality/add/popup/",name="locality_add_popup")
      */
@@ -142,21 +142,28 @@ class AddressController extends AbstractPageController
 
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
-
-            $data = [];
-            $form->submit($content['locality']);
+            $form->submit($content);
             if ($form->isValid()) {
+                $id = $locality->getId();
                 $data = ProviderFactory::create(Locality::class)->persistFlush($locality);
+                if ($data['status'] === 'success' && $id !== $locality->getId()) {
+                    $action = $this->generateUrl('locality_edit_popup', ['locality' => $locality->getId()]);
+                    $form = $this->createForm(LocalityType::class, $locality, ['action' => $action]);
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $action;
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                }
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             }
-            
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
-
             return new JsonResponse($data);
         }
-        
+
+        if ($locality->getId() > 0) {
+            $manager->setAddElementRoute($this->generateUrl('locality_add'));
+        }
         $manager->singlePanel($form->createView());
         
         return $this->getPageManager()->render(['containers' => $manager->getBuiltContainers()]);
@@ -187,6 +194,7 @@ class AddressController extends AbstractPageController
         foreach(ProviderFactory::getRepository(Locality::class)->findBy([],['name' => 'ASC','territory' => 'ASC']) as $locality) {
             $result[] = new ChoiceView($locality, $locality->getId(), $locality->toString());
         }
+        dump($result);
         return new JsonResponse(['choices' => $result]);
     }
 
