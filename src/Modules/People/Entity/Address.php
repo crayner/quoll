@@ -202,7 +202,7 @@ class Address implements EntityInterface
      */
     public function setPostCode(?string $postCode): Address
     {
-        $this->postCode = $postCode !== null ? strtoupper($postCode) : null;
+        $this->postCode = $postCode !== null ? strtoupper(str_replace(['(',')',' ','-','.',',','[',']',"\n","\r","\t"], '', $postCode)) : null;
         return $this;
     }
 

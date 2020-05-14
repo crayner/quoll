@@ -360,6 +360,15 @@ table.smallIntBorder td:last-child {
 .warning {
     @apply bg-orange-300 border-orange-700 text-orange-700;
 }
+.warning ol,
+.success ol,
+.error ol,
+.success ul,
+.error ul,
+.warning ul {
+    text-indent: 1rem;
+    list-style-position: inside;
+}
 
 div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull, div.secondary {
     @apply shadow border-l-6 p-3 my-3 text-xs;

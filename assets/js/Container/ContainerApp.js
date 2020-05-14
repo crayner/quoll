@@ -60,6 +60,7 @@ export default class ContainerApp extends Component {
             toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this),
             handleAddClick: props.functions.handleAddClick,
             replaceSpecialContent: this.replaceSpecialContent.bind(this),
+            mergeSubForm: this.mergeSubForm.bind(this),
             getContent: props.functions.getContent
         }
 
@@ -443,7 +444,8 @@ export default class ContainerApp extends Component {
         )
     }
 
-    addElementToChoice(e,url) {
+    addElementToChoice(e,url)
+    {
         e.preventDefault()
         openUrl(url)
     }
@@ -495,6 +497,32 @@ export default class ContainerApp extends Component {
         let parentForm = {...getParentForm(this.state.forms,form)}
         const parentName = getParentFormName(this.formNames,form)
         this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,form,form.value)),this.singleForm))
+    }
+
+    mergeSubForm(form,parent,id)
+    {
+        if (typeof parent === 'undefined') {
+            parent = getParentForm({ ...this.state.forms }, form, this.formNames)
+            let name = getParentFormName(this.formNames, parent)
+            id = parent.id
+        }
+        if (typeof parent.children !== 'undefined') {
+            Object.keys(parent.children).map(key => {
+                let child = { ...parent.children[key] }
+                if (child.id === form.id) {
+                    Object.assign(parent.children[key], { ...form })
+                } else {
+                    child = this.mergeSubForm(form, child, id)
+                    Object.assign(parent.children[key], { ...child })
+                }
+            })
+        }
+        if (id === parent.id) {
+            this.setState({
+                forms: mergeParentForm(this.state.forms, name, parent)
+            })
+        }
+        return parent
     }
 
     render() {

@@ -73,15 +73,17 @@ class AddressManager
      * isPostCodeHere
      * @param string $position
      * @param string|null $country
+     * @param bool $strict
      * @return bool
      */
-    public function isPostCodeHere(string $position, ?string $country = null): bool
+    public function isPostCodeHere(string $position, ?string $country = null, bool $strict = false): bool
     {
-        if (null === $this->getCountry($country)) {
+        if (null === $this->getCountry($country) && !$strict) {
             return true;
         }
         $data = $this->getCountryInformation($this->getCountry($country));
-        return in_array($data['postcode']['location'], [$position, 'both']);
+
+        return in_array($data['postcode']['location'], [$position, $strict ? '' : 'both']);
     }
 
     /**
@@ -128,8 +130,11 @@ class AddressManager
         $resolver->setDefaults(
             [
                 'postcode' => [],
+                'style' => '',
             ]
         );
+        $resolver->addAllowedTypes('style', ['string']);
+        $resolver->addAllowedTypes('postcode', ['array']);
 
         $data = $resolver->resolve($this->hasCountryInformation($country) ? $this->getCountryInformation($country) : []);
         $resolver->clear();
@@ -137,14 +142,27 @@ class AddressManager
             [
                 'location' => 'both',
                 'validation' => '',
-                'style' => null,
+                'format' => [],
             ]
         );
         $resolver->addAllowedValues('location', ['both','street','locality']);
         $resolver->addAllowedTypes('validation', ['string']);
-        $resolver->addAllowedTypes('style', ['null','string']);
+        $resolver->addAllowedTypes('format', ['array']);
 
         $data['postcode'] = $resolver->resolve($data['postcode']);
+
+        $resolver->clear();
+        $resolver->setDefaults(
+            [
+                'match' => null,
+                'template' => null,
+            ]
+        );
+        $resolver->addAllowedTypes('match', ['null','string']);
+        $resolver->addAllowedTypes('template', ['null','string']);
+
+        $data['postcode']['format'] = $resolver->resolve($data['postcode']['format']);
+
         return $data;
     }
 
@@ -165,7 +183,6 @@ class AddressManager
      */
     public function isValidPostCode($entity) : bool
     {
-        dump($entity);
         if ($entity instanceof Address) {
             $reg = $this->getPostcodeValidation($entity->getLocality()->getCountry());
             if ($reg === '') {
@@ -193,7 +210,92 @@ class AddressManager
         if (!$this->hasCountryInformation($code)) {
             return '';
         }
-        $data = $this->getCountryInformation($code);
+        $data = $this->parseCountry($code);
         return $data['postcode']['validation'];
+    }
+
+    /**
+     * getPostCodeFormat
+     * @param string $code
+     * @return array|null
+     */
+    protected function getPostCodeFormat(string $code): ?array
+    {
+        if (!$this->hasCountryInformation($code)) {
+            return null;
+        }
+        $data = $this->parseCountry($code);
+        return $data['postcode']['format'];
+    }
+
+    /**
+     * formatPostCode
+     * @param Address|Locality $entity
+     * @return string|null
+     */
+    public function formatPostCode($entity): ?string
+    {
+        $country = null;
+        if ($entity instanceof Address) {
+            if (!$entity->getLocality()) {
+                return $entity->getPostCode();
+            }
+            $country = $entity->getLocality()->getCountry();
+            if (null === $country) {
+                return $entity->getPostCode().$entity->getLocality()->getPostCode();
+            }
+            $postCode = null;
+            if ($this->isPostCodeHere('street', $country, true)) {
+                $postCode = $entity->getPostCode();
+            } else if ($this->isPostCodeHere('locality', $country, true)) {
+                $postCode = $entity->getLocality()->getPostCode();
+            }
+            if (null === $postCode || '' === $postCode) {
+                return null;
+            }
+            return $this->getFormattedPostCode($country, $postCode);
+
+        }
+        $country = null;
+        if ($entity instanceof Locality) {
+            $country = $entity->getCountry();
+            if (null === $country) {
+                return $entity->getPostCode();
+            }
+            $postCode = null;
+            if ($this->isPostCodeHere('locality', $country, true)) {
+                $postCode = $entity->getPostCode();
+            }
+            if (null === $postCode || '' === $postCode) {
+                return null;
+            }
+            return $this->getFormattedPostCode($country, $postCode);
+
+        }
+
+        throw new \TypeError(sprintf('Only an %s or %s are accepted.', Address::class, Locality::class));
+    }
+
+    /**
+     * getFormattedPostCode
+     * @param string $country
+     * @param string $postCode
+     * @return string
+     */
+    private function getFormattedPostCode(string $country, string $postCode): string
+    {
+        if ($this->getPostCodeFormat($country) === null) {
+            return $postCode;
+        }
+        $format = $this->getPostCodeFormat($country);
+        if ($format === []) {
+            return $postCode;
+        }
+        $matches = [];
+
+        preg_match($format['match'], $postCode, $matches);
+        unset($matches[0]);
+
+        return str_replace(['{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{0}'], $matches, $format['template']);
     }
 }

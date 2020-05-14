@@ -17,6 +17,7 @@ namespace App\Modules\People\Form;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Locality;
+use App\Modules\People\Form\Transform\PostCodeTransform;
 use App\Modules\People\Manager\AddressManager;
 use App\Modules\System\Util\LocaleHelper;
 use Doctrine\ORM\EntityRepository;
@@ -48,12 +49,19 @@ class LocalityType extends AbstractType
     private $manager;
 
     /**
+     * @var PostCodeTransform
+     */
+    private $transformer;
+
+    /**
      * AddressType constructor.
      * @param AddressManager $manager
+     * @param PostCodeTransform $transformer
      */
-    public function __construct(AddressManager $manager)
+    public function __construct(AddressManager $manager, PostCodeTransform $transformer)
     {
         $this->manager = $manager;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -98,6 +106,8 @@ class LocalityType extends AbstractType
                         'help' => 'This post code applies to the entire locality. This can be changed in country settings.',
                     ]
                 );
+            $this->transformer->setEntity($options['data']);
+            $builder->get('postCode')->addViewTransformer($this->transformer);
         }
         $builder
             ->add('country', CountryType::class,

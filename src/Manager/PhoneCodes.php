@@ -17,6 +17,7 @@ namespace App\Manager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Exception\MissingResourceException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class PhoneCodes
@@ -46,7 +47,7 @@ class PhoneCodes
             'ANT' => 'AN'
         ],
     ];
-
+    
     /**
      * getPath
      * @return string
@@ -54,8 +55,7 @@ class PhoneCodes
     protected static function readCodes(): array
     {
         if (self::$codes === null) {
-            self::$codes = json_decode(file_get_contents(realpath(__DIR__ . '/../../config/information/codes.json')), true);
-            self::$codes = self::$codes['Names'];
+            self::$codes = Yaml::parse(file_get_contents(__DIR__ . '/../../config/information/iddCodes.yaml'), true);
         }
         return self::$codes;
     }

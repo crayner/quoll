@@ -54,9 +54,9 @@ class AddressController extends AbstractPageController
 
     /**
      * Manage Address
-     * @Route("/address/add/",name="address_add")
-     * @Route("/address/add/popup/",name="address_add_popup")
-     * @Route("/address/{address}/edit/popup/",name="address_edit_popup")
+     * @Route("/address/add/",name="address_add",methods={"GET"})
+     * @Route("/address/add/popup/",name="address_add_popup",methods={"GET","POST"})
+     * @Route("/address/{address}/edit/popup/",name="address_edit_popup",methods={"GET","POST"})
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @param Address|null $address
@@ -78,6 +78,7 @@ class AddressController extends AbstractPageController
         $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
+            dump($content,$address);
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $address->getId();
