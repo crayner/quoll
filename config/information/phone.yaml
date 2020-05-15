@@ -1,4 +1,942 @@
-AUS:
+ABW:
     validation: ~
     format: ~
+    iddCode: 297
+AFG:
+    validation: ~
+    format: ~
+    iddCode: 93
+AGO:
+    validation: ~
+    format: ~
+    iddCode: 244
+AIA:
+    validation: ~
+    format: ~
+    iddCode: '1 264'
+ALB:
+    validation: ~
+    format: ~
+    iddCode: 355
+AND:
+    validation: ~
+    format: ~
+    iddCode: 376
+ANT:
+    validation: ~
+    format: ~
+    iddCode: 599
+ARE:
+    validation: ~
+    format: ~
+    iddCode: 971
+ARG:
+    validation: ~
+    format: ~
+    iddCode: 54
+ARM:
+    validation: ~
+    format: ~
+    iddCode: 374
+ASM:
+    validation: ~
+    format: ~
+    iddCode: '1 684'
+ATA:
+    validation: ~
+    format: ~
+    iddCode: 672
+ATG:
+    validation: ~
+    format: ~
+    iddCode: '1 268'
+AUS:
+    validation: '#(^0[234578][\d]{8}$)|(^1[39][\d]{4}$)|(^180[\d]{4}$)|(^1[38]00[\d]{6}$)|(^1903[\d]{6}$)#'
+    format:
+        template: '({1}) {2} {3}'
+        match: '#((^0[2378]{1})([\d]{4})([\d]{4}$))|((^13)([\d]{4}$))|((^19)([\d]{4}$))|((^180)([\d]{4}$))|(^0[45]{1}[\d]{2})([\d]{3})([\d]{3}$)|(^1800([\d]{3})([\d]{3}$))|(^1300([\d]{3})([\d]{3}$))|(^190[\d]{1})([\d]{3})([\d]{3}$)#'
+        useIdd: '(+idd) '
+    iddCode: 61
+AUT:
+    validation: ~
+    format: ~
+    iddCode: 43
+AZE:
+    validation: ~
+    format: ~
+    iddCode: 994
+BDI:
+    validation: ~
+    format: ~
+    iddCode: 257
+BEL:
+    validation: ~
+    format: ~
+    iddCode: 32
+BEN:
+    validation: ~
+    format: ~
+    iddCode: 229
+BES:
+    validation: ~
+    format: ~
+    iddCode: 599
+BFA:
+    validation: ~
+    format: ~
+    iddCode: 226
+BGD:
+    validation: ~
+    format: ~
+    iddCode: 880
+BGR:
+    validation: ~
+    format: ~
+    iddCode: 359
+BHR:
+    validation: ~
+    format: ~
+    iddCode: 973
+BHS:
+    validation: ~
+    format: ~
+    iddCode: '1 242'
+BIH:
+    validation: ~
+    format: ~
+    iddCode: 387
+BLR:
+    validation: ~
+    format: ~
+    iddCode: 375
+BLZ:
+    validation: ~
+    format: ~
+    iddCode: 501
+BMU:
+    validation: ~
+    format: ~
+    iddCode: '1 441'
+BOL:
+    validation: ~
+    format: ~
+    iddCode: 591
+BRA:
+    validation: ~
+    format: ~
+    iddCode: 55
+BRB:
+    validation: ~
+    format: ~
+    iddCode: '1 246'
+BRN:
+    validation: ~
+    format: ~
+    iddCode: 673
+BTN:
+    validation: ~
+    format: ~
+    iddCode: 975
+BWA:
+    validation: ~
+    format: ~
+    iddCode: 267
+CAF:
+    validation: ~
+    format: ~
+    iddCode: 236
 CAN:
+    validation: '#(^[\d]{10}$)#'
+    format:
+        template: '({1}) {2} {3}'
+        match: '#(^[\d]{3})([\d]{3})([\d]{4}$)#'
+        useIdd: '+idd '
+    iddCode: 1
+CCK:
+    validation: ~
+    format: ~
+    iddCode: 61
+CHE:
+    validation: ~
+    format: ~
+    iddCode: 41
+CHL:
+    validation: ~
+    format: ~
+    iddCode: 56
+CHN:
+    validation: ~
+    format: ~
+    iddCode: 86
+CMR:
+    validation: ~
+    format: ~
+    iddCode: 237
+COD:
+    validation: ~
+    format: ~
+    iddCode: 243
+COG:
+    validation: ~
+    format: ~
+    iddCode: 242
+COK:
+    validation: ~
+    format: ~
+    iddCode: 682
+COL:
+    validation: ~
+    format: ~
+    iddCode: 57
+COM:
+    validation: ~
+    format: ~
+    iddCode: 269
+CPV:
+    validation: ~
+    format: ~
+    iddCode: 238
+CRI:
+    validation: ~
+    format: ~
+    iddCode: 506
+CUB:
+    validation: ~
+    format: ~
+    iddCode: 53
+CUW:
+    validation: ~
+    format: ~
+    iddCode: '599 9'
+CXR:
+    validation: ~
+    format: ~
+    iddCode: 61
+CYM:
+    validation: ~
+    format: ~
+    iddCode: '1 345'
+CYP:
+    validation: ~
+    format: ~
+    iddCode: 357
+CZE:
+    validation: ~
+    format: ~
+    iddCode: 420
+DEU:
+    validation: ~
+    format: ~
+    iddCode: 49
+DJI:
+    validation: ~
+    format: ~
+    iddCode: 253
+DMA:
+    validation: ~
+    format: ~
+    iddCode: '1 767'
+DNK:
+    validation: ~
+    format: ~
+    iddCode: 45
+DOM:
+    validation: ~
+    format: ~
+    iddCode: '1 809'
+DZA:
+    validation: ~
+    format: ~
+    iddCode: 213
+ECU:
+    validation: ~
+    format: ~
+    iddCode: 593
+EGY:
+    validation: ~
+    format: ~
+    iddCode: 20
+ERI:
+    validation: ~
+    format: ~
+    iddCode: 291
+ESH:
+    validation: ~
+    format: ~
+    iddCode: 212
+ESP:
+    validation: ~
+    format: ~
+    iddCode: 34
+EST:
+    validation: ~
+    format: ~
+    iddCode: 372
+ETH:
+    validation: ~
+    format: ~
+    iddCode: 251
+FIN:
+    validation: ~
+    format: ~
+    iddCode: 358
+FJI:
+    validation: ~
+    format: ~
+    iddCode: 679
+FLK:
+    validation: ~
+    format: ~
+    iddCode: 500
+FRA:
+    validation: ~
+    format: ~
+    iddCode: 33
+FRO:
+    validation: ~
+    format: ~
+    iddCode: 298
+FSM:
+    validation: ~
+    format: ~
+    iddCode: 691
+GAB:
+    validation: ~
+    format: ~
+    iddCode: 241
+GBR:
+    validation: ~
+    format: ~
+    iddCode: 44
+GEO:
+    validation: ~
+    format: ~
+    iddCode: 995
+GHA:
+    validation: ~
+    format: ~
+    iddCode: 233
+GIB:
+    validation: ~
+    format: ~
+    iddCode: 350
+GIN:
+    validation: ~
+    format: ~
+    iddCode: 224
+GLP:
+    validation: ~
+    format: ~
+    iddCode: 590
+GMB:
+    validation: ~
+    format: ~
+    iddCode: 220
+GNB:
+    validation: ~
+    format: ~
+    iddCode: 245
+GNQ:
+    validation: ~
+    format: ~
+    iddCode: 240
+GRC:
+    validation: ~
+    format: ~
+    iddCode: 30
+GRD:
+    validation: ~
+    format: ~
+    iddCode: '1 473'
+GRL:
+    validation: ~
+    format: ~
+    iddCode: 299
+GTM:
+    validation: ~
+    format: ~
+    iddCode: 502
+GUM:
+    validation: ~
+    format: ~
+    iddCode: '1 671'
+GUY:
+    validation: ~
+    format: ~
+    iddCode: 592
+HKG:
+    validation: ~
+    format: ~
+    iddCode: 852
+HND:
+    validation: ~
+    format: ~
+    iddCode: 504
+HRV:
+    validation: ~
+    format: ~
+    iddCode: 385
+HTI:
+    validation: ~
+    format: ~
+    iddCode: 509
+HUN:
+    validation: ~
+    format: ~
+    iddCode: 36
+IDN:
+    validation: ~
+    format: ~
+    iddCode: 62
+IND:
+    validation: ~
+    format: ~
+    iddCode: 91
+IOT:
+    validation: ~
+    format: ~
+    iddCode: 246
+IRL:
+    validation: ~
+    format: ~
+    iddCode: 353
+IRN:
+    validation: ~
+    format: ~
+    iddCode: 98
+IRQ:
+    validation: ~
+    format: ~
+    iddCode: 964
+ISL:
+    validation: ~
+    format: ~
+    iddCode: 354
+ISR:
+    validation: ~
+    format: ~
+    iddCode: 972
+ITA:
+    validation: ~
+    format: ~
+    iddCode: 39
+JAM:
+    validation: ~
+    format: ~
+    iddCode: '1 876'
+JOR:
+    validation: ~
+    format: ~
+    iddCode: 962
+JPN:
+    validation: ~
+    format: ~
+    iddCode: 81
+KAZ:
+    validation: ~
+    format: ~
+    iddCode: 7
+KEN:
+    validation: ~
+    format: ~
+    iddCode: 254
+KGZ:
+    validation: ~
+    format: ~
+    iddCode: 996
+KHM:
+    validation: ~
+    format: ~
+    iddCode: 855
+KIR:
+    validation: ~
+    format: ~
+    iddCode: 686
+KNA:
+    validation: ~
+    format: ~
+    iddCode: '1 869'
+KOR:
+    validation: ~
+    format: ~
+    iddCode: 82
+KWT:
+    validation: ~
+    format: ~
+    iddCode: 965
+LAO:
+    validation: ~
+    format: ~
+    iddCode: 856
+LBN:
+    validation: ~
+    format: ~
+    iddCode: 961
+LBR:
+    validation: ~
+    format: ~
+    iddCode: 231
+LBY:
+    validation: ~
+    format: ~
+    iddCode: 218
+LCA:
+    validation: ~
+    format: ~
+    iddCode: '1 758'
+LIE:
+    validation: ~
+    format: ~
+    iddCode: 423
+LKA:
+    validation: ~
+    format: ~
+    iddCode: 94
+LSO:
+    validation: ~
+    format: ~
+    iddCode: 266
+LTU:
+    validation: ~
+    format: ~
+    iddCode: 370
+LUX:
+    validation: ~
+    format: ~
+    iddCode: 352
+LVA:
+    validation: ~
+    format: ~
+    iddCode: 371
+MAC:
+    validation: ~
+    format: ~
+    iddCode: 853
+MAR:
+    validation: ~
+    format: ~
+    iddCode: 212
+MCO:
+    validation: ~
+    format: ~
+    iddCode: 377
+MDA:
+    validation: ~
+    format: ~
+    iddCode: 373
+MDG:
+    validation: ~
+    format: ~
+    iddCode: 261
+MDV:
+    validation: ~
+    format: ~
+    iddCode: 960
+MEX:
+    validation: ~
+    format: ~
+    iddCode: 52
+MHL:
+    validation: ~
+    format: ~
+    iddCode: 692
+MKD:
+    validation: ~
+    format: ~
+    iddCode: 389
+MLI:
+    validation: ~
+    format: ~
+    iddCode: 223
+MLT:
+    validation: ~
+    format: ~
+    iddCode: 356
+MMR:
+    validation: ~
+    format: ~
+    iddCode: 95
+MNE:
+    validation: ~
+    format: ~
+    iddCode: 382
+MNG:
+    validation: ~
+    format: ~
+    iddCode: 976
+MNP:
+    validation: ~
+    format: ~
+    iddCode: '1 670'
+MOZ:
+    validation: ~
+    format: ~
+    iddCode: 258
+MRT:
+    validation: ~
+    format: ~
+    iddCode: 222
+MSR:
+    validation: ~
+    format: ~
+    iddCode: '1 664'
+MUS:
+    validation: ~
+    format: ~
+    iddCode: 230
+MWI:
+    validation: ~
+    format: ~
+    iddCode: 265
+MYS:
+    validation: ~
+    format: ~
+    iddCode: 60
+MYT:
+    validation: ~
+    format: ~
+    iddCode: 262
+NAM:
+    validation: ~
+    format: ~
+    iddCode: 264
+NCL:
+    validation: ~
+    format: ~
+    iddCode: 687
+NER:
+    validation: ~
+    format: ~
+    iddCode: 227
+NFK:
+    validation: ~
+    format: ~
+    iddCode: 672
+NGA:
+    validation: ~
+    format: ~
+    iddCode: 234
+NIC:
+    validation: ~
+    format: ~
+    iddCode: 505
+NIU:
+    validation: ~
+    format: ~
+    iddCode: 683
+NLD:
+    validation: ~
+    format: ~
+    iddCode: 31
+NOR:
+    validation: ~
+    format: ~
+    iddCode: 47
+NPL:
+    validation: ~
+    format: ~
+    iddCode: 977
+NRU:
+    validation: ~
+    format: ~
+    iddCode: 674
+NZL:
+    validation: ~
+    format: ~
+    iddCode: 64
+OMN:
+    validation: ~
+    format: ~
+    iddCode: 968
+PAK:
+    validation: ~
+    format: ~
+    iddCode: 92
+PAN:
+    validation: ~
+    format: ~
+    iddCode: 507
+PCN:
+    validation: ~
+    format: ~
+    iddCode: 64
+PER:
+    validation: ~
+    format: ~
+    iddCode: 51
+PHL:
+    validation: ~
+    format: ~
+    iddCode: 63
+PLW:
+    validation: ~
+    format: ~
+    iddCode: 680
+PNG:
+    validation: ~
+    format: ~
+    iddCode: 675
+POL:
+    validation: ~
+    format: ~
+    iddCode: 48
+PRI:
+    validation: ~
+    format: ~
+    iddCode: 1
+PRK:
+    validation: ~
+    format: ~
+    iddCode: 850
+PRT:
+    validation: ~
+    format: ~
+    iddCode: 351
+PRY:
+    validation: ~
+    format: ~
+    iddCode: 595
+PYF:
+    validation: ~
+    format: ~
+    iddCode: 689
+QAT:
+    validation: ~
+    format: ~
+    iddCode: 974
+REU:
+    validation: ~
+    format: ~
+    iddCode: 262
+ROU:
+    validation: ~
+    format: ~
+    iddCode: 40
+RUS:
+    validation: ~
+    format: ~
+    iddCode: 7
+RWA:
+    validation: ~
+    format: ~
+    iddCode: 250
+SAU:
+    validation: ~
+    format: ~
+    iddCode: 966
+SDN:
+    validation: ~
+    format: ~
+    iddCode: 249
+SEN:
+    validation: ~
+    format: ~
+    iddCode: 221
+SGP:
+    validation: ~
+    format: ~
+    iddCode: 65
+SHN:
+    validation: ~
+    format: ~
+    iddCode: 290
+SJM:
+    validation: ~
+    format: ~
+    iddCode: 47
+SLB:
+    validation: ~
+    format: ~
+    iddCode: 677
+SLE:
+    validation: ~
+    format: ~
+    iddCode: 232
+SLV:
+    validation: ~
+    format: ~
+    iddCode: 503
+SMR:
+    validation: ~
+    format: ~
+    iddCode: 378
+SOM:
+    validation: ~
+    format: ~
+    iddCode: 252
+SPM:
+    validation: ~
+    format: ~
+    iddCode: 508
+SRB:
+    validation: ~
+    format: ~
+    iddCode: 381
+STP:
+    validation: ~
+    format: ~
+    iddCode: 239
+SUR:
+    validation: ~
+    format: ~
+    iddCode: 597
+SVK:
+    validation: ~
+    format: ~
+    iddCode: 421
+SVN:
+    validation: ~
+    format: ~
+    iddCode: 386
+SWE:
+    validation: ~
+    format: ~
+    iddCode: 46
+SWZ:
+    validation: ~
+    format: ~
+    iddCode: 268
+SXM:
+    validation: ~
+    format: ~
+    iddCode: '599 5'
+SYC:
+    validation: ~
+    format: ~
+    iddCode: 248
+SYR:
+    validation: ~
+    format: ~
+    iddCode: 963
+TCA:
+    validation: ~
+    format: ~
+    iddCode: '1 649'
+TCD:
+    validation: ~
+    format: ~
+    iddCode: 235
+TGO:
+    validation: ~
+    format: ~
+    iddCode: 228
+THA:
+    validation: ~
+    format: ~
+    iddCode: 66
+TJK:
+    validation: ~
+    format: ~
+    iddCode: 992
+TKL:
+    validation: ~
+    format: ~
+    iddCode: 690
+TKM:
+    validation: ~
+    format: ~
+    iddCode: 993
+TLS:
+    validation: ~
+    format: ~
+    iddCode: 670
+TON:
+    validation: ~
+    format: ~
+    iddCode: 676
+TTO:
+    validation: ~
+    format: ~
+    iddCode: '1 868'
+TUN:
+    validation: ~
+    format: ~
+    iddCode: 216
+TUR:
+    validation: ~
+    format: ~
+    iddCode: 90
+TUV:
+    validation: ~
+    format: ~
+    iddCode: 688
+TWN:
+    validation: ~
+    format: ~
+    iddCode: 886
+TZA:
+    validation: ~
+    format: ~
+    iddCode: 255
+UGA:
+    validation: ~
+    format: ~
+    iddCode: 256
+UKR:
+    validation: ~
+    format: ~
+    iddCode: 380
+URY:
+    validation: ~
+    format: ~
+    iddCode: 598
+USA:
+    validation: ~
+    format: ~
+    iddCode: 1
+UZB:
+    validation: ~
+    format: ~
+    iddCode: 998
+VAT:
+    validation: ~
+    format: ~
+    iddCode: 39
+VCT:
+    validation: ~
+    format: ~
+    iddCode: '1 784'
+VEN:
+    validation: ~
+    format: ~
+    iddCode: 58
+VGB:
+    validation: ~
+    format: ~
+    iddCode: '1 284'
+VIR:
+    validation: ~
+    format: ~
+    iddCode: '1 340'
+VNM:
+    validation: ~
+    format: ~
+    iddCode: 84
+VUT:
+    validation: ~
+    format: ~
+    iddCode: 678
+WLF:
+    validation: ~
+    format: ~
+    iddCode: 681
+WSM:
+    validation: ~
+    format: ~
+    iddCode: 685
+YEM:
+    validation: ~
+    format: ~
+    iddCode: 967
+ZAF:
+    validation: ~
+    format: ~
+    iddCode: 27
+ZMB:
+    validation: ~
+    format: ~
+    iddCode: 260
+ZWE:
+    validation: ~
+    format: ~
+    iddCode: 263

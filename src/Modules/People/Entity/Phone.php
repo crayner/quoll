@@ -17,7 +17,7 @@ namespace App\Modules\People\Entity;
 
 
 use App\Manager\EntityInterface;
-use App\Manager\PhoneCodes;
+use App\Modules\People\Manager\PhoneCodes;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -228,9 +228,6 @@ class Phone implements EntityInterface
      */
     public function __toString(): string
     {
-        if (null !== $this->getPhoneNumber()) {
-            return '(+' . PhoneCodes::getAlpha3IddCode($this->getCountry()) . ') ' . $this->getPhoneNumber();
-        }
-        return (string)$this->getId();
+        return PhoneCodes::formatPhoneNumber($this);
     }
 }

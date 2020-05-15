@@ -432,7 +432,14 @@ export default class ContainerApp extends Component {
             {},
             false)
             .then(data => {
-                form.choices = {...data.choices}
+                if (typeof data.choices === 'object' && typeof data.choices !== 'array') {
+                    const choices = Object.keys(data.choices).map(key => {
+                        return data.choices[key]
+                    })
+                    form.choices = choices
+                } else {
+                    form.choices = data.choices
+                }
                 parentForm = {...replaceFormElement(parentForm, form)}
                 parentForm.errors.push({'class': 'info', 'message': this.translate('The list has been refreshed.')})
                 this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName,parentForm)}, this.singleForm))

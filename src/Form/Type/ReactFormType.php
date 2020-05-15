@@ -372,7 +372,6 @@ class ReactFormType extends AbstractType
             $vars['suggestions'] = [];
             $vars['autoSuggestValue'] = '';
             $vars['suggestionsClass'] = 'md:block absolute md:static top-0 right-0 w-full hidden';
-            dump($vars);
         }
 
         if (in_array('submit', $view->vars['block_prefixes']))

@@ -17,7 +17,7 @@ namespace App\Modules\People\Form;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Manager\PhoneCodes;
+use App\Modules\People\Manager\PhoneCodes;
 use App\Modules\People\Entity\Phone;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;

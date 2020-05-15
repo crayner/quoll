@@ -294,7 +294,14 @@ class AddressManager
         $matches = [];
 
         preg_match($format['match'], $postCode, $matches);
-        unset($matches[0]);
+        foreach($matches as $q=>$w) {
+            if ($w === $postCode || $w === '') {
+                unset($matches[$q]);
+            }
+        }
+        if (count($matches) < 2) {
+            return $postCode;
+        }
 
         return str_replace(['{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{0}'], $matches, $format['template']);
     }
