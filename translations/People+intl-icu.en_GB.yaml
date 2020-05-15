@@ -436,3 +436,7 @@ State / Provence : State / Provence
 Suburb, Locality or Town: Suburb, Locality or Town
 This post code applies to the entire locality.: This post code applies to the entire locality.
 This post code identifies the address detail. This is based on country settings.: This post code identifies the address detail. This is based on country settings.
+Pending Approval: Pending Approval
+'The phone number {value} is not valid for {country}': 'The phone number {value} is not valid for {country}'
+'The postcode {value} is not valid.': 'The postcode {value} is not valid.'
+This post code applies to the entire locality. This can be changed in country settings.: This post code applies to the entire locality. This can be changed in country settings.

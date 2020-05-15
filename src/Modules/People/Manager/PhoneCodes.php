@@ -233,4 +233,34 @@ class PhoneCodes
         }
         return null;
     }
+
+    /**
+     * getValidationRegex
+     * @param string $alpha3
+     * @return string|null
+     */
+    public static function getValidationRegex(string $alpha3): ?string
+    {
+        if (!key_exists($alpha3, self::readCodes())) {
+            return null;
+        }
+        return self::$codes[$alpha3]['validation'];
+    }
+
+    /**
+     * getAlpha3Name
+     * @param string $alpha3
+     * @return string
+     */
+    public static function getAlpha3Name(string $alpha3): string
+    {
+        try {
+            return Countries::getAlpha3Name($alpha3);
+        } catch (MissingResourceException $e) {
+            if (key_exists($alpha3, self::$missing_codes['alpha3Name'])) {
+                return self::$missing_codes['alpha3Name'][$alpha3];
+            }
+            throw $e;
+        }
+    }
 }

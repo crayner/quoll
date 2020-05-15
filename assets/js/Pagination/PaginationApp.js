@@ -10,7 +10,7 @@ import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
-import {buildState, getParentFormName, mergeParentForm, openUrl, trans} from "../Container/ContainerFunctions"
+import {openUrl, trans} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 
 export default class PaginationApp extends Component {
@@ -43,6 +43,7 @@ export default class PaginationApp extends Component {
         this.functions.loadNewPage = this.loadNewPage.bind(this)
         this.functions.displayInformation = this.displayInformation.bind(this)
         this.functions.dropEvent = this.dropEvent.bind(this)
+        this.functions.translate = this.translate.bind(this)
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -400,6 +401,10 @@ export default class PaginationApp extends Component {
         filter.map(filterValue => {
             const filterDetail = this.filters[filterValue]
             let filtered = content.filter(value => {
+                if (typeof filterDetail.value === 'object') {
+                    if (filterDetail.value.includes(value[filterDetail.contentKey]))
+                        return value
+                }
                 if (filterDetail.value === value[filterDetail.contentKey])
                     return value
             })

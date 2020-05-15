@@ -4,6 +4,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import Img from 'react-image'
 import Parser from "react-html-parser"
+import { isEmpty } from '../component/isEmpty'
 
 export default function PaginationContent(props) {
     const {
@@ -50,6 +51,13 @@ export default function PaginationContent(props) {
         let columns = []
         Object.keys(row.columns).map(columnKey => {
             let columnDefinition = row.columns[columnKey]
+            if (!isEmpty(columnDefinition.defaultValue)) {
+                columnDefinition.contentKey.map((name,key) => {
+                    if (isEmpty(rowContent[name]) && !isEmpty(columnDefinition.defaultValue[key])) {
+                        rowContent[name] = columnDefinition.defaultValue[key]
+                    }
+                })
+            }
             if (columnDefinition.dataOnly)
                 return
             let columnContent = []
@@ -59,9 +67,18 @@ export default function PaginationContent(props) {
                     let style = typeof columnDefinition.options['style'] === 'undefined' ? {} : columnDefinition.options['style']
                     let className = typeof columnDefinition.options['class'] === 'undefined' ? '' : columnDefinition.options['class']
                     columnDefinition.contentKey.map((value, key) => {
-                        if (key === 0)
-                            columnContent.push(<Img src={rowContent[value]} style={style} className={className}
+                        if (key === 0) {
+                            let url = rowContent[value]
+                            if (!url.includes('http')) {
+                                if (url[0] !== '/') {
+                                    url = '/' + url
+                                }
+                                let host = window.location.protocol + '//' + window.location.hostname
+                                url = host + url
+                            }
+                            columnContent.push(<Img src={url} style={style} className={className}
                                                     key={key}/>)
+                        }
                     })
                 } else if (columnDefinition.contentType === 'link') {
                     let link = typeof columnDefinition.options['link'] === 'undefined' ? '#' : columnDefinition.options['link']
@@ -87,13 +104,13 @@ export default function PaginationContent(props) {
                     columnDefinition.contentKey.map((value, key) => {
                         if (key > 0)
                             columnContent.push(<span key={key}
-                                                     className={'small text-gray-600 italic'}><br/>{Parser(rowContent[value])}</span>)
+                                                     className={'small text-gray-600 italic'}><br/>{Parser(columnDefinition.translate ? functions.translate(rowContent[value]) : rowContent[value])}</span>)
                         else
-                            columnContent.push(<span key={key}>{Parser(rowContent[value])}</span>)
+                            columnContent.push(<span key={key}>{Parser(columnDefinition.translate ? functions.translate(rowContent[value]) : rowContent[value])}</span>)
                     })
                 }
             } else {
-                columnContent = [rowContent[columnDefinition.contentKey]]
+                columnContent = columnDefintion.translate ? functions.translate([rowContent[columnDefinition.contentKey]]) : [rowContent[columnDefinition.contentKey]]
             }
 
             columns.push(<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )

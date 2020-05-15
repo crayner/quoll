@@ -398,6 +398,7 @@ class PersonRepository extends ServiceEntityRepository
 
 
         return $this->createQueryBuilder('p')
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.primaryRole AS role','p.status','f.name AS family','f.id As family_id','p.username'])
             ->leftJoin('p.members', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.staff', 's')

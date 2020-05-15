@@ -2786,7 +2786,7 @@ class Person implements EntityInterface
     {
         return [
             'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
-            'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getImage240()),
+            'photo' => $this->getImage240(false) ? ImageHelper::getRelativeImageURL($this->getImage240(false)) : '/build/static/DefaultPerson.png',
             'status' => TranslationHelper::translate($this->getStatus()),
             '_status' => $this->getStatus(),
             'family' => $this->getFamilyName(),
@@ -2795,14 +2795,13 @@ class Person implements EntityInterface
             '_role' => $this->getHumanisedRole(),
             'role' => TranslationHelper::translate($this->getPrimaryRole(), [], 'Security'),
             'canDelete' => $this->canDelete(),
-            'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTime() ? false : true,
-            'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTime() ? false : true,
+            'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTimeImmutable() ? false : true,
+            'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTimeImmutable() ? false : true,
             'email' => $this->getEmail(),
             'studentID' => $this->getStudentID() ?: '',
             'phone' => $this->getPersonalPhone(),
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
-            'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()) && $this->isCanLogin(),
         ];
     }
 

@@ -12,9 +12,7 @@
  * Date: 9/05/2020
  * Time: 09:20
  */
-
 namespace App\Modules\People\Entity;
-
 
 use App\Manager\EntityInterface;
 use App\Modules\People\Manager\PhoneCodes;
@@ -30,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint("number_country",columns={"phone_number","country"})})
  * @UniqueEntity(fields={"phoneNumber","country"})
  * @ORM\HasLifecycleCallbacks()
+ * @\App\Modules\People\Validator\Phone()
  */
 class Phone implements EntityInterface
 {
@@ -59,7 +58,6 @@ class Phone implements EntityInterface
      * @var string|null
      * @ORM\Column(length=3)
      * @Assert\NotBlank()
-     * @Assert\Country(alpha3=true)
      */
     private $country;
 

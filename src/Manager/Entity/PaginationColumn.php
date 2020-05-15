@@ -72,6 +72,16 @@ class PaginationColumn
     private $dataOnly = false;
 
     /**
+     * @var array|null
+     */
+    private $defaultValue;
+
+    /**
+     * @var bool
+     */
+    private $translate = false;
+
+    /**
      * @return string|null
      */
     public function getLabel(): ?string
@@ -281,7 +291,46 @@ class PaginationColumn
         $x = [];
         foreach($result as $q=>$w)
             $x[str_replace("\x00App\Manager\Entity\PaginationColumn\x00", '', $q)] = $w;
-
         return $x;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDefaultValue(): ?array
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * DefaultValue.
+     *
+     * @param array|null $defaultValue
+     * @return PaginationColumn
+     */
+    public function setDefaultValue(?array $defaultValue): PaginationColumn
+    {
+        $this->defaultValue = $defaultValue;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTranslate(): bool
+    {
+        return $this->translate;
+    }
+
+    /**
+     * Translate.
+     *
+     * @param bool $translate
+     * @return PaginationColumn
+     */
+    public function setTranslate(bool $translate = true): PaginationColumn
+    {
+        $this->translate = $translate;
+        return $this;
     }
 }

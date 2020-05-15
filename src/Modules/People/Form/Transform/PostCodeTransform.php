@@ -51,7 +51,6 @@ class PostCodeTransform implements DataTransformerInterface
      */
     public function transform($value)
     {
-        dump($this,$value, $this->manager->formatPostCode($this->getEntity()));
         return $this->manager->formatPostCode($this->getEntity());
     }
 

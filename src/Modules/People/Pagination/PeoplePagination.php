@@ -21,6 +21,8 @@ use App\Manager\Entity\PaginationFilter;
 use App\Manager\Entity\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Manager\AbstractPaginationManager;
+use App\Modules\People\Entity\Person;
+use App\Modules\Security\Manager\RoleHierarchy;
 use App\Util\TranslationHelper;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
@@ -34,12 +36,19 @@ class PeoplePagination extends AbstractPaginationManager
     {
         TranslationHelper::setDomain('People');
         TranslationHelper::setTranslation('Search in', 'Preferred, surname, username, role, student ID, email, phone number, vehicle registration', [], 'People');
+        foreach(Person::getStatusList() as $name) {
+            TranslationHelper::setTranslation($name, $name, [], 'People');
+        }
+        foreach($this->getHierarchy()->getReachableRoleNames(['ROLE_SYSTEM_ADMIN']) as $name) {
+            TranslationHelper::setTranslation($name, $name, [], 'Security');
+        }
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
         $column->setLabel('Photo')
             ->setContentKey('photo')
             ->setContentType('image')
+            ->setDefaultValue(['/build/static/DefaultPerson.png'])
             ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
             ->setOptions(['class' => 'max75 user'])
         ;
@@ -58,6 +67,7 @@ class PeoplePagination extends AbstractPaginationManager
             ->setContentKey(['role'])
             ->setSort(false)
             ->setSearch(true)
+            ->setTranslate()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -66,6 +76,7 @@ class PeoplePagination extends AbstractPaginationManager
             ->setContentKey(['status'])
             ->setSearch(true)
             ->setSort(false)
+            ->setTranslate()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -138,7 +149,6 @@ class PeoplePagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('person_reset_password')
-            ->setDisplayWhen('isNotCurrentUser')
             ->setRouteParams(['person' => 'id']);
         $row->addAction($action);
 
@@ -155,44 +165,44 @@ class PeoplePagination extends AbstractPaginationManager
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Student')
-            ->setValue('Student')
+            ->setValue('ROLE_STUDENT')
             ->setGroup('Role')
-            ->setContentKey('_role');
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Parent')
-            ->setValue('Parent')
+            ->setValue('ROLE_PARENT')
             ->setGroup('Role')
-            ->setContentKey('_role');
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Staff')
-            ->setValue('Staff')
+            ->setValue($this->getHierarchy()->getStaffRoles())
             ->setGroup('Role')
-            ->setContentKey('_role');
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Status: Full')
             ->setValue('Full')
             ->setGroup('Status')
-            ->setContentKey('_status');
+            ->setContentKey('status');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Status: Left')
             ->setValue('Left')
             ->setGroup('Status')
-            ->setContentKey('_status');
+            ->setContentKey('status');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Status: Expected')
             ->setValue('Expected')
             ->setGroup('Status')
-            ->setContentKey('_status');
+            ->setContentKey('status');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();

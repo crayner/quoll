@@ -75,3 +75,7 @@ services:
     App\Modules\System\Manager\DemoDataManager:
         arguments:
             $logger: '@monolog.logger.installation'
+
+    App\Modules\People\Pagination\PeoplePagination:
+        calls:
+            - ['setHierarchy', ['@security.role_hierarchy']]

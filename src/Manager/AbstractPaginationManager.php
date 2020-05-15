@@ -203,7 +203,6 @@ abstract class AbstractPaginationManager implements PaginationInterface
                         else
                             throw new InvalidOptionsException(sprintf('The method %s was not found in %s ', $contentName, get_class($content)));
                     } else {
-                        dump($action);
                         throw new InvalidOptionsException(sprintf('Not able to correctly collect the content %s ', $contentName));
                     }
                 }
