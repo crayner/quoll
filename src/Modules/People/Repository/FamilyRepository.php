@@ -19,7 +19,6 @@ use App\Modules\People\Entity\District;
 use App\Modules\People\Entity\Family;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Modules\People\Form\Entity\ManageSearch;
 
 /**
  * Class FamilyRepository
@@ -40,7 +39,7 @@ class FamilyRepository extends ServiceEntityRepository
      * findBySearch
      * @return array
      */
-    public function findBySearch(): array
+    public function getPaginationContent(): array
     {
         return $this->createQueryBuilder('f')
             ->select(['f.id','f.name','f.status'])

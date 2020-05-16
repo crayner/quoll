@@ -12,14 +12,13 @@
  * Date: 5/12/2019
  * Time: 11:22
  */
-
 namespace App\Modules\People\Form;
 
 use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\People\Entity\FamilyChild;
+use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\FamilyRelationship;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -52,13 +51,13 @@ class FamilyRelationshipType extends AbstractType
             ->add('adult', HiddenEntityType::class,
                 [
                     'label' => false,
-                    'class' => FamilyAdult::class,
+                    'class' => FamilyMemberAdult::class,
                 ]
             )
             ->add('child', HiddenEntityType::class,
                 [
                     'label' => false,
-                    'class' => FamilyChild::class,
+                    'class' => FamilyMemberChild::class,
                 ]
             )
             ->add('family', HiddenEntityType::class,

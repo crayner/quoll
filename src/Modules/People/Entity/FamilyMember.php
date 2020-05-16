@@ -12,11 +12,10 @@
  * Date: 11/05/2020
  * Time: 16:24
  */
-
 namespace App\Modules\People\Entity;
 
-
 use App\Manager\EntityInterface;
+use App\Manager\Traits\BooleanList;
 use App\Modules\Students\Util\StudentHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -36,6 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FamilyMember implements EntityInterface
 {
+    use BooleanList;
+
     /**
      * @var integer|null
      * @ORM\Id()
@@ -72,8 +73,8 @@ class FamilyMember implements EntityInterface
      */
     public function __construct(?Family $family = null)
     {
-        $this->family = $family;
-        $this->relationships = new ArrayCollection();
+        $this->setFamily($family);
+        $this->setRelationships(new ArrayCollection());
     }
 
     /**
@@ -170,7 +171,40 @@ class FamilyMember implements EntityInterface
     public function toArray(?string $name = null): array
     {
         $person = $this->getPerson();
+        if ($name === 'adult') {
+            return [
+                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
+                'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
+                'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
+                'roll' => StudentHelper::getCurrentRollGroup($person),
+                'comment' => $this->getComment(),
+                'family_id' => $this->getFamily()->getId(),
+                'adult_id' => $this->getId(),
+                'person_id' => $this->getPerson()->getId(),
+                'id' => $this->getId(),
+                'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),
+                'contactPriority' => $this->getContactPriority(),
+                'phone' => TranslationHelper::translate($this->isContactCall() ? 'Yes' : 'No', [], 'messages'),
+                'sms' => TranslationHelper::translate($this->isContactSMS() ? 'Yes' : 'No', [], 'messages'),
+                'email' => TranslationHelper::translate($this->isContactEmail() ? 'Yes' : 'No', [], 'messages'),
+                'mail' => TranslationHelper::translate($this->isContactMail() ? 'Yes' : 'No', [], 'messages'),
+            ];
 
+        }
+        if ($name === 'child') {
+            return [
+                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
+                'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
+                'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
+                'roll' => StudentHelper::getCurrentRollGroup($person),
+                'comment' => $this->getComment(),
+                'family_id' => $this->getFamily()->getId(),
+                'child_id' => $this->getId(),
+                'person_id' => $this->getPerson()->getId(),
+                'id' => $this->getId(),
+            ];
+
+        }
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
             'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
@@ -178,7 +212,6 @@ class FamilyMember implements EntityInterface
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),
             'family_id' => $this->getFamily()->getId(),
-            'child_id' => $this->getId(),
             'person_id' => $this->getPerson()->getId(),
             'id' => $this->getId(),
         ];
@@ -198,7 +231,22 @@ class FamilyMember implements EntityInterface
 
     public function coreData(): string
     {
-        // TODO: Implement coreData() method.
+        return '';
     }
-
+    
+    /**
+     * isEqualTo
+     * @param FamilyMember $member
+     * @return bool
+     */
+    public function isEqualTo(FamilyMember $member): bool
+    {
+        if($this->getPerson() === null || $member->getPerson() === null || $this->getFamily() === null || $member->getFamily() === null)
+            return false;
+        if (!$member->getPerson()->isEqualTo($this->getPerson()))
+            return false;
+        if (!$member->getFamily()->isEqualTo($this->getFamily()))
+            return false;
+        return true;
+    }
 }

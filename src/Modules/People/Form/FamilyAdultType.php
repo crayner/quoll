@@ -22,12 +22,9 @@ use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyAdult;
+use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\Subscriber\FamilyAdultSubscriber;
-use App\Modules\Security\Manager\RoleHierarchy;
-use App\Provider\ProviderFactory;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -53,7 +50,7 @@ class FamilyAdultType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => FamilyAdult::class,
+                'data_class' => FamilyMemberAdult::class,
             ]
         );
     }

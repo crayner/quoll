@@ -15,12 +15,15 @@
 
 namespace App\Modules\People\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\EntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
+use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\District;
 use App\Modules\People\Entity\Family;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -102,49 +105,91 @@ class FamilyGeneralType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('nameAddress', TextType::class,
+            ->add('formalName', TextType::class,
                 [
                     'label' => 'Formal Family Name',
                     'panel' => 'General',
                     'help' => 'Used to address correspondence sent to the parents/guardians of this family.'
                 ]
             )
-            ->add('homeAddress', TextType::class,
+            ->add('physicalAddress', AutoSuggestEntityType::class,
                 [
                     'label' => 'Residential Address',
-                    'panel' => 'General',
-                    'help' => 'Unit, Building & Street',
-                     'required' => false,
-               ]
-            )
-            ->add('homeAddressDistrict', EntityType::class,
-                [
-                    'label' => 'Residential Address (District)',
-                    'help' => 'Suburb, Town, City, State (Postcode)',
-                    'panel' => 'General',
-                    'required' => false,
-                    'class' => District::class,
-                    'data' => $options['data']->getHomeAddressDistrict() !== null ? $options['data']->getHomeAddressDistrict()->getId() : null,
-                    'choice_label' => 'fullName',
-                    'placeholder' => ' ',
+                    'placeholder' => 'Enter any part of an address',
+                    'class' => Address::class,
+                    'choice_label' => 'toString',
                     'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('d')
-                            ->orderBy('d.name')
-                            ->addOrderBy('d.territory')
-                            ->addOrderBy('d.postCode')
+                        return $er->createQueryBuilder('a')
+                            ->select(['a','l'])
+                            ->leftJoin('a.locality','l')
+                            ->orderBy('a.streetNumber', 'ASC')
+                            ->addOrderBy('a.streetName', 'ASC')
+                            ->addOrderBy('l.name', 'ASC')
                             ;
                     },
-                    'auto_refresh' => true,
-                    'auto_refresh_url' => '/district/refresh/',
-                    'add_url' => ['target' => 'Create_District', 'url' => '/district/add/popup', 'options' => "width=800,height=400,top=200,left=100,directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no"],
+                    'panel' => 'General',
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/address/add/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                        'edit' => [
+                            'class' => 'fa-fw fas fa-edit',
+                            'route' => '/address/__value__/edit/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Edit Address', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/address/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Address List', [], 'People'),
+                        ],
+                    ],
                 ]
             )
-            ->add('homeAddressCountry', CountryType::class,
+            ->add('postalAddress', AutoSuggestEntityType::class,
                 [
-                    'label' => 'Residential Address (Country)',
-                    'placeholder' => ' ',
-                    'panel' => 'General',
+                    'label' => 'Postal Address',
+                    'placeholder' => 'Enter any part of an address',
+                    'help' => 'Should only be used if the physical address is not the postal address.',
+                    'class' => Address::class,
                     'required' => false,
+                    'choice_label' => 'toString',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('a')
+                            ->select(['a','l'])
+                            ->leftJoin('a.locality','l')
+                            ->orderBy('a.streetNumber', 'ASC')
+                            ->addOrderBy('a.streetName', 'ASC')
+                            ->addOrderBy('l.name', 'ASC')
+                            ;
+                    },
+                    'panel' => 'General',
+                    'buttons' => [
+                        'add' => [
+                            'class' => 'fa-fw fas fa-plus-circle',
+                            'route' => '/address/add/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Add Address', [], 'People'),
+                        ],
+                        'edit' => [
+                            'class' => 'fa-fw fas fa-edit',
+                            'route' => '/address/__value__/edit/popup/',
+                            'target' => 'Address_Details',
+                            'specs' => 'width=800,height=600',
+                            'title' => TranslationHelper::translate('Edit Address', [], 'People'),
+                        ],
+                        'refresh' => [
+                            'class' => 'fa-fw fas fa-sync',
+                            'route' => '/address/list/refresh/',
+                            'title' => TranslationHelper::translate('Refresh Address List', [], 'People'),
+                        ],
+                    ],
                 ]
             )
             ->add('panelName', HiddenType::class,

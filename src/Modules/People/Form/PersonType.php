@@ -369,6 +369,7 @@ class PersonType extends AbstractType
                     'label' => 'Physical Address',
                     'placeholder' => 'Enter any part of an address',
                     'class' => Address::class,
+                    'required' => false,
                     'choice_label' => 'toString',
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('a')
@@ -409,6 +410,7 @@ class PersonType extends AbstractType
                     'label' => 'Postal Address',
                     'help' => 'Should only be used if the physical address is not the postal address.',
                     'placeholder' => 'Enter any part of an address',
+                    'required' => false,
                     'class' => Address::class,
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('a')

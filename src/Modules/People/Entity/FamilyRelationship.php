@@ -22,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class FamilyRelationship
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRelationshipRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FamilyRelationship", uniqueConstraints={@ORM\UniqueConstraint(name="familyAdultChild", columns={"family","adult","child"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="FamilyRelationship", 
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="FamilyMemberAdultChild", columns={"family","adult","child"})})
  * @UniqueEntity({"family","adult","child"})
  */
 class FamilyRelationship implements EntityInterface
@@ -134,9 +135,9 @@ class FamilyRelationship implements EntityInterface
     }
 
     /**
-     * @return FamilyAdult|null
+     * @return FamilyMemberAdult|null
      */
-    public function getAdult(): ?FamilyAdult
+    public function getAdult(): ?FamilyMemberAdult
     {
         return $this->adult;
     }
@@ -144,19 +145,19 @@ class FamilyRelationship implements EntityInterface
     /**
      * Adult.
      *
-     * @param FamilyAdult|null $adult
+     * @param FamilyMemberAdult|null $adult
      * @return FamilyRelationship
      */
-    public function setAdult(?FamilyAdult $adult): FamilyRelationship
+    public function setAdult(?FamilyMemberAdult $adult): FamilyRelationship
     {
         $this->adult = $adult;
         return $this;
     }
 
     /**
-     * @return FamilyChild|null
+     * @return FamilyMemberChild|null
      */
-    public function getChild(): ?FamilyChild
+    public function getChild(): ?FamilyMemberChild
     {
         return $this->child;
     }
@@ -164,10 +165,10 @@ class FamilyRelationship implements EntityInterface
     /**
      * Child.
      *
-     * @param FamilyChild|null $child
+     * @param FamilyMemberChild|null $child
      * @return FamilyRelationship
      */
-    public function setChild(?FamilyChild $child): FamilyRelationship
+    public function setChild(?FamilyMemberChild $child): FamilyRelationship
     {
         $this->child = $child;
         return $this;
@@ -234,6 +235,7 @@ class FamilyRelationship implements EntityInterface
         if ($name === 'form')
         {
             TranslationHelper::setDomain('People');
+            dump($this);
             return [
                 'parent' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getAdult()->getPerson()->formatName(['style'=> 'formal'])]),
                 'child' => TranslationHelper::translate('of {name}', ['{name}' => $this->getChild()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),

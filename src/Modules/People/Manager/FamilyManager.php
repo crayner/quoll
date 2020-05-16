@@ -18,6 +18,8 @@ namespace App\Modules\People\Manager;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
+use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Util\StudentHelper;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
@@ -44,16 +46,16 @@ class FamilyManager
      * findBySearch
      * @return array
      */
-    public function findBySearch(): array
+    public function getPaginationContent(): array
     {
-        $result = ProviderFactory::getRepository(Family::class)->findBySearch();
+        $result = ProviderFactory::getRepository(Family::class)->getPaginationContent();
 
         $familyList = [];
         foreach($result as $q=>$family)
             $familyList[] = $family['id'];
 
-        self::$allAdults = ProviderFactory::getRepository(FamilyAdult::class)->findByFamilyList($familyList);
-        self::$allStudents = ProviderFactory::getRepository(FamilyChild::class)->findByFamilyList($familyList);
+        self::$allAdults = ProviderFactory::getRepository(FamilyMemberAdult::class)->findByFamilyList($familyList);
+        self::$allStudents = ProviderFactory::getRepository(FamilyMemberChild::class)->findByFamilyList($familyList);
 
         foreach($result as $q=>$family)
         {
@@ -124,7 +126,7 @@ class FamilyManager
      */
     public static function getAdults(Family $family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyAdult::class)->findByFamily($family);
+        $result = ProviderFactory::getRepository(FamilyMemberAdult::class)->findByFamily($family);
         if ($asArray)
             foreach($result as $q=>$adult)
                 $result[$q] = $adult->toArray();
@@ -139,7 +141,7 @@ class FamilyManager
      */
     public static function getChildren($family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyChild::class)->findByFamily($family);
+        $result = ProviderFactory::getRepository(FamilyMemberChild::class)->findByFamily($family);
         if ($asArray)
             foreach($result as $q=>$child)
                 $result[$q] = $child->toArray();

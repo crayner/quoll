@@ -65,4 +65,15 @@ class FamilyMemberChild extends FamilyMember
         $this->relationships = $relationships;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return parent::toArray('child');
+    }
+
 }

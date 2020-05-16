@@ -17,8 +17,8 @@ namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\People\Entity\FamilyChild;
+use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -85,8 +85,8 @@ class FamilyRelationshipManager implements SpecialInterface
         {
             $fr = $provider->findOneRelationship($item);
             $fr->setFamily($family)
-                ->setAdult($provider->getRepository(FamilyAdult::class)->find($item['adult']))
-                ->setChild($provider->getRepository(FamilyChild::class)->find($item['child']))
+                ->setAdult($provider->getRepository(FamilyMemberAdult::class)->find($item['adult']))
+                ->setChild($provider->getRepository(FamilyMemberChild::class)->find($item['child']))
                 ->setRelationship($item['relationship'])
             ;
 

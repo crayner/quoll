@@ -39,7 +39,7 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @var int|null
-     * @ORM\Column(type="smallint", name="contactPriority", options={"default": 1}, columnDefinition="INT(2)")
+     * @ORM\Column(type="smallint", name="contactPriority", options={"default": 1})
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=99)
      */
@@ -48,28 +48,28 @@ class FamilyMemberAdult extends FamilyMember
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactCall")
-     * @Assert\Choice({"Y","N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $contactCall = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactSMS")
-     * @Assert\Choice({"Y","N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $contactSMS = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactEmail")
-     * @Assert\Choice({"Y","N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $contactEmail = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactMail")
-     * @Assert\Choice({"Y","N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $contactMail = 'N';
 
@@ -260,5 +260,15 @@ class FamilyMemberAdult extends FamilyMember
 
         $this->relationships = $relationships;
         return $this;
+    }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return parent::toArray('adult');
     }
 }

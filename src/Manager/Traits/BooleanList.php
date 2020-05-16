@@ -43,7 +43,7 @@ trait BooleanList
      * @param string|null $default
      * @return string|null
      */
-    private static function checkBoolean(?string $value, ?string $default = 'Y')
+    protected static function checkBoolean(?string $value, ?string $default = 'Y')
     {
         return in_array($value, self::getBooleanList()) ? $value : $default;
     }
@@ -53,7 +53,7 @@ trait BooleanList
      * @param string $yesOrNo
      * @return bool
      */
-    private function isTrueOrFalse(string $yesOrNo): bool
+    protected function isTrueOrFalse(string $yesOrNo): bool
     {
         return $yesOrNo === 'Y';
     }
@@ -63,7 +63,7 @@ trait BooleanList
      * @param bool $w
      * @return string
      */
-    private static function getYesNo(bool $w): string
+    protected static function getYesNo(bool $w): string
     {
         return $w ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages');
     }
