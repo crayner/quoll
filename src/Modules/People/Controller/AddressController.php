@@ -20,13 +20,13 @@ use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Form\AddressType;
 use App\Modules\People\Form\LocalityType;
-use App\Modules\People\Manager\AddressManager;
 use App\Modules\People\Pagination\AddressPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -46,7 +46,8 @@ class AddressController extends AbstractPageController
     {
         $content = ProviderFactory::getRepository(Address::class)->findBy([], ['streetName' => 'ASC', 'streetNumber' => 'ASC']);
         $pagination->setContent($content)
-            ->setAddElementRoute($this->generateUrl('address_add'));
+            ->setRefreshRoute($this->generateUrl('address_list'))
+            ->setAddElementRoute(['url' => $this->generateUrl('address_add_popup'), 'target' => 'Address_Details', 'options' => 'width=800,height=600']);
 
         return $this->getPageManager()->createBreadcrumbs('Manage Addresses')
             ->render(['pagination' => $pagination->toArray()]);
@@ -118,8 +119,17 @@ class AddressController extends AbstractPageController
     /**
      * @Route("/address/{address}/delete/",name="address_delete")
      * @param Address $address
+     * @param FlashBagInterface $bag
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function deleteAddress(Address $address){}
+    public function deleteAddress(Address $address, FlashBagInterface $bag)
+    {
+        ProviderFactory::create(Address::class)->delete($address);
+        ProviderFactory::create(Address::class)->getMessageManager()->pushToFlash($bag);
+
+        return $this->forward(AddressController::class . '::list');
+    }
 
     /**
      * localityEdit

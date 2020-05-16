@@ -32,6 +32,7 @@ class AddressValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        dump($value);
         if (!$value instanceof \App\Modules\People\Entity\Address)
             return;
 

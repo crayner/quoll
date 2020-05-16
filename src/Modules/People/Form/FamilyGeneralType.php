@@ -16,17 +16,14 @@
 namespace App\Modules\People\Form;
 
 use App\Form\Type\AutoSuggestEntityType;
-use App\Form\Type\EntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Address;
-use App\Modules\People\Entity\District;
 use App\Modules\People\Entity\Family;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,6 +37,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FamilyGeneralType extends AbstractType
 {
+    /**
+     * @var array
+     */
+    private $preferredLanguages;
+
     /**
      * getParent
      * @return string|null
@@ -95,6 +97,7 @@ class FamilyGeneralType extends AbstractType
                     'label' => 'Home Language - Primary',
                     'placeholder' => ' ',
                     'panel' => 'General',
+                    'preferred_choices' => $this->getPreferredLanguages(),
                 ]
             )
             ->add('languageHomeSecondary', LanguageType::class,
@@ -103,6 +106,7 @@ class FamilyGeneralType extends AbstractType
                     'placeholder' => ' ',
                     'panel' => 'General',
                     'required' => false,
+                    'preferred_choices' => $this->getPreferredLanguages(),
                 ]
             )
             ->add('formalName', TextType::class,
@@ -206,5 +210,25 @@ class FamilyGeneralType extends AbstractType
                 ]
             )
         ;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPreferredLanguages(): array
+    {
+        return $this->preferredLanguages;
+    }
+
+    /**
+     * PreferredLanguages.
+     *
+     * @param array $preferredLanguages
+     * @return FamilyGeneralType
+     */
+    public function setPreferredLanguages(array $preferredLanguages): FamilyGeneralType
+    {
+        $this->preferredLanguages = $preferredLanguages;
+        return $this;
     }
 }

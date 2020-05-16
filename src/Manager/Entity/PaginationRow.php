@@ -166,6 +166,7 @@ class PaginationRow
             'lastPage' => TranslationHelper::translate('Last Page', [], 'messages'),
             'addElement' => TranslationHelper::translate('Add', [], 'messages'),
             'returnPrompt' => TranslationHelper::translate('Return', [], 'messages'),
+            'refreshPrompt' => TranslationHelper::translate('Refresh', [], 'messages'),
             'search' => $this->isSearch(),
             'filterGroups' => $this->isFilterGroups(),
             'defaultFilter' => $this->getDefaultFilter(),

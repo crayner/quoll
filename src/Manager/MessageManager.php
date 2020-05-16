@@ -2,10 +2,15 @@
 namespace App\Manager;
 
 use App\Manager\Entity\Message;
+use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
+/**
+ * Class MessageManager
+ * @package App\Manager
+ */
 class MessageManager
 {
 	/**
@@ -237,11 +242,12 @@ class MessageManager
     /**
      * getTranslatedMessages
      *
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface|null $translator
      * @return array
      */
-    public function getTranslatedMessages(TranslatorInterface $translator): array
+    public function getTranslatedMessages(?TranslatorInterface $translator = null): array
     {
+        $translator = $translator ?: TranslationHelper::getTranslator();
         foreach($this->getMessages() as $message)
             $message->setTranslatedMessage($translator->trans($message->getMessage(), $message->getOptions(), $message->getDomain()));
 
@@ -251,10 +257,10 @@ class MessageManager
     /**
      * serialiseTranslatedMessages
      *
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface|null $translator
      * @return array
      */
-    public function serialiseTranslatedMessages(TranslatorInterface $translator): array
+    public function serialiseTranslatedMessages(?TranslatorInterface $translator = null): array
     {
         $mes = [];
         $x = 0;
@@ -273,11 +279,23 @@ class MessageManager
     /**
      * pushToFlash
      * @param FlashBagInterface $flashBag
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface|null $translator
      */
-    public function pushToFlash(FlashBagInterface $flashBag, TranslatorInterface $translator)
+    public function pushToFlash(FlashBagInterface $flashBag, ?TranslatorInterface $translator = null)
     {
         foreach($this->getTranslatedMessages($translator) as $message)
             $flashBag->add($message->getLevel(), $message->getTranslatedMessage());
+    }
+
+    /**
+     * pushToJsonData
+     * @param array $data
+     * @return array
+     */
+    public function pushToJsonData(array $data = [])
+    {
+        $data['status'] = $this->getStatus();
+        $data['errors'] = $this->serialiseTranslatedMessages();
+        return $data;
     }
 }

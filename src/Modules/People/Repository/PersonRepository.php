@@ -15,6 +15,7 @@
  */
 namespace App\Modules\People\Repository;
 
+use App\Modules\People\Entity\Address;
 use App\Modules\People\Util\UserHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -376,27 +377,6 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getPaginationContent(): array
     {
-        /*
-        'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
-            'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getImage240()),
-            'status' => TranslationHelper::translate($this->getStatus()),
-            '_status' => $this->getStatus(),
-            'family' => $this->getFamilyName(),
-            'family_id' => $this->getFamilyId(),
-            'username' => $this->getUsername(),
-            '_role' => $this->getHumanisedRole(),
-            'role' => TranslationHelper::translate($this->getPrimaryRole(), [], 'Security'),
-            'canDelete' => $this->canDelete(),
-            'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTime() ? false : true,
-            'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTime() ? false : true,
-            'email' => $this->getEmail(),
-            'studentID' => $this->getStudentID() ?: '',
-            'phone' => $this->getPersonalPhone(),
-            'rego' => $this->getVehicleRegistration() ?: '',
-            'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
-            'isNotCurrentUser' => !$this->isEqualTo(UserHelper::getCurrentUser()) && $this->isCanLogin(), */
-
-
         return $this->createQueryBuilder('p')
             ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.primaryRole AS role','p.status','f.name AS family','f.id As family_id','p.username'])
             ->leftJoin('p.members', 'fm')
@@ -428,4 +408,25 @@ class PersonRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * countAddressUsa
+     * @param Address $address
+     * @return int
+     */
+    public function countAddressUse(Address $address): int
+    {
+        try {
+            return $this->createQueryBuilder('f')
+                ->select('COUNT(f.id)')
+                ->where('f.physicalAddress = :address')
+                ->orWhere('f.postalAddress = :address')
+                ->setParameter('address', $address)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
 }

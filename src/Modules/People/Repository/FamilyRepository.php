@@ -12,6 +12,7 @@
  */
 namespace App\Modules\People\Repository;
 
+use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -49,17 +50,18 @@ class FamilyRepository extends ServiceEntityRepository
     }
 
     /**
-     * countDistrictUsage
-     * @param District $district
+     * countAddressUsa
+     * @param Address $address
      * @return int
      */
-    public function countDistrictUsage(District $district): int
+    public function countAddressUse(Address $address): int
     {
         try {
             return $this->createQueryBuilder('f')
                 ->select('COUNT(f.id)')
-                ->where('f.homeAddressDistrict = :district')
-                ->setParameter('district', $district)
+                ->where('f.physicalAddress = :address')
+                ->orWhere('f.postalAddress = :address')
+                ->setParameter('address', $address)
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NoResultException | NonUniqueResultException $e) {

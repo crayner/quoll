@@ -9,6 +9,7 @@ import Content from "./Content"
 import Footer from "./Footer"
 import {fetchJson} from "../component/fetchJson"
 import Parser from "html-react-parser"
+import { openUrl } from '../Container/ContainerFunctions'
 
 export default class PageApp extends Component {
     constructor (props) {
@@ -176,6 +177,14 @@ export default class PageApp extends Component {
     }
 
     getContentFromServer(url, options) {
+        if (typeof url === 'object') {
+            if (url.target === '_self') {
+                url = url.url
+            } else {
+                openUrl(url)
+                return
+            }
+        }
         if (typeof options !== 'object')
             options = {}
         let content = []

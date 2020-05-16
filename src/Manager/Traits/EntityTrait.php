@@ -528,9 +528,11 @@ trait EntityTrait
      * @param array $data
      * @param bool $flush
      * @return array
+     * @deprecated Use Delete in this class
      */
     public function remove(EntityInterface $entity, array $data = [], bool $flush = true): array
     {
+        trigger_error('Deprecated: Please use '. self::class . '::delete.', E_USER_DEPRECATED);
         if (! $this->getEntityManager()->contains($entity))
             return $data;
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';

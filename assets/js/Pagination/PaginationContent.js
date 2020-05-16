@@ -126,8 +126,8 @@ export default function PaginationContent(props) {
                                title={action.title}><span className={action.spanClass}></span></a>)
 
                 return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey],rowContent)}
-                           className={action.aClass} key={actionKey} title={action.title}><span
-                    className={action.spanClass}></span></a>)
+                           className={action.aClass} key={actionKey} title={action.title}>
+                    <span className={action.spanClass}></span></a>)
             }
         })
         if (row.actions.length > 0) {

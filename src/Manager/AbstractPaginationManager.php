@@ -12,11 +12,10 @@
  * Date: 14/09/2019
  * Time: 11:38
  */
-
 namespace App\Manager;
 
-use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Manager\Entity\PaginationRow;
+use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;
 use App\Util\TranslationHelper;
@@ -26,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractPaginationManager
@@ -94,14 +94,19 @@ abstract class AbstractPaginationManager implements PaginationInterface
     private $draggableRoute = '';
 
     /**
-     * @var string
+     * @var array|null
      */
-    private $addElementRoute = '';
+    private $addElementRoute;
 
     /**
-     * @var string
+     * @var array|null
      */
-    private $returnRoute = '';
+    private $returnRoute;
+
+    /**
+     * @var array|null
+     */
+    private $refreshRoute;
 
     /**
      * @var null|string
@@ -113,7 +118,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      */
     public function __construct()
     {
-        $this->pageMax = ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'pagination');
+        $this->getPageMax();
     }
 
     /**
@@ -122,7 +127,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function getPageMax(): int
     {
         if (null === $this->pageMax)
-            $this->pageMax = ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'pagination');
+            $this->pageMax = ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'pagination', 50);
         return $this->pageMax;
     }
 
@@ -206,7 +211,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
                         throw new InvalidOptionsException(sprintf('Not able to correctly collect the content %s ', $contentName));
                     }
                 }
-                $this->content[$q]['actions'][] = UrlGeneratorHelper::getPath($action->getRoute(), $params);
+                $this->content[$q]['actions'][] = array_merge($action->getRoute(), ['url' => UrlGeneratorHelper::getPath($action->getRoute()['url'], $params)]);
             }
         }
         $columns = new ArrayCollection();
@@ -254,6 +259,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
             'row' => $this->getRow()->toArray(),
             'addElementRoute' => $this->getAddElementRoute(),
             'returnRoute' => $this->getReturnRoute(),
+            'refreshRoute' => $this->getRefreshRoute(),
             'sortList' => $this->isSortList(),
             'draggableSort' => $this->isDraggableSort(),
             'draggableRoute' => $this->isDraggableSort() ? UrlGeneratorHelper::getPath($this->getDraggableRoute(), ['target' => '__target__', 'source' => '__source__']) : '',
@@ -535,9 +541,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getAddElementRoute(): string
+    public function getAddElementRoute(): array
     {
         return $this->addElementRoute;
     }
@@ -545,13 +551,41 @@ abstract class AbstractPaginationManager implements PaginationInterface
     /**
      * AddElementRoute.
      *
-     * @param string $addElementRoute
+     * @param string|array $addElementRoute
      * @return AbstractPaginationManager
      */
-    public function setAddElementRoute(string $addElementRoute): AbstractPaginationManager
+    public function setAddElementRoute($addElementRoute): AbstractPaginationManager
     {
-        $this->addElementRoute = $addElementRoute;
+        $addElementRoute = is_string($addElementRoute) ? ['url' => $addElementRoute] : $addElementRoute;
+
+        $this->addElementRoute = self::resolveRoute($addElementRoute);
         return $this;
+    }
+
+    /**
+     * resolveRoute
+     * @param array $route
+     * @return array
+     */
+    public static function resolveRoute(array $route)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(
+            [
+                'url',
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'target' => '_self',
+                'options' => '',
+            ]
+        );
+
+        $resolver->setAllowedTypes('url', ['string']);
+        $resolver->setAllowedTypes('target', ['string']);
+        $resolver->setAllowedTypes('options', ['string']);
+        return $resolver->resolve($route);
     }
 
     /**
@@ -564,9 +598,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getReturnRoute(): string
+    public function getReturnRoute(): ?array
     {
         return $this->returnRoute;
     }
@@ -574,12 +608,34 @@ abstract class AbstractPaginationManager implements PaginationInterface
     /**
      * ReturnRoute.
      *
-     * @param string $returnRoute
+     * @param string|array $returnRoute
      * @return AbstractPaginationManager
      */
-    public function setReturnRoute(string $returnRoute): AbstractPaginationManager
+    public function setReturnRoute($returnRoute): AbstractPaginationManager
     {
-        $this->returnRoute = $returnRoute;
+        $returnRoute = is_string($returnRoute) ? ['url' => $returnRoute] : $returnRoute;
+        $this->returnRoute = self::resolveRoute($returnRoute);
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getRefreshRoute(): ?array
+    {
+        return $this->refreshRoute;
+    }
+
+    /**
+     * RefreshRoute.
+     *
+     * @param array|string|null $refreshRoute
+     * @return AbstractPaginationManager
+     */
+    public function setRefreshRoute($refreshRoute): AbstractPaginationManager
+    {
+        $refreshRoute = is_string($refreshRoute) ? ['url' => $refreshRoute] : $refreshRoute;
+        $this->refreshRoute = self::resolveRoute($refreshRoute);
         return $this;
     }
 

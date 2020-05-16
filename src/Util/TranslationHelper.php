@@ -123,4 +123,13 @@ class TranslationHelper
     {
         self::$domain = $domain;
     }
+
+    /**
+     * getTranslator
+     * @return TranslatorInterface
+     */
+    public function getTranslator(): TranslatorInterface
+    {
+        return self::$translator;
+    }
 }

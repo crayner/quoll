@@ -78,7 +78,7 @@ class AddressPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-purple-500')
-            ->setRoute('address_edit')
+            ->setRoute(['url' => 'address_edit_popup', 'target' => 'Address_Details', 'options' => 'width=800,height=600'])
             ->setRouteParams(['address' => 'id']);
         $row->addAction($action);
 

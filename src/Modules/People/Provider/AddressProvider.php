@@ -16,6 +16,8 @@ namespace App\Modules\People\Provider;
 
 use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Address;
+use App\Modules\People\Entity\Family;
+use App\Modules\People\Entity\Person;
 use App\Provider\EntityProviderInterface;
 
 /**
@@ -30,4 +32,20 @@ class AddressProvider implements EntityProviderInterface
      * @var string
      */
     private $entityName = Address::class;
+
+    /**
+     * canDelete
+     * @param Address $address
+     * @return bool
+     */
+    public function canDelete(Address $address): bool
+    {
+        if ($this->getRepository(Family::class)->countAddressUse($address) > 0) {
+            return false;
+        }
+        if ($this->getRepository(Person::class)->countAddressUse($address) > 0) {
+            return false;
+        }
+        return true;
+    }
 }

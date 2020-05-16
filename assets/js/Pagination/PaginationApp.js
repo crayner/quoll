@@ -31,6 +31,7 @@ export default class PaginationApp extends Component {
 
         this.addElementRoute = props.addElementRoute
         this.returnRoute = props.returnRoute
+        this.refreshRoute = props.refreshRoute
         this.draggableSort = props.draggableSort
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
@@ -75,6 +76,7 @@ export default class PaginationApp extends Component {
             search: '',
             messages: [],
         }
+        console.log(this)
     }
 
     componentDidMount() {
@@ -384,10 +386,13 @@ export default class PaginationApp extends Component {
                     className={'text-gray-600 fas fa-angle-double-right fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
             }
         }
-        if (this.returnRoute !== '') {
+        if (this.returnRoute !== null) {
             control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.returnRoute, '_self')} title={this.row.returnPrompt}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-purple-600'}/></a>)
         }
-        if (this.addElementRoute !== '') {
+        if (this.refreshRoute !== null) {
+            control.push(<a key={'refresh'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.refreshRoute, '_self')} title={this.row.refreshPrompt}><span className={'fas fa-sync fa-fw text-gray-800 hover:text-purple-600'}/></a>)
+        }
+        if (this.addElementRoute !== null) {
             control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-purple-600'}/></a>)
         }
         return control
@@ -609,9 +614,24 @@ PaginationApp.propTypes = {
     storeFilterURL: PropTypes.string,
     draggableRoute: PropTypes.string,
     functions: PropTypes.object.isRequired,
+    refreshRoute: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string,
+    ]),
+    returnRoute: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string,
+    ]),
+    addElementRoute: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string,
+    ]),
 }
 
 PaginationApp.defaultProps = {
     draggableRoute: '',
     storeFilterURL: '',
+    returnRoute: '',
+    addElementRoute: '',
+    refreshRoute: '',
 }

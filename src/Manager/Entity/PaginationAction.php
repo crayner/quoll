@@ -15,6 +15,8 @@
 
 namespace App\Manager\Entity;
 
+use App\Manager\AbstractPaginationManager;
+
 /**
  * Class PaginationAction
  * @package App\Manager\Entity
@@ -22,7 +24,7 @@ namespace App\Manager\Entity;
 class PaginationAction
 {
     /**
-     * @var string
+     * @var array
      */
     private $route;
 
@@ -75,9 +77,9 @@ class PaginationAction
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRoute(): string
+    public function getRoute(): array
     {
         return $this->route;
     }
@@ -85,12 +87,13 @@ class PaginationAction
     /**
      * Route.
      *
-     * @param string $route
+     * @param string|array $route
      * @return PaginationAction
      */
-    public function setRoute(string $route): PaginationAction
+    public function setRoute($route): PaginationAction
     {
-        $this->route = $route;
+        $route = is_string($route) ? ['url' => $route] : $route;
+        $this->route = AbstractPaginationManager::resolveRoute($route);
         return $this;
     }
 

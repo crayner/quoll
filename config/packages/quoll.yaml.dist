@@ -57,3 +57,4 @@ parameters:
     messenger_transport_dsn: 'doctrine://default'
     country: ~
     preferred_countries: []
+    preferred_languages: []

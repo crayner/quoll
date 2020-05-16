@@ -79,3 +79,7 @@ services:
     App\Modules\People\Pagination\PeoplePagination:
         calls:
             - ['setHierarchy', ['@security.role_hierarchy']]
+
+    App\Modules\People\Form\FamilyGeneralType:
+        calls:
+            - ['setPreferredLanguages', ['%preferred_languages%']]
