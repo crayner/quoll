@@ -13,6 +13,7 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Address;
+use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -62,6 +63,28 @@ class FamilyRepository extends ServiceEntityRepository
                 ->where('f.physicalAddress = :address')
                 ->orWhere('f.postalAddress = :address')
                 ->setParameter('address', $address)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * countLocalityUse
+     * @param Locality $locality
+     * @return int
+     */
+    public function countLocalityUse(Locality $locality): int
+    {
+        try {
+            return $this->createQueryBuilder('f')
+                ->select('COUNT(f.id)')
+                ->leftJoin('f.physicalAddress', 'a')
+                ->leftJoin('f.postalAddress', 'pa')
+                ->where('a.locality = :locality')
+                ->orWhere('pa.locality = :locality')
+                ->setParameter('locality', $locality)
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NoResultException | NonUniqueResultException $e) {

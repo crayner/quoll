@@ -40,15 +40,20 @@ class AddressRepository extends ServiceEntityRepository
      */
     public function getSingleStringAddress(Address $address): array
     {
-        dump($address);
-        return $this->createQueryBuilder('a')
-            ->join('a.locality', 'l')
-            ->select(['a','l'])
-            ->where('a.id != :address_id')
-            ->setParameter('address_id', $address->getId())
-            ->andWhere('a.locality = :locality')
-            ->setParameter('locality', $address->getLocality())
-            ->getQuery()
-            ->getResult();
+        $query = $this->createQueryBuilder('a')
+            ->select(["CONCAT(COALESCE(a.flatUnitDetails,''),COALESCE(a.propertyName,''),COALESCE(a.streetNumber,''),a.streetName,COALESCE(a.postCode,''),l.id) AS name"])
+            ->leftJoin('a.locality', 'l')
+            ->where('a.locality = :locality')
+            ->setParameter('locality', $address->getLocality());
+        if (intval($address->getId()) > 0) {
+            return $query->andWhere('a.id != :address_id')
+                ->setParameter('address_id', $address->getId())
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $query->andWhere('a.id IS NOT NULL')
+                ->getQuery()
+                ->getResult();
+        }
     }
 }

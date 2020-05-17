@@ -24,7 +24,7 @@ export default class HeaderMenu extends Component {
         result.push(
             <div className="flex flex-wrap items-center m-0 px-2 border-t border-b" key={'Home'}>
                 <div className="pl-2 mt-1">
-                    <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-600 no-underline px-2 py-3'} href={'/home/'} title={this.translate('Home')}>{this.translate('Home')}</a> </div>
+                    <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-indigo-500 no-underline px-2 py-3'} href={'/home/'} title={this.translate('Home')}>{this.translate('Home')}</a> </div>
                 </div>
             </div>
         )
@@ -37,7 +37,7 @@ export default class HeaderMenu extends Component {
             result.push(
                 <div className="flex flex-wrap items-center m-0 px-2 border-t border-b" key={key} onMouseEnter={() => this.onMouseHover(key)} onMouseLeave={() => this.onMouseLeave()}>
                     <div className="pl-2 mt-1">
-                        <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-600 no-underline px-2 py-3'}title={key}>{key}</a> </div>
+                        <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-indigo-500 no-underline px-2 py-3'}title={key}>{key}</a> </div>
                     </div>
                     {this.generateMenuItems(key, menu)}
                 </div>

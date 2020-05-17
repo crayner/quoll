@@ -22,7 +22,7 @@ export default function Header(props) {
             })
 
             menu.push(<li className="sm:relative group mt-1" key={categoryName}>
-                    <a className="block uppercase font-bold text-sm text-gray-800 hover:text-purple-600 no-underline px-2 py-3"
+                    <a className="block uppercase font-bold text-sm text-gray-800 hover:text-indigo-500 no-underline px-2 py-3"
                        href="#">{categoryName}</a>
                     <ul className="list-none bg-transparent-900 absolute hidden group-hover:block w-full sm:w-48 left-0 m-0 -mt-1 py-1 sm:p-1 z-50">
                         {itemContent}
@@ -46,7 +46,7 @@ export default function Header(props) {
             <nav id="header-menu" className="w-full bg-gray-200 justify-between">
                 <ul className="list-none flex flex-wrap items-center m-0 px-2 border-t border-b">
                     <li className="pl-2 mt-1" key={'home'}>
-                        <a className="block uppercase font-bold text-sm text-gray-800 hover:text-purple-600 no-underline px-2 py-3"
+                        <a className="block uppercase font-bold text-sm text-gray-800 hover:text-indigo-500 no-underline px-2 py-3"
                            href={details.homeURL}>{details.translations.Home}</a>
                     </li>
                     {menu}

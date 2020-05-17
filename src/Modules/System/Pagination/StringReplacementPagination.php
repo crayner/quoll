@@ -75,7 +75,7 @@ class StringReplacementPagination extends AbstractPaginationManager
         $action = new PaginationAction();
         $action->setTitle('Edit')
             ->setAClass('p-3 sm:p-0')
-            ->setSpanClass('far fa-edit fa-fw fa-1-5x text-gray-800 hover:text-purple-500')
+            ->setSpanClass('far fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('string_edit')
             ->setRouteParams(['stringReplacement' => 'id']);
         $row->addAction($action);

@@ -27,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\AddressRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Address",
  *     indexes={@ORM\Index("locality",columns={"locality"})},
- *     uniqueConstraints={@ORM\UniqueConstraint("address_in_locality",columns={"street_name","flat_unit_details","street_number","locality"})})
- * @UniqueEntity(fields={"streetName","flatUnitDetails","streetNumber","locality"},message="This address is a load of not unique.")
+ *     uniqueConstraints={@ORM\UniqueConstraint("address_in_locality",columns={"street_name","property_name","flat_unit_details","street_number","locality","postCode"})})
+ * @UniqueEntity(fields={"streetName","propertyName","flatUnitDetails","streetNumber","locality","postCode"},message="This address is a load of not unique.")
  * @\App\Modules\People\Validator\Address()
  * @PostCode()
  */

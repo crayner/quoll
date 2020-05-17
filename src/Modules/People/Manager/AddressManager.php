@@ -64,8 +64,10 @@ class AddressManager
             $cList = [];
         }
         $list = [];
-        foreach($cList as $c)
+        foreach($cList as $c) {
+            $c = strtoupper($c);
             $list[Countries::getAlpha3Name($c)] = $c;
+        }
         return $list;
     }
 

@@ -196,8 +196,9 @@ class Locality implements EntityInterface
             'name' => $this->getName(),
             'id' => $this->getId(),
             'territory' => $this->getTerritory(),
+            'country' => Countries::getAlpha3Name($this->getCountry()),
             'postCode' => $this->getPostCode(),
-            'canDelete' => ProviderFactory::create(District::class)->canDelete($this) === 0,
+            'canDelete' => ProviderFactory::create(Locality::class)->canDelete($this),
         ];
     }
 

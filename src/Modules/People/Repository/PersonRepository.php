@@ -16,6 +16,7 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Address;
+use App\Modules\People\Entity\Locality;
 use App\Modules\People\Util\UserHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -429,4 +430,25 @@ class PersonRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * countLocalityUse
+     * @param Locality $locality
+     * @return int
+     */
+    public function countLocalityUse(Locality $locality): int
+    {
+        try {
+            return $this->createQueryBuilder('p')
+                ->select('COUNT(p.id)')
+                ->leftJoin('p.physicalAddress', 'a')
+                ->leftJoin('p.postalAddress', 'pa')
+                ->where('a.locality = :locality')
+                ->orWhere('pa.locality = :locality')
+                ->setParameter('locality', $locality)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

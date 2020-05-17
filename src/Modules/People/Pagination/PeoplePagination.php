@@ -138,7 +138,7 @@ class PeoplePagination extends AbstractPaginationManager
         $action->setTitle('Edit Person')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-purple-500')
+            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('person_edit')
             ->setRouteParams(['person' => 'id']);
         $row->addAction($action);

@@ -41,10 +41,8 @@ class LocalityProvider implements EntityProviderInterface
      */
     public function countUsage(Locality $Locality): int
     {
-        $result = $this->getRepository(Person::class)->countLocalityUsage($Locality);
-        if ($result > 0)
-            return $result;
-        $result += $this->getRepository(Family::class)->countLocalityUsage($Locality);
+        $result = $this->getRepository(Person::class)->countLocalityUse($Locality);
+        $result += $this->getRepository(Family::class)->countLocalityUse($Locality);
         return $result;
     }
 

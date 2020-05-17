@@ -32,7 +32,6 @@ class AddressValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
         if (!$value instanceof \App\Modules\People\Entity\Address)
             return;
 
@@ -41,13 +40,11 @@ class AddressValidator extends ConstraintValidator
 
         $addresses = ProviderFactory::getRepository(\App\Modules\People\Entity\Address::class)->getSingleStringAddress($value);
         foreach($addresses as $q=>$w) {
-            if (!$value->isEqualTo($w)) {
-                $addresses[$q] = $w->getFlatUnitDetails() . $w->getStreetNumber() . $w->getStreetName() . $w->getPropertyName() . $w->getLocality()->getName() . $w->getLocality()->getTerritory() . $w->getLocality()->getPostCode() . $w->getLocality()->getCountry();
-            }
+            $addresses[$q] = $w['name'];
         }
-        $address = $value->getFlatUnitDetails() . $value->getStreetNumber() . $value->getStreetName() . $value->getPropertyName() . $value->getLocality()->getName() . $value->getLocality()->getTerritory() . $value->getLocality()->getPostCode() . $value->getLocality()->getCountry();
+        $testValue = $value->getFlatUnitDetails().$value->getPropertyName().$value->getStreetNumber().$value->getStreetName().$value->getPostCode().$value->getLocality()->getId();
 
-        if (in_array($address,$addresses)) {
+        if (in_array($testValue,$addresses)) {
             $this->context->buildViolation($constraint->message)
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(Address::DUPLICATE_ADDRESS_ERROR)
@@ -56,18 +53,17 @@ class AddressValidator extends ConstraintValidator
             return;
         }
 
+        $testValue = preg_replace('/[^a-zA-Z0-9]/', '', $testValue);
         foreach($addresses as $q=>$w) {
-            $addresses[$q] = str_replace([' ', "\n", "\r", "\t", ',', '.', "'", '`'], '', $w);
+            $addresses[$q] = preg_replace('/[^a-zA-Z0-9]/', '', $w);
         }
-        $address = str_replace([' ', "\n", "\r", "\t", ',', '.', "'", '`'], '', $address);
 
-        if (in_array($address,$addresses)) {
+        if (in_array($testValue,$addresses)) {
             $this->context->buildViolation($constraint->message)
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(Address::DUPLICATE_ADDRESS_ERROR)
                 ->atPath('streetName')
                 ->addViolation();
-            return;
         }
     }
 }

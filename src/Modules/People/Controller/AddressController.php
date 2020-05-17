@@ -21,11 +21,13 @@ use App\Modules\People\Entity\Locality;
 use App\Modules\People\Form\AddressType;
 use App\Modules\People\Form\LocalityType;
 use App\Modules\People\Pagination\AddressPagination;
+use App\Modules\People\Pagination\LocalityPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -79,7 +81,6 @@ class AddressController extends AbstractPageController
         $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
-            dump($content,$address);
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $address->getId();
@@ -120,7 +121,7 @@ class AddressController extends AbstractPageController
      * @Route("/address/{address}/delete/",name="address_delete")
      * @param Address $address
      * @param FlashBagInterface $bag
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @IsGranted("ROLE_ROUTE")
      */
     public function deleteAddress(Address $address, FlashBagInterface $bag)
@@ -139,6 +140,7 @@ class AddressController extends AbstractPageController
      * @Route("/locality/{locality}/edit/popup/",name="locality_edit_popup")
      * @Route("/locality/add/",name="locality_add")
      * @Route("/locality/add/popup/",name="locality_add_popup")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function localityEdit(ContainerManager $manager, ?Locality $locality = null)
     {
@@ -198,6 +200,7 @@ class AddressController extends AbstractPageController
     /**
      * refreshLocalityChoiceList
      * @Route("/locality/list/refresh/",name="locality_list_refresh")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function refreshLocalityChoiceList()
     {
@@ -209,4 +212,37 @@ class AddressController extends AbstractPageController
         return new JsonResponse(['choices' => $result]);
     }
 
+    /**
+     * list locality
+     * @Route("/locality/list/",name="locality_list")
+     * @IsGranted("ROLE_ROUTE")
+     * @param LocalityPagination $pagination
+     * @return JsonResponse
+     */
+    public function listLocality(LocalityPagination $pagination)
+    {
+        $content = ProviderFactory::getRepository(Locality::class)->findBy([], ['name' => 'ASC']);
+        $pagination->setContent($content)
+            ->setRefreshRoute($this->generateUrl('locality_list'))
+            ->setAddElementRoute(['url' => $this->generateUrl('locality_add_popup'), 'target' => 'Locality_Details', 'options' => 'width=800,height=450']);
+
+        return $this->getPageManager()->createBreadcrumbs('Manage Localities')
+            ->render(['pagination' => $pagination->toArray()]);
+    }
+
+    /**
+     * deleteLocality
+     * @param Locality $locality
+     * @param FlashBagInterface $bag
+     * @return Response
+     * @Route("/locality/{locality}/delete/",name="locality_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function deleteLocality(Locality $locality, FlashBagInterface $bag)
+    {
+        ProviderFactory::create(Locality::class)->delete($locality);
+        ProviderFactory::create(Locality::class)->getMessageManager()->pushToFlash($bag);
+
+        return $this->forward(AddressController::class . '::listLocality');
+    }
 }
