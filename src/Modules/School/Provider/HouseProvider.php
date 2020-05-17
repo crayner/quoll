@@ -15,22 +15,20 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\School\Entity\House;
 
 /**
  * Class HouseProvider
  * @package App\Modules\School\Provider
  */
-class HouseProvider implements EntityProviderInterface
+class HouseProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = House::class;
+    protected $entityName = House::class;
 
     /**
      * canDelete

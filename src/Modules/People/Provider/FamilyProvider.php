@@ -15,20 +15,18 @@
 
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\People\Entity\Family;
 
 /**
  * Class FamilyProvider
  * @package App\Modules\People\Provider
  */
-class FamilyProvider implements EntityProviderInterface
+class FamilyProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Family::class;
+    protected $entityName = Family::class;
 }

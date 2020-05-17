@@ -16,8 +16,7 @@
 namespace App\Modules\School\Provider;
 
 use App\Modules\Enrolment\Entity\StudentEnrolment;
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use App\Modules\Library\Helper\ReturnAction;
@@ -28,14 +27,13 @@ use Symfony\Component\Form\ChoiceList\View\ChoiceView;
  * Class YearGroupProvider
  * @package App\Modules\School\Provider
  */
-class YearGroupProvider implements EntityProviderInterface
+class YearGroupProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = YearGroup::class;
+    protected $entityName = YearGroup::class;
 
     /**
      * getCurrentYearGroupChoiceList

@@ -18,7 +18,7 @@ namespace App\Modules\People\Util;
 use App\Modules\People\Entity\Person;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Security\Manager\SecurityUser;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

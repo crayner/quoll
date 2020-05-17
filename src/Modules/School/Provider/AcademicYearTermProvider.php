@@ -15,20 +15,18 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\School\Entity\AcademicYearTerm;
 
 /**
  * Class AcademicYearTermProvider
  * @package App\Modules\School\Provider
  */
-class AcademicYearTermProvider implements EntityProviderInterface
+class AcademicYearTermProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = AcademicYearTerm::class;
+    protected $entityName = AcademicYearTerm::class;
 }

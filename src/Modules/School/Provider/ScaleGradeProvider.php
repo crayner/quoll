@@ -17,9 +17,8 @@ namespace App\Modules\School\Provider;
 
 use App\Entity\MarkbookTarget;
 use App\Entity\RubricColumn;
-use App\Manager\Traits\EntityTrait;
 use App\Modules\School\Entity\ScaleGrade;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -28,14 +27,13 @@ use Doctrine\DBAL\Schema\SchemaException;
  * Class ScaleGradeProvider
  * @package App\Modules\School\Provider
  */
-class ScaleGradeProvider implements EntityProviderInterface
+class ScaleGradeProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = ScaleGrade::class;
+    protected $entityName = ScaleGrade::class;
 
     /**
      * saveGrades

@@ -15,19 +15,17 @@
 
 namespace App\Modules\Comms\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\Comms\Entity\Notification;
 
 /**
  * Class NotificationProvider
  * @package App\Modules\Comms\Provider
  */
-class NotificationProvider implements EntityProviderInterface
+class NotificationProvider extends AbstractProvider
 {
-    use EntityTrait;
     /**
      * @var string
      */
-    private $entityName = Notification::class;
+    protected $entityName = Notification::class;
 }

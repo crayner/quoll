@@ -14,21 +14,19 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class PhoneProvider
  * @package App\Modules\People\Provider
  */
-class PhoneProvider implements EntityProviderInterface
+class PhoneProvider extends AbstractProvider
 {
-    use EntityTrait;
 
-    private $entityName = Phone::class;
+    protected $entityName = Phone::class;
 
     /**
      * getFamilyPhonesOfPerson

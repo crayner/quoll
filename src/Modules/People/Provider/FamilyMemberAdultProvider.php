@@ -14,9 +14,8 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -25,11 +24,10 @@ use Doctrine\DBAL\Schema\SchemaException;
  * Class FamilyMemberAdultProvider
  * @package App\Modules\People\Provider
  */
-class FamilyMemberAdultProvider implements EntityProviderInterface
+class FamilyMemberAdultProvider extends AbstractProvider
 {
-    use EntityTrait;
 
-    private $entityName = FamilyMemberAdult::class;
+    protected $entityName = FamilyMemberAdult::class;
 
     /**
      * saveAdults

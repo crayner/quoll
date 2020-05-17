@@ -15,25 +15,23 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Entity\Setting;
-use App\Manager\Traits\EntityTrait;
 use App\Util\CacheHelper;
 
 /**
  * Class ModuleProvider
  * @package App\Modules\System\Provider
  */
-class ModuleProvider implements EntityProviderInterface
+class ModuleProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Module::class;
+    protected $entityName = Module::class;
 
     /**
      * selectModulesByRole

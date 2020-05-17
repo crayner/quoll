@@ -17,7 +17,7 @@ namespace App\Modules\Enrolment\Provider;
 
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
-use App\Modules\Enrolment\Manager\Traits\EntityTrait;
+use App\Modules\Enrolment\Manager\Traits\ProviderTrait;
 use App\Modules\Departments\Twig\MyClasses;
 use App\Modules\People\Manager\SecurityUser;
 use App\Modules\Enrolment\Twig\SidebarContent;
@@ -26,11 +26,10 @@ use App\Modules\Enrolment\Twig\SidebarContent;
  * Class CourseClassProvider
  * @package App\Modules\Enrolment\Provider
  */
-class CourseClassProvider implements EntityProviderInterface
+class CourseClassProvider extends AbstractProvider
 {
-    use EntityTrait;
 
-    private $entityName = CourseClass::class;
+    protected $entityName = CourseClass::class;
 
     /**
      * getMyClasses

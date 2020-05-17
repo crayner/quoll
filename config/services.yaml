@@ -15,7 +15,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php,Provider}'
 
     App\Modules\:
         resource: '../src/Modules/*'
@@ -83,3 +83,7 @@ services:
     App\Modules\People\Form\FamilyGeneralType:
         calls:
             - ['setPreferredLanguages', ['%preferred_languages%']]
+
+    App\Provider\ProviderFactory:
+        class: App\Provider\ProviderFactory
+

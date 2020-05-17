@@ -15,8 +15,7 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\AcademicYearSpecialDay;
 
@@ -24,13 +23,12 @@ use App\Modules\School\Entity\AcademicYearSpecialDay;
  * Class AcademicYearSpecialDayProvider
  * @package App\Modules\School\Provider
  */
-class AcademicYearSpecialDayProvider implements EntityProviderInterface
+class AcademicYearSpecialDayProvider extends AbstractProvider
 {
-    use EntityTrait;
     /**
      * @var string
      */
-    private $entityName = AcademicYearSpecialDay::class;
+    protected $entityName = AcademicYearSpecialDay::class;
 
     /**
      * dateExists

@@ -15,20 +15,18 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\School\Entity\Department;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class DepartmentProvider
  * @package App\Modules\School\Provider
  */
-class DepartmentProvider implements EntityProviderInterface
+class DepartmentProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Department::class;
+    protected $entityName = Department::class;
 }

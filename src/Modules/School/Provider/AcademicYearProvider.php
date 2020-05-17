@@ -18,8 +18,7 @@ namespace App\Modules\School\Provider;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Exception\MissingClassException;
 use App\Exception\MissingEntityException;
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use App\Modules\School\Entity\AcademicYear;
@@ -30,14 +29,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Class AcademicYearProvider
  * @package App\Modules\SchoolProvider\Provider
  */
-class AcademicYearProvider implements EntityProviderInterface
+class AcademicYearProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = AcademicYear::class;
+    protected $entityName = AcademicYear::class;
 
     /**
      * setCurrentAcademicYear

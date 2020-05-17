@@ -15,11 +15,10 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -27,14 +26,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * Class ActionProvider
  * @package App\Modules\System\Provider
  */
-class ActionProvider implements EntityProviderInterface
+class ActionProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Action::class;
+    protected $entityName = Action::class;
 
     /**
      * findByrouteListModuleRole

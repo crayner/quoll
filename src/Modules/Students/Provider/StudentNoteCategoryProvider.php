@@ -15,17 +15,15 @@
 
 namespace App\Modules\Students\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\Students\Entity\StudentNoteCategory;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class StudentNoteCategoryProvider
  * @package App\Modules\Students\Provider
  */
-class StudentNoteCategoryProvider implements EntityProviderInterface
+class StudentNoteCategoryProvider extends AbstractProvider
 {
-    use EntityTrait;
 
-    private $entityName = StudentNoteCategory::class;
+    protected $entityName = StudentNoteCategory::class;
 }

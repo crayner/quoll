@@ -16,19 +16,17 @@
 namespace App\Modules\System\Provider;
 
 use App\Modules\System\Entity\Theme;
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class ThemeProvider
  * @package App\Modules\System\Provider
  */
-class ThemeProvider implements EntityProviderInterface
+class ThemeProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Theme::class;
+    protected $entityName = Theme::class;
 }

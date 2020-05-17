@@ -16,13 +16,12 @@
 namespace App\Modules\System\Provider;
 
 use App\Manager\EntityInterface;
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Person;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use App\Util\Format;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,14 +32,13 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class SettingProvider implements EntityProviderInterface
+class SettingProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Setting::class;
+    protected $entityName = Setting::class;
 
     /**
      * @var ArrayCollection
@@ -410,8 +408,8 @@ class SettingProvider implements EntityProviderInterface
      */
     public function getSession(): ?SessionInterface
     {
-        if ($this->stack->getCurrentRequest() && $this->stack->getCurrentRequest()->getSession())
-            return $this->stack->getCurrentRequest()->getSession();
+        if ($this->getStack()->getCurrentRequest() && $this->getStack()->getCurrentRequest()->getSession())
+            return $this->getStack()->getCurrentRequest()->getSession();
         return null;
     }
 

@@ -15,25 +15,23 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\Activities\Entity\ActivitySlot;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Entity\FacilityPerson;
 use App\Modules\School\Entity\RollGroup;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class FacilityProvider
  * @package App\Modules\School\Provider
  */
-class FacilityProvider implements EntityProviderInterface
+class FacilityProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Facility::class;
+    protected $entityName = Facility::class;
 
     /**
      * canDelete

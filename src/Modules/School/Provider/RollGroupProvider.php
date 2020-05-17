@@ -15,18 +15,16 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\School\Entity\RollGroup;
 
-class RollGroupProvider implements EntityProviderInterface
+class RollGroupProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = RollGroup::class;
+    protected $entityName = RollGroup::class;
 
     /**
      * canDelete

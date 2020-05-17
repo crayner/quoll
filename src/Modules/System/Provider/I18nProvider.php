@@ -16,8 +16,7 @@
 namespace App\Modules\System\Provider;
 
 use App\Manager\EntityInterface;
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Util\GlobalHelper;
 use App\Modules\System\Entity\I18n;
 use App\Modules\People\Util\UserHelper;
@@ -27,14 +26,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Class I18nProvider
  * @package App\Modules\System\Provider
  */
-class I18nProvider implements EntityProviderInterface
+class I18nProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = I18n::class;
+    protected $entityName = I18n::class;
 
     /**
      * @var string|null

@@ -15,22 +15,20 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\System\Entity\StringReplacement;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class StringReplacementProvider
  * @package App\Modules\System\Provider
  */
-class StringReplacementProvider implements EntityProviderInterface
+class StringReplacementProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = StringReplacement::class;
+    protected $entityName = StringReplacement::class;
 
     /**
      * getPaginationResults

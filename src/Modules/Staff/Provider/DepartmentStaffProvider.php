@@ -15,26 +15,24 @@
 
 namespace App\Modules\Staff\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Department;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Staff\Entity\DepartmentStaff;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 
 /**
  * Class DepartmentStaffProvider
  * @package App\Provider
  */
-class DepartmentStaffProvider implements EntityProviderInterface
+class DepartmentStaffProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = DepartmentStaff::class;
+    protected $entityName = DepartmentStaff::class;
 
     /**
      * getRole

@@ -15,20 +15,18 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\School\Entity\Scale;
 use App\Modules\School\Entity\ScaleGrade;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class ScaleProvider
  * @package App\Modules\School\Provider
  */
-class ScaleProvider implements EntityProviderInterface
+class ScaleProvider extends AbstractProvider
 {
-    use EntityTrait;
 
-    private $entityName = Scale::class;
+    protected $entityName = Scale::class;
 
     /**
      * canDelete

@@ -14,24 +14,22 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class AddressProvider
  * @package App\Modules\People\Provider
  */
-class AddressProvider implements EntityProviderInterface
+class AddressProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Address::class;
+    protected $entityName = Address::class;
 
     /**
      * canDelete

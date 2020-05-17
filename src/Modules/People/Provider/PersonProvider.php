@@ -16,7 +16,6 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\StudentEnrolment;
-use App\Manager\Traits\EntityTrait;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
@@ -24,7 +23,7 @@ use App\Modules\System\Entity\Setting;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
@@ -38,14 +37,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class PersonProvider
  * @package App\Modules\people\Provider
  */
-class PersonProvider implements EntityProviderInterface, UserLoaderInterface
+class PersonProvider extends AbstractProvider implements UserLoaderInterface
 {
-    use EntityTrait;
-
     /**
      * @var string
      */
-    private $entityName = Person::class;
+    protected $entityName = Person::class;
 
     /**
      * Loads the user for the given username.

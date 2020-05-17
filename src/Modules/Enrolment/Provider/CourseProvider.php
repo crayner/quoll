@@ -15,23 +15,21 @@
 
 namespace App\Modules\Enrolment\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\Enrolment\Entity\Course;
 use App\Modules\School\Entity\Department;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class CourseProvider
  * @package App\Modules\Enrolment\Provider
  */
-class CourseProvider implements EntityProviderInterface
+class CourseProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Course::class;
+    protected $entityName = Course::class;
 
     /**
      * getByDepartment

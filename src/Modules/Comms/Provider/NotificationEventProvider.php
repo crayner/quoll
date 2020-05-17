@@ -16,9 +16,8 @@
 namespace App\Modules\Comms\Provider;
 
 use App\Modules\People\Entity\Person;
-use App\Manager\Traits\EntityTrait;
 use App\Mailer\NotificationMailer;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Modules\Comms\Entity\Module;
 use App\Modules\Comms\Entity\Notification;
@@ -30,9 +29,8 @@ use Symfony\Component\Mailer\MailerInterface;
  * Class NotificationEventProvider
  * @package App\Modules\Comms\Provider
  */
-class NotificationEventProvider implements EntityProviderInterface
+class NotificationEventProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var null|MailerInterface
@@ -47,7 +45,7 @@ class NotificationEventProvider implements EntityProviderInterface
     /**
      * @var string
      */
-    private $entityName = NotificationEvent::class;
+    protected $entityName = NotificationEvent::class;
 
     /**
      * createEvent

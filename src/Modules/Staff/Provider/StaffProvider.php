@@ -15,20 +15,18 @@
 
 namespace App\Modules\Staff\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\Staff\Entity\Staff;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 
 /**
  * Class StaffProvider
  * @package App\Modules\Staff\Provider
  */
-class StaffProvider implements EntityProviderInterface
+class StaffProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Staff::class;
+    protected $entityName = Staff::class;
 }

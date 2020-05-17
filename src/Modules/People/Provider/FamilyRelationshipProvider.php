@@ -15,22 +15,20 @@
 
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\People\Entity\FamilyRelationship;
 
 /**
  * Class FamilyRelationshipProvider
  * @package App\Modules\People\Provider
  */
-class FamilyRelationshipProvider implements EntityProviderInterface
+class FamilyRelationshipProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = FamilyRelationship::class;
+    protected $entityName = FamilyRelationship::class;
 
     /**
      * findOneRelationship

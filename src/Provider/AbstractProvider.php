@@ -2,24 +2,21 @@
 /**
  * Created by PhpStorm.
  *
- * This file is part of the Busybee Project.
- *
- * (c) Craig Rayner <craig@craigrayner.com>
+ * quoll
+ * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * UserProvider: craig
- * Date: 23/06/2018
- * Time: 18:10
+ * User: craig
+ * Date: 17/05/2020
+ * Time: 12:54
  */
-namespace App\Manager\Traits;
+namespace App\Provider;
 
 use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
-use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
-use App\Util\TranslationHelper;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
@@ -32,14 +29,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Traits EntityTrait
- * @package App\Manager
+ * Class AbstractProvider
+ * @package App\Provider
  */
-trait EntityTrait
+abstract class AbstractProvider implements EntityProviderInterface
 {
     /**
      * @var EntityManagerInterface
@@ -87,7 +84,13 @@ trait EntityTrait
     private $parameterBag;
 
     /**
-     * EntityTrait constructor.
+     * @var ProviderFactory
+     */
+    private $providerFactory;
+
+
+    /**
+     * ProviderTrait constructor.
      * @param ProviderFactory $providerFactory
      * @throws \Exception
      */
@@ -151,15 +154,13 @@ trait EntityTrait
     public function delete($id)
     {
         if ($id === 'ignore') return $this->getEntity();
-        if ($id instanceof $this->entityName)
-        {
+        if ($id instanceof $this->entityName) {
             $this->setEntity($id);
             $entity = $id;
             $id = $entity->getId();
         } else
             $entity = $this->find($id);
-        if (empty($entity))
-        {
+        if (empty($entity)) {
             $this->getMessageManager()->add('warning', 'return.error.0', [], 'messages');
             return $entity;
         }
@@ -223,7 +224,7 @@ trait EntityTrait
 
     /**
      * @param EntityInterface|null $entity
-     * @return EntityTrait
+     * @return ProviderTrait
      */
     public function setEntity(?EntityInterface $entity)
     {
@@ -238,7 +239,7 @@ trait EntityTrait
      */
     public function getTransDomain(): string
     {
-        if(empty($this->transDomain))
+        if (empty($this->transDomain))
             return 'messages';
         return $this->transDomain;
     }
@@ -251,9 +252,8 @@ trait EntityTrait
      */
     public function saveEntity(?ValidatorInterface $validator = null, bool $flush = true)
     {
-        if ($validator && ($list = $validator->validate($this->getEntity()))->count() > 0)
-        {
-            foreach($list as $error)
+        if ($validator && ($list = $validator->validate($this->getEntity()))->count() > 0) {
+            foreach ($list as $error)
                 $this->getMessageManager()->add('error', $error->getMessage(), [], false);
             return $this;
         }
@@ -261,8 +261,7 @@ trait EntityTrait
             $this->getEntityManager()->persist($this->getEntity());
             if ($flush)
                 $this->getEntityManager()->flush();
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->getMessageManager()->add('error', 'return.error.2', [], 'messages');
         }
         return $this;
@@ -299,7 +298,7 @@ trait EntityTrait
      */
     public function isValidEntityManager(): bool
     {
-        if (! is_null($this->validEntityManager))
+        if (!is_null($this->validEntityManager))
             return $this->validEntityManager;
         return $this->validEntityManager = true;
     }
@@ -338,7 +337,7 @@ trait EntityTrait
      * setTranslator
      *
      * @param TranslatorInterface $translator
-     * @return EntityTrait
+     * @return ProviderTrait
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -393,8 +392,7 @@ trait EntityTrait
     {
         try {
             $this->getEntityManager()->flush();
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
         }
         return $data;
@@ -425,11 +423,6 @@ trait EntityTrait
     }
 
     /**
-     * @var ProviderFactory
-     */
-    private $providerFactory;
-
-    /**
      * @return ProviderFactory
      */
     public function getProviderFactory(): ProviderFactory
@@ -456,7 +449,7 @@ trait EntityTrait
     /**
      * @var Request|null
      */
-    private  $request;
+    private $request;
 
     /**
      * @return SessionInterface
@@ -474,7 +467,7 @@ trait EntityTrait
      */
     public function getStack(): RequestStack
     {
-        return $this->stack;
+        return $this->stack ?: $this->stack = $this->getProviderFactory()::getStack();
     }
 
     /**
@@ -532,8 +525,8 @@ trait EntityTrait
      */
     public function remove(EntityInterface $entity, array $data = [], bool $flush = true): array
     {
-        trigger_error('Deprecated: Please use '. self::class . '::delete.', E_USER_DEPRECATED);
-        if (! $this->getEntityManager()->contains($entity))
+        trigger_error('Deprecated: Please use ' . self::class . '::delete.', E_USER_DEPRECATED);
+        if (!$this->getEntityManager()->contains($entity))
             return $data;
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {

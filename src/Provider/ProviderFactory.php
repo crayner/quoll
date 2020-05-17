@@ -15,6 +15,7 @@
 
 namespace App\Provider;
 
+use App\Exception\MissingClassException;
 use App\Manager\MessageManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;

@@ -14,25 +14,23 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Manager\Traits\EntityTrait;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
  * Class LocalityProvider
  * @package App\Modules\People\Provider
  */
-class LocalityProvider implements EntityProviderInterface
+class LocalityProvider extends AbstractProvider
 {
-    use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = Locality::class;
+    protected $entityName = Locality::class;
 
     /**
      * countUsage
