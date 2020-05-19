@@ -59,6 +59,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Applies to Categories')
             ->setContentKey(['categories'])
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
