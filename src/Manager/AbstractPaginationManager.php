@@ -541,9 +541,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getAddElementRoute(): array
+    public function getAddElementRoute(): ?array
     {
         return $this->addElementRoute;
     }

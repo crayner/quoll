@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class FamilyMember
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
- * @ORM\Table(name="FamilyMember",options={"auto_increment": 1})
+ * @ORM\Table(name="FamilyMember")
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type", type="string", length=191)
@@ -78,18 +78,20 @@ class FamilyMember implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return FamilyMember
      */
-    public function setId(?int $id): FamilyMember
+    public function setId(?string $id): FamilyMember
     {
         $this->id = $id;
         return $this;

@@ -22,17 +22,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class FamilyRelationship
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRelationshipRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FamilyRelationship", 
+ * @ORM\Table(name="FamilyRelationship",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="FamilyMemberAdultChild", columns={"family","adult","child"})})
  * @UniqueEntity({"family","adult","child"})
  */
 class FamilyRelationship implements EntityInterface
 {
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="INT(9) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -99,18 +99,20 @@ class FamilyRelationship implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return FamilyRelationship
      */
-    public function setId(?int $id): FamilyRelationship
+    public function setId(?string $id): FamilyRelationship
     {
         $this->id = $id;
         return $this;
@@ -247,11 +249,11 @@ class FamilyRelationship implements EntityInterface
     public function create(): string
     {
         return 'CREATE TABLE `__prefix__FamilyRelationship` (
-                    `id` int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `id` CHAR(36) NOT NULL,
                     `relationship` varchar(50) NOT NULL,
                     `family` int(7) UNSIGNED DEFAULT NULL,
-                    `adult` int(10) UNSIGNED DEFAULT NULL,
-                    `child` int(10) UNSIGNED DEFAULT NULL,
+                    `adult` char(36) DEFAULT NULL,
+                    `child` char(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `family` (`family`),
                     KEY `adult` (`adult`),
