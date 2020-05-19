@@ -215,13 +215,13 @@ class Locality implements EntityInterface
     {
         return "CREATE TABLE `__prefix__Locality` (
                     `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `territory` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `post_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `country` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `name` varchar(30) NOT NULL,
+                    `territory` varchar(30) DEFAULT NULL,
+                    `post_code` varchar(10) DEFAULT NULL,
+                    `country` varchar(3) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `locality` (`name`,`territory`,`post_code`,`country`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string

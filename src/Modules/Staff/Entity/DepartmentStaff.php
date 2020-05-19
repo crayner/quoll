@@ -174,14 +174,14 @@ class DepartmentStaff implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__DepartmentStaff` (
                     `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `role` varchar(24) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `role` varchar(24) NOT NULL,
                     `department` int(4) UNSIGNED DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `department_person` (`department`,`person`) USING BTREE,
                     KEY `department` (`department`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

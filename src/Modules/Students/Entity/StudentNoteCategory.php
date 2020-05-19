@@ -171,11 +171,11 @@ class StudentNoteCategory implements EntityInterface
     {
         return "CREATE TABLE `__prefix__StudentNoteCategory` (
                     `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-                    `template` longtext COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-                    `active` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `template` longtext COLLATE ut8mb4_unicode_ci NULL DEFAULT NULL,
+                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'Y',
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string

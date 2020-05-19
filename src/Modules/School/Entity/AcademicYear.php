@@ -375,15 +375,15 @@ class AcademicYear implements EntityInterface
     {
         return "CREATE TABLE `__prefix__AcademicYear` (
                     `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `status` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Upcoming',
+                    `name` varchar(9) NOT NULL,
+                    `status` varchar(8) NOT NULL DEFAULT 'Upcoming',
                     `firstDay` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `lastDay` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `sequenceNumber` int(3) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`) USING BTREE,
                     UNIQUE KEY `sequence` (`sequenceNumber`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

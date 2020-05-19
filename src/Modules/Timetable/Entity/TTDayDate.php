@@ -119,7 +119,7 @@ class TTDayDate implements EntityInterface
                     `timetable_day` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `timetable_day` (`timetable_day`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

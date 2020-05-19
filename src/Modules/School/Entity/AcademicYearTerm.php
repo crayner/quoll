@@ -242,8 +242,8 @@ class AcademicYearTerm implements EntityInterface
         return 'CREATE TABLE `__prefix__AcademicYearTerm` (
                     `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `sequenceNumber` int(5) DEFAULT NULL,
-                    `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(20) NOT NULL,
+                    `nameShort` varchar(4) NOT NULL,
                     `firstDay` date DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\',
                     `lastDay` date DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\',
                     `academic_year` int(3) UNSIGNED DEFAULT NULL,
@@ -252,7 +252,7 @@ class AcademicYearTerm implements EntityInterface
                     UNIQUE KEY `abbr` (`academic_year`,`nameShort`),
                     UNIQUE KEY `sequence_nnumber` (`academic_year`,`sequenceNumber`) USING BTREE,
                     KEY `academic_year` (`academic_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     /**

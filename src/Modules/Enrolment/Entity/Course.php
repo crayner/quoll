@@ -342,11 +342,11 @@ class Course implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Course` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-                    `map` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\' COMMENT \'Should this course be included in curriculum maps and other summaries?\',
-                    `year_group_list` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:simple_array)\',
+                    `name` varchar(60) NOT NULL,
+                    `nameShort` varchar(12) NOT NULL,
+                    `description` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
+                    `map` varchar(1) NOT NULL DEFAULT \'Y\' COMMENT \'Should this course be included in curriculum maps and other summaries?\',
+                    `year_group_list` varchar(191) NOT NULL COMMENT \'(DC2Type:simple_array)\',
                     `order_by` int(3) DEFAULT NULL,
                     `academic_year` int(3) UNSIGNED DEFAULT NULL,
                     `department` int(4) UNSIGNED DEFAULT NULL,
@@ -355,7 +355,7 @@ class Course implements EntityInterface
                     UNIQUE KEY `name_short_year` (`academic_year`,`nameShort`) USING BTREE,
                     KEY `department` (`department`),
                     KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

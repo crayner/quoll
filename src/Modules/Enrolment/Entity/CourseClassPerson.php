@@ -199,8 +199,8 @@ class CourseClassPerson implements EntityInterface
     {
         return "CREATE TABLE `__prefix__CourseClassPerson` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `role` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `reportable` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+                    `role` varchar(16) NOT NULL,
+                    `reportable` varchar(1) NOT NULL DEFAULT 'Y',
                     `course_class` int(8) UNSIGNED DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
@@ -208,7 +208,7 @@ class CourseClassPerson implements EntityInterface
                     KEY `person` (`person`),
                     KEY `course_class` (`course_class`),
                     KEY `person_role` (`person`,`role`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

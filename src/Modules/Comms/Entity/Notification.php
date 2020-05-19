@@ -287,17 +287,17 @@ class Notification implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Notification` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `status` varchar(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'New\',
+                    `status` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'New\',
                     `count` int(4) DEFAULT NULL,
-                    `text` longtext COLLATE utf8_unicode_ci NOT NULL,
-                    `actionLink` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Relative to absoluteURL, start with a forward slash\',
+                    `text` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `actionLink` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL COMMENT \'Relative to absoluteURL, start with a forward slash\',
                     `timestamp` datetime NOT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     `module` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `person` (`person`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

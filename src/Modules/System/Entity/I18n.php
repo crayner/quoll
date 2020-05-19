@@ -443,18 +443,18 @@ class I18n implements EntityInterface
     {
         return "CREATE TABLE `__prefix__I18n` (
                 `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `code` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `version` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                `active` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                `installed` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                `systemDefault` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                `dateFormat` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `dateFormatRegEx` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `dateFormatPHP` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `rtl` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+                `code` varchar(5) NOT NULL,
+                `name` varchar(100) NOT NULL,
+                `version` varchar(10) DEFAULT NULL,
+                `active` varchar(1) NOT NULL DEFAULT 'Y',
+                `installed` varchar(1) NOT NULL DEFAULT 'N',
+                `systemDefault` varchar(1) NOT NULL DEFAULT 'N',
+                `dateFormat` varchar(20) NOT NULL,
+                `dateFormatRegEx` longtext NOT NULL,
+                `dateFormatPHP` varchar(20) NOT NULL,
+                `rtl` varchar(1) NOT NULL DEFAULT 'N',
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

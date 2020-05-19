@@ -215,8 +215,8 @@ class StudentNote implements EntityInterface
     {
         return "CREATE TABLE `__prefix__StudentNote` (
                     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                    `note` longtext COLLATE utf8_unicode_ci NOT NULL,
+                    `title` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `note` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
                     `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     `student_note_category` int(5) UNSIGNED DEFAULT NULL,
@@ -225,7 +225,7 @@ class StudentNote implements EntityInterface
                     KEY `person` (`person`) USING BTREE,
                     KEY `student_note_category` (`student_note_category`) USING BTREE,
                     KEY `person_creator` (`person_creator`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string

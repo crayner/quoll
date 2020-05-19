@@ -165,13 +165,13 @@ class District implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__District` (
                     `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-                    `territory` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `post_code` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `territory` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `post_code` varchar(10) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
                     `country` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `country` (`country`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

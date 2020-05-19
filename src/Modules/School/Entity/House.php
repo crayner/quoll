@@ -190,13 +190,13 @@ class House implements EntityInterface
     {
         return "CREATE TABLE `__prefix__House` (
                     `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `name` varchar(30) NOT NULL,
+                    `nameShort` varchar(10) NOT NULL,
+                    `logo` varchar(255) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`) USING BTREE,
                     UNIQUE KEY `nameShort` (`nameShort`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci AUTO_INCREMENT=1;";
     }
 
     /**

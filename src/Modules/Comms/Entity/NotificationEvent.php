@@ -381,19 +381,19 @@ class NotificationEvent implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__NotificationEvent` (
+        return "CREATE TABLE `__prefix__NotificationEvent` (
                     `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `event` varchar(90) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `type` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Core\',
-                    `scopes` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'All\',
-                    `active` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+                    `event` varchar(90) NOT NULL,
+                    `type` varchar(12) NOT NULL DEFAULT 'Core',
+                    `scopes` varchar(191) NOT NULL DEFAULT 'All',
+                    `active` varchar(1) NOT NULL DEFAULT 'Y',
                     `module` int(4) UNSIGNED DEFAULT NULL,
                     `action` int(7) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `event` (`event`,`module`) USING BTREE,
                     KEY `module` (`module`) USING BTREE,
                     KEY `action` (`action`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string

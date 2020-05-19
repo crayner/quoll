@@ -233,13 +233,13 @@ class StringReplacement implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__String` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `original` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                    `replacement` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                    `mode` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-                    `case_sensitive` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `original` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `replacement` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `mode` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `case_sensitive` varchar(1) NOT NULL,
                     `priority` int(2) DEFAULT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

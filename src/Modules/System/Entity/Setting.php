@@ -184,15 +184,15 @@ class Setting implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Setting` (
                     `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `scope` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameDisplay` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `value` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+                    `scope` varchar(50) NOT NULL,
+                    `name` varchar(50) NOT NULL,
+                    `nameDisplay` varchar(60) NOT NULL,
+                    `description` varchar(255) NOT NULL,
+                    `value` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `scope_name` (`scope`,`name`) USING BTREE,
                     UNIQUE KEY `scope_display` (`scope`,`nameDisplay`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

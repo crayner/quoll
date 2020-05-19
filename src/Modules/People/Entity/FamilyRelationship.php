@@ -248,7 +248,7 @@ class FamilyRelationship implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__FamilyRelationship` (
                     `id` int(9) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `relationship` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `relationship` varchar(50) NOT NULL,
                     `family` int(7) UNSIGNED DEFAULT NULL,
                     `adult` int(10) UNSIGNED DEFAULT NULL,
                     `child` int(10) UNSIGNED DEFAULT NULL,
@@ -256,7 +256,7 @@ class FamilyRelationship implements EntityInterface
                     KEY `family` (`family`),
                     KEY `adult` (`adult`),
                     KEY `student` (`child`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

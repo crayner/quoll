@@ -413,22 +413,22 @@ class Payment implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Payment` (
                     `id` int(14) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `foreign_table` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `foreign_table` varchar(50) NOT NULL,
                     `foreign_table_id` int(14) UNSIGNED DEFAULT NULL,
-                    `type` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Online\',
-                    `status` varchar(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Complete\' COMMENT \'Complete means paid in one go, partial is part of a set of payments, and final is last in a set of payments.\',
+                    `type` varchar(16) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Online\',
+                    `status` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Complete\' COMMENT \'Complete means paid in one go, partial is part of a set of payments, and final is last in a set of payments.\',
                     `amount` decimal(13,2) NOT NULL,
-                    `gateway` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `online_transaction_status` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `payment_token` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `payment_payer_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `payment_transaction_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `payment_receipt_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `gateway` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `online_transaction_status` varchar(12) DEFAULT NULL,
+                    `payment_token` varchar(50) DEFAULT NULL,
+                    `payment_payer_id` varchar(50) DEFAULT NULL,
+                    `payment_transaction_id` varchar(50) DEFAULT NULL,
+                    `payment_receipt_id` varchar(50) DEFAULT NULL,
                     `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT \'(DC2Type:datetime_immutable)\',
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `IDX_6DE7A9BACC6782D6` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -172,10 +172,10 @@ class TTColumn implements EntityInterface
     {
         return 'CREATE TABLE  `__prefix__TTColumn` (
                     `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `nameShort` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

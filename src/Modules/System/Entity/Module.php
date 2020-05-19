@@ -576,19 +576,19 @@ class Module implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Module` (
                     `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'This name should be globally unique preferably, but certainly locally unique\',
-                    `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `entry_route` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `type` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Core\',
-                    `active` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-                    `category` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `version` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `author` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(30) NOT NULL COMMENT \'This name should be globally unique preferably, but certainly locally unique\',
+                    `description` longtext NOT NULL,
+                    `entry_route` varchar(191) NOT NULL,
+                    `type` varchar(12) NOT NULL DEFAULT \'Core\',
+                    `active` varchar(1) NOT NULL DEFAULT \'Y\',
+                    `category` varchar(10) NOT NULL,
+                    `version` varchar(8) NOT NULL,
+                    `author` varchar(40) NOT NULL,
+                    `url` varchar(255) NOT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     KEY `category` (`category`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

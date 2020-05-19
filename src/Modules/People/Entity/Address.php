@@ -264,12 +264,12 @@ class Address implements EntityInterface
     {
         return "CREATE TABLE `__prefix__Address` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `streetName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `propertyName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `streetName` varchar(50) DEFAULT NULL,
+                    `propertyName` varchar(50) DEFAULT NULL,
                     `locality` int(6) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `locality` (`locality`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci";
     }
 
     /**

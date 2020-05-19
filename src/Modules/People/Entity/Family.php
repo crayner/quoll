@@ -439,27 +439,27 @@ class Family implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Family` (
                     `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `formal_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
+                    `name` varchar(100) NOT NULL,
+                    `formal_name` varchar(100) NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
                     `physical_address` int(10) UNSIGNED DEFAULT NULL,
                     `postal_address` int(10) UNSIGNED DEFAULT NULL,
-                    `status` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `languageHomePrimary` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `languageHomeSecondary` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `familySync` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `status` varchar(12) NOT NULL,
+                    `languageHomePrimary` varchar(30) DEFAULT NULL,
+                    `languageHomeSecondary` varchar(30) DEFAULT NULL,
+                    `familySync` varchar(50) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `familySync` (`familySync`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
                 CREATE TABLE `__prefix__FamilyPhone` (
                     `family` int(7) UNSIGNED NOT NULL,
                     `phone` int(10) UNSIGNED NOT NULL,
                     PRIMARY KEY (`family`,`phone`),
                     KEY `family` (`family`) USING BTREE,
                     KEY `phone` (`phone`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

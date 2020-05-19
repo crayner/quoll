@@ -580,10 +580,10 @@ class RollGroup implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__RollGroup` (
                     `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `attendance` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-                    `website` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(10) NOT NULL,
+                    `nameShort` varchar(5) NOT NULL,
+                    `attendance` varchar(1) NOT NULL DEFAULT \'Y\',
+                    `website` varchar(255) NOT NULL,
                     `academic_year` int(3) UNSIGNED DEFAULT NULL,
                     `tutor1` int(10) UNSIGNED DEFAULT NULL,
                     `tutor2` int(10) UNSIGNED DEFAULT NULL,
@@ -606,7 +606,7 @@ class RollGroup implements EntityInterface
                     KEY `assistant3` (`assistant3`),
                     KEY `facility` (`facility`),
                     KEY `nextRollGroup` (`next_roll_group`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

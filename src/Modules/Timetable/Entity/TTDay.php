@@ -298,10 +298,10 @@ class TTDay implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__TTDay` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `colour` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `font_colour` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(12) NOT NULL,
+                    `nameShort` varchar(4) NOT NULL,
+                    `colour` varchar(6) NOT NULL,
+                    `font_colour` varchar(6) NOT NULL,
                     `timetable` int(8) UNSIGNED DEFAULT NULL,
                     `timetable_column` int(6) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
@@ -309,7 +309,7 @@ class TTDay implements EntityInterface
                     UNIQUE KEY `name_timetable` (`timetable`,`name`) USING BTREE,
                     KEY `timetable` (`timetable`) USING BTREE,
                     KEY `timetable_column` (`timetable_column`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

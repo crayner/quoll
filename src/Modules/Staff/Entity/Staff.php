@@ -407,22 +407,22 @@ class Staff implements EntityInterface
     {
         return "CREATE TABLE `__prefix__Staff` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `initials` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `jobTitle` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `smartWorkflowHelp` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `firstAidQualified` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+                    `type` varchar(20) NOT NULL,
+                    `initials` varchar(4) DEFAULT NULL,
+                    `jobTitle` varchar(100) DEFAULT NULL,
+                    `smartWorkflowHelp` varchar(1) NOT NULL DEFAULT 'Y',
+                    `firstAidQualified` varchar(1) NOT NULL DEFAULT 'N',
                     `firstAidExpiry` date DEFAULT NULL,
-                    `countryOfOrigin` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `qualifications` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `biography` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-                    `biographicalGrouping` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Used for group staff when creating a staff directory.',
+                    `countryOfOrigin` varchar(80) DEFAULT NULL,
+                    `qualifications` varchar(255) DEFAULT NULL,
+                    `biography` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
+                    `biographicalGrouping` varchar(100) DEFAULT NULL COMMENT 'Used for group staff when creating a staff directory.',
                     `biographicalGroupingPriority` int(3) DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `staff` (`person`) USING BTREE,
                     UNIQUE KEY `initials` (`initials`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

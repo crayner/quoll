@@ -170,14 +170,14 @@ class Hook implements EntityInterface
     {
         return 'CREATE TABLE `__pefix__Hook` (
                     `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-                    `type` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `options` longtext COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `type` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `options` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
                     `module` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`,`type`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

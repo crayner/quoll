@@ -165,12 +165,12 @@ class ModuleUpgrade implements EntityInterface
         return 'CREATE TABLE `__prefix__ModuleUpgrade` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `module` int(4) UNSIGNED DEFAULT NULL,
-                    `version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+                    `version` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
                     `executed_at` datetime NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `module_version` (`module`,`version`),
                     KEY `module` (`module`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

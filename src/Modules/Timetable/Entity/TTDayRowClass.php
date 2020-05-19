@@ -193,7 +193,7 @@ class TTDayRowClass implements EntityInterface
                     KEY `timetable_day` (`timetable_day`) USING BTREE,
                     KEY `timetable_column_row` (`timetable_column_row`) USING BTREE,
                     KEY `course_class` (`course_class`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

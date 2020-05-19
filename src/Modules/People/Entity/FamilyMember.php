@@ -38,10 +38,10 @@ class FamilyMember implements EntityInterface
     use BooleanList;
 
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -219,7 +219,25 @@ class FamilyMember implements EntityInterface
 
     public function create(): string
     {
-        return "CREATE TABLE `__prefix__FamilyMember` (id INT(10) UNSIGNED, family INT(7) UNSIGNED, person INT(10) UNSIGNED AUTO_INCREMENT, comment LONGTEXT DEFAULT NULL, member_type VARCHAR(255) NOT NULL, childDataAccess VARCHAR(1) DEFAULT NULL, contactPriority INT(2), contactCall VARCHAR(1) DEFAULT NULL, contactSMS VARCHAR(1) DEFAULT NULL, contactEmail VARCHAR(1) DEFAULT NULL, contactMail VARCHAR(1) DEFAULT NULL, INDEX person (person), INDEX family (family), UNIQUE INDEX family_member (family, person), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB AUTO_INCREMENT = 1";
+        return "CREATE TABLE `__prefix__FamilyMember` (
+                    `id` char(36) NOT NULL,
+                    `family` int(10) UNSIGNED NOT NULL,
+                    `person` int(10) UNSIGNED NOT NULL,
+                    `comment` longtext,
+                    `member_type` varchar(191) NOT NULL,
+                    `childDataAccess` varchar(1) DEFAULT NULL,
+                    `contactPriority` smallint(6) DEFAULT NULL,
+                    `contactCall` varchar(1) DEFAULT NULL,
+                    `contactSMS` varchar(1) DEFAULT NULL,
+                    `contactEmail` varchar(1) DEFAULT NULL,
+                    `contactMail` varchar(1) DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    UNIQUE KEY `family_member` (`family`,`person`),
+                    UNIQUE KEY `family_contact` (`family`,`contactPriority`),
+                    KEY `person` (`person`),
+                    KEY `family` (`family`),
+                    KEY `member_type` (`member_type`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string

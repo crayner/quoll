@@ -229,14 +229,14 @@ class NotificationListener implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__NotificationListener` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `scopeType` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `scopeType` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
                     `scopeID` int(20) UNSIGNED DEFAULT NULL,
                     `notification_event` int(6) UNSIGNED DEFAULT NULL,
                     `person` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `notificatiion_event` (`notification_event`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

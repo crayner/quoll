@@ -361,9 +361,9 @@ class AcademicYearSpecialDay implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__AcademicYearSpecialDay` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(14) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `type` varchar(14) NOT NULL,
+                    `name` varchar(20) NOT NULL,
+                    `description` varchar(255) DEFAULT NULL,
                     `date` date NOT NULL COMMENT \'(DC2Type:date_immutable)\',
                     `schoolOpen` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
                     `schoolStart` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
@@ -373,7 +373,7 @@ class AcademicYearSpecialDay implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `date` (`date`),
                     KEY `academic_year` (`academic_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     /**

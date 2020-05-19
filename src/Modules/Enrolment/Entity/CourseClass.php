@@ -407,10 +407,10 @@ class CourseClass implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__CourseClass` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `reportable` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-                    `attendance` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+                    `name` varchar(30) NOT NULL,
+                    `nameShort` varchar(8) NOT NULL,
+                    `reportable` varchar(1) NOT NULL DEFAULT \'Y\',
+                    `attendance` varchar(1) NOT NULL DEFAULT \'Y\',
                     `course` int(8) UNSIGNED DEFAULT NULL,
                     `scale` int(5) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
@@ -418,7 +418,7 @@ class CourseClass implements EntityInterface
                     UNIQUE KEY `nameShortCourse` (`nameShort`,`course`),
                     KEY `scale` (`scale`) USING BTREE,
                     KEY `course` (`course`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

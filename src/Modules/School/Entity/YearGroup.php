@@ -200,8 +200,8 @@ class YearGroup implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__YearGroup` (
                     `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(15) NOT NULL,
+                    `nameShort` varchar(4) NOT NULL,
                     `sequenceNumber` int(3) UNSIGNED NOT NULL,
                     `head_of_year` int(10) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
@@ -209,7 +209,7 @@ class YearGroup implements EntityInterface
                     UNIQUE KEY `nameShort` (`nameShort`),
                     UNIQUE KEY `sequenceNumber` (`sequenceNumber`),
                     KEY `headOfYear` (`head_of_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

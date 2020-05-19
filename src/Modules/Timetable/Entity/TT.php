@@ -263,15 +263,15 @@ class TT implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__TT` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShortDisplay` varchar(24) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Day Of The Week\',
-                    `year_group_list` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:simple_array)\',
-                    `active` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `nameShort` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `nameShortDisplay` varchar(24) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Day Of The Week\',
+                    `year_group_list` varchar(191) NOT NULL COMMENT \'(DC2Type:simple_array)\',
+                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL,
                     `academic_year` int(3) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `IDX_9431F94371FA7520` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -621,29 +621,29 @@ class Action implements EntityInterface
     {
         return "CREATE TABLE IF NOT EXISTS `__prefix__Action` (
                     `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
+                    `name` varchar(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
                     `precedence` int(2) DEFAULT NULL,
-                    `category` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `description` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `route_list` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `entryRoute` varchar(191) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `entrySidebar` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `menuShow` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `defaultPermissionAdmin` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `defaultPermissionTeacher` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `defaultPermissionStudent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `defaultPermissionParent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `defaultPermissionSupport` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `categoryPermissionStaff` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `categoryPermissionStudent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `categoryPermissionParent` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `categoryPermissionOther` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-                    `role` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `category` varchar(20) NOT NULL,
+                    `description` varchar(191) NOT NULL,
+                    `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `entryRoute` varchar(191) NOT NULL,
+                    `entrySidebar` varchar(1) NOT NULL DEFAULT 'Y',
+                    `menuShow` varchar(1) NOT NULL DEFAULT 'Y',
+                    `defaultPermissionAdmin` varchar(1) NOT NULL DEFAULT 'N',
+                    `defaultPermissionTeacher` varchar(1) NOT NULL DEFAULT 'N',
+                    `defaultPermissionStudent` varchar(1) NOT NULL DEFAULT 'N',
+                    `defaultPermissionParent` varchar(1) NOT NULL DEFAULT 'N',
+                    `defaultPermissionSupport` varchar(1) NOT NULL DEFAULT 'N',
+                    `categoryPermissionStaff` varchar(1) NOT NULL DEFAULT 'Y',
+                    `categoryPermissionStudent` varchar(1) NOT NULL DEFAULT 'Y',
+                    `categoryPermissionParent` varchar(1) NOT NULL DEFAULT 'Y',
+                    `categoryPermissionOther` varchar(1) NOT NULL DEFAULT 'Y',
+                    `role` varchar(32) DEFAULT NULL,
                     `module` int(4) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `moduleName` (`name`,`module`) USING BTREE,
                     KEY `module` (`module`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

@@ -558,23 +558,23 @@ class Facility implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Facility` (
                     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `type` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(30) NOT NULL,
+                    `type` varchar(50) NOT NULL,
                     `capacity` int(5) DEFAULT NULL,
-                    `computer` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `computer` varchar(1) NOT NULL,
                     `computerStudent` int(3) DEFAULT NULL,
-                    `projector` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `tv` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `dvd` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `hifi` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `speakers` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `iwb` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `phoneInternal` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `phoneExternal` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `comment` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+                    `projector` varchar(1) NOT NULL,
+                    `tv` varchar(1) NOT NULL,
+                    `dvd` varchar(1) NOT NULL,
+                    `hifi` varchar(1) NOT NULL,
+                    `speakers` varchar(1) NOT NULL,
+                    `iwb` varchar(1) NOT NULL,
+                    `phoneInternal` varchar(5) DEFAULT NULL,
+                    `phoneExternal` varchar(20) DEFAULT NULL,
+                    `comment` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints() : string

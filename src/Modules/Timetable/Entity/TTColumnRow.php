@@ -255,15 +255,15 @@ class TTColumnRow implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__TTColumnRow` (
                     `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `nameShort` varchar(4) COLLATE ut8mb4_unicode_ci NOT NULL,
                     `timeStart` time NOT NULL COMMENT \'(DC2Type:time_immutable)\',
                     `timeEnd` time NOT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `type` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
+                    `type` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL,
                     `timetable_column` int(6) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `timetable_column` (`timetable_column`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -347,16 +347,16 @@ class Department implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Department` (
                     `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Learning Area\',
-                    `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `subjectListing` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `blurb` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-                    `logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `type` varchar(16) NOT NULL DEFAULT \'Learning Area\',
+                    `name` varchar(40) NOT NULL,
+                    `nameShort` varchar(4) NOT NULL,
+                    `subjectListing` varchar(255) NOT NULL,
+                    `blurb` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
+                    `logo` varchar(255) NOT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `nameShort` (`nameShort`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

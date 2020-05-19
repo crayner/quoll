@@ -222,14 +222,14 @@ class Theme implements EntityInterface
     {
         return "CREATE TABLE `__prefix__Theme` (
                     `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-                    `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-                    `active` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-                    `version` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-                    `author` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-                    `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `description` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'N',
+                    `version` varchar(6) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `author` varchar(40) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `url` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

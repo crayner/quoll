@@ -247,17 +247,17 @@ class ScaleGrade implements EntityInterface
     {
         return 'CREATE TABLE `gibbonscalegrade` (
                     `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `value` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `descriptor` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `value` varchar(10) NOT NULL,
+                    `descriptor` varchar(50) NOT NULL,
                     `sequenceNumber` int(5) DEFAULT NULL,
-                    `isDefault` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+                    `isDefault` varchar(1) NOT NULL DEFAULT \'N\',
                     `scale` int(5) UNSIGNED DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `id` (`id`,`value`),
                     UNIQUE KEY `scaleValue` (`scale`,`value`) USING BTREE,
                     UNIQUE KEY `scaleSequence` (`sequenceNumber`,`scale`),
                     KEY `scale` (`scale`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -151,11 +151,11 @@ class Country implements EntityInterface
     {
         return "CREATE TABLE `gibboncountry` (
                 `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `printable_name` varchar(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                `iddCountryCode` varchar(7) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                `printable_name` varchar(80) NOT NULL,
+                `iddCountryCode` varchar(7) NOT NULL,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `printable_name` (`printable_name`) USING BTREE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**

@@ -302,15 +302,15 @@ class Scale implements EntityInterface
     {
         return 'CREATE TABLE `__prefix__Scale` (
                     `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `nameShort` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-                    `usage_info` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                    `name` varchar(40) NOT NULL,
+                    `nameShort` varchar(5) NOT NULL,
+                    `usage_info` varchar(50) NOT NULL,
                     `lowest_acceptable` int(7) UNSIGNED DEFAULT NULL,
-                    `active` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-                    `is_numeric` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+                    `active` varchar(1) NOT NULL DEFAULT \'Y\',
+                    `is_numeric` varchar(1) NOT NULL DEFAULT \'N\',
                     PRIMARY KEY (`id`),
                     KEY `lowestAcceptable` (`lowest_acceptable`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
     }
 
     public function foreignConstraints(): string
