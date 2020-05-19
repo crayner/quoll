@@ -393,7 +393,7 @@ class NotificationEvent implements EntityInterface
                     UNIQUE KEY `event` (`event`,`module`) USING BTREE,
                     KEY `module` (`module`) USING BTREE,
                     KEY `action` (`action`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -192,7 +192,7 @@ class Setting implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `scope_name` (`scope`,`name`) USING BTREE,
                     UNIQUE KEY `scope_display` (`scope`,`nameDisplay`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 
     public function foreignConstraints(): string

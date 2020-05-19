@@ -20,7 +20,6 @@ use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\System\Entity\I18n;
-use App\Modules\System\Pagination\StringReplacementPagination;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;

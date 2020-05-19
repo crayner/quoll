@@ -48,6 +48,11 @@ class PaginationFilter
     private $group;
 
     /**
+     * @var bool
+     */
+    private $defaultFilter = false;
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -163,5 +168,25 @@ class PaginationFilter
             $x['label'] = TranslationHelper::translate($x['label'] ?: $x['name']);
         $x['group'] = $x['group'] ? TranslationHelper::translate($x['group']) : null;
         return $x;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefaultFilter(): bool
+    {
+        return $this->defaultFilter;
+    }
+
+    /**
+     * DefaultFilter.
+     *
+     * @param bool $defaultFilter
+     * @return PaginationFilter
+     */
+    public function setDefaultFilter(bool $defaultFilter = true): PaginationFilter
+    {
+        $this->defaultFilter = $defaultFilter;
+        return $this;
     }
 }

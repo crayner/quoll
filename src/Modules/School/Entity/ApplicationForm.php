@@ -3569,7 +3569,7 @@ class ApplicationForm implements EntityInterface
                     KEY `IDX_A309B59CA85AE4EC` (`roll_group`),
                     KEY `IDX_A309B59C51F0BB1F` (`family`),
                     KEY `IDX_A309B59CA0F353A3` (`payment_record`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**

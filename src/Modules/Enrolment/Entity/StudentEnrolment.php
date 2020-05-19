@@ -206,7 +206,7 @@ class StudentEnrolment implements EntityInterface
                     KEY `year_group` (`year_group`) USING BTREE,
                     KEY `roll_group` (`roll_group`) USING BTREE,
                     KEY `person_academic_year` (`person`,`academic_year`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**

@@ -252,7 +252,7 @@ class AcademicYearTerm implements EntityInterface
                     UNIQUE KEY `abbr` (`academic_year`,`nameShort`),
                     UNIQUE KEY `sequence_nnumber` (`academic_year`,`sequenceNumber`) USING BTREE,
                     KEY `academic_year` (`academic_year`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 
     /**

@@ -142,8 +142,12 @@ class PaginationRow
      */
     public function addFilter(PaginationFilter $filter): PaginationRow
     {
-        if (!$this->getFilters()->contains($filter))
-            $this->filters->set($filter->getName(),$filter);
+        if (!$this->getFilters()->contains($filter)) {
+            $this->filters->set($filter->getName(), $filter);
+            if ($filter->isDefaultFilter()) {
+                $this->addDefaultFilter($filter->getName());
+            }
+        }
         return $this;
     }
 
@@ -222,10 +226,27 @@ class PaginationRow
         $this->defaultFilter = [];
         foreach($defaultFilter as $w)
         {
-            if (!$this->getFilters()->containsKey($w))
+            if (!$this->getFilters()->containsKey($w)) {
                 throw new MissingOptionsException(sprintf('The filter name "%s" has not been defined.', $w));
+            }
             $this->defaultFilter[$w] = $this->getFilters()->get($w)->toArray();
         }
+
+        return $this;
+    }
+
+    /**
+     * addDefaultFilter
+     * @param string $name
+     * @return PaginationRow
+     */
+    public function addDefaultFilter(string $name) : PaginationRow
+    {
+        $defaultFilter = $this->getDefaultFilter() ?: [];
+        if (!$this->getFilters()->containsKey($name)) {
+            throw new MissingOptionsException(sprintf('The filter name "%s" has not been defined.', $w));
+        }
+        $this->defaultFilter[$name] = $this->getFilters()->get($name)->toArray();
 
         return $this;
     }

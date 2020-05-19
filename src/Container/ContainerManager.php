@@ -15,6 +15,7 @@
 
 namespace App\Container;
 
+use App\Manager\AbstractPaginationManager;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -50,14 +51,14 @@ class ContainerManager
     private $showSubmitButton = false;
 
     /**
-     * @var string
+     * @var array
      */
-    private $addElementRoute = '';
+    private $addElementRoute;
 
     /**
-     * @var string
+     * @var array
      */
-    private $returnRoute = '';
+    private $returnRoute;
 
     /**
      * @var boolean
@@ -173,11 +174,12 @@ class ContainerManager
     private $builtContainers;
 
     /**
+     * @param bool $refresh
      * @return array|null
      */
-    public function getBuiltContainers(): ?array
+    public function getBuiltContainers(bool $refresh = false): ?array
     {
-        if (null === $this->builtContainers || [] === $this->builtContainers)
+        if (null === $this->builtContainers || [] === $this->builtContainers || $refresh)
             $this->buildContainers();
         return $this->builtContainers;
     }
@@ -212,8 +214,8 @@ class ContainerManager
             $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();
-            $container['returnRoute'] = $this->getReturnRoute();
-            $container['addElementRoute'] = $this->getAddElementRoute();
+            $container['returnRoute'] = AbstractPaginationManager::resolveRoute($this->getReturnRoute());
+            $container['addElementRoute'] = AbstractPaginationManager::resolveRoute($this->getAddElementRoute());
             $container['hideSingleFormWarning'] = $this->isHideSingleFormWarning();
             $containers[$target] = $container;
         }
@@ -268,7 +270,7 @@ class ContainerManager
         $container->addForm('single', $view);
         $panel = new Panel('single');
         $container->addPanel($panel)->setTarget($target)->setApplication($application);
-        $this->setTranslationDomain($domain)->addContainer($container)->buildContainers();
+        $this->setTranslationDomain($domain)->addContainer($container);
     }
 
     /**
@@ -279,7 +281,7 @@ class ContainerManager
     {
         $container = new Container();
         $container->setContent($content);
-        $this->setTranslationDomain($domain)->addContainer($container)->buildContainers();
+        $this->setTranslationDomain($domain)->addContainer($container);
     }
 
     /**
@@ -315,9 +317,9 @@ class ContainerManager
     }
 
     /**
-     * @return string
+     * @return array|null
      */
-    public function getAddElementRoute(): string
+    public function getAddElementRoute(): ?array
     {
         return $this->addElementRoute;
     }
@@ -328,16 +330,18 @@ class ContainerManager
      * @param string $addElementRoute
      * @return ContainerManager
      */
-    public function setAddElementRoute(string $addElementRoute): ContainerManager
+    public function setAddElementRoute($addElementRoute): ContainerManager
     {
+        if (is_string($addElementRoute))
+            $addElementRoute = ['url' => $addElementRoute];
         $this->addElementRoute = $addElementRoute;
         return $this;
     }
 
     /**
-     * @return string
+     * @return array|null
      */
-    public function getReturnRoute(): string
+    public function getReturnRoute(): ?array
     {
         return $this->returnRoute;
     }
@@ -345,11 +349,13 @@ class ContainerManager
     /**
      * ReturnRoute.
      *
-     * @param string $returnRoute
+     * @param string|array $returnRoute
      * @return ContainerManager
      */
-    public function setReturnRoute(string $returnRoute): ContainerManager
+    public function setReturnRoute($returnRoute): ContainerManager
     {
+        if (is_string($returnRoute))
+            $returnRoute = ['url' => $returnRoute];
         $this->returnRoute = $returnRoute;
         return $this;
     }

@@ -20,9 +20,9 @@ interface EntityInterface
 {
     /**
      * getId
-     * @return int|null
+     * @return string|int|null
      */
-    public function getId(): ?int;
+    public function getId();
 
     /**
      * toArray

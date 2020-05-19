@@ -12,7 +12,6 @@
  * Date: 17/04/2020
  * Time: 15:13
  */
-
 namespace App\Modules\People\Controller;
 
 use App\Container\Container;

@@ -12,6 +12,7 @@ import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
 import {openUrl, trans} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
+import { isEmpty } from '../component/isEmpty'
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -72,7 +73,6 @@ export default class PaginationApp extends Component {
             information: false,
             filteredContent: this.content,
             filter: [],
-            filterGroups: {},
             search: '',
             messages: [],
         }
@@ -124,10 +124,7 @@ export default class PaginationApp extends Component {
     setInitialFilter() {
         if (this.initialFilter.length > 0) {
             this.initialFilter.map(value => {
-                let data = {}
-                data.target = {}
-                data.target.value = value
-                this.changeFilter(data)
+                this.changeFilter(this.filters[value.value])
             })
         }
     }
@@ -398,12 +395,11 @@ export default class PaginationApp extends Component {
     }
 
     filterContent(filter, search) {
-        if (filter === [])
+        if (isEmpty(filter))
             filter = this.state.filter
-
         let content = this.content
         filter.map(filterValue => {
-            const filterDetail = this.filters[filterValue]
+            const filterDetail = this.filters[filterValue.name]
             let filtered = content.filter(value => {
                 if (typeof filterDetail.value === 'object') {
                     if (filterDetail.value.includes(value[filterDetail.contentKey]))
@@ -441,8 +437,7 @@ export default class PaginationApp extends Component {
     }
 
     changeFilter(value) {
-        let filterGroups = {...this.state.filterGroups}
-        if (value === null) {
+        if (value === null || typeof value === 'undefined') {
             if (this.defaultFilter === null) {
                 let result = this.paginateContent(this.content,this.state.offset)
                 this.setState({
@@ -452,63 +447,65 @@ export default class PaginationApp extends Component {
                     confirm: false,
                 })
                 return
-            } else if (Object.keys(filterGroups).length === 0) {
-                filterGroups = {}
-                if (this.state.filter.length > 0) {
-                    let loop = 0
-                    this.state.filter.map(name => {
-                        const filter = this.filters[name]
-                        if (loop === 0) {
-                            filterGroups[filter.group] = ''
-                            value = filter
-                        } else {
-                            filterGroups[filter.group] = filter.value
-                        }
-                        loop = loop + 1
-                    })
-                }
-
-                Object.keys(this.defaultFilter).map(key => {
-                    if (value === null) {
-                        value = this.defaultFilter[key]
-                        filterGroups[value.group] = ''
-                    } else {
-                        const x = this.defaultFilter[key]
-                        filterGroups[x.group] = x.name
-                    }
-                })
             }
-        } else if (typeof value.group === 'undefined') {
+        } else if (typeof value === 'object' && typeof value.group === 'undefined') {
             if (value.target.value === '')
                 return
-            value = this.filters[value.target.value]
+            if (typeof value.target.value === 'object' && typeof value.target.value.value !== 'undefined') {
+                value = this.filters[value.target.value.value]
+            } else if (typeof value.target.value === 'string') {
+                value = this.filters[value.target.value]
+            }
         }
-
         let filter = this.state.filter
+
         if (this.filterGroups) {
-            let was = filterGroups[value.group]
-            if (was === undefined) {
-                filterGroups[value.group] = value.name
-            } else if (was === value.name) {
-                delete filterGroups[value.group]
+            // Turn off a filter that is set.
+            let existed = false
+            let newFilter = []
+            filter.map(x => {
+                if (x.name === value.name) {
+                    existed = true
+                    return
+                }
+                if (x.group === value.group) {
+                    return
+                }
+                newFilter.push(x)
+            })
+
+            // Add a new filter.
+            if (existed === false) {
+                newFilter.push(value)
+            }
+
+            if (newFilter.length > 0 && !(newFilter[0] === null || typeof newFilter[0] == 'undefined')) {
+                filter = newFilter.filter(x => {
+                    if (x.group !== value.group) {
+                        return x
+                    }
+                    if (value.name === x.name) {
+                        return x
+                    }
+                })
             } else {
-                filterGroups[value.group] = value.name
+                filter = []
             }
 
             if (this.defaultFilter !== null) {
-                Object.keys(this.defaultFilter).map(key => {
-                    value = this.defaultFilter[key]
-                    if (typeof filterGroups[value.group] === 'undefined')
-                        filterGroups[value.group] = value.name
+                let filterGroups = {}
+                filter.map(x => {
+                    filterGroups[x.group] = x
                 })
-
+                Object.keys(this.defaultFilter).map(key => {
+                    let x = this.defaultFilter[key]
+                    if (typeof filterGroups[x.group] === 'undefined') {
+                        filter.push(x)
+                    }
+                })
             }
-
-            filter = Object.keys(filterGroups).map(q => {
-                return filterGroups[q]
-            })
         } else {
-            filter = [value.name]
+            filter = [value]
         }
         const filteredContent = this.filterContent(filter, this.state.search)
         let result = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
@@ -517,7 +514,6 @@ export default class PaginationApp extends Component {
             control: this.buildControl(this.state.offset, result),
             filter: filter,
             filteredContent: filteredContent,
-            filterGroups: filterGroups
         })
     }
 
@@ -589,7 +585,7 @@ export default class PaginationApp extends Component {
                                 <table className={'noIntBorder fullWidth relative'}>
                                     <tbody>
                                         <PaginationSearch search={this.search} messages={this.messages} clearSearch={this.clearSearch} changeSearch={this.changeSearch} searchValue={this.state.search} />
-                                        <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} filterGroups={this.state.filterGroups} defaultFilters={this.defaultFilter !== null} />
+                                        <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} defaultFilters={this.defaultFilter !== null} />
                                     </tbody>
                                 </table>
                             </td>

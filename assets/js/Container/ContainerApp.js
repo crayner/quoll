@@ -556,14 +556,12 @@ ContainerApp.propTypes = {
     content: PropTypes.string,
     actionRoute: PropTypes.string,
     selectedPanel: PropTypes.string,
-    returnRoute: PropTypes.string,
-    addElementRoute: PropTypes.string,
+    returnRoute: PropTypes.object,
+    addElementRoute: PropTypes.object,
 }
 
 ContainerApp.defaultProps = {
     panels: {},
     translations: {},
     forms: {},
-    returnRoute: '',
-    addElementRoute: '',
 }

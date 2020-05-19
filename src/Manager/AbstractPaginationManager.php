@@ -564,11 +564,14 @@ abstract class AbstractPaginationManager implements PaginationInterface
 
     /**
      * resolveRoute
-     * @param array $route
+     * @param array|null $route
      * @return array
      */
-    public static function resolveRoute(array $route)
+    public static function resolveRoute(?array $route)
     {
+        if (null === $route) {
+            return $route;
+        }
         $resolver = new OptionsResolver();
         $resolver->setRequired(
             [

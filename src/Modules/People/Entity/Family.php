@@ -452,7 +452,7 @@ class Family implements EntityInterface
                     UNIQUE KEY `familySync` (`familySync`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
                 CREATE TABLE `__prefix__FamilyPhone` (
                     `family` int(7) UNSIGNED NOT NULL,
                     `phone` int(10) UNSIGNED NOT NULL,

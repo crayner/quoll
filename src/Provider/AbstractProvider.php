@@ -23,6 +23,7 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -491,6 +492,7 @@ abstract class AbstractProvider implements EntityProviderInterface
      * persistFlush
      * @param EntityInterface $entity
      * @param array $data
+     * @param bool $flush
      * @return array
      */
     public function persistFlush(EntityInterface $entity, array $data = [], bool $flush = true): array
@@ -506,8 +508,9 @@ abstract class AbstractProvider implements EntityProviderInterface
         } catch (UniqueConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
-        } catch (\PDOException | PDOException $e) {
+        } catch (\PDOException | PDOException | ORMException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
         } catch (\Exception $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];

@@ -440,3 +440,48 @@ Pending Approval: Pending Approval
 'The phone number {value} is not valid for {country}': 'The phone number {value} is not valid for {country}'
 'The postcode {value} is not valid.': 'The postcode {value} is not valid.'
 This post code applies to the entire locality. This can be changed in country settings.: This post code applies to the entire locality. This can be changed in country settings.
+Active: Active
+Add Family: Add Family
+Applies to Categories: Applies to Categories
+Custom Field name: Custom Field name
+Description: Description
+Edit Custom Field: Edit Custom Field
+Field Type: Field Type
+Include in Application Form?: Include in Application Form?
+Include in Data Updater?: Include in Data Updater?
+Include in Public Registration Form?: Include in Public Registration Form?
+Is this field compulsory?: Is this field compulsory?
+Manage Custom Fields: Manage Custom Fields
+Manage Localities: Manage Localities
+Options needs some work.: Options needs some work.
+Role Categories: Role Categories
+Territory: Territory
+The address is not unique: The address is not unique
+customfield:
+    fieldtype:
+        boolean: Yes/No
+        choice: Choice List
+        date: Date
+        date_time: Date Time
+        integer: Number (Integer)
+        short_string: Short String (to 191 characters)
+        text: Text
+        time: Time
+    categories:
+        other: Other
+        parent: Parent
+        staff: Staff
+        student: Student
+A list of choices for your field.: A list of choices for your field.
+'Active: No': 'Active: No'
+'Active: Yes': 'Active: Yes'
+Add Custom Field: Add Custom Field
+Category: Category
+'Category: {name}': 'Category: {name}'
+Enter the number of rows to display for field Data: Enter the number of rows to display for field Data
+'Maximum characters in the short string (max: 191)': 'Maximum characters in the short string (max: 191)'
+'Options: Choices': 'Options: Choices'
+'Options: Length': 'Options: Length'
+'Options: Rows': 'Options: Rows'
+'The option {value} is not valid for {type}.': 'The option {value} is not valid for {type}.'
+'You will need ensure that these options are appropriate for your field.': 'You will need ensure that these options are appropriate for your field.'

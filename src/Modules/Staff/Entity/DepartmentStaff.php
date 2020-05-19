@@ -181,7 +181,7 @@ class DepartmentStaff implements EntityInterface
                     UNIQUE KEY `department_person` (`department`,`person`) USING BTREE,
                     KEY `department` (`department`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
     }
 
     public function foreignConstraints(): string

@@ -643,7 +643,7 @@ class Action implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `moduleName` (`name`,`module`) USING BTREE,
                     KEY `module` (`module`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**

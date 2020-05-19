@@ -383,7 +383,7 @@ class AcademicYear implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`) USING BTREE,
                     UNIQUE KEY `sequence` (`sequenceNumber`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**

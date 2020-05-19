@@ -8,7 +8,6 @@ export default function PaginationFilter(props) {
         changeFilter,
         filters,
         filter,
-        filterGroups,
         messages,
         defaultFilters
     } = props
@@ -38,11 +37,9 @@ export default function PaginationFilter(props) {
     filterOptions.unshift(<option value={''} key={0}>{messages['Filter']}</option>)
 
     let activeFilters = []
-    if (filterGroups !== {}) {
-        activeFilters = Object.keys(filterGroups).map(q => {
-            const name = filterGroups[q]
-            const value = filters[name]
-            return (<span onClick={() => changeFilter(value)} className={'primary button-like pointer-hover ml-1'} key={q}>{name}&nbsp;<span className={'far fa-times-circle fa-fw'}></span></span>)
+    if (filter.length > 0) {
+        activeFilters = filter.map(value => {
+            return (<span onClick={() => changeFilter(value)} className={'primary button-like pointer-hover ml-1'} key={value.name}>{value.label}&nbsp;<span className={'far fa-times-circle fa-fw'}></span></span>)
         })
     }
 
@@ -69,7 +66,6 @@ PaginationFilter.propTypes = {
     ]).isRequired,
     changeFilter: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
-    filterGroups: PropTypes.object.isRequired,
     defaultFilters: PropTypes.bool.isRequired,
 }
 

@@ -229,7 +229,7 @@ class Theme implements EntityInterface
                     `author` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
                     `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**

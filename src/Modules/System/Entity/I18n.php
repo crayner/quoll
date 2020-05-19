@@ -454,7 +454,7 @@ class I18n implements EntityInterface
                 `dateFormatPHP` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
                 `rtl` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
     }
 
     /**
