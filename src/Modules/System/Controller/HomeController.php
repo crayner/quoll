@@ -24,6 +24,8 @@ use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Intl\Locale;
@@ -44,6 +46,10 @@ class HomeController extends AbstractPageController
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('personal_page');
+
+        if (!$this->getParameter('installed')) {
+            return $this->redirectToRoute('installation_check');
+        }
 
         $pageManager = $this->getPageManager();
         $request = $pageManager->getRequest();
@@ -67,11 +73,16 @@ class HomeController extends AbstractPageController
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
+        try {
+            $hooks = ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'], ['name' => 'ASC']);
+        } catch (\PDOException | PDOException | DriverException $e) {
+            $hooks = [];
+        }
         return $pageManager->render(
             [
                 'content' => trim($this->renderView('home/welcome.html.twig',
                         [
-                            'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
+                            'hooks' => $hooks,
                         ]
                     )
                 )

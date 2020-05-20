@@ -22,6 +22,7 @@ use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\TranslationHelper;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -39,6 +40,11 @@ class PageListener implements EventSubscriberInterface
     private $pageManager;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
      * PageListener constructor.
      * @param PageManager $pageManager
      * @param ProviderFactory $factory Pre load to Container
@@ -46,6 +52,7 @@ class PageListener implements EventSubscriberInterface
      * @param CacheHelper $cache
      * @param UserHelper $userHelper
      * @param SecurityHelper $securityHelper
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         PageManager $pageManager,
@@ -53,9 +60,11 @@ class PageListener implements EventSubscriberInterface
         TranslationHelper $helper,
         CacheHelper $cache,
         UserHelper $userHelper,
-        SecurityHelper $securityHelper
+        SecurityHelper $securityHelper,
+        ParameterBagInterface $parameterBag
     ) {
-        $this->pageManager = $pageManager;
+        $this->setPageManager($pageManager);
+        $this->setParameterBag($parameterBag);
     }
 
     /**
@@ -87,7 +96,7 @@ class PageListener implements EventSubscriberInterface
             return;
         }
 
-        $this->pageManager->configurePage();
+        $this->getPageManager()->configurePage();
 
         if (preg_match("#(api)#", $route)) {
             return;
@@ -97,12 +106,52 @@ class PageListener implements EventSubscriberInterface
             return;
         }
         if (preg_match("#(popup)#", $route)) {
-            $this->pageManager->setPopup();
+            $this->getPageManager()->setPopup();
         }
 
 
         if ($request->getContentType() !== 'json') {
-            $event->setResponse($this->pageManager->getBaseResponse());
+            $event->setResponse($this->getPageManager()->getBaseResponse());
         }
+    }
+
+    /**
+     * @return PageManager
+     */
+    protected function getPageManager(): PageManager
+    {
+        return $this->pageManager;
+    }
+
+    /**
+     * PageManager.
+     *
+     * @param PageManager $pageManager
+     * @return PageListener
+     */
+    protected function setPageManager(PageManager $pageManager): PageListener
+    {
+        $this->pageManager = $pageManager;
+        return $this;
+    }
+
+    /**
+     * @return ParameterBagInterface
+     */
+    protected function getParameterBag(): ParameterBagInterface
+    {
+        return $this->parameterBag;
+    }
+
+    /**
+     * ParameterBag.
+     *
+     * @param ParameterBagInterface $parameterBag
+     * @return PageListener
+     */
+    protected function setParameterBag(ParameterBagInterface $parameterBag): PageListener
+    {
+        $this->parameterBag = $parameterBag;
+        return $this;
     }
 }

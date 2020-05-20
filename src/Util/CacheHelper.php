@@ -40,9 +40,9 @@ class CacheHelper
     }
 
     /**
-     * @return SessionInterface
+     * @return SessionInterface|null
      */
-    public static function getSession(): SessionInterface
+    public static function getSession(): ?SessionInterface
     {
         return self::$session;
     }
@@ -122,9 +122,13 @@ class CacheHelper
      */
     public static function isCaching(): bool
     {
-        return self::$caching;
+        return self::$caching && self::getSession() !== null;
     }
 
+    /**
+     * clearCacheValue
+     * @param string $name
+     */
     public static function clearCacheValue(string $name)
     {
         self::getSession()->clear($name);

@@ -30,6 +30,7 @@ use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Util\LocaleHelper;
 use App\Util\TranslationHelper;
@@ -287,11 +288,16 @@ class PageManager
     {
         $this->addTranslation('Loading');
         $this->addTranslation('Close');
-        $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getLocale(), $this->request);
+        try {
+            $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getLocale(), $this->request);
+        } catch (\PDOException | PDOException | DriverException $e) {
+            $locale = new I18n();
+            $locale->setCode('en_GB')->setRtl('N');
+        }
         return [
             'pageHeader' => $this->getPageHeader(),
             'popup' => $this->isPopup(),
-            'locale' => $this->getLocale(),
+            'locale' => $locale->getCode(),
             'rtl' => $locale->isRtl(),
             'bodyImage' => ImageHelper::getBackgroundImage(),
             'minorLinks' => $this->minorLinks->getContent(),

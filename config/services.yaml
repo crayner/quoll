@@ -87,3 +87,7 @@ services:
     App\Provider\ProviderFactory:
         class: App\Provider\ProviderFactory
 
+    App\Modules\System\Manager\InstallationManager:
+        calls:
+            - ['setLogger', ['@monolog.logger.installation']]
+

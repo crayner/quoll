@@ -21,6 +21,7 @@ use App\Util\CacheHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
@@ -132,7 +133,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
     {
         if (null === $this->stack->getCurrentRequest())
             return new ArrayCollection();
-        if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0)
+        if (strpos($this->stack->getCurrentRequest()->get('_route'), '$this->getRequest()') === 0)
             return new ArrayCollection();
 
         if ($this->strings !== null && ! $refresh)
@@ -145,7 +146,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
         try {
             $this->strings = new ArrayCollection($provider->getRepository()->findBy([], ['priority' => 'DESC', 'original' => 'ASC']));
-        } catch (PDOException | TableNotFoundException $e) {
+        } catch (\PDOException | PDOException | TableNotFoundException | DriverException $e) {
             $this->strings = new ArrayCollection();
         }
 

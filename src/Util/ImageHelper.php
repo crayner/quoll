@@ -218,7 +218,7 @@ class ImageHelper
      */
     public static function getBackgroundImage(string $default = '/build/static/backgroundPage.jpg'): string
     {
-        if (self::$stack === null || strpos(self::$stack->getCurrentRequest()->get('_route'), 'install__') === 0 )
+        if (self::$stack === null || strpos(self::$stack->getCurrentRequest()->get('_route'), '$this->getRequest()') === 0 )
             return self::getAbsoluteImageURL('File', $default);
 
         $session = self::$stack->getCurrentRequest()->getSession();

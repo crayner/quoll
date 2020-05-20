@@ -107,7 +107,7 @@ class I18n implements EntityInterface
      * @var array
      */
     private static $languages = array(
-        'nl_NL' => 'Dutch - Nederland',
+        'nl_NL' => 'Dutch - Netherlands',
         'en_GB' => 'English - United Kingdom',
         'en_US' => 'English - United States',
         'es_ES' => 'Español',

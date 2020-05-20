@@ -100,6 +100,9 @@ class Kernel extends BaseKernel
         $container->setParameter('google_api_key', '');
         $container->setParameter('google_client_id', '');
         $container->setParameter('google_client_secret', '');
+        $container->setParameter('caching', false);
+        $container->setParameter('preferred_languages', []);
+        $container->setParameter('security.hierarchy.roles', ['ROLE_SYSTEM_ADMIN' => null]);
     }
 
 }

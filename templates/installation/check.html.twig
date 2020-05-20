@@ -1,0 +1,30 @@
+{% trans_default_domain 'messages' %}
+<h2>{{ 'Installation - Step {step}'|trans({'{step}': '1'}) }}</h2>
+<div class="{{ message.class }}">{{ message.text|trans() }}</div>
+<table class="smallIntBorder w-full relative" cellspacing="0">
+    <tbody>
+        <tr class="break">
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="3">
+                <h3>{{ 'System Requirements'|trans }}</h3>
+            </td>
+        </tr>
+    {% for name,details in systemDisplay['System Requirements'] %}
+       <tr>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <label for="{name}" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'{name}': name}) }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
+                {% endif %}
+            </td>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                <div class="flex-1 relative">{{ details.detail|trans }}</div>
+            </td>
+            <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                {% if details.result %}
+                    <span class="fas fa-check fa-2x fa-fw text-green-500 bg-transparent" />
+                {% else %}
+                    <span class="fas fa-times fa-2x fa-fw text-red-500 bg-transparent" />
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

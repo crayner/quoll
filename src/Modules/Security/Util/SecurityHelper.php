@@ -22,6 +22,7 @@ use App\Modules\System\Provider\ActionProvider ;
 use App\Modules\System\Provider\ModuleProvider ;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -210,8 +211,12 @@ class SecurityHelper
     public static function getActionFromRoute(string $route): ?Action
     {
         if (!key_exists($route, self::$routeActions)) {
-            self::$action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);
-            self::$routeActions[$route] = self::$action;
+            try {
+                self::$action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);
+                self::$routeActions[$route] = self::$action;
+            } catch (\PDOException | PDOException | DriverException $e) {
+                return null;
+            }
         } else {
             self::$action = self::$routeActions[$route];
         }
