@@ -437,12 +437,12 @@ class Family implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Family` (
+        return "CREATE TABLE `__prefix__Family` (
                     `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `name` varchar(100) NOT NULL,
-                    `formal_name` varchar(100) NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
-                    `physical_address` int(10) UNSIGNED DEFAULT NULL,
-                    `postal_address` int(10) UNSIGNED DEFAULT NULL,
+                    `formal_name` varchar(100) NOT NULL COMMENT 'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)',
+                    `physical_address` CHAR(36) DEFAULT NULL,
+                    `postal_address` char(36) DEFAULT NULL,
                     `status` varchar(12) NOT NULL,
                     `languageHomePrimary` varchar(30) DEFAULT NULL,
                     `languageHomeSecondary` varchar(30) DEFAULT NULL,
@@ -455,11 +455,11 @@ class Family implements EntityInterface
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
                 CREATE TABLE `__prefix__FamilyPhone` (
                     `family` int(7) UNSIGNED NOT NULL,
-                    `phone` int(10) UNSIGNED NOT NULL,
+                    `phone` char(36) NOT NULL,
                     PRIMARY KEY (`family`,`phone`),
                     KEY `family` (`family`) USING BTREE,
                     KEY `phone` (`phone`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
