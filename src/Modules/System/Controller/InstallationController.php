@@ -20,10 +20,15 @@ use App\Controller\AbstractPageController;
 use App\Manager\Entity\Language;
 use App\Manager\PageManager;
 use App\Modules\System\Entity\I18n;
+use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Modules\System\Form\LanguageType;
+use App\Modules\System\Form\MySQLType;
 use App\Modules\System\Manager\InstallationManager;
+use App\Util\ErrorMessageHelper;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Intl\Languages;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -49,10 +54,6 @@ class InstallationController extends AbstractPageController
     {
         $i18n = new Language();
 
-        foreach(I18n::getLanguages() as $name => $code) {
-            dump($code, Languages::getName($code,$code), Languages::getName($code,'en_AU'), $name);
-        }
-
         $form = $this->createForm(LanguageType::class, $i18n, ['action' => $this->generateUrl('installation_check', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
 
         if ($this->getRequest()->getContent() !== '') {
@@ -74,7 +75,7 @@ class InstallationController extends AbstractPageController
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('installation_mysql', [], UrlGeneratorInterface::ABSOLUTE_URL);
                 $fs = new Filesystem();
-                $fs->remove(__DIR__. '/../../var/cache/*');
+                $fs->remove(__DIR__. '/../../../../var/cache/*');
                 return new JsonResponse($data);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
@@ -92,6 +93,74 @@ class InstallationController extends AbstractPageController
                 'containers' => $containerManager->getBuiltContainers(),
             ]
         );
+    }
+
+    /**
+     * installationMySQLSettings
+     * @param PageManager $pageManager
+     * @param InstallationManager $manager
+     * @param ContainerManager $containerManager
+     * @param string $proceed
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @Route("/installation/mysql/{proceed}", name="installation_mysql")
+     */
+    public function installationMySQLSettings(PageManager $pageManager, InstallationManager $manager, ContainerManager $containerManager, string $proceed = '0')
+    {
+        $mysql = new MySQLSettings();
+        $manager->readCurrentMySQLSettings($mysql);
+        $data = null;
+
+        $form = $this->createForm(MySQLType::class, $mysql, ['action' => $this->generateUrl('installation_mysql', ['proceed' => $proceed], UrlGeneratorInterface::ABSOLUTE_URL), 'proceed' => $proceed]);
+
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
+            $form->submit($content);
+
+            if ($form->isValid()) {
+                $manager->setInstallationStatus('build');
+                $data = $manager->setMySQLSettings($form);
+                $data['status'] = 'redirect';
+                $data['redirect'] = $this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL);
+                if ($proceed === 'proceed' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
+                    $data['redirect'] = $this->generateUrl('installation_build', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $data['status'] = 'newPage';
+                }
+            } else {
+                $containerManager->singlePanel($form->createView());
+                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data['form'] = $containerManager->getFormFromContainer();
+            }
+            return new JsonResponse($data);
+        }
+
+        $containerManager->singlePanel($form->createView());
+
+        return $pageManager->render(
+            [
+                'content' => $this->renderView('installation/mysql_settings.html.twig',
+                    [
+                        'message' => $data ? $data['errors'][0] : null,
+                    ]
+                ),
+                'containers' => $containerManager->getBuiltContainers(),
+            ]
+        );
+    }
+
+    /**
+     * installationBuild
+     * @param InstallationManager $manager
+     * @param KernelInterface $kernel
+     * @param EntityManagerInterface $em
+     * @return Response
+     * @Route("/installation/build/", name="installation_build")
+     */
+    public function installationBuild(InstallationManager $manager, KernelInterface $kernel, EntityManagerInterface $em)
+    {
+        $manager->getLogger()->notice(TranslationHelper::translate('The build of the database has commenced.'));
+        return $manager->buildDatabase($kernel, $this->getRequest());
     }
 
 }

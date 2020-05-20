@@ -48,4 +48,10 @@ interface EntityInterface
      * @return string
      */
     public function coreData(): string;
+
+    /**
+     * getVersion
+     * @return string
+     */
+    public function getVersion(): string;
 }

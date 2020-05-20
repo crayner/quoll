@@ -192,3 +192,4 @@ Module: Module
 Name: Name
 Notification Events: Notification Events
 'The settings used here are cached and changes will not be reflected in the display configuration immediately.': 'The settings used here are cached and changes will not be reflected in the display configuration immediately.'
+database_build_warning: 'Once the correct settings for your database are verified, the database will be built when you click the "Proceed" button below. This is a process that can take minutes to complete.  Your patience is appreciated.'

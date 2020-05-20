@@ -14,10 +14,15 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Util\TranslationHelper;
+use App\Util\TranslationsHelper;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
@@ -63,12 +68,12 @@ class InstallationManager
      */
     public function check(array $systemRequirements): string
     {
-        $configFile = $this->getQuollParameterPath(false);
+        $configFile = $this->getParameterPath(false);
         TranslationHelper::setDomain('System');
-        if (false === realpath($this->getQuollParameterPath(false)) && false !== realpath($this->getQuollParameterPath(false).'.dist'))
+        if (false === realpath($this->getParameterPath(false)) && false !== realpath($this->getParameterPath(false).'.dist'))
         {
             $this->getLogger()->debug(TranslationHelper::translate('The parameter file needs to be created'));
-            if (false === copy($this->getQuollParameterPath(false).'.dist', $this->getQuollParameterPath(false))) {
+            if (false === copy($this->getParameterPath(false).'.dist', $this->getParameterPath(false))) {
                 $this->getLogger()->error(TranslationHelper::translate('Not able to copy the parameter file.'));
                 return $this->twig->render($this->twig->render('legacy/error.html.twig',
                     [
@@ -78,10 +83,10 @@ class InstallationManager
                     ]
                 ));
             } else {
-                $config = $this->readQuollYaml();
+                $config = $this->readParameterFile();
                 $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
                 $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
-                $this->writeQuollYaml($config);
+                $this->writeParameterFile($config);
                 $this->getLogger()->notice(TranslationHelper::translate('The parameter file has been created.'));
             }
         }
@@ -129,13 +134,13 @@ class InstallationManager
         $message['class'] = 'success';
         $message['text'] = 'The directory containing the configuration files is writable, so the installation may proceed.';
 
-        if ($this->getQuollParameterPath() !== false && !is_writable($this->getQuollParameterPath())) {
+        if ($this->getParameterPath() !== false && !is_writable($this->getParameterPath())) {
             $message['class'] = 'error';
             $message['text'] = 'The file quoll.yaml is not writable, so the installer cannot proceed.';
             $this->getLogger()->error(TranslationHelper::translate($message['text'] ));
         } else { //No config, so continue installer
-            dump($this->getQuollParameterPath(),dirname($this->getQuollParameterPath()));
-            if (!is_writable(dirname($this->getQuollParameterPath()))) { // Ensure that config directory is writable
+            dump($this->getParameterPath(),dirname($this->getParameterPath()));
+            if (!is_writable(dirname($this->getParameterPath()))) { // Ensure that config directory is writable
                 $message['class'] = 'error';
                 $message['text'] = 'The directory containing the configuration files is not currently writable, so the installer cannot proceed.';
                 $this->getLogger()->error(TranslationHelper::translate($message['text'] ));
@@ -184,9 +189,11 @@ class InstallationManager
     }
 
     /**
-     * getQuollParameterPath
+     * getParameterPath
+     * @param bool $test
+     * @return false|string
      */
-    protected function getQuollParameterPath(bool $test = true)
+    protected function getParameterPath(bool $test = true)
     {
         if ($test)
             return realpath(__DIR__ . '/../../../../config/packages/quoll.yaml');
@@ -194,23 +201,135 @@ class InstallationManager
     }
 
     /**
-     * readQuollYaml
+     * readParameterFile
      * @return array
      */
-    private function readQuollYaml(): array
+    private function readParameterFile(): array
     {
-        if ($this->getQuollParameterPath())
-            return Yaml::parse(file_get_contents($this->getQuollParameterPath()));
+        if ($this->getParameterPath())
+            return Yaml::parse(file_get_contents($this->getParameterPath()));
         return [];
     }
 
     /**
-     * writeQuollYaml
+     * writeParameterFile
      * @param array $config
      */
-    private function writeQuollYaml(array $config)
+    private function writeParameterFile(array $config)
     {
-        if ($this->getQuollParameterPath())
-            file_put_contents($this->getQuollParameterPath(), Yaml::dump($config, 8));
+        if ($this->getParameterPath())
+            file_put_contents($this->getParameterPath(), Yaml::dump($config, 8));
     }
+
+    /**
+     * getLocale
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        $config = $this->readParameterFile();
+        return $config['parameters']['locale'] ?: 'en_GB';
+    }
+
+    /**
+     * setLocale
+     * @param string $locale
+     */
+    public function setLocale(string $locale)
+    {
+        $config = $this->readParameterFile();
+        $config['parameters']['locale'] = $locale;
+        $this->getLogger()->notice(TranslationHelper::translate('The locale was set to {locale}', ['{locale}' => $locale]), ['locale' => $locale]);
+        $this->writeParameterFile($config);
+    }
+
+    /**
+     * setInstallationStatus
+     * @param string $status
+     */
+    public function setInstallationStatus(string $status)
+    {
+        $config = $this->readParameterFile();
+        $config['parameters']['installation']['status'] = $status;
+        if ($status === 'complete') {
+            $config['parameters']['installed'] = true;
+            unset($config['parameters']['installation']);
+        }
+        $this->writeParameterFile($config);
+        $this->getLogger()->notice(TranslationHelper::translate('The installation status was set to {status}.', ['{status}' => $status], 'messages'), ['status' => $status]);
+    }
+
+    /**
+     * readCurrentMySQLSettings
+     * @param MySQLSettings $setting
+     */
+    public function readCurrentMySQLSettings(MySQLSettings $setting): void
+    {
+        $config = $this->readParameterFile();
+
+        $setting->setHost($config['parameters']['databaseServer'])
+            ->setDbname($config['parameters']['databaseName'])
+            ->setPort($config['parameters']['databasePort'])
+            ->setUser($config['parameters']['databaseUsername'])
+            ->setPassword($config['parameters']['databasePassword'])
+            ->setPrefix($config['parameters']['databasePrefix']);
+        if (key_exists('demo',$config['parameters']['installation']))
+            $setting->setDemo($config['parameters']['installation']['demo'] ? 'Y' : 'N');
+
+    }
+
+    /**
+     * setMySQLSettings
+     * @param FormInterface $form
+     * @return array
+     */
+    public function setMySQLSettings(FormInterface $form): array
+    {
+        $setting = $form->getData();
+        $config = $this->readParameterFile();
+
+        $config['parameters']['databaseServer']         = $setting->getHost();
+        $config['parameters']['databaseName']           = $setting->getDbname();
+        $config['parameters']['databasePort']           = $setting->getPort();
+        $config['parameters']['databaseUsername']       = $setting->getUser();
+        $config['parameters']['databasePassword']       = $setting->getPassword();
+        $config['parameters']['databasePrefix']         = $setting->getPrefix();
+        $config['parameters']['installation']['demo']   = $setting->isDemo(); ;
+
+        $this->writeParameterFile($config);
+
+
+        $this->getLogger()->notice('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.');
+
+        return [
+            'status' => 'success',
+            'errors' => [
+                [
+                    'class' => 'success',
+                    'message' => TranslationHelper::translate('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.')
+                ]
+            ]
+        ];
+    }
+    /**
+     * buildDatabase
+     * @param KernelInterface $kernel
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function buildDatabase(KernelInterface $kernel, Request $request): Response
+    {
+        $this->manager->setLogger($this->getLogger());
+        $this->manager->installation($kernel);
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $this->getLogger()->notice(TranslationsHelper::translate('Module Installation commenced.'));
+
+        $this->setInstallationStatus('system');
+        $this->getLogger()->notice(TranslationsHelper::translate('The database build was completed.'));
+
+        return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
+    }
+
 }
