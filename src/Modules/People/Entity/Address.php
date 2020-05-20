@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Address
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\AddressRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Address",
+ * @ORM\Table(name="Address",
  *     indexes={@ORM\Index("locality",columns={"locality"})},
  *     uniqueConstraints={@ORM\UniqueConstraint("address_in_locality",columns={"street_name","property_name","flat_unit_details","street_number","locality","post_code"})})
  * @UniqueEntity(fields={"streetName","propertyName","flatUnitDetails","streetNumber","locality","postCode"},message="This address is a load of not unique.")
@@ -35,10 +35,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Address implements EntityInterface
 {
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -87,9 +87,9 @@ class Address implements EntityInterface
     private $locality;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -97,10 +97,10 @@ class Address implements EntityInterface
     /**
      * Id.
      *
-     * @param int|null $id
+     * @param string|null $id
      * @return Address
      */
-    public function setId(?int $id): Address
+    public function setId(?string $id): Address
     {
         $this->id = $id;
         return $this;
@@ -263,7 +263,7 @@ class Address implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Address` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `id` CHAR(36) NOT NULL,
                     `streetName` varchar(50) DEFAULT NULL,
                     `propertyName` varchar(50) DEFAULT NULL,
                     `locality` int(6) UNSIGNED DEFAULT NULL,

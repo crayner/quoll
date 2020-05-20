@@ -44,7 +44,7 @@
 
         <tr>
             <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'MySQL Collation'|trans }} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ 'Database collation should be set to {collation}'|trans({"{collation}": 'utf8_general_ci'}) }}</span></label>
+                <label class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ 'MySQL Collation'|trans }} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ 'Database collation should be set to {collation}'|trans({"{collation}": 'utf8mb4_unicode_ci'}) }}</span></label>
             </td>
             <td class="px-2 border-b-0 sm:border-b border-t-0">
                 <div class="flex-1 relative">
@@ -52,7 +52,7 @@
                 </div>
             </td>
             <td class="px-2 border-b-0 sm:border-b border-t-0">
-                {% if manager.collation is same as('utf8_general_ci') %}
+                {% if manager.collation is same as('utf8mb4_unicode_ci') %}
                     <span class="fas fa-check text-green-700 fa-fw fa-2x"></span>
                 {% else %}
                     <span class="fas fa-times text-red-700 fa-fw fa-2x"></span>

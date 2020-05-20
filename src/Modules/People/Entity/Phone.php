@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Phone
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PhoneRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Phone",
+ * @ORM\Table(name="Phone",
  *     uniqueConstraints={@ORM\UniqueConstraint("number_country",columns={"phone_number","country"})})
  * @UniqueEntity(fields={"phoneNumber","country"})
  * @ORM\HasLifecycleCallbacks()
@@ -33,10 +33,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Phone implements EntityInterface
 {
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -62,9 +62,9 @@ class Phone implements EntityInterface
     private $country;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -72,10 +72,10 @@ class Phone implements EntityInterface
     /**
      * Id.
      *
-     * @param int|null $id
+     * @param string|null $id
      * @return Phone
      */
-    public function setId(?int $id): Phone
+    public function setId(?string $id): Phone
     {
         $this->id = $id;
         return $this;
@@ -194,7 +194,7 @@ class Phone implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Phone` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `id` char(36) NOT NULL,
                     `type` varchar(16) DEFAULT NULL,
                     `phone_number` varchar(20) DEFAULT NULL,
                     `country` varchar(3) DEFAULT NULL,

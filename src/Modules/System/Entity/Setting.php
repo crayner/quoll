@@ -18,33 +18,35 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Setting
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\SettingRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Setting",
+ * @ORM\Table(name="Setting",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display", columns={"scope","nameDisplay"}),
  *     @ORM\UniqueConstraint(name="scope_name", columns={"scope","name"})})
  */
 class Setting implements EntityInterface
 {
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(5) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Setting
      */
-    public function setId(?int $id): Setting
+    public function setId(?string $id): Setting
     {
         $this->id = $id;
         return $this;
@@ -124,7 +126,7 @@ class Setting implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
     private $description;
 
@@ -148,7 +150,7 @@ class Setting implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      */
     private $value;
 
@@ -182,17 +184,17 @@ class Setting implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Setting` (
-                    `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+        return "CREATE TABLE `__prefix__Setting` (
+                    `id` char(36) NOT NULL,
                     `scope` varchar(50) NOT NULL,
                     `name` varchar(50) NOT NULL,
                     `nameDisplay` varchar(60) NOT NULL,
-                    `description` varchar(255) NOT NULL,
-                    `value` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
+                    `description` varchar(191) DEFAULT NULL,
+                    `value` longtext DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `scope_name` (`scope`,`name`) USING BTREE,
                     UNIQUE KEY `scope_display` (`scope`,`nameDisplay`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
@@ -202,29 +204,30 @@ class Setting implements EntityInterface
 
     public function coreData(): string
     {
-        return "INSERT INTO `__prefix__Setting` (`scope`, `name`, `nameDisplay`, `description`, `value`) VALUES
+        return <<<JJJ
+INSERT INTO `__prefix__Setting` (`scope`, `name`, `nameDisplay`, `description`, `value`) VALUES
 ('System', 'absoluteURL', 'Base URL', 'The address at which the whole system resides.', null),
-('System', 'organisationName', 'Organisation Name', '', null),
-('System', 'organisationNameShort', 'Organisation Initials', '', null),
+('System', 'organisationName', 'Organisation Name', null, null),
+('System', 'organisationNameShort', 'Organisation Initials', null, null),
 ('System', 'pagination', 'Pagination Count', 'Must be numeric. Number of records shown per page.', '50'),
-('System', 'systemName', 'System Name', '', 'Quoll'),
-('System', 'indexText', 'Index Page Text', 'Text displayed in system\'s welcome page.', 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'),
+('System', 'systemName', 'System Name', null, 'Quoll'),
+('System', 'indexText', 'Index Page Text', 'Text displayed in system's welcome page.', 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'),
 ('System', 'absolutePath', 'Base Path', 'The local FS path to the system', null),
-('System', 'analytics', 'Analytics', 'Javascript code to integrate statistics, such as Google Analytics', ''),
-('System', 'emailLink', 'Link To Email', 'The link that points to the school/\'s email system', ''),
-('System', 'webLink', 'Link To Web', 'The link that points to the school/\'s website', NULL),
+('System', 'analytics', 'Analytics', 'Javascript code to integrate statistics, such as Google Analytics', null),
+('System', 'emailLink', 'Link To Email', 'The link that points to the school/\'s email system', null),
+('System', 'webLink', 'Link To Web', 'The link that points to the school's website', NULL),
 ('System', 'defaultAssessmentScale', 'Default Assessment Scale', 'This is the scale used as a default where assessment scales need to be selected.', null),
-('System', 'organisationLogo', 'Logo', 'Relative path to site logo (400 x 100px)', '\\themes\\Default\\img\\logo.png'),
-('System', 'calendarFeed', 'School Google Calendar ID', 'Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.', 'craig@craigrayner.com'),
+('System', 'organisationLogo', 'Logo', 'Relative path to site logo (400 x 100px)', '\\build\\static\\logo.png'),
+('System', 'calendarFeed', 'School Google Calendar ID', 'Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.', null),
 ('Activities', 'access', 'Access', 'System-wide access control', 'Register'),
 ('Activities', 'payment', 'Payment', 'Payment system', 'Per Activity'),
 ('Activities', 'enrolmentType', 'Enrolment Type', 'Enrolment process type', 'Competitive'),
-('Activities', 'backupChoice', 'Backup Choice', 'Allow students to choose a backup, in case enroled activity is full.', 'Y'),
-('Activities', 'activityTypes', 'Activity Types', 'Comma-seperated list of the different activity types available in school. Leave blank to disable this feature.', 'Creativity,Action,Service'),
-('Application Form', 'introduction', 'Introduction', 'Information to display before the form', ''),
-('Application Form', 'postscript', 'Postscript', 'Information to display at the end of the form', ''),
-('Application Form', 'scholarships', 'Scholarships', 'Information to display before the scholarship options', ''),
-('Application Form', 'agreement', 'Agreement', 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything', ''),
+('Activities', 'backupChoice', 'Backup Choice', 'Allow students to choose a backup, in case enrolled activity is full.', 'Y'),
+('Activities', 'activityTypes', 'Activity Types', 'Comma-separated list of the different activity types available in school. Leave blank to disable this feature.', 'Creativity,Action,Service'),
+('Application Form', 'introduction', 'Introduction', 'Information to display before the form', null),
+('Application Form', 'postscript', 'Postscript', 'Information to display at the end of the form', null),
+('Application Form', 'scholarships', 'Scholarships', 'Information to display before the scholarship options', null),
+('Application Form', 'agreement', 'Agreement', 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything', null),
 ('Application Form', 'publicApplications', 'Public Applications?', 'If yes, members of the public can submit applications', 'Y'),
 ('Behaviour', 'positiveDescriptors', 'Positive Descriptors', 'Allowable choices for positive behaviour', 'Attitude to learning,Collaboration,Community spirit,Creativity,Effort,Leadership,Participation,Persistence,Problem solving,Quality of work,Values'),
 ('Behaviour', 'negativeDescriptors', 'Negative Descriptors', 'Allowable choices for negative behaviour', 'Classwork - Late,Classwork - Incomplete,Classwork - Unacceptable,Disrespectful,Disruptive,Homework - Late,Homework - Incomplete,Homework - Unacceptable,ICT Misuse,Truancy,Other'),
@@ -232,8 +235,8 @@ class Setting implements EntityInterface
 ('Resources', 'categories', 'Categories', 'Allowable choices for category', 'Article,Book,Document,Graphic,Idea,Music,Object,Painting,Person,Photo,Place,Poetry,Prose,Rubric,Text,Video,Website,Work Sample,Other'),
 ('Resources', 'purposesGeneral', 'Purposes (General)', 'Allowable choices for purpose when creating a resource', 'Assessment Aid,Concept,Inspiration,Learner Profile,Mass Mailer Attachment,Provocation,Skill,Teaching and Learning Strategy,Other'),
 ('System', 'version', 'Version', 'The version of the Gibbon database', '18.0.00'),
-('Resources', 'purposesRestricted', 'Purposes (Restricted)', 'Additional allowable choices for purpose when creating a resource, for those with \"Manage All Resources\" rights', ''),
-('System', 'organisationEmail', 'Organisation Email', 'General email address for the school', ''),
+('Resources', 'purposesRestricted', 'Purposes (Restricted)', 'Additional allowable choices for purpose when creating a resource, for those with \"Manage All Resources\" rights', null),
+('System', 'organisationEmail', 'Organisation Email', 'General email address for the school', null),
 ('Activities', 'dateType', 'Date Type', 'Should activities be organised around dates (flexible) or terms (easy)?', 'Term'),
 ('System', 'installType', 'Install Type', 'The purpose of this installation of Kookaburra', 'Development'),
 ('System', 'statsCollection', 'Statistics Collection', 'To track Gibbon uptake, the system tracks basic data (current URL, install type, organisation name) on each install. Do you want to help?', 'Y'),
@@ -242,50 +245,50 @@ class Setting implements EntityInterface
 ('Planner', 'teachersNotesTemplate', 'Teacher\'s Notes Template', 'Template to be inserted into Teacher\'s Notes field', NULL),
 ('Planner', 'smartBlockTemplate', 'Smart Block Template', 'Template to be inserted into new block in Smart Unit', NULL),
 ('Planner', 'unitOutlineTemplate', 'Unit Outline Template', 'Template to be inserted into Unit Outline section of planner', NULL),
-('Application Form', 'milestones', 'Milestones', 'Comma-separated list of the major steps in the application process. Applicants can be tracked through the various stages.', ''),
+('Application Form', 'milestones', 'Milestones', 'Comma-separated list of the major steps in the application process. Applicants can be tracked through the various stages.', null),
 ('Library', 'defaultLoanLength', 'Default Loan Length', 'The standard loan length for a library item, in days', '7'),
 ('Behaviour', 'policyLink', 'Policy Link', 'A link to the school behaviour policy.', NULL),
-('Library', 'browseBGColor', 'Browse Library BG Color', 'RGB Hex value, without leading #. Background color used behind library browsing screen.', ''),
-('Library', 'browseBGImage', 'Browse Library BG Image', 'URL to background image used behind library browsing screen.', ''),
+('Library', 'browseBGColor', 'Browse Library BG Color', 'RGB Hex value, without leading #. Background color used behind library browsing screen.', null),
+('Library', 'browseBGImage', 'Browse Library BG Image', 'URL to background image used behind library browsing screen.', null),
 ('System', 'passwordPolicyAlpha', 'Password - Alpha Requirement', 'Require both upper and lower case alpha characters?', 'Y'),
 ('System', 'passwordPolicyNumeric', 'Password - Numeric Requirement', 'Require at least one numeric character?', 'Y'),
 ('System', 'passwordPolicyNonAlphaNumeric', 'Password - Non-Alphanumeric Requirement', 'Require at least one non-alphanumeric character (e.g. punctuation mark or space)?', 'N'),
 ('System', 'passwordPolicyMinLength', 'Password - Minimum Length', 'Minimum acceptable password length.', '8'),
-('User Admin', 'ethnicity', 'Ethnicity', 'Comma-separated list of ethnicities available in system', ''),
-('User Admin', 'nationality', 'Nationality', 'Comma-separated list of nationalities available in system. If blank, system will default to list of countries', ''),
-('User Admin', 'residencyStatus', 'Residency Status', 'Comma-separated list of residency status available in system. If blank, system will allow text input', ''),
+('User Admin', 'ethnicity', 'Ethnicity', 'Comma-separated list of ethnicities available in system', null),
+('User Admin', 'nationality', 'Nationality', 'Comma-separated list of nationalities available in system. If blank, system will default to list of countries', null),
+('User Admin', 'residencyStatus', 'Residency Status', 'Comma-separated list of residency status available in system. If blank, system will allow text input', null),
 ('User Admin', 'personalDataUpdaterRequiredFields', 'Personal Data Updater Required Fields', 'Serialized array listed personal fields in data updater, and whether or not they are required.', 'a:47:{s:5:\"title\";s:1:\"N\";s:7:\"surname\";s:1:\"Y\";s:9:\"firstName\";s:1:\"N\";s:10:\"otherNames\";s:1:\"N\";s:13:\"preferredName\";s:1:\"Y\";s:12:\"officialName\";s:1:\"Y\";s:16:\"nameInCharacters\";s:1:\"N\";s:3:\"dob\";s:1:\"N\";s:5:\"email\";s:1:\"N\";s:14:\"emailAlternate\";s:1:\"N\";s:8:\"address1\";s:1:\"Y\";s:16:\"address1District\";s:1:\"N\";s:15:\"address1Country\";s:1:\"N\";s:8:\"address2\";s:1:\"N\";s:16:\"address2District\";s:1:\"N\";s:15:\"address2Country\";s:1:\"N\";s:10:\"phone1Type\";s:1:\"N\";s:17:\"phone1CountryCode\";s:1:\"N\";s:6:\"phone1\";s:1:\"N\";s:6:\"phone2\";s:1:\"N\";s:6:\"phone3\";s:1:\"N\";s:6:\"phone4\";s:1:\"N\";s:13:\"languageFirst\";s:1:\"N\";s:14:\"languageSecond\";s:1:\"N\";s:13:\"languageThird\";s:1:\"N\";s:14:\"countryOfBirth\";s:1:\"N\";s:9:\"ethnicity\";s:1:\"N\";s:12:\"citizenship1\";s:1:\"N\";s:20:\"citizenship1Passport\";s:1:\"N\";s:12:\"citizenship2\";s:1:\"N\";s:20:\"citizenship2Passport\";s:1:\"N\";s:8:\"religion\";s:1:\"N\";s:20:\"nationalIDCardNumber\";s:1:\"N\";s:15:\"residencyStatus\";s:1:\"N\";s:14:\"visaExpiryDate\";s:1:\"N\";s:10:\"profession\";s:1:\"N\";s:8:\"employer\";s:1:\"N\";s:8:\"jobTitle\";s:1:\"N\";s:14:\"emergency1Name\";s:1:\"N\";s:17:\"emergency1Number1\";s:1:\"N\";s:17:\"emergency1Number2\";s:1:\"N\";s:22:\"emergency1Relationship\";s:1:\"N\";s:14:\"emergency2Name\";s:1:\"N\";s:17:\"emergency2Number1\";s:1:\"N\";s:17:\"emergency2Number2\";s:1:\"N\";s:22:\"emergency2Relationship\";s:1:\"N\";s:19:\"vehicleRegistration\";s:1:\"N\";}'),
 ('School Admin', 'primaryExternalAssessmentByYearGroup', 'Primary External Assessment By Year Group', 'Serialized array connected gibbonExternalAssessmentID to gibbonYearGroupID, and specify which field set to use.', 'a:7:{i:1;s:21:\"1 - 2_KS3 Target Grades\";i:2;s:22:\"1 - 3_GCSE Target Grades\";i:3;s:10:\"1 - 1_Scores\";i:4;s:0:\"\";i:5;s:0:\"\";i:6;s:0:\"\";i:7;s:0:\"\";}'),
 ('Markbook', 'markbookType', 'Markbook Type', 'Comma-separated list of types to make available in the Markbook.', 'Essay,Exam,Homework,Reflection,Test,Unit,End of Year,Other'),
 ('System', 'allowableHTML', 'Allowable HTML', 'TinyMCE-style list of acceptable HTML tags and options.', 'br[style],strong[style],em[style],span[style],p[style],address[style],pre[style],h1[style],h2[style],h3[style],h4[style],h5[style],h6[style],table[style],thead[style],tbody[style],tfoot[style],tr[style],td[style|colspan|rowspan],ol[style],ul[style],li[style],blockquote[style],a[style|target|href],img[style|class|src|width|height],video[style],source[style],hr[style],iframe[style|width|height|src|frameborder|allowfullscreen],embed[style],div[style],sup[style],sub[style]'),
 ('Application Form', 'howDidYouHear', 'How Did Your Hear?', 'Comma-separated list', 'Advertisement,Personal Recommendation,World Wide Web,Others'),
-('Messenger', 'smsUsername', 'SMS Username', 'SMS gateway username.', ''),
-('Messenger', 'smsPassword', 'SMS Password', 'SMS gateway password.', ''),
-('Messenger', 'smsURL', 'SMS URL', 'SMS gateway URL for send requests.', ''),
-('Messenger', 'smsURLCredit', 'SMS URL Credit', 'SMS gateway URL for checking credit.', ''),
+('Messenger', 'smsUsername', 'SMS Username', 'SMS gateway username.', null),
+('Messenger', 'smsPassword', 'SMS Password', 'SMS gateway password.', null),
+('Messenger', 'smsURL', 'SMS URL', 'SMS gateway URL for send requests.', null),
+('Messenger', 'smsURLCredit', 'SMS URL Credit', 'SMS gateway URL for checking credit.', null),
 ('System', 'currency', 'Currency', 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.', 'AUD'),
 ('System', 'enablePayments', 'Enable Payments', 'Should payments be enabled across the system?', 'N'),
-('System', 'paypalAPIUsername', 'PayPal API Username', 'API Username provided by PayPal.', ''),
-('System', 'paypalAPIPassword', 'PayPal API Password', 'API Password provided by PayPal.', ''),
-('System', 'paypalAPISignature', 'PayPal API Signature', 'API Signature provided by PayPal.', ''),
+('System', 'paypalAPIUsername', 'PayPal API Username', 'API Username provided by PayPal.', null),
+('System', 'paypalAPIPassword', 'PayPal API Password', 'API Password provided by PayPal.', null),
+('System', 'paypalAPISignature', 'PayPal API Signature', 'API Signature provided by PayPal.', null),
 ('Application Form', 'applicationFee', 'Application Fee', 'The cost of applying to the school.', '0'),
-('Application Form', 'requiredDocuments', 'Required Documents', 'Comma-separated list of documents which must be submitted electronically with the application form.', ''),
+('Application Form', 'requiredDocuments', 'Required Documents', 'Comma-separated list of documents which must be submitted electronically with the application form.', null),
 ('Application Form', 'requiredDocumentsCompulsory', 'Required Documents Compulsory?', 'Are the required documents compulsory?', 'N'),
-('Application Form', 'requiredDocumentsText', 'Required Documents Text', 'Explanatory text to appear with the required documents?', ''),
+('Application Form', 'requiredDocumentsText', 'Required Documents Text', 'Explanatory text to appear with the required documents?', null),
 ('Application Form', 'notificationStudentDefault', 'Student Notification Default', 'Should student acceptance email be turned on or off by default.', 'On'),
 ('Application Form', 'languageOptionsActive', 'Language Options Active', 'Should the Language Options section be turned on?', 'Off'),
-('Application Form', 'languageOptionsBlurb', 'Language Options Blurb', 'Introductory text if Language Options section is turned on.', ''),
-('Application Form', 'languageOptionsLanguageList', 'Language Options Language List', 'Comma-separated list of available language selections if Language Options section is turned on.', ''),
+('Application Form', 'languageOptionsBlurb', 'Language Options Blurb', 'Introductory text if Language Options section is turned on.', null),
+('Application Form', 'languageOptionsLanguageList', 'Language Options Language List', 'Comma-separated list of available language selections if Language Options section is turned on.', null),
 ('User Admin', 'personalBackground', 'Personal Background', 'Should users be allowed to set their own personal backgrounds?', 'Y'),
-('User Admin', 'dayTypeOptions', 'Day-Type Options', 'Comma-separated list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.', ''),
-('User Admin', 'dayTypeText', 'Day-Type Text', 'Explanatory text to include with Day-Type Options.', ''),
+('User Admin', 'dayTypeOptions', 'Day-Type Options', 'Comma-separated list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.', null),
+('User Admin', 'dayTypeText', 'Day-Type Text', 'Explanatory text to include with Day-Type Options.', null),
 ('Markbook', 'showStudentAttainmentWarning', 'Show Student Attainment Warning', 'Show low attainment grade visual warning to students?', 'Y'),
 ('Markbook', 'showStudentEffortWarning', 'Show Student Effort Warning', 'Show low effort grade visual warning to students?', 'Y'),
 ('Markbook', 'showParentAttainmentWarning', 'Show Parent Attainment Warning', 'Show low attainment grade visual warning to parents?', 'Y'),
 ('Markbook', 'showParentEffortWarning', 'Show Parent Effort Warning', 'Show low effort grade visual warning to parents?', 'Y'),
 ('Planner', 'allowOutcomeEditing', 'Allow Outcome Editing', 'Should the text within outcomes be editable when planning lessons and units?', 'Y'),
 ('User Admin', 'privacy', 'Privacy', 'Should privacy options be turned on across the system?', 'N'),
-('User Admin', 'privacyBlurb', 'Privacy Blurb', 'Descriptive text to accompany image privacy option when shown to users.', ''),
+('User Admin', 'privacyBlurb', 'Privacy Blurb', 'Descriptive text to accompany image privacy option when shown to users.', null),
 ('Finance', 'invoiceText', 'Invoice Text', 'Text to appear in invoice, above invoice details and fees.', NULL),
 ('Finance', 'invoiceNotes', 'Invoice Notes', 'Text to appear in invoice, below invoice details and fees.', NULL),
 ('Finance', 'receiptText', 'Receipt Text', 'Text to appear in receipt, above receipt details and fees.', NULL),
@@ -295,14 +298,14 @@ class Setting implements EntityInterface
 ('Finance', 'reminder3Text', 'Reminder 3 Text', 'Text to appear in third level reminder level, above invoice details and fees.', NULL),
 ('Finance', 'email', 'Email', 'Email address to send finance emails from.', 'craig@craigrayner.com'),
 ('Application Form', 'notificationParentsDefault', 'Parents Notification Default', 'Should parent acceptance email be turned on or off by default.', 'On'),
-('User Admin', 'privacyOptions', 'Privacy Options', 'Comma-separated list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.', ''),
+('User Admin', 'privacyOptions', 'Privacy Options', 'Comma-separated list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.', null),
 ('Planner', 'sharingDefaultParents', 'Sharing Default: Parents', 'When adding lessons and deploying units, should sharing default for parents be Y or N?', 'Y'),
 ('Planner', 'sharingDefaultStudents', 'Sharing Default: Students', 'When adding lessons and deploying units, should sharing default for students be Y or N?', 'Y'),
 ('Students', 'extendedBriefProfile', 'Extended Brief Profile', 'The extended version of the brief student profile includes contact information of parents.', 'N'),
-('Application Form', 'notificationParentsMessage', 'Parents Notification Message', 'A custom message to add to the standard email to parents on acceptance.', ''),
-('Application Form', 'notificationStudentMessage', 'Student Notification Message', 'A custom message to add to the standard email to students on acceptance.', ''),
+('Application Form', 'notificationParentsMessage', 'Parents Notification Message', 'A custom message to add to the standard email to parents on acceptance.', null),
+('Application Form', 'notificationStudentMessage', 'Student Notification Message', 'A custom message to add to the standard email to students on acceptance.', null),
 ('Finance', 'invoiceNumber', 'Invoice Number Style', 'How should invoice numbers be constructed?', 'Invoice ID'),
-('User Admin', 'departureReasons', 'Departure Reasons', 'Comma-separated list of reasons for departure from school. If blank, user can enter any text.', ''),
+('User Admin', 'departureReasons', 'Departure Reasons', 'Comma-separated list of reasons for departure from school. If blank, user can enter any text.', null),
 ('System', 'googleOAuth', 'Google Integration', 'Enable Gibbon-wide integration with the Google APIs?', 'Y'),
 ('System', 'googleClientName', 'Google Developers Client Name', 'Name of Google Project in Developers Console.', 'gibbon-231623'),
 ('System', 'googleClientID', 'Google Developers Client ID', 'Client ID for Google Project In Developers Console.', '869932302474-vmp86mrilkcn37s62vhrjpcdq2fu3ava.apps.googleusercontent.com'),
@@ -312,9 +315,9 @@ class Setting implements EntityInterface
 ('Markbook', 'personalisedWarnings', 'Personalised Warnings', 'Should markbook warnings be based on personal targets, if they are available?', 'Y'),
 ('Activities', 'disableExternalProviderSignup', 'Disable External Provider Signup', 'Should we turn off the option to sign up for activities provided by an outside agency?', 'N'),
 ('Activities', 'hideExternalProviderCost', 'Hide External Provider Cost', 'Should we hide the cost of activities provided by an outside agency from the Activities View?', 'N'),
-('Application Form', 'studentDefaultEmail', 'Student Default Email', 'Set default email for students on acceptance, using [username] to insert username.', ''),
-('Application Form', 'studentDefaultWebsite', 'Student Default Website', 'Set default website for students on acceptance, using [username] to insert username.', ''),
-('School Admin', 'studentAgreementOptions', 'Student Agreement Options', 'Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).', ''),
+('Application Form', 'studentDefaultEmail', 'Student Default Email', 'Set default email for students on acceptance, using [username] to insert username.', null),
+('Application Form', 'studentDefaultWebsite', 'Student Default Website', 'Set default website for students on acceptance, using [username] to insert username.', null),
+('School Admin', 'studentAgreementOptions', 'Student Agreement Options', 'Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).', null),
 ('Markbook', 'attainmentAlternativeName', 'Attainment Alternative Name', 'A name to use isntead of \"Attainment\" in the first grade column of the markbook.', NULL),
 ('Markbook', 'effortAlternativeName', 'Effort Alternative Name', 'A name to use isntead of \"Effort\" in the second grade column of the markbook.', NULL),
 ('Markbook', 'attainmentAlternativeNameAbrev', 'Attainment Alternative Name Abbreviation', 'A short name to use isntead of \"Attainment\" in the first grade column of the markbook.', NULL),
@@ -347,7 +350,7 @@ class Setting implements EntityInterface
 ('Behaviour', 'enableDescriptors', 'Enable Descriptors', 'Setting to No reduces complexity of behaviour tracking.', 'Y'),
 ('Behaviour', 'enableLevels', 'Enable Levels', 'Setting to No reduces complexity of behaviour tracking.', 'Y'),
 ('Formal Assessment', 'internalAssessmentTypes', 'Internal Assessment Types', 'Comma-separated list of types to make available in Internal Assessments.', 'Expected Grade,Predicted Grade,Target Grade'),
-('System Admin', 'customAlarmSound', 'Custom Alarm Sound', 'A custom alarm sound file.', ''),
+('System Admin', 'customAlarmSound', 'Custom Alarm Sound', 'A custom alarm sound file.', null),
 ('School Admin', 'facilityTypes', 'FacilityTypes', 'A comma-separated list of types for facilities.', 'Classroom,Hall,Laboratory,Library,Office,Outdoor,Performance,Staffroom,Storage,Study,Undercover,Other'),
 ('Finance', 'allowExpenseAdd', 'Allow Expense Add', 'Allows privileged users to add expenses without going through request process.', 'Y'),
 ('System', 'organisationAdministrator', 'System Administrator', 'The staff member who receives notifications for system events.', '1'),
@@ -368,26 +371,26 @@ class Setting implements EntityInterface
 ('System', 'firstDayOfTheWeek', 'First Day Of The Week', 'On which day should the week begin?', 'Monday'),
 ('Application Form', 'usernameFormat', 'Username Format', 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].', '[preferredNameInitial][surname]'),
 ('Staff', 'jobOpeningDescriptionTemplate', 'Job Opening Description Template', 'Default HTML contents for the Job Opening Description field.', '<table style=\'width: 100%\'>\n	<tr>\n		<td colspan=2 style=\'vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Job Description</span><br/>\n			<br/>\n		</td>\n	</tr>\n	<tr>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Responsibilities</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Required Skills/Characteristics</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n	</tr>\n	<tr>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Remuneration</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Other Details </span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n	</tr>\n</table>'),
-('Staff', 'staffApplicationFormIntroduction', 'Introduction', 'Information to display before the form', ''),
-('Staff', 'staffApplicationFormPostscript', 'Postscript', 'Information to display at the end of the form', ''),
+('Staff', 'staffApplicationFormIntroduction', 'Introduction', 'Information to display before the form', null),
+('Staff', 'staffApplicationFormPostscript', 'Postscript', 'Information to display at the end of the form', null),
 ('Staff', 'staffApplicationFormAgreement', 'Agreement', 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything', 'In submitting this form, I confirm that all information provided above is accurate and complete to the best of my knowledge.'),
 ('Staff', 'staffApplicationFormMilestones', 'Milestones', 'Comma-separated list of the major steps in the application process. Applicants can be tracked through the various stages.', 'Short List, First Interview, Second Interview, Offer Made, Offer Accepted, Contact Issued, Contact Signed'),
 ('Staff', 'staffApplicationFormRequiredDocuments', 'Required Documents', 'Comma-separated list of documents which must be submitted electronically with the application form.', 'Curriculum Vitae'),
 ('Staff', 'staffApplicationFormRequiredDocumentsCompulsory', 'Required Documents Compulsory?', 'Are the required documents compulsory?', 'Y'),
 ('Staff', 'staffApplicationFormRequiredDocumentsText', 'Required Documents Text', 'Explanatory text to appear with the required documents?', 'Please submit the following document(s) to ensure your application can be processed without delay.'),
 ('Staff', 'staffApplicationFormNotificationDefault', 'Notification Default', 'Should acceptance email be turned on or off by default.', 'Y'),
-('Staff', 'staffApplicationFormNotificationMessage', 'Notification Message', 'A custom message to add to the standard email on acceptance.', ''),
-('Staff', 'staffApplicationFormDefaultEmail', 'Default Email', 'Set default email on acceptance, using [username] to insert username.', ''),
-('Staff', 'staffApplicationFormDefaultWebsite', 'Default Website', 'Set default website on acceptance, using [username] to insert username.', ''),
+('Staff', 'staffApplicationFormNotificationMessage', 'Notification Message', 'A custom message to add to the standard email on acceptance.', null),
+('Staff', 'staffApplicationFormDefaultEmail', 'Default Email', 'Set default email on acceptance, using [username] to insert username.', null),
+('Staff', 'staffApplicationFormDefaultWebsite', 'Default Website', 'Set default website on acceptance, using [username] to insert username.', null),
 ('Staff', 'staffApplicationFormUsernameFormat', 'Username Format', 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].', '[preferredNameInitial].[surname]'),
 ('System', 'organisationHR', 'Human Resources Administrator', 'The staff member who receives notifications for staffing events.', '0000000001'),
 ('Staff', 'staffApplicationFormQuestions', 'Application Questions', 'HTML text that will appear as questions for the applicant to answer.', '<span style=\'text-decoration: underline; font-weight: bold\'>Why are you applying for this role?</span><br/><p></p>'),
 ('Staff', 'salaryScalePositions', 'Salary Scale Positions', 'Comma-separated list of salary scale positions, from lowest to highest.', '1,2,3,4,5,6,7,8,9,10'),
-('Staff', 'responsibilityPosts', 'Responsibility Posts', 'Comma-separated list of posts carrying extra responsibilities.', ''),
+('Staff', 'responsibilityPosts', 'Responsibility Posts', 'Comma-separated list of posts carrying extra responsibilities.', null),
 ('Students', 'applicationFormSENText', 'Application Form SEN Text', 'Text to appear with the Special Educational Needs section of the student application form.', 'Please indicate whether or not your child has any known, or suspected, special educational needs, or whether they have been assessed for any such needs in the past. Provide any comments or information concerning your child\'s development that may be relevant to your child\'s performance in the classroom or elsewhere? Incorrect or withheld information may affect continued enrolment.'),
-('Students', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', ''),
+('Students', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', null),
 ('User Admin', 'religions', 'Religions', 'Comma-separated list of religions available in system', ',Nonreligious/Agnostic/Atheist,Buddhism,Christianity,Hinduism,Islam,Judaism,Other'),
-('Staff', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', ''),
+('Staff', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', null),
 ('Markbook', 'enableRawAttainment', 'Enable Raw Attainment Marks', 'Should recording of raw marks be enabled in the Markbook?', 'N'),
 ('Markbook', 'enableGroupByTerm', 'Group Columns by Term', 'Should columns and total scores be grouped by term?', 'N'),
 ('Markbook', 'enableEffort', 'Enable Effort', 'Should columns have the Effort section enabled?', 'Y'),
@@ -396,10 +399,10 @@ class Setting implements EntityInterface
 ('School Admin', 'studentDashboardDefaultTab', 'Student Dashboard Default Tab', 'The default landing tab for the student dashboard.', NULL),
 ('School Admin', 'parentDashboardDefaultTab', 'Parent Dashboard Default Tab', 'The default landing tab for the parent dashboard.', 'Timetable'),
 ('System', 'enableMailerSMTP', 'Enable SMTP Mail', 'Adds PHPMailer settings for servers with an SMTP connection.', 'N'),
-('System', 'mailerSMTPHost', 'SMTP Host', 'Set the hostname of the mail server.', ''),
+('System', 'mailerSMTPHost', 'SMTP Host', 'Set the hostname of the mail server.', null),
 ('System', 'mailerSMTPPort', 'SMTP Port', 'Set the SMTP port number - likely to be 25, 465 or 587.', '25'),
-('System', 'mailerSMTPUsername', 'SMTP Username', 'Username to use for SMTP authentication. Leave blank for no authentication.', ''),
-('System', 'mailerSMTPPassword', 'SMTP Password', 'Password to use for SMTP authentication. Leave blank for no authentication.', ''),
+('System', 'mailerSMTPUsername', 'SMTP Username', 'Username to use for SMTP authentication. Leave blank for no authentication.', null),
+('System', 'mailerSMTPPassword', 'SMTP Password', 'Password to use for SMTP authentication. Leave blank for no authentication.', null),
 ('System', 'mainMenuCategoryOrder', 'Main Menu Category Order', 'A comma separated list of module categories in display order.', 'Admin,Assess,Learn,People,Other'),
 ('Attendance', 'attendanceReasons', 'Attendance Reasons', 'Comma-separated list of reasons which are available when taking attendance.', 'Pending,Education,Family,Medical,Other'),
 ('Attendance', 'attendanceMedicalReasons', 'Medical Reasons', 'Comma-separated list of allowable medical reasons.', 'Medical'),
@@ -409,14 +412,14 @@ class Setting implements EntityInterface
 ('Individual Needs', 'targetsTemplate', 'Targets Template', 'An HTML template to be used in the targets field.', NULL),
 ('Individual Needs', 'teachingStrategiesTemplate', 'Teaching Strategies Template', 'An HTML template to be used in the teaching strategies field.', NULL),
 ('Individual Needs', 'notesReviewTemplate', 'Notes & Review Template', 'An HTML template to be used in the notes and review field.', NULL),
-('Attendance', 'attendanceCLINotifyByRollGroup', 'Enable Notifications by Roll Group', '', 'Y'),
-('Attendance', 'attendanceCLINotifyByClass', 'Enable Notifications by Class', '', 'Y'),
-('Attendance', 'attendanceCLIAdditionalUsers', 'Additional Users to Notify', 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.', ''),
+('Attendance', 'attendanceCLINotifyByRollGroup', 'Enable Notifications by Roll Group', null, 'Y'),
+('Attendance', 'attendanceCLINotifyByClass', 'Enable Notifications by Class', null, 'Y'),
+('Attendance', 'attendanceCLIAdditionalUsers', 'Additional Users to Notify', 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.', null),
 ('Students', 'noteCreationNotification', 'Note Creation Notification', 'Determines who to notify when a new student note is created.', 'Tutors'),
 ('Finance', 'invoiceeNameStyle', 'Invoicee Name Style', 'Determines how invoicee name appears on invoices and receipts.', 'Surname, Preferred Name'),
 ('Planner', 'shareUnitOutline', 'Share Unit Outline', 'Allow users who do not have access to the unit planner to see Unit Outlines via the lesson planner?', 'N'),
-('Attendance', 'studentSelfRegistrationIPAddresses', 'Student Self Registration IP Addresses', 'Comma-separated list of IP addresses within which students can self register.', ''),
-('Application Form', 'internalDocuments', 'Internal Documents', 'Comma-separated list of documents for internal upload and use.', ''),
+('Attendance', 'studentSelfRegistrationIPAddresses', 'Student Self Registration IP Addresses', 'Comma-separated list of IP addresses within which students can self register.', null),
+('Application Form', 'internalDocuments', 'Internal Documents', 'Comma-separated list of documents for internal upload and use.', null),
 ('Attendance', 'countClassAsSchool', 'Count Class Attendance as School Attendance', 'Should attendance from the class context be used to prefill and inform school attendance?', 'N'),
 ('Attendance', 'defaultRollGroupAttendanceType', 'Default Roll Group Attendance Type', 'The default selection for attendance type when taking Roll Group attendance', 'Present'),
 ('Attendance', 'defaultClassAttendanceType', 'Default Class Attendance Type', 'The default selection for attendance type when taking Class attendance', 'Present'),
@@ -431,34 +434,35 @@ class Setting implements EntityInterface
 ('Application Form', 'paymentOptionsActive', 'Payment Options Active', 'Should the Payment section be turned on?', 'Y'),
 ('Application Form', 'senOptionsActive', 'Special Education Needs Active', 'Should the Special Education Needs section be turned on?', 'Y'),
 ('Timetable Admin', 'autoEnrolCourses', 'Auto-Enrol Courses Default', 'Should auto-enrolment of new students into courses be turned on or off by default?', 'N'),
-('Application Form', 'availableYearsOfEntry', 'Available Years of Entry', 'Which school years should be available to apply to?', ''),
+('Application Form', 'availableYearsOfEntry', 'Available Years of Entry', 'Which school years should be available to apply to?', null),
 ('Application Form', 'enableLimitedYearsOfEntry', 'Enable Limited Years of Entry', 'If yes, applicants choices for Year of Entry can be limited to specific school years.', 'N'),
 ('User Admin', 'uniqueEmailAddress', 'Unique Email Address', 'Are primary email addresses required to be unique?', 'N'),
 ('Planner', 'parentWeeklyEmailSummaryIncludeMarkbook', 'Parent Weekly Email Summary Include Markbook', 'Should Markbook information be included in the weekly planner email summary that goes out to parents?', 'N'),
-('System', 'nameFormatStaffFormal', 'Formal Name Format', '', '[title] [preferredName:1]. [surname]'),
-('System', 'nameFormatStaffFormalReversed', 'Formal Name Reversed', '', '[title] [surname], [preferredName:1].'),
-('System', 'nameFormatStaffInformal', 'Informal Name Format', '', '[preferredName] [surname]'),
-('System', 'nameFormatStaffInformalReversed', 'Informal Name Reversed', '', '[surname], [preferredName]'),
+('System', 'nameFormatStaffFormal', 'Formal Name Format', null, '[title] [preferredName:1]. [surname]'),
+('System', 'nameFormatStaffFormalReversed', 'Formal Name Reversed', null, '[title] [surname], [preferredName:1].'),
+('System', 'nameFormatStaffInformal', 'Informal Name Format', null, '[preferredName] [surname]'),
+('System', 'nameFormatStaffInformalReversed', 'Informal Name Reversed', null, '[surname], [preferredName]'),
 ('Attendance', 'selfRegistrationRedirect', 'Self Registration Redirect', 'Should self registration redirect to Message Wall?', 'N'),
-('Data Updater', 'cutoffDate', 'Cutoff Date', 'Earliest acceptable date when checking if data updates are required.', ''),
+('Data Updater', 'cutoffDate', 'Cutoff Date', 'Earliest acceptable date when checking if data updates are required.', null),
 ('Data Updater', 'redirectByRoleCategory', 'Data Updater Redirect', 'Which types of users should be redirected to the Data Updater if updates are required.', 'Parent'),
 ('Data Updater', 'requiredUpdates', 'Required Updates?', 'Should the data updater highlight updates that are required?', 'N'),
 ('Data Updater', 'requiredUpdatesByType', 'Required Update Types', 'Which type of data updates should be required.', 'Personal,Family'),
 ('Markbook', 'enableModifiedAssessment', 'Enable Modified Assessment', 'Allows teachers to specify \"Modified Assessment\" for students with individual needs.', 'N'),
-('Messenger', 'messageBcc', 'Message Bcc', 'Comma-separated list of recipients to bcc all messenger emails to.', ''),
+('Messenger', 'messageBcc', 'Message Bcc', 'Comma-separated list of recipients to bcc all messenger emails to.', null),
 ('System', 'organisationBackground', 'Background', 'Relative path to background image. Overrides theme background.', '\\uploads\\2020\\03\\org_bg_1_5e8296c9d41fb.jpeg'),
-('Messenger', 'smsGateway', 'SMS Gateway', '', ''),
-('Messenger', 'smsSenderID', 'SMS Sender ID', 'The sender name or phone number. Depends on the gateway used.', ''),
-('System Admin', 'exportDefaultFileType', 'Default Export File Type', '', 'Excel2007'),
+('Messenger', 'smsGateway', 'SMS Gateway', null, null),
+('Messenger', 'smsSenderID', 'SMS Sender ID', 'The sender name or phone number. Depends on the gateway used.', null),
+('System Admin', 'exportDefaultFileType', 'Default Export File Type', null, 'Excel2007'),
 ('System', 'mailerSMTPSecure', 'SMTP Encryption', 'Automatically sets the encryption based on the port, otherwise select one manually.', 'auto'),
 ('Staff', 'substituteTypes', 'Substitute Types', 'A comma-separated list.', 'Internal Substitute,External Substitute'),
 ('Staff', 'urgencyThreshold', 'Urgency Threshold', 'Notifications in this time-span are sent immediately, day or night.', '3'),
 ('Staff', 'urgentNotifications', 'Urgent Notifications', 'If enabled, urgent notifications will be sent by SMS as well as email.', 'N'),
-('Staff', 'absenceApprovers', 'Absence Approvers', 'Users who can approve staff absences. Leave this blank if approval is not used.', ''),
+('Staff', 'absenceApprovers', 'Absence Approvers', 'Users who can approve staff absences. Leave this blank if approval is not used.', null),
 ('Staff', 'absenceFullDayThreshold', 'Full Day Absence', 'The minumum number of hours for an absence to count as a full day (1.0)', '6.0'),
 ('Staff', 'absenceHalfDayThreshold', 'Half Day Absence', 'The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0', '2.0'),
-('Staff', 'absenceNotificationGroups', 'Notification Groups', 'Which messenger groups can staff members send absence notifications to?', ''),
-('Attendance', 'crossFillClasses', 'Cross-Fill Classes', 'Should classes prefill with data from other classes?', 'N');";
+('Staff', 'absenceNotificationGroups', 'Notification Groups', 'Which messenger groups can staff members send absence notifications to?', null),
+('Attendance', 'crossFillClasses', 'Cross-Fill Classes', 'Should classes prefill with data from other classes?', 'N');
+JJJ;
     }
 
 }

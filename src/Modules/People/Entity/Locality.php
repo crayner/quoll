@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Locality
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\LocalityRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Locality",
+ * @ORM\Table(name="Locality",
  *     indexes={@ORM\Index(name="country",columns={"country"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="locality",columns={"name","territory","post_code","country"})}
  * )
@@ -35,10 +35,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Locality implements EntityInterface
 {
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="INT(6) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -73,18 +73,20 @@ class Locality implements EntityInterface
     private $country;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
-     * @return District
+     * Id.
+     *
+     * @param string|null $id
+     * @return Locality
      */
-    public function setId(?int $id): Locality
+    public function setId(?string $id): Locality
     {
         $this->id = $id;
         return $this;
@@ -214,7 +216,7 @@ class Locality implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Locality` (
-                    `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `id` char(36) NOT NULL,
                     `name` varchar(30) NOT NULL,
                     `territory` varchar(30) DEFAULT NULL,
                     `post_code` varchar(10) DEFAULT NULL,
