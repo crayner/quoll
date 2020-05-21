@@ -15,6 +15,7 @@
 
 namespace App\Modules\System\Form;
 
+use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\System\Form\Entity\MySQLSettings;
@@ -59,7 +60,7 @@ class MySQLType extends AbstractType
             ->add('dbname', TextType::class,
                 [
                     'label' => 'Database Name',
-                    'help' => 'This database will be created if it does not already exist. Collation should be utf8_general_ci.',
+                    'help' => 'This database will be created if it does not already exist. Collation should be utf8mb4_uicode_ci.',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 50,
@@ -105,7 +106,6 @@ class MySQLType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                     ],
-                    'translation_domain' => 'messages',
                 ]
             )
             ->add('prefix', TextType::class,
@@ -119,7 +119,6 @@ class MySQLType extends AbstractType
                     'constraints' => [
                         new Length(['max' => 6]),
                     ],
-                    'translation_domain' => 'messages',
                 ]
             )
             ->add('demo', ToggleType::class,
@@ -131,8 +130,14 @@ class MySQLType extends AbstractType
                 ]
             )
         ;
-        if ($options['proceed'] === '1') {
+        if ($options['proceed'] === 'proceed') {
             $builder
+                ->add('proceedHelp', ParagraphType::class,
+                    [
+                        'help' => 'database_build_ready',
+                        'wrapper_class' => 'relative w-full info',
+                    ]
+                )
                 ->add('proceed', SubmitType::class,
                     [
                         'label' => 'Proceed',
@@ -164,7 +169,7 @@ class MySQLType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => MySQLSettings::class,
-                'translation_domain' => 'messages',
+                'translation_domain' => 'System',
                 'constraints' => [
                     new MySQLConnection(),
                 ],

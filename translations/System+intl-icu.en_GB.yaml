@@ -193,3 +193,35 @@ Name: Name
 Notification Events: Notification Events
 'The settings used here are cached and changes will not be reflected in the display configuration immediately.': 'The settings used here are cached and changes will not be reflected in the display configuration immediately.'
 database_build_warning: 'Once the correct settings for your database are verified, the database will be built when you click the "Proceed" button below. This is a process that can take minutes to complete.  Your patience is appreciated.'
+Apache Module {name}: Apache Module {name}
+Installation - Step {step}: Installation - Step {step}
+Installed: Installed
+Language Setting: Language Setting
+MySQL PDO Support: MySQL PDO Support
+PHP Extension {name}: PHP Extension {name}
+Quoll {version} requires PHP Version {php_version} or higher: Quoll {version} requires PHP Version {php_version} or higher
+System Language: System Language
+The directory containing the configuration files is writable, so the installation may proceed.: The directory containing the configuration files is writable, so the installation may proceed.
+Database Name: Database Name
+Database Password: Database Password
+Database Server: Database Server
+Database Username: Database Username
+Install Demo Data?: Install Demo Data?
+Localhost, IP address or domain.: Localhost, IP address or domain.
+This database will be created if it does not already exist. Collation should be utf8mb4_uicode_ci.: This database will be created if it does not already exist. Collation should be utf8mb4_uicode_ci.
+Database Port: Database Port
+The standard port for MySQL is 3306. Only change this if the MySQL Server is listening on a different port.: The standard port for MySQL is 3306. Only change this if the MySQL Server is listening on a different port.
+Database Table Prefix: Database Table Prefix
+A prefix added to all table names.  Up to 6 characters in length: A prefix added to all table names.  Up to 6 characters in length
+mod_rewrite: mod_rewrite
+gettext: GNU GetText
+mbstring: Multibyte String Extension
+curl: Curl Extension
+zip: ZIP Extension
+xml: XML Extension
+gd: Graphic Library (gd)
+The locale was set to {locale}: The locale was set to {locale}
+The installation status was set to {status}.: The installation status was set to {status}.
+The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.: The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.
+Proceed: Proceed
+database_build_ready: 'The database setting are now working correctly. Use the Proceed button to begin building the database.'

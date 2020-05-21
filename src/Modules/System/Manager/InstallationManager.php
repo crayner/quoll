@@ -56,6 +56,7 @@ class InstallationManager
     {
         $this->twig = $twig;
         $this->urlHelper = $urlHelper;
+        TranslationHelper::setDomain('System');
     }
 
     /**
@@ -256,7 +257,7 @@ class InstallationManager
             unset($config['parameters']['installation']);
         }
         $this->writeParameterFile($config);
-        $this->getLogger()->notice(TranslationHelper::translate('The installation status was set to {status}.', ['{status}' => $status], 'messages'), ['status' => $status]);
+        $this->getLogger()->notice(TranslationHelper::translate('The installation status was set to {status}.', ['{status}' => $status]));
     }
 
     /**

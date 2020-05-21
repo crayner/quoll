@@ -11,11 +11,15 @@
     {% for name,details in systemDisplay['System Requirements'] %}
        <tr>
             <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-                <label for="{name}" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'{name}': name}) }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
+                <label for="{{ name }}" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ name|trans }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
                 {% endif %}
             </td>
             <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-                <div class="flex-1 relative">{{ details.detail|trans }}</div>
+                {% if name is same as('PHP Version') %}
+                    <div class="flex-1 relative" id="{{ name }}">{{ details.detail }}</div>
+                {% else %}
+                    <div class="flex-1 relative" id="{{ name }}">{{ details.detail|trans }}</div>
+                {% endif %}
             </td>
             <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
                 {% if details.result %}

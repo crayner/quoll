@@ -125,12 +125,6 @@ class Module implements EntityInterface
     private $updateRequired = false;
 
     /**
-     * @var Collection|ModuleUpgrade[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\System\Entity\ModuleUpgrade",mappedBy="module",orphanRemoval=true)
-     */
-    private $upgradeLogs;
-
-    /**
      * @var Collection|NotificationEvent[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\Comms\Entity\NotificationEvent", mappedBy="module", orphanRemoval=true)
      */
@@ -147,7 +141,6 @@ class Module implements EntityInterface
      */
     public function __construct()
     {
-        $this->upgradeLogs = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->actions = new ArrayCollection();
         $this->notifications = new ArrayCollection();
@@ -441,7 +434,6 @@ class Module implements EntityInterface
      */
     public function getStatus(): string
     {
-
         if (null === $this->status) {
             if ($this->getType() === 'Core') {
                 $this->status = TranslationHelper::translate('Installed');
@@ -541,26 +533,6 @@ class Module implements EntityInterface
     public function setNotifications(Collection $notifications): Module
     {
         $this->notifications = $notifications;
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getUpgrades(): Collection
-    {
-        return $this->upgrades;
-    }
-
-    /**
-     * Upgrades.
-     *
-     * @param Collection $upgrades
-     * @return Module
-     */
-    public function setUpgrades(Collection $upgrades): Module
-    {
-        $this->upgrades = $upgrades;
         return $this;
     }
 

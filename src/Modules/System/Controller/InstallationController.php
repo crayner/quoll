@@ -123,7 +123,7 @@ class InstallationController extends AbstractPageController
                 $data = $manager->setMySQLSettings($form);
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL);
-                if ($proceed === 'proceed' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
+                if ($proceed !== '0' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
                     $data['redirect'] = $this->generateUrl('installation_build', [], UrlGeneratorInterface::ABSOLUTE_URL);
                     $data['status'] = 'newPage';
                 }
