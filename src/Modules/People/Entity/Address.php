@@ -34,6 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Address implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -263,10 +265,10 @@ class Address implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Address` (
-                    `id` CHAR(36) NOT NULL,
-                    `streetName` varchar(50) DEFAULT NULL,
-                    `propertyName` varchar(50) DEFAULT NULL,
-                    `locality` int(6) UNSIGNED DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `streetName` CHAR(50) DEFAULT NULL,
+                    `propertyName` CHAR(50) DEFAULT NULL,
+                    `locality` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `locality` (`locality`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci";
@@ -279,7 +281,7 @@ class Address implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Address`
-                    ADD CONSTRAINT `FOREIGN KEY (`locality`) REFERENCES `__prefix__Locality` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`locality`) REFERENCES `__prefix__Locality` (`id`);";
     }
 
     /**
@@ -325,5 +327,10 @@ class Address implements EntityInterface
     public function isEqualTo(Address $address): bool
     {
         return $this->getId() === $address->getId();
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

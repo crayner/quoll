@@ -32,14 +32,14 @@ class FamilyMemberAdult extends FamilyMember
 {
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="childDataAccess")
+     * @ORM\Column(length=1)
      * @Assert\Choice({"Y","N"})
      */
     private $childDataAccess = 'N';
 
     /**
      * @var int|null
-     * @ORM\Column(type="smallint", name="contactPriority", options={"default": 1})
+     * @ORM\Column(type="smallint",options={"default": 1})
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=99)
      */
@@ -47,28 +47,28 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="contactCall")
+     * @ORM\Column(length=1)
      * @Assert\Choice(callback="getBooleanList")
      */
     private $contactCall = 'N';
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="contactSMS")
+     * @ORM\Column(length=1, name="contact_SMS")
      * @Assert\Choice(callback="getBooleanList")
      */
     private $contactSMS = 'N';
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="contactEmail")
+     * @ORM\Column(length=1)
      * @Assert\Choice(callback="getBooleanList")
      */
     private $contactEmail = 'N';
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="contactMail")
+     * @ORM\Column(length=1)
      * @Assert\Choice(callback="getBooleanList")
      */
     private $contactMail = 'N';

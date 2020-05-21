@@ -24,11 +24,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class CustomFields
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\CustomFieldRepository")
- * @ORM\Table(name="CustomField",options={"auto_increment": 1})
+ * @ORM\Table(name="CustomField",)
  * @App\Modules\People\Validator\CustomFieldOptions()
  */
 class CustomField implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
@@ -434,16 +436,16 @@ class CustomField implements EntityInterface
     {
         return "CREATE TABLE `__prefix__CustomField` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `active` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `field_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `name` CHAR(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `description` CHAR(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `active` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `field_type` CHAR(32) COLLATE utf8mb4_unicode_ci NOT NULL,
                     `options` json DEFAULT NULL,
                     `categories` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `required` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `data_updater` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `application_form` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `public_registration_form` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `required` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `data_updater` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `application_form` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `public_registration_form` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
     }
@@ -475,5 +477,10 @@ class CustomField implements EntityInterface
     protected function isCategory(string $category): bool
     {
         return in_array($category, $this->getCategories());
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

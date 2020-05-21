@@ -32,6 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Phone implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -194,10 +196,10 @@ class Phone implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Phone` (
-                    `id` char(36) NOT NULL,
-                    `type` varchar(16) DEFAULT NULL,
-                    `phone_number` varchar(20) DEFAULT NULL,
-                    `country` varchar(3) DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `type` CHAR(16) DEFAULT NULL,
+                    `phone_number` CHAR(20) DEFAULT NULL,
+                    `country` CHAR(3) DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
@@ -227,5 +229,10 @@ class Phone implements EntityInterface
     public function __toString(): string
     {
         return PhoneCodes::formatPhoneNumber($this);
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

@@ -21,10 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class StringReplacement
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\StringReplacementRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="String")
+ * @ORM\Table(name="String")
  */
 class StringReplacement implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
@@ -36,26 +38,28 @@ class StringReplacement implements EntityInterface
     }
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return StringReplacement
      */
-    public function setId(?int $id): StringReplacement
+    public function setId(?string $id): StringReplacement
     {
         $this->id = $id;
         return $this;
@@ -231,15 +235,15 @@ class StringReplacement implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__String` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `original` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `replacement` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `mode` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `case_sensitive` varchar(1) NOT NULL,
+        return "CREATE TABLE `__prefix__String` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `original` CHAR(100) NOT NULL,
+                    `replacement` CHAR(100) NOT NULL,
+                    `mode` CHAR(8) NOT NULL,
+                    `case_sensitive` CHAR(1) NOT NULL,
                     `priority` int(2) DEFAULT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
@@ -250,5 +254,10 @@ class StringReplacement implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

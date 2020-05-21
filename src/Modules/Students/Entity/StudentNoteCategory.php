@@ -17,7 +17,6 @@ namespace App\Modules\Students\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
-use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,17 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class StudentNoteCategory
  * @package App\Modules\Students\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteCategoryRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentNoteCategory")
+ * @ORM\Table(name="StudentNoteCategory")
  */
 class StudentNoteCategory implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(5) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -67,20 +68,21 @@ class StudentNoteCategory implements EntityInterface
         $this->setActive('Y');
     }
 
-
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return StudentNoteCategory
      */
-    public function setId(?int $id): StudentNoteCategory
+    public function setId(?string $id): StudentNoteCategory
     {
         $this->id = $id;
         return $this;
@@ -170,10 +172,10 @@ class StudentNoteCategory implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__StudentNoteCategory` (
-                    `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `template` longtext COLLATE ut8mb4_unicode_ci NULL DEFAULT NULL,
-                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'Y',
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `template` longtext NULL DEFAULT NULL,
+                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
@@ -190,5 +192,10 @@ class StudentNoteCategory implements EntityInterface
                     ('Pastoral', 'Y'),
                     ('Behaviour', 'Y'),
                     ('Other', 'Y');";
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

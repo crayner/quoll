@@ -26,20 +26,22 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class Action
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ActionRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Action",
+ * @ORM\Table(name="Action",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="moduleName", columns={"name", "module"})},
  *     indexes={@ORM\Index(name="module", columns={"module"})})
  * @UniqueEntity(fields={"name","module"})
  */
 class Action implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(7) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -82,75 +84,21 @@ class Action implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="entry_route")
+     * @ORM\Column(length=191)
      */
     private $entryRoute;
 
     /**
      * @var string
-     * @ORM\Column(length=1, name="entrySidebar", options={"default": "Y"})
+     * @ORM\Column(length=1,options={"default": "Y"})
      */
     private $entrySidebar = 'Y';
 
     /**
      * @var string
-     * @ORM\Column(length=1, name="menuShow", options={"default": "Y"})
+     * @ORM\Column(length=1,options={"default": "Y"})
      */
     private $menuShow = 'Y';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="defaultPermissionAdmin", options={"default": "N"})
-     */
-    private $defaultPermissionAdmin = 'N';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="defaultPermissionTeacher", options={"default": "N"})
-     */
-    private $defaultPermissionTeacher = 'N';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="defaultPermissionStudent", options={"default": "N"})
-     */
-    private $defaultPermissionStudent = 'N';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="defaultPermissionParent", options={"default": "N"})
-     */
-    private $defaultPermissionParent = 'N';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="defaultPermissionSupport", options={"default": "N"})
-     */
-    private $defaultPermissionSupport = 'N';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="categoryPermissionStaff", options={"default": "Y"})
-     */
-    private $categoryPermissionStaff = 'Y';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="categoryPermissionStudent", options={"default": "Y"})
-     */
-    private $categoryPermissionStudent = 'Y';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="categoryPermissionParent", options={"default": "Y"})
-     */
-    private $categoryPermissionParent = 'Y';
-
-    /**
-     * @var string
-     * @ORM\Column(length=1, name="categoryPermissionOther", options={"default": "Y"})
-     */
-    private $categoryPermissionOther = 'Y';
 
     /**
      * @var array|null
@@ -159,18 +107,20 @@ class Action implements EntityInterface
     private $role;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Action
      */
-    public function setId(?int $id): Action
+    public function setId(?string $id): Action
     {
         $this->id = $id;
         return $this;
@@ -378,168 +328,6 @@ class Action implements EntityInterface
     }
 
     /**
-     * @return string
-     */
-    public function getDefaultPermissionAdmin(): string
-    {
-        return $this->defaultPermissionAdmin;
-    }
-
-    /**
-     * @param string $defaultPermissionAdmin
-     * @return Action
-     */
-    public function setDefaultPermissionAdmin(string $defaultPermissionAdmin): Action
-    {
-        $this->defaultPermissionAdmin = self::checkBoolean($defaultPermissionAdmin, 'N');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultPermissionTeacher(): string
-    {
-        return $this->defaultPermissionTeacher;
-    }
-
-    /**
-     * @param string $defaultPermissionTeacher
-     * @return Action
-     */
-    public function setDefaultPermissionTeacher(string $defaultPermissionTeacher): Action
-    {
-        $this->defaultPermissionTeacher = self::checkBoolean($defaultPermissionTeacher, 'N');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultPermissionStudent(): string
-    {
-        return $this->defaultPermissionStudent;
-    }
-
-    /**
-     * @param string $defaultPermissionStudent
-     * @return Action
-     */
-    public function setDefaultPermissionStudent(string $defaultPermissionStudent): Action
-    {
-        $this->defaultPermissionStudent = self::checkBoolean($defaultPermissionStudent, 'N');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultPermissionParent(): string
-    {
-        return $this->defaultPermissionParent;
-    }
-
-    /**
-     * @param string $defaultPermissionParent
-     * @return Action
-     */
-    public function setDefaultPermissionParent(string $defaultPermissionParent): Action
-    {
-        $this->defaultPermissionParent = self::checkBoolean($defaultPermissionParent, 'N');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultPermissionSupport(): string
-    {
-        return $this->defaultPermissionSupport;
-    }
-
-    /**
-     * @param string $defaultPermissionSupport
-     * @return Action
-     */
-    public function setDefaultPermissionSupport(string $defaultPermissionSupport): Action
-    {
-        $this->defaultPermissionSupport = self::checkBoolean($defaultPermissionSupport, 'N');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategoryPermissionStaff(): string
-    {
-        return $this->categoryPermissionStaff;
-    }
-
-    /**
-     * @param string $categoryPermissionStaff
-     * @return Action
-     */
-    public function setCategoryPermissionStaff(string $categoryPermissionStaff): Action
-    {
-        $this->categoryPermissionStaff = self::checkBoolean($categoryPermissionStaff, 'Y');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategoryPermissionStudent(): string
-    {
-        return $this->categoryPermissionStudent;
-    }
-
-    /**
-     * @param string $categoryPermissionStudent
-     * @return Action
-     */
-    public function setCategoryPermissionStudent(string $categoryPermissionStudent): Action
-    {
-        $this->categoryPermissionStudent = self::checkBoolean($categoryPermissionStudent, 'Y');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategoryPermissionParent(): string
-    {
-        return $this->categoryPermissionParent;
-    }
-
-    /**
-     * @param string $categoryPermissionParent
-     * @return Action
-     */
-    public function setCategoryPermissionParent(string $categoryPermissionParent): Action
-    {
-        $this->categoryPermissionParent = self::checkBoolean($categoryPermissionParent, 'Y');
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategoryPermissionOther(): string
-    {
-        return $this->categoryPermissionOther;
-    }
-
-    /**
-     * @param string $categoryPermissionOther
-     * @return Action
-     */
-    public function setCategoryPermissionOther(string $categoryPermissionOther): Action
-    {
-        $this->categoryPermissionOther = self::checkBoolean($categoryPermissionOther, 'Y');
-        return $this;
-    }
-
-    /**
      * @return array|null
      */
     public function getRole(): ?array
@@ -589,15 +377,6 @@ class Action implements EntityInterface
             'entryRoute' => $this->entryRoute,
             'entrySidebar' => $this->entrySidebar,
             'menuShow' => $this->menuShow,
-            'defaultPermissionAdmin' => $this->defaultPermissionAdmin,
-            'defaultPermissionTeacher' => $this->defaultPermissionTeacher,
-            'defaultPermissionStudent' => $this->defaultPermissionStudent,
-            'defaultPermissionParent' => $this->defaultPermissionParent,
-            'defaultPermissionSupport' => $this->defaultPermissionSupport,
-            'categoryPermissionStaff' => $this->categoryPermissionStaff,
-            'categoryPermissionStudent' => $this->categoryPermissionStudent,
-            'categoryPermissionParent' => $this->categoryPermissionParent,
-            'categoryPermissionOther' => $this->categoryPermissionOther,
             'module' => $this->getModule() ? $this->getModule()->getId() : null,
         ];
     }
@@ -620,29 +399,20 @@ class Action implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE IF NOT EXISTS `__prefix__Action` (
-                    `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
                     `precedence` int(2) DEFAULT NULL,
-                    `category` varchar(20) NOT NULL,
-                    `description` varchar(191) NOT NULL,
+                    `category` CHAR(20) NOT NULL,
+                    `description` CHAR(191) NOT NULL,
                     `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `entryRoute` varchar(191) NOT NULL,
-                    `entrySidebar` varchar(1) NOT NULL DEFAULT 'Y',
-                    `menuShow` varchar(1) NOT NULL DEFAULT 'Y',
-                    `defaultPermissionAdmin` varchar(1) NOT NULL DEFAULT 'N',
-                    `defaultPermissionTeacher` varchar(1) NOT NULL DEFAULT 'N',
-                    `defaultPermissionStudent` varchar(1) NOT NULL DEFAULT 'N',
-                    `defaultPermissionParent` varchar(1) NOT NULL DEFAULT 'N',
-                    `defaultPermissionSupport` varchar(1) NOT NULL DEFAULT 'N',
-                    `categoryPermissionStaff` varchar(1) NOT NULL DEFAULT 'Y',
-                    `categoryPermissionStudent` varchar(1) NOT NULL DEFAULT 'Y',
-                    `categoryPermissionParent` varchar(1) NOT NULL DEFAULT 'Y',
-                    `categoryPermissionOther` varchar(1) NOT NULL DEFAULT 'Y',
-                    `role` varchar(32) DEFAULT NULL,
-                    `module` int(4) UNSIGNED DEFAULT NULL,
+                    `entry_route` CHAR(191) NOT NULL,
+                    `entry_sidebar` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `menu_show` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `role` CHAR(32) DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    `module` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `moduleName` (`name`,`module`) USING BTREE,
-                    KEY `module` (`module`) USING BTREE
+                    UNIQUE KEY `moduleName` (`name`,`module`),
+                    KEY `module` (`module`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
@@ -653,7 +423,7 @@ class Action implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Action`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
     }
 
     /**
@@ -663,5 +433,10 @@ class Action implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

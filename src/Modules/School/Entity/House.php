@@ -26,20 +26,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class House
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\HouseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="House",
+ * @ORM\Table(name="House",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
- *     @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
+ *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class House implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use ImageRemovalTrait;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="smallint", columnDefinition="INT(3) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -53,15 +55,15 @@ class House implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=10,name="nameShort",unique=true)
+     * @ORM\Column(length=10,name="abbreviation",unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=10)
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var string|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(nullable=true,length=191)
      */
     private $logo;
 
@@ -74,18 +76,20 @@ class House implements EntityInterface
     ];
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return House
      */
-    public function setId(?int $id): House
+    public function setId(?string $id): House
     {
         $this->id = $id;
         return $this;
@@ -112,19 +116,19 @@ class House implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * setNameShort
-     * @param string|null $nameShort
+     * setAbbreviation
+     * @param string|null $abbreviation
      * @return House
      */
-    public function setNameShort(?string $nameShort): House
+    public function setAbbreviation(?string $abbreviation): House
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -154,7 +158,7 @@ class House implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getName() . ' (' . $this->getNameShort() . ')';
+        return $this->getName() . ' (' . $this->getAbbreviation() . ')';
     }
 
     /**
@@ -167,7 +171,7 @@ class House implements EntityInterface
         $result = [
             'name' => $this->getName(),
             'logo' => $this->getLogo(),
-            'short' => $this->getNameShort(),
+            'short' => $this->getAbbreviation(),
             'canDelete' => $this->canDelete(),
         ];
         return $result;
@@ -189,14 +193,14 @@ class House implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__House` (
-                    `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) NOT NULL,
-                    `nameShort` varchar(10) NOT NULL,
-                    `logo` varchar(255) DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `abbreviation` CHAR(10) NOT NULL,
+                    `logo` CHAR(191) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`) USING BTREE,
-                    UNIQUE KEY `nameShort` (`nameShort`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci AUTO_INCREMENT=1;";
+                    UNIQUE KEY `name` (`name`),
+                    UNIQUE KEY `abbreviation` (`abbreviation`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**
@@ -217,4 +221,8 @@ class House implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

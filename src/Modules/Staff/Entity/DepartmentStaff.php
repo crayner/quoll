@@ -23,18 +23,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class DepartmentStaff
  * @package App\Modules\Staff\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\DepartmentStaffRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="DepartmentStaff",
+ * @ORM\Table(name="DepartmentStaff",
  *     indexes={@ORM\Index(name="person",columns={"person"}),@ORM\Index(name="department",columns={"department"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="department_person",columns={"department","person"})})
  * @UniqueEntity({"department","person"})
  */
 class DepartmentStaff implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", columnDefinition="INT(6) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -68,18 +70,20 @@ class DepartmentStaff implements EntityInterface
     private static $roleList = ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator','Other'];
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return DepartmentStaff
      */
-    public function setId(?int $id): DepartmentStaff
+    public function setId(?string $id): DepartmentStaff
     {
         $this->id = $id;
         return $this;
@@ -172,27 +176,32 @@ class DepartmentStaff implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__DepartmentStaff` (
-                    `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `role` varchar(24) NOT NULL,
-                    `department` int(4) UNSIGNED DEFAULT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__DepartmentStaff` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `role` CHAR(24) NOT NULL,
+                    `department` CHAR(36) DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `department_person` (`department`,`person`) USING BTREE,
+                    UNIQUE KEY `department_person` (`department`,`person`),
                     KEY `department` (`department`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__DepartmentStaff`
-                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__DepartmentStaff`
+                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

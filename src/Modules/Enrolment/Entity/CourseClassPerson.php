@@ -23,18 +23,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class CourseClassPerson
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseClassPersonRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="CourseClassPerson", indexes={@ORM\Index(name="course_class", columns={"course_class"}), @ORM\Index(name="person_role", columns={"person", "role"})}, uniqueConstraints={@ORM\UniqueConstraint(name="courseClassPerson",columns={ "course_class", "person"})})
+ * @ORM\Table(name="CourseClassPerson", indexes={@ORM\Index(name="course_class", columns={"course_class"}), @ORM\Index(name="person_role", columns={"person", "role"})}, uniqueConstraints={@ORM\UniqueConstraint(name="courseClassPerson",columns={ "course_class", "person"})})
  * @UniqueEntity({"courseClass","person"})
  */
 class CourseClassPerson implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -75,18 +77,20 @@ class CourseClassPerson implements EntityInterface
     private $reportable = 'Y';
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return CourseClassPerson
      */
-    public function setId(?int $id): CourseClassPerson
+    public function setId(?string $id): CourseClassPerson
     {
         $this->id = $id;
         return $this;
@@ -198,17 +202,17 @@ class CourseClassPerson implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__CourseClassPerson` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `role` varchar(16) NOT NULL,
-                    `reportable` varchar(1) NOT NULL DEFAULT 'Y',
-                    `course_class` int(8) UNSIGNED DEFAULT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `role` CHAR(16) NOT NULL,
+                    `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `course_class` CHAR(36) DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `courseClassPerson` (`course_class`,`person`),
                     KEY `person` (`person`),
                     KEY `course_class` (`course_class`),
                     KEY `person_role` (`person`,`role`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**
@@ -218,8 +222,8 @@ class CourseClassPerson implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__CcourseClassPerson`
-  ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`),
+  ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);
 ";
     }
 
@@ -232,5 +236,8 @@ class CourseClassPerson implements EntityInterface
         return "";
     }
 
-
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

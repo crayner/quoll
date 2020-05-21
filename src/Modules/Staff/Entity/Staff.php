@@ -23,17 +23,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Staff
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
+ * @ORM\Table(name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
  */
 class Staff implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="bigint", name="id", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -67,40 +69,40 @@ class Staff implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,name="jobTitle",nullable=true)
+     * @ORM\Column(length=100,nullable=true)
      */
     private $jobTitle;
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="smartWorkflowHelp", options={"default": "Y"})
+     * @ORM\Column(length=1,options={"default": "Y"})
      * @Assert\Choice(callback="getBooleanList")
      */
     private $smartWorkflowHelp = 'Y';
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="firstAidQualified", options={"default": "N"})
+     * @ORM\Column(length=1,options={"default": "N"})
      * @Assert\Choice(callback="getBooleanList")
      */
     private $firstAidQualified = 'N';
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",name="firstAidExpiry",nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $firstAidExpiry;
 
     /**
      * @var string|null
-     * @ORM\Column(length=80, name="countryOfOrigin",nullable=true)
+     * @ORM\Column(length=3,nullable=true)
      * @Assert\Country()
      */
     private $countryOfOrigin;
 
     /**
      * @var string|null
-     * @ORM\Column(name="qualifications",nullable=true)
+     * @ORM\Column(name="qualifications",nullable=true,length=191)
      */
     private $qualifications;
 
@@ -112,29 +114,31 @@ class Staff implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,name="biographicalGrouping",options={"comment": "Used for group staff when creating a staff directory."},nullable=true)
+     * @ORM\Column(length=100,options={"comment": "Used for group staff when creating a staff directory."},nullable=true)
      */
     private $biographicalGrouping;
 
     /**
      * @var integer|null
-     * @ORM\Column(name="biographicalGroupingPriority", type="smallint", columnDefinition="INT(3)", nullable=true)
+     * @ORM\Column(type="smallint",nullable=true)
      */
     private $biographicalGroupingPriority;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Staff
      */
-    public function setId(?int $id): Staff
+    public function setId(?string $id): Staff
     {
         $this->id = $id;
         return $this;
@@ -406,23 +410,23 @@ class Staff implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Staff` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(20) NOT NULL,
-                    `initials` varchar(4) DEFAULT NULL,
-                    `jobTitle` varchar(100) DEFAULT NULL,
-                    `smartWorkflowHelp` varchar(1) NOT NULL DEFAULT 'Y',
-                    `firstAidQualified` varchar(1) NOT NULL DEFAULT 'N',
-                    `firstAidExpiry` date DEFAULT NULL,
-                    `countryOfOrigin` varchar(80) DEFAULT NULL,
-                    `qualifications` varchar(255) DEFAULT NULL,
-                    `biography` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
-                    `biographicalGrouping` varchar(100) DEFAULT NULL COMMENT 'Used for group staff when creating a staff directory.',
-                    `biographicalGroupingPriority` int(3) DEFAULT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `type` CHAR(20) NOT NULL,
+                    `initials` CHAR(4) DEFAULT NULL,
+                    `job_title` CHAR(100) DEFAULT NULL,
+                    `smart_workflow_help` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `first_aid_qualified` CHAR(1) NOT NULL DEFAULT 'N',
+                    `first_aid_expiry` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `country_of_origin` CHAR(3) DEFAULT NULL,
+                    `qualifications` CHAR(191) DEFAULT NULL,
+                    `biography` longtext,
+                    `biographical_grouping` CHAR(100) DEFAULT NULL COMMENT 'Used for group staff when creating a staff directory.',
+                    `biographical_grouping_priority` smallint DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `staff` (`person`) USING BTREE,
+                    UNIQUE KEY `staff` (`person`),
                     UNIQUE KEY `initials` (`initials`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**
@@ -431,8 +435,8 @@ class Staff implements EntityInterface
      */
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `gibbonstaff`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+        return "ALTER TABLE `__prefex__Staff`
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
@@ -441,7 +445,11 @@ class Staff implements EntityInterface
      */
     public function coreData(): string
     {
-        return "";
+        return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

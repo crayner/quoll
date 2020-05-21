@@ -22,13 +22,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class CustomFieldData
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\CustomFieldDataRepository")
- * @ORM\Table(name="CustomFieldData", options={"auto_increment": 1},
+ * @ORM\Table(name="CustomFieldData",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="person_field",columns={"person","custom_field"})},
  *     indexes={@ORM\Index(name="person",columns={"person"}), @ORM\Index(name="field",columns={"custom_field"})})
  * @UniqueEntity(fields={"customField","person"})
  */
 class CustomFieldData implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -147,7 +149,7 @@ class CustomFieldData implements EntityInterface
         return "CREATE TABLE  `__prefix__CustomFieldData` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `custom_field` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `person` int UNSIGNED DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
                     `value` longtext COLLATE utf8mb4_unicode_ci,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `person_field` (`person`,`custom_field`),
@@ -159,12 +161,17 @@ class CustomFieldData implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__CustomFieldData`
-                    ADD CONSTRAINT FOREIGN KEY (`custom_field`) REFERENCES `__prefix__CustomField` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`custom_field`) REFERENCES `__prefix__CustomField` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

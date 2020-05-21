@@ -30,11 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="FamilyMember")
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="member_type", type="string", length=191)
+ * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
  * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberChild", "member" = "FamilyMember"})
  */
 class FamilyMember implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
@@ -222,17 +224,17 @@ class FamilyMember implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__FamilyMember` (
-                    `id` char(36) NOT NULL,
-                    `family` int(10) UNSIGNED NOT NULL,
-                    `person` int(10) UNSIGNED NOT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `family` CHAR(36) NOT NULL,
+                    `person` CHAR(36) NOT NULL,
                     `comment` longtext,
-                    `member_type` varchar(191) NOT NULL,
-                    `childDataAccess` varchar(1) DEFAULT NULL,
-                    `contactPriority` smallint(6) DEFAULT NULL,
-                    `contactCall` varchar(1) DEFAULT NULL,
-                    `contactSMS` varchar(1) DEFAULT NULL,
-                    `contactEmail` varchar(1) DEFAULT NULL,
-                    `contactMail` varchar(1) DEFAULT NULL,
+                    `member_type` CHAR(191) NOT NULL,
+                    `child_data_access` CHAR(1) DEFAULT NULL,
+                    `contact_priority` smallint DEFAULT NULL,
+                    `contact_call` CHAR(1) DEFAULT NULL,
+                    `contact_SMS` CHAR(1) DEFAULT NULL,
+                    `contact_email` CHAR(1) DEFAULT NULL,
+                    `contact_mail` CHAR(1) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `family_member` (`family`,`person`),
                     UNIQUE KEY `family_contact` (`family`,`contactPriority`),
@@ -268,5 +270,10 @@ class FamilyMember implements EntityInterface
         if (!$member->getFamily()->isEqualTo($this->getFamily()))
             return false;
         return true;
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

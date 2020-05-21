@@ -18,20 +18,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TT
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TT")
+ * @ORM\Table(name="TT")
  */
 class TT implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer",columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -50,24 +53,25 @@ class TT implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="nameShort",unique=true)
+     * @ORM\Column(length=12, name="abbreviation",unique=true)
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var string|null
-     * @ORM\Column(length=24, name="nameShortDisplay", options={"default": "Day Of The Week"})
+     * @ORM\Column(length=24,options={"default": "Day Of The Week"})
+     * @Assert\Choice(callback="getDisplayMode")
      */
-    private $nameShortDisplay;
+    private $displayMode = 'Day Of The Week';
 
     /**
      * @var array
      */
-    private static $nameShortDisplayList = ['Day Of The Week','Dashboard Day Short Name',''];
+    private static $displayModeList = ['Day Of The Week','Dashboard Day Short Name',''];
 
     /**
      * @var array|null
-     * @ORM\Column(name="year_group_list",type="simple_array")
+     * @ORM\Column(type="simple_array")
      */
     private $yearGroupList;
 
@@ -84,18 +88,20 @@ class TT implements EntityInterface
     private $TTDays;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return TT
      */
-    public function setId(?int $id): TT
+    public function setId(?string $id): TT
     {
         $this->id = $id;
         return $this;
@@ -140,36 +146,36 @@ class TT implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return TT
      */
-    public function setNameShort(?string $nameShort): TT
+    public function setAbbreviation(?string $abbreviation): TT
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getNameShortDisplay(): ?string
+    public function getDisplayMode(): ?string
     {
-        return $this->nameShortDisplay;
+        return $this->displayMode;
     }
 
     /**
-     * @param string|null $nameShortDisplay
+     * @param string|null $displayMode
      * @return TT
      */
-    public function setNameShortDisplay(?string $nameShortDisplay): TT
+    public function setDisplayMode(?string $displayMode): TT
     {
-        $this->nameShortDisplay = in_array($nameShortDisplay, self::getNameShortDisplayList()) ? $nameShortDisplay : '';
+        $this->displayMode = in_array($displayMode, self::getDisplayModeList()) ? $displayMode : '';
         return $this;
     }
 
@@ -210,9 +216,9 @@ class TT implements EntityInterface
     /**
      * @return array
      */
-    public static function getNameShortDisplayList(): array
+    public static function getDisplayModeList(): array
     {
-        return self::$nameShortDisplayList;
+        return self::$displayModeList;
     }
 
     /**
@@ -246,7 +252,7 @@ class TT implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getName() . ' ('.$this->getNameShort().')';
+        return $this->getName() . ' ('.$this->getAbbreviation().')';
     }
 
     /**
@@ -261,27 +267,32 @@ class TT implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__TT` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nameShort` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nameShortDisplay` varchar(24) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Day Of The Week\',
-                    `year_group_list` varchar(191) NOT NULL COMMENT \'(DC2Type:simple_array)\',
-                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__TT` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `abbreviation` CHAR(12) NOT NULL,
+                    `display_mode` CHAR(24) NOT NULL DEFAULT 'Day Of The Week',
+                    `year_group_list` text NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `active` CHAR(1) NOT NULL,
+                    `academic_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `IDX_9431F94371FA7520` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `academic_year` (`academic_year`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__TT`
-  ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__TT`
+  ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

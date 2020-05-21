@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StudentNote
  * @package App\Modules\Students\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentNote",
+ * @ORM\Table(name="StudentNote",
  *     indexes={@ORM\Index("person", columns={"person"}),
  *     @ORM\Index("student_note_category",columns={"student_note_category"}),
  *     @ORM\Index("person_creator",columns={"person_creator"})}
@@ -28,11 +28,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StudentNote implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="bigint", columnDefinition="INT(12) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -76,18 +78,20 @@ class StudentNote implements EntityInterface
     private $timestamp;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return StudentNote
      */
-    public function setId(?int $id): StudentNote
+    public function setId(?string $id): StudentNote
     {
         $this->id = $id;
         return $this;
@@ -214,30 +218,35 @@ class StudentNote implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__StudentNote` (
-                    `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `title` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `note` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `title` CHAR(50) OT NULL,
+                    `note` longtext NOT NULL,
                     `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `person` int(10) UNSIGNED DEFAULT NULL,
-                    `student_note_category` int(5) UNSIGNED DEFAULT NULL,
-                    `person_creator` int(10) UNSIGNED DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
+                    `student_note_category` CHAR(36) DEFAULT NULL,
+                    `person_creator` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `person` (`person`) USING BTREE,
-                    KEY `student_note_category` (`student_note_category`) USING BTREE,
-                    KEY `person_creator` (`person_creator`) USING BTREE
+                    KEY `person` (`person`),
+                    KEY `student_note_category` (`student_note_category`),
+                    KEY `person_creator` (`person_creator`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__StudentNote`
-  ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT FOREIGN KEY (`student_note_category`) REFERENCES `__prefix__StudentNoteCategory` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT FOREIGN KEY (`person_creator`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`student_note_category`) REFERENCES `__prefix__StudentNoteCategory` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person_creator`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

@@ -23,21 +23,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class TTDay
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTDayRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTDay",
+ * @ORM\Table(name="TTDay",
  *     indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"}),
  *     @ORM\Index(name="timetable", columns={"timetable"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable",columns={"name","timetable"}),
- *     @ORM\UniqueConstraint(name="name_short_timetable",columns={"nameShort","timetable"})})
+ *     @ORM\UniqueConstraint(name="name_short_timetable",columns={"abbreviation","timetable"})})
  * @UniqueEntity({"name","TT"})
- * @UniqueEntity({"nameShort","TT"})
+ * @UniqueEntity({"abbreviation","TT"})
  */
 class TTDay implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -63,9 +65,9 @@ class TTDay implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=4, name="nameShort")
+     * @ORM\Column(length=4, name="abbreviation")
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var string|null
@@ -100,18 +102,20 @@ class TTDay implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return TTDay
      */
-    public function setId(?int $id): TTDay
+    public function setId(?string $id): TTDay
     {
         $this->id = $id;
         return $this;
@@ -174,18 +178,18 @@ class TTDay implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return TTDay
      */
-    public function setNameShort(?string $nameShort): TTDay
+    public function setAbbreviation(?string $abbreviation): TTDay
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -281,7 +285,7 @@ class TTDay implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getName() . ' ('.$this->getNameShort().') of '.$this->getTT()->__toString();
+        return $this->getName() . ' ('.$this->getAbbreviation().') of '.$this->getTT()->__toString();
     }
 
     /**
@@ -296,31 +300,36 @@ class TTDay implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__TTDay` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(12) NOT NULL,
-                    `nameShort` varchar(4) NOT NULL,
-                    `colour` varchar(6) NOT NULL,
-                    `font_colour` varchar(6) NOT NULL,
-                    `timetable` int(8) UNSIGNED DEFAULT NULL,
-                    `timetable_column` int(6) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__TTDay` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(12) NOT NULL,
+                    `abbreviation` CHAR(4) NOT NULL,
+                    `colour` CHAR(6) NOT NULL,
+                    `font_colour` CHAR(6) NOT NULL,
+                    `timetable` CHAR(36) DEFAULT NULL,
+                    `timetable_column` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name_short_timetable` (`timetable`,`nameShort`) USING BTREE,
-                    UNIQUE KEY `name_timetable` (`timetable`,`name`) USING BTREE,
-                    KEY `timetable` (`timetable`) USING BTREE,
-                    KEY `timetable_column` (`timetable_column`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    UNIQUE KEY `name_short_timetable` (`timetable`,`abbreviation`),
+                    UNIQUE KEY `name_timetable` (`timetable`,`name`),
+                    KEY `timetable` (`timetable`),
+                    KEY `timetable_column` (`timetable_column`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__TTDay`
-                    ADD CONSTRAINT FOREIGN KEY (`timetable`) REFERENCES `__prefix__TT` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__TTDay`
+                    ADD CONSTRAINT FOREIGN KEY (`timetable`) REFERENCES `__prefix__TT` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

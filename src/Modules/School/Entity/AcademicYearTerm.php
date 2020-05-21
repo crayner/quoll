@@ -22,22 +22,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class AcademicYearTerm
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearTermRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="AcademicYearTerm",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="sequence_number", columns={"academic_year","sequenceNumber"}),
- *     @ORM\UniqueConstraint(name="abbr", columns={"academic_year","nameShort"}),
+ * @ORM\Table(name="AcademicYearTerm",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="sequence_number", columns={"academic_year","sequence_number"}),
+ *     @ORM\UniqueConstraint(name="abbr", columns={"academic_year","abbreviation"}),
  *     @ORM\UniqueConstraint(name="name", columns={"academic_year","name"})})
  * @UniqueEntity({"academicYear","sequenceNumber"},errorPath="sequenceNumber")
  * @UniqueEntity({"academicYear","name"},errorPath="name")
- * @UniqueEntity({"academicYear","nameShort"},errorPath="nameShort")
+ * @UniqueEntity({"academicYear","abbreviation"},errorPath="abbreviation")
  * @Check\Term()
  */
 class AcademicYearTerm implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(5) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -51,7 +53,7 @@ class AcademicYearTerm implements EntityInterface
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(5)",name="sequenceNumber",unique=true)
+     * @ORM\Column(type="smallint",unique=true)
      */
     private $sequenceNumber;
 
@@ -65,39 +67,41 @@ class AcademicYearTerm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=4, name="nameShort")
+     * @ORM\Column(length=4)
      * @Assert\Length(max=4)
      * @Assert\NotBlank()
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",name="firstDay",nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
     private $firstDay;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",name="lastDay",nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
     private $lastDay;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return AcademicYearTerm
      */
-    public function setId(?int $id): AcademicYearTerm
+    public function setId(?string $id): AcademicYearTerm
     {
         $this->id = $id;
         return $this;
@@ -160,18 +164,18 @@ class AcademicYearTerm implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return AcademicYearTerm
      */
-    public function setNameShort(?string $nameShort): AcademicYearTerm
+    public function setAbbreviation(?string $abbreviation): AcademicYearTerm
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -225,7 +229,7 @@ class AcademicYearTerm implements EntityInterface
         $dates = $this->getFirstDay()->format('d M Y') . ' - ' . $this->getLastDay()->format('d M Y');
         return [
             'name' => $this->getName(),
-            'abbr' => $this->getNameShort(),
+            'abbr' => $this->getAbbreviation(),
             'year' => $this->getAcademicYear()->getName(),
             'dates' => $dates,
             'canDelete' => true,
@@ -239,20 +243,20 @@ class AcademicYearTerm implements EntityInterface
      */
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__AcademicYearTerm` (
-                    `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `sequenceNumber` int(5) DEFAULT NULL,
-                    `name` varchar(20) NOT NULL,
-                    `nameShort` varchar(4) NOT NULL,
-                    `firstDay` date DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\',
-                    `lastDay` date DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\',
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__AcademicYearTerm` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `sequence_number` int DEFAULT NULL,
+                    `name` CHAR(20) NOT NULL,
+                    `abbreviation` CHAR(4) NOT NULL,
+                    `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `last_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `academic_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`academic_year`,`name`) USING BTREE,
-                    UNIQUE KEY `abbr` (`academic_year`,`nameShort`),
-                    UNIQUE KEY `sequence_nnumber` (`academic_year`,`sequenceNumber`) USING BTREE,
-                    KEY `academic_year` (`academic_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    UNIQUE KEY `name` (`academic_year`,`name`),
+                    UNIQUE KEY `abbr` (`academic_year`,`abbreviation`),
+                    UNIQUE KEY `sequence_number` (`academic_year`,`sequence_number`),
+                    KEY `academic_year` (`academic_year`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**
@@ -262,7 +266,7 @@ class AcademicYearTerm implements EntityInterface
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__AcademicYearTerm`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);';
     }
 
     /**
@@ -272,5 +276,10 @@ class AcademicYearTerm implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

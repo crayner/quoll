@@ -22,15 +22,17 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StudentEnrolment
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentEnrolmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="year_group", columns={"year_group"}), @ORM\Index(name="person", columns={"person"}), @ORM\Index(name="roll_group", columns={"roll_group"}), @ORM\Index(name="person_academic_year", columns={"person","academic_year"})})
+ * @ORM\Table(name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="year_group", columns={"year_group"}), @ORM\Index(name="person", columns={"person"}), @ORM\Index(name="roll_group", columns={"roll_group"}), @ORM\Index(name="person_academic_year", columns={"person","academic_year"})})
  */
 class StudentEnrolment implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -65,23 +67,25 @@ class StudentEnrolment implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", nullable=true, name="rollOrder", columnDefinition="INT(2)")
+     * @ORM\Column(type="smallint", nullable=true, columnDefinition="INT(2)")
      */
     private $rollOrder;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return StudentEnrolment
      */
-    public function setId(?int $id): StudentEnrolment
+    public function setId(?string $id): StudentEnrolment
     {
         $this->id = $id;
         return $this;
@@ -194,18 +198,18 @@ class StudentEnrolment implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE IF NOT EXISTS `__prefix__StudentEnrolment` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `rollOrder` int(2) DEFAULT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
-                    `year_group` int(3) UNSIGNED DEFAULT NULL,
-                    `roll_group` int(5) UNSIGNED DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `roll_order` smallint DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
+                    `academic_year` CHAR(36) DEFAULT NULL,
+                    `year_group` CHAR(36) DEFAULT NULL,
+                    `roll_group` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `person` (`person`) USING BTREE,
-                    KEY `academic_year` (`academic_year`) USING BTREE,
-                    KEY `year_group` (`year_group`) USING BTREE,
-                    KEY `roll_group` (`roll_group`) USING BTREE,
-                    KEY `person_academic_year` (`person`,`academic_year`) USING BTREE
+                    KEY `person` (`person`),
+                    KEY `academic_year` (`academic_year`),
+                    KEY `year_group` (`year_group`),
+                    KEY `roll_group` (`roll_group`),
+                    KEY `person_academic_year` (`person`,`academic_year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
@@ -216,10 +220,10 @@ class StudentEnrolment implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__StudentEnrolment`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`year_group`) REFERENCES `__prefix__YearGroup` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`year_group`) REFERENCES `__prefix__YearGroup` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);";
     }
 
     /**
@@ -229,5 +233,10 @@ class StudentEnrolment implements EntityInterface
     public function coreData(): string
     {
         return "";
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

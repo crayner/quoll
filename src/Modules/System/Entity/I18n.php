@@ -23,17 +23,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class I18n
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\I18nRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="i18n")
+ * @ORM\Table(name="i18n")
  */
 class I18n implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="smallint", columnDefinition="INT(4) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -51,10 +53,10 @@ class I18n implements EntityInterface
     private $name;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=10, nullable=true)
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private $version;
+    private $versionDate;
 
     /**
      * @var string|null
@@ -70,25 +72,25 @@ class I18n implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="systemDefault", options={"default": "N"})
+     * @ORM\Column(length=1,options={"default": "N"})
      */
     private $systemDefault = 'N';
 
     /**
      * @var string|null
-     * @ORM\Column(length=20, name="dateFormat")
+     * @ORM\Column(length=20)
      */
     private $dateFormat;
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", name="dateFormatRegEx")
+     * @ORM\Column(type="text",name="date_format_regex")
      */
     private $dateFormatRegEx;
 
     /**
      * @var string|null
-     * @ORM\Column(length=20, name="dateFormatPHP")
+     * @ORM\Column(length=20, name="date_format_php")
      */
     private $dateFormatPHP;
 
@@ -129,18 +131,20 @@ class I18n implements EntityInterface
     );
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return I18n
      */
-    public function setId(?int $id): I18n
+    public function setId(?string $id): I18n
     {
         $this->id = $id;
         return $this;
@@ -183,20 +187,22 @@ class I18n implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return \DateTimeImmutable|null
      */
-    public function getVersion(): ?string
+    public function getVersionDate(): ?\DateTimeImmutable
     {
-        return $this->version;
+        return $this->versionDate;
     }
 
     /**
-     * @param string|null $version
+     * VersionDate.
+     *
+     * @param \DateTimeImmutable|null $versionDate
      * @return I18n
      */
-    public function setVersion(?string $version): I18n
+    public function setVersionDate(?\DateTimeImmutable $versionDate): I18n
     {
-        $this->version = $version;
+        $this->versionDate = $versionDate;
         return $this;
     }
 
@@ -442,17 +448,17 @@ class I18n implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__I18n` (
-                `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `code` varchar(5) NOT NULL,
-                `name` varchar(100) NOT NULL,
-                `version` varchar(10) DEFAULT NULL,
-                `active` varchar(1) NOT NULL DEFAULT 'Y',
-                `installed` varchar(1) NOT NULL DEFAULT 'N',
-                `systemDefault` varchar(1) NOT NULL DEFAULT 'N',
-                `dateFormat` varchar(20) NOT NULL,
-                `dateFormatRegEx` longtext NOT NULL,
-                `dateFormatPHP` varchar(20) NOT NULL,
-                `rtl` varchar(1) NOT NULL DEFAULT 'N',
+                `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                `code` CHAR(5) NOT NULL,
+                `name` CHAR(100) NOT NULL,
+                `version_date` date DEFAUT NULL COMMENT '(DC2Type:date_immutable)',
+                `active` CHAR(1) NOT NULL DEFAULT 'Y',
+                `installed` CHAR(1) NOT NULL DEFAULT 'N',
+                `system_default` CHAR(1) NOT NULL DEFAULT 'N',
+                `date_format` CHAR(20) NOT NULL,
+                `date_format_regex` longtext NOT NULL,
+                `date_format_php` CHAR(20) NOT NULL,
+                `rtl` CHAR(1) NOT NULL DEFAULT 'N',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
@@ -472,7 +478,8 @@ class I18n implements EntityInterface
      */
     public function coreData(): string
     {
-        return "INSERT INTO `__prefix__I18n` (`code`, `name`, `version`, `active`, `installed`, `systemDefault`, `dateFormat`, `dateFormatRegEx`, `dateFormatPHP`, `rtl`) VALUES
+        return <<<JJJ
+INSERT INTO `__prefix__I18n` (`code`, `name`, `version_date`, `active`, `installed`, `system_default`, `date_format`, `date_format_regex`, `date_format_php`, `rtl`) VALUES
                     ('en_GB', 'English - United Kingdom', NULL, 'Y', 'Y', 'Y', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
                     ('en_US', 'English - United States', NULL, 'Y', 'N', 'N', 'mm/dd/yyyy', '/([1-9]|1[012])[- /.]([1-9]|[12][0-9]|3[01])[- /.](19|20\\d\\d)/', 'm/d/Y', 'N'),
                     ('es_ES', 'Español', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
@@ -514,7 +521,11 @@ class I18n implements EntityInterface
                     ('he_IL', 'עברית - ישראל', NULL, 'Y', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'Y'),
                     ('tr_TR', 'Türkçe - Türkiye', NULL, 'Y', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'N'),
                     ('my_MM', 'မြန်မာ - မြန်မာ', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd-m-Y', 'N');
-                    ";
+JJJ;
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

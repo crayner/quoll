@@ -53,5 +53,5 @@ interface EntityInterface
      * getVersion
      * @return string
      */
-    public function getVersion(): string;
+    public static function getVersion(): string;
 }

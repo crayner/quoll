@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TTDayRowClass
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTDayRowClassRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTDayRowClass", indexes={
+ * @ORM\Table(name="TTDayRowClass", indexes={
  *     @ORM\Index(name="course_class", columns={"course_class"}),
  *     @ORM\Index(name="facility", columns={"facility"}),
  *     @ORM\Index(name="timetable_column_row", columns={"timetable_column_row"}),
@@ -32,11 +32,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TTDayRowClass implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="bigint", columnDefinition="INT(12) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -69,18 +71,20 @@ class TTDayRowClass implements EntityInterface
     private $facility;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return TTDayRowClass
      */
-    public function setId(?int $id): TTDayRowClass
+    public function setId(?string $id): TTDayRowClass
     {
         $this->id = $id;
         return $this;
@@ -182,31 +186,36 @@ class TTDayRowClass implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__TTDayRowClass` (
-                    `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `timetable_column_row` int(8) UNSIGNED DEFAULT NULL,
-                    `timetable_day` int(10) UNSIGNED DEFAULT NULL,
-                    `course_class` int(8) UNSIGNED DEFAULT NULL,
-                    `facility` int(10) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__TTDayRowClass` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `timetable_column_row` CHAR(36) DEFAULT NULL,
+                    `timetable_day` CHAR(36) DEFAULT NULL,
+                    `course_class` CHAR(36) DEFAULT NULL,
+                    `facility` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `facility` (`facility`),
-                    KEY `timetable_day` (`timetable_day`) USING BTREE,
-                    KEY `timetable_column_row` (`timetable_column_row`) USING BTREE,
-                    KEY `course_class` (`course_class`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `timetable_day` (`timetable_day`),
+                    KEY `timetable_column_row` (`timetable_column_row`),
+                    KEY `course_class` (`course_class`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__TTDayRowClass`
-                    ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_column_row`) REFERENCES `__prefix__TTColumnRow` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__TTDayRowClass`
+                    ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_column_row`) REFERENCES `__prefix__TTColumnRow` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

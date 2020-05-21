@@ -21,15 +21,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Payment
  * @package App\Modules\Finance\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Finance\Repository\PaymentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Payment")
+ * @ORM\Table(name="Payment",
+ *     indexes={@ORM\Index(name="person",columns={"person"})})
  */
 class Payment implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="bigint", columnDefinition="INT(14) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -40,8 +43,8 @@ class Payment implements EntityInterface
     private $foreignTable;
 
     /**
-     * @var integer|null
-     * @ORM\Column(type="bigint", name="foreign_table_id", columnDefinition="INT(14) UNSIGNED")
+     * @var string|null
+     * @ORM\Column(length=36,name="foreign_table_id")
      */
     private $foreignTableID;
 
@@ -130,18 +133,20 @@ class Payment implements EntityInterface
     private $timestamp;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Payment
      */
-    public function setId(?int $id): Payment
+    public function setId(?string $id): Payment
     {
         $this->id = $id;
         return $this;
@@ -166,18 +171,20 @@ class Payment implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getForeignTableID(): ?int
+    public function getForeignTableID(): ?string
     {
         return $this->foreignTableID;
     }
 
     /**
-     * @param int|null $foreignTableID
+     * ForeignTableID.
+     *
+     * @param string|null $foreignTableID
      * @return Payment
      */
-    public function setForeignTableID(?int $foreignTableID): Payment
+    public function setForeignTableID(?string $foreignTableID): Payment
     {
         $this->foreignTableID = $foreignTableID;
         return $this;
@@ -411,30 +418,30 @@ class Payment implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Payment` (
-                    `id` int(14) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `foreign_table` varchar(50) NOT NULL,
-                    `foreign_table_id` int(14) UNSIGNED DEFAULT NULL,
-                    `type` varchar(16) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Online\',
-                    `status` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'Complete\' COMMENT \'Complete means paid in one go, partial is part of a set of payments, and final is last in a set of payments.\',
+        return "CREATE TABLE `__prefix__Payment` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `foreign_table` CHAR(50) NOT NULL,
+                    `foreign_table_id` CHAR(36) DEFAULT NULL,
+                    `type` CHAR(16) NOT NULL DEFAULT 'Online',
+                    `status` CHAR(8) NOT NULL DEFAULT 'Complete' COMMENT 'Complete means paid in one go, partial is part of a set of payments, and final is last in a set of payments.',
                     `amount` decimal(13,2) NOT NULL,
-                    `gateway` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `online_transaction_status` varchar(12) DEFAULT NULL,
-                    `payment_token` varchar(50) DEFAULT NULL,
-                    `payment_payer_id` varchar(50) DEFAULT NULL,
-                    `payment_transaction_id` varchar(50) DEFAULT NULL,
-                    `payment_receipt_id` varchar(50) DEFAULT NULL,
-                    `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT \'(DC2Type:datetime_immutable)\',
-                    `person` int(10) UNSIGNED DEFAULT NULL,
+                    `gateway` CHAR(6) DEFAULT NULL,
+                    `online_transaction_status` CHAR(12) DEFAULT NULL,
+                    `payment_token` CHAR(50) DEFAULT NULL,
+                    `payment_payer_id` CHAR(50) DEFAULT NULL,
+                    `payment_transaction_id` CHAR(50) DEFAULT NULL,
+                    `payment_receipt_id` CHAR(50) DEFAULT NULL,
+                    `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '(DC2Type:datetime_immutable)',
+                    `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `IDX_6DE7A9BACC6782D6` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `person` (`person`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__Payment`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);';
     }
 
     public function coreData(): string
@@ -442,4 +449,8 @@ class Payment implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

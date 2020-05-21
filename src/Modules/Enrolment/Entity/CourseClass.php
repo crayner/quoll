@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class CourseClass
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseClassRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="CourseClass",
+ * @ORM\Table(name="CourseClass",
  *     indexes={@ORM\Index(name="course", columns={"course"}),
  *     @ORM\Index(name="scale",columns={"scale"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="nameCourse",columns={ "name", "course"}),
@@ -38,13 +38,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CourseClass implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -112,18 +114,20 @@ class CourseClass implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return CourseClass
      */
-    public function setId(?int $id): CourseClass
+    public function setId(?string $id): CourseClass
     {
         $this->id = $id;
         return $this;
@@ -405,31 +409,36 @@ class CourseClass implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__CourseClass` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) NOT NULL,
-                    `nameShort` varchar(8) NOT NULL,
-                    `reportable` varchar(1) NOT NULL DEFAULT \'Y\',
-                    `attendance` varchar(1) NOT NULL DEFAULT \'Y\',
-                    `course` int(8) UNSIGNED DEFAULT NULL,
-                    `scale` int(5) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__CourseClass` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `nameShort` CHAR(8) NOT NULL,
+                    `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `course` CHAR(36) DEFAULT NULL,
+                    `scale` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `nameCourse` (`name`,`course`),
                     UNIQUE KEY `nameShortCourse` (`nameShort`,`course`),
-                    KEY `scale` (`scale`) USING BTREE,
-                    KEY `course` (`course`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `scale` (`scale`),
+                    KEY `course` (`course`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__CourseClass`
-                    ADD CONSTRAINT FOREIGN KEY (`course`) REFERENCES `__prefix__Course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`course`) REFERENCES `__prefix__Course` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`);';
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

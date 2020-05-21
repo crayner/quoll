@@ -19,11 +19,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\SettingRepository")
  * @ORM\Table(name="Setting",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display", columns={"scope","nameDisplay"}),
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display", columns={"scope","name_display"}),
  *     @ORM\UniqueConstraint(name="scope_name", columns={"scope","name"})})
  */
 class Setting implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -102,7 +104,7 @@ class Setting implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=60, name="nameDisplay")
+     * @ORM\Column(length=60)
      */
     private $nameDisplay;
 
@@ -126,7 +128,7 @@ class Setting implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(length=191,nullable=true)
      */
     private $description;
 
@@ -185,15 +187,15 @@ class Setting implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Setting` (
-                    `id` char(36) NOT NULL,
-                    `scope` varchar(50) NOT NULL,
-                    `name` varchar(50) NOT NULL,
-                    `nameDisplay` varchar(60) NOT NULL,
-                    `description` varchar(191) DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL,
+                    `scope` CHAR(50) NOT NULL,
+                    `name` CHAR(50) NOT NULL,
+                    `name_display` CHAR(60) NOT NULL,
+                    `description` CHAR(191) DEFAULT NULL,
                     `value` longtext DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `scope_name` (`scope`,`name`) USING BTREE,
-                    UNIQUE KEY `scope_display` (`scope`,`nameDisplay`) USING BTREE
+                    UNIQUE KEY `scope_name` (`scope`,`name`),
+                    UNIQUE KEY `scope_display` (`scope`,`name_display`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
@@ -205,7 +207,7 @@ class Setting implements EntityInterface
     public function coreData(): string
     {
         return <<<JJJ
-INSERT INTO `__prefix__Setting` (`scope`, `name`, `nameDisplay`, `description`, `value`) VALUES
+INSERT INTO `__prefix__Setting` (`scope`, `name`, `name_display`, `description`, `value`) VALUES
 ('System', 'absoluteURL', 'Base URL', 'The address at which the whole system resides.', null),
 ('System', 'organisationName', 'Organisation Name', null, null),
 ('System', 'organisationNameShort', 'Organisation Initials', null, null),
@@ -465,4 +467,8 @@ INSERT INTO `__prefix__Setting` (`scope`, `name`, `nameDisplay`, `description`, 
 JJJ;
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

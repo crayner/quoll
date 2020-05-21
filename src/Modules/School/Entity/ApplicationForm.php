@@ -26,17 +26,20 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ApplicationForm
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\ApplicationFormRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ApplicationForm",options={"auto_increment": 1})
+ * @ORM\Table(name="ApplicationForm",)
  * @ORM\HasLifecycleCallbacks
  */
 class ApplicationForm implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(12) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -127,13 +130,13 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="homeAddressDistrict", nullable=true)
+     * @ORM\Column(name="homeAddressDistrict",length=191,nullable=true)
      */
     private $homeAddressDistrict;
 
     /**
      * @var string|null
-     * @ORM\Column(name="homeAddressCountry", nullable=true)
+     * @ORM\Column(name="homeAddressCountry",length=191,nullable=true)
      */
     private $homeAddressCountry;
 
@@ -181,7 +184,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="citizenship1")
+     * @ORM\Column(name="citizenship1",length=191)
      */
     private $citizenship1;
 
@@ -199,7 +202,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="residencyStatus")
+     * @ORM\Column(length=191, name="residencyStatus")
      */
     private $residencyStatus;
 
@@ -225,7 +228,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="dayType", nullable=true)
+     * @ORM\Column(name="dayType",length=191,nullable=true)
      */
     private $dayType;
 
@@ -243,7 +246,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="schoolAddress1")
+     * @ORM\Column(name="schoolAddress1",length=191)
      */
     private $schoolAddress1;
 
@@ -273,7 +276,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="schoolAddress2")
+     * @ORM\Column(name="schoolAddress2",length=191)
      */
     private $schoolAddress2;
 
@@ -464,7 +467,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="companyAddress", length=255, nullable=true)
+     * @ORM\Column(name="companyAddress", length=191, nullable=true)
      */
     private $companyAddress;
 
@@ -573,7 +576,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="parent1citizenship1", nullable=true)
+     * @ORM\Column(length=191, name="parent1citizenship1", nullable=true)
      */
     private $parent1citizenship1;
 
@@ -585,7 +588,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="parent1residencyStatus", nullable=true)
+     * @ORM\Column(length=191, name="parent1residencyStatus", nullable=true)
      */
     private $parent1residencyStatus;
 
@@ -711,7 +714,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="parent2citizenship1", nullable=true)
+     * @ORM\Column(length=191, name="parent2citizenship1", nullable=true)
      */
     private $parent2citizenship1;
 
@@ -723,7 +726,7 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=255, name="parent2residencyStatus", nullable=true)
+     * @ORM\Column(length=191, name="parent2residencyStatus", nullable=true)
      */
     private $parent2residencyStatus;
 
@@ -833,13 +836,13 @@ class ApplicationForm implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="howDidYouHear", nullable=true)
+     * @ORM\Column(name="howDidYouHear",nullable=true,length=191)
      */
     private $howDidYouHear;
 
     /**
      * @var string|null
-     * @ORM\Column(name="howDidYouHearMore", nullable=true)
+     * @ORM\Column(name="howDidYouHearMore",nullable=true,length=191)
      */
     private $howDidYouHearMore;
 
@@ -892,18 +895,20 @@ class ApplicationForm implements EntityInterface
     private $parent2fields;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return ApplicationForm
      */
-    public function setId(?int $id): ApplicationForm
+    public function setId(?string $id): ApplicationForm
     {
         $this->id = $id;
         return $this;
@@ -3424,144 +3429,144 @@ class ApplicationForm implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__ApplicationForm` (
-                    `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `applicationFormHash` varchar(40) DEFAULT NULL,
-                    `surname` varchar(60) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `firstName` varchar(60) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `preferredName` varchar(60) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `officialName` varchar(150) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nameInCharacters` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `gender` varchar(12) COLLATE ut8mb4_unicode_ci DEFAULT 'Unspecified',
-                    `username` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `status` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'Pending',
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `applicationFormHash` CHAR(40) DEFAULT NULL,
+                    `surname` CHAR(60) NOT NULL,
+                    `firstName` CHAR(60) NOT NULL,
+                    `preferredName` CHAR(60) NOT NULL,
+                    `officialName` CHAR(150) NOT NULL,
+                    `nameInCharacters` CHAR(20) NOT NULL,
+                    `gender` CHAR(12) DEFAULT 'Unspecified',
+                    `username` CHAR(20) DEFAULT NULL,
+                    `status` CHAR(12) NOT NULL DEFAULT 'Pending',
                     `dob` date DEFAULT NULL,
-                    `email` varchar(75) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `homeAddress` longtext COLLATE ut8mb4_unicode_ci,
-                    `homeAddressDistrict` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `homeAddressCountry` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `phone1Type` varchar(6) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `phone1CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `phone1` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `phone2Type` varchar(6) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `phone2CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `phone2` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `countryOfBirth` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `citizenship1` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `citizenship1Passport` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nationalIDCardNumber` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `residencyStatus` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `email` CHAR(75) DEFAULT NULL,
+                    `homeAddress` longtext,
+                    `homeAddressDistrict` CHAR(191) DEFAULT NULL,
+                    `homeAddressCountry` CHAR(191) DEFAULT NULL,
+                    `phone1Type` CHAR(6) NOT NULL,
+                    `phone1CountryCode` CHAR(7) NOT NULL,
+                    `phone1` CHAR(20) NOT NULL,
+                    `phone2Type` CHAR(6) NOT NULL,
+                    `phone2CountryCode` CHAR(7) NOT NULL,
+                    `phone2` CHAR(20) NOT NULL,
+                    `countryOfBirth` CHAR(30) NOT NULL,
+                    `citizenship1` CHAR(191) NOT NULL,
+                    `citizenship1Passport` CHAR(30) NOT NULL,
+                    `nationalIDCardNumber` CHAR(30) NOT NULL,
+                    `residencyStatus` CHAR(191) NOT NULL,
                     `visaExpiryDate` date DEFAULT NULL,
-                    `dayType` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `referenceEmail` varchar(100) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `schoolName1` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolAddress1` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolGrades1` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolLanguage1` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `dayType` CHAR(191) DEFAULT NULL,
+                    `referenceEmail` CHAR(100) DEFAULT NULL,
+                    `schoolName1` CHAR(50) NOT NULL,
+                    `schoolAddress1` CHAR(191) NOT NULL,
+                    `schoolGrades1` CHAR(20) NOT NULL,
+                    `schoolLanguage1` CHAR(50) NOT NULL,
                     `schoolDate1` date DEFAULT NULL,
-                    `schoolName2` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolAddress2` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolGrades2` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `schoolLanguage2` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `schoolName2` CHAR(50) NOT NULL,
+                    `schoolAddress2` CHAR(191) NOT NULL,
+                    `schoolGrades2` CHAR(20) NOT NULL,
+                    `schoolLanguage2` CHAR(50) NOT NULL,
                     `schoolDate2` date DEFAULT NULL,
-                    `siblingName1` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingName1` CHAR(50) NOT NULL,
                     `siblingDOB1` date DEFAULT NULL,
-                    `siblingSchool1` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingSchool1` CHAR(50) NOT NULL,
                     `siblingSchoolJoiningDate1` date DEFAULT NULL,
-                    `siblingName2` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingName2` CHAR(50) NOT NULL,
                     `siblingDOB2` date DEFAULT NULL,
-                    `siblingSchool2` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingSchool2` CHAR(50) NOT NULL,
                     `siblingSchoolJoiningDate2` date DEFAULT NULL,
-                    `siblingName3` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingName3` CHAR(50) NOT NULL,
                     `siblingDOB3` date DEFAULT NULL,
-                    `siblingSchool3` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `siblingSchool3` CHAR(50) NOT NULL,
                     `siblingSchoolJoiningDate3` date DEFAULT NULL,
-                    `languageHomePrimary` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `languageHomeSecondary` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `languageFirst` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `languageSecond` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `languageThird` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `medicalInformation` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `sen` varchar(1) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `senDetails` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `languageChoice` varchar(100) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `languageChoiceExperience` longtext COLLATE ut8mb4_unicode_ci,
-                    `scholarshipInterest` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'N',
-                    `scholarshipRequired` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'N',
-                    `payment` varchar(7) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'Family',
-                    `companyName` varchar(100) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `companyContact` varchar(100) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `companyAddress` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `companyEmail` longtext COLLATE ut8mb4_unicode_ci,
-                    `companyCCFamily` varchar(1) COLLATE ut8mb4_unicode_ci DEFAULT NULL COMMENT 'When company is billed, should family receive a copy?',
-                    `companyPhone` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `companyAll` varchar(1) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `__prefix__FinanceFeeCategoryIDList` longtext COLLATE ut8mb4_unicode_ci,
-                    `agreement` varchar(1) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1title` varchar(5) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1surname` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1firstName` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1preferredName` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1officialName` varchar(150) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1nameInCharacters` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1gender` varchar(12) COLLATE ut8mb4_unicode_ci DEFAULT 'Unspecified',
-                    `parent1relationship` varchar(50) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1languageFirst` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1languageSecond` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1citizenship1` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1nationalIDCardNumber` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1residencyStatus` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `languageHomePrimary` CHAR(30) NOT NULL,
+                    `languageHomeSecondary` CHAR(30) NOT NULL,
+                    `languageFirst` CHAR(30) NOT NULL,
+                    `languageSecond` CHAR(30) NOT NULL,
+                    `languageThird` CHAR(30) NOT NULL,
+                    `medicalInformation` longtext NOT NULL,
+                    `sen` CHAR(1) DEFAULT NULL,
+                    `senDetails` longtext NOT NULL,
+                    `languageChoice` CHAR(100) DEFAULT NULL,
+                    `languageChoiceExperience` longtext,
+                    `scholarshipInterest` CHAR(1) NOT NULL DEFAULT 'N',
+                    `scholarshipRequired` CHAR(1) NOT NULL DEFAULT 'N',
+                    `payment` CHAR(7) NOT NULL DEFAULT 'Family',
+                    `companyName` CHAR(100) DEFAULT NULL,
+                    `companyContact` CHAR(100) DEFAULT NULL,
+                    `companyAddress` CHAR(191) DEFAULT NULL,
+                    `companyEmail` longtext,
+                    `companyCCFamily` CHAR(1) DEFAULT NULL COMMENT 'When company is billed, should family receive a copy?',
+                    `companyPhone` CHAR(20) DEFAULT NULL,
+                    `companyAll` CHAR(1) DEFAULT NULL,
+                    `__prefix__FinanceFeeCategoryIDList` longtext,
+                    `agreement` CHAR(1) DEFAULT NULL,
+                    `parent1title` CHAR(5) DEFAULT NULL,
+                    `parent1surname` CHAR(60) DEFAULT NULL,
+                    `parent1firstName` CHAR(60) DEFAULT NULL,
+                    `parent1preferredName` CHAR(60) DEFAULT NULL,
+                    `parent1officialName` CHAR(150) DEFAULT NULL,
+                    `parent1nameInCharacters` CHAR(20) DEFAULT NULL,
+                    `parent1gender` CHAR(12) DEFAULT 'Unspecified',
+                    `parent1relationship` CHAR(50) DEFAULT NULL,
+                    `parent1languageFirst` CHAR(30) DEFAULT NULL,
+                    `parent1languageSecond` CHAR(30) DEFAULT NULL,
+                    `parent1citizenship1` CHAR(191) DEFAULT NULL,
+                    `parent1nationalIDCardNumber` CHAR(30) DEFAULT NULL,
+                    `parent1residencyStatus` CHAR(191) DEFAULT NULL,
                     `parent1visaExpiryDate` date DEFAULT NULL,
-                    `parent1email` varchar(75) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone1Type` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone1CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone1` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone2Type` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone2CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1phone2` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1profession` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent1employer` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2title` varchar(5) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2surname` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2firstName` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2preferredName` varchar(60) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2officialName` varchar(150) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2nameInCharacters` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2gender` varchar(12) COLLATE ut8mb4_unicode_ci DEFAULT 'Unspecified',
-                    `parent2relationship` varchar(50) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2languageFirst` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2languageSecond` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2citizenship1` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2nationalIDCardNumber` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2residencyStatus` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `parent1email` CHAR(75) DEFAULT NULL,
+                    `parent1phone1Type` CHAR(6) DEFAULT NULL,
+                    `parent1phone1CountryCode` CHAR(7) DEFAULT NULL,
+                    `parent1phone1` CHAR(20) DEFAULT NULL,
+                    `parent1phone2Type` CHAR(6) DEFAULT NULL,
+                    `parent1phone2CountryCode` CHAR(7) DEFAULT NULL,
+                    `parent1phone2` CHAR(20) DEFAULT NULL,
+                    `parent1profession` CHAR(30) DEFAULT NULL,
+                    `parent1employer` CHAR(30) DEFAULT NULL,
+                    `parent2title` CHAR(5) DEFAULT NULL,
+                    `parent2surname` CHAR(60) DEFAULT NULL,
+                    `parent2firstName` CHAR(60) DEFAULT NULL,
+                    `parent2preferredName` CHAR(60) DEFAULT NULL,
+                    `parent2officialName` CHAR(150) DEFAULT NULL,
+                    `parent2nameInCharacters` CHAR(20) DEFAULT NULL,
+                    `parent2gender` CHAR(12) DEFAULT 'Unspecified',
+                    `parent2relationship` CHAR(50) DEFAULT NULL,
+                    `parent2languageFirst` CHAR(30) DEFAULT NULL,
+                    `parent2languageSecond` CHAR(30) DEFAULT NULL,
+                    `parent2citizenship1` CHAR(191) DEFAULT NULL,
+                    `parent2nationalIDCardNumber` CHAR(30) DEFAULT NULL,
+                    `parent2residencyStatus` CHAR(191) DEFAULT NULL,
                     `parent2visaExpiryDate` date DEFAULT NULL,
-                    `parent2email` varchar(75) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone1Type` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone1CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone1` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone2Type` varchar(6) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone2CountryCode` varchar(7) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2phone2` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2profession` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `parent2employer` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
+                    `parent2email` CHAR(75) DEFAULT NULL,
+                    `parent2phone1Type` CHAR(6) DEFAULT NULL,
+                    `parent2phone1CountryCode` CHAR(7) DEFAULT NULL,
+                    `parent2phone1` CHAR(20) DEFAULT NULL,
+                    `parent2phone2Type` CHAR(6) DEFAULT NULL,
+                    `parent2phone2CountryCode` CHAR(7) DEFAULT NULL,
+                    `parent2phone2` CHAR(20) DEFAULT NULL,
+                    `parent2profession` CHAR(30) DEFAULT NULL,
+                    `parent2employer` CHAR(30) DEFAULT NULL,
                     `timestamp` datetime DEFAULT NULL,
                     `priority` int(1) DEFAULT NULL,
-                    `milestones` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `notes` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `milestones` longtext NOT NULL,
+                    `notes` longtext NOT NULL,
                     `dateStart` date DEFAULT NULL,
-                    `howDidYouHear` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `howDidYouHearMore` varchar(255) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `paymentMade` varchar(10) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'N',
-                    `studentID` varchar(10) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `privacy` longtext COLLATE ut8mb4_unicode_ci,
-                    `fields` longtext COLLATE ut8mb4_unicode_ci NOT NULL COMMENT 'Serialised array of custom field values',
-                    `parent1fields` longtext COLLATE ut8mb4_unicode_ci NOT NULL COMMENT 'Serialised array of custom field values',
-                    `parent2fields` longtext COLLATE ut8mb4_unicode_ci NOT NULL COMMENT 'Serialised array of custom field values',
-                    `academic_year_entry` int(3) UNSIGNED DEFAULT NULL,
-                    `year_group_entry` int(3) UNSIGNED DEFAULT NULL,
-                    `parent1` int(10) UNSIGNED DEFAULT NULL,
-                    `roll_group` int(5) UNSIGNED DEFAULT NULL,
-                    `family` int(7) UNSIGNED DEFAULT NULL,
-                    `payment_record` int(14) UNSIGNED DEFAULT NULL,
+                    `howDidYouHear` CHAR(191) DEFAULT NULL,
+                    `howDidYouHearMore` CHAR(191) DEFAULT NULL,
+                    `paymentMade` CHAR(10) NOT NULL DEFAULT 'N',
+                    `studentID` CHAR(10) DEFAULT NULL,
+                    `privacy` longtext,
+                    `fields` longtext NOT NULL COMMENT 'Serialised array of custom field values',
+                    `parent1fields` longtext NOT NULL COMMENT 'Serialised array of custom field values',
+                    `parent2fields` longtext NOT NULL COMMENT 'Serialised array of custom field values',
+                    `academic_year_entry` CHAR(36) DEFAULT NULL,
+                    `year_group_entry` CHAR(36) DEFAULT NULL,
+                    `parent1` CHAR(36) DEFAULT NULL,
+                    `roll_group` CHAR(36) DEFAULT NULL,
+                    `family` CHAR(36) DEFAULT NULL,
+                    `payment_record` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `IDX_A309B59CF9B7736F` (`academic_year_entry`),
                     KEY `IDX_A309B59C9DE35FD8` (`year_group_entry`),
@@ -3579,12 +3584,12 @@ class ApplicationForm implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__ApplicationForm`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year_entry`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`year_group_entry`) REFERENCES `__prefix__YearGroup` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`parent1`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`payment_record`) REFERENCES `__prefix__Payment` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year_entry`) REFERENCES `__prefix__AcademicYear` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`year_group_entry`) REFERENCES `__prefix__YearGroup` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`parent1`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`payment_record`) REFERENCES `__prefix__Payment` (`id`);";
     }
 
     /**
@@ -3596,4 +3601,8 @@ class ApplicationForm implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

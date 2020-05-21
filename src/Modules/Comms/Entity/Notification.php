@@ -16,21 +16,24 @@ use App\Modules\System\Entity\Module;
 use App\Modules\People\Entity\Person;
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Notification
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Notification")
+ * @ORM\Table(name="Notification")
  * @ORM\HasLifecycleCallbacks()
  * */
 class Notification implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(10) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -61,7 +64,8 @@ class Notification implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", columnDefinition="INT(4)", options={"default": "1"})
+     * @ORM\Column(type="smallint",options={"default": "1"})
+     * @Assert\NotBlank()
      */
     private $count = 1;
 
@@ -78,29 +82,31 @@ class Notification implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="actionLink", options={"comment": "Relative to absoluteURL, start with a forward slash"},nullable=true)
+     * @ORM\Column(length=191,options={"comment": "Relative to absoluteURL, start with a forward slash"},nullable=true)
      */
     private $actionLink;
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime")
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="datetime_immutable")
      */
     private $timestamp;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Notification
      */
-    public function setId(?int $id): Notification
+    public function setId(?string $id): Notification
     {
         $this->id = $id;
         return $this;
@@ -279,36 +285,40 @@ class Notification implements EntityInterface
     {
         return [
             'module' => $this->getModule()->getName(),
-            'name' => $this->get
         ];
     }
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Notification` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `status` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT \'New\',
-                    `count` int(4) DEFAULT NULL,
-                    `text` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `actionLink` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL COMMENT \'Relative to absoluteURL, start with a forward slash\',
-                    `timestamp` datetime NOT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
-                    `module` int(4) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__Notification` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `status` CHAR(8) NOT NULL DEFAULT 'New',
+                    `count` smallint DEFAULT NULL,
+                    `text` longtext NOT NULL,
+                    `action_link` CHAR(191) NOT NULL COMMENT 'Relative to absoluteURL, start with a forward slash',
+                    `timestamp` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+                    `person` CHAR(36) DEFAULT NULL,
+                    `module` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `person` (`person`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__Notification`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);';
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

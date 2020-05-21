@@ -24,18 +24,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class NotificationListener
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationListenerRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="NotificationListener",
+ * @ORM\Table(name="NotificationListener",
  *     indexes={@ORM\Index(name="person",columns={"person"}),
  *     @ORM\Index(name="notification_event",columns={"notification_event"})})
  * @Valid\EventListener()
  */
 class NotificationListener implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(10) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
     
@@ -58,7 +60,7 @@ class NotificationListener implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="scopeType", nullable=true)
+     * @ORM\Column(length=30,nullable=true)
      * @Assert\Choice(callback="getScopeTypeList")
      * @Assert\NotBlank()
      */
@@ -76,9 +78,9 @@ class NotificationListener implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=20,name="scopeID",nullable=true)
+     * @ORM\Column(length=36,nullable=true)
      */
-    private $scopeID;
+    private $scopeIdentifier;
 
     /**
      * @return int|null
@@ -152,31 +154,31 @@ class NotificationListener implements EntityInterface
     {
         $this->scopeType = $scopeType;
         if ($scopeType === 'All')
-            $this->setScopeID(null);
+            $this->setScopeIdentifier(null);
         return $this;
     }
 
     /**
-     * getScopeID
+     * getScopeIdentifier
      * @return string|null
      */
-    public function getScopeID(): ?string
+    public function getScopeIdentifier(): ?string
     {
         if ($this->getScopeType() === 'All')
-            $this->scopeID = null;
-        return $this->scopeID;
+            $this->scopeIdentifier = null;
+        return $this->scopeIdentifier;
     }
 
     /**
-     * setScopeID
-     * @param string|null $scopeID
+     * setScopeIdentifier
+     * @param string|null $scopeIdentifier
      * @return NotificationListener
      */
-    public function setScopeID(?string $scopeID): NotificationListener
+    public function setScopeIdentifier(?string $scopeIdentifier): NotificationListener
     {
         if ($this->getScopeType() === 'All')
-            $scopeID  = null;
-        $this->scopeID = $scopeID;
+            $scopeIdentifier  = null;
+        $this->scopeIdentifier = $scopeIdentifier;
         return $this;
     }
 
@@ -227,27 +229,32 @@ class NotificationListener implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__NotificationListener` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `scopeType` varchar(30) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `scopeID` int(20) UNSIGNED DEFAULT NULL,
-                    `notification_event` int(6) UNSIGNED DEFAULT NULL,
-                    `person` int(10) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__NotificationListener` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `scope_type` CHAR(30) DEFAULT NULL,
+                    `scope_identifier` CHAR(36) DEFAULT NULL,
+                    `notification_event` CHAR(36) DEFAULT NULL,
+                    `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `notificatiion_event` (`notification_event`),
+                    KEY `notification_event` (`notification_event`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__NotificationListener`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`notification_event`) REFERENCES `__prefix__NotificationEvent` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`notification_event`) REFERENCES `__prefix__NotificationEvent` (`id`);';
     }
 
     public function coreData(): string
     {
         // TODO: Implement coreData() method.
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

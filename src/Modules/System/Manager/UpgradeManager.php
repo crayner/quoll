@@ -459,7 +459,7 @@ class UpgradeManager
     /**
      * @return string
      */
-    public function getVersion(): string
+    public static function getVersion(): string
     {
         return $this->version;
     }
@@ -562,11 +562,11 @@ class UpgradeManager
         $this->addSql('CREATE TABLE gibbonBehaviourLetter (gibbonBehaviourLetterID INT(10) UNSIGNED AUTO_INCREMENT, letterLevel VARCHAR(1) NOT NULL, status VARCHAR(7) NOT NULL, recordCountAtCreation INT(3), body LONGTEXT NOT NULL, recipientList LONGTEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, AcademicYearID INT(3) UNSIGNED, gibbonPersonID INT(10) UNSIGNED, INDEX IDX_5F61F91071FA7520 (AcademicYearID), INDEX IDX_5F61F910CC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonBehaviourLetterID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonCourse` (
   `gibbonCourseID` int(8) UNSIGNED AUTO_INCREMENT,
-  `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `nameShort` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `name` CHAR(60) COLLATE utf8_unicode_ci NOT NULL,
+  `nameShort` CHAR(12) COLLATE utf8_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8_unicode_ci,
-  `map` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\' COMMENT \'Should this course be included in curriculum maps and other summaries?\',
-  `gibbonYearGroupIDList` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `map` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\' COMMENT \'Should this course be included in curriculum maps and other summaries?\',
+  `gibbonYearGroupIDList` CHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `orderBy` int(3) DEFAULT NULL,
   `academic_year` int(3) UNSIGNED DEFAULT NULL,
   `gibbonDepartmentID` int(4) UNSIGNED DEFAULT NULL,
@@ -578,10 +578,10 @@ class UpgradeManager
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonCourseClass` (
     `gibbonCourseClassID` int(8)  UNSIGNED AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `nameShort` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `reportable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-  `attendance` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `name` CHAR(30) COLLATE utf8_unicode_ci NOT NULL,
+  `nameShort` CHAR(8) COLLATE utf8_unicode_ci NOT NULL,
+  `reportable` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `attendance` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
   `gibbonCourseID` int(8) UNSIGNED DEFAULT NULL,
   `gibbonScaleIDTarget` int(5) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`gibbonCourseClassID`),
@@ -593,8 +593,8 @@ class UpgradeManager
         $this->addSql('CREATE TABLE gibbonCourseClassMap (gibbonCourseClassMapID INT(8) UNSIGNED AUTO_INCREMENT, gibbonCourseClassID INT(8) UNSIGNED, gibbonRollGroupID INT(5) UNSIGNED, gibbonYearGroupID INT(3) UNSIGNED, INDEX IDX_97F9BC70A85AE4EC (gibbonRollGroupID), INDEX IDX_97F9BC70427372F (gibbonYearGroupID), UNIQUE INDEX gibbonCourseClassID (gibbonCourseClassID), PRIMARY KEY(gibbonCourseClassMapID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonCourseClassPerson` (
   `gibbonCourseClassPersonID` int(10) UNSIGNED AUTO_INCREMENT,
-  `role` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `reportable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `role` CHAR(16) COLLATE utf8_unicode_ci NOT NULL,
+  `reportable` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
   `gibbonCourseClassID` int(8) UNSIGNED DEFAULT NULL,
   `gibbonPersonID` int(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`gibbonCourseClassPersonID`),
@@ -630,23 +630,23 @@ class UpgradeManager
         $this->addSql('CREATE TABLE `gibbonMarkbookColumn` (
   `gibbonMarkbookColumnID` int(10) UNSIGNED AUTO_INCREMENT,
   `groupingID` int(8) UNSIGNED DEFAULT NULL,
-  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `type` CHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` CHAR(20) COLLATE utf8_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
   `sequenceNumber` int(3) UNSIGNED DEFAULT NULL,
-  `attachment` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `attainment` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `attachment` CHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `attainment` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
   `attainmentWeighting` decimal(5,2) DEFAULT NULL,
-  `attainmentRaw` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+  `attainmentRaw` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
   `attainmentRawMax` decimal(8,2) DEFAULT NULL,
-  `effort` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-  `comment` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-  `uploadedResponse` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-  `complete` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `effort` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `comment` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `uploadedResponse` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `complete` CHAR(1) COLLATE utf8_unicode_ci NOT NULL,
   `completeDate` date DEFAULT NULL,
-  `viewableStudents` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `viewableParents` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `viewableStudents` CHAR(1) COLLATE utf8_unicode_ci NOT NULL,
+  `viewableParents` CHAR(1) COLLATE utf8_unicode_ci NOT NULL,
   `gibbonCourseClassID` int(8) UNSIGNED NOT NULL,
   `gibbonHookID` int(4) UNSIGNED DEFAULT NULL,
   `gibbonUnitID` int(10) UNSIGNED DEFAULT NULL,
@@ -676,16 +676,16 @@ class UpgradeManager
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonMarkbookEntry` (
   `gibbonMarkbookEntryID` int(12) UNSIGNED AUTO_INCREMENT,
-  `modifiedAssessment` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attainmentValue` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attainmentValueRaw` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attainmentDescriptor` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attainmentConcern` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT \'`P` denotes that student has exceed their personal target\',
-  `effortValue` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `effortDescriptor` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `effortConcern` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `modifiedAssessment` CHAR(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentValue` CHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentValueRaw` CHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentDescriptor` CHAR(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentConcern` CHAR(1) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT \'`P` denotes that student has exceed their personal target\',
+  `effortValue` CHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `effortDescriptor` CHAR(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `effortConcern` CHAR(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `comment` longtext COLLATE utf8_unicode_ci,
-  `response` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `response` CHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `gibbonMarkbookColumnID` int(10) UNSIGNED DEFAULT NULL,
   `gibbonPersonIDStudent` int(10) UNSIGNED DEFAULT NULL,
   `gibbonPersonIDLastEdit` int(10) UNSIGNED DEFAULT NULL,
@@ -704,13 +704,13 @@ class UpgradeManager
         $this->addSql('CREATE TABLE gibbonMessengerTarget (gibbonMessengerTargetID INT(14) UNSIGNED AUTO_INCREMENT, type VARCHAR(16) DEFAULT NULL, id VARCHAR(30) NOT NULL, parents VARCHAR(1) DEFAULT \'N\' NOT NULL, students VARCHAR(1) DEFAULT \'N\' NOT NULL, staff VARCHAR(1) DEFAULT \'N\' NOT NULL, gibbonMessengerID INT(12) UNSIGNED, INDEX IDX_62C2BBE11B4FC86A (gibbonMessengerID), PRIMARY KEY(gibbonMessengerTargetID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonOutcome` (
   `gibbonOutcomeID` int(8) UNSIGNED AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `nameShort` varchar(14) COLLATE utf8_unicode_ci NOT NULL,
-  `category` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` CHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+  `nameShort` CHAR(14) COLLATE utf8_unicode_ci NOT NULL,
+  `category` CHAR(50) COLLATE utf8_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `active` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `scope` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `gibbonYearGroupIDList` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:simple_array)\',
+  `active` CHAR(1) COLLATE utf8_unicode_ci NOT NULL,
+  `scope` CHAR(16) COLLATE utf8_unicode_ci NOT NULL,
+  `gibbonYearGroupIDList` CHAR(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:simple_array)\',
   `gibbonDepartmentID` int(4) UNSIGNED DEFAULT NULL,
   `gibbonPersonIDCreator` int(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`gibbonOutcomeID`),
@@ -743,20 +743,20 @@ class UpgradeManager
         $this->addSql('CREATE TABLE gibbonRubricRow (gibbonRubricRowID INT(9) UNSIGNED AUTO_INCREMENT, title VARCHAR(40) NOT NULL, sequenceNumber INT(2), gibbonRubricID INT(8) UNSIGNED, gibbonOutcomeID INT(8) UNSIGNED, INDEX IDX_96F9D13235479F6A (gibbonOutcomeID), INDEX gibbonRubricID (gibbonRubricID), PRIMARY KEY(gibbonRubricRowID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonStaff` (
   `gibbonStaffID` int(10) UNSIGNED AUTO_INCREMENT,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `initials` varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `jobTitle` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `smartWorkflowHelp` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
-  `firstAidQualified` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+  `type` CHAR(20) COLLATE utf8_unicode_ci NOT NULL,
+  `initials` CHAR(4) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `jobTitle` CHAR(100) COLLATE utf8_unicode_ci NOT NULL,
+  `smartWorkflowHelp` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `firstAidQualified` CHAR(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
   `firstAidExpiry` date DEFAULT NULL,
   `countryOfOrigin` VARCHAR(80) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `qualifications` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `biography` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `biographicalGrouping` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT \'Used for group staff when creating a staff directory.\',
+  `biographicalGrouping` CHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT \'Used for group staff when creating a staff directory.\',
   `biographicalGroupingPriority` int(3) DEFAULT NULL,
   `gibbonPersonID` int(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`gibbonStaffID`),
-  UNIQUE KEY `staff` (`gibbonPersonID`) USING BTREE,
+  UNIQUE KEY `staff` (`gibbonPersonID`),
   UNIQUE KEY `initials` (`initials`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonStaffAbsence (gibbonStaffAbsenceID INT(14) UNSIGNED AUTO_INCREMENT, reason VARCHAR(60) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, commentConfidential LONGTEXT DEFAULT NULL, status VARCHAR(16) DEFAULT \'Approved\', coverageRequired VARCHAR(1) DEFAULT \'N\' NOT NULL, timestampApproval DATETIME DEFAULT NULL, notesApproval LONGTEXT DEFAULT NULL, timestampCreator DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, notificationSent VARCHAR(1) DEFAULT \'N\' NOT NULL, notificationList LONGTEXT DEFAULT NULL, gibbonCalendarEventID LONGTEXT DEFAULT NULL, gibbonStaffAbsenceTypeID INT(6) UNSIGNED, AcademicYearID INT(3) UNSIGNED, gibbonPersonID INT(10) UNSIGNED, gibbonPersonIDApproval INT(10) UNSIGNED, gibbonPersonIDCreator INT(10) UNSIGNED, gibbonGroupID INT(8) UNSIGNED, UNIQUE INDEX UNIQ_2FE5FEF78A15C624 (gibbonStaffAbsenceTypeID), UNIQUE INDEX UNIQ_2FE5FEF771FA7520 (AcademicYearID), UNIQUE INDEX UNIQ_2FE5FEF7CC6782D6 (gibbonPersonID), UNIQUE INDEX UNIQ_2FE5FEF79794905 (gibbonPersonIDApproval), UNIQUE INDEX UNIQ_2FE5FEF7FF59AAB0 (gibbonPersonIDCreator), UNIQUE INDEX UNIQ_2FE5FEF7D62085CF (gibbonGroupID), PRIMARY KEY(gibbonStaffAbsenceID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
@@ -789,15 +789,15 @@ class UpgradeManager
         $this->addSql('CREATE TABLE gibbonTTColumnRow (gibbonTTColumnRowID INT(8) UNSIGNED AUTO_INCREMENT, name VARCHAR(12) NOT NULL, nameShort VARCHAR(4) NOT NULL, timeStart TIME NOT NULL, timeEnd TIME NOT NULL, type VARCHAR(8) NOT NULL, gibbonTTColumnID INT(6) UNSIGNED, INDEX gibbonTTColumnID (gibbonTTColumnID), PRIMARY KEY(gibbonTTColumnRowID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonTTDay` (
   `gibbonTTDayID` int(10) UNSIGNED AUTO_INCREMENT,
-  `name` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `nameShort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
-  `color` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `fontColor` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `name` CHAR(12) COLLATE utf8_unicode_ci NOT NULL,
+  `nameShort` CHAR(4) COLLATE utf8_unicode_ci NOT NULL,
+  `color` CHAR(6) COLLATE utf8_unicode_ci NOT NULL,
+  `fontColor` CHAR(6) COLLATE utf8_unicode_ci NOT NULL,
   `gibbonTTID` int(8) UNSIGNED DEFAULT NULL,
   `gibbonTTColumnID` int(6) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`gibbonTTDayID`),
   UNIQUE KEY `nameShortTT` (`gibbonTTID`,`nameShort`),
-  UNIQUE KEY `nameTT` (`gibbonTTID`,`name`) USING BTREE,
+  UNIQUE KEY `nameTT` (`gibbonTTID`,`name`),
   KEY `IDX_3B9106B3EE6A175` (`gibbonTTID`),
   KEY `gibbonTTColumnID` (`gibbonTTColumnID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');

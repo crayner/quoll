@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Family
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Family",
+ * @ORM\Table(name="Family",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
  *     @ORM\UniqueConstraint(name="familySync",columns={"familySync"})},
  *     indexes={@ORM\Index(name="physical_address", columns={"physical_address"}),
@@ -40,11 +40,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Family implements EntityInterface
 {
-    /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(7) UNSIGNED")
-     * @ORM\GeneratedValue
+    CONST VERSION = '20200401';
+/**
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -438,42 +439,47 @@ class Family implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Family` (
-                    `id` int(7) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(100) NOT NULL,
-                    `formal_name` varchar(100) NOT NULL COMMENT 'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)',
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(100) NOT NULL,
+                    `formal_name` CHAR(100) NOT NULL COMMENT 'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)',
                     `physical_address` CHAR(36) DEFAULT NULL,
-                    `postal_address` char(36) DEFAULT NULL,
-                    `status` varchar(12) NOT NULL,
-                    `languageHomePrimary` varchar(30) DEFAULT NULL,
-                    `languageHomeSecondary` varchar(30) DEFAULT NULL,
-                    `familySync` varchar(50) DEFAULT NULL,
+                    `postal_address` CHAR(36) DEFAULT NULL,
+                    `status` CHAR(12) NOT NULL,
+                    `languageHomePrimary` CHAR(30) DEFAULT NULL,
+                    `languageHomeSecondary` CHAR(30) DEFAULT NULL,
+                    `familySync` CHAR(50) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `familySync` (`familySync`),
                     KEY `physical_address` (`physical_address`),
-                    KEY `postal_address` (`postal_address`) USING BTREE
+                    KEY `postal_address` (`postal_address`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
                 CREATE TABLE `__prefix__FamilyPhone` (
-                    `family` int(7) UNSIGNED NOT NULL,
-                    `phone` char(36) NOT NULL,
+                    `family` CHAR(36) NOT NULL,
+                    `phone` CHAR(36) NOT NULL,
                     PRIMARY KEY (`family`,`phone`),
-                    KEY `family` (`family`) USING BTREE,
-                    KEY `phone` (`phone`) USING BTREE
+                    KEY `family` (`family`),
+                    KEY `phone` (`phone`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__Family`
-                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`);
                 ALTER TABLE `__prefix__FamilyPhone`
-                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`);';
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

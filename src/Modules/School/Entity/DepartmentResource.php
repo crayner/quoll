@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class DepartmentResource
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\DepartmentResourceRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="DepartmentResource", indexes={@ORM\Index(name="department",columns={"department"})})
+ * @ORM\Table(name="DepartmentResource", indexes={@ORM\Index(name="department",columns={"department"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class DepartmentResource

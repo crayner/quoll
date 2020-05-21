@@ -23,21 +23,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class YearGroup
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\YearGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
- *     @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"}),
- *     @ORM\UniqueConstraint(name="sequenceNumber", columns={"sequenceNumber"})},
+ * @ORM\Table(name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
+ *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"}),
+ *     @ORM\UniqueConstraint(name="sequence_number", columns={"sequence_number"})},
  *     indexes={@ORM\Index(name="headOfYear", columns={"head_of_year"})})
  * @UniqueEntity({"name"})
- * @UniqueEntity({"nameShort"})
+ * @UniqueEntity({"abbreviation"})
  * @UniqueEntity({"sequenceNumber"})
  */
 class YearGroup implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="smallint", columnDefinition="INT(3) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -50,14 +52,14 @@ class YearGroup implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=4,name="nameShort",unique=true)
+     * @ORM\Column(length=4,name="abbreviation",unique=true)
      * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(3) UNSIGNED",name="sequenceNumber",unique=true)
+     * @ORM\Column(type="smallint",columnDefinition="SMALLINT UNSIGNED",unique=true)
      * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
      * @Assert\Range(min=1,max=999)
     ")
@@ -73,18 +75,20 @@ class YearGroup implements EntityInterface
     private $headOfYear;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return YearGroup
      */
-    public function setId(?int $id): YearGroup
+    public function setId(?string $id): YearGroup
     {
         $this->id = $id;
         return $this;
@@ -111,18 +115,18 @@ class YearGroup implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return YearGroup
      */
-    public function setNameShort(?string $nameShort): YearGroup
+    public function setAbbreviation(?string $abbreviation): YearGroup
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -181,7 +185,7 @@ class YearGroup implements EntityInterface
         return [
             'sequence' => $this->getSequenceNumber(),
             'name' => $this->getName(),
-            'abbr' => $this->getNameShort(),
+            'abbr' => $this->getAbbreviation(),
             'canDelete' => $this->canDelete(),
             'head' => $this->getHeadOfYear() ? $this->getHeadOfYear()->formatName(['style' => 'long', 'reverse' => false]) : '',
         ];
@@ -198,35 +202,40 @@ class YearGroup implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__YearGroup` (
-                    `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(15) NOT NULL,
-                    `nameShort` varchar(4) NOT NULL,
-                    `sequenceNumber` int(3) UNSIGNED NOT NULL,
-                    `head_of_year` int(10) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__YearGroup` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(15) NOT NULL,
+                    `abbreviation` CHAR(4) NOT NULL,
+                    `sequence_number` smallint UNSIGNED NOT NULL,
+                    `head_of_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `nameShort` (`nameShort`),
-                    UNIQUE KEY `sequenceNumber` (`sequenceNumber`),
-                    KEY `headOfYear` (`head_of_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    UNIQUE KEY `abbreviation` (`abbreviation`),
+                    UNIQUE KEY `sequence_number` (`sequence_number`),
+                    KEY `headOfYear` (`head_of_year`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__YearGroup`
-                    ADD CONSTRAINT FOREIGN KEY (`head_of_year`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__YearGroup`
+                    ADD CONSTRAINT FOREIGN KEY (`head_of_year`) REFERENCES `__prefix__person` (`id`);";
     }
 
     public function coreData(): string
     {
-        return 'INSERT INTO `__prefix__YearGroup` (`name`, `nameShort`, `sequenceNumber`, `head_of_year`) VALUES
-                    (\'Year 7\', \'Y07\', 1, NULL),
-                    (\'Year 8\', \'Y08\', 2, NULL),
-                    (\'Year 9\', \'Y09\', 3, NULL),
-                    (\'Year 10\', \'Y10\', 4, NULL),
-                    (\'Year 11\', \'Y11\', 5, NULL),
-                    (\'Year 12\', \'Y12\', 6, NULL),
-                    (\'Year 13\', \'Y13\', 7, NULL);';
+        return "INSERT INTO `__prefix__YearGroup` (`name`, `abbreviation`, `sequence_number`, `head_of_year`) VALUES
+                    ('Year 7', 'Y07', 1, NULL),
+                    ('Year 8', 'Y08', 2, NULL),
+                    ('Year 9', 'Y09', 3, NULL),
+                    ('Year 10', 'Y10', 4, NULL),
+                    ('Year 11', 'Y11', 5, NULL),
+                    ('Year 12', 'Y12', 6, NULL),
+                    ('Year 13', 'Y13', 7, NULL);";
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

@@ -30,18 +30,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class AcademicYear
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="AcademicYear", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="sequence", columns={"sequenceNumber"})})
+ * @ORM\Table(name="AcademicYear", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="sequence", columns={"sequence_number"})})
  * @Check\AcademicYear()
  * @UniqueEntity("sequenceNumber")
  * @UniqueEntity("name")
  */
 class AcademicYear implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(3) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -67,21 +69,21 @@ class AcademicYear implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable", name="firstDay", nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
     private $firstDay;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable", name="lastDay", nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
     private $lastDay;
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(3)",name="sequenceNumber",unique=true)
+     * @ORM\Column(type="smallint",columnDefinition="INT(3)",unique=true)
      * @Assert\Range(min=1,max=999)
      */
     private $sequenceNumber;
@@ -116,18 +118,20 @@ class AcademicYear implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return AcademicYear
      */
-    public function setId(?int $id): AcademicYear
+    public function setId(?string $id): AcademicYear
     {
         $this->id = $id;
         return $this;
@@ -374,15 +378,15 @@ class AcademicYear implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__AcademicYear` (
-                    `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(9) NOT NULL,
-                    `status` varchar(8) NOT NULL DEFAULT 'Upcoming',
-                    `firstDay` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `lastDay` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `sequenceNumber` int(3) DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(9) NOT NULL,
+                    `status` CHAR(8) NOT NULL DEFAULT 'Upcoming',
+                    `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `last_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `sequence_number` int(3) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`) USING BTREE,
-                    UNIQUE KEY `sequence` (`sequenceNumber`) USING BTREE
+                    UNIQUE KEY `name` (`name`),
+                    UNIQUE KEY `sequence` (`sequence_number`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
@@ -404,4 +408,8 @@ class AcademicYear implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

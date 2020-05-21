@@ -34,6 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Locality implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -216,11 +218,11 @@ class Locality implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Locality` (
-                    `id` char(36) NOT NULL,
-                    `name` varchar(30) NOT NULL,
-                    `territory` varchar(30) DEFAULT NULL,
-                    `post_code` varchar(10) DEFAULT NULL,
-                    `country` varchar(3) DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `territory` CHAR(30) DEFAULT NULL,
+                    `post_code` CHAR(10) DEFAULT NULL,
+                    `country` CHAR(3) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `locality` (`name`,`territory`,`post_code`,`country`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
@@ -252,5 +254,10 @@ class Locality implements EntityInterface
             $result = str_replace(array_keys($this->toArray('style')), array_values($this->toArray('style')), $style);
         }
         return trim($result);
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

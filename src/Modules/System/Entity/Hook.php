@@ -19,17 +19,19 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Hook
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\HookRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Hook",
+ * @ORM\Table(name="Hook",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name", "type"})},
  *     indexes={@ORM\Index(name="module",columns={"module"})})
  */
 class Hook implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="smallint", columnDefinition="INT(4) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -64,18 +66,20 @@ class Hook implements EntityInterface
     private $module;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Hook
      */
-    public function setId(?int $id): Hook
+    public function setId(?string $id): Hook
     {
         $this->id = $id;
         return $this;
@@ -168,26 +172,31 @@ class Hook implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__pefix__Hook` (
-                    `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(50) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `type` varchar(20) COLLATE ut8mb4_unicode_ci DEFAULT NULL,
-                    `options` longtext COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `module` int(4) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__pefix__Hook` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(50) NOT NULL,
+                    `type` CHAR(20) DEFAULT NULL,
+                    `options` longtext NOT NULL,
+                    `module` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`,`type`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__Hook`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__Hook`
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

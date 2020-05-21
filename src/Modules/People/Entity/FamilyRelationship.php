@@ -28,6 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FamilyRelationship implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var string|null
      * @ORM\Id()
@@ -248,29 +250,34 @@ class FamilyRelationship implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__FamilyRelationship` (
-                    `id` CHAR(36) NOT NULL,
-                    `relationship` varchar(50) NOT NULL,
-                    `family` int(7) UNSIGNED DEFAULT NULL,
-                    `adult` char(36) DEFAULT NULL,
-                    `child` char(36) DEFAULT NULL,
+        return "CREATE TABLE `__prefix__FamilyRelationship` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `relationship` CHAR(50) NOT NULL,
+                    `family` CHAR(36) DEFAULT NULL,
+                    `adult` CHAR(36) DEFAULT NULL,
+                    `child` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `family` (`family`),
                     KEY `adult` (`adult`),
                     KEY `student` (`child`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__FamilyRelationship`
-                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__FamilyRelationship`
+                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

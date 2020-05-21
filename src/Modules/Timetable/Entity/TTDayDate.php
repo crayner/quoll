@@ -20,16 +20,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class TTDayDate
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTDayDateRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTDayDate",
+ * @ORM\Table(name="TTDayDate",
  *     indexes={@ORM\Index(name="timetable_day", columns={"timetable_day"})})
  */
 class TTDayDate implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer",columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -113,19 +115,19 @@ class TTDayDate implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE IF NOT EXISTS `__prefix__TTDayDate` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        return "CREATE TABLE IF NOT EXISTS `__prefix__TTDayDate` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `date` date NOT NULL,
-                    `timetable_day` int(10) UNSIGNED DEFAULT NULL,
+                    `timetable_day` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `timetable_day` (`timetable_day`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `timetable_day` (`timetable_day`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__TTDayDate`
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__TTDayDate`
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`);";
     }
 
     public function coreData(): string
@@ -133,4 +135,8 @@ class TTDayDate implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

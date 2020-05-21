@@ -25,18 +25,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Facility
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\FacilityRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Facility", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(name="Facility", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @UniqueEntity({"name"})
  */
 class Facility implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(10) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -72,7 +74,7 @@ class Facility implements EntityInterface
 
     /**
      * @var integer
-     * @ORM\Column(type="integer", columnDefinition="INT(3)", name="computerStudent", options={"default": "0"})
+     * @ORM\Column(type="smallint",options={"default": "0"})
      */
     private $studentComputers = 0;
 
@@ -120,13 +122,13 @@ class Facility implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=5, name="phoneInternal",nullable=true)
+     * @ORM\Column(length=5,nullable=true)
      */
     private $phoneInt;
 
     /**
      * @var string|null
-     * @ORM\Column(length=20, name="phoneExternal",nullable=true)
+     * @ORM\Column(length=20,nullable=true)
      */
     private $phoneExt;
 
@@ -137,18 +139,20 @@ class Facility implements EntityInterface
     private $comment;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Facility
      */
-    public function setId(?int $id): Facility
+    public function setId(?string $id): Facility
     {
         $this->id = $id;
         return $this;
@@ -556,25 +560,25 @@ class Facility implements EntityInterface
 
     public function create() : string
     {
-        return 'CREATE TABLE `__prefix__Facility` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) NOT NULL,
-                    `type` varchar(50) NOT NULL,
+        return "CREATE TABLE `__prefix__Facility` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `type` CHAR(50) NOT NULL,
                     `capacity` int(5) DEFAULT NULL,
-                    `computer` varchar(1) NOT NULL,
-                    `computerStudent` int(3) DEFAULT NULL,
-                    `projector` varchar(1) NOT NULL,
-                    `tv` varchar(1) NOT NULL,
-                    `dvd` varchar(1) NOT NULL,
-                    `hifi` varchar(1) NOT NULL,
-                    `speakers` varchar(1) NOT NULL,
-                    `iwb` varchar(1) NOT NULL,
-                    `phoneInternal` varchar(5) DEFAULT NULL,
-                    `phoneExternal` varchar(20) DEFAULT NULL,
-                    `comment` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
+                    `computer` CHAR(1) NOT NULL,
+                    `computer_student` smallint DEFAULT NULL,
+                    `projector` CHAR(1) NOT NULL,
+                    `tv` CHAR(1) NOT NULL,
+                    `dvd` CHAR(1) NOT NULL,
+                    `hifi` CHAR(1) NOT NULL,
+                    `speakers` CHAR(1) NOT NULL,
+                    `iwb` CHAR(1) NOT NULL,
+                    `phone_internal` CHAR(5) DEFAULT NULL,
+                    `phone_external` CHAR(20) DEFAULT NULL,
+                    `comment` longtext,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints() : string
@@ -585,5 +589,10 @@ class Facility implements EntityInterface
     public function coreData() : string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

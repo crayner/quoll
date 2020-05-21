@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class NotificationEvent
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationEventRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="NotificationEvent",
+ * @ORM\Table(name="NotificationEvent",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="eventModule", columns={"event","module"})},
  *     indexes={@ORM\Index(name="module",columns={"module"}),
  *     @ORM\Index(name="action",columns={"action"})})
@@ -38,13 +38,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * */
 class NotificationEvent implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(6) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -82,7 +84,7 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @var array|null
-     * @ORM\Column(options={"default": "All"}, type="simple_array")
+     * @ORM\Column(options={"default": "All"},type="simple_array")
      */
     private $scopes;
 
@@ -107,18 +109,20 @@ class NotificationEvent implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return NotificationEvent
      */
-    public function setId(?int $id): NotificationEvent
+    public function setId(?string $id): NotificationEvent
     {
         $this->id = $id;
         return $this;
@@ -382,29 +386,34 @@ class NotificationEvent implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__NotificationEvent` (
-                    `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `event` varchar(90) NOT NULL,
-                    `type` varchar(12) NOT NULL DEFAULT 'Core',
-                    `scopes` varchar(191) NOT NULL DEFAULT 'All',
-                    `active` varchar(1) NOT NULL DEFAULT 'Y',
-                    `module` int(4) UNSIGNED DEFAULT NULL,
-                    `action` int(7) UNSIGNED DEFAULT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `event` CHAR(90) NOT NULL,
+                    `type` CHAR(12) NOT NULL DEFAULT 'Core',
+                    `scopes` text NOT NULL DEFAULT 'All',
+                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `module` CHAR(36) DEFAULT NULL,
+                    `action` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `event` (`event`,`module`) USING BTREE,
-                    KEY `module` (`module`) USING BTREE,
-                    KEY `action` (`action`) USING BTREE
+                    UNIQUE KEY `event` (`event`,`module`),
+                    KEY `module` (`module`),
+                    KEY `action` (`action`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__NotificationEvent`
-                    ADD CONSTRAINT FOREIGN KEY (`action`) REFERENCES `__prefix__Action` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`action`) REFERENCES `__prefix__Action` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

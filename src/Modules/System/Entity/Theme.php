@@ -22,15 +22,17 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Theme
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ThemeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Theme")
+ * @ORM\Table(name="Theme")
  */
 class Theme implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(4) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -53,10 +55,10 @@ class Theme implements EntityInterface
     private $active = 'N';
 
     /**
-     * @var string|null
-     * @ORM\Column(length=6)
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="date_immutable")
      */
-    private $version;
+    private $versionDate;
 
     /**
      * @var string|null
@@ -66,7 +68,7 @@ class Theme implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(length=191)
      */
     private $url;
 
@@ -143,20 +145,22 @@ class Theme implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return \DateTimeImmutable|null
      */
-    public function getVersion(): ?string
+    public function getVersionDate(): ?\DateTimeImmutable
     {
-        return $this->version;
+        return $this->versionDate;
     }
 
     /**
-     * @param string|null $version
+     * VersionDate.
+     *
+     * @param \DateTimeImmutable|null $versionDate
      * @return Theme
      */
-    public function setVersion(?string $version): Theme
+    public function setVersionDate(?\DateTimeImmutable $versionDate): Theme
     {
-        $this->version = $version;
+        $this->versionDate = $versionDate;
         return $this;
     }
 
@@ -208,7 +212,7 @@ class Theme implements EntityInterface
             'name' => $this->name,
             'description' => $this->description,
             'active' => $this->active,
-            'version' => $this->version,
+            'versionDate' => $this->versionDate,
             'author' => $this->author,
             'url' => $this->url,
         ];
@@ -221,13 +225,13 @@ class Theme implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Theme` (
-                    `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `description` varchar(100) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `active` varchar(1) COLLATE ut8mb4_unicode_ci NOT NULL DEFAULT 'N',
-                    `version` varchar(6) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `author` varchar(40) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `url` varchar(255) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `description` CHAR(100) NOT NULL,
+                    `active` CHAR(1) NOT NULL DEFAULT 'N',
+                    `version_date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
+                    `author` CHAR(40) NOT NULL,
+                    `url` CHAR(191) NOT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
@@ -250,4 +254,8 @@ class Theme implements EntityInterface
         return "";
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

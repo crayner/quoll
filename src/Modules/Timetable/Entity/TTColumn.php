@@ -39,15 +39,17 @@ use Doctrine\ORM\PersistentCollection;
  * Class TTColumn
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTColumnRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTColumn")
+ * @ORM\Table(name="TTColumn")
  */
 class TTColumn implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer",columnDefinition="INT(6) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -59,9 +61,9 @@ class TTColumn implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="nameShort")
+     * @ORM\Column(length=12, name="abbreviation")
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var Collection
@@ -70,18 +72,20 @@ class TTColumn implements EntityInterface
     private $timetableColumnRows;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return TTColumn
      */
-    public function setId(?int $id): TTColumn
+    public function setId(?string $id): TTColumn
     {
         $this->id = $id;
         return $this;
@@ -108,18 +112,18 @@ class TTColumn implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return TTColumn
      */
-    public function setNameShort(?string $nameShort): TTColumn
+    public function setAbbreviation(?string $abbreviation): TTColumn
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -170,12 +174,12 @@ class TTColumn implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE  `__prefix__TTColumn` (
-                    `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nameShort` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
+        return "CREATE TABLE  `__prefix__TTColumn` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL,
+                    `abbreviation` CHAR(12) NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
@@ -186,5 +190,10 @@ class TTColumn implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

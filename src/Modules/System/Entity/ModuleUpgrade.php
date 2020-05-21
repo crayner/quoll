@@ -15,21 +15,23 @@
 
 namespace App\Modules\System\Entity;
 
-use App\Modules\System\Entity\Module;
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Module
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ModuleUpgradeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ModuleUpgrade",uniqueConstraints={@ORM\UniqueConstraint(name="module_version", columns={"module","version"})})
+ * @ORM\Table(name="ModuleUpgrade",uniqueConstraints={@ORM\UniqueConstraint(name="module_version", columns={"module","version"})})
  * @UniqueEntity(fields={"module","version"})
  * @ORM\HasLifecycleCallbacks()
  */
 class ModuleUpgrade implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
      * @var integer|null
      * @ORM\Id
@@ -39,21 +41,40 @@ class ModuleUpgrade implements EntityInterface
     private $id;
 
     /**
-     * @var Module|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="upgradeLogs")
-     * @ORM\JoinColumn(name="module",referencedColumnName="id",nullable=false)
+     * @var string
+     * @ORM\Column(length=127)
+     * @Assert\NotBlank()
      */
-    private $module;
+    private $table;
 
     /**
      * @var string|null
      * @ORM\Column(length=20)
+     * @Assert\NotBlank()
      */
-    private $version;
+    private $tableVersion;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=20)
+     * @Assert\NotBlank()
+     * @Assert\Choice(callback="getTableSectionList")
+     */
+    private $tableSection;
+
+    /**
+     * @var string[]
+     */
+    private static $tableSectionList = [
+        'core',
+        'foreign_constraints',
+        'install',
+    ];
 
     /**
      * @var \DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank()
      */
     private $executedAt;
 
@@ -78,43 +99,71 @@ class ModuleUpgrade implements EntityInterface
     }
 
     /**
-     * @return Module|null
+     * @return string
      */
-    public function getModule(): ?Module
+    public function getTable(): string
     {
-        return $this->module;
+        return $this->table;
     }
 
     /**
-     * Module.
+     * Table.
      *
-     * @param Module|null $module
+     * @param string $table
      * @return ModuleUpgrade
      */
-    public function setModule(?Module $module): ModuleUpgrade
+    public function setTable(string $table): ModuleUpgrade
     {
-        $this->module = $module;
+        $this->table = $table;
         return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getVersion(): ?string
+    public function getTableVersion(): ?string
     {
-        return $this->version;
+        return $this->tableVersion;
     }
 
     /**
-     * Version.
+     * TableVersion.
      *
-     * @param string|null $version
+     * @param string|null $tableVersion
      * @return ModuleUpgrade
      */
-    public function setVersion(?string $version): ModuleUpgrade
+    public function setTableVersion(?string $tableVersion): ModuleUpgrade
     {
-        $this->version = $version;
+        $this->tableVersion = $tableVersion;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTableSection(): ?string
+    {
+        return $this->tableSection;
+    }
+
+    /**
+     * TableSection.
+     *
+     * @param string|null $tableSection
+     * @return ModuleUpgrade
+     */
+    public function setTableSection(?string $tableSection): ModuleUpgrade
+    {
+        $this->tableSection = $tableSection;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTableSectionList(): array
+    {
+        return self::$tableSectionList;
     }
 
     /**
@@ -162,25 +211,30 @@ class ModuleUpgrade implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__ModuleUpgrade` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        return "CREATE TABLE `__prefix__ModuleUpgrade` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `module` int(4) UNSIGNED DEFAULT NULL,
-                    `version` varchar(20) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `version` CHAR(20) COLLATE ut8mb4_unicode_ci NOT NULL,
                     `executed_at` datetime NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `module_version` (`module`,`version`),
-                    KEY `module` (`module`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `module` (`module`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__ModuleUpgrade`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);';
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

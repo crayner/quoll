@@ -16,13 +16,10 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
 use App\Provider\ProviderFactory;
-use App\Util\EntityHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\Facility;
 use App\Modules\People\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,29 +28,31 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class RollGroup
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\RollGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="RollGroup",
+ * @ORM\Table(name="RollGroup",
  *     uniqueConstraints={
  *     @ORM\UniqueConstraint(name="nameAcademicYear", columns={"name","academic_year"}),
- *     @ORM\UniqueConstraint(name="abbrAcademicYear", columns={"nameShort","academic_year"}),
+ *     @ORM\UniqueConstraint(name="abbrAcademicYear", columns={"abbreviation","academic_year"}),
  *     @ORM\UniqueConstraint(name="tutor1AcademicYear", columns={"tutor1","academic_year"}),
  *     @ORM\UniqueConstraint(name="facilityAcademicYear", columns={"facility","academic_year"})
  * })
  * @UniqueEntity({"name","academicYear"})
- * @UniqueEntity({"nameShort","academicYear"})
+ * @UniqueEntity({"abbreviation","academicYear"})
  * @UniqueEntity({"tutor","academicYear"})
  * @UniqueEntity({"facility","academicYear"})
  */
 class RollGroup implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     use EntityGlobals;
 
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint",columnDefinition="INT(5) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -73,10 +72,10 @@ class RollGroup implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=5, name="nameShort")
+     * @ORM\Column(length=5, name="abbreviation")
      * @Assert\NotBlank()
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var Person|null
@@ -145,7 +144,7 @@ class RollGroup implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(nullable=true,length=191)
      * @Assert\Url()
      */
     private $website;
@@ -165,18 +164,20 @@ class RollGroup implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return RollGroup
      */
-    public function setId(?int $id): RollGroup
+    public function setId(?string $id): RollGroup
     {
         $this->id = $id;
         return $this;
@@ -221,18 +222,18 @@ class RollGroup implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return RollGroup
      */
-    public function setNameShort(?string $nameShort): RollGroup
+    public function setAbbreviation(?string $abbreviation): RollGroup
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -549,7 +550,7 @@ class RollGroup implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getName() . ' (' . $this->getNameShort() . ')';
+        return $this->getName() . ' (' . $this->getAbbreviation() . ')';
     }
 
     /**
@@ -561,7 +562,7 @@ class RollGroup implements EntityInterface
     {
         return [
             'name' => $this->getName(),
-            'abbr' => $this->getNameShort(),
+            'abbr' => $this->getAbbreviation(),
             'tutors' => $this->getFormatTutors(),
             'location' => $this->getSpace() ? $this->getSpace()->getName() : '',
             'website' => $this->getWebsite(),
@@ -578,24 +579,24 @@ class RollGroup implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__RollGroup` (
-                    `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(10) NOT NULL,
-                    `nameShort` varchar(5) NOT NULL,
-                    `attendance` varchar(1) NOT NULL DEFAULT \'Y\',
-                    `website` varchar(255) NOT NULL,
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
-                    `tutor1` int(10) UNSIGNED DEFAULT NULL,
-                    `tutor2` int(10) UNSIGNED DEFAULT NULL,
-                    `tutor3` int(10) UNSIGNED DEFAULT NULL,
-                    `assistant1` int(10) UNSIGNED DEFAULT NULL,
-                    `assistant2` int(10) UNSIGNED DEFAULT NULL,
-                    `assistant3` int(10) UNSIGNED DEFAULT NULL,
-                    `facility` int(10) UNSIGNED DEFAULT NULL,
-                    `next_roll_group` int(5) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__RollGroup` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(10) NOT NULL,
+                    `abbreviation` CHAR(5) NOT NULL,
+                    `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `website` CHAR(191) NOT NULL,
+                    `academic_year` CHAR(36) DEFAULT NULL,
+                    `tutor1` CHAR(36) DEFAULT NULL,
+                    `tutor2` CHAR(36) DEFAULT NULL,
+                    `tutor3` CHAR(36) DEFAULT NULL,
+                    `assistant1` CHAR(36) DEFAULT NULL,
+                    `assistant2` CHAR(36) DEFAULT NULL,
+                    `assistant3` CHAR(36) DEFAULT NULL,
+                    `facility` CHAR(36) DEFAULT NULL,
+                    `next_roll_group` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `nameAcademicYear` (`name`,`academic_year`),
-                    UNIQUE KEY `abbrAcademicYear` (`nameShort`,`academic_year`),
+                    UNIQUE KEY `abbrAcademicYear` (`abbreviation`,`academic_year`),
                     UNIQUE KEY `tutor1AcademicYear` (`tutor1`,`academic_year`),
                     KEY `academicYear` (`academic_year`),
                     KEY `tutor1` (`tutor1`),
@@ -606,21 +607,21 @@ class RollGroup implements EntityInterface
                     KEY `assistant3` (`assistant3`),
                     KEY `facility` (`facility`),
                     KEY `nextRollGroup` (`next_roll_group`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__RollGroup`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__academicyear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`assistant1`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`assistant2`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`assistant3`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`tutor1`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`tutor2`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`tutor3`) REFERENCES `__prefix__person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__facility` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`next_roll_group`) REFERENCES `__prefix__RollGroup` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`assistant1`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`assistant2`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`assistant3`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`tutor1`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`tutor2`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`tutor3`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`next_roll_group`) REFERENCES `__prefix__RollGroup` (`id`);';
     }
 
     public function coreData(): string
@@ -628,4 +629,8 @@ class RollGroup implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

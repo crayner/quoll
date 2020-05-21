@@ -22,15 +22,17 @@ use Doctrine\ORM\PersistentCollection;
  * Class TTColumnRow
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTColumnRowRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTColumnRow", indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"})})
+ * @ORM\Table(name="TTColumnRow", indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"})})
  */
 class TTColumnRow implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -49,19 +51,19 @@ class TTColumnRow implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=4, name="nameShort")
+     * @ORM\Column(length=4, name="abbreviation")
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable",name="timeStart")
+     * @ORM\Column(type="time_immutable")
      */
     private $timeStart;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable",name="timeEnd")
+     * @ORM\Column(type="time_immutable")
      */
     private $timeEnd;
 
@@ -83,18 +85,20 @@ class TTColumnRow implements EntityInterface
     private $TTDayRowClasses;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return TTColumnRow
      */
-    public function setId(?int $id): TTColumnRow
+    public function setId(?string $id): TTColumnRow
     {
         $this->id = $id;
         return $this;
@@ -139,18 +143,18 @@ class TTColumnRow implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return TTColumnRow
      */
-    public function setNameShort(?string $nameShort): TTColumnRow
+    public function setAbbreviation(?string $abbreviation): TTColumnRow
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -253,27 +257,32 @@ class TTColumnRow implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__TTColumnRow` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(12) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `nameShort` varchar(4) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `timeStart` time NOT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `timeEnd` time NOT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `type` varchar(8) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `timetable_column` int(6) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__TTColumnRow` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(12) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `abbreviation` CHAR(4) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `time_start` time NOT NULL COMMENT '(DC2Type:time_immutable)',
+                    `time_end` time NOT NULL COMMENT '(DC2Type:time_immutable)',
+                    `type` CHAR(8) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `timetable_column` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `timetable_column` (`timetable_column`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `timetable_column` (`timetable_column`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
-        return 'ALTER TABLE `__prefix__TTColumnRow`
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+        return "ALTER TABLE `__prefix__TTColumnRow`
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`);";
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

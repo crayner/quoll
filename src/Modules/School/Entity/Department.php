@@ -25,18 +25,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Department
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\DepartmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Department",
+ * @ORM\Table(name="Department",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={ "name"}),
- *     @ORM\UniqueConstraint(name="nameShort",columns={ "nameShort"})}
+ *     @ORM\UniqueConstraint(name="abbreviation",columns={ "abbreviation"})}
  * )
  */
 class Department implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", columnDefinition="INT(4) UNSIGNED")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -62,15 +64,15 @@ class Department implements EntityInterface
 
     /**
      * @var string
-     * @ORM\Column(length=4,name="nameShort",unique=true)
+     * @ORM\Column(length=4,name="abbreviation",unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(4)
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var array
-     * @ORM\Column(type="simple_array",name="subjectListing")
+     * @ORM\Column(type="simple_array")
      */
     private $subjectListing = [];
 
@@ -82,7 +84,7 @@ class Department implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(length=191)
      */
     private $logo;
 
@@ -107,18 +109,20 @@ class Department implements EntityInterface
     }
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getId(): int
+    public function getId(): ?string
     {
-        return intval($this->id);
+        return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Department
      */
-    public function setId(?int $id): Department
+    public function setId(?string $id): Department
     {
         $this->id = $id;
         return $this;
@@ -163,18 +167,18 @@ class Department implements EntityInterface
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string $nameShort
+     * @param string $abbreviation
      * @return Department
      */
-    public function setNameShort(string $nameShort): Department
+    public function setAbbreviation(string $abbreviation): Department
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -315,14 +319,14 @@ class Department implements EntityInterface
      */
     public function __toString(): string
     {
-        return $this->getName() . ' (' . $this->getNameShort() . ')';
+        return $this->getName() . ' (' . $this->getAbbreviation() . ')';
     }
 
     public function toArray(?string $name = null): array
     {
         return [
             'name' => $this->getName(),
-            'abbr' => $this->getNameShort(),
+            'abbr' => $this->getAbbreviation(),
             'type' => TranslationHelper::translate($this->getType()),
             'canDelete' => true,
             'staff' => $this->getStaffNames(),
@@ -345,18 +349,18 @@ class Department implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Department` (
-                    `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(16) NOT NULL DEFAULT \'Learning Area\',
-                    `name` varchar(40) NOT NULL,
-                    `nameShort` varchar(4) NOT NULL,
-                    `subjectListing` varchar(255) NOT NULL,
-                    `blurb` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
-                    `logo` varchar(255) NOT NULL,
+        return "CREATE TABLE `__prefix__Department` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `type` CHAR(16) NOT NULL DEFAULT 'Learning Area',
+                    `name` CHAR(40) NOT NULL,
+                    `abbreviation` CHAR(4) NOT NULL,
+                    `subject_listing` text COMMENT '(DC2Type:simple_array)',
+                    `blurb` longtext,
+                    `logo` CHAR(191) NOT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `nameShort` (`nameShort`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    UNIQUE KEY `abbreviation` (`abbreviation`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
@@ -367,5 +371,10 @@ class Department implements EntityInterface
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

@@ -45,7 +45,6 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PersonRepository")
  * @ORM\Table(
- *     options={"auto_increment": 1},
  *     name="Person",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"})},
  *     indexes={@ORM\Index(name="username_email", columns={"username", "email"}),
@@ -57,11 +56,12 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="application_form",columns={"application_form"}),
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
  *     @ORM\Index(name="primary_role",columns={"primary_role"}),
- *     @ORM\Index(name="i18n",columns={"personal_i18n"})
- * }
+ *     @ORM\Index(name="emergncy_contact1",columns={"emergency_contact1"}),
+ *     @ORM\Index(name="emergncy_contact2",columns={"emergency_contact2"}),
+ *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
  *     )
  * @UniqueEntity(
- *     fields={"studentID"},
+ *     fields={"student_identifier"},
  *     ignoreNull=true
  * )
  * @UniqueEntity(
@@ -73,6 +73,8 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  */
 class Person implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
@@ -88,10 +90,10 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -119,15 +121,13 @@ class Person implements EntityInterface
      */
     public static function getGenderAssert(): array
     {
-        $x = self::$genderList;
-//        unset($x['Unspecified']);
-        return $x;
+        return self::$genderList;
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -135,15 +135,14 @@ class Person implements EntityInterface
     /**
      * Id.
      *
-     * @param int|null $id
+     * @param string|null $id
      * @return Person
      */
-    public function setId(?int $id): Person
+    public function setId(?string $id): Person
     {
         $this->id = $id;
         return $this;
     }
-
 
     /**
      * @var string|null
@@ -208,7 +207,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=60, name="firstName")
+     * @ORM\Column(length=60)
      * @ASSERT\NotBlank()
      */
     private $firstName;
@@ -237,7 +236,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=60, name="preferredName")
+     * @ORM\Column(length=60)
      * @ASSERT\NotBlank()
      */
     private $preferredName;
@@ -267,7 +266,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=150, name="officialName")
+     * @ORM\Column(length=150)
      * @ASSERT\NotBlank()
      */
     private $officialName = '';
@@ -294,7 +293,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=60, name="nameInCharacters")
+     * @ORM\Column(length=60, name="name_in_characters")
      */
     private $nameInCharacters = '';
 
@@ -401,7 +400,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "N", "comment": "Force user to reset password on next login."}, name="passwordForceReset")
+     * @ORM\Column(length=1,options={"default": "N", "comment": "Force user to reset password on next login."})
      */
     private $passwordForceReset = 'N';
 
@@ -469,7 +468,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"}, name="canLogin")
+     * @ORM\Column(length=1, options={"default": "Y"})
      */
     private $canLogin = 'Y';
 
@@ -613,7 +612,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=75, name="emailAlternate", nullable=true)
+     * @ORM\Column(length=75,nullable=true)
      */
     private $emailAlternate;
 
@@ -675,7 +674,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=15, name="lastIPAddress")
+     * @ORM\Column(length=15,name="last_ip_address")
      */
     private $lastIPAddress = '';
 
@@ -699,7 +698,7 @@ class Person implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="datetime_immutable", nullable=true, name="lastTimestamp")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $lastTimestamp;
 
@@ -721,7 +720,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=15, nullable=true, name="lastFailIPAddress")
+     * @ORM\Column(length=15,nullable=true,name="last_fail_ip_address")
      */
     private $lastFailIPAddress;
 
@@ -745,7 +744,7 @@ class Person implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="datetime_immutable", nullable=true, name="lastFailTimestamp")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $lastFailTimestamp;
 
@@ -779,7 +778,7 @@ class Person implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", columnDefinition="INT(1)", nullable=true, name="failCount", options={"default": "0"})
+     * @ORM\Column(type="smallint",nullable=true,options={"default": "0"})
      */
     private $failCount;
 
@@ -1000,7 +999,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="languageFirst")
+     * @ORM\Column(length=5)
      */
     private $languageFirst = '';
 
@@ -1024,7 +1023,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="languageSecond")
+     * @ORM\Column(length=5)
      */
     private $languageSecond = '';
 
@@ -1048,7 +1047,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="languageThird")
+     * @ORM\Column(length=5)
      */
     private $languageThird = '';
 
@@ -1072,7 +1071,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="countryOfBirth")
+     * @ORM\Column(length=3)
      */
     private $countryOfBirth = '';
 
@@ -1096,7 +1095,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="birthCertificateScan")
+     * @ORM\Column(length=191)
      * @ASSERTLOCAL\ReactFile(
      *     maxSize = "2048k",
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
@@ -1218,7 +1217,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="citizenship1Passport")
+     * @ORM\Column(length=30, name="citizenship1_passport")
      */
     private $citizenship1Passport = '';
 
@@ -1244,7 +1243,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="citizenship1PassportScan")
+     * @ORM\Column(length=191, name="citizenship1_passport_scan")
      * @ASSERTLOCAL\ReactFile(
      *     maxSize = "2048k",
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
@@ -1296,7 +1295,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="citizenship2Passport")
+     * @ORM\Column(length=30, name="citizenship2_passport")
      */
     private $citizenship2Passport = '';
 
@@ -1353,7 +1352,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="nationalIDCardNumber")
+     * @ORM\Column(length=30, name="national_card_number")
      */
     private $nationalIDCardNumber = '';
 
@@ -1377,7 +1376,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="nationalIDCardScan")
+     * @ORM\Column(length=191, name="national_card_scan")
      */
     private $nationalIDCardScan = '';
 
@@ -1401,7 +1400,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="residencyStatus")
+     * @ORM\Column(length=191)
      */
     private $residencyStatus = '';
 
@@ -1425,7 +1424,7 @@ class Person implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(nullable=true, type="date_immutable", name="visaExpiryDate")
+     * @ORM\Column(nullable=true, type="date_immutable")
      */
     private $visaExpiryDate;
 
@@ -1522,197 +1521,59 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=90, name="emergency1Name")
+     * @var Person|null
+     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\JoinColumn(nullable=true,name="emergency_contact1")
      */
-    private $emergency1Name = '';
+    public $emergencyContact1;
 
     /**
-     * @return null|string
+     * @var Person|null
+     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\JoinColumn(nullable=true,name="emergency_contact2")
      */
-    public function getEmergency1Name(): ?string
+    public $emergencyContact2;
+
+    /**
+     * @return Person|null
+     */
+    public function getEmergencyContact1(): ?Person
     {
-        return $this->emergency1Name;
+        return $this->emergencyContact1;
     }
 
     /**
-     * @param null|string $emergency1Name
+     * EmergencyContact1.
+     *
+     * @param Person|null $emergencyContact1
      * @return Person
      */
-    public function setEmergency1Name(?string $emergency1Name): Person
+    public function setEmergencyContact1(?Person $emergencyContact1): Person
     {
-        $this->emergency1Name = mb_substr($emergency1Name, 0, 90);
+        $this->emergencyContact1 = $emergencyContact1;
         return $this;
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency1Number1")
+     * @return Person|null
      */
-    private $emergency1Number1 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency1Number1(): ?string
+    public function getEmergencyContact2(): ?Person
     {
-        return $this->emergency1Number1;
+        return $this->emergencyContact2;
     }
 
     /**
-     * @param null|string $emergency1Number1
+     * EmergencyContact2.
+     *
+     * @param Person|null $emergencyContact2
      * @return Person
      */
-    public function setEmergency1Number1(?string $emergency1Number1): Person
+    public function setEmergencyContact2(?Person $emergencyContact2): Person
     {
-        $this->emergency1Number1 = mb_substr($emergency1Number1, 0, 30);
+        $this->emergencyContact2 = $emergencyContact2;
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency1Number2")
-     */
-    private $emergency1Number2 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency1Number2(): ?string
-    {
-        return $this->emergency1Number2;
-    }
-
-    /**
-     * @param null|string $emergency1Number2
-     * @return Person
-     */
-    public function setEmergency1Number2(?string $emergency1Number2): Person
-    {
-        $this->emergency1Number2 = mb_substr($emergency1Number2, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency1Relationship")
-     */
-    private $emergency1Relationship = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency1Relationship(): ?string
-    {
-        return $this->emergency1Relationship;
-    }
-
-    /**
-     * @param null|string $emergency1Relationship
-     * @return Person
-     */
-    public function setEmergency1Relationship(?string $emergency1Relationship): Person
-    {
-        $this->emergency1Relationship = mb_substr($emergency1Relationship, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=90, name="emergency2Name")
-     */
-    private $emergency2Name = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency2Name(): ?string
-    {
-        return $this->emergency2Name;
-    }
-
-    /**
-     * @param null|string $emergency2Name
-     * @return Person
-     */
-    public function setEmergency2Name(?string $emergency2Name): Person
-    {
-        $this->emergency2Name = mb_substr($emergency2Name, 0, 90);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency2Number1")
-     */
-    private $emergency2Number1 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency2Number1(): ?string
-    {
-        return $this->emergency2Number1;
-    }
-
-    /**
-     * @param null|string $emergency2Number1
-     * @return Person
-     */
-    public function setEmergency2Number1(?string $emergency2Number1): Person
-    {
-        $this->emergency2Number1 = mb_substr($emergency2Number1, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency2Number2")
-     */
-    private $emergency2Number2 = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency2Number2(): ?string
-    {
-        return $this->emergency2Number2;
-    }
-
-    /**
-     * @param null|string $emergency2Number2
-     * @return Person
-     */
-    public function setEmergency2Number2(?string $emergency2Number2): Person
-    {
-        $this->emergency2Number2 = mb_substr($emergency2Number2, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30, name="emergency2Relationship")
-     */
-    private $emergency2Relationship = '';
-
-    /**
-     * @return null|string
-     */
-    public function getEmergency2Relationship(): ?string
-    {
-        return $this->emergency2Relationship;
-    }
-
-    /**
-     * @param null|string $emergency2Relationship
-     * @return Person
-     */
-    public function setEmergency2Relationship(?string $emergency2Relationship): Person
-    {
-        $this->emergency2Relationship = mb_substr($emergency2Relationship, 0, 30);
-        return $this;
-    }
-
+    
     /**
      * @var House|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\House")
@@ -1740,31 +1601,31 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=10, name="studentID",nullable=true)
+     * @ORM\Column(length=20,nullable=true)
      */
-    private $studentID;
+    private $studentIdentifier;
 
     /**
      * @return null|string
      */
-    public function getStudentID(): ?string
+    public function getStudentIdentifier(): ?string
     {
-        return $this->studentID;
+        return $this->studentIdentifier;
     }
 
     /**
-     * @param null|string $studentID
+     * @param null|string $studentIdentifier
      * @return Person
      */
-    public function setStudentID(?string $studentID): Person
+    public function setStudentIdentifier(?string $studentIdentifier): Person
     {
-        $this->studentID = mb_substr($studentID, 0, 10) ?: null;
+        $this->studentIdentifier = mb_substr($studentIdentifier, 0, 10) ?: null;
         return $this;
     }
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable", name="dateStart", nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $dateStart;
 
@@ -1788,7 +1649,7 @@ class Person implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable", name="dateEnd", nullable=true)
+     * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $dateEnd;
 
@@ -1837,7 +1698,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, name="lastSchool")
+     * @ORM\Column(length=100)
      */
     private $lastSchool = '';
 
@@ -1861,7 +1722,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, name="nextSchool")
+     * @ORM\Column(length=100)
      */
     private $nextSchool = '';
 
@@ -1885,7 +1746,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=50, name="departureReason")
+     * @ORM\Column(length=50)
      */
     private $departureReason = '';
 
@@ -1909,7 +1770,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(length=191)
      */
     private $transport = '';
 
@@ -1933,7 +1794,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", name="transportNotes")
+     * @ORM\Column(type="text")
      */
     private $transportNotes = '';
 
@@ -1957,7 +1818,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=192, name="calendarFeedPersonal", nullable=true)
+     * @ORM\Column(length=191,nullable=true)
      */
     private $calendarFeedPersonal;
 
@@ -1981,7 +1842,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"}, name="viewCalendarSchool")
+     * @ORM\Column(length=1, options={"default": "Y"})
      */
     private $viewCalendarSchool = 'N';
 
@@ -2006,7 +1867,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"}, name="viewCalendarPersonal")
+     * @ORM\Column(length=1, options={"default": "Y"})
      */
     private $viewCalendarPersonal = 'Y';
 
@@ -2031,7 +1892,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "N"}, name="viewCalendarSpaceBooking")
+     * @ORM\Column(length=1, options={"default": "N"})
      */
     private $viewCalendarSpaceBooking = 'N';
 
@@ -2081,7 +1942,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=20, name="lockerNumber")
+     * @ORM\Column(length=20)
      */
     private $lockerNumber = '';
 
@@ -2105,7 +1966,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=20, name="vehicleRegistration")
+     * @ORM\Column(length=20)
      */
     private $vehicleRegistration = '';
 
@@ -2129,7 +1990,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="personalBackground")
+     * @ORM\Column(length=191)
      * @ASSERTLOCAL\ReactImage(
      *     mimeTypes = {"image/jpg","image/jpeg","image/png","image/gif"},
      *     maxSize = "1536k",
@@ -2159,24 +2020,24 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="date", nullable=true, name="messengerLastBubble")
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="date_immutable", nullable=true)
      */
     private $messengerLastBubble;
 
     /**
-     * @return \DateTime|null
+     * @return \DateTimeImmutable|null
      */
-    public function getMessengerLastBubble(): ?\DateTime
+    public function getMessengerLastBubble(): ?\DateTimeImmutable
     {
         return $this->messengerLastBubble;
     }
 
     /**
-     * @param \DateTime|null $messengerLastBubble
+     * @param \DateTimeImmutable|null $messengerLastBubble
      * @return Person
      */
-    public function setMessengerLastBubble(?\DateTime $messengerLastBubble): Person
+    public function setMessengerLastBubble(?\DateTimeImmutable $messengerLastBubble): Person
     {
         $this->messengerLastBubble = $messengerLastBubble;
         return $this;
@@ -2208,7 +2069,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, nullable=true, name="dayType", options={"comment": "Student day type, as specified in the application form."})
+     * @ORM\Column(length=191,nullable=true,options={"comment": "Student day type, as specified in the application form."})
      */
     private $dayType;
 
@@ -2282,7 +2143,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", nullable=true, name="studentAgreements")
+     * @ORM\Column(type="text",nullable=true)
      */
     private $studentAgreements;
 
@@ -2306,7 +2167,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="googleAPIRefreshToken")
+     * @ORM\Column(length=191, name="google_api_refresh_token")
      */
     private $googleAPIRefreshToken = '';
 
@@ -2330,7 +2191,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"}, name="receiveNotificationEmails")
+     * @ORM\Column(length=1, options={"default": "Y"})
      * @ASSERT\Choice(callback="getBooleanList")
      */
     private $receiveNotificationEmails = 'Y';
@@ -2768,8 +2629,8 @@ class Person implements EntityInterface
      */
     public function uniqueIdentifier(): string
     {
-        if (is_string($this->getStudentID()) && $this->getStudentID() !== '')
-            return $this->getStudentID();
+        if (is_string($this->getStudentIdentifier()) && $this->getStudentIdentifier() !== '')
+            return $this->getStudentIdentifier();
 
         if (is_string($this->getUsername()) && $this->getUsername() !== '')
                 return $this->getUsername();
@@ -2798,7 +2659,7 @@ class Person implements EntityInterface
             'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTimeImmutable() ? false : true,
             'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTimeImmutable() ? false : true,
             'email' => $this->getEmail(),
-            'studentID' => $this->getStudentID() ?: '',
+            'studentIdentifier' => $this->getStudentIdentifier() ?: '',
             'phone' => $this->getPersonalPhone(),
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
@@ -2894,7 +2755,7 @@ class Person implements EntityInterface
             return false;
         if ($person->getPassword() !== $this->getPassword())
             return false;
-        if ($person->getStudentID() !== $this->getStudentID())
+        if ($person->getStudentIdentifier() !== $this->getStudentIdentifier())
             return false;
         return true;
     }
@@ -2931,107 +2792,101 @@ class Person implements EntityInterface
     public function create(): string
     {
         return "CREATE TABLE `__prefix__Person` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `title` varchar(5) NOT NULL,
-                    `surname` varchar(60) NOT NULL,
-                    `firstName` varchar(60) NOT NULL,
-                    `preferredName` varchar(60) NOT NULL,
-                    `officialName` varchar(150) NOT NULL,
-                    `nameInCharacters` varchar(60) NOT NULL,
-                    `gender` varchar(16) NOT NULL DEFAULT 'Unspecified',
-                    `username` varchar(20) DEFAULT NULL,
-                    `password` varchar(191) DEFAULT NULL,
-                    `passwordForceReset` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
-                    `status` varchar(16) NOT NULL DEFAULT 'Full',
-                    `canLogin` varchar(1) NOT NULL DEFAULT 'Y',
-                    `all_roles` varchar(255) DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `title` CHAR(5) NOT NULL,
+                    `surname` CHAR(60) NOT NULL,
+                    `first_name` CHAR(60) NOT NULL,
+                    `preferred_name` CHAR(60) NOT NULL,
+                    `official_name` CHAR(150) NOT NULL,
+                    `name_in_characters` CHAR(60) NOT NULL,
+                    `gender` CHAR(16) NOT NULL DEFAULT 'Unspecified',
+                    `username` CHAR(20) DEFAULT NULL,
+                    `password` CHAR(191) DEFAULT NULL,
+                    `password_force_reset` CHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
+                    `status` CHAR(16) NOT NULL DEFAULT 'Full',
+                    `can_login` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `all_roles` text DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `email` varchar(75) DEFAULT NULL,
-                    `emailAlternate` varchar(75) DEFAULT NULL,
-                    `image_240` varchar(191) DEFAULT NULL,
-                    `lastIPAddress` varchar(15) NOT NULL,
-                    `lastTimestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `lastFailIPAddress` varchar(15) DEFAULT NULL,
-                    `lastFailTimestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `failCount` int(1) DEFAULT NULL,
-                    `physical_address` char(36) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
-                    `postal_address` char(36) UNSIGNED DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
-                    `personal_phone` char(36) DEFAULT NULL,
-                    `website` varchar(255) NOT NULL,
-                    `languageFirst` varchar(30) NOT NULL,
-                    `languageSecond` varchar(30) NOT NULL,
-                    `languageThird` varchar(30) NOT NULL,
-                    `countryOfBirth` varchar(30) NOT NULL,
-                    `birthCertificateScan` varchar(255) NOT NULL,
-                    `ethnicity` varchar(255) NOT NULL,
-                    `citizenship1` varchar(255) NOT NULL,
-                    `citizenship1Passport` varchar(30) NOT NULL,
-                    `citizenship1PassportScan` varchar(255) NOT NULL,
-                    `citizenship2` varchar(255) NOT NULL,
-                    `citizenship2Passport` varchar(30) NOT NULL,
-                    `religion` varchar(30) NOT NULL,
-                    `nationalIDCardNumber` varchar(30) NOT NULL,
-                    `nationalIDCardScan` varchar(255) NOT NULL,
-                    `residencyStatus` varchar(255) NOT NULL,
-                    `visaExpiryDate` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `profession` varchar(90) NOT NULL,
-                    `employer` varchar(90) NOT NULL,
-                    `jobTitle` varchar(90) NOT NULL,
-                    `emergency1Name` varchar(90) NOT NULL,
-                    `emergency1Number1` varchar(30) NOT NULL,
-                    `emergency1Number2` varchar(30) NOT NULL,
-                    `emergency1Relationship` varchar(30) NOT NULL,
-                    `emergency2Name` varchar(90) NOT NULL,
-                    `emergency2Number1` varchar(30) NOT NULL,
-                    `emergency2Number2` varchar(30) NOT NULL,
-                    `emergency2Relationship` varchar(30) NOT NULL,
-                    `studentID` varchar(10) DEFAULT NULL,
-                    `dateStart` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `dateEnd` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `lastSchool` varchar(100) NOT NULL,
-                    `nextSchool` varchar(100) NOT NULL,
-                    `departureReason` varchar(50) NOT NULL,
-                    `transport` varchar(255) NOT NULL,
-                    `transportNotes` longtext NOT NULL,
-                    `calendarFeedPersonal` varchar(192) DEFAULT NULL,
-                    `viewCalendarSchool` varchar(1) NOT NULL DEFAULT 'Y',
-                    `viewCalendarPersonal` varchar(1) NOT NULL DEFAULT 'Y',
-                    `viewCalendarSpaceBooking` varchar(1) NOT NULL DEFAULT 'N',
-                    `lockerNumber` varchar(20) NOT NULL,
-                    `vehicleRegistration` varchar(20) NOT NULL,
-                    `personalBackground` varchar(255) NOT NULL,
-                    `messengerLastBubble` date DEFAULT NULL,
-                    `privacy` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
-                    `dayType` varchar(255) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
-                    `studentAgreements` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
-                    `googleAPIRefreshToken` varchar(255) NOT NULL,
-                    `receiveNotificationEmails` varchar(1) NOT NULL DEFAULT 'Y',
+                    `email` CHAR(75) DEFAULT NULL,
+                    `email_alternate` CHAR(75) DEFAULT NULL,
+                    `image_240` CHAR(191) DEFAULT NULL,
+                    `last_ip_address` CHAR(15) NOT NULL,
+                    `last_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+                    `last_fail_ip_address` CHAR(15) DEFAULT NULL,
+                    `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+                    `fail_count` smallint DEFAULT NULL,
+                    `physical_address` CHAR(36) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `postal_address` CHAR(36) UNSIGNED DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `personal_phone` CHAR(36) DEFAULT NULL,
+                    `website` CHAR(191) NOT NULL,
+                    `language_first` CHAR(5) NOT NULL,
+                    `language_second` CHAR(5) NOT NULL,
+                    `language_third` CHAR(5) NOT NULL,
+                    `country_of_birth` CHAR(3) NOT NULL,
+                    `birth_certificate_scan` CHAR(191) NOT NULL,
+                    `ethnicity` CHAR(191) NOT NULL,
+                    `citizenship1` CHAR(191) NOT NULL,
+                    `citizenship1_passport` CHAR(30) NOT NULL,
+                    `citizenship1_passport_scan` CHAR(191) NOT NULL,
+                    `citizenship2` CHAR(191) NOT NULL,
+                    `citizenship2_passport` CHAR(30) NOT NULL,
+                    `religion` CHAR(30) NOT NULL,
+                    `national_card_number` CHAR(30) NOT NULL,
+                    `national_card_scan` CHAR(191) NOT NULL,
+                    `residency_status` CHAR(191) NOT NULL,
+                    `visa_expiry_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `profession` CHAR(90) NOT NULL,
+                    `employer` CHAR(90) NOT NULL,
+                    `jobTitle` CHAR(90) NOT NULL,
+                    `emergency_contact1` CHAR(30) NOT NULL,
+                    `emergency_contact2` CHAR(30) NOT NULL,
+                    `student_identifier` CHAR(20) DEFAULT NULL,
+                    `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `last_school` CHAR(100) NOT NULL,
+                    `next_school` CHAR(100) NOT NULL,
+                    `departure_reason` CHAR(50) NOT NULL,
+                    `transport` CHAR(191) NOT NULL,
+                    `transport_notes` longtext NOT NULL,
+                    `calendar_feed_personal` CHAR(191) DEFAULT NULL,
+                    `view_calendar_school` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `view_calendar_personal` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `view_calendar_space_booking` CHAR(1) NOT NULL DEFAULT 'N',
+                    `locker_number` CHAR(20) NOT NULL,
+                    `vehicle_registration` CHAR(20) NOT NULL,
+                    `personal_background` CHAR(191) NOT NULL,
+                    `messenger_last_bubble` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                    `privacy` longtext,
+                    `day_type` CHAR(191) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
+                    `student_agreements` longtext,
+                    `google_api_refresh_token` CHAR(191) NOT NULL,
+                    `receive_notification_emails` CHAR(1) NOT NULL DEFAULT 'Y',
                     `fields` longtext COMMENT 'Serialised array of custom field values(DC2Type:array)',
-                    `primary_role` varchar(32) DEFAULT NULL,
-                    `house` int(3) UNSIGNED DEFAULT NULL,
-                    `class_of_academic_year` int(3) UNSIGNED DEFAULT NULL,
-                    `application_form` int(12) UNSIGNED DEFAULT NULL,
-                    `personal_theme` int(4) UNSIGNED DEFAULT NULL,
-                    `personal_i18n` int(4) UNSIGNED DEFAULT NULL,
+                    `primary_role` CHAR(32) DEFAULT NULL,
+                    `house` CHAR(36) DEFAULT NULL,
+                    `class_of_academic_year` CHAR(36) DEFAULT NULL,
+                    `application_form` CHAR(36) DEFAULT NULL,
+                    `personal_theme` CHAR(36) DEFAULT NULL,
+                    `personal_i18n` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `username` (`username`),
-                    KEY `house` (`house`) USING BTREE,
-                    KEY `theme` (`personal_theme`) USING BTREE,
-                    KEY `i18n` (`personal_i18n`) USING BTREE,
-                    KEY `academic_year_class_of` (`class_of_academic_year`) USING BTREE,
-                    KEY `application_form` (`application_form`) USING BTREE,
+                    KEY `house` (`house`),
+                    KEY `theme` (`personal_theme`),
+                    KEY `i18n` (`personal_i18n`),
+                    KEY `academic_year_class_of` (`class_of_academic_year`),
+                    KEY `application_form` (`application_form`),
                     KEY `primary_role` (`primary_role`),
-                    KEY `personal_phone` (`personal_phone`) USING BTREE,
-                    KEY `username_email` (`username`,`email`) USING BTREE,
+                    KEY `personal_phone` (`personal_phone`),
+                    KEY `username_email` (`username`,`email`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
                     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
                 CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
-                    `person` int(10) UNSIGNED NOT NULL,
-                    `phone` int(10) UNSIGNED NOT NULL,
+                    `person` CHAR(36) NOT NULL,
+                    `phone` CHAR(36) NOT NULL,
                     PRIMARY KEY (`person`,`phone`),
-                    KEY `IDX_F911F9D734DCD176` (`person`),
-                    KEY `IDX_F911F9D7444F97DD` (`phone`)
+                    KEY `person` (`person`),
+                    KEY `phone` (`phone`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
@@ -3042,17 +2897,19 @@ class Person implements EntityInterface
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Person`
-                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__house` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`class_of_academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`personal_theme`) REFERENCES `__prefix__Theme` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`personal_i18n`) REFERENCES `__prefix__I18n` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__House` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`class_of_academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`personal_theme`) REFERENCES `__prefix__Theme` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`personal_i18n`) REFERENCES `__prefix__I18n` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact1`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact2`) REFERENCES `__prefix__Person` (`id`);
                 ALTER TABLE `__prefix__PersonalPhone`
-                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
@@ -3080,5 +2937,10 @@ class Person implements EntityInterface
             default:
                 return 'Staff';
         }
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

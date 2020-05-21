@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseRepository")
  * @ORM\Table(
- *     options={"auto_increment": 1},
+ *
  *     name="Course",
  *     indexes={
  *      @ORM\Index(name="academicYear",columns={"academic_year"})},
@@ -43,13 +43,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Course implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -103,7 +105,7 @@ class Course implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", name="order_by", columnDefinition="INT(3)", nullable=true)
+     * @ORM\Column(type="smallint",name="order_by",nullable=true)
      */
     private $orderBy;
 
@@ -123,18 +125,20 @@ class Course implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Course
      */
-    public function setId(?int $id): Course
+    public function setId(?string $id): Course
     {
         $this->id = $id;
         return $this;
@@ -340,33 +344,38 @@ class Course implements EntityInterface
 
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Course` (
-                    `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(60) NOT NULL,
-                    `nameShort` varchar(12) NOT NULL,
-                    `description` longtext CHARACTER SET utf8 COLLATE ut8mb4_unicode_ci,
-                    `map` varchar(1) NOT NULL DEFAULT \'Y\' COMMENT \'Should this course be included in curriculum maps and other summaries?\',
-                    `year_group_list` varchar(191) NOT NULL COMMENT \'(DC2Type:simple_array)\',
-                    `order_by` int(3) DEFAULT NULL,
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
-                    `department` int(4) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__Course` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(60) NOT NULL,
+                    `nameShort` CHAR(12) NOT NULL,
+                    `description` longtext,
+                    `map` CHAR(1) NOT NULL DEFAULT 'Y' COMMENT 'Should this course be included in curriculum maps and other summaries?',
+                    `year_group_list` CHAR(191) NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `order_by` smallint DEFAULT NULL,
+                    `academic_year` CHAR(36) DEFAULT NULL,
+                    `department` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name_year` (`academic_year`,`name`) USING BTREE,
-                    UNIQUE KEY `name_short_year` (`academic_year`,`nameShort`) USING BTREE,
+                    UNIQUE KEY `name_year` (`academic_year`,`name`),
+                    UNIQUE KEY `name_short_year` (`academic_year`,`nameShort`),
                     KEY `department` (`department`),
                     KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__Course`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;';
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`);';
     }
 
     public function coreData(): string
     {
         return '';
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

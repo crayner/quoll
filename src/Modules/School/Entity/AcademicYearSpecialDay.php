@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class AcademicYearSpecialDay
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearSpecialDayRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="AcademicYearSpecialDay",
+ * @ORM\Table(name="AcademicYearSpecialDay",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="date", columns={"date"})},
  *     indexes={@ORM\Index(name="academic_year", columns={"academic_year"})})
  * @Check\SpecialDay()
@@ -33,11 +33,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AcademicYearSpecialDay implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="id", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -68,7 +70,7 @@ class AcademicYearSpecialDay implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(nullable=true,length=191)
      */
     private $description;
 
@@ -81,41 +83,43 @@ class AcademicYearSpecialDay implements EntityInterface
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable", name="schoolOpen", nullable=true)
+     * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolOpen;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable", name="schoolStart", nullable=true)
+     * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolStart;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable", name="schoolEnd", nullable=true)
+     * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolEnd;
 
     /**
      * @var \DateTimeImmutable|null
-     * @ORM\Column(type="time_immutable", name="schoolClose", nullable=true)
+     * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolClose;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return AcademicYearSpecialDay
      */
-    public function setId(?int $id): AcademicYearSpecialDay
+    public function setId(?string $id): AcademicYearSpecialDay
     {
         $this->id = $id;
         return $this;
@@ -359,21 +363,21 @@ class AcademicYearSpecialDay implements EntityInterface
      */
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__AcademicYearSpecialDay` (
-                    `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `type` varchar(14) NOT NULL,
-                    `name` varchar(20) NOT NULL,
-                    `description` varchar(255) DEFAULT NULL,
-                    `date` date NOT NULL COMMENT \'(DC2Type:date_immutable)\',
-                    `schoolOpen` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `schoolStart` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `schoolEnd` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `schoolClose` time DEFAULT NULL COMMENT \'(DC2Type:time_immutable)\',
-                    `academic_year` int(3) UNSIGNED DEFAULT NULL,
+        return "CREATE TABLE `__prefix__AcademicYearSpecialDay` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `type` CHAR(14) NOT NULL,
+                    `name` CHAR(20) NOT NULL,
+                    `description` CHAR(191) DEFAULT NULL,
+                    `date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
+                    `school_open` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
+                    `school_start` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
+                    `school_end` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
+                    `school_close` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
+                    `academic_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `date` (`date`),
-                    KEY `academic_year` (`academic_year`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `academic_year` (`academic_year`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     /**
@@ -383,8 +387,7 @@ class AcademicYearSpecialDay implements EntityInterface
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__AcademicYearSpecialDay`
-  ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-';
+                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);';
     }
 
     /**
@@ -396,4 +399,8 @@ class AcademicYearSpecialDay implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }

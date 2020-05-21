@@ -30,19 +30,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Module
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ModuleRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Module",
+ * @ORM\Table(name="Module",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @UniqueEntity({"name"})
  * */
 class Module implements EntityInterface
 {
+    CONST VERSION = '20200401';
+
     use BooleanList;
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(4) UNSIGNED AUTO_INCREMENT", options={"comment": "This number is assigned at install, and is only unique to the installation"})
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -61,7 +63,7 @@ class Module implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="entry_route")
+     * @ORM\Column(length=191)
      */
     private $entryRoute;
 
@@ -89,10 +91,10 @@ class Module implements EntityInterface
     private $category;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=6)
+     * @var \DateTimeImmutable|null
+     * @ORM\Column(type="date_immutable")
      */
-    private $version;
+    private $versionDate;
 
     /**
      * @var string|null
@@ -125,7 +127,6 @@ class Module implements EntityInterface
     /**
      * @var Collection|ModuleUpgrade[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\System\Entity\ModuleUpgrade",mappedBy="module",orphanRemoval=true)
-     * @ORM\OrderBy({"version" = "DESC"})
      */
     private $upgradeLogs;
 
@@ -153,18 +154,20 @@ class Module implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Module
      */
-    public function setId(?int $id): Module
+    public function setId(?string $id): Module
     {
         $this->id = $id;
         return $this;
@@ -279,20 +282,22 @@ class Module implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return \DateTimeImmutable|null
      */
-    public function getVersion(): ?string
+    public function getVersionDate(): ?\DateTimeImmutable
     {
-        return $this->version;
+        return $this->versionDate;
     }
 
     /**
-     * @param string|null $version
+     * VersionDate.
+     *
+     * @param \DateTimeImmutable|null $versionDate
      * @return Module
      */
-    public function setVersion(?string $version): Module
+    public function setVersionDate(?\DateTimeImmutable $versionDate): Module
     {
-        $this->version = $version;
+        $this->versionDate = $versionDate;
         return $this;
     }
 
@@ -364,7 +369,7 @@ class Module implements EntityInterface
             'type' => $this->getType(),
             'active' => $this->active,
             'category' => $this->category,
-            'version' => $this->version,
+            'versionDate' => $this->versionDate,
             'author' => $this->author,
             'url' => $this->url,
             'status' => $this->getStatus(),
@@ -446,7 +451,7 @@ class Module implements EntityInterface
                     $this->status = TranslationHelper::translate('Not Installed');
                 } else {
                     $installed = $this->getUpgradeLogs()->filter(function($log) {
-                        return $log->getVersion() === 'Installation';
+                        return $log->getVersionDate() === 'Installation';
                     });
                     if ($this->getUpgradeLogs()->count() === 0 || $installed->count() === 0)
                         $this->status = TranslationHelper::translate('Not Installed');
@@ -574,21 +579,21 @@ class Module implements EntityInterface
      */
     public function create(): string
     {
-        return 'CREATE TABLE `__prefix__Module` (
-                    `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-                    `name` varchar(30) NOT NULL COMMENT \'This name should be globally unique preferably, but certainly locally unique\',
+        return "CREATE TABLE `__prefix__Module` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `name` CHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
                     `description` longtext NOT NULL,
-                    `entry_route` varchar(191) NOT NULL,
-                    `type` varchar(12) NOT NULL DEFAULT \'Core\',
-                    `active` varchar(1) NOT NULL DEFAULT \'Y\',
-                    `category` varchar(10) NOT NULL,
-                    `version` varchar(8) NOT NULL,
-                    `author` varchar(40) NOT NULL,
-                    `url` varchar(255) NOT NULL,
+                    `entry_route` CHAR(191) NOT NULL,
+                    `type` CHAR(12) NOT NULL DEFAULT 'Core',
+                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `category` CHAR(10) NOT NULL,
+                    `version_date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
+                    `author` CHAR(40) NOT NULL,
+                    `url` CHAR(255) NOT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    KEY `category` (`category`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;';
+                    KEY `category` (`category`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
     }
 
     public function foreignConstraints(): string
@@ -601,4 +606,8 @@ class Module implements EntityInterface
         return '';
     }
 
+    public static function getVersion(): string
+    {
+        return self::VERSION;
+    }
 }
