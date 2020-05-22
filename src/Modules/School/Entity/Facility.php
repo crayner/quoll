@@ -558,9 +558,9 @@ class Facility implements EntityInterface
         return implode("\n<br/>", $result);
     }
 
-    public function create() : string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Facility` (
+        return ["CREATE TABLE `__prefix__Facility` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `type` CHAR(50) NOT NULL,
@@ -578,7 +578,7 @@ class Facility implements EntityInterface
                     `comment` longtext,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints() : string

@@ -3426,9 +3426,9 @@ class ApplicationForm implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__ApplicationForm` (
+        return ["CREATE TABLE `__prefix__ApplicationForm` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `applicationFormHash` CHAR(40) DEFAULT NULL,
                     `surname` CHAR(60) NOT NULL,
@@ -3574,7 +3574,7 @@ class ApplicationForm implements EntityInterface
                     KEY `IDX_A309B59CA85AE4EC` (`roll_group`),
                     KEY `IDX_A309B59C51F0BB1F` (`family`),
                     KEY `IDX_A309B59CA0F353A3` (`payment_record`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

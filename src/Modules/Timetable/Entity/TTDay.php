@@ -298,9 +298,9 @@ class TTDay implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__TTDay` (
+        return ["CREATE TABLE `__prefix__TTDay` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(12) NOT NULL,
                     `abbreviation` CHAR(4) NOT NULL,
@@ -313,7 +313,7 @@ class TTDay implements EntityInterface
                     UNIQUE KEY `name_timetable` (`timetable`,`name`),
                     KEY `timetable` (`timetable`),
                     KEY `timetable_column` (`timetable_column`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

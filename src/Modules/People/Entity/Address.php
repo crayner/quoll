@@ -262,16 +262,16 @@ class Address implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Address` (
+        return ["CREATE TABLE `__prefix__Address` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `streetName` CHAR(50) DEFAULT NULL,
                     `propertyName` CHAR(50) DEFAULT NULL,
                     `locality` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `locality` (`locality`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

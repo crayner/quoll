@@ -60,7 +60,7 @@ class MySQLType extends AbstractType
             ->add('dbname', TextType::class,
                 [
                     'label' => 'Database Name',
-                    'help' => 'This database will be created if it does not already exist. Collation should be utf8mb4_uicode_ci.',
+                    'help' => 'This database will be created if it does not already exist. Collation should be utf8mb4_general_ci.',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 50,

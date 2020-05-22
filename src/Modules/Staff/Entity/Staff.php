@@ -407,9 +407,9 @@ class Staff implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Staff` (
+        return ["CREATE TABLE `__prefix__Staff` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `type` CHAR(20) NOT NULL,
                     `initials` CHAR(4) DEFAULT NULL,
@@ -426,7 +426,7 @@ class Staff implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `staff` (`person`),
                     UNIQUE KEY `initials` (`initials`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

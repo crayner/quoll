@@ -75,7 +75,7 @@ monolog:
         installation:
             level:    debug
             type:     rotating_file
-            path:     '%kernel.logs_dir%/installation.%kernel.environment%.log'
+            path:     '%kernel.logs_dir%/installation.log'
             channels: [installation]
             max_files: 14
         translation:

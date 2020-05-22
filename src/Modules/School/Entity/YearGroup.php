@@ -200,9 +200,9 @@ class YearGroup implements EntityInterface
         return ProviderFactory::create(YearGroup::class)->canDelete($this);
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__YearGroup` (
+        return ["CREATE TABLE `__prefix__YearGroup` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(15) NOT NULL,
                     `abbreviation` CHAR(4) NOT NULL,
@@ -213,7 +213,7 @@ class YearGroup implements EntityInterface
                     UNIQUE KEY `abbreviation` (`abbreviation`),
                     UNIQUE KEY `sequence_number` (`sequence_number`),
                     KEY `headOfYear` (`head_of_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

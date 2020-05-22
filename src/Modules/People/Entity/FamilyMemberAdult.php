@@ -271,4 +271,9 @@ class FamilyMemberAdult extends FamilyMember
     {
         return parent::toArray('adult');
     }
+
+    public function create(): array
+    {
+        return [];
+    }
 }

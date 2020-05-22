@@ -33,9 +33,9 @@ interface EntityInterface
 
     /**
      * create
-     * @return string
+     * @return array
      */
-    public function create(): string;
+    public function create(): array;
 
     /**
      * foreignConstraints

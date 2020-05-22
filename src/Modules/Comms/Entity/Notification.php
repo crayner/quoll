@@ -288,9 +288,9 @@ class Notification implements EntityInterface
         ];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Notification` (
+        return ["CREATE TABLE `__prefix__Notification` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `status` CHAR(8) NOT NULL DEFAULT 'New',
                     `count` smallint DEFAULT NULL,
@@ -302,7 +302,7 @@ class Notification implements EntityInterface
                     PRIMARY KEY (`id`),
                     KEY `person` (`person`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

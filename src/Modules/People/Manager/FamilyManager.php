@@ -16,14 +16,9 @@
 namespace App\Modules\People\Manager;
 
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
-use App\Modules\People\Util\StudentHelper;
 use App\Provider\ProviderFactory;
-use App\Util\ImageHelper;
-use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**

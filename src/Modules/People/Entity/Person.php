@@ -2789,9 +2789,9 @@ class Person implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Person` (
+        return ["CREATE TABLE `__prefix__Person` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `title` CHAR(5) NOT NULL,
                     `surname` CHAR(60) NOT NULL,
@@ -2815,8 +2815,8 @@ class Person implements EntityInterface
                     `last_fail_ip_address` CHAR(15) DEFAULT NULL,
                     `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `fail_count` smallint DEFAULT NULL,
-                    `physical_address` CHAR(36) DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
-                    `postal_address` CHAR(36) UNSIGNED DEFAULT NULL COMMENT 'Only used here if the family address is different, or this person is not a member of a family in the database.',
+                    `physical_address` CHAR(36) DEFAULT NULL,
+                    `postal_address` CHAR(36) DEFAULT NULL,
                     `personal_phone` CHAR(36) DEFAULT NULL,
                     `website` CHAR(191) NOT NULL,
                     `language_first` CHAR(5) NOT NULL,
@@ -2880,14 +2880,14 @@ class Person implements EntityInterface
                     KEY `username_email` (`username`,`email`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
-                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
-                CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
+                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+                "CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
                     `person` CHAR(36) NOT NULL,
                     `phone` CHAR(36) NOT NULL,
                     PRIMARY KEY (`person`,`phone`),
                     KEY `person` (`person`),
                     KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

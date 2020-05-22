@@ -396,9 +396,9 @@ class Action implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE IF NOT EXISTS `__prefix__Action` (
+        return ["CREATE TABLE IF NOT EXISTS `__prefix__Action` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
                     `precedence` int(2) DEFAULT NULL,
@@ -413,7 +413,7 @@ class Action implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `moduleName` (`name`,`module`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

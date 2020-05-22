@@ -92,14 +92,14 @@ class I18nRepository extends ServiceEntityRepository
      * findOneByCode
      * @param string $code
      * @param Request|null $request
-     * @return object|null
+     * @return I18n|null
      */
-    public function findOneByCode(string $code, ?Request $request = null)
+    public function findOneByCode(string $code, ?Request $request = null): ?I18n
     {
         $locale = $this->findOneBy(['code' => $code]);
         if (null == $locale) {
             $locale = $this->findOneBy(['systemDefault' => 'Y']);
-            if (null !== $request) {
+            if (null !== $request && null !== $locale) {
                 $request->setDefaultLocale($locale->getCode());
                 $request->setLocale($locale->getCode());
             }

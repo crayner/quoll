@@ -255,19 +255,19 @@ class TTColumnRow implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__TTColumnRow` (
+        return ["CREATE TABLE `__prefix__TTColumnRow` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(12) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `abbreviation` CHAR(4) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `name` CHAR(12) COLLATE utf8mb4_general_ci NOT NULL,
+                    `abbreviation` CHAR(4) COLLATE utf8mb4_general_ci NOT NULL,
                     `time_start` time NOT NULL COMMENT '(DC2Type:time_immutable)',
                     `time_end` time NOT NULL COMMENT '(DC2Type:time_immutable)',
-                    `type` CHAR(8) COLLATE ut8mb4_unicode_ci NOT NULL,
+                    `type` CHAR(8) COLLATE utf8mb4_general_ci NOT NULL,
                     `timetable_column` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `timetable_column` (`timetable_column`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

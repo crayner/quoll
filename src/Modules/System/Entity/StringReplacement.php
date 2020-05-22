@@ -233,9 +233,9 @@ class StringReplacement implements EntityInterface
         return $x;
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__String` (
+        return ["CREATE TABLE `__prefix__String` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `original` CHAR(100) NOT NULL,
                     `replacement` CHAR(100) NOT NULL,
@@ -243,7 +243,7 @@ class StringReplacement implements EntityInterface
                     `case_sensitive` CHAR(1) NOT NULL,
                     `priority` int(2) DEFAULT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

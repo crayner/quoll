@@ -227,9 +227,9 @@ class NotificationListener implements EntityInterface
         return $result;
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__NotificationListener` (
+        return ["CREATE TABLE `__prefix__NotificationListener` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `scope_type` CHAR(30) DEFAULT NULL,
                     `scope_identifier` CHAR(36) DEFAULT NULL,
@@ -238,7 +238,7 @@ class NotificationListener implements EntityInterface
                     PRIMARY KEY (`id`),
                     KEY `notification_event` (`notification_event`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

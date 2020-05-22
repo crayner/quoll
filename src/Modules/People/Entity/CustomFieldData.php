@@ -144,18 +144,18 @@ class CustomFieldData implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE  `__prefix__CustomFieldData` (
+        return ["CREATE TABLE  `__prefix__CustomFieldData` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `custom_field` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `person` CHAR(36) DEFAULT NULL,
-                    `value` longtext COLLATE utf8mb4_unicode_ci,
+                    `value` longtext COLLATE utf8mb4_general_ci,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `person_field` (`person`,`custom_field`),
                     KEY `person` (`person`),
                     KEY `field` (`custom_field`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

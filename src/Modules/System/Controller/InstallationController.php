@@ -17,14 +17,17 @@ namespace App\Modules\System\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Form\Type\SubmitOnlyType;
 use App\Manager\Entity\Language;
 use App\Manager\PageManager;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Modules\System\Form\LanguageType;
 use App\Modules\System\Form\MySQLType;
+use App\Modules\System\Manager\CreateManager;
 use App\Modules\System\Manager\InstallationManager;
 use App\Util\ErrorMessageHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -97,16 +100,12 @@ class InstallationController extends AbstractPageController
 
     /**
      * installationMySQLSettings
-     * @param PageManager $pageManager
      * @param InstallationManager $manager
      * @param ContainerManager $containerManager
      * @param string $proceed
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      * @Route("/installation/mysql/{proceed}", name="installation_mysql")
      */
-    public function installationMySQLSettings(PageManager $pageManager, InstallationManager $manager, ContainerManager $containerManager, string $proceed = '0')
+    public function installationMySQLSettings(InstallationManager $manager, ContainerManager $containerManager, string $proceed = '0')
     {
         $mysql = new MySQLSettings();
         $manager->readCurrentMySQLSettings($mysql);
@@ -124,8 +123,7 @@ class InstallationController extends AbstractPageController
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL);
                 if ($proceed !== '0' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
-                    $data['redirect'] = $this->generateUrl('installation_build', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                    $data['status'] = 'newPage';
+                    $data['redirect'] = $this->generateUrl('installation_build_create', [], UrlGeneratorInterface::ABSOLUTE_URL);
                 }
             } else {
                 $containerManager->singlePanel($form->createView());
@@ -136,8 +134,7 @@ class InstallationController extends AbstractPageController
         }
 
         $containerManager->singlePanel($form->createView());
-
-        return $pageManager->render(
+        return $this->getPageManager()->render(
             [
                 'content' => $this->renderView('installation/mysql_settings.html.twig',
                     [
@@ -151,16 +148,67 @@ class InstallationController extends AbstractPageController
 
     /**
      * installationBuild
-     * @param InstallationManager $manager
-     * @param KernelInterface $kernel
-     * @param EntityManagerInterface $em
-     * @return Response
-     * @Route("/installation/build/", name="installation_build")
+     * @param CreateManager $manager
+     * @param ContainerManager $containerManager
+     * @return JsonResponse
+     * @Route("/installation/build/create/", name="installation_build_create")
      */
-    public function installationBuild(InstallationManager $manager, KernelInterface $kernel, EntityManagerInterface $em)
+    public function createTables(CreateManager $manager, ContainerManager $containerManager)
     {
-        $manager->getLogger()->notice(TranslationHelper::translate('The build of the database has commenced.'));
-        return $manager->buildDatabase($kernel, $this->getRequest());
+        TranslationHelper::setDomain('System');
+        $manager->getLogger()->notice(TranslationHelper::translate('The creation of tables for the database has commenced.'));
+
+        $form = $this->createForm(SubmitOnlyType::class, null,
+            [
+                'action' => $this->generateUrl('installation_core_data'),
+                'translation_domain' => 'System',
+                'submitLabel' => 'Proceed',
+            ]
+        );
+
+        $containerManager->singlePanel($form->createView());
+        return $this->getPageManager()->render(
+            [
+                'content' => $this->renderView('installation/table_complete.html.twig',
+                    [
+                        'tableCount' => $manager->createTables(),
+                    ]
+                ),
+                'containers' => $containerManager->getBuiltContainers(),
+            ]
+        );
     }
 
+    /**
+     * coreData
+     * @param CreateManager $createManager
+     * @param ContainerManager $manager
+     * @return JsonResponse
+     * @Route("/installation/core/data/",name="installation_core_data")
+     */
+    public function coreData(CreateManager $createManager, ContainerManager $manager)
+    {
+        TranslationHelper::setDomain('System');
+        $createManager->getLogger()->notice(TranslationHelper::translate('Core Data will be added to tables.'));
+
+        $form = $this->createForm(SubmitOnlyType::class, null,
+            [
+                'action' => $this->generateUrl('home'),
+                'translation_domain' => 'System',
+                'submitLabel' => 'Proceed',
+            ]
+        );
+
+        $manager->singlePanel($form->createView());
+        return $this->getPageManager()->render(
+            [
+                'content' => $this->renderView('installation/table_complete.html.twig',
+                    [
+                        'tableCount' => $createManager->coreData(),
+                    ]
+                ),
+                'containers' => $manager->getBuiltContainers(),
+            ]
+        );
+    }
 }

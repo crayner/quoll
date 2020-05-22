@@ -12,6 +12,7 @@
  */
 namespace App\Modules\School\Entity;
 
+use App\Manager\AbstractEntity;
 use App\Util\FileHelper;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,13 +23,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="DepartmentResource", indexes={@ORM\Index(name="department",columns={"department"})})
  * @ORM\HasLifecycleCallbacks()
  */
-class DepartmentResource
+class DepartmentResource extends AbstractEntity
 {
+    CONST VERSION = '20200401';
+
     /**
-     * @var integer|null
+     * @var string|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", columnDefinition="INT(8) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -58,7 +61,7 @@ class DepartmentResource
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(length=191)
      */
     private $url;
 
@@ -68,18 +71,20 @@ class DepartmentResource
     private $oldUrl;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return DepartmentResource
      */
-    public function setId(?int $id): DepartmentResource
+    public function setId(?string $id): DepartmentResource
     {
         $this->id = $id;
         return $this;
@@ -188,9 +193,10 @@ class DepartmentResource
 
     /**
      * toArray
+     * @param string|null $name
      * @return array
      */
-    public function toArray()
+    public function toArray(?string $name = null): array
     {
         return [
             'id' => $this->getId(),
@@ -226,5 +232,29 @@ class DepartmentResource
     {
         $this->oldUrl = $this->getUrl();
         return $this->removeOldFiles();
+    }
+
+    public function create(): array
+    {
+        return ["CREATE TABLE `__prefix__DepartmentResource` (
+                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `type` varchar(16) NOT NULL,
+                    `name` varchar(100) NOT NULL,
+                    `url` varchar(191) NOT NULL,
+                    `department` CHAR(36) DEFAULT NULL,
+                    PRIMARY KEY (`id`),
+                    KEY `department` (`department`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+    }
+
+    public function foreignConstraints(): string
+    {
+        return "ALTER TABLE `__prefix__DepartmentResource`
+  ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+    }
+
+    public static function getVersion(): string
+    {
+        return self::VERSION;
     }
 }

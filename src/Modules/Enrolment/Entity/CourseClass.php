@@ -407,9 +407,9 @@ class CourseClass implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__CourseClass` (
+        return ["CREATE TABLE `__prefix__CourseClass` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `nameShort` CHAR(8) NOT NULL,
@@ -422,7 +422,7 @@ class CourseClass implements EntityInterface
                     UNIQUE KEY `nameShortCourse` (`nameShort`,`course`),
                     KEY `scale` (`scale`),
                     KEY `course` (`course`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

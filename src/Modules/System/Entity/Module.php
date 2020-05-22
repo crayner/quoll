@@ -549,9 +549,9 @@ class Module implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Module` (
+        return ["CREATE TABLE `__prefix__Module` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
                     `description` longtext NOT NULL,
@@ -565,7 +565,7 @@ class Module implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     KEY `category` (`category`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

@@ -209,17 +209,17 @@ class ModuleUpgrade implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__ModuleUpgrade` (
+        return ["CREATE TABLE `__prefix__ModuleUpgrade` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `module` int(4) UNSIGNED DEFAULT NULL,
-                    `version` CHAR(20) COLLATE ut8mb4_unicode_ci NOT NULL,
-                    `executed_at` datetime NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
+                    `version` CHAR(20) COLLATE utf8mb4_general_ci NOT NULL,
+                    `executed_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `module_version` (`module`,`version`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

@@ -432,22 +432,22 @@ class CustomField implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__CustomField` (
+        return ["CREATE TABLE `__prefix__CustomField` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `description` CHAR(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `active` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `field_type` CHAR(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `name` CHAR(32) COLLATE utf8mb4_general_ci NOT NULL,
+                    `description` CHAR(191) COLLATE utf8mb4_general_ci NOT NULL,
+                    `active` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
+                    `field_type` CHAR(32) COLLATE utf8mb4_general_ci NOT NULL,
                     `options` json DEFAULT NULL,
-                    `categories` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `required` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `data_updater` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `application_form` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-                    `public_registration_form` CHAR(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+                    `categories` longtext COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `required` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
+                    `data_updater` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
+                    `application_form` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
+                    `public_registration_form` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

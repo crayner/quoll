@@ -222,9 +222,9 @@ class Theme implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Theme` (
+        return ["CREATE TABLE `__prefix__Theme` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `description` CHAR(100) NOT NULL,
@@ -233,7 +233,7 @@ class Theme implements EntityInterface
                     `author` CHAR(40) NOT NULL,
                     `url` CHAR(191) NOT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

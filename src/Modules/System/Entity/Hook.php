@@ -12,7 +12,7 @@
  */
 namespace App\Modules\System\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name", "type"})},
  *     indexes={@ORM\Index(name="module",columns={"module"})})
  */
-class Hook implements EntityInterface
+class Hook extends AbstractEntity
 {
     CONST VERSION = '20200401';
 
@@ -170,9 +170,9 @@ class Hook implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__pefix__Hook` (
+        return ["CREATE TABLE `__prefix__Hook` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(50) NOT NULL,
                     `type` CHAR(20) DEFAULT NULL,
@@ -181,18 +181,13 @@ class Hook implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`,`type`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Hook`
                     ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

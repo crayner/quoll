@@ -84,9 +84,9 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @var array|null
-     * @ORM\Column(options={"default": "All"},type="simple_array")
+     * @ORM\Column(type="simple_array")
      */
-    private $scopes;
+    private $scopes = 'All';
 
     /**
      * @var string|null
@@ -383,13 +383,13 @@ class NotificationEvent implements EntityInterface
         ];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__NotificationEvent` (
+        return ["CREATE TABLE `__prefix__NotificationEvent` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `event` CHAR(90) NOT NULL,
                     `type` CHAR(12) NOT NULL DEFAULT 'Core',
-                    `scopes` text NOT NULL DEFAULT 'All',
+                    `scopes` text NOT NULL,
                     `active` CHAR(1) NOT NULL DEFAULT 'Y',
                     `module` CHAR(36) DEFAULT NULL,
                     `action` CHAR(36) DEFAULT NULL,
@@ -397,7 +397,7 @@ class NotificationEvent implements EntityInterface
                     UNIQUE KEY `event` (`event`,`module`),
                     KEY `module` (`module`),
                     KEY `action` (`action`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

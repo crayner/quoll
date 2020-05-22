@@ -113,15 +113,15 @@ class TTDayDate implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE IF NOT EXISTS `__prefix__TTDayDate` (
+        return ["CREATE TABLE IF NOT EXISTS `__prefix__TTDayDate` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `date` date NOT NULL,
                     `timetable_day` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `timetable_day` (`timetable_day`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

@@ -416,9 +416,9 @@ class Payment implements EntityInterface
        return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Payment` (
+        return ["CREATE TABLE `__prefix__Payment` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `foreign_table` CHAR(50) NOT NULL,
                     `foreign_table_id` CHAR(36) DEFAULT NULL,
@@ -435,7 +435,7 @@ class Payment implements EntityInterface
                     `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

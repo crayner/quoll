@@ -265,9 +265,9 @@ class TT implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__TT` (
+        return ["CREATE TABLE `__prefix__TT` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `abbreviation` CHAR(12) NOT NULL,
@@ -277,7 +277,7 @@ class TT implements EntityInterface
                     `academic_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

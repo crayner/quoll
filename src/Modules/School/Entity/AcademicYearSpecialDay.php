@@ -361,9 +361,9 @@ class AcademicYearSpecialDay implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__AcademicYearSpecialDay` (
+        return ["CREATE TABLE `__prefix__AcademicYearSpecialDay` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `type` CHAR(14) NOT NULL,
                     `name` CHAR(20) NOT NULL,
@@ -377,7 +377,7 @@ class AcademicYearSpecialDay implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `date` (`date`),
                     KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

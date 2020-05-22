@@ -184,9 +184,9 @@ class TTDayRowClass implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__TTDayRowClass` (
+        return ["CREATE TABLE `__prefix__TTDayRowClass` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `timetable_column_row` CHAR(36) DEFAULT NULL,
                     `timetable_day` CHAR(36) DEFAULT NULL,
@@ -197,7 +197,7 @@ class TTDayRowClass implements EntityInterface
                     KEY `timetable_day` (`timetable_day`),
                     KEY `timetable_column_row` (`timetable_column_row`),
                     KEY `course_class` (`course_class`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

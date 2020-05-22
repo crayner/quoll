@@ -247,9 +247,9 @@ class ScaleGrade implements EntityInterface
         ];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__ScaleGrade` (
+        return ["CREATE TABLE `__prefix__ScaleGrade` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `value` CHAR(10) NOT NULL,
                     `descriptor` CHAR(50) NOT NULL,
@@ -261,7 +261,7 @@ class ScaleGrade implements EntityInterface
                     UNIQUE KEY `scaleValue` (`scale`,`value`),
                     UNIQUE KEY `scaleSequence` (`sequence_number`,`scale`),
                     KEY `scale` (`scale`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

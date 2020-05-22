@@ -375,9 +375,9 @@ class AcademicYear implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__AcademicYear` (
+        return ["CREATE TABLE `__prefix__AcademicYear` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(9) NOT NULL,
                     `status` CHAR(8) NOT NULL DEFAULT 'Upcoming',
@@ -387,7 +387,7 @@ class AcademicYear implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `sequence` (`sequence_number`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

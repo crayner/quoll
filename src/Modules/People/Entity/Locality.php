@@ -215,9 +215,9 @@ class Locality implements EntityInterface
         return trim($this->getName().' '.$this->getTerritory().' '.$this->getPostCode());
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Locality` (
+        return ["CREATE TABLE `__prefix__Locality` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `territory` CHAR(30) DEFAULT NULL,
@@ -225,7 +225,7 @@ class Locality implements EntityInterface
                     `country` CHAR(3) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `locality` (`name`,`territory`,`post_code`,`country`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

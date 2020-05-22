@@ -174,9 +174,9 @@ class DepartmentStaff implements EntityInterface
         ];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__DepartmentStaff` (
+        return ["CREATE TABLE `__prefix__DepartmentStaff` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `role` CHAR(24) NOT NULL,
                     `department` CHAR(36) DEFAULT NULL,
@@ -185,7 +185,7 @@ class DepartmentStaff implements EntityInterface
                     UNIQUE KEY `department_person` (`department`,`person`),
                     KEY `department` (`department`),
                     KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

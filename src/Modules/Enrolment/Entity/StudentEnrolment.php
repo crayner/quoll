@@ -195,9 +195,9 @@ class StudentEnrolment implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE IF NOT EXISTS `__prefix__StudentEnrolment` (
+        return ["CREATE TABLE IF NOT EXISTS `__prefix__StudentEnrolment` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `roll_order` smallint DEFAULT NULL,
                     `person` CHAR(36) DEFAULT NULL,
@@ -210,7 +210,7 @@ class StudentEnrolment implements EntityInterface
                     KEY `year_group` (`year_group`),
                     KEY `roll_group` (`roll_group`),
                     KEY `person_academic_year` (`person`,`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

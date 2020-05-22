@@ -91,3 +91,8 @@ services:
         calls:
             - ['setLogger', ['@monolog.logger.installation']]
 
+    App\Modules\System\Manager\CreateManager:
+        calls:
+            - ['setLogger', ['@monolog.logger.installation']]
+            - ['setPrefix', ['%databasePrefix%']]
+

@@ -436,9 +436,9 @@ class Family implements EntityInterface
         return true;
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Family` (
+        return ["CREATE TABLE `__prefix__Family` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(100) NOT NULL,
                     `formal_name` CHAR(100) NOT NULL COMMENT 'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)',
@@ -453,14 +453,14 @@ class Family implements EntityInterface
                     UNIQUE KEY `familySync` (`familySync`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;
-                CREATE TABLE `__prefix__FamilyPhone` (
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+                "CREATE TABLE `__prefix__FamilyPhone` (
                     `family` CHAR(36) NOT NULL,
                     `phone` CHAR(36) NOT NULL,
                     PRIMARY KEY (`family`,`phone`),
                     KEY `family` (`family`),
                     KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

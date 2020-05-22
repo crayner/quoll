@@ -288,9 +288,13 @@ class PageManager
     {
         $this->addTranslation('Loading');
         $this->addTranslation('Close');
+        $locale = null;
         try {
             $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getLocale(), $this->request);
         } catch (\PDOException | PDOException | DriverException $e) {
+            // Ignore errors.
+        }
+        if (null === $locale) {
             $locale = new I18n();
             $locale->setCode('en_GB')->setRtl('N');
         }
@@ -370,14 +374,14 @@ class PageManager
     {
         return [
             'translations' => [
-                'Kookaburra' => TranslationHelper::translate('Quoll'),
-                'Created under the' => TranslationHelper::translate('Created under the'),
-                'Powered by' => TranslationHelper::translate('Powered by'),
-                'from a fork of' => TranslationHelper::translate('from a fork of'),
-                'licence' => TranslationHelper::translate('licence'),
+                'Kookaburra' => TranslationHelper::translate('Quoll', [], 'messages'),
+                'Created under the' => TranslationHelper::translate('Created under the', [], 'messages'),
+                'Powered by' => TranslationHelper::translate('Powered by', [], 'messages'),
+                'from a fork of' => TranslationHelper::translate('from a fork of', [], 'messages'),
+                'licence' => TranslationHelper::translate('licence', [], 'messages'),
             ],
             'footerLogo' => ImageHelper::getAbsoluteImageURL('File', '/build/static/logoFooter.png'),
-            'footerThemeAuthor' => TranslationHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default']),
+            'footerThemeAuthor' => TranslationHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default'], 'messages'),
             'year' => date('Y'),
         ];
     }

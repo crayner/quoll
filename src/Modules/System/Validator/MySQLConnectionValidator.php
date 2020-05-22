@@ -50,7 +50,7 @@ class MySQLConnectionValidator extends ConstraintValidator
             return;
         }
 
-        $sql = "CREATE DATABASE IF NOT EXISTS " . $value->getDbname() . " DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci";
+        $sql = "CREATE DATABASE IF NOT EXISTS " . $value->getDbname() . " DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
         try {
             $conn->exec($sql);
         } catch (PDOException $e) {

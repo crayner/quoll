@@ -11,6 +11,7 @@
  */
 namespace App\Modules\System\Entity;
 
+use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display", columns={"scope","name_display"}),
  *     @ORM\UniqueConstraint(name="scope_name", columns={"scope","name"})})
  */
-class Setting implements EntityInterface
+class Setting extends AbstractEntity
 {
     CONST VERSION = '20200401';
 
@@ -184,9 +185,9 @@ class Setting implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Setting` (
+        return ["CREATE TABLE `__prefix__Setting` (
                     `id` CHAR(36) NOT NULL,
                     `scope` CHAR(50) NOT NULL,
                     `name` CHAR(50) NOT NULL,
@@ -196,7 +197,7 @@ class Setting implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `scope_name` (`scope`,`name`),
                     UNIQUE KEY `scope_display` (`scope`,`name_display`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

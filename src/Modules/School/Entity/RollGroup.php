@@ -577,9 +577,9 @@ class RollGroup implements EntityInterface
         return false;
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__RollGroup` (
+        return ["CREATE TABLE `__prefix__RollGroup` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(10) NOT NULL,
                     `abbreviation` CHAR(5) NOT NULL,
@@ -607,7 +607,7 @@ class RollGroup implements EntityInterface
                     KEY `assistant3` (`assistant3`),
                     KEY `facility` (`facility`),
                     KEY `nextRollGroup` (`next_roll_group`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

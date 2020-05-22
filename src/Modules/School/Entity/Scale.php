@@ -302,9 +302,9 @@ class Scale implements EntityInterface
         return $this->getId();
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Scale` (
+        return ["CREATE TABLE `__prefix__Scale` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(40) NOT NULL,
                     `abbreviation` CHAR(5) NOT NULL,
@@ -314,7 +314,7 @@ class Scale implements EntityInterface
                     `is_numeric` CHAR(1) NOT NULL DEFAULT 'N',
                     PRIMARY KEY (`id`),
                     KEY `lowestAcceptable` (`lowest_acceptable`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

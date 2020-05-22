@@ -76,4 +76,8 @@ class FamilyMemberChild extends FamilyMember
         return parent::toArray('child');
     }
 
+    public function create(): array
+    {
+        return [];
+    }
 }

@@ -199,9 +199,9 @@ class CourseClassPerson implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__CourseClassPerson` (
+        return ["CREATE TABLE `__prefix__CourseClassPerson` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `role` CHAR(16) NOT NULL,
                     `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
@@ -212,7 +212,7 @@ class CourseClassPerson implements EntityInterface
                     KEY `person` (`person`),
                     KEY `course_class` (`course_class`),
                     KEY `person_role` (`person`,`role`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

@@ -445,13 +445,13 @@ class I18n implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__I18n` (
+        return ["CREATE TABLE `__prefix__I18n` (
                 `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                 `code` CHAR(5) NOT NULL,
                 `name` CHAR(100) NOT NULL,
-                `version_date` date DEFAUT NULL COMMENT '(DC2Type:date_immutable)',
+                `version_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                 `active` CHAR(1) NOT NULL DEFAULT 'Y',
                 `installed` CHAR(1) NOT NULL DEFAULT 'N',
                 `system_default` CHAR(1) NOT NULL DEFAULT 'N',
@@ -460,7 +460,7 @@ class I18n implements EntityInterface
                 `date_format_php` CHAR(20) NOT NULL,
                 `rtl` CHAR(1) NOT NULL DEFAULT 'N',
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

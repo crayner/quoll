@@ -193,15 +193,15 @@ class Phone implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Phone` (
+        return ["CREATE TABLE `__prefix__Phone` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `type` CHAR(16) DEFAULT NULL,
                     `phone_number` CHAR(20) DEFAULT NULL,
                     `country` CHAR(3) DEFAULT NULL,
                     PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

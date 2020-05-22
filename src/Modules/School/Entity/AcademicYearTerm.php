@@ -241,9 +241,9 @@ class AcademicYearTerm implements EntityInterface
      * create
      * @return string
      */
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__AcademicYearTerm` (
+        return ["CREATE TABLE `__prefix__AcademicYearTerm` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `sequence_number` int DEFAULT NULL,
                     `name` CHAR(20) NOT NULL,
@@ -256,7 +256,7 @@ class AcademicYearTerm implements EntityInterface
                     UNIQUE KEY `abbr` (`academic_year`,`abbreviation`),
                     UNIQUE KEY `sequence_number` (`academic_year`,`sequence_number`),
                     KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**

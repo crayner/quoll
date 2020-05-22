@@ -347,9 +347,9 @@ class Department implements EntityInterface
         return implode("\n<br/>", $result);
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__Department` (
+        return ["CREATE TABLE `__prefix__Department` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `type` CHAR(16) NOT NULL DEFAULT 'Learning Area',
                     `name` CHAR(40) NOT NULL,
@@ -360,7 +360,7 @@ class Department implements EntityInterface
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `abbreviation` (`abbreviation`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

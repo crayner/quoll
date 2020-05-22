@@ -215,11 +215,11 @@ class StudentNote implements EntityInterface
         return [];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__StudentNote` (
+        return ["CREATE TABLE `__prefix__StudentNote` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `title` CHAR(50) OT NULL,
+                    `title` CHAR(50) NOT NULL,
                     `note` longtext NOT NULL,
                     `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
                     `person` CHAR(36) DEFAULT NULL,
@@ -229,7 +229,7 @@ class StudentNote implements EntityInterface
                     KEY `person` (`person`),
                     KEY `student_note_category` (`student_note_category`),
                     KEY `person_creator` (`person_creator`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=ut8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

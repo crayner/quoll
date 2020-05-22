@@ -76,7 +76,6 @@ class FamilyMember implements EntityInterface
     public function __construct(?Family $family = null)
     {
         $this->setFamily($family);
-        $this->setRelationships(new ArrayCollection());
     }
 
     /**
@@ -221,9 +220,9 @@ class FamilyMember implements EntityInterface
         ];
     }
 
-    public function create(): string
+    public function create(): array
     {
-        return "CREATE TABLE `__prefix__FamilyMember` (
+        return ["CREATE TABLE `__prefix__FamilyMember` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `family` CHAR(36) NOT NULL,
                     `person` CHAR(36) NOT NULL,
@@ -237,18 +236,18 @@ class FamilyMember implements EntityInterface
                     `contact_mail` CHAR(1) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `family_member` (`family`,`person`),
-                    UNIQUE KEY `family_contact` (`family`,`contactPriority`),
+                    UNIQUE KEY `family_contact` (`family`,`contact_priority`),
                     KEY `person` (`person`),
                     KEY `family` (`family`),
                     KEY `member_type` (`member_type`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__FamilyMember` 
-         ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
-         ADD CONSTRAINT FOREIGN KEY (person) REFERENCES __prefix__Person (id);";
+                    ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
+                    ADD CONSTRAINT FOREIGN KEY (person) REFERENCES __prefix__Person (id);";
     }
 
     public function coreData(): string
