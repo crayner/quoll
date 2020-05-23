@@ -266,18 +266,20 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     private $id;
 
     /**
-     * @return int|null
+     * getId
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
-     * @return SecurityUser
+     * setId
+     * @param string|null $id
+     * @return $this
      */
-    public function setId(?int $id): SecurityUser
+    public function setId(?string $id): SecurityUser
     {
         $this->id = $id;
         return $this;

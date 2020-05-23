@@ -79,10 +79,10 @@ class CacheHelper
     /**
      * intervalDateTime
      * @param int $interval
-     * @return \DateTime
+     * @return \DateTimeImmutable
      * @throws \Exception
      */
-    public static function intervalDateTime(int $interval): \DateTime
+    public static function intervalDateTime(int $interval): \DateTimeImmutable
     {
         return new \DateTimeImmutable('- ' . strval($interval * 30 + rand(0, $interval * 60)) . ' Seconds');
     }
@@ -100,7 +100,7 @@ class CacheHelper
             try {
                 self::getSession()->set(self::getCacheName($name), new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
             } catch (\Exception $e) {
-                self::getSession()->clear(self::getCacheName($name));
+                self::getSession()->remove(self::getCacheName($name));
             }
         }
     }

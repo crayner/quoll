@@ -56,8 +56,8 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="application_form",columns={"application_form"}),
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
  *     @ORM\Index(name="primary_role",columns={"primary_role"}),
- *     @ORM\Index(name="emergncy_contact1",columns={"emergency_contact1"}),
- *     @ORM\Index(name="emergncy_contact2",columns={"emergency_contact2"}),
+ *     @ORM\Index(name="emergency_contact1",columns={"emergency_contact1"}),
+ *     @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
  *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
  *     )
  * @UniqueEntity(
@@ -2838,8 +2838,8 @@ class Person extends AbstractEntity
                     `profession` CHAR(90) NOT NULL,
                     `employer` CHAR(90) NOT NULL,
                     `jobTitle` CHAR(90) NOT NULL,
-                    `emergency_contact1` CHAR(30) NOT NULL,
-                    `emergency_contact2` CHAR(30) NOT NULL,
+                    `emergency_contact1` CHAR(30) DEFAULT NULL,
+                    `emergency_contact2` CHAR(30) DEFAULT NULL,
                     `student_identifier` CHAR(20) DEFAULT NULL,
                     `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
@@ -2876,6 +2876,8 @@ class Person extends AbstractEntity
                     KEY `academic_year_class_of` (`class_of_academic_year`),
                     KEY `application_form` (`application_form`),
                     KEY `primary_role` (`primary_role`),
+                    KEY `emergency_contact1` (`emergency_contact1`),
+                    KEY `emergency_contact2` (`emergency_contact2`),
                     KEY `personal_phone` (`personal_phone`),
                     KEY `username_email` (`username`,`email`),
                     KEY `physical_address` (`physical_address`),

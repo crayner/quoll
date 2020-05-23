@@ -217,11 +217,6 @@ class Setting extends AbstractEntity
         return Yaml::parse("
 -
   scope: 'System'
-  name: 'absoluteURL'
-  nameDisplay: 'Base URL'
-  description: 'The address at which the whole system resides.'
--
-  scope: 'System'
   name: 'emailLink'
   nameDisplay: 'Link To Email'
   description: 'The link that points to the school''s email system'
@@ -241,37 +236,6 @@ class Setting extends AbstractEntity
   name: 'departureReasons'
   nameDisplay: 'Departure Reasons'
   description: 'A list of reasons for departure from school. If blank, user can enter any text.'
--
-  scope: 'System'
-  name: 'googleOAuth'
-  nameDisplay: 'Google Integration'
-  description: 'Enable Gibbon-wide integration with the Google APIs?'
-  value: 'Y'
--
-  scope: 'System'
-  name: 'googleClientName'
-  nameDisplay: 'Google Developers Client Name'
-  description: 'Name of Google Project in Developers Console.'
--
-  scope: 'System'
-  name: 'googleClientID'
-  nameDisplay: 'Google Developers Client ID'
-  description: 'Client ID for Google Project In Developers Console.'
--
-  scope: 'System'
-  name: 'googleClientSecret'
-  nameDisplay: 'Google Developers Client Secret'
-  description: 'Client Secret for Google Project In Developers Console.'
--
-  scope: 'System'
-  name: 'googleRedirectUri'
-  nameDisplay: 'Google Developers Redirect Url'
-  description: 'Google Redirect on sucessful auth.'
--
-  scope: 'System'
-  name: 'googleDeveloperKey'
-  nameDisplay: 'Google Developers Developer Key'
-  description: 'Google project Developer Key.'
 -
   scope: 'Mark book'
   name: 'personalisedWarnings'
@@ -1517,12 +1481,6 @@ class Setting extends AbstractEntity
   name: 'requiredDocuments'
   nameDisplay: 'Required Documents'
   description: 'A list of documents which must be submitted electronically with the application form.'
--
-  scope: 'System'
-  name: 'absolutePath'
-  nameDisplay: 'Base Path'
-  description: 'The local FS path to the system'
-  value: 'F:\\websites\\crayner\\quoll\\public'
 -
   scope: 'Application Form'
   name: 'requiredDocumentsCompulsory'

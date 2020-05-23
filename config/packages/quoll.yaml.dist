@@ -46,14 +46,13 @@ parameters:
         ROLE_SYSTEM_ADMIN:
             - ROLE_REGISTRAR
             - ROLE_PARENT
-    timezone: ~
+    timezone: UTC
     locale: en_GB
     mailer_dns: 'smtp://null'
+    google_oauth: false
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~
-    system_name: Quoll
-    organisation_name: Organisation Name
     messenger_transport_dsn: 'doctrine://default'
     country: ~
     preferred_countries: []

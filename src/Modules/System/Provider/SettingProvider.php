@@ -15,15 +15,11 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\AbstractEntity;
-use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
-use App\Util\Format;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\DriverException;

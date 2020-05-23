@@ -73,8 +73,8 @@ PayPal Payment Gateway: PayPal Payment Gateway
 PayPal: PayPal
 Please Select...: Please Select...
 Production: Production
-Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}: Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}
-Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}: Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}
+Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}: Provide a copy of the .json file downloaded from the {anchor}Google Development Console{anchorClose}.
+Provide a copy of the API Key from the {anchor}Google Development Console.{anchorClose}: Provide a copy of the API Key from the {anchor}Google Development Console{anchorClose}.
 Relative path to background image. Overrides theme background.: Relative path to background image. Overrides theme background.
 Relative path to site logo (400 x 100px): Relative path to site logo (400 x 100px)
 Require at least one non-alphanumeric character (e.g. punctuation mark or space)?: Require at least one non-alphanumeric character (e.g. punctuation mark or space)?
@@ -121,7 +121,7 @@ The address at which the whole system resides.: The address at which the whole s
 The country the school is located in: The country the school is located in
 The link that points to the school/'s email system: The link that points to the school/'s email system
 The link that points to the school/'s website: The link that points to the school/'s website
-The local FS path to the system: The local FS path to the system
+The local file system path to the system: The local file system path to the system
 The purpose of this installation of Kookaburra: The purpose of this installation of Kookaburra
 The sender name or phone number. Depends on the gateway used.: The sender name or phone number. Depends on the gateway used.
 The staff member who receives notifications for admissions events.: The staff member who receives notifications for admissions events.
@@ -240,3 +240,30 @@ Core Data will be added to tables.: Core Data will be added to tables.
 Core Data: Core Data
 Core data was added to {table}. {count} items were added.: Core data was added to {table}. {count} items were added.
 Link data was added for {table}.  {linkCount} links were added.: Link data was added for {table}.  {linkCount} links were added.
+Allow Google integration into your school system.: Allow Google integration into your school system.
+Confirm Password: Confirm Password
+Email: Email
+Family name as shown in ID documents.: Family name as shown in ID documents.
+First Name: First Name
+First name as shown in ID documents.: First name as shown in ID documents.
+Foreign Constraints added to {count} tables.: Foreign Constraints added to {count} tables.
+Foreign Constraints were added to {table}.: Foreign Constraints were added to {table}.
+Foreign Constraints will be added to tables.: Foreign Constraints will be added to tables.
+Foreign Constraints: Foreign Constraints
+Google Developer Key: Google Developer Key
+Google integration has been turned off.: Google integration has been turned off.
+Must be unique. System login name. Cannot be changed.: Must be unique. System login name. Cannot be changed.
+Password: Password
+Please select...: Please select...
+Surname: Surname
+System User Account: System User Account
+The link that points to the school's email system: The link that points to the school's email system
+The link that points to the school's website: The link that points to the school's website
+The local FS path to the system: The local FS path to the system
+The url at which the whole system resides.: The url at which the whole system resides.
+Title: Title
+Use Google OAuth: Use Google OAuth
+User Account: User Account
+Username: Username
+Your requested included a valid Google Secret File.  The information was successfully stored.: Your requested included a valid Google Secret File.  The information was successfully stored.
+country: country

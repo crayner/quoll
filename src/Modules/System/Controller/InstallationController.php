@@ -15,15 +15,19 @@
 
 namespace App\Modules\System\Controller;
 
+use App\Container\Container;
 use App\Container\ContainerManager;
+use App\Container\Panel;
 use App\Controller\AbstractPageController;
 use App\Form\Type\SubmitOnlyType;
 use App\Manager\Entity\Language;
 use App\Manager\PageManager;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Form\Entity\MySQLSettings;
+use App\Modules\System\Form\Entity\SystemSettings;
 use App\Modules\System\Form\LanguageType;
 use App\Modules\System\Form\MySQLType;
+use App\Modules\System\Form\SystemType;
 use App\Modules\System\Manager\CreateManager;
 use App\Modules\System\Manager\InstallationManager;
 use App\Util\ErrorMessageHelper;
@@ -262,7 +266,7 @@ class InstallationController extends AbstractPageController
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
-                $data['redirect'] = $this->generateUrl('home');
+                $data['redirect'] = $this->generateUrl('installation_system_settings');
                 $data['status'] = 'redirect';
 
                 return new JsonResponse($data);
@@ -279,6 +283,53 @@ class InstallationController extends AbstractPageController
                         'tableCount' => $createManager->foreignConstraints(),
                     ]
                 ),
+                'containers' => $manager->getBuiltContainers(),
+            ]
+        );
+    }
+
+    /**
+     * systemSettings
+     * @Route("/installation/system/settings/{tabName}",name="installation_system_settings")
+     * @param InstallationManager $installationManager
+     * @param ContainerManager $manager
+     */
+    public function systemSettings(InstallationManager $installationManager, ContainerManager $manager, string $tabName = 'System User')
+    {
+        $settings = new SystemSettings();
+        $settings->injectRequest($this->getRequest());
+        $message = null;
+
+        $form = $this->createForm(SystemType::class, $settings, ['action' => $this->generateUrl('installation_system_settings', ['tabName' => $tabName])]);
+
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(),true);
+            $form->submit($content);
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $installationManager->setAdministrator($form);
+                    $installationManager->setSystemSettings($form);
+                }
+                $data['redirect'] = $this->generateUrl('home');
+                $data['status'] = 'redirect';
+                return new JsonResponse($data);
+            }
+        }
+
+        $manager->singlePanel($form->createView());
+        $container = new Container();
+        $container->addForm('single', $form->createView());
+        $panel = new Panel('System User', 'People');
+        $container->addPanel($panel);
+        $panel = new Panel('Settings', 'System');
+        $container->addPanel($panel);
+        $panel = new Panel('Organisation', 'System');
+        $container->addPanel($panel);
+        $container->setSelectedPanel($tabName);
+        $manager->addContainer($container);
+
+        return $this->getPageManager()->render(
+            [
                 'containers' => $manager->getBuiltContainers(),
             ]
         );

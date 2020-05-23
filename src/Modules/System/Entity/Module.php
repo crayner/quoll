@@ -362,7 +362,6 @@ class Module extends AbstractEntity
             'author' => $this->author,
             'url' => $this->url,
             'status' => $this->getStatus(),
-            'updateRequired' => $this->isUpdateRequired(),
             'isNotCore' => $this->getType() !== 'Core',
         ];
     }

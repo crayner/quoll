@@ -14,7 +14,12 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Modules\People\Entity\Person;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Staff\Entity\Staff;
+use App\Modules\System\Entity\Setting;
 use App\Modules\System\Form\Entity\MySQLSettings;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -22,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
@@ -329,4 +335,61 @@ class InstallationManager
         return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
     }
 
+    /**
+     * setAdministrator
+     * @param FormInterface $form
+     */
+    public function setAdministrator(FormInterface $form)
+    {
+        $person = ProviderFactory::getRepository(Person::class)->loadUserByUsernameOrEmail($form->get('username')->getData()) ?: new Person();
+        $person->setTitle($form->get('title')->getData());
+        $person->setSurname($form->get('surname')->getData());
+        $person->setFirstName($form->get('firstName')->getData());
+        $person->setPreferredName($form->get('firstName')->getData());
+        $person->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
+        $person->setusername($form->get('username')->getData());
+        $encoder = new NativePasswordEncoder();
+
+        $password = $encoder->encodePassword($form->get('password')->getData(), null);
+        $person->setPassword($password);
+        $person->setStatus('Full');
+        $person->setCanLogin('Y');
+        $person->setPrimaryRole('ROLE_SYSTEM_ADMIN');
+        $person->setEmail($form->get('email')->getData());
+        $person->setViewCalendarSchool('Y');
+        $person->setViewCalendarSpaceBooking('Y');
+        $em = ProviderFactory::getEntityManager();
+        $em->persist($person);
+        $em->flush();
+
+        $staff = new Staff();
+        $staff->setType('Support')
+            ->setJobTitle('System Administrator')
+            ->setPerson($person);
+        $em->persist($staff);
+        $em->flush();
+        new SecurityUser($person);
+    }
+
+    /**
+     * setSystemSettings
+     * @param FormInterface $form
+     */
+    public function setSystemSettings(FormInterface $form)
+    {
+        $settingProvider = ProviderFactory::create(Setting::class);
+
+        $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
+        $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());
+        $settingProvider->setSettingByScope('System', 'organisationName', $form->get('organisationName')->getData());
+        $settingProvider->setSettingByScope('System', 'organisationNameShort', $form->get('organisationNameShort')->getData());
+        $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData());
+        $config = $this->readParameterFile();
+        $config['parameters']['timezone'] = $form->get('timezone')->getData();
+        $config['parameters']['country'] = $form->get('country')->getData();
+        $config['parameters']['installed'] = true;
+        $config['parameters']['install_date'] = date('Y-m-d');
+        unset($config['parameters']['installation']);
+        $this->writeParameterFile($config);
+    }
 }
