@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,9 +24,9 @@ use Doctrine\ORM\PersistentCollection;
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTColumnRowRepository")
  * @ORM\Table(name="TTColumnRow", indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"})})
  */
-class TTColumnRow implements EntityInterface
+class TTColumnRow extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -274,11 +274,6 @@ class TTColumnRow implements EntityInterface
     {
         return "ALTER TABLE `__prefix__TTColumnRow`
                     ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

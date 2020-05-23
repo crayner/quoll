@@ -1,0 +1,16 @@
+{% trans_default_domain 'messages' %}
+
+<h1>
+    {{ 'Oh no!'|trans }}<br/>
+</h1>
+<p>
+    {{ 'Something has gone wrong: the Quolls are in the hen house!'|trans }}<br/>
+    <br/>
+    {{ 'An error has occurred. This could mean a number of different things, but generally indicates that you have a misspelt address, or are trying to access a page that you are not permitted to access.'|trans }}.' '.{{ 'If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.'|trans }}<br/>
+</p>
+{% if extendedError is defined %}
+    <h4>{{ extendedError|trans(extendedParams|default({}),'messages') }}</h4>
+    {% if app.environment is same as('dev') %}
+        {{ dump(manager|default({})) }}
+    {% endif %}
+{% endif %}

@@ -15,7 +15,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\ImageRemovalTrait;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,9 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"})})
  * @ORM\HasLifecycleCallbacks()
  */
-class House implements EntityInterface
+class House extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use ImageRemovalTrait;
 
@@ -215,13 +215,7 @@ class House implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

@@ -16,7 +16,6 @@ namespace App\Modules\System\Manager;
 
 use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Util\TranslationHelper;
-use App\Util\TranslationsHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,14 +68,13 @@ class InstallationManager
      */
     public function check(array $systemRequirements): string
     {
-        $configFile = $this->getParameterPath(false);
         TranslationHelper::setDomain('System');
         if (false === realpath($this->getParameterPath(false)) && false !== realpath($this->getParameterPath(false).'.dist'))
         {
             $this->getLogger()->debug(TranslationHelper::translate('The parameter file needs to be created'));
             if (false === copy($this->getParameterPath(false).'.dist', $this->getParameterPath(false))) {
                 $this->getLogger()->error(TranslationHelper::translate('Not able to copy the parameter file.'));
-                return $this->twig->render($this->twig->render('legacy/error.html.twig',
+                return $this->twig->render($this->twig->render('error/error.html.twig',
                     [
                         'extendedError' => 'Unable to copy the quoll.yaml file from the distribution file in /config/packages directory.',
                         'extendedParams' => [],
@@ -87,6 +85,7 @@ class InstallationManager
                 $config = $this->readParameterFile();
                 $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
                 $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
+                $config['parameters']['timezone'] = ini_get('date.timezone');
                 $this->writeParameterFile($config);
                 $this->getLogger()->notice(TranslationHelper::translate('The parameter file has been created.'));
             }
@@ -274,8 +273,6 @@ class InstallationManager
             ->setUser($config['parameters']['databaseUsername'])
             ->setPassword($config['parameters']['databasePassword'])
             ->setPrefix($config['parameters']['databasePrefix']);
-        if (key_exists('demo',$config['parameters']['installation']))
-            $setting->setDemo($config['parameters']['installation']['demo'] ? 'Y' : 'N');
 
     }
 
@@ -295,7 +292,6 @@ class InstallationManager
         $config['parameters']['databaseUsername']       = $setting->getUser();
         $config['parameters']['databasePassword']       = $setting->getPassword();
         $config['parameters']['databasePrefix']         = $setting->getPrefix();
-        $config['parameters']['installation']['demo']   = $setting->isDemo(); ;
 
         $this->writeParameterFile($config);
 

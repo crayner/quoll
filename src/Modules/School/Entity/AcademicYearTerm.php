@@ -12,7 +12,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\School\Validator as Check;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -31,9 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"academicYear","abbreviation"},errorPath="abbreviation")
  * @Check\Term()
  */
-class AcademicYearTerm implements EntityInterface
+class AcademicYearTerm extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -272,13 +272,7 @@ class AcademicYearTerm implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\Facility;
 use App\Util\EntityHelper;
@@ -30,9 +30,9 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class TTDayRowClass implements EntityInterface
+class TTDayRowClass extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -207,11 +207,6 @@ class TTDayRowClass implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`timetable_column_row`) REFERENCES `__prefix__TTColumnRow` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

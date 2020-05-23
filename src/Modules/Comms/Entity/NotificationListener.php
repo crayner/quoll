@@ -16,7 +16,7 @@ use App\Provider\ProviderFactory;
 use App\Modules\School\Entity\YearGroup;
 use App\Modules\Comms\Validator as Valid;
 use App\Modules\People\Entity\Person;
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,9 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="notification_event",columns={"notification_event"})})
  * @Valid\EventListener()
  */
-class NotificationListener implements EntityInterface
+class NotificationListener extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -246,11 +246,6 @@ class NotificationListener implements EntityInterface
         return 'ALTER TABLE `__prefix__NotificationListener`
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`notification_event`) REFERENCES `__prefix__NotificationEvent` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        // TODO: Implement coreData() method.
     }
 
     public static function getVersion(): string

@@ -1,7 +1,7 @@
 <?php
 namespace App\Form\Transform;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;

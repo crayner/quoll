@@ -15,7 +15,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,9 +35,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("sequenceNumber")
  * @UniqueEntity("name")
  */
-class AcademicYear implements EntityInterface
+class AcademicYear extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -402,13 +402,7 @@ class AcademicYear implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

@@ -29,7 +29,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,9 +41,9 @@ use Doctrine\ORM\PersistentCollection;
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTColumnRepository")
  * @ORM\Table(name="TTColumn")
  */
-class TTColumn implements EntityInterface
+class TTColumn extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -183,11 +183,6 @@ class TTColumn implements EntityInterface
     }
 
     public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    public function coreData(): string
     {
         return '';
     }

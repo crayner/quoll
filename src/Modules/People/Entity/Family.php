@@ -13,7 +13,7 @@
 
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,9 +38,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @UniqueEntity(fields={"name"})
  */
-class Family implements EntityInterface
+class Family extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 /**
      * @var string|null
      * @ORM\Id()
@@ -471,11 +471,6 @@ class Family implements EntityInterface
                 ALTER TABLE `__prefix__FamilyPhone`
                     ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

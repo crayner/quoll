@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\School\Entity\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,9 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTRepository")
  * @ORM\Table(name="TT")
  */
-class TT implements EntityInterface
+class TT extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -284,11 +284,6 @@ class TT implements EntityInterface
     {
         return "ALTER TABLE `__prefix__TT`
   ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

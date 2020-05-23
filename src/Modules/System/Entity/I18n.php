@@ -12,12 +12,13 @@
  */
 namespace App\Modules\System\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class I18n
@@ -25,9 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\I18nRepository")
  * @ORM\Table(name="i18n")
  */
-class I18n implements EntityInterface
+class I18n extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -476,52 +477,420 @@ class I18n implements EntityInterface
      * coreData
      * @return string
      */
-    public function coreData(): string
+    public function coreData(): array
     {
-        return <<<JJJ
-INSERT INTO `__prefix__I18n` (`code`, `name`, `version_date`, `active`, `installed`, `system_default`, `date_format`, `date_format_regex`, `date_format_php`, `rtl`) VALUES
-                    ('en_GB', 'English - United Kingdom', NULL, 'Y', 'Y', 'Y', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('en_US', 'English - United States', NULL, 'Y', 'N', 'N', 'mm/dd/yyyy', '/([1-9]|1[012])[- /.]([1-9]|[12][0-9]|3[01])[- /.](19|20\\d\\d)/', 'm/d/Y', 'N'),
-                    ('es_ES', 'Español', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('zh_CN', '汉语 - 中国', NULL, 'Y', 'N', 'N', 'yyyy-mm-dd', '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/', 'Y-m-d', 'N'),
-                    ('zh_HK', '體字 - 香港', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('pl_PL', 'Język polski - Polska', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\\\d\\\\d$/i', 'd/m/Y', 'N'),
-                    ('it_IT', 'Italiano - Italia', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('id_ID', 'Bahasa Indonesia - Indonesia', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('ar_SA', 'العربية - المملكة العربية السعودية', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'Y'),
-                    ('fr_FR', 'Français - France', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('ur_PK', 'پاکستان - اُردُو', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'Y'),
-                    ('sw_KE', 'Swahili', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('pt_PT', 'Português', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('ro_RO', 'Română', NULL, 'Y', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'N'),
-                    ('ja_JP', '日本語', NULL, 'N', 'N', 'N', 'yyyy-mm-dd', '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/', 'Y-m-d', 'N'),
-                    ('ru_RU', 'ру́сский язы́к', NULL, 'N', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'N'),
-                    ('uk_UA', 'українська мова', NULL, 'N', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'N'),
-                    ('bn_BD', 'বাংলা', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('da_DK', 'Dansk - Danmark', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('fa_IR', 'فارسی', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'Y'),
-                    ('pt_BR', 'Português - Brasil', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('ka_GE', 'ქართული ენა', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('nl_NL', 'Dutch - Nederland', NULL, 'Y', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('hu_HU', 'Magyar - Magyarország', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('bg_BG', 'български език', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('ko_KP', '한국어 - 대한민국', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('fi_FI', 'Suomen Kieli - Suomi', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('de_DE', 'Deutsch - Deutschland', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('in_OR', 'ଓଡ଼ିଆ - इंडिया', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('no_NO', 'Norsk - Norge', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('vi_VN', 'Tiếng Việt - Việt Nam', NULL, 'Y', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('sq_AL', 'Shqip - Shqipëri', NULL, 'Y', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('th_TH', 'ภาษาไทย - ราชอาณาจักรไทย', NULL, 'Y', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('el_GR', 'ελληνικά - Ελλάδα', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i', 'd-m-Y', 'N'),
-                    ('am_ET', 'አማርኛ - ኢትዮጵያ', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('om_ET', 'Afaan Oromo - Ethiopia', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('hr_HR', 'Hrvatski - Hrvatska', NULL, 'Y', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('et_EE', 'Eesti Keel - Eesti', NULL, 'N', 'N', 'N', 'dd/mm/yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd/m/Y', 'N'),
-                    ('he_IL', 'עברית - ישראל', NULL, 'Y', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'Y'),
-                    ('tr_TR', 'Türkçe - Türkiye', NULL, 'Y', 'N', 'N', 'dd.mm.yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd.m.Y', 'N'),
-                    ('my_MM', 'မြန်မာ - မြန်မာ', NULL, 'N', 'N', 'N', 'dd-mm-yyyy', '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i', 'd-m-Y', 'N');
-JJJ;
+        return Yaml::parse("
+-
+  code: 'en_GB'
+  name: 'English - United Kingdom'
+  active: 'Y'
+  installed: 'Y'
+  systemDefault: 'Y'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'en_US'
+  name: 'English - United States'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'mm/dd/yyyy'
+  dateFormatRegEx: '/([1-9]|1[012])[- /.]([1-9]|[12][0-9]|3[01])[- /.](19|20\\d\\d)/'
+  dateFormatPHP: 'm/d/Y'
+  rtl: 'N'
+-
+  code: 'es_ES'
+  name: 'Español'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'zh_CN'
+  name: '汉语 - 中国'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'yyyy-mm-dd'
+  dateFormatRegEx: '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/'
+  dateFormatPHP: 'Y-m-d'
+  rtl: 'N'
+-
+  code: 'zh_HK'
+  name: '體字 - 香港'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'pl_PL'
+  name: 'Język polski - Polska'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\\\d\\\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'it_IT'
+  name: 'Italiano - Italia'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'id_ID'
+  name: 'Bahasa Indonesia - Indonesia'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'ar_SA'
+  name: 'العربية - المملكة العربية السعودية'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'Y'
+-
+  code: 'fr_FR'
+  name: 'Français - France'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'ur_PK'
+  name: 'پاکستان - اُردُو'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'Y'
+-
+  code: 'sw_KE'
+  name: 'Swahili'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'pt_PT'
+  name: 'Português'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'ro_RO'
+  name: 'Română'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd.mm.yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd.m.Y'
+  rtl: 'N'
+-
+  code: 'ja_JP'
+  name: '日本語'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'yyyy-mm-dd'
+  dateFormatRegEx: '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/'
+  dateFormatPHP: 'Y-m-d'
+  rtl: 'N'
+-
+  code: 'ru_RU'
+  name: 'ру́сский язы́к'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd.mm.yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd.m.Y'
+  rtl: 'N'
+-
+  code: 'uk_UA'
+  name: 'українська мова'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd.mm.yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd.m.Y'
+  rtl: 'N'
+-
+  code: 'bn_BD'
+  name: 'বাংলা'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'da_DK'
+  name: 'Dansk - Danmark'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'fa_IR'
+  name: 'فارسی'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'Y'
+-
+  code: 'pt_BR'
+  name: 'Português - Brasil'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'ka_GE'
+  name: 'ქართული ენა'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'nl_NL'
+  name: 'Dutch - Netherlands'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'hu_HU'
+  name: 'Magyar - Magyarország'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'bg_BG'
+  name: 'български език'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'ko_KP'
+  name: '한국어 - 대한민국'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'fi_FI'
+  name: 'Suomen Kieli - Suomi'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'de_DE'
+  name: 'Deutsch - Deutschland'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'in_OR'
+  name: 'ଓଡ଼ିଆ - इंडिया'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'no_NO'
+  name: 'Norsk - Norge'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'vi_VN'
+  name: 'Tiếng Việt - Việt Nam'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'sq_AL'
+  name: 'Shqip - Shqipëri'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'th_TH'
+  name: 'ภาษาไทย - ราชอาณาจักรไทย'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'el_GR'
+  name: 'ελληνικά - Ελλάδα'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+-
+  code: 'am_ET'
+  name: 'አማርኛ - ኢትዮጵያ'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'om_ET'
+  name: 'Afaan Oromo - Ethiopia'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'hr_HR'
+  name: 'Hrvatski - Hrvatska'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'et_EE'
+  name: 'Eesti Keel - Eesti'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd/mm/yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd/m/Y'
+  rtl: 'N'
+-
+  code: 'he_IL'
+  name: 'עברית - ישראל'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd.mm.yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd.m.Y'
+  rtl: 'Y'
+-
+  code: 'tr_TR'
+  name: 'Türkçe - Türkiye'
+  active: 'Y'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd.mm.yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd.m.Y'
+  rtl: 'N'
+-
+  code: 'my_MM'
+  name: 'မြန်မာ - မြန်မာ'
+  active: 'N'
+  installed: 'N'
+  systemDefault: 'N'
+  dateFormat: 'dd-mm-yyyy'
+  dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+  dateFormatPHP: 'd-m-Y'
+  rtl: 'N'
+");
     }
 
     public static function getVersion(): string

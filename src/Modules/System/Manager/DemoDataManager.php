@@ -15,7 +15,7 @@
 
 namespace App\Modules\System\Manager;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
@@ -111,7 +111,8 @@ class DemoDataManager
 
     /**
      * isEntityEmpty
-     * @param $entityName
+     * @param string $name
+     * @param string $entityName
      * @return bool
      */
     private function isEntityEmpty(string $name, string $entityName)

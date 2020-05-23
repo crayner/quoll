@@ -14,7 +14,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -27,9 +27,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     indexes={@ORM\Index(name="person",columns={"person"}), @ORM\Index(name="field",columns={"custom_field"})})
  * @UniqueEntity(fields={"customField","person"})
  */
-class CustomFieldData implements EntityInterface
+class CustomFieldData extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -163,11 +163,6 @@ class CustomFieldData implements EntityInterface
         return "ALTER TABLE `__prefix__CustomFieldData`
                     ADD CONSTRAINT FOREIGN KEY (`custom_field`) REFERENCES `__prefix__CustomField` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

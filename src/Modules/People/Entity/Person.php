@@ -15,7 +15,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Manager\PersonNameManager;
@@ -71,9 +71,9 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * @ORM\HasLifecycleCallbacks()
  * @Username()
  */
-class Person implements EntityInterface
+class Person extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -2915,13 +2915,7 @@ class Person implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    /**
+     *//**
      * getHumanisedRole
      * @return string
      */

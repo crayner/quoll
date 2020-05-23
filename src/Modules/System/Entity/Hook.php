@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Hook extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null

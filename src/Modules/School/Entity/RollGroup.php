@@ -12,7 +12,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
 use App\Provider\ProviderFactory;
@@ -40,9 +40,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"tutor","academicYear"})
  * @UniqueEntity({"facility","academicYear"})
  */
-class RollGroup implements EntityInterface
+class RollGroup extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -622,11 +622,6 @@ class RollGroup implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`tutor3`) REFERENCES `__prefix__Person` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`next_roll_group`) REFERENCES `__prefix__RollGroup` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

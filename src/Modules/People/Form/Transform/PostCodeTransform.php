@@ -14,7 +14,7 @@
  */
 namespace App\Modules\People\Form\Transform;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Manager\AddressManager;
 use Symfony\Component\Form\DataTransformerInterface;
 

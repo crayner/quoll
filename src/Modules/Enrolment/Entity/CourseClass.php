@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Enrolment\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\School\Entity\Scale;
 use App\Modules\Timetable\Entity\TTDayRowClass;
@@ -36,9 +36,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"name","course"})
  * @UniqueEntity({"nameShort","course"})
  */
-class CourseClass implements EntityInterface
+class CourseClass extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -430,11 +430,6 @@ class CourseClass implements EntityInterface
         return 'ALTER TABLE `__prefix__CourseClass`
                     ADD CONSTRAINT FOREIGN KEY (`course`) REFERENCES `__prefix__Course` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

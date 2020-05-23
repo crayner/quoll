@@ -11,7 +11,7 @@
  */
 namespace App\Modules\Enrolment\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
@@ -24,9 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentEnrolmentRepository")
  * @ORM\Table(name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="year_group", columns={"year_group"}), @ORM\Index(name="person", columns={"person"}), @ORM\Index(name="roll_group", columns={"roll_group"}), @ORM\Index(name="person_academic_year", columns={"person","academic_year"})})
  */
-class StudentEnrolment implements EntityInterface
+class StudentEnrolment extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -224,15 +224,6 @@ class StudentEnrolment implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`year_group`) REFERENCES `__prefix__YearGroup` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);";
-    }
-
-    /**
-     * coreData
-     * @return string
-     */
-    public function coreData(): string
-    {
-        return "";
     }
 
     public static function getVersion(): string

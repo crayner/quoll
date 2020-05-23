@@ -231,3 +231,12 @@ installation_table_complete: 'count tables have been added to the database.  Ple
 The creation of tables for the database is completed. {count} tables where added.: 'The creation of tables for the database is completed. {count} tables where added.'
 The {table} was written to the database.: 'The {table} was written to the database.'
 Tables: Tables
+The parameter file needs to be created: The parameter file needs to be created
+The parameter file has been created.: The parameter file has been created.
+installation_core_data_complete: Core data has now been added to the database, injected into count tables. You can also check the log at /var/log/installation-{date}.log for further details. Once you are satisfied with the data, please proceed to add foreign constraints, which will enforce validation of data added to the database.
+installation_constraints_complete: With the completion of foreign constaints to the database, the creation of the database is complete.  You can now add demonstration data, or if you are ready, move towards using the system for your school.
+Core Data has been added to the database. {count} tables had data added.: Core Data has been added to the database. {count} tables had core data added.
+Core Data will be added to tables.: Core Data will be added to tables.
+Core Data: Core Data
+Core data was added to {table}. {count} items were added.: Core data was added to {table}. {count} items were added.
+Link data was added for {table}.  {linkCount} links were added.: Link data was added for {table}.  {linkCount} links were added.

@@ -42,6 +42,28 @@ class MySQLType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['proceed'] === 'proceed') {
+            $builder
+                ->add('proceedHelp', ParagraphType::class,
+                    [
+                        'help' => 'database_build_ready',
+                        'wrapper_class' => 'relative w-full info',
+                    ]
+                )
+                ->add('proceed', SubmitType::class,
+                    [
+                        'label' => 'Proceed',
+                    ]
+                )
+                ->add('proceedFlag', HiddenType::class,
+                    [
+                        'data' => 'Ready to Go',
+                        'mapped' => false,
+                    ]
+                )
+            ;
+        }
+
         $builder
             ->add('host', TextType::class,
                 [
@@ -121,36 +143,7 @@ class MySQLType extends AbstractType
                     ],
                 ]
             )
-            ->add('demo', ToggleType::class,
-                [
-                    'label' => 'Install Demo Data?',
-                    'attr' => [
-                        'class' => 'w-full',
-                    ],
-                ]
-            )
         ;
-        if ($options['proceed'] === 'proceed') {
-            $builder
-                ->add('proceedHelp', ParagraphType::class,
-                    [
-                        'help' => 'database_build_ready',
-                        'wrapper_class' => 'relative w-full info',
-                    ]
-                )
-                ->add('proceed', SubmitType::class,
-                    [
-                        'label' => 'Proceed',
-                    ]
-                )
-                ->add('proceedFlag', HiddenType::class,
-                    [
-                        'data' => 'Ready to Go',
-                        'mapped' => false,
-                    ]
-                )
-            ;
-        }
         $builder
             ->add('submit', SubmitType::class,
                 [

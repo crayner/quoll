@@ -15,7 +15,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Finance\Entity\Payment;
 use App\Modules\People\Entity\Family;
@@ -29,9 +29,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ApplicationForm",)
  * @ORM\HasLifecycleCallbacks
  */
-class ApplicationForm implements EntityInterface
+class ApplicationForm extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -3595,13 +3595,7 @@ class ApplicationForm implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

@@ -12,7 +12,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\School\Manager\SpecialDayManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\School\Validator as Check;
@@ -31,9 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Check\SpecialDay()
  * @UniqueEntity("date")
  */
-class AcademicYearSpecialDay implements EntityInterface
+class AcademicYearSpecialDay extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -393,13 +393,7 @@ class AcademicYearSpecialDay implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

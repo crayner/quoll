@@ -15,7 +15,7 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Provider\AbstractProvider;
 use App\Util\GlobalHelper;
 use App\Modules\System\Entity\I18n;

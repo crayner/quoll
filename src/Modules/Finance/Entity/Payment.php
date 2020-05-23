@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Finance\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,9 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="Payment",
  *     indexes={@ORM\Index(name="person",columns={"person"})})
  */
-class Payment implements EntityInterface
+class Payment extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -442,11 +442,6 @@ class Payment implements EntityInterface
     {
         return 'ALTER TABLE `__prefix__Payment`
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

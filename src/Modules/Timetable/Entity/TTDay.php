@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,9 +31,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity({"name","TT"})
  * @UniqueEntity({"abbreviation","TT"})
  */
-class TTDay implements EntityInterface
+class TTDay extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -321,11 +321,6 @@ class TTDay implements EntityInterface
         return "ALTER TABLE `__prefix__TTDay`
                     ADD CONSTRAINT FOREIGN KEY (`timetable`) REFERENCES `__prefix__TT` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

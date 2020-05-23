@@ -14,6 +14,7 @@ namespace App\Modules\School\Repository;
 
 use App\Modules\School\Entity\Scale;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,6 +23,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ScaleRepository extends ServiceEntityRepository
 {
+
     /**
      * ApplicationFormRepository constructor.
      * @param ManagerRegistry $registry

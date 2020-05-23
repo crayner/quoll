@@ -14,7 +14,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,9 +27,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="CustomField",)
  * @App\Modules\People\Validator\CustomFieldOptions()
  */
-class CustomField implements EntityInterface
+class CustomField extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -455,11 +455,6 @@ class CustomField implements EntityInterface
         return '';
     }
 
-    public function coreData(): string
-    {
-        return '';
-    }
-    
     protected function getCategoryNames()
     {
         $roles = '';

@@ -17,7 +17,7 @@ namespace App\Form\Type;
 
 use App\Form\EventSubscriber\ReactFileListener;
 use App\Form\Transform\ReactFileTransformer;
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Twig\Sidebar\Photo;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;

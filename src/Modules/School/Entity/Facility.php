@@ -12,7 +12,7 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
@@ -28,9 +28,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="Facility", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @UniqueEntity({"name"})
  */
-class Facility implements EntityInterface
+class Facility extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -582,11 +582,6 @@ class Facility implements EntityInterface
     }
 
     public function foreignConstraints() : string
-    {
-        return '';
-    }
-
-    public function coreData() : string
     {
         return '';
     }

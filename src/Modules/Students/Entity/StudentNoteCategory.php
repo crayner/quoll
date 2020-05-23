@@ -15,10 +15,11 @@
 
 namespace App\Modules\Students\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class StudentNoteCategory
@@ -26,9 +27,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteCategoryRepository")
  * @ORM\Table(name="StudentNoteCategory")
  */
-class StudentNoteCategory implements EntityInterface
+class StudentNoteCategory extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -185,15 +186,35 @@ class StudentNoteCategory implements EntityInterface
         return '';
     }
 
-    public function coreData(): string
+    /**
+     * coreData
+     * @return array|string[]
+     */
+    public function coreData(): array
     {
-        return "INSERT INTO `__prefix__StudentNoteCategory` (`name`, `active`) VALUES
-                    ('Academic', 'Y'),
-                    ('Pastoral', 'Y'),
-                    ('Behaviour', 'Y'),
-                    ('Other', 'Y');";
+        return Yaml::parse("
+-
+  name: 'Academic'
+  active: 'Y'
+-
+  name: 'Pastoral'
+  template: ''
+  active: 'Y'
+-
+  name: 'Behaviour'
+  template: ''
+  active: 'Y'
+-
+  name: 'Other'
+  template: ''
+  active: 'Y'
+");
     }
 
+    /**
+     * getVersion
+     * @return string
+     */
     public static function getVersion(): string
     {
         return self::VERSION;

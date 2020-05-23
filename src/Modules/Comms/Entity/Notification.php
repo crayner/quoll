@@ -14,7 +14,7 @@ namespace App\Modules\Comms\Entity;
 
 use App\Modules\System\Entity\Module;
 use App\Modules\People\Entity\Person;
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,9 +25,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="Notification")
  * @ORM\HasLifecycleCallbacks()
  * */
-class Notification implements EntityInterface
+class Notification extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -310,11 +310,6 @@ class Notification implements EntityInterface
         return 'ALTER TABLE `__prefix__Notification`
                     ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

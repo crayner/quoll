@@ -12,7 +12,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Validator\Country;
 use App\Modules\People\Validator\PostCode;
 use App\Provider\ProviderFactory;
@@ -32,9 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"name","territory","postCode","country"})
  * @PostCode()
  */
-class Locality implements EntityInterface
+class Locality extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -231,14 +231,7 @@ class Locality implements EntityInterface
     public function foreignConstraints(): string
     {
         return '';
-    }
-
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    /**
+    }/**
      * toString
      * @param string|null $style
      * @return string

@@ -12,7 +12,7 @@
  */
 namespace App\Modules\System\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Security\Util\SecurityHelper;
@@ -25,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Module
@@ -34,9 +35,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @UniqueEntity({"name"})
  * */
-class Module implements EntityInterface
+class Module extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -118,11 +119,6 @@ class Module implements EntityInterface
      * @var null|string
      */
     private $status;
-
-    /**
-     * @var bool
-     */
-    private $updateRequired = false;
 
     /**
      * @var Collection|NotificationEvent[]|null
@@ -456,47 +452,6 @@ class Module implements EntityInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isUpdateRequired(): bool
-    {
-        return $this->updateRequired ? true : false;
-    }
-
-    /**
-     * UpdateRequired.
-     *
-     * @param bool $updateRequired
-     * @return Module
-     */
-    public function setUpdateRequired(bool $updateRequired): Module
-    {
-        $this->updateRequired = $updateRequired;
-        return $this;
-    }
-
-    /**
-     * getUpgradeLogs
-     * @return Collection
-     */
-    public function getUpgradeLogs(): Collection
-    {
-        return $this->upgradeLogs = $this->upgradeLogs ?: new ArrayCollection();
-    }
-
-    /**
-     * UpgradeLogs.
-     *
-     * @param Collection $upgradeLog
-     * @return Module
-     */
-    public function setUpgradeLogs(Collection $upgradeLogs): Module
-    {
-        $this->upgradeLogs = $upgradeLogs;
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getEvents(): Collection
@@ -573,11 +528,56 @@ class Module implements EntityInterface
         return '';
     }
 
-    public function coreData(): string
+    public function coreData(): array
     {
-        return '';
+        return Yaml::parse("
+-
+  name: 'People'
+  description: 'Manage people'
+  entryRoute: 'people_list'
+  type: 'Core'
+  active: 'Y'
+  category: 'Admin'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
+-
+  name: 'System'
+  description: 'Allows administrators to configure system settings.'
+  entryRoute: 'system_settings'
+  type: 'Core'
+  active: 'Y'
+  category: 'Admin'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
+-
+  name: 'Students'
+  description: 'Manage students'
+  entryRoute: 'student_view'
+  type: 'Core'
+  active: 'Y'
+  category: 'People'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
+-
+  name: 'Staff'
+  description: 'Manage Staff'
+  entryRoute: 'staff_view'
+  type: 'Core'
+  active: 'Y'
+  category: 'People'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
+");
     }
 
+    /**
+     * getVersion
+     * @return string
+     */
     public static function getVersion(): string
     {
         return self::VERSION;

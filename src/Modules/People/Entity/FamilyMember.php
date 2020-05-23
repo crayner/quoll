@@ -14,12 +14,11 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Students\Util\StudentHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,9 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
  * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberChild", "member" = "FamilyMember"})
  */
-class FamilyMember implements EntityInterface
+class FamilyMember extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -248,14 +247,7 @@ class FamilyMember implements EntityInterface
         return "ALTER TABLE `__prefix__FamilyMember` 
                     ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
                     ADD CONSTRAINT FOREIGN KEY (person) REFERENCES __prefix__Person (id);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
-    }
-    
-    /**
+    }/**
      * isEqualTo
      * @param FamilyMember $member
      * @return bool

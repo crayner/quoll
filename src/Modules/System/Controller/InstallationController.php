@@ -29,6 +29,7 @@ use App\Modules\System\Manager\InstallationManager;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -118,12 +119,14 @@ class InstallationController extends AbstractPageController
             $form->submit($content);
 
             if ($form->isValid()) {
-                $manager->setInstallationStatus('build');
+                if ($proceed === 0) {
+                    $manager->setInstallationStatus('build');
+                }
                 $data = $manager->setMySQLSettings($form);
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL);
                 if ($proceed !== '0' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
-                    $data['redirect'] = $this->generateUrl('installation_build_create', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $data['redirect'] = $this->generateUrl('installation_table_create', [], UrlGeneratorInterface::ABSOLUTE_URL);
                 }
             } else {
                 $containerManager->singlePanel($form->createView());
@@ -151,22 +154,34 @@ class InstallationController extends AbstractPageController
      * @param CreateManager $manager
      * @param ContainerManager $containerManager
      * @return JsonResponse
-     * @Route("/installation/build/create/", name="installation_build_create")
+     * @Route("/installation/table/create/", name="installation_table_create")
      */
     public function createTables(CreateManager $manager, ContainerManager $containerManager)
     {
         TranslationHelper::setDomain('System');
-        $manager->getLogger()->notice(TranslationHelper::translate('The creation of tables for the database has commenced.'));
 
         $form = $this->createForm(SubmitOnlyType::class, null,
             [
-                'action' => $this->generateUrl('installation_core_data'),
+                'action' => $this->generateUrl('installation_table_create'),
                 'translation_domain' => 'System',
                 'submitLabel' => 'Proceed',
             ]
         );
 
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
+            $form->submit($content);
+            if ($form->isValid()) {
+                $data['redirect'] = $this->generateUrl('installation_core_data');
+                $data['status'] = 'redirect';
+
+                return new JsonResponse($data);
+            }
+        }
+
         $containerManager->singlePanel($form->createView());
+        $manager->getLogger()->notice(TranslationHelper::translate('The creation of tables for the database has commenced.'));
+        $manager->setInstallationStatus('Create');
         return $this->getPageManager()->render(
             [
                 'content' => $this->renderView('installation/table_complete.html.twig',
@@ -189,22 +204,79 @@ class InstallationController extends AbstractPageController
     public function coreData(CreateManager $createManager, ContainerManager $manager)
     {
         TranslationHelper::setDomain('System');
-        $createManager->getLogger()->notice(TranslationHelper::translate('Core Data will be added to tables.'));
 
         $form = $this->createForm(SubmitOnlyType::class, null,
             [
-                'action' => $this->generateUrl('home'),
+                'action' => $this->generateUrl('installation_core_data'),
                 'translation_domain' => 'System',
                 'submitLabel' => 'Proceed',
             ]
         );
 
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
+            $form->submit($content);
+            if ($form->isValid()) {
+                $data['redirect'] = $this->generateUrl('installation_foreign_constraints');
+                $data['status'] = 'redirect';
+
+                return new JsonResponse($data);
+            }
+        }
+
         $manager->singlePanel($form->createView());
+        $createManager->getLogger()->notice(TranslationHelper::translate('Core Data will be added to tables.'));
+        $createManager->setInstallationStatus('Core Data');
         return $this->getPageManager()->render(
             [
-                'content' => $this->renderView('installation/table_complete.html.twig',
+                'content' => $this->renderView('installation/core_data_complete.html.twig',
                     [
                         'tableCount' => $createManager->coreData(),
+                    ]
+                ),
+                'containers' => $manager->getBuiltContainers(),
+            ]
+        );
+    }
+
+    /**
+     * demoData
+     * @param CreateManager $createManager
+     * @param ContainerManager $manager
+     * @return JsonResponse
+     * @Route("/installation/foreign/constraints/",name="installation_foreign_constraints")
+     */
+    public function foreignConstraints(CreateManager $createManager, ContainerManager $manager)
+    {
+        TranslationHelper::setDomain('System');
+
+        $form = $this->createForm(SubmitOnlyType::class, null,
+            [
+                'action' => $this->generateUrl('installation_foreign_constraints'),
+                'translation_domain' => 'System',
+                'submitLabel' => 'Proceed',
+            ]
+        );
+
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
+            $form->submit($content);
+            if ($form->isValid()) {
+                $data['redirect'] = $this->generateUrl('home');
+                $data['status'] = 'redirect';
+
+                return new JsonResponse($data);
+            }
+        }
+
+        $manager->singlePanel($form->createView());
+        $createManager->setInstallationStatus('Foreign Constraints');
+        $createManager->getLogger()->notice(TranslationHelper::translate('Foreign Constraints will be added to tables.'));
+        return $this->getPageManager()->render(
+            [
+                'content' => $this->renderView('installation/foreign_constraint_complete.html.twig',
+                    [
+                        'tableCount' => $createManager->foreignConstraints(),
                     ]
                 ),
                 'containers' => $manager->getBuiltContainers(),

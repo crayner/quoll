@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Timetable\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="TTDayDate",
  *     indexes={@ORM\Index(name="timetable_day", columns={"timetable_day"})})
  */
-class TTDayDate implements EntityInterface
+class TTDayDate extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -128,11 +128,6 @@ class TTDayDate implements EntityInterface
     {
         return "ALTER TABLE `__prefix__TTDayDate`
                     ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

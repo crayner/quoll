@@ -15,7 +15,7 @@
 
 namespace App\Modules\System\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,19 +24,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Module
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ModuleUpgradeRepository")
- * @ORM\Table(name="ModuleUpgrade",uniqueConstraints={@ORM\UniqueConstraint(name="module_version", columns={"module","version"})})
- * @UniqueEntity(fields={"module","version"})
+ * @ORM\Table(name="ModuleUpgrade")
  * @ORM\HasLifecycleCallbacks()
  */
-class ModuleUpgrade implements EntityInterface
+class ModuleUpgrade extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
-     * @var integer|null
-     * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
-     * @ORM\GeneratedValue
+     * @var string|null
+     * @ORM\Id()
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -45,7 +44,7 @@ class ModuleUpgrade implements EntityInterface
      * @ORM\Column(length=127)
      * @Assert\NotBlank()
      */
-    private $table;
+    private $tableName;
 
     /**
      * @var string|null
@@ -79,9 +78,9 @@ class ModuleUpgrade implements EntityInterface
     private $executedAt;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -89,10 +88,10 @@ class ModuleUpgrade implements EntityInterface
     /**
      * Id.
      *
-     * @param int|null $id
+     * @param string|null $id
      * @return ModuleUpgrade
      */
-    public function setId(?int $id): ModuleUpgrade
+    public function setId(?string $id): ModuleUpgrade
     {
         $this->id = $id;
         return $this;
@@ -101,20 +100,20 @@ class ModuleUpgrade implements EntityInterface
     /**
      * @return string
      */
-    public function getTable(): string
+    public function getTableName(): string
     {
-        return $this->table;
+        return $this->tableName;
     }
 
     /**
-     * Table.
+     * TableName.
      *
-     * @param string $table
+     * @param string $tableName
      * @return ModuleUpgrade
      */
-    public function setTable(string $table): ModuleUpgrade
+    public function setTableName(string $tableName): ModuleUpgrade
     {
-        $this->table = $table;
+        $this->tableName = $tableName;
         return $this;
     }
 
@@ -213,22 +212,15 @@ class ModuleUpgrade implements EntityInterface
     {
         return ["CREATE TABLE `__prefix__ModuleUpgrade` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `module` int(4) UNSIGNED DEFAULT NULL,
-                    `version` CHAR(20) COLLATE utf8mb4_general_ci NOT NULL,
+                    `table_name` varchar(127) COLLATE utf8mb4_general_ci NOT NULL,
+                    `table_version` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+                    `table_section` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
                     `executed_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `module_version` (`module`,`version`),
-                    KEY `module` (`module`)
+                    PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__ModuleUpgrade`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);';
-    }
-
-    public function coreData(): string
     {
         return '';
     }

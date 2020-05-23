@@ -12,20 +12,23 @@
 namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Setting
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\SettingRepository")
  * @ORM\Table(name="Setting",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display", columns={"scope","name_display"}),
- *     @ORM\UniqueConstraint(name="scope_name", columns={"scope","name"})})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="scope_display",columns={"scope","name_display"}),
+ *     @ORM\UniqueConstraint(name="scope_name",columns={"scope","name"})})
+ * @UniqueEntity({"name","scope"})
+ * @UniqueEntity({"nameDisplay","scope"})
  */
 class Setting extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -34,6 +37,36 @@ class Setting extends AbstractEntity
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=50)
+     */
+    private $scope;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=50)
+     */
+    private $name;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=60)
+     */
+    private $nameDisplay;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=191,nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $value;
 
     /**
      * @return string|null
@@ -56,12 +89,6 @@ class Setting extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=50)
-     */
-    private $scope;
-
-    /**
      * @return string|null
      */
     public function getScope(): ?string
@@ -78,12 +105,6 @@ class Setting extends AbstractEntity
         $this->scope = mb_substr($scope, 0, 50);
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=50)
-     */
-    private $name;
 
     /**
      * @return string|null
@@ -104,12 +125,6 @@ class Setting extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=60)
-     */
-    private $nameDisplay;
-
-    /**
      * @return string|null
      */
     public function getNameDisplay(): ?string
@@ -128,12 +143,6 @@ class Setting extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $description;
-
-    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -150,12 +159,6 @@ class Setting extends AbstractEntity
         $this->description = mb_substr($description, 0, 255);
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(type="text",nullable=true)
-     */
-    private $value;
 
     /**
      * @return string|null
@@ -185,6 +188,10 @@ class Setting extends AbstractEntity
         return [];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__Setting` (
@@ -205,267 +212,1488 @@ class Setting extends AbstractEntity
         return '';
     }
 
-    public function coreData(): string
+    public function coreData(): array
     {
-        return <<<JJJ
-INSERT INTO `__prefix__Setting` (`scope`, `name`, `name_display`, `description`, `value`) VALUES
-('System', 'absoluteURL', 'Base URL', 'The address at which the whole system resides.', null),
-('System', 'organisationName', 'Organisation Name', null, null),
-('System', 'organisationNameShort', 'Organisation Initials', null, null),
-('System', 'pagination', 'Pagination Count', 'Must be numeric. Number of records shown per page.', '50'),
-('System', 'systemName', 'System Name', null, 'Quoll'),
-('System', 'indexText', 'Index Page Text', 'Text displayed in system's welcome page.', 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'),
-('System', 'absolutePath', 'Base Path', 'The local FS path to the system', null),
-('System', 'analytics', 'Analytics', 'Javascript code to integrate statistics, such as Google Analytics', null),
-('System', 'emailLink', 'Link To Email', 'The link that points to the school/\'s email system', null),
-('System', 'webLink', 'Link To Web', 'The link that points to the school's website', NULL),
-('System', 'defaultAssessmentScale', 'Default Assessment Scale', 'This is the scale used as a default where assessment scales need to be selected.', null),
-('System', 'organisationLogo', 'Logo', 'Relative path to site logo (400 x 100px)', '\\build\\static\\logo.png'),
-('System', 'calendarFeed', 'School Google Calendar ID', 'Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.', null),
-('Activities', 'access', 'Access', 'System-wide access control', 'Register'),
-('Activities', 'payment', 'Payment', 'Payment system', 'Per Activity'),
-('Activities', 'enrolmentType', 'Enrolment Type', 'Enrolment process type', 'Competitive'),
-('Activities', 'backupChoice', 'Backup Choice', 'Allow students to choose a backup, in case enrolled activity is full.', 'Y'),
-('Activities', 'activityTypes', 'Activity Types', 'Comma-separated list of the different activity types available in school. Leave blank to disable this feature.', 'Creativity,Action,Service'),
-('Application Form', 'introduction', 'Introduction', 'Information to display before the form', null),
-('Application Form', 'postscript', 'Postscript', 'Information to display at the end of the form', null),
-('Application Form', 'scholarships', 'Scholarships', 'Information to display before the scholarship options', null),
-('Application Form', 'agreement', 'Agreement', 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything', null),
-('Application Form', 'publicApplications', 'Public Applications?', 'If yes, members of the public can submit applications', 'Y'),
-('Behaviour', 'positiveDescriptors', 'Positive Descriptors', 'Allowable choices for positive behaviour', 'Attitude to learning,Collaboration,Community spirit,Creativity,Effort,Leadership,Participation,Persistence,Problem solving,Quality of work,Values'),
-('Behaviour', 'negativeDescriptors', 'Negative Descriptors', 'Allowable choices for negative behaviour', 'Classwork - Late,Classwork - Incomplete,Classwork - Unacceptable,Disrespectful,Disruptive,Homework - Late,Homework - Incomplete,Homework - Unacceptable,ICT Misuse,Truancy,Other'),
-('Behaviour', 'levels', 'Levels', 'Allowable choices for severity level (from lowest to highest)', ',Stage 1,Stage 1 (Actioned),Stage 2,Stage 2 (Actioned),Stage 3,Stage 3 (Actioned),Actioned'),
-('Resources', 'categories', 'Categories', 'Allowable choices for category', 'Article,Book,Document,Graphic,Idea,Music,Object,Painting,Person,Photo,Place,Poetry,Prose,Rubric,Text,Video,Website,Work Sample,Other'),
-('Resources', 'purposesGeneral', 'Purposes (General)', 'Allowable choices for purpose when creating a resource', 'Assessment Aid,Concept,Inspiration,Learner Profile,Mass Mailer Attachment,Provocation,Skill,Teaching and Learning Strategy,Other'),
-('System', 'version', 'Version', 'The version of the Gibbon database', '18.0.00'),
-('Resources', 'purposesRestricted', 'Purposes (Restricted)', 'Additional allowable choices for purpose when creating a resource, for those with \"Manage All Resources\" rights', null),
-('System', 'organisationEmail', 'Organisation Email', 'General email address for the school', null),
-('Activities', 'dateType', 'Date Type', 'Should activities be organised around dates (flexible) or terms (easy)?', 'Term'),
-('System', 'installType', 'Install Type', 'The purpose of this installation of Kookaburra', 'Development'),
-('System', 'statsCollection', 'Statistics Collection', 'To track Gibbon uptake, the system tracks basic data (current URL, install type, organisation name) on each install. Do you want to help?', 'Y'),
-('Activities', 'maxPerTerm', 'Maximum Activities per Term', 'The most a student can sign up for in one term. Set to 0 for unlimited.', '0'),
-('Planner', 'lessonDetailsTemplate', 'Lesson Details Template', 'Template to be inserted into Lesson Details field', NULL),
-('Planner', 'teachersNotesTemplate', 'Teacher\'s Notes Template', 'Template to be inserted into Teacher\'s Notes field', NULL),
-('Planner', 'smartBlockTemplate', 'Smart Block Template', 'Template to be inserted into new block in Smart Unit', NULL),
-('Planner', 'unitOutlineTemplate', 'Unit Outline Template', 'Template to be inserted into Unit Outline section of planner', NULL),
-('Application Form', 'milestones', 'Milestones', 'Comma-separated list of the major steps in the application process. Applicants can be tracked through the various stages.', null),
-('Library', 'defaultLoanLength', 'Default Loan Length', 'The standard loan length for a library item, in days', '7'),
-('Behaviour', 'policyLink', 'Policy Link', 'A link to the school behaviour policy.', NULL),
-('Library', 'browseBGColor', 'Browse Library BG Color', 'RGB Hex value, without leading #. Background color used behind library browsing screen.', null),
-('Library', 'browseBGImage', 'Browse Library BG Image', 'URL to background image used behind library browsing screen.', null),
-('System', 'passwordPolicyAlpha', 'Password - Alpha Requirement', 'Require both upper and lower case alpha characters?', 'Y'),
-('System', 'passwordPolicyNumeric', 'Password - Numeric Requirement', 'Require at least one numeric character?', 'Y'),
-('System', 'passwordPolicyNonAlphaNumeric', 'Password - Non-Alphanumeric Requirement', 'Require at least one non-alphanumeric character (e.g. punctuation mark or space)?', 'N'),
-('System', 'passwordPolicyMinLength', 'Password - Minimum Length', 'Minimum acceptable password length.', '8'),
-('User Admin', 'ethnicity', 'Ethnicity', 'Comma-separated list of ethnicities available in system', null),
-('User Admin', 'nationality', 'Nationality', 'Comma-separated list of nationalities available in system. If blank, system will default to list of countries', null),
-('User Admin', 'residencyStatus', 'Residency Status', 'Comma-separated list of residency status available in system. If blank, system will allow text input', null),
-('User Admin', 'personalDataUpdaterRequiredFields', 'Personal Data Updater Required Fields', 'Serialized array listed personal fields in data updater, and whether or not they are required.', 'a:47:{s:5:\"title\";s:1:\"N\";s:7:\"surname\";s:1:\"Y\";s:9:\"firstName\";s:1:\"N\";s:10:\"otherNames\";s:1:\"N\";s:13:\"preferredName\";s:1:\"Y\";s:12:\"officialName\";s:1:\"Y\";s:16:\"nameInCharacters\";s:1:\"N\";s:3:\"dob\";s:1:\"N\";s:5:\"email\";s:1:\"N\";s:14:\"emailAlternate\";s:1:\"N\";s:8:\"address1\";s:1:\"Y\";s:16:\"address1District\";s:1:\"N\";s:15:\"address1Country\";s:1:\"N\";s:8:\"address2\";s:1:\"N\";s:16:\"address2District\";s:1:\"N\";s:15:\"address2Country\";s:1:\"N\";s:10:\"phone1Type\";s:1:\"N\";s:17:\"phone1CountryCode\";s:1:\"N\";s:6:\"phone1\";s:1:\"N\";s:6:\"phone2\";s:1:\"N\";s:6:\"phone3\";s:1:\"N\";s:6:\"phone4\";s:1:\"N\";s:13:\"languageFirst\";s:1:\"N\";s:14:\"languageSecond\";s:1:\"N\";s:13:\"languageThird\";s:1:\"N\";s:14:\"countryOfBirth\";s:1:\"N\";s:9:\"ethnicity\";s:1:\"N\";s:12:\"citizenship1\";s:1:\"N\";s:20:\"citizenship1Passport\";s:1:\"N\";s:12:\"citizenship2\";s:1:\"N\";s:20:\"citizenship2Passport\";s:1:\"N\";s:8:\"religion\";s:1:\"N\";s:20:\"nationalIDCardNumber\";s:1:\"N\";s:15:\"residencyStatus\";s:1:\"N\";s:14:\"visaExpiryDate\";s:1:\"N\";s:10:\"profession\";s:1:\"N\";s:8:\"employer\";s:1:\"N\";s:8:\"jobTitle\";s:1:\"N\";s:14:\"emergency1Name\";s:1:\"N\";s:17:\"emergency1Number1\";s:1:\"N\";s:17:\"emergency1Number2\";s:1:\"N\";s:22:\"emergency1Relationship\";s:1:\"N\";s:14:\"emergency2Name\";s:1:\"N\";s:17:\"emergency2Number1\";s:1:\"N\";s:17:\"emergency2Number2\";s:1:\"N\";s:22:\"emergency2Relationship\";s:1:\"N\";s:19:\"vehicleRegistration\";s:1:\"N\";}'),
-('School Admin', 'primaryExternalAssessmentByYearGroup', 'Primary External Assessment By Year Group', 'Serialized array connected gibbonExternalAssessmentID to gibbonYearGroupID, and specify which field set to use.', 'a:7:{i:1;s:21:\"1 - 2_KS3 Target Grades\";i:2;s:22:\"1 - 3_GCSE Target Grades\";i:3;s:10:\"1 - 1_Scores\";i:4;s:0:\"\";i:5;s:0:\"\";i:6;s:0:\"\";i:7;s:0:\"\";}'),
-('Markbook', 'markbookType', 'Markbook Type', 'Comma-separated list of types to make available in the Markbook.', 'Essay,Exam,Homework,Reflection,Test,Unit,End of Year,Other'),
-('System', 'allowableHTML', 'Allowable HTML', 'TinyMCE-style list of acceptable HTML tags and options.', 'br[style],strong[style],em[style],span[style],p[style],address[style],pre[style],h1[style],h2[style],h3[style],h4[style],h5[style],h6[style],table[style],thead[style],tbody[style],tfoot[style],tr[style],td[style|colspan|rowspan],ol[style],ul[style],li[style],blockquote[style],a[style|target|href],img[style|class|src|width|height],video[style],source[style],hr[style],iframe[style|width|height|src|frameborder|allowfullscreen],embed[style],div[style],sup[style],sub[style]'),
-('Application Form', 'howDidYouHear', 'How Did Your Hear?', 'Comma-separated list', 'Advertisement,Personal Recommendation,World Wide Web,Others'),
-('Messenger', 'smsUsername', 'SMS Username', 'SMS gateway username.', null),
-('Messenger', 'smsPassword', 'SMS Password', 'SMS gateway password.', null),
-('Messenger', 'smsURL', 'SMS URL', 'SMS gateway URL for send requests.', null),
-('Messenger', 'smsURLCredit', 'SMS URL Credit', 'SMS gateway URL for checking credit.', null),
-('System', 'currency', 'Currency', 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.', 'AUD'),
-('System', 'enablePayments', 'Enable Payments', 'Should payments be enabled across the system?', 'N'),
-('System', 'paypalAPIUsername', 'PayPal API Username', 'API Username provided by PayPal.', null),
-('System', 'paypalAPIPassword', 'PayPal API Password', 'API Password provided by PayPal.', null),
-('System', 'paypalAPISignature', 'PayPal API Signature', 'API Signature provided by PayPal.', null),
-('Application Form', 'applicationFee', 'Application Fee', 'The cost of applying to the school.', '0'),
-('Application Form', 'requiredDocuments', 'Required Documents', 'Comma-separated list of documents which must be submitted electronically with the application form.', null),
-('Application Form', 'requiredDocumentsCompulsory', 'Required Documents Compulsory?', 'Are the required documents compulsory?', 'N'),
-('Application Form', 'requiredDocumentsText', 'Required Documents Text', 'Explanatory text to appear with the required documents?', null),
-('Application Form', 'notificationStudentDefault', 'Student Notification Default', 'Should student acceptance email be turned on or off by default.', 'On'),
-('Application Form', 'languageOptionsActive', 'Language Options Active', 'Should the Language Options section be turned on?', 'Off'),
-('Application Form', 'languageOptionsBlurb', 'Language Options Blurb', 'Introductory text if Language Options section is turned on.', null),
-('Application Form', 'languageOptionsLanguageList', 'Language Options Language List', 'Comma-separated list of available language selections if Language Options section is turned on.', null),
-('User Admin', 'personalBackground', 'Personal Background', 'Should users be allowed to set their own personal backgrounds?', 'Y'),
-('User Admin', 'dayTypeOptions', 'Day-Type Options', 'Comma-separated list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.', null),
-('User Admin', 'dayTypeText', 'Day-Type Text', 'Explanatory text to include with Day-Type Options.', null),
-('Markbook', 'showStudentAttainmentWarning', 'Show Student Attainment Warning', 'Show low attainment grade visual warning to students?', 'Y'),
-('Markbook', 'showStudentEffortWarning', 'Show Student Effort Warning', 'Show low effort grade visual warning to students?', 'Y'),
-('Markbook', 'showParentAttainmentWarning', 'Show Parent Attainment Warning', 'Show low attainment grade visual warning to parents?', 'Y'),
-('Markbook', 'showParentEffortWarning', 'Show Parent Effort Warning', 'Show low effort grade visual warning to parents?', 'Y'),
-('Planner', 'allowOutcomeEditing', 'Allow Outcome Editing', 'Should the text within outcomes be editable when planning lessons and units?', 'Y'),
-('User Admin', 'privacy', 'Privacy', 'Should privacy options be turned on across the system?', 'N'),
-('User Admin', 'privacyBlurb', 'Privacy Blurb', 'Descriptive text to accompany image privacy option when shown to users.', null),
-('Finance', 'invoiceText', 'Invoice Text', 'Text to appear in invoice, above invoice details and fees.', NULL),
-('Finance', 'invoiceNotes', 'Invoice Notes', 'Text to appear in invoice, below invoice details and fees.', NULL),
-('Finance', 'receiptText', 'Receipt Text', 'Text to appear in receipt, above receipt details and fees.', NULL),
-('Finance', 'receiptNotes', 'Receipt Notes', 'Text to appear in receipt, below receipt details and fees.', NULL),
-('Finance', 'reminder1Text', 'Reminder 1 Text', 'Text to appear in first level reminder level, above invoice details and fees.', NULL),
-('Finance', 'reminder2Text', 'Reminder 2 Text', 'Text to appear in second level reminder level, above invoice details and fees.', NULL),
-('Finance', 'reminder3Text', 'Reminder 3 Text', 'Text to appear in third level reminder level, above invoice details and fees.', NULL),
-('Finance', 'email', 'Email', 'Email address to send finance emails from.', 'craig@craigrayner.com'),
-('Application Form', 'notificationParentsDefault', 'Parents Notification Default', 'Should parent acceptance email be turned on or off by default.', 'On'),
-('User Admin', 'privacyOptions', 'Privacy Options', 'Comma-separated list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.', null),
-('Planner', 'sharingDefaultParents', 'Sharing Default: Parents', 'When adding lessons and deploying units, should sharing default for parents be Y or N?', 'Y'),
-('Planner', 'sharingDefaultStudents', 'Sharing Default: Students', 'When adding lessons and deploying units, should sharing default for students be Y or N?', 'Y'),
-('Students', 'extendedBriefProfile', 'Extended Brief Profile', 'The extended version of the brief student profile includes contact information of parents.', 'N'),
-('Application Form', 'notificationParentsMessage', 'Parents Notification Message', 'A custom message to add to the standard email to parents on acceptance.', null),
-('Application Form', 'notificationStudentMessage', 'Student Notification Message', 'A custom message to add to the standard email to students on acceptance.', null),
-('Finance', 'invoiceNumber', 'Invoice Number Style', 'How should invoice numbers be constructed?', 'Invoice ID'),
-('User Admin', 'departureReasons', 'Departure Reasons', 'Comma-separated list of reasons for departure from school. If blank, user can enter any text.', null),
-('System', 'googleOAuth', 'Google Integration', 'Enable Gibbon-wide integration with the Google APIs?', 'Y'),
-('System', 'googleClientName', 'Google Developers Client Name', 'Name of Google Project in Developers Console.', 'gibbon-231623'),
-('System', 'googleClientID', 'Google Developers Client ID', 'Client ID for Google Project In Developers Console.', '869932302474-vmp86mrilkcn37s62vhrjpcdq2fu3ava.apps.googleusercontent.com'),
-('System', 'googleClientSecret', 'Google Developers Client Secret', 'Client Secret for Google Project In Developers Console.', 'jqgOQUB_b2ms7DftqXvA4JSR'),
-('System', 'googleRedirectUri', 'Google Developers Redirect Url', 'Google Redirect on sucessful auth.', 'https://bilby.craigrayner.com/security/oauth2callback/'),
-('System', 'googleDeveloperKey', 'Google Developers Developer Key', 'Google project Developer Key.', 'AIzaSyDxs2So92a--QPgNXfTYeAPK2EyVL4XZ2Q'),
-('Markbook', 'personalisedWarnings', 'Personalised Warnings', 'Should markbook warnings be based on personal targets, if they are available?', 'Y'),
-('Activities', 'disableExternalProviderSignup', 'Disable External Provider Signup', 'Should we turn off the option to sign up for activities provided by an outside agency?', 'N'),
-('Activities', 'hideExternalProviderCost', 'Hide External Provider Cost', 'Should we hide the cost of activities provided by an outside agency from the Activities View?', 'N'),
-('Application Form', 'studentDefaultEmail', 'Student Default Email', 'Set default email for students on acceptance, using [username] to insert username.', null),
-('Application Form', 'studentDefaultWebsite', 'Student Default Website', 'Set default website for students on acceptance, using [username] to insert username.', null),
-('School Admin', 'studentAgreementOptions', 'Student Agreement Options', 'Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).', null),
-('Markbook', 'attainmentAlternativeName', 'Attainment Alternative Name', 'A name to use isntead of \"Attainment\" in the first grade column of the markbook.', NULL),
-('Markbook', 'effortAlternativeName', 'Effort Alternative Name', 'A name to use isntead of \"Effort\" in the second grade column of the markbook.', NULL),
-('Markbook', 'attainmentAlternativeNameAbrev', 'Attainment Alternative Name Abbreviation', 'A short name to use isntead of \"Attainment\" in the first grade column of the markbook.', NULL),
-('Markbook', 'effortAlternativeNameAbrev', 'Effort Alternative Name Abbreviation', 'A short name to use isntead of \"Effort\" in the second grade column of the markbook.', NULL),
-('Planner', 'parentWeeklyEmailSummaryIncludeBehaviour', 'Parent Weekly Email Summary Include Behaviour', 'Should behaviour information be included in the weekly planner email summary that goes out to parents?', 'Y'),
-('Finance', 'financeOnlinePaymentEnabled', 'Enable Online Payment', 'Should invoices be payable online, via an encrypted link in the invoice? Requires correctly configured payment gateway in System Settings.', 'N'),
-('Finance', 'financeOnlinePaymentThreshold', 'Online Payment Threshold', 'If invoices are payable online, what is the maximum payment allowed? Useful for controlling payment fees. No value means unlimited.', NULL),
-('Departments', 'makeDepartmentsPublic', 'Make Departments Public', 'Should department information be made available to the public, via the Gibbon homepage?', 'Y'),
-('System', 'sessionDuration', 'Session Duration', 'Time, in seconds, before system logs a user out. Should be less than PHP\'s session.gc_maxlifetime option.', '1200'),
-('Planner', 'makeUnitsPublic', 'Make Units Public', 'Enables a public listing of units, with teachers able to opt in to share units.', 'Y'),
-('Messenger', 'messageBubbleWidthType', 'Message Bubble Width Type', 'Should the message bubble be regular or wide?', 'Regular'),
-('Messenger', 'messageBubbleBGColor', 'Message Bubble Background Color', 'Message bubble background color in RGBA (e.g. 100,100,100,0.50). If blank, theme default will be used.', NULL),
-('Messenger', 'messageBubbleAutoHide', 'Message Bubble Auto Hide', 'Should message bubble fade out automatically?', 'Y'),
-('Students', 'enableStudentNotes', 'Enable Student Notes', 'Should student notes be turned on?', 'Y'),
-('Finance', 'budgetCategories', 'Budget Categories', 'Comma-separated list of budget categories.', 'Academic,Administration,Capital'),
-('Finance', 'expenseApprovalType', 'Expense Approval Type', 'How should expense approval be dealt with?', 'One Of'),
-('Finance', 'budgetLevelExpenseApproval', 'Budget Level Expense Approval', 'Should approval from a budget member with Full access be required?', 'Y'),
-('Finance', 'expenseRequestTemplate', 'Expense Request Template', 'An HTML template to be used in the description field of expense requests.', NULL),
-('Finance', 'purchasingOfficer', 'Purchasing Officer', 'User responsible for purchasing for the school.', NULL),
-('Finance', 'reimbursementOfficer', 'Reimbursement Officer', 'User responsible for reimbursing expenses.', NULL),
-('Messenger', 'enableHomeScreenWidget', 'Enable Home Screen Widget', 'Adds a Message Wall widget to the home page, hihglighting current messages.', 'N'),
-('User Admin', 'enablePublicRegistration', 'Enable Public Registration', 'Allows members of the public to register to use the system.', 'Y'),
-('User Admin', 'publicRegistrationMinimumAge', 'Public Registration Minimum Age', 'The minimum age, in years, permitted to register.', '13'),
-('User Admin', 'publicRegistrationDefaultStatus', 'Public Registration Default Status', 'Should new users be \'Full\' or \'Pending Approval\'?', 'Pending Approval'),
-('User Admin', 'publicRegistrationDefaultRole', 'Public Registration Default Role', 'System role to be assigned to registering members of the public.', '3'),
-('User Admin', 'publicRegistrationIntro', 'Public Registration Introductory Text', 'HTML text that will appear above the public registration form.', NULL),
-('User Admin', 'publicRegistrationPrivacyStatement', 'Public Registration Privacy Statement', 'HTML text that will appear above the Submit button, explaining privacy policy.', 'By registering for this site you are giving permission for your personal data to be used and shared within this organisation and its websites. We will not share your personal data outside our organisation.'),
-('User Admin', 'publicRegistrationAgreement', 'Public Registration Agreement', 'Agreement that user must confirm before joining. Blank for no agreement.', 'In joining this site, and checking the box below, I agree to act lawfully, ethically and with respect for others. I agree to use this site for learning purposes only, and understand that access may be withdrawn at any time, at the discretion of the site\'s administrators.'),
-('User Admin', 'publicRegistrationPostscript', 'Public Registration Postscript', 'HTML text that will appear underneath the public registration form.', NULL),
-('Behaviour', 'enableDescriptors', 'Enable Descriptors', 'Setting to No reduces complexity of behaviour tracking.', 'Y'),
-('Behaviour', 'enableLevels', 'Enable Levels', 'Setting to No reduces complexity of behaviour tracking.', 'Y'),
-('Formal Assessment', 'internalAssessmentTypes', 'Internal Assessment Types', 'Comma-separated list of types to make available in Internal Assessments.', 'Expected Grade,Predicted Grade,Target Grade'),
-('System Admin', 'customAlarmSound', 'Custom Alarm Sound', 'A custom alarm sound file.', null),
-('School Admin', 'facilityTypes', 'FacilityTypes', 'A comma-separated list of types for facilities.', 'Classroom,Hall,Laboratory,Library,Office,Outdoor,Performance,Staffroom,Storage,Study,Undercover,Other'),
-('Finance', 'allowExpenseAdd', 'Allow Expense Add', 'Allows privileged users to add expenses without going through request process.', 'Y'),
-('System', 'organisationAdministrator', 'System Administrator', 'The staff member who receives notifications for system events.', '1'),
-('System', 'organisationDBA', 'Database Administrator', 'The staff member who receives notifications for data events.', '1'),
-('System', 'organisationAdmissions', 'Admissions Administrator', 'The staff member who receives notifications for admissions events.', '1'),
-('Finance', 'hideItemisation', 'Hide Itemisation', 'Hide fee and payment details in receipts?', 'N'),
-('Application Form', 'autoHouseAssign', 'Auto House Assign', 'Attempt to automatically place student in a house?', 'N'),
-('Tracking', 'externalAssessmentDataPoints', 'External Assessment Data Points', 'Stores the external assessment choices for data points output in tracking.', 'a:7:{i:0;a:3:{s:10:\"assessment\";s:1:\"1\";s:8:\"category\";s:8:\"1_Scores\";s:13:\"yearGroupList\";a:3:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"3\";}}i:1;a:3:{s:10:\"assessment\";s:1:\"1\";s:8:\"category\";s:19:\"2_KS3 Target Grades\";s:13:\"yearGroupList\";a:3:{i:0;s:1:\"1\";i:1;s:1:\"2\";i:2;s:1:\"3\";}}i:2;a:3:{s:10:\"assessment\";s:1:\"1\";s:8:\"category\";s:20:\"3_GCSE Target Grades\";s:13:\"yearGroupList\";a:2:{i:0;s:1:\"4\";i:1;s:1:\"5\";}}i:3;a:3:{s:10:\"assessment\";s:1:\"2\";s:8:\"category\";s:14:\"2_Target Grade\";s:13:\"yearGroupList\";a:2:{i:0;s:1:\"4\";i:1;s:1:\"5\";}}i:4;a:3:{s:10:\"assessment\";s:1:\"2\";s:8:\"category\";s:13:\"1_Final Grade\";s:13:\"yearGroupList\";a:2:{i:0;s:1:\"4\";i:1;s:1:\"5\";}}i:5;a:3:{s:10:\"assessment\";s:1:\"3\";s:8:\"category\";s:14:\"2_Target Grade\";s:13:\"yearGroupList\";a:2:{i:0;s:1:\"6\";i:1;s:1:\"7\";}}i:6;a:3:{s:10:\"assessment\";s:1:\"3\";s:8:\"category\";s:13:\"1_Final Grade\";s:13:\"yearGroupList\";a:2:{i:0;s:1:\"6\";i:1;s:1:\"7\";}}}'),
-('Tracking', 'internalAssessmentDataPoints', 'Internal Assessment Data Points', 'Stores the internal assessment choices for data points output in tracking.', 'a:3:{i:0;a:2:{s:4:\"type\";s:14:\"Expected Grade\";s:13:\"yearGroupList\";a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}}i:1;a:2:{s:4:\"type\";s:15:\"Predicted Grade\";s:13:\"yearGroupList\";a:2:{i:0;i:4;i:1;i:5;}}i:2;a:2:{s:4:\"type\";s:12:\"Target Grade\";s:13:\"yearGroupList\";a:2:{i:0;i:6;i:1;i:7;}}}'),
-('Behaviour', 'enableBehaviourLetters', 'Enable Behaviour Letters', 'Should automated behaviour letter functionality be enabled?', 'N'),
-('Behaviour', 'behaviourLettersLetter1Count', 'Letter 1 Count', 'After how many negative records should letter 1 be sent?', '3'),
-('Behaviour', 'behaviourLettersLetter1Text', 'Letter 1 Text', 'The contents of letter 1, as HTML.', 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the first communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child\'s tutor.'),
-('Behaviour', 'behaviourLettersLetter2Count', 'Letter 2 Count', 'After how many negative records should letter 2 be sent?', '6'),
-('Behaviour', 'behaviourLettersLetter2Text', 'Letter 2 Text', 'The contents of letter 2, as HTML.', 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the second communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child\'s tutor.'),
-('Behaviour', 'behaviourLettersLetter3Count', 'Letter 3 Count', 'After how many negative records should letter 3 be sent?', '9'),
-('Behaviour', 'behaviourLettersLetter3Text', 'Letter 3 Text', 'The contents of letter 3, as HTML.', 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the final communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child\'s tutor.'),
-('Markbook', 'enableColumnWeighting', 'Enable Column Weighting', 'Should column weighting and total scores be enabled in the Markbook?', 'N'),
-('System', 'firstDayOfTheWeek', 'First Day Of The Week', 'On which day should the week begin?', 'Monday'),
-('Application Form', 'usernameFormat', 'Username Format', 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].', '[preferredNameInitial][surname]'),
-('Staff', 'jobOpeningDescriptionTemplate', 'Job Opening Description Template', 'Default HTML contents for the Job Opening Description field.', '<table style=\'width: 100%\'>\n	<tr>\n		<td colspan=2 style=\'vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Job Description</span><br/>\n			<br/>\n		</td>\n	</tr>\n	<tr>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Responsibilities</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Required Skills/Characteristics</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n	</tr>\n	<tr>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Remuneration</span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n		<td style=\'width: 50%; vertical-align: top\'>\n			<span style=\'text-decoration: underline; font-weight: bold\'>Other Details </span><br/>\n			<ul style=\'margin-top:0px\'>\n				<li></li>\n				<li></li>\n			</ul>\n		</td>\n	</tr>\n</table>'),
-('Staff', 'staffApplicationFormIntroduction', 'Introduction', 'Information to display before the form', null),
-('Staff', 'staffApplicationFormPostscript', 'Postscript', 'Information to display at the end of the form', null),
-('Staff', 'staffApplicationFormAgreement', 'Agreement', 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything', 'In submitting this form, I confirm that all information provided above is accurate and complete to the best of my knowledge.'),
-('Staff', 'staffApplicationFormMilestones', 'Milestones', 'Comma-separated list of the major steps in the application process. Applicants can be tracked through the various stages.', 'Short List, First Interview, Second Interview, Offer Made, Offer Accepted, Contact Issued, Contact Signed'),
-('Staff', 'staffApplicationFormRequiredDocuments', 'Required Documents', 'Comma-separated list of documents which must be submitted electronically with the application form.', 'Curriculum Vitae'),
-('Staff', 'staffApplicationFormRequiredDocumentsCompulsory', 'Required Documents Compulsory?', 'Are the required documents compulsory?', 'Y'),
-('Staff', 'staffApplicationFormRequiredDocumentsText', 'Required Documents Text', 'Explanatory text to appear with the required documents?', 'Please submit the following document(s) to ensure your application can be processed without delay.'),
-('Staff', 'staffApplicationFormNotificationDefault', 'Notification Default', 'Should acceptance email be turned on or off by default.', 'Y'),
-('Staff', 'staffApplicationFormNotificationMessage', 'Notification Message', 'A custom message to add to the standard email on acceptance.', null),
-('Staff', 'staffApplicationFormDefaultEmail', 'Default Email', 'Set default email on acceptance, using [username] to insert username.', null),
-('Staff', 'staffApplicationFormDefaultWebsite', 'Default Website', 'Set default website on acceptance, using [username] to insert username.', null),
-('Staff', 'staffApplicationFormUsernameFormat', 'Username Format', 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].', '[preferredNameInitial].[surname]'),
-('System', 'organisationHR', 'Human Resources Administrator', 'The staff member who receives notifications for staffing events.', '0000000001'),
-('Staff', 'staffApplicationFormQuestions', 'Application Questions', 'HTML text that will appear as questions for the applicant to answer.', '<span style=\'text-decoration: underline; font-weight: bold\'>Why are you applying for this role?</span><br/><p></p>'),
-('Staff', 'salaryScalePositions', 'Salary Scale Positions', 'Comma-separated list of salary scale positions, from lowest to highest.', '1,2,3,4,5,6,7,8,9,10'),
-('Staff', 'responsibilityPosts', 'Responsibility Posts', 'Comma-separated list of posts carrying extra responsibilities.', null),
-('Students', 'applicationFormSENText', 'Application Form SEN Text', 'Text to appear with the Special Educational Needs section of the student application form.', 'Please indicate whether or not your child has any known, or suspected, special educational needs, or whether they have been assessed for any such needs in the past. Provide any comments or information concerning your child\'s development that may be relevant to your child\'s performance in the classroom or elsewhere? Incorrect or withheld information may affect continued enrolment.'),
-('Students', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', null),
-('User Admin', 'religions', 'Religions', 'Comma-separated list of religions available in system', ',Nonreligious/Agnostic/Atheist,Buddhism,Christianity,Hinduism,Islam,Judaism,Other'),
-('Staff', 'applicationFormRefereeLink', 'Application Form Referee Link', 'Link to an external form that will be emailed to a referee of the applicant\'s choosing.', null),
-('Markbook', 'enableRawAttainment', 'Enable Raw Attainment Marks', 'Should recording of raw marks be enabled in the Markbook?', 'N'),
-('Markbook', 'enableGroupByTerm', 'Group Columns by Term', 'Should columns and total scores be grouped by term?', 'N'),
-('Markbook', 'enableEffort', 'Enable Effort', 'Should columns have the Effort section enabled?', 'Y'),
-('Markbook', 'enableRubrics', 'Enable Rubrics', 'Should columns have Rubrics section enabled?', 'Y'),
-('School Admin', 'staffDashboardDefaultTab', 'Staff Dashboard Default Tab', 'The default landing tab for the staff dashboard.', NULL),
-('School Admin', 'studentDashboardDefaultTab', 'Student Dashboard Default Tab', 'The default landing tab for the student dashboard.', NULL),
-('School Admin', 'parentDashboardDefaultTab', 'Parent Dashboard Default Tab', 'The default landing tab for the parent dashboard.', 'Timetable'),
-('System', 'enableMailerSMTP', 'Enable SMTP Mail', 'Adds PHPMailer settings for servers with an SMTP connection.', 'N'),
-('System', 'mailerSMTPHost', 'SMTP Host', 'Set the hostname of the mail server.', null),
-('System', 'mailerSMTPPort', 'SMTP Port', 'Set the SMTP port number - likely to be 25, 465 or 587.', '25'),
-('System', 'mailerSMTPUsername', 'SMTP Username', 'Username to use for SMTP authentication. Leave blank for no authentication.', null),
-('System', 'mailerSMTPPassword', 'SMTP Password', 'Password to use for SMTP authentication. Leave blank for no authentication.', null),
-('System', 'mainMenuCategoryOrder', 'Main Menu Category Order', 'A comma separated list of module categories in display order.', 'Admin,Assess,Learn,People,Other'),
-('Attendance', 'attendanceReasons', 'Attendance Reasons', 'Comma-separated list of reasons which are available when taking attendance.', 'Pending,Education,Family,Medical,Other'),
-('Attendance', 'attendanceMedicalReasons', 'Medical Reasons', 'Comma-separated list of allowable medical reasons.', 'Medical'),
-('Attendance', 'attendanceEnableMedicalTracking', 'Enable Symptom Tracking', 'Attach a symptom report to attendance logs with a medical reason.', 'N'),
-('Students', 'medicalIllnessSymptoms', 'Predefined Illness Symptoms', 'Comma-separated list of illness symptoms.', 'Fever,Cough,Cold,Vomiting,Diarrhea'),
-('Staff Application Form', 'staffApplicationFormPublicApplications', 'Public Applications?', 'If yes, members of the public can submit staff applications', 'Y'),
-('Individual Needs', 'targetsTemplate', 'Targets Template', 'An HTML template to be used in the targets field.', NULL),
-('Individual Needs', 'teachingStrategiesTemplate', 'Teaching Strategies Template', 'An HTML template to be used in the teaching strategies field.', NULL),
-('Individual Needs', 'notesReviewTemplate', 'Notes & Review Template', 'An HTML template to be used in the notes and review field.', NULL),
-('Attendance', 'attendanceCLINotifyByRollGroup', 'Enable Notifications by Roll Group', null, 'Y'),
-('Attendance', 'attendanceCLINotifyByClass', 'Enable Notifications by Class', null, 'Y'),
-('Attendance', 'attendanceCLIAdditionalUsers', 'Additional Users to Notify', 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.', null),
-('Students', 'noteCreationNotification', 'Note Creation Notification', 'Determines who to notify when a new student note is created.', 'Tutors'),
-('Finance', 'invoiceeNameStyle', 'Invoicee Name Style', 'Determines how invoicee name appears on invoices and receipts.', 'Surname, Preferred Name'),
-('Planner', 'shareUnitOutline', 'Share Unit Outline', 'Allow users who do not have access to the unit planner to see Unit Outlines via the lesson planner?', 'N'),
-('Attendance', 'studentSelfRegistrationIPAddresses', 'Student Self Registration IP Addresses', 'Comma-separated list of IP addresses within which students can self register.', null),
-('Application Form', 'internalDocuments', 'Internal Documents', 'Comma-separated list of documents for internal upload and use.', null),
-('Attendance', 'countClassAsSchool', 'Count Class Attendance as School Attendance', 'Should attendance from the class context be used to prefill and inform school attendance?', 'N'),
-('Attendance', 'defaultRollGroupAttendanceType', 'Default Roll Group Attendance Type', 'The default selection for attendance type when taking Roll Group attendance', 'Present'),
-('Attendance', 'defaultClassAttendanceType', 'Default Class Attendance Type', 'The default selection for attendance type when taking Class attendance', 'Present'),
-('Students', 'academicAlertLowThreshold', 'Low Academic Alert Threshold', 'The number of Markbook concerns needed in the past 60 days to raise a low level academic alert on a student.', '3'),
-('Students', 'academicAlertMediumThreshold', 'Medium Academic Alert Threshold', 'The number of Markbook concerns needed in the past 60 days to raise a medium level academic alert on a student.', '5'),
-('Students', 'academicAlertHighThreshold', 'High Academic Alert Threshold', 'The number of Markbook concerns needed in the past 60 days to raise a high level academic alert on a student.', '9'),
-('Students', 'behaviourAlertLowThreshold', 'Low Behaviour Alert Threshold', 'The number of Behaviour concerns needed in the past 60 days to raise a low level alert on a student.', '3'),
-('Students', 'behaviourAlertMediumThreshold', 'Medium Behaviour Alert Threshold', 'The number of Behaviour concerns needed in the past 60 days to raise a medium level alert on a student.', '5'),
-('Students', 'behaviourAlertHighThreshold', 'High Behaviour Alert Threshold', 'The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.', '9'),
-('Markbook', 'enableDisplayCumulativeMarks', 'Enable Display Cumulative Marks', 'Should cumulative marks be displayed on the View Markbook page for Students and Parents and in Student Profiles?', 'N'),
-('Application Form', 'scholarshipOptionsActive', 'Scholarship Options Active', 'Should the Scholarship Options section be turned on?', 'Y'),
-('Application Form', 'paymentOptionsActive', 'Payment Options Active', 'Should the Payment section be turned on?', 'Y'),
-('Application Form', 'senOptionsActive', 'Special Education Needs Active', 'Should the Special Education Needs section be turned on?', 'Y'),
-('Timetable Admin', 'autoEnrolCourses', 'Auto-Enrol Courses Default', 'Should auto-enrolment of new students into courses be turned on or off by default?', 'N'),
-('Application Form', 'availableYearsOfEntry', 'Available Years of Entry', 'Which school years should be available to apply to?', null),
-('Application Form', 'enableLimitedYearsOfEntry', 'Enable Limited Years of Entry', 'If yes, applicants choices for Year of Entry can be limited to specific school years.', 'N'),
-('User Admin', 'uniqueEmailAddress', 'Unique Email Address', 'Are primary email addresses required to be unique?', 'N'),
-('Planner', 'parentWeeklyEmailSummaryIncludeMarkbook', 'Parent Weekly Email Summary Include Markbook', 'Should Markbook information be included in the weekly planner email summary that goes out to parents?', 'N'),
-('System', 'nameFormatStaffFormal', 'Formal Name Format', null, '[title] [preferredName:1]. [surname]'),
-('System', 'nameFormatStaffFormalReversed', 'Formal Name Reversed', null, '[title] [surname], [preferredName:1].'),
-('System', 'nameFormatStaffInformal', 'Informal Name Format', null, '[preferredName] [surname]'),
-('System', 'nameFormatStaffInformalReversed', 'Informal Name Reversed', null, '[surname], [preferredName]'),
-('Attendance', 'selfRegistrationRedirect', 'Self Registration Redirect', 'Should self registration redirect to Message Wall?', 'N'),
-('Data Updater', 'cutoffDate', 'Cutoff Date', 'Earliest acceptable date when checking if data updates are required.', null),
-('Data Updater', 'redirectByRoleCategory', 'Data Updater Redirect', 'Which types of users should be redirected to the Data Updater if updates are required.', 'Parent'),
-('Data Updater', 'requiredUpdates', 'Required Updates?', 'Should the data updater highlight updates that are required?', 'N'),
-('Data Updater', 'requiredUpdatesByType', 'Required Update Types', 'Which type of data updates should be required.', 'Personal,Family'),
-('Markbook', 'enableModifiedAssessment', 'Enable Modified Assessment', 'Allows teachers to specify \"Modified Assessment\" for students with individual needs.', 'N'),
-('Messenger', 'messageBcc', 'Message Bcc', 'Comma-separated list of recipients to bcc all messenger emails to.', null),
-('System', 'organisationBackground', 'Background', 'Relative path to background image. Overrides theme background.', '\\uploads\\2020\\03\\org_bg_1_5e8296c9d41fb.jpeg'),
-('Messenger', 'smsGateway', 'SMS Gateway', null, null),
-('Messenger', 'smsSenderID', 'SMS Sender ID', 'The sender name or phone number. Depends on the gateway used.', null),
-('System Admin', 'exportDefaultFileType', 'Default Export File Type', null, 'Excel2007'),
-('System', 'mailerSMTPSecure', 'SMTP Encryption', 'Automatically sets the encryption based on the port, otherwise select one manually.', 'auto'),
-('Staff', 'substituteTypes', 'Substitute Types', 'A comma-separated list.', 'Internal Substitute,External Substitute'),
-('Staff', 'urgencyThreshold', 'Urgency Threshold', 'Notifications in this time-span are sent immediately, day or night.', '3'),
-('Staff', 'urgentNotifications', 'Urgent Notifications', 'If enabled, urgent notifications will be sent by SMS as well as email.', 'N'),
-('Staff', 'absenceApprovers', 'Absence Approvers', 'Users who can approve staff absences. Leave this blank if approval is not used.', null),
-('Staff', 'absenceFullDayThreshold', 'Full Day Absence', 'The minumum number of hours for an absence to count as a full day (1.0)', '6.0'),
-('Staff', 'absenceHalfDayThreshold', 'Half Day Absence', 'The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0', '2.0'),
-('Staff', 'absenceNotificationGroups', 'Notification Groups', 'Which messenger groups can staff members send absence notifications to?', null),
-('Attendance', 'crossFillClasses', 'Cross-Fill Classes', 'Should classes prefill with data from other classes?', 'N');
-JJJ;
+        return Yaml::parse("
+-
+  scope: 'System'
+  name: 'absoluteURL'
+  nameDisplay: 'Base URL'
+  description: 'The address at which the whole system resides.'
+-
+  scope: 'System'
+  name: 'emailLink'
+  nameDisplay: 'Link To Email'
+  description: 'The link that points to the school''s email system'
+-
+  scope: 'Application Form'
+  name: 'notificationStudentMessage'
+  nameDisplay: 'Student Notification Message'
+  description: 'A custom message to add to the standard email to students on acceptance.'
+-
+  scope: 'Finance'
+  name: 'invoiceNumber'
+  nameDisplay: 'Invoice Number Style'
+  description: 'How should invoice numbers be constructed?'
+  value: 'Invoice ID'
+-
+  scope: 'People'
+  name: 'departureReasons'
+  nameDisplay: 'Departure Reasons'
+  description: 'A list of reasons for departure from school. If blank, user can enter any text.'
+-
+  scope: 'System'
+  name: 'googleOAuth'
+  nameDisplay: 'Google Integration'
+  description: 'Enable Gibbon-wide integration with the Google APIs?'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'googleClientName'
+  nameDisplay: 'Google Developers Client Name'
+  description: 'Name of Google Project in Developers Console.'
+-
+  scope: 'System'
+  name: 'googleClientID'
+  nameDisplay: 'Google Developers Client ID'
+  description: 'Client ID for Google Project In Developers Console.'
+-
+  scope: 'System'
+  name: 'googleClientSecret'
+  nameDisplay: 'Google Developers Client Secret'
+  description: 'Client Secret for Google Project In Developers Console.'
+-
+  scope: 'System'
+  name: 'googleRedirectUri'
+  nameDisplay: 'Google Developers Redirect Url'
+  description: 'Google Redirect on sucessful auth.'
+-
+  scope: 'System'
+  name: 'googleDeveloperKey'
+  nameDisplay: 'Google Developers Developer Key'
+  description: 'Google project Developer Key.'
+-
+  scope: 'Mark book'
+  name: 'personalisedWarnings'
+  nameDisplay: 'Personalised Warnings'
+  description: 'Should mark book warnings be based on personal targets, if they are available?'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'webLink'
+  nameDisplay: 'Link To Web'
+  description: 'The link that points to the school''s website'
+-
+  scope: 'Activities'
+  name: 'disableExternalProviderSignup'
+  nameDisplay: 'Disable External Provider Signup'
+  description: 'Should we turn off the option to sign up for activities provided by an outside agency?'
+  value: 'N'
+-
+  scope: 'Activities'
+  name: 'hideExternalProviderCost'
+  nameDisplay: 'Hide External Provider Cost'
+  description: 'Should we hide the cost of activities provided by an outside agency from the Activities View?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'studentDefaultEmail'
+  nameDisplay: 'Student Default Email'
+  description: 'Set default email for students on acceptance, using [username] to insert username.'
+-
+  scope: 'Application Form'
+  name: 'studentDefaultWebsite'
+  nameDisplay: 'Student Default Website'
+  description: 'Set default website for students on acceptance, using [username] to insert username.'
+-
+  scope: 'School Admin'
+  name: 'studentAgreementOptions'
+  nameDisplay: 'Student Agreement Options'
+  description: 'A list of agreements that students might be asked to sign in school (e.g. ICT Policy).'
+-
+  scope: 'Mark book'
+  name: 'attainmentAlternativeName'
+  nameDisplay: 'Attainment Alternative Name'
+  description: 'A name to use instead of ''Attainment'' in the first grade column of the mark book.'
+-
+  scope: 'Mark book'
+  name: 'effortAlternativeName'
+  nameDisplay: 'Effort Alternative Name'
+  description: 'A name to use instead of ''Effort'' in the second grade column of the mark book.'
+-
+  scope: 'Mark book'
+  name: 'attainmentAlternativeNameAbrev'
+  nameDisplay: 'Attainment Alternative Name Abbreviation'
+  description: 'A short name to use instead of ''Attainment'' in the first grade column of the mark book.'
+-
+  scope: 'Mark book'
+  name: 'effortAlternativeNameAbrev'
+  nameDisplay: 'Effort Alternative Name Abbreviation'
+  description: 'A short name to use instead of ''Effort'' in the second grade column of the mark book.'
+-
+  scope: 'Planner'
+  name: 'parentWeeklyEmailSummaryIncludeBehaviour'
+  nameDisplay: 'Parent Weekly Email Summary Include Behaviour'
+  description: 'Should behaviour information be included in the weekly planner email summary that goes out to parents?'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'defaultAssessmentScale'
+  nameDisplay: 'Default Assessment Scale'
+  description: 'This is the scale used as a default where assessment scales need to be selected.'
+  value: 7
+-
+  scope: 'Finance'
+  name: 'financeOnlinePaymentEnabled'
+  nameDisplay: 'Enable Online Payment'
+  description: 'Should invoices be payable online, via an encrypted link in the invoice? Requires correctly configured payment gateway in System Settings.'
+  value: 'N'
+-
+  scope: 'Finance'
+  name: 'financeOnlinePaymentThreshold'
+  nameDisplay: 'Online Payment Threshold'
+  description: 'If invoices are payable online, what is the maximum payment allowed? Useful for controlling payment fees. No value means unlimited.'
+-
+  scope: 'Departments'
+  name: 'makeDepartmentsPublic'
+  nameDisplay: 'Make Departments Public'
+  description: 'Should department information be made available to the public, via the Gibbon homepage?'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'sessionDuration'
+  nameDisplay: 'Session Duration'
+  description: 'Time, in seconds, before system logs a user out. Should be less than PHP''s session.gc_maxlifetime option.'
+  value: 900
+-
+  scope: 'Planner'
+  name: 'makeUnitsPublic'
+  nameDisplay: 'Make Units Public'
+  description: 'Enables a public listing of units, with teachers able to opt in to share units.'
+  value: 'Y'
+-
+  scope: 'Messenger'
+  name: 'messageBubbleWidthType'
+  nameDisplay: 'Message Bubble Width Type'
+  description: 'Should the message bubble be regular or wide?'
+  value: 'Regular'
+-
+  scope: 'Messenger'
+  name: 'messageBubbleBGColor'
+  nameDisplay: 'Message Bubble Background Color'
+  description: 'Message bubble background color in RGBA (e.g. 100,100,100,0.50). If blank, theme default will be used.'
+-
+  scope: 'Messenger'
+  name: 'messageBubbleAutoHide'
+  nameDisplay: 'Message Bubble Auto Hide'
+  description: 'Should message bubble fade out automatically?'
+  value: 'Y'
+-
+  scope: 'Students'
+  name: 'enableStudentNotes'
+  nameDisplay: 'Enable Student Notes'
+  description: 'Should student notes be turned on?'
+  value: 'Y'
+-
+  scope: 'Finance'
+  name: 'budgetCategories'
+  nameDisplay: 'Budget Categories'
+  description: 'A list of budget categories.'
+  value: 'Academic,Administration,Capital'
+-
+  scope: 'Finance'
+  name: 'expenseApprovalType'
+  nameDisplay: 'Expense Approval Type'
+  description: 'How should expense approval be dealt with?'
+  value: 'One Of'
+-
+  scope: 'Finance'
+  name: 'budgetLevelExpenseApproval'
+  nameDisplay: 'Budget Level Expense Approval'
+  description: 'Should approval from a budget member with Full access be required?'
+  value: 'Y'
+-
+  scope: 'Finance'
+  name: 'expenseRequestTemplate'
+  nameDisplay: 'Expense Request Template'
+  description: 'An HTML template to be used in the description field of expense requests.'
+-
+  scope: 'Finance'
+  name: 'purchasingOfficer'
+  nameDisplay: 'Purchasing Officer'
+  description: 'User responsible for purchasing for the school.'
+-
+  scope: 'Finance'
+  name: 'reimbursementOfficer'
+  nameDisplay: 'Reimbursement Officer'
+  description: 'User responsible for reimbursing expenses.'
+-
+  scope: 'Messenger'
+  name: 'enableHomeScreenWidget'
+  nameDisplay: 'Enable Home Screen Widget'
+  description: 'Adds a Message Wall widget to the home page, hihglighting current messages.'
+  value: 'N'
+-
+  scope: 'People'
+  name: 'enablePublicRegistration'
+  nameDisplay: 'Enable Public Registration'
+  description: 'Allows members of the public to register to use the system.'
+  value: 'Y'
+-
+  scope: 'People'
+  name: 'publicRegistrationMinimumAge'
+  nameDisplay: 'Public Registration Minimum Age'
+  description: 'The minimum age, in years, permitted to register.'
+  value: 13
+-
+  scope: 'People'
+  name: 'publicRegistrationDefaultStatus'
+  nameDisplay: 'Public Registration Default Status'
+  description: 'Should new users be ''Full'' or ''Pending Approval''?'
+  value: 'Pending Approval'
+-
+  scope: 'People'
+  name: 'publicRegistrationDefaultRole'
+  nameDisplay: 'Public Registration Default Role'
+  description: 'System role to be assigned to registering members of the public.'
+  value: 3
+-
+  scope: 'System'
+  name: 'organisationLogo'
+  nameDisplay: 'Logo'
+  description: 'Relative path to site logo (400 x 100px)'
+-
+  scope: 'People'
+  name: 'publicRegistrationIntro'
+  nameDisplay: 'Public Registration Introductory Text'
+  description: 'HTML text that will appear above the public registration form.'
+-
+  scope: 'People'
+  name: 'publicRegistrationPrivacyStatement'
+  nameDisplay: 'Public Registration Privacy Statement'
+  description: 'HTML text that will appear above the Submit button, explaining privacy policy.'
+  value: 'By registering for this site you are giving permission for your personal data to be used and shared within this organisation and its websites. We will not share your personal data outside our organisation.'
+-
+  scope: 'People'
+  name: 'publicRegistrationAgreement'
+  nameDisplay: 'Public Registration Agreement'
+  description: 'Agreement that user must confirm before joining. Blank for no agreement.'
+  value: 'In joining this site, and checking the box below, I agree to act lawfully, ethically and with respect for others. I agree to use this site for learning purposes only, and understand that access may be withdrawn at any time, at the discretion of the site''s administrators.'
+-
+  scope: 'People'
+  name: 'publicRegistrationPostscript'
+  nameDisplay: 'Public Registration Postscript'
+  description: 'HTML text that will appear underneath the public registration form.'
+-
+  scope: 'Behaviour'
+  name: 'enableDescriptors'
+  nameDisplay: 'Enable Descriptors'
+  description: 'Setting to No reduces complexity of behaviour tracking.'
+  value: 'Y'
+-
+  scope: 'Behaviour'
+  name: 'enableLevels'
+  nameDisplay: 'Enable Levels'
+  description: 'Setting to No reduces complexity of behaviour tracking.'
+  value: 'Y'
+-
+  scope: 'Formal Assessment'
+  name: 'internalAssessmentTypes'
+  nameDisplay: 'Internal Assessment Types'
+  description: 'A list of types to make available in Internal Assessments.'
+  value: 'Expected Grade,Predicted Grade,Target Grade'
+-
+  scope: 'System Admin'
+  name: 'customAlarmSound'
+  nameDisplay: 'Custom Alarm Sound'
+  description: 'A custom alarm sound file.'
+-
+  scope: 'School Admin'
+  name: 'facilityTypes'
+  nameDisplay: 'FacilityTypes'
+  description: 'A A list of types for facilities.'
+  value: 'Classroom,Hall,Laboratory,Library,Office,Outdoor,Performance,Staffroom,Storage,Study,Undercover,Other'
+-
+  scope: 'Finance'
+  name: 'allowExpenseAdd'
+  nameDisplay: 'Allow Expense Add'
+  description: 'Allows privileged users to add expenses without going through request process.'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'calendarFeed'
+  nameDisplay: 'School Google Calendar ID'
+  description: 'Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.'
+  value: 'craig@craigrayner.com'
+-
+  scope: 'System'
+  name: 'organisationAdministrator'
+  nameDisplay: 'System Administrator'
+  description: 'The staff member who receives notifications for system events.'
+  value: 1
+-
+  scope: 'System'
+  name: 'organisationDBA'
+  nameDisplay: 'Database Administrator'
+  description: 'The staff member who receives notifications for data events.'
+  value: 1
+-
+  scope: 'System'
+  name: 'organisationAdmissions'
+  nameDisplay: 'Admissions Administrator'
+  description: 'The staff member who receives notifications for admissions events.'
+  value: 1
+-
+  scope: 'Finance'
+  name: 'hideItemisation'
+  nameDisplay: 'Hide Itemisation'
+  description: 'Hide fee and payment details in receipts?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'autoHouseAssign'
+  nameDisplay: 'Auto House Assign'
+  description: 'Attempt to automatically place student in a house?'
+  value: 'N'
+-
+  scope: 'Tracking'
+  name: 'externalAssessmentDataPoints'
+  nameDisplay: 'External Assessment Data Points'
+  description: 'Stores the external assessment choices for data points output in tracking.'
+  value: 'a:7:{i:0;a:3:{s:10:''assessment'';s:1:''1'';s:8:''category'';s:8:''1_Scores'';s:13:''yearGroupList'';a:3:{i:0;s:1:''1'';i:1;s:1:''2'';i:2;s:1:''3'';}}i:1;a:3:{s:10:''assessment'';s:1:''1'';s:8:''category'';s:19:''2_KS3 Target Grades'';s:13:''yearGroupList'';a:3:{i:0;s:1:''1'';i:1;s:1:''2'';i:2;s:1:''3'';}}i:2;a:3:{s:10:''assessment'';s:1:''1'';s:8:''category'';s:20:''3_GCSE Target Grades'';s:13:''yearGroupList'';a:2:{i:0;s:1:''4'';i:1;s:1:''5'';}}i:3;a:3:{s:10:''assessment'';s:1:''2'';s:8:''category'';s:14:''2_Target Grade'';s:13:''yearGroupList'';a:2:{i:0;s:1:''4'';i:1;s:1:''5'';}}i:4;a:3:{s:10:''assessment'';s:1:''2'';s:8:''category'';s:13:''1_Final Grade'';s:13:''yearGroupList'';a:2:{i:0;s:1:''4'';i:1;s:1:''5'';}}i:5;a:3:{s:10:''assessment'';s:1:''3'';s:8:''category'';s:14:''2_Target Grade'';s:13:''yearGroupList'';a:2:{i:0;s:1:''6'';i:1;s:1:''7'';}}i:6;a:3:{s:10:''assessment'';s:1:''3'';s:8:''category'';s:13:''1_Final Grade'';s:13:''yearGroupList'';a:2:{i:0;s:1:''6'';i:1;s:1:''7'';}}}'
+-
+  scope: 'Tracking'
+  name: 'internalAssessmentDataPoints'
+  nameDisplay: 'Internal Assessment Data Points'
+  description: 'Stores the internal assessment choices for data points output in tracking.'
+  value: 'a:3:{i:0;a:2:{s:4:''type'';s:14:''Expected Grade'';s:13:''yearGroupList'';a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}}i:1;a:2:{s:4:''type'';s:15:''Predicted Grade'';s:13:''yearGroupList'';a:2:{i:0;i:4;i:1;i:5;}}i:2;a:2:{s:4:''type'';s:12:''Target Grade'';s:13:''yearGroupList'';a:2:{i:0;i:6;i:1;i:7;}}}'
+-
+  scope: 'Behaviour'
+  name: 'enableBehaviourLetters'
+  nameDisplay: 'Enable Behaviour Letters'
+  description: 'Should automated behaviour letter functionality be enabled?'
+  value: 'N'
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter1Count'
+  nameDisplay: 'Letter 1 Count'
+  description: 'After how many negative records should letter 1 be sent?'
+  value: 3
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter1Text'
+  nameDisplay: 'Letter 1 Text'
+  description: 'The contents of letter 1, as HTML.'
+  value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the first communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+-
+  scope: 'Activities'
+  name: 'access'
+  nameDisplay: 'Access'
+  description: 'System-wide access control'
+  value: 'Register'
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter2Count'
+  nameDisplay: 'Letter 2 Count'
+  description: 'After how many negative records should letter 2 be sent?'
+  value: 6
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter2Text'
+  nameDisplay: 'Letter 2 Text'
+  description: 'The contents of letter 2, as HTML.'
+  value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the second communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter3Count'
+  nameDisplay: 'Letter 3 Count'
+  description: 'After how many negative records should letter 3 be sent?'
+  value: 9
+-
+  scope: 'Behaviour'
+  name: 'behaviourLettersLetter3Text'
+  nameDisplay: 'Letter 3 Text'
+  description: 'The contents of letter 3, as HTML.'
+  value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the final communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+-
+  scope: 'Mark book'
+  name: 'enableColumnWeighting'
+  nameDisplay: 'Enable Column Weighting'
+  description: 'Should column weighting and total scores be enabled in the Mark book?'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'firstDayOfTheWeek'
+  nameDisplay: 'First Day Of The Week'
+  description: 'On which day should the week begin?'
+  value: 'Sunday'
+-
+  scope: 'Application Form'
+  name: 'usernameFormat'
+  nameDisplay: 'Username Format'
+  description: 'How should usernames be formatted? Choose from [preferredName], [preferredNameInitial], [surname].'
+  value: '[preferredNameInitial][surname]'
+-
+  scope: 'Staff'
+  name: 'jobOpeningDescriptionTemplate'
+  nameDisplay: 'Job Opening Description Template'
+  description: 'Default HTML contents for the Job Opening Description field.'
+  value: >-
+        <table style=''width: 100%''>
+        <tr>
+        <td colspan=2 style=''vertical-align: top''>
+        <span style=''text-decoration: underline; font-weight: bold''>Job Description</span><br/>
+        <br/>
+        </td>
+        </tr>
+        <tr>
+        <td style=''width: 50%; vertical-align: top''>
+        <span style=''text-decoration: underline; font-weight: bold''>Responsibilities</span><br/>
+        <ul style=''margin-top:0px''>
+        <li></li>
+        <li></li>
+        </ul>
+        </td>
+        <td style=''width: 50%; vertical-align: top''>
+        <span style=''text-decoration: underline; font-weight: bold''>Required Skills/Characteristics</span><br/>
+        <ul style=''margin-top:0px''>
+        <li></li>
+        <li></li>
+        </ul>
+        </td>
+        </tr>
+        <tr>
+        <td style=''width: 50%; vertical-align: top''>
+        <span style=''text-decoration: underline; font-weight: bold''>Remuneration</span><br/>
+        <ul style=''margin-top:0px''>
+        <li></li>
+        <li></li>
+        </ul>
+        </td>
+        <td style=''width: 50%; vertical-align: top''>
+        <span style=''text-decoration: underline; font-weight: bold''>Other Details </span><br/>
+        <ul style=''margin-top: 0px''>
+        <li></li>
+        <li></li>
+        </ul>
+        </td>
+        </tr>
+        </table>
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormIntroduction'
+  nameDisplay: 'Introduction'
+  description: 'Information to display before the form'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormPostscript'
+  nameDisplay: 'Postscript'
+  description: 'Information to display at the end of the form'
+-
+  scope: 'Activities'
+  name: 'payment'
+  nameDisplay: 'Payment'
+  description: 'Payment system'
+  value: 'Per Activity'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormAgreement'
+  nameDisplay: 'Agreement'
+  description: 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything'
+  value: 'In submitting this form, I confirm that all information provided above is accurate and complete to the best of my knowledge.'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormMilestones'
+  nameDisplay: 'Milestones'
+  description: 'A list of the major steps in the application process. Applicants can be tracked through the various stages.'
+  value: 'Short List, First Interview, Second Interview, Offer Made, Offer Accepted, Contact Issued, Contact Signed'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormRequiredDocuments'
+  nameDisplay: 'Required Documents'
+  description: 'A list of documents which must be submitted electronically with the application form.'
+  value: 'Curriculum Vitae'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormRequiredDocumentsCompulsory'
+  nameDisplay: 'Required Documents Compulsory?'
+  description: 'Are the required documents compulsory?'
+  value: 'Y'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormRequiredDocumentsText'
+  nameDisplay: 'Required Documents Text'
+  description: 'Explanatory text to appear with the required documents?'
+  value: 'Please submit the following document(s) to ensure your application can be processed without delay.'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormNotificationDefault'
+  nameDisplay: 'Notification Default'
+  description: 'Should acceptance email be turned on or off by default.'
+  value: 'Y'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormNotificationMessage'
+  nameDisplay: 'Notification Message'
+  description: 'A custom message to add to the standard email on acceptance.'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormDefaultEmail'
+  nameDisplay: 'Default Email'
+  description: 'Set default email on acceptance, using [username] to insert username.'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormDefaultWebsite'
+  nameDisplay: 'Default Website'
+  description: 'Set default website on acceptance, using [username] to insert username.'
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormUsernameFormat'
+  nameDisplay: 'Username Format'
+  description: 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].'
+  value: '[preferredNameInitial].[surname]'
+-
+  scope: 'Activities'
+  name: 'enrolmentType'
+  nameDisplay: 'Enrolment Type'
+  description: 'Enrolment process type'
+  value: 'Competitive'
+-
+  scope: 'System'
+  name: 'organisationHR'
+  nameDisplay: 'Human Resources Administrator'
+  description: 'The staff member who receives notifications for staffing events.'
+  value: 1
+-
+  scope: 'Staff'
+  name: 'staffApplicationFormQuestions'
+  nameDisplay: 'Application Questions'
+  description: 'HTML text that will appear as questions for the applicant to answer.'
+  value: '<span style=''text-decoration: underline; font-weight: bold''>Why are you applying for this role?</span><br/><p></p>'
+-
+  scope: 'Staff'
+  name: 'salaryScalePositions'
+  nameDisplay: 'Salary Scale Positions'
+  description: 'A list of salary scale positions, from lowest to highest.'
+  value: '1,2,3,4,5,6,7,8,9,10'
+-
+  scope: 'Staff'
+  name: 'responsibilityPosts'
+  nameDisplay: 'Responsibility Posts'
+  description: 'A list of posts carrying extra responsibilities.'
+-
+  scope: 'Students'
+  name: 'applicationFormSENText'
+  nameDisplay: 'Application Form SEN Text'
+  description: 'Text to appear with the Special Educational Needs section of the student application form.'
+  value: 'Please indicate whether or not your child has any known, or suspected, special educational needs, or whether they have been assessed for any such needs in the past. Provide any comments or information concerning your child''s development that may be relevant to your child''s performance in the classroom or elsewhere? Incorrect or withheld information may affect continued enrolment.'
+-
+  scope: 'Students'
+  name: 'applicationFormRefereeLink'
+  nameDisplay: 'Application Form Referee Link'
+  description: 'Link to an external form that will be emailed to a referee of the applicant''s choosing.'
+-
+  scope: 'People'
+  name: 'religions'
+  nameDisplay: 'Religions'
+  description: 'A list of religions available in system'
+  value: ''',Nonreligious/Agnostic/Atheist,Buddhism,Christianity,Hinduism,Islam,Judaism,Other'
+-
+  scope: 'Staff'
+  name: 'applicationFormRefereeLink'
+  nameDisplay: 'Application Form Referee Link'
+  description: 'Link to an external form that will be emailed to a referee of the applicant''s choosing.'
+-
+  scope: 'Mark book'
+  name: 'enableRawAttainment'
+  nameDisplay: 'Enable Raw Attainment Marks'
+  description: 'Should recording of raw marks be enabled in the Mark book?'
+  value: 'N'
+-
+  scope: 'Mark book'
+  name: 'enableGroupByTerm'
+  nameDisplay: 'Group Columns by Term'
+  description: 'Should columns and total scores be grouped by term?'
+  value: 'N'
+-
+  scope: 'Activities'
+  name: 'backupChoice'
+  nameDisplay: 'Backup Choice'
+  description: 'Allow students to choose a backup, in case enrolled activity is full.'
+  value: 'Y'
+-
+  scope: 'Mark book'
+  name: 'enableEffort'
+  nameDisplay: 'Enable Effort'
+  description: 'Should columns have the Effort section enabled?'
+  value: 'Y'
+-
+  scope: 'Mark book'
+  name: 'enableRubrics'
+  nameDisplay: 'Enable Rubrics'
+  description: 'Should columns have Rubrics section enabled?'
+  value: 'Y'
+-
+  scope: 'School Admin'
+  name: 'staffDashboardDefaultTab'
+  nameDisplay: 'Staff Dashboard Default Tab'
+  description: 'The default landing tab for the staff dashboard.'
+-
+  scope: 'School Admin'
+  name: 'studentDashboardDefaultTab'
+  nameDisplay: 'Student Dashboard Default Tab'
+  description: 'The default landing tab for the student dashboard.'
+-
+  scope: 'School Admin'
+  name: 'parentDashboardDefaultTab'
+  nameDisplay: 'Parent Dashboard Default Tab'
+  description: 'The default landing tab for the parent dashboard.'
+  value: 'Timetable'
+-
+  scope: 'System'
+  name: 'enableMailerSMTP'
+  nameDisplay: 'Enable SMTP Mail'
+  description: 'Adds PHPMailer settings for servers with an SMTP connection.'
+  value: 'No'
+-
+  scope: 'System'
+  name: 'mailerSMTPHost'
+  nameDisplay: 'SMTP Host'
+  description: 'Set the hostname of the mail server.'
+-
+  scope: 'System'
+  name: 'mailerSMTPPort'
+  nameDisplay: 'SMTP Port'
+  description: 'Set the SMTP port number - likely to be 25, 465 or 587.'
+  value: 25
+-
+  scope: 'System'
+  name: 'mailerSMTPUsername'
+  nameDisplay: 'SMTP Username'
+  description: 'Username to use for SMTP authentication. Leave blank for no authentication.'
+-
+  scope: 'System'
+  name: 'mailerSMTPPassword'
+  nameDisplay: 'SMTP Password'
+  description: 'Password to use for SMTP authentication. Leave blank for no authentication.'
+-
+  scope: 'System'
+  name: 'organisationName'
+  nameDisplay: 'Organisation Name'
+  description: ''
+-
+  scope: 'Activities'
+  name: 'activityTypes'
+  nameDisplay: 'Activity Types'
+  description: 'Comma-seperated list of the different activity types available in school. Leave blank to disable this feature.'
+  value: 'Creativity,Action,Service'
+-
+  scope: 'System'
+  name: 'mainMenuCategoryOrder'
+  nameDisplay: 'Main Menu Category Order'
+  description: 'A list of module categories in display order.'
+  value: 'Admin,Assess,Learn,People,Other'
+-
+  scope: 'Attendance'
+  name: 'attendanceReasons'
+  nameDisplay: 'Attendance Reasons'
+  description: 'A list of reasons which are available when taking attendance.'
+  value: 'Pending,Education,Family,Medical,Other'
+-
+  scope: 'Attendance'
+  name: 'attendanceMedicalReasons'
+  nameDisplay: 'Medical Reasons'
+  description: 'A list of allowable medical reasons.'
+  value: 'Medical'
+-
+  scope: 'Attendance'
+  name: 'attendanceEnableMedicalTracking'
+  nameDisplay: 'Enable Symptom Tracking'
+  description: 'Attach a symptom report to attendance logs with a medical reason.'
+  value: 'N'
+-
+  scope: 'Students'
+  name: 'medicalIllnessSymptoms'
+  nameDisplay: 'Predefined Illness Symptoms'
+  description: 'A list of illness symptoms.'
+  value: 'Fever,Cough,Cold,Vomiting,Diarrhea'
+-
+  scope: 'Staff Application Form'
+  name: 'staffApplicationFormPublicApplications'
+  nameDisplay: 'Public Applications?'
+  description: 'If yes, members of the public can submit staff applications'
+  value: 'N'
+-
+  scope: 'Individual Needs'
+  name: 'targetsTemplate'
+  nameDisplay: 'Targets Template'
+  description: 'An HTML template to be used in the targets field.'
+-
+  scope: 'Individual Needs'
+  name: 'teachingStrategiesTemplate'
+  nameDisplay: 'Teaching Strategies Template'
+  description: 'An HTML template to be used in the teaching strategies field.'
+-
+  scope: 'Individual Needs'
+  name: 'notesReviewTemplate'
+  nameDisplay: 'Notes & Review Template'
+  description: 'An HTML template to be used in the notes and review field.'
+-
+  scope: 'Attendance'
+  name: 'attendanceCLINotifyByRollGroup'
+  nameDisplay: 'Enable Notifications by Roll Group'
+  value: 'Y'
+-
+  scope: 'Application Form'
+  name: 'introduction'
+  nameDisplay: 'Introduction'
+  description: 'Information to display before the form'
+-
+  scope: 'Attendance'
+  name: 'attendanceCLINotifyByClass'
+  nameDisplay: 'Enable Notifications by Class'
+  value: 'Y'
+-
+  scope: 'Attendance'
+  name: 'attendanceCLIAdditionalUsers'
+  nameDisplay: 'Additional Users to Notify'
+  description: 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.'
+-
+  scope: 'Students'
+  name: 'noteCreationNotification'
+  nameDisplay: 'Note Creation Notification'
+  description: 'Determines who to notify when a new student note is created.'
+  value: 'Tutors'
+-
+  scope: 'Finance'
+  name: 'invoiceeNameStyle'
+  nameDisplay: 'Invoicee Name Style'
+  description: 'Determines how invoicee name appears on invoices and receipts.'
+  value: 'Surname, Preferred Name'
+-
+  scope: 'Planner'
+  name: 'shareUnitOutline'
+  nameDisplay: 'Share Unit Outline'
+  description: 'Allow users who do not have access to the unit planner to see Unit Outlines via the lesson planner?'
+  value: 'N'
+-
+  scope: 'Attendance'
+  name: 'studentSelfRegistrationIPAddresses'
+  nameDisplay: 'Student Self Registration IP Addresses'
+  description: 'A list of IP addresses within which students can self register.'
+-
+  scope: 'Application Form'
+  name: 'internalDocuments'
+  nameDisplay: 'Internal Documents'
+  description: 'A list of documents for internal upload and use.'
+-
+  scope: 'Attendance'
+  name: 'countClassAsSchool'
+  nameDisplay: 'Count Class Attendance as School Attendance'
+  description: 'Should attendance from the class context be used to prefill and inform school attendance?'
+  value: 'N'
+-
+  scope: 'Attendance'
+  name: 'defaultRollGroupAttendanceType'
+  nameDisplay: 'Default Roll Group Attendance Type'
+  description: 'The default selection for attendance type when taking Roll Group attendance'
+  value: 'Present'
+-
+  scope: 'Attendance'
+  name: 'defaultClassAttendanceType'
+  nameDisplay: 'Default Class Attendance Type'
+  description: 'The default selection for attendance type when taking Class attendance'
+  value: 'Present'
+-
+  scope: 'Application Form'
+  name: 'postscript'
+  nameDisplay: 'Postscript'
+  description: 'Information to display at the end of the form'
+-
+  scope: 'Students'
+  name: 'academicAlertLowThreshold'
+  nameDisplay: 'Low Academic Alert Threshold'
+  description: 'The number of Mark book concerns needed in the past 60 days to raise a low level academic alert on a student.'
+  value: 3
+-
+  scope: 'Students'
+  name: 'academicAlertMediumThreshold'
+  nameDisplay: 'Medium Academic Alert Threshold'
+  description: 'The number of Mark book concerns needed in the past 60 days to raise a medium level academic alert on a student.'
+  value: 6
+-
+  scope: 'Students'
+  name: 'academicAlertHighThreshold'
+  nameDisplay: 'High Academic Alert Threshold'
+  description: 'The number of Mark book concerns needed in the past 60 days to raise a high level academic alert on a student.'
+  value: 9
+-
+  scope: 'Students'
+  name: 'behaviourAlertLowThreshold'
+  nameDisplay: 'Low Behaviour Alert Threshold'
+  description: 'The number of Behaviour concerns needed in the past 60 days to raise a low level alert on a student.'
+  value: 3
+-
+  scope: 'Students'
+  name: 'behaviourAlertMediumThreshold'
+  nameDisplay: 'Medium Behaviour Alert Threshold'
+  description: 'The number of Behaviour concerns needed in the past 60 days to raise a medium level alert on a student.'
+  value: 6
+-
+  scope: 'Students'
+  name: 'behaviourAlertHighThreshold'
+  nameDisplay: 'High Behaviour Alert Threshold'
+  description: 'The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.'
+  value: 9
+-
+  scope: 'Mark book'
+  name: 'enableDisplayCumulativeMarks'
+  nameDisplay: 'Enable Display Cumulative Marks'
+  description: 'Should cumulative marks be displayed on the View Mark book page for Students and Parents and in Student Profiles?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'scholarshipOptionsActive'
+  nameDisplay: 'Scholarship Options Active'
+  description: 'Should the Scholarship Options section be turned on?'
+  value: 'Y'
+-
+  scope: 'Application Form'
+  name: 'paymentOptionsActive'
+  nameDisplay: 'Payment Options Active'
+  description: 'Should the Payment section be turned on?'
+  value: 'Y'
+-
+  scope: 'Application Form'
+  name: 'senOptionsActive'
+  nameDisplay: 'Special Education Needs Active'
+  description: 'Should the Special Education Needs section be turned on?'
+  value: 'Y'
+-
+  scope: 'Application Form'
+  name: 'scholarships'
+  nameDisplay: 'Scholarships'
+  description: 'Information to display before the scholarship options'
+-
+  scope: 'Timetable Admin'
+  name: 'autoEnrolCourses'
+  nameDisplay: 'Auto-Enrol Courses Default'
+  description: 'Should auto-enrolment of new students into courses be turned on or off by default?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'availableYearsOfEntry'
+  nameDisplay: 'Available Years of Entry'
+  description: 'Which school years should be available to apply to?'
+-
+  scope: 'Application Form'
+  name: 'enableLimitedYearsOfEntry'
+  nameDisplay: 'Enable Limited Years of Entry'
+  description: 'If yes, applicants choices for Year of Entry can be limited to specific school years.'
+  value: 'N'
+-
+  scope: 'People'
+  name: 'uniqueEmailAddress'
+  nameDisplay: 'Unique Email Address'
+  description: 'Are primary email addresses required to be unique?'
+  value: 'Y'
+-
+  scope: 'Planner'
+  name: 'parentWeeklyEmailSummaryIncludeMark book'
+  nameDisplay: 'Parent Weekly Email Summary Include Mark book'
+  description: 'Should Mark book information be included in the weekly planner email summary that goes out to parents?'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'nameFormatStaffFormal'
+  nameDisplay: 'Formal Name Format'
+  description: ''
+  value: '[title] [preferredName:1]. [surname]'
+-
+  scope: 'System'
+  name: 'nameFormatStaffFormalReversed'
+  nameDisplay: 'Formal Name Reversed'
+  description: ''
+  value: '[title] [surname], [preferredName:1].'
+-
+  scope: 'System'
+  name: 'nameFormatStaffInformal'
+  nameDisplay: 'Informal Name Format'
+  description: ''
+  value: '[preferredName] [surname]'
+-
+  scope: 'System'
+  name: 'nameFormatStaffInformalReversed'
+  nameDisplay: 'Informal Name Reversed'
+  description: ''
+  value: '[surname], [preferredName]'
+-
+  scope: 'Attendance'
+  name: 'selfRegistrationRedirect'
+  nameDisplay: 'Self Registration Redirect'
+  description: 'Should self registration redirect to Message Wall?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'agreement'
+  nameDisplay: 'Agreement'
+  description: 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything'
+-
+  scope: 'Data Updater'
+  name: 'cutoffDate'
+  nameDisplay: 'Cutoff Date'
+  description: 'Earliest acceptable date when checking if data updates are required.'
+-
+  scope: 'Data Updater'
+  name: 'redirectByRoleCategory'
+  nameDisplay: 'Data Updater Redirect'
+  description: 'Which types of users should be redirected to the Data Updater if updates are required.'
+  value: 'Parent'
+-
+  scope: 'Data Updater'
+  name: 'requiredUpdates'
+  nameDisplay: 'Required Updates?'
+  description: 'Should the data updater highlight updates that are required?'
+  value: 'N'
+-
+  scope: 'Data Updater'
+  name: 'requiredUpdatesByType'
+  nameDisplay: 'Required Update Types'
+  description: 'Which type of data updates should be required.'
+  value: 'Personal,Family'
+-
+  scope: 'Mark book'
+  name: 'enableModifiedAssessment'
+  nameDisplay: 'Enable Modified Assessment'
+  description: 'Allows teachers to specify ''Modified Assessment'' for students with individual needs.'
+  value: 'N'
+-
+  scope: 'Messenger'
+  name: 'messageBcc'
+  nameDisplay: 'Message Bcc'
+  description: 'A list of recipients to bcc all messenger emails to.'
+-
+  scope: 'System'
+  name: 'organisationBackground'
+  nameDisplay: 'Background'
+  description: 'Relative path to background image. Overrides theme background.'
+-
+  scope: 'Messenger'
+  name: 'smsGateway'
+  nameDisplay: 'SMS Gateway'
+  description: ''
+-
+  scope: 'Messenger'
+  name: 'smsSenderID'
+  nameDisplay: 'SMS Sender ID'
+  description: 'The sender name or phone number. Depends on the gateway used.'
+-
+  scope: 'System Admin'
+  name: 'exportDefaultFileType'
+  nameDisplay: 'Default Export File Type'
+  description: ''
+  value: 'Excel2007'
+-
+  scope: 'Application Form'
+  name: 'publicApplications'
+  nameDisplay: 'Public Applications?'
+  description: 'If yes, members of the public can submit applications'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'mailerSMTPSecure'
+  nameDisplay: 'SMTP Encryption'
+  description: 'Automatically sets the encryption based on the port, otherwise select one manually.'
+  value: 'auto'
+-
+  scope: 'Staff'
+  name: 'substituteTypes'
+  nameDisplay: 'Substitute Types'
+  description: 'A A list.'
+  value: 'Internal Substitute,External Substitute'
+-
+  scope: 'Staff'
+  name: 'urgencyThreshold'
+  nameDisplay: 'Urgency Threshold'
+  description: 'Notifications in this time-span are sent immediately, day or night.'
+  value: 3
+-
+  scope: 'Staff'
+  name: 'urgentNotifications'
+  nameDisplay: 'Urgent Notifications'
+  description: 'If enabled, urgent notifications will be sent by SMS as well as email.'
+  value: 'N'
+-
+  scope: 'Staff'
+  name: 'absenceApprovers'
+  nameDisplay: 'Absence Approvers'
+  description: 'Users who can approve staff absences. Leave this blank if approval is not used.'
+-
+  scope: 'Staff'
+  name: 'absenceFullDayThreshold'
+  nameDisplay: 'Full Day Absence'
+  description: 'The minumum number of hours for an absence to count as a full day (1.0)'
+  value: 6.0
+-
+  scope: 'Staff'
+  name: 'absenceHalfDayThreshold'
+  nameDisplay: 'Half Day Absence'
+  description: 'The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0'
+  value: 2.0
+-
+  scope: 'Staff'
+  name: 'absenceNotificationGroups'
+  nameDisplay: 'Notification Groups'
+  description: 'Which messenger groups can staff members send absence notifications to?'
+-
+  scope: 'Attendance'
+  name: 'crossFillClasses'
+  nameDisplay: 'Cross-Fill Classes'
+  description: 'Should classes prefill with data from other classes?'
+  value: 'N'
+-
+  scope: 'Behaviour'
+  name: 'positiveDescriptors'
+  nameDisplay: 'Positive Descriptors'
+  description: 'Allowable choices for positive behaviour'
+  value: 'Attitude to learning,Collaboration,Community spirit,Creativity,Effort,Leadership,Participation,Persistence,Problem solving,Quality of work,Values'
+-
+  scope: 'Behaviour'
+  name: 'negativeDescriptors'
+  nameDisplay: 'Negative Descriptors'
+  description: 'Allowable choices for negative behaviour'
+  value: 'Classwork - Late,Classwork - Incomplete,Classwork - Unacceptable,Disrespectful,Disruptive,Homework - Late,Homework - Incomplete,Homework - Unacceptable,ICT Misuse,Truancy,Other'
+-
+  scope: 'Behaviour'
+  name: 'levels'
+  nameDisplay: 'Levels'
+  description: 'Allowable choices for severity level (from lowest to highest)'
+  value: ',Stage 1,Stage 1 (Actioned),Stage 2,Stage 2 (Actioned),Stage 3,Stage 3 (Actioned),Actioned'
+-
+  scope: 'Resources'
+  name: 'categories'
+  nameDisplay: 'Categories'
+  description: 'Allowable choices for category'
+  value: 'Article,Book,Document,Graphic,Idea,Music,Object,Painting,Person,Photo,Place,Poetry,Prose,Rubric,Text,Video,Website,Work Sample,Other'
+-
+  scope: 'System'
+  name: 'organisationNameShort'
+  nameDisplay: 'Organisation Initials'
+  description: ''
+  value: 'HRS'
+-
+  scope: 'Resources'
+  name: 'purposesGeneral'
+  nameDisplay: 'Purposes (General)'
+  description: 'Allowable choices for purpose when creating a resource'
+  value: 'Assessment Aid,Concept,Inspiration,Learner Profile,Mass Mailer Attachment,Provocation,Skill,Teaching and Learning Strategy,Other'
+-
+  scope: 'System'
+  name: 'version'
+  nameDisplay: 'Version'
+  description: 'The version of the Gibbon database'
+  value: '0.0.00'
+-
+  scope: 'Resources'
+  name: 'purposesRestricted'
+  nameDisplay: 'Purposes (Restricted)'
+  description: 'Additional allowable choices for purpose when creating a resource, for those with ''Manage All Resources'' rights'
+-
+  scope: 'System'
+  name: 'organisationEmail'
+  nameDisplay: 'Organisation Email'
+  description: 'General email address for the school'
+-
+  scope: 'Activities'
+  name: 'dateType'
+  nameDisplay: 'Date Type'
+  description: 'Should activities be organised around dates (flexible) or terms (easy)?'
+  value: 'Term'
+-
+  scope: 'System'
+  name: 'installType'
+  nameDisplay: 'Install Type'
+  description: 'The purpose of this installation of Kookaburra'
+  value: 'Development'
+-
+  scope: 'System'
+  name: 'statsCollection'
+  nameDisplay: 'Statistics Collection'
+  description: 'To track Gibbon uptake, the system tracks basic data (current URL, install type, organisation name) on each install. Do you want to help?'
+  value: 'Y'
+-
+  scope: 'Activities'
+  name: 'maxPerTerm'
+  nameDisplay: 'Maximum Activities per Term'
+  description: 'The most a student can sign up for in one term. Set to 0 for unlimited.'
+  value: 0
+-
+  scope: 'Planner'
+  name: 'lessonDetailsTemplate'
+  nameDisplay: 'Lesson Details Template'
+  description: 'Template to be inserted into Lesson Details field'
+-
+  scope: 'Planner'
+  name: 'teachersNotesTemplate'
+  nameDisplay: 'Teacher''s Notes Template'
+  description: 'Template to be inserted into Teacher''s Notes field'
+-
+  scope: 'System'
+  name: 'pagination'
+  nameDisplay: 'Pagination Count'
+  description: 'Must be numeric. Number of records shown per page.'
+  value: 25
+-
+  scope: 'Planner'
+  name: 'smartBlockTemplate'
+  nameDisplay: 'Smart Block Template'
+  description: 'Template to be inserted into new block in Smart Unit'
+-
+  scope: 'Planner'
+  name: 'unitOutlineTemplate'
+  nameDisplay: 'Unit Outline Template'
+  description: 'Template to be inserted into Unit Outline section of planner'
+-
+  scope: 'Application Form'
+  name: 'milestones'
+  nameDisplay: 'Milestones'
+  description: 'A list of the major steps in the application process. Applicants can be tracked through the various stages.'
+-
+  scope: 'Library'
+  name: 'defaultLoanLength'
+  nameDisplay: 'Default Loan Length'
+  description: 'The standard loan length for a library item, in days'
+  value: 7
+-
+  scope: 'Behaviour'
+  name: 'policyLink'
+  nameDisplay: 'Policy Link'
+  description: 'A link to the school behaviour policy.'
+-
+  scope: 'Library'
+  name: 'browseBGColor'
+  nameDisplay: 'Browse Library BG Color'
+  description: 'RGB Hex value, without leading #. Background color used behind library browsing screen.'
+-
+  scope: 'Library'
+  name: 'browseBGImage'
+  nameDisplay: 'Browse Library BG Image'
+  description: 'URL to background image used behind library browsing screen.'
+-
+  scope: 'System'
+  name: 'passwordPolicyAlpha'
+  nameDisplay: 'Password - Alpha Requirement'
+  description: 'Require both upper and lower case alpha characters?'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'passwordPolicyNumeric'
+  nameDisplay: 'Password - Numeric Requirement'
+  description: 'Require at least one numeric character?'
+  value: 'Y'
+-
+  scope: 'System'
+  name: 'passwordPolicyNonAlphaNumeric'
+  nameDisplay: 'Password - Non-Alphanumeric Requirement'
+  description: 'Require at least one non-alphanumeric character (e.g. punctuation mark or space)?'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'systemName'
+  nameDisplay: 'System Name'
+  description: ''
+  value: 'Quoll'
+-
+  scope: 'System'
+  name: 'passwordPolicyMinLength'
+  nameDisplay: 'Password - Minimum Length'
+  description: 'Minimum acceptable password length.'
+  value: 8
+-
+  scope: 'People'
+  name: 'ethnicity'
+  nameDisplay: 'Ethnicity'
+  description: 'A list of ethnicities available in system'
+-
+  scope: 'People'
+  name: 'nationality'
+  nameDisplay: 'Nationality'
+  description: 'A list of nationalities available in system. If blank, system will default to list of countries'
+-
+  scope: 'People'
+  name: 'residencyStatus'
+  nameDisplay: 'Residency Status'
+  description: 'A list of residency status available in system. If blank, system will allow text input'
+-
+  scope: 'People'
+  name: 'personalDataUpdaterRequiredFields'
+  nameDisplay: 'Personal Data Updater Required Fields'
+  description: 'Serialized array listed personal fields in data updater, and whether or not they are required.'
+  value: 'a:4:{s:5:''Staff'';a:38:{s:5:''title'';s:8:''required'';s:7:''surname'';s:8:''required'';s:9:''firstName'';s:0:'''';s:13:''preferredName'';s:8:''required'';s:12:''officialName'';s:8:''required'';s:16:''nameInCharacters'';s:0:'''';s:3:''dob'';s:0:'''';s:5:''email'';s:0:'''';s:14:''emailAlternate'';s:0:'''';s:6:''phone1'';s:0:'''';s:6:''phone2'';s:0:'''';s:6:''phone3'';s:0:'''';s:6:''phone4'';s:0:'''';s:13:''languageFirst'';s:0:'''';s:14:''languageSecond'';s:0:'''';s:13:''languageThird'';s:0:'''';s:14:''countryOfBirth'';s:0:'''';s:9:''ethnicity'';s:0:'''';s:8:''religion'';s:0:'''';s:12:''citizenship1'';s:0:'''';s:20:''citizenship1Passport'';s:0:'''';s:12:''citizenship2'';s:0:'''';s:20:''citizenship2Passport'';s:0:'''';s:20:''nationalIDCardNumber'';s:0:'''';s:15:''residencyStatus'';s:0:'''';s:14:''visaExpiryDate'';s:0:'''';s:10:''profession'';s:0:'''';s:8:''employer'';s:0:'''';s:8:''jobTitle'';s:0:'''';s:14:''emergency1Name'';s:0:'''';s:17:''emergency1Number1'';s:0:'''';s:17:''emergency1Number2'';s:0:'''';s:22:''emergency1Relationship'';s:0:'''';s:14:''emergency2Name'';s:0:'''';s:17:''emergency2Number1'';s:0:'''';s:17:''emergency2Number2'';s:0:'''';s:22:''emergency2Relationship'';s:0:'''';s:19:''vehicleRegistration'';s:0:'''';}s:7:''Student'';a:38:{s:5:''title'';s:8:''required'';s:7:''surname'';s:8:''required'';s:9:''firstName'';s:0:'''';s:13:''preferredName'';s:8:''required'';s:12:''officialName'';s:8:''required'';s:16:''nameInCharacters'';s:0:'''';s:3:''dob'';s:0:'''';s:5:''email'';s:0:'''';s:14:''emailAlternate'';s:0:'''';s:6:''phone1'';s:0:'''';s:6:''phone2'';s:0:'''';s:6:''phone3'';s:0:'''';s:6:''phone4'';s:0:'''';s:13:''languageFirst'';s:0:'''';s:14:''languageSecond'';s:0:'''';s:13:''languageThird'';s:0:'''';s:14:''countryOfBirth'';s:0:'''';s:9:''ethnicity'';s:0:'''';s:8:''religion'';s:0:'''';s:12:''citizenship1'';s:0:'''';s:20:''citizenship1Passport'';s:0:'''';s:12:''citizenship2'';s:0:'''';s:20:''citizenship2Passport'';s:0:'''';s:20:''nationalIDCardNumber'';s:0:'''';s:15:''residencyStatus'';s:0:'''';s:14:''visaExpiryDate'';s:0:'''';s:10:''profession'';s:0:'''';s:8:''employer'';s:0:'''';s:8:''jobTitle'';s:0:'''';s:14:''emergency1Name'';s:0:'''';s:17:''emergency1Number1'';s:0:'''';s:17:''emergency1Number2'';s:0:'''';s:22:''emergency1Relationship'';s:0:'''';s:14:''emergency2Name'';s:0:'''';s:17:''emergency2Number1'';s:0:'''';s:17:''emergency2Number2'';s:0:'''';s:22:''emergency2Relationship'';s:0:'''';s:19:''vehicleRegistration'';s:0:'''';}s:6:''Parent'';a:38:{s:5:''title'';s:8:''required'';s:7:''surname'';s:8:''required'';s:9:''firstName'';s:0:'''';s:13:''preferredName'';s:8:''required'';s:12:''officialName'';s:8:''required'';s:16:''nameInCharacters'';s:0:'''';s:3:''dob'';s:0:'''';s:5:''email'';s:0:'''';s:14:''emailAlternate'';s:0:'''';s:6:''phone1'';s:0:'''';s:6:''phone2'';s:0:'''';s:6:''phone3'';s:0:'''';s:6:''phone4'';s:0:'''';s:13:''languageFirst'';s:0:'''';s:14:''languageSecond'';s:0:'''';s:13:''languageThird'';s:0:'''';s:14:''countryOfBirth'';s:0:'''';s:9:''ethnicity'';s:0:'''';s:8:''religion'';s:0:'''';s:12:''citizenship1'';s:0:'''';s:20:''citizenship1Passport'';s:0:'''';s:12:''citizenship2'';s:0:'''';s:20:''citizenship2Passport'';s:0:'''';s:20:''nationalIDCardNumber'';s:0:'''';s:15:''residencyStatus'';s:0:'''';s:14:''visaExpiryDate'';s:0:'''';s:10:''profession'';s:0:'''';s:8:''employer'';s:0:'''';s:8:''jobTitle'';s:0:'''';s:14:''emergency1Name'';s:0:'''';s:17:''emergency1Number1'';s:0:'''';s:17:''emergency1Number2'';s:0:'''';s:22:''emergency1Relationship'';s:0:'''';s:14:''emergency2Name'';s:0:'''';s:17:''emergency2Number1'';s:0:'''';s:17:''emergency2Number2'';s:0:'''';s:22:''emergency2Relationship'';s:0:'''';s:19:''vehicleRegistration'';s:0:'''';}s:5:''Other'';a:38:{s:5:''title'';s:8:''required'';s:7:''surname'';s:8:''required'';s:9:''firstName'';s:0:'''';s:13:''preferredName'';s:8:''required'';s:12:''officialName'';s:8:''required'';s:16:''nameInCharacters'';s:0:'''';s:3:''dob'';s:0:'''';s:5:''email'';s:0:'''';s:14:''emailAlternate'';s:0:'''';s:6:''phone1'';s:0:'''';s:6:''phone2'';s:0:'''';s:6:''phone3'';s:0:'''';s:6:''phone4'';s:0:'''';s:13:''languageFirst'';s:0:'''';s:14:''languageSecond'';s:0:'''';s:13:''languageThird'';s:0:'''';s:14:''countryOfBirth'';s:0:'''';s:9:''ethnicity'';s:0:'''';s:8:''religion'';s:0:'''';s:12:''citizenship1'';s:0:'''';s:20:''citizenship1Passport'';s:0:'''';s:12:''citizenship2'';s:0:'''';s:20:''citizenship2Passport'';s:0:'''';s:20:''nationalIDCardNumber'';s:0:'''';s:15:''residencyStatus'';s:0:'''';s:14:''visaExpiryDate'';s:0:'''';s:10:''profession'';s:0:'''';s:8:''employer'';s:0:'''';s:8:''jobTitle'';s:0:'''';s:14:''emergency1Name'';s:0:'''';s:17:''emergency1Number1'';s:0:'''';s:17:''emergency1Number2'';s:0:'''';s:22:''emergency1Relationship'';s:0:'''';s:14:''emergency2Name'';s:0:'''';s:17:''emergency2Number1'';s:0:'''';s:17:''emergency2Number2'';s:0:'''';s:22:''emergency2Relationship'';s:0:'''';s:19:''vehicleRegistration'';s:0:'''';}}'
+-
+  scope: 'School Admin'
+  name: 'primaryExternalAssessmentByYearGroup'
+  nameDisplay: 'Primary External Assessment By Year Group'
+  description: 'Serialized array connected gibbonExternalAssessmentID to gibbonYearGroupID, and specify which field set to use.'
+  value: 'a:7:{i:1;s:21:''1-2_KS3 Target Grades'';i:2;s:22:''1-3_GCSE Target Grades'';i:3;s:10:''1-1_Scores'';i:4;s:0:'''';i:5;s:0:'''';i:6;s:0:'''';i:7;s:0:'''';}'
+-
+  scope: 'Mark book'
+  name: 'mark bookType'
+  nameDisplay: 'Mark book Type'
+  description: 'A list of types to make available in the Mark book.'
+  value: 'Essay,Exam,Homework,Reflection,Test,Unit,End of Year,Other'
+-
+  scope: 'System'
+  name: 'allowableHTML'
+  nameDisplay: 'Allowable HTML'
+  description: 'TinyMCE-style list of acceptable HTML tags and options.'
+  value: 'br[style],strong[style],em[style],span[style],p[style],address[style],pre[style],h1[style],h2[style],h3[style],h4[style],h5[style],h6[style],table[style],thead[style],tbody[style],tfoot[style],tr[style],td[style|colspan|rowspan],ol[style],ul[style],li[style],blockquote[style],a[style|target|href],img[style|class|src|width|height],video[style],source[style],hr[style],iframe[style|width|height|src|frameborder|allowfullscreen],embed[style],div[style],sup[style],sub[style]'
+-
+  scope: 'Application Form'
+  name: 'howDidYouHear'
+  nameDisplay: 'How Did Your Hear?'
+  description: 'A list'
+  value: 'Advertisement,Personal Recommendation,World Wide Web,Others'
+-
+  scope: 'Messenger'
+  name: 'smsUsername'
+  nameDisplay: 'SMS Username'
+  description: 'SMS gateway username.'
+-
+  scope: 'System'
+  name: 'indexText'
+  nameDisplay: 'Index Page Text'
+  description: 'Text displayed in system''s welcome page.'
+  value: 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'
+-
+  scope: 'Messenger'
+  name: 'smsPassword'
+  nameDisplay: 'SMS Password'
+  description: 'SMS gateway password.'
+-
+  scope: 'Messenger'
+  name: 'smsURL'
+  nameDisplay: 'SMS URL'
+  description: 'SMS gateway URL for send requests.'
+-
+  scope: 'Messenger'
+  name: 'smsURLCredit'
+  nameDisplay: 'SMS URL Credit'
+  description: 'SMS gateway URL for checking credit.'
+-
+  scope: 'System'
+  name: 'currency'
+  nameDisplay: 'Currency'
+  description: 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
+-
+  scope: 'System'
+  name: 'enablePayments'
+  nameDisplay: 'Enable Payments'
+  description: 'Should payments be enabled across the system?'
+  value: 'N'
+-
+  scope: 'System'
+  name: 'paypalAPIUsername'
+  nameDisplay: 'PayPal API Username'
+  description: 'API Username provided by PayPal.'
+-
+  scope: 'System'
+  name: 'paypalAPIPassword'
+  nameDisplay: 'PayPal API Password'
+  description: 'API Password provided by PayPal.'
+-
+  scope: 'System'
+  name: 'paypalAPISignature'
+  nameDisplay: 'PayPal API Signature'
+  description: 'API Signature provided by PayPal.'
+-
+  scope: 'Application Form'
+  name: 'applicationFee'
+  nameDisplay: 'Application Fee'
+  description: 'The cost of applying to the school.'
+  value: 0
+-
+  scope: 'Application Form'
+  name: 'requiredDocuments'
+  nameDisplay: 'Required Documents'
+  description: 'A list of documents which must be submitted electronically with the application form.'
+-
+  scope: 'System'
+  name: 'absolutePath'
+  nameDisplay: 'Base Path'
+  description: 'The local FS path to the system'
+  value: 'F:\\websites\\crayner\\quoll\\public'
+-
+  scope: 'Application Form'
+  name: 'requiredDocumentsCompulsory'
+  nameDisplay: 'Required Documents Compulsory?'
+  description: 'Are the required documents compulsory?'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'requiredDocumentsText'
+  nameDisplay: 'Required Documents Text'
+  description: 'Explanatory text to appear with the required documents?'
+-
+  scope: 'Application Form'
+  name: 'notificationStudentDefault'
+  nameDisplay: 'Student Notification Default'
+  description: 'Should student acceptance email be turned on or off by default.'
+  value: 'On'
+-
+  scope: 'Application Form'
+  name: 'languageOptionsActive'
+  nameDisplay: 'Language Options Active'
+  description: 'Should the Language Options section be turned on?'
+  value: 'Off'
+-
+  scope: 'Application Form'
+  name: 'languageOptionsBlurb'
+  nameDisplay: 'Language Options Blurb'
+  description: 'Introductory text if Language Options section is turned on.'
+-
+  scope: 'Application Form'
+  name: 'languageOptionsLanguageList'
+  nameDisplay: 'Language Options Language List'
+  description: 'A list of available language selections if Language Options section is turned on.'
+-
+  scope: 'People'
+  name: 'personalBackground'
+  nameDisplay: 'Personal Background'
+  description: 'Should users be allowed to set their own personal backgrounds?'
+  value: 'Y'
+-
+  scope: 'People'
+  name: 'dayTypeOptions'
+  nameDisplay: 'Day-Type Options'
+  description: 'A list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.'
+-
+  scope: 'People'
+  name: 'dayTypeText'
+  nameDisplay: 'Day-Type Text'
+  description: 'Explanatory text to include with Day-Type Options.'
+-
+  scope: 'Mark book'
+  name: 'showStudentAttainmentWarning'
+  nameDisplay: 'Show Student Attainment Warning'
+  description: 'Show low attainment grade visual warning to students?'
+  value: 'Y'
+-
+  scope: 'Mark book'
+  name: 'showStudentEffortWarning'
+  nameDisplay: 'Show Student Effort Warning'
+  description: 'Show low effort grade visual warning to students?'
+  value: 'Y'
+-
+  scope: 'Mark book'
+  name: 'showParentAttainmentWarning'
+  nameDisplay: 'Show Parent Attainment Warning'
+  description: 'Show low attainment grade visual warning to parents?'
+  value: 'Y'
+-
+  scope: 'Mark book'
+  name: 'showParentEffortWarning'
+  nameDisplay: 'Show Parent Effort Warning'
+  description: 'Show low effort grade visual warning to parents?'
+  value: 'Y'
+-
+  scope: 'Planner'
+  name: 'allowOutcomeEditing'
+  nameDisplay: 'Allow Outcome Editing'
+  description: 'Should the text within outcomes be editable when planning lessons and units?'
+  value: 'Y'
+-
+  scope: 'People'
+  name: 'privacy'
+  nameDisplay: 'Privacy'
+  description: 'Should privacy options be turned on across the system?'
+  value: 'N'
+-
+  scope: 'People'
+  name: 'privacyBlurb'
+  nameDisplay: 'Privacy Blurb'
+  description: 'Descriptive text to accompany image privacy option when shown to users.'
+-
+  scope: 'Finance'
+  name: 'invoiceText'
+  nameDisplay: 'Invoice Text'
+  description: 'Text to appear in invoice, above invoice details and fees.'
+-
+  scope: 'Finance'
+  name: 'invoiceNotes'
+  nameDisplay: 'Invoice Notes'
+  description: 'Text to appear in invoice, below invoice details and fees.'
+-
+  scope: 'Finance'
+  name: 'receiptText'
+  nameDisplay: 'Receipt Text'
+  description: 'Text to appear in receipt, above receipt details and fees.'
+-
+  scope: 'Finance'
+  name: 'receiptNotes'
+  nameDisplay: 'Receipt Notes'
+  description: 'Text to appear in receipt, below receipt details and fees.'
+-
+  scope: 'System'
+  name: 'analytics'
+  nameDisplay: 'Analytics'
+  description: 'Javascript code to integrate statistics, such as Google Analytics'
+-
+  scope: 'Finance'
+  name: 'reminder1Text'
+  nameDisplay: 'Reminder 1 Text'
+  description: 'Text to appear in first level reminder level, above invoice details and fees.'
+-
+  scope: 'Finance'
+  name: 'reminder2Text'
+  nameDisplay: 'Reminder 2 Text'
+  description: 'Text to appear in second level reminder level, above invoice details and fees.'
+-
+  scope: 'Finance'
+  name: 'reminder3Text'
+  nameDisplay: 'Reminder 3 Text'
+  description: 'Text to appear in third level reminder level, above invoice details and fees.'
+-
+  scope: 'Finance'
+  name: 'email'
+  nameDisplay: 'Email'
+  description: 'Email address to send finance emails from.'
+  value: 'craig@craigrayner.com'
+-
+  scope: 'Application Form'
+  name: 'notificationParentsDefault'
+  nameDisplay: 'Parents Notification Default'
+  description: 'Should parent acceptance email be turned on or off by default.'
+  value: 'On'
+-
+  scope: 'People'
+  name: 'privacyOptions'
+  nameDisplay: 'Privacy Options'
+  description: 'A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.'
+-
+  scope: 'Planner'
+  name: 'sharingDefaultParents'
+  nameDisplay: 'Sharing Default: Parents'
+  description: 'When adding lessons and deploying units, should sharing default for parents be Y or N?'
+  value: 'Y'
+-
+  scope: 'Planner'
+  name: 'sharingDefaultStudents'
+  nameDisplay: 'Sharing Default: Students'
+  description: 'When adding lessons and deploying units, should sharing default for students be Y or N?'
+  value: 'Y'
+-
+  scope: 'Students'
+  name: 'extendedBriefProfile'
+  nameDisplay: 'Extended Brief Profile'
+  description: 'The extended version of the brief student profile includes contact information of parents.'
+  value: 'N'
+-
+  scope: 'Application Form'
+  name: 'notificationParentsMessage'
+  nameDisplay: 'Parents Notification Message'
+  description: 'A custom message to add to the standard email to parents on acceptance.'
+");
     }
 
     public static function getVersion(): string

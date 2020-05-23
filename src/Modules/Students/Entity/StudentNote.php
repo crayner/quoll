@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Students\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,9 +26,9 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\Index("person_creator",columns={"person_creator"})}
  * )
  */
-class StudentNote implements EntityInterface
+class StudentNote extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -238,11 +238,6 @@ class StudentNote implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`student_note_category`) REFERENCES `__prefix__StudentNoteCategory` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`person_creator`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

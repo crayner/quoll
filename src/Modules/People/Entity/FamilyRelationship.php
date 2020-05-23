@@ -12,7 +12,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -26,9 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="FamilyMemberAdultChild", columns={"family","adult","child"})})
  * @UniqueEntity({"family","adult","child"})
  */
-class FamilyRelationship implements EntityInterface
+class FamilyRelationship extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -269,11 +269,6 @@ class FamilyRelationship implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__Person` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

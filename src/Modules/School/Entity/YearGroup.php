@@ -12,12 +12,14 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bundle\FrameworkBundle\Command\YamlLintCommand;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class YearGroup
@@ -31,9 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"abbreviation"})
  * @UniqueEntity({"sequenceNumber"})
  */
-class YearGroup implements EntityInterface
+class YearGroup extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -222,16 +224,42 @@ class YearGroup implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`head_of_year`) REFERENCES `__prefix__person` (`id`);";
     }
 
-    public function coreData(): string
+    /**
+     * coreData
+     * @return array|string[]
+     */
+    public function coreData(): array
     {
-        return "INSERT INTO `__prefix__YearGroup` (`name`, `abbreviation`, `sequence_number`, `head_of_year`) VALUES
-                    ('Year 7', 'Y07', 1, NULL),
-                    ('Year 8', 'Y08', 2, NULL),
-                    ('Year 9', 'Y09', 3, NULL),
-                    ('Year 10', 'Y10', 4, NULL),
-                    ('Year 11', 'Y11', 5, NULL),
-                    ('Year 12', 'Y12', 6, NULL),
-                    ('Year 13', 'Y13', 7, NULL);";
+        return Yaml::parse("
+-
+  name: 'Year 7'
+  abbreviation: 'Y07'
+  sequenceNumber: 1
+-
+  name: 'Year 8'
+  abbreviation: 'Y08'
+  sequenceNumber: 2
+-
+  name: 'Year 9'
+  abbreviation: 'Y09'
+  sequenceNumber: 3
+-
+  name: 'Year 10'
+  abbreviation: 'Y10'
+  sequenceNumber: 4
+-
+  name: 'Year 11'
+  abbreviation: 'Y11'
+  sequenceNumber: 5
+-
+  name: 'Year 12'
+  abbreviation: 'Y12'
+  sequenceNumber: 6
+-
+  name: 'Year 13'
+  abbreviation: 'Y13'
+  sequenceNumber: 7
+");
     }
 
     public static function getVersion(): string

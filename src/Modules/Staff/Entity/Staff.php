@@ -13,7 +13,7 @@
 
 namespace App\Modules\Staff\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,9 +25,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
  * @ORM\Table(name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
  */
-class Staff implements EntityInterface
+class Staff extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -435,20 +435,14 @@ class Staff implements EntityInterface
      */
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `__prefex__Staff`
+        return "ALTER TABLE `__prefix__Staff`
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
+     */public static function getVersion(): string
     {
         return self::VERSION;
     }

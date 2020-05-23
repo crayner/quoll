@@ -13,7 +13,7 @@
 
 namespace App\Modules\Enrolment\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Department;
@@ -41,9 +41,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"academicYear", "name"})
  * @UniqueEntity({"academicYear", "nameShort"})
  */
-class Course implements EntityInterface
+class Course extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -367,11 +367,6 @@ class Course implements EntityInterface
         return 'ALTER TABLE `__prefix__Course`
                     ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`);';
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

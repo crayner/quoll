@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Enrolment\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,9 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="CourseClassPerson", indexes={@ORM\Index(name="course_class", columns={"course_class"}), @ORM\Index(name="person_role", columns={"person", "role"})}, uniqueConstraints={@ORM\UniqueConstraint(name="courseClassPerson",columns={ "course_class", "person"})})
  * @UniqueEntity({"courseClass","person"})
  */
-class CourseClassPerson implements EntityInterface
+class CourseClassPerson extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -221,21 +221,15 @@ class CourseClassPerson implements EntityInterface
      */
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `__prefix__CcourseClassPerson`
-  ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`),
-  ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);
-";
+        return "ALTER TABLE `__prefix__CourseClassPerson`
+                    ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
-     * coreData
+     * getVersion
      * @return string
      */
-    public function coreData(): string
-    {
-        return "";
-    }
-
     public static function getVersion(): string
     {
         return self::VERSION;

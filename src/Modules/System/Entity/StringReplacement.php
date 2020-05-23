@@ -12,7 +12,7 @@
  */
 namespace App\Modules\System\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\StringReplacementRepository")
  * @ORM\Table(name="String")
  */
-class StringReplacement implements EntityInterface
+class StringReplacement extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -247,11 +247,6 @@ class StringReplacement implements EntityInterface
     }
 
     public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    public function coreData(): string
     {
         return '';
     }

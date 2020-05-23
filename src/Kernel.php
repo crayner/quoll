@@ -81,7 +81,7 @@ class Kernel extends BaseKernel
         if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] !== '443')
             $url .= ':'. $_SERVER['SERVER_PORT'];
 
-        $container->setParameter('timezone', 'UTC');
+        $container->setParameter('timezone', ini_get('date.timezone'));
         $container->setParameter('absoluteURL', $url);
         $container->setParameter('databaseServer', null);
         $container->setParameter('databaseUsername', null);

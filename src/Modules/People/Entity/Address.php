@@ -14,7 +14,7 @@
  */
 namespace App\Modules\People\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Validator\PostCode;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -32,9 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @\App\Modules\People\Validator\Address()
  * @PostCode()
  */
-class Address implements EntityInterface
+class Address extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -287,13 +287,7 @@ class Address implements EntityInterface
     /**
      * coreData
      * @return string
-     */
-    public function coreData(): string
-    {
-        return '';
-    }
-
-    /**
+     *//**
      * canDelete
      * @return bool
      */

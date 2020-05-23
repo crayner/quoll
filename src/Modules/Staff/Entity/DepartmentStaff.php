@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Staff\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Department;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,9 +28,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="department_person",columns={"department","person"})})
  * @UniqueEntity({"department","person"})
  */
-class DepartmentStaff implements EntityInterface
+class DepartmentStaff extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -193,11 +193,6 @@ class DepartmentStaff implements EntityInterface
         return "ALTER TABLE `__prefix__DepartmentStaff`
                     ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

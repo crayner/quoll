@@ -15,7 +15,7 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;

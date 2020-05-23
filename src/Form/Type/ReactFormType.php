@@ -16,7 +16,7 @@
 namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;

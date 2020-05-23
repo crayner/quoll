@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Comms\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
@@ -36,9 +36,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"event","module"})
  * @ORM\HasLifecycleCallbacks()
  * */
-class NotificationEvent implements EntityInterface
+class NotificationEvent extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -405,11 +405,6 @@ class NotificationEvent implements EntityInterface
         return "ALTER TABLE `__prefix__NotificationEvent`
                     ADD CONSTRAINT FOREIGN KEY (`action`) REFERENCES `__prefix__Action` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
-    }
-
-    public function coreData(): string
-    {
-        return '';
     }
 
     public static function getVersion(): string

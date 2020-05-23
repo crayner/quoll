@@ -12,13 +12,14 @@
  */
 namespace App\Modules\School\Entity;
 
-use App\Manager\EntityInterface;
+use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ScaleGrade
@@ -32,9 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity({"value","scale"})
  * @UniqueEntity({"sequenceNumber","scale"})
  */
-class ScaleGrade implements EntityInterface
+class ScaleGrade extends AbstractEntity
 {
-    CONST VERSION = '20200401';
+    CONST VERSION = '1.0.00';
 
     use BooleanList;
 
@@ -188,7 +189,7 @@ class ScaleGrade implements EntityInterface
     /**
      * @return string|null
      */
-    public function isDefaultGrade(): ?string
+    public function defaultGradeGrade(): ?string
     {
         return $this->getDefaultGrade() === 'Y' ? true : false;
     }
@@ -242,7 +243,7 @@ class ScaleGrade implements EntityInterface
             'sequence' => $this->getSequenceNumber(),
             'id' => $this->getId(),
             'scale' => $this->getScaleId(),
-            'default' => TranslationHelper::translate($this->isDefaultGrade() ? 'Yes' : 'No', [], 'messages'),
+            'default' => TranslationHelper::translate($this->defaultGradeGrade() ? 'Yes' : 'No', [], 'messages'),
             'canDelete' => ProviderFactory::create(ScaleGrade::class)->canDelete($this),
         ];
     }
@@ -270,340 +271,1985 @@ class ScaleGrade implements EntityInterface
                     ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`);';
     }
 
-    public function coreData(): string
+    public function coreData(): array
     {
-        return <<<JJJ
-INSERT INTO `__prefix__ScaleGrade` (`value`, `descriptor`, `sequence_number`, `default_grade`, `scale`) VALUES
-('7', '7', 1, 'N', 1),
-('6', '6', 2, 'N', 1),
-('5', '5', 3, 'N', 1),
-('4', '4', 4, 'N', 1),
-('3', '3', 5, 'N', 1),
-('2', '2', 6, 'N', 1),
-('1', '1', 7, 'N', 1),
-('A', '49–60', 1, 'N', 2),
-('B', '40–48', 2, 'N', 2),
-('C', '32–39', 3, 'N', 2),
-('D', '22–31', 4, 'N', 2),
-('E', '–21', 5, 'N', 2),
-('A*', 'A*', 1, 'N', 3),
-('A', 'A', 2, 'N', 3),
-('B', 'B', 3, 'N', 3),
-('C', 'C', 4, 'N', 3),
-('D', 'D', 5, 'N', 3),
-('E', 'E', 6, 'N', 3),
-('F', 'F', 7, 'N', 3),
-('G', 'G', 8, 'N', 3),
-('U', 'Unclassified', 9, 'N', 3),
-('100%', '100%', 1, 'N', 4),
-('99%', '99%', 2, 'N', 4),
-('98%', '98%', 3, 'N', 4),
-('97%', '97%', 4, 'N', 4),
-('96%', '96%', 5, 'N', 4),
-('95%', '95%', 6, 'N', 4),
-('94%', '94%', 7, 'N', 4),
-('93%', '93%', 8, 'N', 4),
-('92%', '92%', 9, 'N', 4),
-('91%', '91%', 10, 'N', 4),
-('90%', '90%', 11, 'N', 4),
-('89%', '89%', 12, 'N', 4),
-('88%', '88%', 13, 'N', 4),
-('87%', '87%', 14, 'N', 4),
-('86%', '86%', 15, 'N', 4),
-('85%', '85%', 16, 'N', 4),
-('84%', '84%', 17, 'N', 4),
-('83%', '83%', 18, 'N', 4),
-('82%', '82%', 19, 'N', 4),
-('81%', '81%', 20, 'N', 4),
-('80%', '80%', 21, 'N', 4),
-('79%', '79%', 22, 'N', 4),
-('78%', '78%', 23, 'N', 4),
-('77%', '77%', 24, 'N', 4),
-('76%', '76%', 25, 'N', 4),
-('75%', '75%', 26, 'N', 4),
-('74%', '74%', 27, 'N', 4),
-('73%', '73%', 28, 'N', 4),
-('72%', '72%', 29, 'N', 4),
-('71%', '71%', 30, 'N', 4),
-('70%', '70%', 31, 'N', 4),
-('69%', '69%', 32, 'N', 4),
-('68%', '68%', 33, 'N', 4),
-('67%', '67%', 34, 'N', 4),
-('66%', '66%', 35, 'N', 4),
-('65%', '65%', 36, 'N', 4),
-('64%', '64%', 37, 'N', 4),
-('63%', '63%', 38, 'N', 4),
-('62%', '62%', 39, 'N', 4),
-('61%', '61%', 40, 'N', 4),
-('60%', '60%', 41, 'N', 4),
-('59%', '59%', 42, 'N', 4),
-('58%', '58%', 43, 'N', 4),
-('57%', '57%', 44, 'N', 4),
-('56%', '56%', 45, 'N', 4),
-('55%', '55%', 46, 'N', 4),
-('54%', '54%', 47, 'N', 4),
-('53%', '53%', 48, 'N', 4),
-('52%', '52%', 49, 'N', 4),
-('51%', '51%', 50, 'N', 4),
-('50%', '50%', 51, 'N', 4),
-('49%', '49%', 52, 'N', 4),
-('48%', '48%', 53, 'N', 4),
-('47%', '47%', 54, 'N', 4),
-('46%', '46%', 55, 'N', 4),
-('45%', '45%', 56, 'N', 4),
-('44%', '44%', 57, 'N', 4),
-('43%', '43%', 58, 'N', 4),
-('42%', '42%', 59, 'N', 4),
-('41%', '41%', 60, 'N', 4),
-('40%', '40%', 61, 'N', 4),
-('39%', '39%', 62, 'N', 4),
-('38%', '38%', 63, 'N', 4),
-('37%', '37%', 64, 'N', 4),
-('36%', '36%', 65, 'N', 4),
-('35%', '35%', 66, 'N', 4),
-('34%', '34%', 67, 'N', 4),
-('33%', '33%', 68, 'N', 4),
-('32%', '32%', 69, 'N', 4),
-('31%', '31%', 70, 'N', 4),
-('30%', '30%', 71, 'N', 4),
-('29%', '29%', 72, 'N', 4),
-('28%', '28%', 73, 'N', 4),
-('27%', '27%', 74, 'N', 4),
-('26%', '26%', 75, 'N', 4),
-('25%', '25%', 76, 'N', 4),
-('24%', '24%', 77, 'N', 4),
-('23%', '23%', 78, 'N', 4),
-('22%', '22%', 79, 'N', 4),
-('21%', '21%', 80, 'N', 4),
-('20%', '20%', 81, 'N', 4),
-('19%', '19%', 82, 'N', 4),
-('18%', '18%', 83, 'N', 4),
-('17%', '17%', 84, 'N', 4),
-('16%', '16%', 85, 'N', 4),
-('15%', '15%', 86, 'N', 4),
-('14%', '14%', 87, 'N', 4),
-('13%', '13%', 88, 'N', 4),
-('12%', '12%', 89, 'N', 4),
-('11%', '11%', 90, 'N', 4),
-('10%', '10%', 91, 'N', 4),
-('9%', '9%', 92, 'N', 4),
-('8%', '8%', 93, 'N', 4),
-('7%', '7%', 94, 'N', 4),
-('6%', '6%', 95, 'N', 4),
-('5%', '5%', 96, 'N', 4),
-('4%', '4%', 97, 'N', 4),
-('3%', '3%', 98, 'N', 4),
-('2%', '2%', 99, 'N', 4),
-('1%', '2%', 100, 'N', 4),
-('%', '%', 101, 'N', 4),
-('A+', 'A+', 1, 'N', 5),
-('A', 'A', 2, 'N', 5),
-('A-', 'A-', 3, 'N', 5),
-('B+', 'B+', 4, 'N', 5),
-('B', 'B', 5, 'N', 5),
-('B-', 'B-', 6, 'N', 5),
-('C+', 'C+', 7, 'N', 5),
-('C', 'C', 8, 'N', 5),
-('C-', 'C-', 9, 'N', 5),
-('D+', 'D+', 10, 'N', 5),
-('D', 'D', 11, 'N', 5),
-('D-', 'D-', 12, 'N', 5),
-('E+', 'E+', 13, 'N', 5),
-('E', 'E', 14, 'N', 5),
-('E-', 'E-', 15, 'N', 5),
-('F', 'F', 16, 'N', 5),
-('A', 'A', 1, 'N', 6),
-('B', 'B', 2, 'N', 6),
-('C', 'C', 3, 'N', 6),
-('D', 'D', 4, 'N', 6),
-('E', 'E', 5, 'N', 6),
-('F', 'F', 6, 'N', 6),
-('7', 'Exceptional  Performance', 1, 'N', 7),
-('6', 'Well Above Expected Level', 2, 'N', 7),
-('5', 'Above Expected Level', 3, 'N', 7),
-('4', 'At Expected Level', 4, 'N', 7),
-('3', 'Below Expected Level', 5, 'N', 7),
-('2', 'Well Below Expected Level', 6, 'N', 7),
-('1', 'Cause For Concern', 7, 'N', 7),
-('Complete', 'Work complete', 1, 'N', 8),
-('Incomplete', 'Work incomplete', 3, 'N', 8),
-('Late', 'Work submitted late', 2, 'N', 8),
-('Incomplete', 'Work incomplete', 8, 'N', 7),
-('Incomplete', 'Work incomplete', 8, 'N', 1),
-('Incomplete', 'Work incomplete', 10, 'N', 3),
-('Incomplete', 'Work incomplete', 102, 'N', 4),
-('Incomplete', 'Work incomplete', 17, 'N', 5),
-('Incomplete', 'Work incomplete', 7, 'N', 6),
-('60', '60', 82, 'N', 9),
-('61', '61', 81, 'N', 9),
-('62', '62', 80, 'N', 9),
-('63', '63', 79, 'N', 9),
-('64', '64', 78, 'N', 9),
-('65', '65', 77, 'N', 9),
-('66', '66', 76, 'N', 9),
-('67', '67', 75, 'N', 9),
-('68', '68', 74, 'N', 9),
-('69', '69', 73, 'N', 9),
-('70', '70', 72, 'N', 9),
-('71', '71', 71, 'N', 9),
-('72', '72', 70, 'N', 9),
-('73', '73', 69, 'N', 9),
-('74', '74', 68, 'N', 9),
-('75', '75', 67, 'N', 9),
-('76', '76', 66, 'N', 9),
-('77', '77', 65, 'N', 9),
-('78', '78', 64, 'N', 9),
-('79', '79', 63, 'N', 9),
-('80', '80', 62, 'N', 9),
-('81', '81', 61, 'N', 9),
-('82', '82', 60, 'N', 9),
-('83', '83', 59, 'N', 9),
-('84', '84', 58, 'N', 9),
-('85', '85', 57, 'N', 9),
-('86', '86', 56, 'N', 9),
-('87', '87', 55, 'N', 9),
-('88', '88', 54, 'N', 9),
-('89', '89', 53, 'N', 9),
-('90', '90', 52, 'N', 9),
-('91', '91', 51, 'N', 9),
-('92', '92', 50, 'N', 9),
-('93', '93', 49, 'N', 9),
-('94', '94', 48, 'N', 9),
-('95', '95', 47, 'N', 9),
-('96', '96', 46, 'N', 9),
-('97', '97', 45, 'N', 9),
-('98', '98', 44, 'N', 9),
-('99', '99', 43, 'N', 9),
-('100', '100', 42, 'N', 9),
-('101', '101', 41, 'N', 9),
-('102', '102', 40, 'N', 9),
-('103', '103', 39, 'N', 9),
-('104', '104', 38, 'N', 9),
-('105', '105', 37, 'N', 9),
-('106', '106', 36, 'N', 9),
-('107', '107', 35, 'N', 9),
-('108', '108', 34, 'N', 9),
-('109', '109', 33, 'N', 9),
-('110', '110', 32, 'N', 9),
-('111', '111', 31, 'N', 9),
-('112', '112', 30, 'N', 9),
-('113', '113', 29, 'N', 9),
-('114', '114', 28, 'N', 9),
-('115', '115', 27, 'N', 9),
-('116', '116', 26, 'N', 9),
-('117', '117', 25, 'N', 9),
-('118', '118', 24, 'N', 9),
-('119', '119', 23, 'N', 9),
-('120', '120', 22, 'N', 9),
-('121', '121', 21, 'N', 9),
-('122', '122', 20, 'N', 9),
-('123', '123', 19, 'N', 9),
-('124', '124', 18, 'N', 9),
-('125', '125', 17, 'N', 9),
-('126', '126', 16, 'N', 9),
-('127', '127', 15, 'N', 9),
-('128', '128', 14, 'N', 9),
-('129', '129', 13, 'N', 9),
-('130', '130', 12, 'N', 9),
-('131', '131', 11, 'N', 9),
-('132', '132', 10, 'N', 9),
-('133', '133', 9, 'N', 9),
-('134', '134', 8, 'N', 9),
-('135', '135', 7, 'N', 9),
-('136', '136', 6, 'N', 9),
-('137', '137', 5, 'N', 9),
-('138', '138', 4, 'N', 9),
-('139', '139', 3, 'N', 9),
-('140', '140', 2, 'N', 9),
-('8A', '8A', 1, 'N', 10),
-('8B', '8B', 2, 'N', 10),
-('8C', '8C', 3, 'N', 10),
-('7A', '7A', 4, 'N', 10),
-('7B', '7B', 5, 'N', 10),
-('7C', '7C', 6, 'N', 10),
-('6A', '6A', 7, 'N', 10),
-('6B', '6B', 8, 'N', 10),
-('6C', '6C', 9, 'N', 10),
-('5A', '5A', 10, 'N', 10),
-('5B', '5B', 11, 'N', 10),
-('5C', '5C', 12, 'N', 10),
-('4A', '4A', 13, 'N', 10),
-('4B', '4B', 14, 'N', 10),
-('4C', '4C', 15, 'N', 10),
-('B3', 'B3', 16, 'N', 10),
-('A', 'A', 1, 'N', 11),
-('A/B', 'A/B', 2, 'N', 11),
-('B', 'B', 3, 'N', 11),
-('B/C', 'B/C', 4, 'N', 11),
-('C', 'C', 5, 'N', 11),
-('C/D', 'C/D', 6, 'N', 11),
-('D', 'D', 7, 'N', 11),
-('D/E', 'D/E', 8, 'N', 11),
-('E', 'E', 9, 'N', 11),
-('E/F', 'E/F', 10, 'N', 11),
-('F', 'F', 11, 'N', 11),
-('G', 'G', 12, 'N', 11),
-('U', 'Unclassified', 13, 'N', 11),
-('141', '141', 1, 'N', 9),
-('7', '7', 1, 'N', 12),
-('6', '6', 2, 'N', 12),
-('5', '5', 3, 'N', 12),
-('4', '4', 4, 'N', 12),
-('3', '3', 5, 'N', 12),
-('2', '2', 6, 'N', 12),
-('1', '1', 7, 'N', 12),
-('45', '45', 1, 'N', 13),
-('44', '44', 2, 'N', 13),
-('43', '43', 3, 'N', 13),
-('42', '42', 4, 'N', 13),
-('41', '41', 5, 'N', 13),
-('40', '40', 6, 'N', 13),
-('39', '39', 7, 'N', 13),
-('38', '38', 8, 'N', 13),
-('37', '37', 9, 'N', 13),
-('36', '36', 10, 'N', 13),
-('35', '35', 11, 'N', 13),
-('34', '34', 12, 'N', 13),
-('33', '33', 13, 'N', 13),
-('32', '32', 14, 'N', 13),
-('31', '31', 15, 'N', 13),
-('30', '30', 16, 'N', 13),
-('29', '29', 17, 'N', 13),
-('28', '28', 18, 'N', 13),
-('27', '27', 19, 'N', 13),
-('26', '26', 20, 'N', 13),
-('25', '25', 21, 'N', 13),
-('24', '24', 22, 'N', 13),
-('23', '23', 23, 'N', 13),
-('22', '22', 24, 'N', 13),
-('21', '21', 25, 'N', 13),
-('20', '20', 26, 'N', 13),
-('19', '19', 27, 'N', 13),
-('18', '18', 28, 'N', 13),
-('17', '17', 29, 'N', 13),
-('16', '16', 30, 'N', 13),
-('15', '15', 31, 'N', 13),
-('14', '14', 32, 'N', 13),
-('13', '13', 33, 'N', 13),
-('12', '12', 34, 'N', 13),
-('11', '11', 35, 'N', 13),
-('10', '10', 36, 'N', 13),
-('9', '9', 37, 'N', 13),
-('8', '8', 38, 'N', 13),
-('7', '7', 39, 'N', 13),
-('6', '6', 40, 'N', 13),
-('5', '5', 41, 'N', 13),
-('4', '4', 42, 'N', 13),
-('3', '3', 43, 'N', 13),
-('2', '2', 44, 'N', 13),
-('1', '1', 45, 'N', 13),
-('8', 'Level 8', 1, 'N', 14),
-('7', 'Level 7', 2, 'N', 14),
-('6', 'Level 6', 3, 'N', 14),
-('5', 'Level 5', 4, 'N', 14),
-('4', 'Level 4', 5, 'N', 14),
-('3', 'Level 3', 6, 'N', 14);
-JJJ;
+        return Yaml::parse(<<<JJJ
+-
+  value: 7
+  descriptor: 7
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 6
+  descriptor: 6
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 5
+  descriptor: 5
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 4
+  descriptor: 4
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 3
+  descriptor: 3
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 2
+  descriptor: 2
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: 1
+  descriptor: 1
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: "A"
+  descriptor: "49–60"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBEE'}
+-
+  value: "B"
+  descriptor: "40–48"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBEE'}
+-
+  value: "C"
+  descriptor: "32–39"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBEE'}
+-
+  value: "D"
+  descriptor: "22–31"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBEE'}
+-
+  value: "E"
+  descriptor: "–21"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBEE'}
+-
+  value: "A*"
+  descriptor: "A*"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "A"
+  descriptor: "A"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "B"
+  descriptor: "B"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "C"
+  descriptor: "C"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "D"
+  descriptor: "D"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "E"
+  descriptor: "E"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "F"
+  descriptor: "F"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "G"
+  descriptor: "G"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "U"
+  descriptor: "Unclassified"
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "100%"
+  descriptor: "100%"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "99%"
+  descriptor: "99%"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "98%"
+  descriptor: "98%"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "97%"
+  descriptor: "97%"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "96%"
+  descriptor: "96%"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "95%"
+  descriptor: "95%"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "94%"
+  descriptor: "94%"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "93%"
+  descriptor: "93%"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "92%"
+  descriptor: "92%"
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "91%"
+  descriptor: "91%"
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "90%"
+  descriptor: "90%"
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "89%"
+  descriptor: "89%"
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "88%"
+  descriptor: "88%"
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "87%"
+  descriptor: "87%"
+  sequenceNumber: 14
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "86%"
+  descriptor: "86%"
+  sequenceNumber: 15
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "85%"
+  descriptor: "85%"
+  sequenceNumber: 16
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "84%"
+  descriptor: "84%"
+  sequenceNumber: 17
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "83%"
+  descriptor: "83%"
+  sequenceNumber: 18
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "82%"
+  descriptor: "82%"
+  sequenceNumber: 19
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "81%"
+  descriptor: "81%"
+  sequenceNumber: 20
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "80%"
+  descriptor: "80%"
+  sequenceNumber: 21
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "79%"
+  descriptor: "79%"
+  sequenceNumber: 22
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "78%"
+  descriptor: "78%"
+  sequenceNumber: 23
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "77%"
+  descriptor: "77%"
+  sequenceNumber: 24
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "76%"
+  descriptor: "76%"
+  sequenceNumber: 25
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "75%"
+  descriptor: "75%"
+  sequenceNumber: 26
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "74%"
+  descriptor: "74%"
+  sequenceNumber: 27
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "73%"
+  descriptor: "73%"
+  sequenceNumber: 28
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "72%"
+  descriptor: "72%"
+  sequenceNumber: 29
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "71%"
+  descriptor: "71%"
+  sequenceNumber: 30
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "70%"
+  descriptor: "70%"
+  sequenceNumber: 31
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "69%"
+  descriptor: "69%"
+  sequenceNumber: 32
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "68%"
+  descriptor: "68%"
+  sequenceNumber: 33
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "67%"
+  descriptor: "67%"
+  sequenceNumber: 34
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "66%"
+  descriptor: "66%"
+  sequenceNumber: 35
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "65%"
+  descriptor: "65%"
+  sequenceNumber: 36
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "64%"
+  descriptor: "64%"
+  sequenceNumber: 37
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "63%"
+  descriptor: "63%"
+  sequenceNumber: 38
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "62%"
+  descriptor: "62%"
+  sequenceNumber: 39
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "61%"
+  descriptor: "61%"
+  sequenceNumber: 40
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "60%"
+  descriptor: "60%"
+  sequenceNumber: 41
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "59%"
+  descriptor: "59%"
+  sequenceNumber: 42
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "58%"
+  descriptor: "58%"
+  sequenceNumber: 43
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "57%"
+  descriptor: "57%"
+  sequenceNumber: 44
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "56%"
+  descriptor: "56%"
+  sequenceNumber: 45
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "55%"
+  descriptor: "55%"
+  sequenceNumber: 46
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "54%"
+  descriptor: "54%"
+  sequenceNumber: 47
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "53%"
+  descriptor: "53%"
+  sequenceNumber: 48
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "52%"
+  descriptor: "52%"
+  sequenceNumber: 49
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "51%"
+  descriptor: "51%"
+  sequenceNumber: 50
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "50%"
+  descriptor: "50%"
+  sequenceNumber: 51
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "49%"
+  descriptor: "49%"
+  sequenceNumber: 52
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "48%"
+  descriptor: "48%"
+  sequenceNumber: 53
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "47%"
+  descriptor: "47%"
+  sequenceNumber: 54
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "46%"
+  descriptor: "46%"
+  sequenceNumber: 55
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "45%"
+  descriptor: "45%"
+  sequenceNumber: 56
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "44%"
+  descriptor: "44%"
+  sequenceNumber: 57
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "43%"
+  descriptor: "43%"
+  sequenceNumber: 58
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "42%"
+  descriptor: "42%"
+  sequenceNumber: 59
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "41%"
+  descriptor: "41%"
+  sequenceNumber: 60
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "40%"
+  descriptor: "40%"
+  sequenceNumber: 61
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "39%"
+  descriptor: "39%"
+  sequenceNumber: 62
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "38%"
+  descriptor: "38%"
+  sequenceNumber: 63
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "37%"
+  descriptor: "37%"
+  sequenceNumber: 64
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "36%"
+  descriptor: "36%"
+  sequenceNumber: 65
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "35%"
+  descriptor: "35%"
+  sequenceNumber: 66
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "34%"
+  descriptor: "34%"
+  sequenceNumber: 67
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "33%"
+  descriptor: "33%"
+  sequenceNumber: 68
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "32%"
+  descriptor: "32%"
+  sequenceNumber: 69
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "31%"
+  descriptor: "31%"
+  sequenceNumber: 70
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "30%"
+  descriptor: "30%"
+  sequenceNumber: 71
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "29%"
+  descriptor: "29%"
+  sequenceNumber: 72
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "28%"
+  descriptor: "28%"
+  sequenceNumber: 73
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "27%"
+  descriptor: "27%"
+  sequenceNumber: 74
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "26%"
+  descriptor: "26%"
+  sequenceNumber: 75
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "25%"
+  descriptor: "25%"
+  sequenceNumber: 76
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "24%"
+  descriptor: "24%"
+  sequenceNumber: 77
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "23%"
+  descriptor: "23%"
+  sequenceNumber: 78
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "22%"
+  descriptor: "22%"
+  sequenceNumber: 79
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "21%"
+  descriptor: "21%"
+  sequenceNumber: 80
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "20%"
+  descriptor: "20%"
+  sequenceNumber: 81
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "19%"
+  descriptor: "19%"
+  sequenceNumber: 82
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "18%"
+  descriptor: "18%"
+  sequenceNumber: 83
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "17%"
+  descriptor: "17%"
+  sequenceNumber: 84
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "16%"
+  descriptor: "16%"
+  sequenceNumber: 85
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "15%"
+  descriptor: "15%"
+  sequenceNumber: 86
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "14%"
+  descriptor: "14%"
+  sequenceNumber: 87
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "13%"
+  descriptor: "13%"
+  sequenceNumber: 88
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "12%"
+  descriptor: "12%"
+  sequenceNumber: 89
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "11%"
+  descriptor: "11%"
+  sequenceNumber: 90
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "10%"
+  descriptor: "10%"
+  sequenceNumber: 91
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "9%"
+  descriptor: "9%"
+  sequenceNumber: 92
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "8%"
+  descriptor: "8%"
+  sequenceNumber: 93
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "7%"
+  descriptor: "7%"
+  sequenceNumber: 94
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "6%"
+  descriptor: "6%"
+  sequenceNumber: 95
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "5%"
+  descriptor: "5%"
+  sequenceNumber: 96
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "4%"
+  descriptor: "4%"
+  sequenceNumber: 97
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "3%"
+  descriptor: "3%"
+  sequenceNumber: 98
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "2%"
+  descriptor: "2%"
+  sequenceNumber: 99
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "1%"
+  descriptor: "2%"
+  sequenceNumber: 100
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "%"
+  descriptor: "%"
+  sequenceNumber: 101
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "A+"
+  descriptor: "A+"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "A"
+  descriptor: "A"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "A-"
+  descriptor: "A-"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "B+"
+  descriptor: "B+"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "B"
+  descriptor: "B"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "B-"
+  descriptor: "B-"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "C+"
+  descriptor: "C+"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "C"
+  descriptor: "C"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "C-"
+  descriptor: "C-"
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "D+"
+  descriptor: "D+"
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "D"
+  descriptor: "D"
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "D-"
+  descriptor: "D-"
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "E+"
+  descriptor: "E+"
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "E"
+  descriptor: "E"
+  sequenceNumber: 14
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "E-"
+  descriptor: "E-"
+  sequenceNumber: 15
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "F"
+  descriptor: "F"
+  sequenceNumber: 16
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "A"
+  descriptor: "A"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: "B"
+  descriptor: "B"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: "C"
+  descriptor: "C"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: "D"
+  descriptor: "D"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: "E"
+  descriptor: "E"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: "F"
+  descriptor: "F"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: 7
+  descriptor: "Exceptional  Performance"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 6
+  descriptor: "Well Above Expected Level"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 5
+  descriptor: "Above Expected Level"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 4
+  descriptor: "At Expected Level"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 3
+  descriptor: "Below Expected Level"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 2
+  descriptor: "Well Below Expected Level"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: 1
+  descriptor: "Cause For Concern"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: "Complete"
+  descriptor: "Work complete"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'Comp'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'Comp'}
+-
+  value: "Late"
+  descriptor: "Work submitted late"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'Comp'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'ICHK'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IB'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GCSE'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 102
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: '%'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 17
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'FLG'}
+-
+  value: "Incomplete"
+  descriptor: "Work incomplete"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'SLG'}
+-
+  value: 60
+  descriptor: 60
+  sequenceNumber: 82
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 61
+  descriptor: 61
+  sequenceNumber: 81
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 62
+  descriptor: 62
+  sequenceNumber: 80
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 63
+  descriptor: 63
+  sequenceNumber: 79
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 64
+  descriptor: 64
+  sequenceNumber: 78
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 65
+  descriptor: 65
+  sequenceNumber: 77
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 66
+  descriptor: 66
+  sequenceNumber: 76
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 67
+  descriptor: 67
+  sequenceNumber: 75
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 68
+  descriptor: 68
+  sequenceNumber: 74
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 69
+  descriptor: 69
+  sequenceNumber: 73
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 70
+  descriptor: 70
+  sequenceNumber: 72
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 71
+  descriptor: 71
+  sequenceNumber: 71
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 72
+  descriptor: 72
+  sequenceNumber: 70
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 73
+  descriptor: 73
+  sequenceNumber: 69
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 74
+  descriptor: 74
+  sequenceNumber: 68
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 75
+  descriptor: 75
+  sequenceNumber: 67
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 76
+  descriptor: 76
+  sequenceNumber: 66
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 77
+  descriptor: 77
+  sequenceNumber: 65
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 78
+  descriptor: 78
+  sequenceNumber: 64
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 79
+  descriptor: 79
+  sequenceNumber: 63
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 80
+  descriptor: 80
+  sequenceNumber: 62
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 81
+  descriptor: 81
+  sequenceNumber: 61
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 82
+  descriptor: 82
+  sequenceNumber: 60
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 83
+  descriptor: 83
+  sequenceNumber: 59
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 84
+  descriptor: 84
+  sequenceNumber: 58
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 85
+  descriptor: 85
+  sequenceNumber: 57
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 86
+  descriptor: 86
+  sequenceNumber: 56
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 87
+  descriptor: 87
+  sequenceNumber: 55
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 88
+  descriptor: 88
+  sequenceNumber: 54
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 89
+  descriptor: 89
+  sequenceNumber: 53
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 90
+  descriptor: 90
+  sequenceNumber: 52
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 91
+  descriptor: 91
+  sequenceNumber: 51
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 92
+  descriptor: 92
+  sequenceNumber: 50
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 93
+  descriptor: 93
+  sequenceNumber: 49
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 94
+  descriptor: 94
+  sequenceNumber: 48
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 95
+  descriptor: 95
+  sequenceNumber: 47
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 96
+  descriptor: 96
+  sequenceNumber: 46
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 97
+  descriptor: 97
+  sequenceNumber: 45
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 98
+  descriptor: 98
+  sequenceNumber: 44
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 99
+  descriptor: 99
+  sequenceNumber: 43
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 100
+  descriptor: 100
+  sequenceNumber: 42
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 101
+  descriptor: 101
+  sequenceNumber: 41
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 102
+  descriptor: 102
+  sequenceNumber: 40
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 103
+  descriptor: 103
+  sequenceNumber: 39
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 104
+  descriptor: 104
+  sequenceNumber: 38
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 105
+  descriptor: 105
+  sequenceNumber: 37
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 106
+  descriptor: 106
+  sequenceNumber: 36
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 107
+  descriptor: 107
+  sequenceNumber: 35
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 108
+  descriptor: 108
+  sequenceNumber: 34
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 109
+  descriptor: 109
+  sequenceNumber: 33
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 110
+  descriptor: 110
+  sequenceNumber: 32
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 111
+  descriptor: 111
+  sequenceNumber: 31
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 112
+  descriptor: 112
+  sequenceNumber: 30
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 113
+  descriptor: 113
+  sequenceNumber: 29
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 114
+  descriptor: 114
+  sequenceNumber: 28
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 115
+  descriptor: 115
+  sequenceNumber: 27
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 116
+  descriptor: 116
+  sequenceNumber: 26
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 117
+  descriptor: 117
+  sequenceNumber: 25
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 118
+  descriptor: 118
+  sequenceNumber: 24
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 119
+  descriptor: 119
+  sequenceNumber: 23
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 120
+  descriptor: 120
+  sequenceNumber: 22
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 121
+  descriptor: 121
+  sequenceNumber: 21
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 122
+  descriptor: 122
+  sequenceNumber: 20
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 123
+  descriptor: 123
+  sequenceNumber: 19
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 124
+  descriptor: 124
+  sequenceNumber: 18
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 125
+  descriptor: 125
+  sequenceNumber: 17
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 126
+  descriptor: 126
+  sequenceNumber: 16
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 127
+  descriptor: 127
+  sequenceNumber: 15
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 128
+  descriptor: 128
+  sequenceNumber: 14
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 129
+  descriptor: 129
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 130
+  descriptor: 130
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 131
+  descriptor: 131
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 132
+  descriptor: 132
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 133
+  descriptor: 133
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 134
+  descriptor: 134
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 135
+  descriptor: 135
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 136
+  descriptor: 136
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 137
+  descriptor: 137
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 138
+  descriptor: 138
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 139
+  descriptor: 139
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 140
+  descriptor: 140
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: "8A"
+  descriptor: "8A"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "8B"
+  descriptor: "8B"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "8C"
+  descriptor: "8C"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "7A"
+  descriptor: "7A"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "7B"
+  descriptor: "7B"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "7C"
+  descriptor: "7C"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "6A"
+  descriptor: "6A"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "6B"
+  descriptor: "6B"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "6C"
+  descriptor: "6C"
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "5A"
+  descriptor: "5A"
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "5B"
+  descriptor: "5B"
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "5C"
+  descriptor: "5C"
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "4A"
+  descriptor: "4A"
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "4B"
+  descriptor: "4B"
+  sequenceNumber: 14
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "4C"
+  descriptor: "4C"
+  sequenceNumber: 15
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "B3"
+  descriptor: "B3"
+  sequenceNumber: 16
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3'}
+-
+  value: "A"
+  descriptor: "A"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "A/B"
+  descriptor: "A/B"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "B"
+  descriptor: "B"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "B/C"
+  descriptor: "B/C"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "C"
+  descriptor: "C"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "C/D"
+  descriptor: "C/D"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "D"
+  descriptor: "D"
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "D/E"
+  descriptor: "D/E"
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "E"
+  descriptor: "E"
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "E/F"
+  descriptor: "E/F"
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "F"
+  descriptor: "F"
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "G"
+  descriptor: "G"
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: "U"
+  descriptor: "Unclassified"
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'GPrd'}
+-
+  value: 141
+  descriptor: 141
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'CAT'}
+-
+  value: 7
+  descriptor: 7
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 6
+  descriptor: 6
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 5
+  descriptor: 5
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 4
+  descriptor: 4
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 3
+  descriptor: 3
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 2
+  descriptor: 2
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 1
+  descriptor: 1
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDS'}
+-
+  value: 45
+  descriptor: 45
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 44
+  descriptor: 44
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 43
+  descriptor: 43
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 42
+  descriptor: 42
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 41
+  descriptor: 41
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 40
+  descriptor: 40
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 39
+  descriptor: 39
+  sequenceNumber: 7
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 38
+  descriptor: 38
+  sequenceNumber: 8
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 37
+  descriptor: 37
+  sequenceNumber: 9
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 36
+  descriptor: 36
+  sequenceNumber: 10
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 35
+  descriptor: 35
+  sequenceNumber: 11
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 34
+  descriptor: 34
+  sequenceNumber: 12
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 33
+  descriptor: 33
+  sequenceNumber: 13
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 32
+  descriptor: 32
+  sequenceNumber: 14
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 31
+  descriptor: 31
+  sequenceNumber: 15
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 30
+  descriptor: 30
+  sequenceNumber: 16
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 29
+  descriptor: 29
+  sequenceNumber: 17
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 28
+  descriptor: 28
+  sequenceNumber: 18
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 27
+  descriptor: 27
+  sequenceNumber: 19
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 26
+  descriptor: 26
+  sequenceNumber: 20
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 25
+  descriptor: 25
+  sequenceNumber: 21
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 24
+  descriptor: 24
+  sequenceNumber: 22
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 23
+  descriptor: 23
+  sequenceNumber: 23
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 22
+  descriptor: 22
+  sequenceNumber: 24
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 21
+  descriptor: 21
+  sequenceNumber: 25
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 20
+  descriptor: 20
+  sequenceNumber: 26
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 19
+  descriptor: 19
+  sequenceNumber: 27
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 18
+  descriptor: 18
+  sequenceNumber: 28
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 17
+  descriptor: 17
+  sequenceNumber: 29
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 16
+  descriptor: 16
+  sequenceNumber: 30
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 15
+  descriptor: 15
+  sequenceNumber: 31
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 14
+  descriptor: 14
+  sequenceNumber: 32
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 13
+  descriptor: 13
+  sequenceNumber: 33
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 12
+  descriptor: 12
+  sequenceNumber: 34
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 11
+  descriptor: 11
+  sequenceNumber: 35
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 10
+  descriptor: 10
+  sequenceNumber: 36
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 9
+  descriptor: 9
+  sequenceNumber: 37
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 8
+  descriptor: 8
+  sequenceNumber: 38
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 7
+  descriptor: 7
+  sequenceNumber: 39
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 6
+  descriptor: 6
+  sequenceNumber: 40
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 5
+  descriptor: 5
+  sequenceNumber: 41
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 4
+  descriptor: 4
+  sequenceNumber: 42
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 3
+  descriptor: 3
+  sequenceNumber: 43
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 2
+  descriptor: 2
+  sequenceNumber: 44
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 1
+  descriptor: 1
+  sequenceNumber: 45
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'IBDT'}
+-
+  value: 8
+  descriptor: "Level 8"
+  sequenceNumber: 1
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+-
+  value: 7
+  descriptor: "Level 7"
+  sequenceNumber: 2
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+-
+  value: 6
+  descriptor: "Level 6"
+  sequenceNumber: 3
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+-
+  value: 5
+  descriptor: "Level 5"
+  sequenceNumber: 4
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+-
+  value: 4
+  descriptor: "Level 4"
+  sequenceNumber: 5
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+-
+  value: 3
+  descriptor: "Level 3"
+  sequenceNumber: 6
+  defaultGrade: "N"
+  scale: {table: 'App\Modules\School\Entity\Scale', reference: 'abbreviation', value: 'KS3S'}
+JJJ
+    );
     }
 
     public static function getVersion(): string
