@@ -12,13 +12,11 @@
  * Date: 9/11/2019
  * Time: 07:55
  */
-
 namespace App\Twig\Sidebar;
 
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\System\Entity\I18n;
-use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
@@ -26,9 +24,6 @@ use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 /**
  * Class Login
@@ -43,6 +38,11 @@ class Login implements SidebarContentInterface
     private $position = 'top';
 
     /**
+     * @var bool
+     */
+    private $googleOn = false;
+
+    /**
      * @var CsrfToken
      */
     private $token;
@@ -55,6 +55,7 @@ class Login implements SidebarContentInterface
     /**
      * toArray
      * @return array
+     * @throws \Exception
      */
     public function toArray(): array
     {
@@ -81,7 +82,7 @@ class Login implements SidebarContentInterface
     private function getGoogleOAuth(): array
     {
         return [
-            'on' => ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('System', 'googleOAuth'),
+            'on' => $this->isGoogleOn(),
             'login_img' => ImageHelper::getAbsoluteImageURL('File','/build/static/google-login.svg'),
             'googleOAuthURL' => UrlGeneratorHelper::getUrl('google_oauth'),
         ];
@@ -122,6 +123,26 @@ class Login implements SidebarContentInterface
     public function setToken(CsrfToken $token): Login
     {
         $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGoogleOn(): bool
+    {
+        return $this->googleOn;
+    }
+
+    /**
+     * GoogleOn.
+     *
+     * @param bool $googleOn
+     * @return Login
+     */
+    public function setGoogleOn(bool $googleOn): Login
+    {
+        $this->googleOn = $googleOn;
         return $this;
     }
 }

@@ -20,6 +20,7 @@ use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Validator\ReactFile;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -33,6 +34,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class GoogleIntegrationType extends AbstractType
 {
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
+     * GoogleIntegrationType constructor.
+     * @param ParameterBagInterface $parameterBag
+     */
+    public function __construct(ParameterBagInterface $parameterBag)
+    {
+        $this->parameterBag = $parameterBag;
+    }
+
     /**
      * buildForm
      * @param FormBuilderInterface $builder
@@ -51,18 +66,12 @@ class GoogleIntegrationType extends AbstractType
                     ],
                 ]
             )
-            ->add('googleIntegrationSettings', SettingsType::class,
+            ->add('googleOAuth', ToggleType::class,
                 [
-                    'settings' => [
-                        [
-                            'scope' => 'System',
-                            'name' => 'googleOAuth',
-                            'entry_type' => ToggleType::class,
-                            'entry_options' => [
-                                'visible_by_choice' => 'System__googleOAuth'
-                            ],
-                        ],
-                    ],
+                    'label' => 'Use Google OAuth',
+                    'help' => 'Allow Google integration into your school system.',
+                    'visible_by_choice' => 'System__googleOAuth',
+                    'data' => $this->parameterBag->get('google_oauth') ? 'Y' : 'N',
                 ]
             )
             ->add('clientSecretFile', ReactFileType::class,
@@ -71,32 +80,31 @@ class GoogleIntegrationType extends AbstractType
                         new ReactFile(['mimeTypes' => ['text/plain'], 'maxSize' => '1k']),
                     ],
                     'label' => 'Google OAuth Download File',
-                    'help' => 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}',
+                    'help' => 'Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}',
                     'help_translation_parameters' => [
-                        '%{anchor}' => "<a href='https://console.cloud.google.com/apis/credentials' target='_blank'>",
-                        '%{anchorClose}' => "</a>",
+                        '{anchor}' => "<a href='https://console.cloud.google.com/apis/credentials' target='_blank'>",
+                        '{anchorClose}' => "</a>",
                     ],
                     'file_prefix' => 'temp',
                     'data' => '',
                     'visible_values' => ['System__googleOAuth'],
                 ]
             )
+            ->add('developerKey', TextType::class ,
+                [
+                    'label' => 'Google Developer Key',
+                    'help' => 'Provide a copy of the API Key from the {anchor}Google Development Console.{anchorClose}',
+                    'help_translation_parameters' => [
+                        '{anchor}' => "<a href='https://console.cloud.google.com/apis/credentials' target='_blank'>",
+                        '{anchorClose}' => "</a>",
+                    ],
+                    'visible_values' => ['System__googleOAuth'],
+                    'data' => $this->parameterBag->get('google_api_key'),
+                ]
+            )
             ->add('googleSettings', SettingsType::class,
                 [
                     'settings' => [
-                        [
-                            'scope' => 'System',
-                            'name' => 'googleDeveloperKey',
-                            'entry_type' => TextType::class,
-                            'entry_options' => [
-                                'help' => 'Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}',
-                                'help_translation_parameters' => [
-                                    '%{anchor}' => "<a href='https://console.cloud.google.com/apis/credentials' target='_blank'>",
-                                    '%{anchorClose}' => "</a>",
-                                ],
-                                'visible_values' => ['System__googleOAuth'],
-                            ],
-                        ],
                         [
                             'scope' => 'System',
                             'name' => 'calendarFeed',
