@@ -16,9 +16,12 @@
 namespace App\Modules\System\Manager;
 
 use App\Manager\AbstractEntity;
+use App\Manager\EntityInterface;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
+use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Person;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
@@ -64,8 +67,8 @@ class DemoDataManager
         'person' => Person::class,
         'person2' => Person::class,
         'family' => Family::class,
-        'family_adult' => FamilyAdult::class,
-        'family_child' => FamilyChild::class,
+        'family_adult' => FamilyMemberAdult::class,
+        'family_child' => FamilyMemberChild::class,
         'staff' => Staff::class,
     ];
 
@@ -230,30 +233,67 @@ class DemoDataManager
         if (!key_exists($propertyName, $rules['associated']))
             return $value;
 
-        $key = strval($value);
+        if (!is_array($value)) {
+            $key = strval($value);
 
-        if (key_exists($propertyName, $this->associatedEntities))
-            if (key_exists($key, $this->associatedEntities[$propertyName]))
-                return $this->associatedEntities[$propertyName][$key];
+            if (key_exists($propertyName, $this->associatedEntities))
+                if (key_exists($key, $this->associatedEntities[$propertyName]))
+                    return $this->associatedEntities[$propertyName][$key];
 
-        if (is_string($rules['associated'][$propertyName]))
-            $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
+            if (is_string($rules['associated'][$propertyName]))
+                $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
 
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(
-            [
-                'entityName',
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'findBy' => 'id',
-            ]
-        );
+            $resolver = new OptionsResolver();
+            $resolver->setRequired(
+                [
+                    'entityName',
+                ]
+            );
+            $resolver->setDefaults(
+                [
+                    'findBy' => 'id',
+                ]
+            );
 
-        $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
+            $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
 
-        return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy([$associateRules['findBy'] => $value]);
+            $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy([$associateRules['findBy'] => $value]);
+
+            if (null === $this->associatedEntities[$propertyName][$key]) {
+                $this->getLogger()->notice(sprintf('The entity %s does not have a row defined by %s => %s', $associateRules['entityName'], $associateRules['findBy'], (string)$value));
+            }
+
+            return     $this->associatedEntities[$propertyName][$key];
+
+        } else {
+            $key = '';
+            foreach($value as $q=>$w) {
+                $key .= $q.'.';
+            }
+            $key = trim($key, '.');
+
+            if (key_exists($propertyName, $this->associatedEntities))
+                if (key_exists($key, $this->associatedEntities[$propertyName]))
+                    return $this->associatedEntities[$propertyName][$key];
+
+            if (is_string($rules['associated'][$propertyName]))
+                $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
+
+            $resolver = new OptionsResolver();
+            $resolver->setRequired(
+                [
+                    'entityName',
+                ]
+            );
+            $resolver->setDefaults(
+                [
+                    'findBy' => [],
+                ]
+            );
+
+            $associateRules = $rules['associated'][$propertyName];
+            return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value);
+        }
     }
 
     /**
@@ -300,8 +340,11 @@ class DemoDataManager
      * @param array $defaults
      * @return EntityInterface
      */
-    private function renderDefaultValues(EntityInterface $entity, array $defaults): EntityInterface
+    private function renderDefaultValues($entity, array $defaults): EntityInterface
     {
+        if (!class_implements($entity, EntityInterface::class)) {
+            throw new \InvalidArgumentException(sprintf('The class %s does not implement %s. Ensure that the entity file extends %s or implements %s.', get_class($entity), EntityInterface::class, AbstractEntity::class, EntityInterface::class));
+        }
         if ($defaults === [])
             return $entity;
 

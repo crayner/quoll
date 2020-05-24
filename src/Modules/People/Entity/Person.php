@@ -19,7 +19,6 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Manager\PersonNameManager;
-use App\Modules\People\Util\UserHelper;
 use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
@@ -61,7 +60,7 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
  *     )
  * @UniqueEntity(
- *     fields={"student_identifier"},
+ *     fields={"studentIdentifier"},
  *     ignoreNull=true
  * )
  * @UniqueEntity(
@@ -82,10 +81,10 @@ class Person extends AbstractEntity
      */
     public function __construct()
     {
-        $this->adults = new ArrayCollection();
+        $this->members = new ArrayCollection();
         $this->courseClassPerson = new ArrayCollection();
-        $this->children = new ArrayCollection();
         $this->studentEnrolments = new ArrayCollection();
+        $this->additionalPhones = new ArrayCollection();
         $this->allRoles = [];
     }
 
@@ -1573,7 +1572,7 @@ class Person extends AbstractEntity
         $this->emergencyContact2 = $emergencyContact2;
         return $this;
     }
-    
+
     /**
      * @var House|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\House")

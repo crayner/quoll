@@ -19,6 +19,7 @@ use App\Manager\Traits\BooleanList;
 use App\Modules\Students\Util\StudentHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,6 +76,7 @@ class FamilyMember extends AbstractEntity
     public function __construct(?Family $family = null)
     {
         $this->setFamily($family);
+        $this->setRelationships(new ArrayCollection());
     }
 
     /**

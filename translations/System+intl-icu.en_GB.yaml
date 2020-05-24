@@ -267,3 +267,6 @@ User Account: User Account
 Username: Username
 Your requested included a valid Google Secret File.  The information was successfully stored.: Your requested included a valid Google Secret File.  The information was successfully stored.
 country: country
+Demonstration Data Completed: Demonstration Data Completed
+Full details can be found in the installation-{date}.log file in the /var/log directory.: Full details can be found in the installation-{date}.log file in the /var/log directory.
+Demonstration Data: Demonstration Data

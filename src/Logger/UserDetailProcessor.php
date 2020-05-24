@@ -56,7 +56,7 @@ class UserDetailProcessor
      */
     public function getUserId(): string
     {
-        return $this->getUser() ? strval(intval($this->getUser()->getId())) : '';
+        return $this->getUser() ? substr($this->getUser()->getId(), 0, 12) . '...' : 'Anon.';
     }
 
     /**

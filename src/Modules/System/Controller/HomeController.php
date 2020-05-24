@@ -16,8 +16,6 @@
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
-use App\Modules\People\Manager\PhoneCodes;
-use App\Modules\System\Entity\Country;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
@@ -26,11 +24,7 @@ use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
-use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Intl;
-use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class HomeController
@@ -67,6 +61,7 @@ class HomeController extends AbstractPageController
         $sidebar = $pageManager->getSidebar();
         $sidebar->addContent(new Flash());
         $login = new Login();
+        $login->setGoogleOn($this->getParameter('google_oauth'));
         $login->setToken($this->get('security.csrf.token_manager')->getToken('authenticate'));
         $sidebar->addContent($login);
 

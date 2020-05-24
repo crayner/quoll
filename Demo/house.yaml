@@ -1,9 +1,9 @@
 -
     name: "Blaxland"
-    nameShort: "B"
+    abbreviation: "B"
 -
     name: "Lawson"
-    nameShort: "L"
+    abbreviation: "L"
 -
     name: "Wentworth"
-    nameShort: "T"
+    abbreviation: "T"

@@ -1,4 +1,4 @@
 defaults:
-    nameAddress: 'name'
+    formalName: 'name'
 constants:
     languageHomePrimary: 'en'

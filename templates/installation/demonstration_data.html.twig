@@ -1,0 +1,4 @@
+{% trans_default_domain 'System' %}
+
+<h3>{{ 'Demonstration Data Completed'|trans }}</h3>
+<p>{{ 'Full details can be found in the installation-{date}.log file in the /var/log directory.'|trans({'{date}': 'now'|date('Y-m-d')}) }}</p>

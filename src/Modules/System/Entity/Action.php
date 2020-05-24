@@ -620,6 +620,16 @@ class Action extends AbstractEntity
   entrySidebar: 'Y'
   menuShow: 'Y'
   role: ['ROLE_SUPPORT']
+-
+  name: 'Demonstration Data'
+  precedence: 0
+  category: 'Extend & Update'
+  description: 'Load Demonstration Data'
+  route_list: ['demonstration_load']
+  entry_route: 'demonstration_load'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_SYSTEM_ADMIN']
 ");
     }
 
@@ -781,6 +791,13 @@ class Action extends AbstractEntity
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: People }
+    target: module
+-
+    findBy: 
+        entryRoute: 'demonstration_data'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: System }
     target: module
 ");
     }

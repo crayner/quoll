@@ -28,9 +28,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRepository")
  * @ORM\Table(name="Family",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
- *     @ORM\UniqueConstraint(name="familySync",columns={"familySync"})},
+ *     @ORM\UniqueConstraint(name="family_sync",columns={"family_sync"})},
  *     indexes={@ORM\Index(name="physical_address", columns={"physical_address"}),
- *     @ORM\Index(name="postall_address", columns={"postal_address"})})
+ *     @ORM\Index(name="postal_address", columns={"postal_address"})})
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"familySync"},
@@ -59,7 +59,7 @@ class Family extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,name="formal_name",options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
+     * @ORM\Column(length=100,options={"comment": "The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)"})
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -67,34 +67,34 @@ class Family extends AbstractEntity
 
     /**
      * @var Address|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="physical_address", referencedColumnName="id",nullable=true)
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumn(name="physical_address",referencedColumnName="id",nullable=true)
      */
     private $physicalAddress;
 
     /**
      * @var Address|null
      * Only if necessary
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="postal_address", referencedColumnName="id",nullable=true)
+     * @ORM\ManyToOne(targetEntity="Address")
+     * @ORM\JoinColumn(name="postal_address",referencedColumnName="id",nullable=true)
      */
     private $postalAddress;
 
     /**
      * @var string|null
      * @ORM\Column(length=12)
-     * @Assert\Choice({"Married","Separated","Divorced","De Facto","Other"})
+     * @Assert\Choice(callback="getStatusList")
      */
     private $status = 'Unknown';
 
     /**
      * @var array
      */
-    private static $statusList = ['Married', 'Separated', 'Divorced', 'De Facto', 'Other'];
+    private static $statusList = ['Married', 'Separated', 'Divorced', 'De Facto', 'Other', 'Unknown'];
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="languageHomePrimary")
+     * @ORM\Column(length=30)
      * @Assert\Language()
      * @Assert\NotBlank()
      */
@@ -102,14 +102,14 @@ class Family extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="languageHomeSecondary", nullable=true)
+     * @ORM\Column(length=30,nullable=true)
      * @Assert\Language()
      */
     private $languageHomeSecondary;
 
     /**
      * @var string|null
-     * @ORM\Column(length=50, name="familySync", nullable=true, unique=true)
+     * @ORM\Column(length=50, nullable=true, unique=true)
      */
     private $familySync;
 
@@ -128,6 +128,16 @@ class Family extends AbstractEntity
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMember", mappedBy="family")
      */
     private $members;
+
+    /**
+     * Family constructor.
+     */
+    public function __construct()
+    {
+        $this->familyPhones = new ArrayCollection();
+        $this->members = new ArrayCollection();
+    }
+
 
     /**
      * @return Collection
@@ -223,6 +233,9 @@ class Family extends AbstractEntity
     public function setName(?string $name): Family
     {
         $this->name = $name;
+        if (empty($this->formalName)) {
+            $this->setFormalName($name);
+        }
         return $this;
     }
 
@@ -243,6 +256,32 @@ class Family extends AbstractEntity
     public function setFormalName(?string $formalName): Family
     {
         $this->formalName = $formalName;
+        return $this;
+    }
+
+    /**
+     * checkFormalName
+     * @return Family
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function checkFormalName(): Family
+    {
+        $this->getFormalName();
+        if (empty($this->formalName)) {
+            $this->setFormalName($this->getName());
+        }
+        if ($this->getName() === $this->getFormalName() && $this->getAdults()->count() > 0) {
+            $count = 0;
+            $name = '';
+            foreach($this->getAdults() as $adult) {
+                $name .= $adult->getPerson()->formatName(['title' => true, 'preferred' => false]) . ' & ';
+                if (++$count > 1) {
+                    break;
+                }
+            }
+            $this->setFormalName(trim($name, ' &'));
+        }
         return $this;
     }
 
@@ -391,10 +430,19 @@ class Family extends AbstractEntity
      */
     public function getAdults(): Collection
     {
-        return $this->getMembers()->filter(function (FamilyMember $member) {
+        $adults = $this->getMembers()->filter(function (FamilyMember $member) {
             if ($member instanceof FamilyMemberAdult)
                 return $member;
         });
+
+        $iterator = $adults->getIterator();
+        $iterator->uasort(
+            function ($a, $b) {
+                return $a->getPriority() < $b->getPriority() ? -1 : 1 ;
+            }
+        );
+
+        return new ArrayCollection(iterator_to_array($iterator, false));
     }
 
     /**
@@ -445,12 +493,12 @@ class Family extends AbstractEntity
                     `physical_address` CHAR(36) DEFAULT NULL,
                     `postal_address` CHAR(36) DEFAULT NULL,
                     `status` CHAR(12) NOT NULL,
-                    `languageHomePrimary` CHAR(30) DEFAULT NULL,
-                    `languageHomeSecondary` CHAR(30) DEFAULT NULL,
-                    `familySync` CHAR(50) DEFAULT NULL,
+                    `language_home_primary` CHAR(30) DEFAULT NULL,
+                    `language_home_secondary` CHAR(30) DEFAULT NULL,
+                    `family_sync` CHAR(50) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `familySync` (`familySync`),
+                    UNIQUE KEY `family_sync` (`family_sync`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",

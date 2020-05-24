@@ -17,7 +17,9 @@ namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Modules\System\Manager\DemoDataManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class DemonstrationController
@@ -29,12 +31,13 @@ class DemonstrationController extends AbstractPageController
      * load
      * @param DemoDataManager $manager
      * @Route("/demonstration/load/{raw_page}", name="demonstration_load")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function load(DemoDataManager $manager, string $raw_page = 'true')
     {
         $manager->execute();
 
         return $this->getPageManager()
-            ->render(['content' => '<h3>Demonstration Data</h3>']);
+            ->render(['content' => $this->renderView('installation/demonstration_data.html.twig')]);
     }
 }

@@ -77,7 +77,7 @@ monolog:
             type:     rotating_file
             path:     '%kernel.logs_dir%/installation.log'
             channels: [installation]
-            max_files: 14
+            max_files: 7
         translation:
             type:     service
             id:       App\Translation\Logger

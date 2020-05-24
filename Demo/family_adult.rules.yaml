@@ -1,5 +1,7 @@
 associated:
     family:
         entityName: 'App\Modules\People\Entity\Family'
+        findBy: 'familySync'
     person:
         entityName: 'App\Modules\People\Entity\Person'
+        findBy: 'username'
