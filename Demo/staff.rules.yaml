@@ -1,5 +1,7 @@
 empty_count: 1
 associated:
-    person: 'App\Modules\People\Entity\Person'
+    person:
+        entityName: 'App\Modules\People\Entity\Person'
+        findBy: username
 constants:
     biographicalGroupingPriority: 0

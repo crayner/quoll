@@ -18,8 +18,8 @@ namespace App\Modules\System\Controller;
 use App\Controller\AbstractPageController;
 use App\Modules\System\Manager\DemoDataManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class DemonstrationController
@@ -30,12 +30,14 @@ class DemonstrationController extends AbstractPageController
     /**
      * load
      * @param DemoDataManager $manager
-     * @Route("/demonstration/load/{raw_page}", name="demonstration_load")
+     * @param string $table
+     * @return JsonResponse
+     * @Route("/demonstration/load/{table}", name="demonstration_load")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function load(DemoDataManager $manager, string $raw_page = 'true')
+    public function load(DemoDataManager $manager, string $table = '')
     {
-        $manager->execute();
+        $manager->execute($table);
 
         return $this->getPageManager()
             ->render(['content' => $this->renderView('installation/demonstration_data.html.twig')]);

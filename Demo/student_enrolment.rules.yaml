@@ -1,0 +1,13 @@
+associated:
+    person:
+        entityName: 'App\Modules\People\Entity\Person'
+        findBy: username
+    academicYear:
+        entityName: 'App\Modules\School\Entity\AcademicYear'
+        findBy: status
+    yearGroup:
+        entityName: 'App\Modules\School\Entity\YearGroup'
+        findBy: sequenceNumber
+    rollGroup:
+        entityName: 'App\Modules\School\Entity\RollGroup'
+        findBy: abbreviation

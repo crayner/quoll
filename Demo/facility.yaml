@@ -1,0 +1,762 @@
+-
+    name: 'C101'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 101
+-
+    name: 'C102'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 102
+-
+    name: 'C103'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 103
+-
+    name: 'C104'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 104
+-
+    name: 'C106'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 106
+-
+    name: 'C107'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 107
+-
+    name: 'C105'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 105
+-
+    name: 'C108'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 108
+-
+    name: 'D002'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 402
+-
+    name: 'D004'
+    type: 'Laboratory'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 404
+-
+    name: 'B003'
+    type: 'Performance'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 218
+-
+    name: 'Library'
+    type: 'Library'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 2
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+    phoneInt: 237
+-
+    name: 'Hall'
+    type: 'Hall'
+    capacity: 300
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'Y'
+    speakers: 'Y'
+    iwb: 'N'
+-
+    name: 'Court'
+    type: 'Outdoor'
+    capacity: 100
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'C204'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 204
+-
+    name: 'C203'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 203
+-
+    name: 'C201'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 201
+-
+    name: 'C202'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 202
+-
+    name: 'C301'
+    type: 'Laboratory'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 301
+-
+    name: 'C303'
+    type: 'Laboratory'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 303
+-
+    name: 'C309'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 309
+-
+    name: 'C205'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 205
+-
+    name: 'C206A'
+    type: 'Classroom'
+    capacity: 12
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 206
+-
+    name: 'C206B'
+    type: 'Classroom'
+    capacity: 12
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 207
+-
+    name: 'C208'
+    type: 'Performance'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 208
+-
+    name: 'C304'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 304
+-
+    name: 'C305'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 305
+-
+    name: 'C306'
+    type: 'Classroom'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 306
+-
+    name: 'C307'
+    type: 'Laboratory'
+    capacity: 24
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 307
+-
+    name: 'HOS'
+    type: 'Office'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 288
+-
+    name: 'C302'
+    type: 'Office'
+    capacity: 0
+    computer: 'Y'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+    phoneInt: 302
+-
+    name: 'B002'
+    type: 'Office'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'B001'
+    type: 'Office'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'C308 (Chemical Store)'
+    type: 'Storage'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'House 8'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'Server Room'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'House 2'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'Back Court'
+    type: 'Outdoor'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'House 3'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'B001A'
+    type: 'Classroom'
+    capacity: 6
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 227
+-
+    name: 'B001B'
+    type: 'Classroom'
+    capacity: 4
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 224
+-
+    name: 'B001C (Finance)'
+    type: 'Office'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'D101'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 601
+-
+    name: 'D102'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 602
+-
+    name: 'D103'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 603
+-
+    name: 'D104'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 604
+-
+    name: 'D105'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 605
+-
+    name: 'D106'
+    type: 'Classroom'
+    capacity: 20
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 606
+-
+    name: 'D100'
+    type: 'Classroom'
+    capacity: 4
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 600
+-
+    name: 'D100A (Testing)'
+    type: 'Other'
+    capacity: 6
+    computer: 'N'
+    studentComputers: 6
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+    phoneInt: 609
+-
+    name: 'D100B (Admissions)'
+    type: 'Office'
+    capacity: 2
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+    phoneInt: 610
+-
+    name: 'D107 (IB Center)'
+    type: 'Classroom'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 0
+    projector: 'Y'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'Y'
+    iwb: 'N'
+    phoneInt: 607
+-
+    name: 'House 1'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'D201 (Yoga)'
+    type: 'Creative Space'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'D202 (Music)'
+    type: 'Creative Space'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'D203 (Storage)'
+    type: 'Creative Space'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'D204 (Maker Space)'
+    type: 'Creative Space'
+    capacity: 30
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'Learning Support'
+    type: 'Other'
+    capacity: 10
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+    phoneInt: 231
+-
+    name: 'House 5'
+    type: 'Other'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'
+-
+    name: 'B102'
+    type: 'Staffroom'
+    capacity: 0
+    computer: 'N'
+    studentComputers: 0
+    projector: 'N'
+    tv: 'N'
+    dvd: 'N'
+    hifi: 'N'
+    speakers: 'N'
+    iwb: 'N'

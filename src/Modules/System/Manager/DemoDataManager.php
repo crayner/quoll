@@ -17,12 +17,15 @@ namespace App\Modules\System\Manager;
 
 use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
+use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\Facility;
+use App\Modules\School\Entity\RollGroup;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
 use App\Provider\ProviderFactory;
@@ -70,6 +73,9 @@ class DemoDataManager
         'family_adult' => FamilyMemberAdult::class,
         'family_child' => FamilyMemberChild::class,
         'staff' => Staff::class,
+        'facility' => Facility::class,
+        'roll_group' => RollGroup::class,
+        'student_enrolment' => StudentEnrolment::class,
     ];
 
     /**
@@ -99,15 +105,18 @@ class DemoDataManager
 
     /**
      * execute
+     * @param string $table
      */
-    public function execute()
+    public function execute(string $table)
     {
         foreach($this->entities as $name => $entityName)
         {
-            if ($this->isEntityEmpty($name, $entityName)) {
-                $this->load($name, $entityName);
-            } else {
-                $this->logger->warning(sprintf('%s already has data. No changes made for %s file.', $entityName, $name));
+            if ($name === $table || $table === '') {
+                if ($this->isEntityEmpty($name, $entityName)) {
+                    $this->load($name, $entityName);
+                } else {
+                    $this->logger->warning(sprintf('%s already has data. No changes made for %s file.', $entityName, $name));
+                }
             }
         }
     }
@@ -146,8 +155,9 @@ class DemoDataManager
                 $method = 'set' . ucfirst($propertyName);
 
                 if (method_exists($entity, $method)) {
-                    if (key_exists($propertyName, $rules['associated']))
+                    if (key_exists($propertyName, $rules['associated'])) {
                         $value = $this->getAssociatedValue($value, $name, $propertyName);
+                    }
                     if (key_exists($propertyName, $rules['properties'])) {
                         $value = $this->transformPropertyValue($rules['properties'][$propertyName], $value);
                     }
@@ -169,7 +179,7 @@ class DemoDataManager
                     $this->getLogger('Something when wrong with persist', [$entity]);
                 $valid++;
             } else {
-                $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$entity, $validatorList->__toString()]);
+                $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$w, $entity, $validatorList->__toString()]);
             }
 
             if ($valid % 50 === 0 && $valid !== 0) {
