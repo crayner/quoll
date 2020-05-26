@@ -17,6 +17,7 @@ namespace App\Modules\School\Provider;
 
 use App\Provider\AbstractProvider;
 use App\Modules\School\Entity\RollGroup;
+use App\Util\TranslationHelper;
 
 class RollGroupProvider extends AbstractProvider
 {

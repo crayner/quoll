@@ -128,8 +128,9 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
      */
     public function findCurrentParentsAsArray(): array
     {
+        $parentLabel = TranslationHelper::translate('Parent', [], 'People');
         return $this->createQueryBuilder('m')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'People')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id as value', "CONCAT('".$parentLabel.": ', p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "CONCAT(p.surname, p.firstName,p.preferredName) AS data", "'".$parentLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo"])
             ->join('m.person', 'p')
             ->where('(m.contactPriority <= 2 and m.contactPriority > 0)')
             ->andWhere('p.status = :full')

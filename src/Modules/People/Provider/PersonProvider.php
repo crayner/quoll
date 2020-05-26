@@ -19,6 +19,7 @@ use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\School\Entity\House;
+use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\System\Entity\Setting;
@@ -384,18 +385,15 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
      */
     public function groupedChoiceList(): array
     {
-        $people = $this->getRepository(FamilyMemberChild::class)->findCurrentStudentsAsArray();
-        $people = array_merge($people, $this->getRepository()->findCurrentStaffAsArray());
-        $people = array_merge($people, $this->getRepository(FamilyMemberAdult::class)->findCurrentParentsAsArray());
+        $people = $this->getRepository(RollGroup::class)->findCurrentStudentsAsArray();
+        $people = array_merge($this->getRepository()->findCurrentStaffAsArray(),$people);
+        $people = array_merge($this->getRepository(FamilyMemberAdult::class)->findCurrentParentsAsArray(),$people);
 
-        $type = null;
-        $result = [];
-        foreach($people as $person) {
-            $result[$person['type']][$person['fullName']]['id'] = $person['id'];
-            $result[$person['type']][$person['fullName']]['photo'] = ImageHelper::getAbsoluteImageURL('file', $person['photo'] ?: '/build/static/DefaultPerson.png');
-            $result[$person['type']][$person['fullName']]['name'] = $person['fullName'];
-        }
-        return $result;
+        uasort($people, function($a, $b) {
+            return $a['data'] < $b['data'] ? -1 : 1;
+        });
+
+        return array_values($people);
     }
 
     /**

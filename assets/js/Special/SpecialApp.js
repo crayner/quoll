@@ -23,7 +23,7 @@ export default class SpecialApp extends Component {
     {
         let result = []
         if (this.name === 'photo_importer') {
-            result.push(<PhotoLoaderApp {...this.content} key={'photo_importer'} />)
+            result.push(<PhotoLoaderApp {...this.content} functions={this.functions} key={'photo_importer'} />)
         } else if (this.name === 'permission_manager') {
             result.push(<PermissionApp {...this.content} key={'permission_manager'} />)
         } else if (this.name === 'family_relationship_manager') {

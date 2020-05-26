@@ -12,13 +12,11 @@
  * Date: 16/12/2019
  * Time: 15:18
  */
-
 namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
-use App\Util\ImageHelper;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Filesystem\Filesystem;
@@ -98,6 +96,7 @@ class PhotoImporter implements SpecialInterface
         $tx['Replace this image'] = TranslationHelper::translate('Replace this image');
         $tx['Images [.jpg, .png, .jpeg, .gif] only'] = TranslationHelper::translate('Images [.jpg, .png, .jpeg, .gif] only');
         $tx['Import Images'] = TranslationHelper::translate('Import Images');
+        $tx['placeholder'] = TranslationHelper::translate('Start typing a name...', [], 'messages');
         $tx['Notes'] = TranslationHelper::translate('Notes');
         $tx['drag_drop_page'] = TranslationHelper::translate('Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.');
         $tx['File Name - The system modifies the filename when linked to the correct person.'] = TranslationHelper::translate('File Name - The system modifies the filename when linked to the correct person.');

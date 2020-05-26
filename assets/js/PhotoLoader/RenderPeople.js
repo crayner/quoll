@@ -4,37 +4,30 @@ import React from "react"
 import PropTypes from 'prop-types'
 import Dropzone, { formatBytes } from 'react-dropzone-uploader'
 import 'react-dropzone-uploader/dist/styles.css'
+import FormAutoSuggest from '../Form/FormAutoSuggest'
+import Autosuggest from 'react-autosuggest'
 
 export default function RenderPeople(props) {
     const {
         people,
         chosen,
-        selectPerson,
         addMessage,
         replacePerson,
         validateImage,
         removePhoto,
         messages,
         absolute_url,
+        functions,
+        suggestions,
+        autoSuggestValue,
     } = props
 
-    const optGroups = Object.keys(people).map(group => {
-        const groupData = people[group]
-
-        const options = Object.keys(groupData).map(name => {
-            const person = groupData[name]
-            return (<option key={person.id} value={person.id}>{person.name}</option>)
-        })
-        return (<optgroup label={group} key={group}>{options}</optgroup>)
-    })
-
-    optGroups.unshift(<option key={0}>{messages['Target this person...']}</option>)
-
+    console.log(autoSuggestValue)
     const SingleFileAutoSubmit = () => {
 
         const getUploadParams = () => {
             let url = absolute_url + '/personal/photo/{person}/upload/'
-            url = url.replace('{person}', chosen.id)
+            url = url.replace('{person}', chosen.value)
             return {url: url}
         }
 
@@ -85,7 +78,7 @@ export default function RenderPeople(props) {
                 acceptedFiles="image/jpeg,image/png,image/jpg,image/gif"
                 InputComponent={dropFilesHere}
                 styles={{
-                    dropzone: {height: 120, border: '1px solid gray'},
+                    dropzone: {height: 120, borderColor: 'gray', borderStyle: 'solid', borderWidth: '1px'},
                     dropzoneActive: {borderColor: 'green', backgroundColor: 'aquamarine'},
                     dropzoneReject: {borderColor: 'red', backgroundColor: 'moccasin'},
                 }}
@@ -96,6 +89,55 @@ export default function RenderPeople(props) {
         )
     }
 
+    function getForm() {
+        return {
+            choices: people,
+            buttons: {},
+            suggestions: [],
+        }
+    }
+
+    function getWidgetAttr() {
+        return {}
+    }
+
+    function getWrapperAttr() {
+        return {}
+    }
+
+    function renderSuggestion(suggestion) {
+        return (<span>{suggestion.label}</span>)
+    }
+
+
+    function getAutoSuggest() {
+        return <Autosuggest
+            id='photo.loader'
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={functions.autoSuggestMatches}
+            onSuggestionsClearRequested={functions.resetSuggestMatches}
+            getSuggestionValue={functions.getSuggestedValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={{
+                value: autoSuggestValue,
+                placeholder: messages.placeholder,
+                autoComplete: 'stop_all_stuff',
+                onChange: functions.onChange,
+            }}
+        />
+
+    }
+
+    function getLabel(chosen) {
+        return chosen.label.replace(chosen.type + ': ', '')
+    }
+
+    function getPhoto(chosen) {
+        if (chosen.photo.length > 1 && chosen.photo[0] === '/')
+            return chosen.photo
+        return '/' + chosen.photo
+
+    }
 
     return (
         <table className="noIntBorder fullWidth relative">
@@ -106,22 +148,22 @@ export default function RenderPeople(props) {
                     </td>
                     <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 ">
                         <div className="flex-1 relative">
-                            <select className={'w-full left'} id={'people_drop'} value={chosen.id} onChange={(e) => selectPerson(e)}>{optGroups}</select>
+                            {getAutoSuggest()}
                         </div>
                     </td>
                 </tr>
-                {chosen.id > 0 ?
+                {typeof chosen.value === 'string' ?
                 <tr className="flex flex-col sm:flex-row justify-between content-center p-0">
                     <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
-                        <label className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Replace this image']}<br/><span style={{fontWeight: 'normal'}}>{chosen.name}</span>
+                        <label className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Replace this image']}<br/><span style={{fontWeight: 'normal'}}>{getLabel(chosen)}</span>
                             <button type={'button'} className={'close-button grey'} title={messages['Remove Photo']} onClick={() => removePhoto(chosen)} style={{float: 'right', marginTop: '-19px'}} >
                                 <span className={'fas fa-eraser fa-fw'} />
                             </button>
-                            <img src={chosen.photo} title={chosen.name} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />
+                            <img src={getPhoto(chosen)} title={getLabel(chosen)} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />
                         </label>
                     </td>
                     <td className="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right">
-                         <SingleFileAutoSubmit />
+                        <SingleFileAutoSubmit />
                     </td>
                 </tr> : null}
             </tbody>
@@ -130,13 +172,15 @@ export default function RenderPeople(props) {
 }
 
 RenderPeople.propTypes = {
-    people: PropTypes.object.isRequired,
+    people: PropTypes.array.isRequired,
     chosen: PropTypes.object.isRequired,
-    selectPerson: PropTypes.func.isRequired,
     addMessage: PropTypes.func.isRequired,
     validateImage: PropTypes.func.isRequired,
     replacePerson: PropTypes.func.isRequired,
     removePhoto: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
     absolute_url: PropTypes.string.isRequired,
+    functions: PropTypes.object.isRequired,
+    suggestions: PropTypes.array.isRequired,
+    autoSuggestValue: PropTypes.string.isRequired,
 }

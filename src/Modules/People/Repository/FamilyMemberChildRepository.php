@@ -101,21 +101,4 @@ class FamilyMemberChildRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * findAllStudentsByRollGroup
-     * @return mixed
-     */
-    public function findCurrentStudentsAsArray()
-    {
-        return $this->createQueryBuilder('m')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Student', [], 'People')."' AS type", 'p.image_240 AS photo'])
-            ->join('m.person', 'p')
-            ->where('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
 }

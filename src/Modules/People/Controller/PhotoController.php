@@ -18,6 +18,8 @@ namespace App\Modules\People\Controller;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PhotoImporter;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\ErrorMessageHelper;
 use App\Util\ImageHelper;
 use App\Util\StringHelper;
@@ -75,13 +77,13 @@ class PhotoController extends AbstractPageController
             if (!is_dir($path))
                 $fs->mkdir($path, 0755);
 
-            $name = uniqid(StringHelper::toSnakeCase($person->formatName(['style' => 'long', 'reverse' => true])). '_') . '.' . $file->guessExtension();
+            $name = uniqid(StringHelper::toSnakeCase($person->formatName(['title' => false, 'preferred' => false, 'reverse' => true])). '_') . '.' . $file->guessExtension();
 
             $file->move($path, $name);
 
             $fs->remove($file->getRealpath());
 
-            $file = new File($path.DIRECTORY_SEPARATOR.$name);
+            $file = new File($path . DIRECTORY_SEPARATOR . $name);
 
             $person->setImage240($file->getRealpath());
 
@@ -95,8 +97,7 @@ class PhotoController extends AbstractPageController
             }
 
             $photo = [];
-            $photo['id'] = $person->getId();
-            $photo['name'] = $person->formatName(['style' => 'long', 'reverse' => true]);
+            $photo['value'] = $person->getId();
             $photo['photo'] = ImageHelper::getAbsoluteImageURL('file', $person->getImage240());
             return new JsonResponse(['status' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true), 'person' => $photo], 200);
         }
@@ -118,9 +119,8 @@ class PhotoController extends AbstractPageController
             $em->persist($person);
             $em->flush();
             $photo = [];
-            $photo['id'] = $person->getId();
-            $photo['name'] = $person->formatName(['style' => 'long', 'reverse' => true]);
-            $photo['photo'] = ImageHelper::getAbsoluteImageURL('file', $person->getImage240());
+            $photo['value'] = $person->getId();
+            $photo['photo'] = 'build/static/DefaultPerson.png';
             return new JsonResponse(['status' => 'success', 'message' => TranslationHelper::translate('The photo was removed.',[],'People'), 'person' => $photo], 200);
         } catch ( \Exception $e) {
             return new JsonResponse(['status' => 'error', 'message' => $e->getMessage()], 200);

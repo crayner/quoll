@@ -124,8 +124,6 @@ export default function FormAutoSuggest(props) {
         }
     }
 
-    setAutoSuggestValue()
-
     return (
         <div id={form.id + '_auto_suggest'} className={ form.suggestionsClass }>
             <div className="z-10 rounded border border-solid border-gray-300 w-full">

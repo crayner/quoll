@@ -238,8 +238,9 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentStaffAsArray(): array
     {
         $today = new \DateTime(date('Y-m-d'));
+        $staffLabel = TranslationHelper::translate('Staff', [], 'People');
         return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Staff', [], 'People')."' AS type", 'p.image_240 AS photo'])
+            ->select(['p.id as value', "CONCAT('".$staffLabel.": ',p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "'".$staffLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, p.firstName,p.preferredName) AS data"])
             ->join('p.staff','s')
             ->where('s.id IS NOT NULL')
             ->andWhere('p.status = :full')

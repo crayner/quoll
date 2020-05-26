@@ -4,26 +4,74 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RenderPeople from "./RenderPeople"
 import {fetchJson} from "../component/fetchJson"
-import { isEmpty } from '../component/isEmpty'
 
 export default class PhotoLoaderApp extends Component {
     constructor (props) {
         super(props)
-        this.people = props.people
         this.messages = props.messages
         this.absolute_url = props.absolute_url
+        this.functions = props.functions
         this.timeout = null
 
-        this.selectPerson = this.selectPerson.bind(this)
         this.addMessage = this.addMessage.bind(this)
         this.validateImage = this.validateImage.bind(this)
         this.replacePerson = this.replacePerson.bind(this)
         this.removePhoto = this.removePhoto.bind(this)
 
+        this.functions.resetSuggestMatches = this.resetSuggestMatches.bind(this)
+        this.functions.autoSuggestMatches = this.autoSuggestMatches.bind(this)
+        this.functions.getSuggestedValue = this.getSuggestedValue.bind(this)
+        this.functions.onChange = this.onChange.bind(this)
+
         this.state = {
             chosen: {},
             messages: [],
+            suggestions: [],
+            autoSuggestValue: '',
+            people: props.people,
         }
+    }
+
+    autoSuggestMatches(value) {
+        value = value.value.trim().toLowerCase()
+        if (value === '') {
+            return this.resetSuggestMatches()
+        }
+        const suggestions = this.state.people.filter(choice => {
+            const label = choice.label.toLowerCase()
+            if (label.includes(value)) {
+                return choice
+            }
+        })
+        this.setState({
+            suggestions: suggestions,
+            autoSuggestValue: value,
+        })
+    }
+
+    onChange(event) {
+        if (event.target.value !== undefined)
+        {
+            this.setState({
+                autoSuggestValue: event.target.value,
+            })
+        }
+    }
+
+    resetSuggestMatches() {
+        this.setState({
+            suggestions: [],
+            autoSuggestValue: ''
+        })
+    }
+
+    getSuggestedValue(suggestion) {
+        this.setState({
+            chosen: suggestion,
+            autoSuggestValue: suggestion.label,
+            suggestions: [],
+            messages: [],
+        })
     }
 
     addMessage(message, status)
@@ -45,29 +93,6 @@ export default class PhotoLoaderApp extends Component {
         }, 5000)
     }
 
-    selectPerson({target} = e) {
-        let person = {}
-        let found = false
-        const value = isEmpty(target.value) ? target.value : null
-        Object.keys(this.people).map(group => {
-            if (found) return
-            const groupData = this.people[group]
-            Object.keys(groupData).map(name => {
-                if (found) return
-                const x = groupData[name]
-                if(x.id === value) {
-                    found = true
-                    person = {...x}
-                }
-            })
-        })
-
-        this.setState({
-            chosen: person,
-            messages: [],
-        })
-    }
-
     validateImage({meta} = filexhrmeta) {
         if (meta.height > 960 || meta.height < 240 || meta.width > 720)
             return true
@@ -77,35 +102,33 @@ export default class PhotoLoaderApp extends Component {
         return false
     }
 
-    replacePerson(person){
+    replacePerson(person) {
+        let people = this.state.people
         let found = false
-        const value =person.id
-        Object.keys(this.people).map(group => {
-            if (found) return
-            const groupData = this.people[group]
-            Object.keys(groupData).map(name => {
-                if (found) return
-                const x = groupData[name]
-                if(x.id === value) {
-                    found = true
-                    this.people[group][name] = {...person}
-                }
+        people.map((item,key) => {
+            if (item.value === person.value) {
+                people[key].photo = person.photo
+                person = people[key]
+                found = true
+            }
+        })
+        if (found) {
+            this.setState({
+                chosen: person,
+                people: people,
             })
-        })
-
-        this.setState({
-            chosen: person,
-        })
+        }
     }
 
     removePhoto(person){
         let url = this.absolute_url + '/personal/photo/{person}/remove/'
-        url = url.replace('{person}', person.id)
+        url = url.replace('{person}', person.value)
         fetchJson(url,
             {},
             false
             ).then(data => {
                 if (data.status === 'success') {
+                    this.addMessage(data.message,'success')
                     this.replacePerson(data.person)
                 } else if (data.status === 'error') {
                     this.addMessage(data.message, 'error')
@@ -126,7 +149,7 @@ export default class PhotoLoaderApp extends Component {
         return (
             <div>
                 {messages}
-                <RenderPeople people={this.people} chosen={this.state.chosen} selectPerson={this.selectPerson} addMessage={this.addMessage} validateImage={this.validateImage} replacePerson={this.replacePerson} removePhoto={this.removePhoto} messages={this.messages} absolute_url={this.absolute_url} />
+                <RenderPeople functions={this.functions} addMessage={this.addMessage} validateImage={this.validateImage} replacePerson={this.replacePerson} removePhoto={this.removePhoto} absolute_url={this.absolute_url} {...this.state} messages={this.messages} />
                 <h3>{this.messages['Import Images']}</h3>
                 <div className="info clear-both">
                     <h4 className="info">{this.messages['Notes']}</h4>
@@ -145,7 +168,8 @@ export default class PhotoLoaderApp extends Component {
 }
 
 PhotoLoaderApp.propTypes = {
-    people: PropTypes.object.isRequired,
+    people: PropTypes.array.isRequired,
     messages: PropTypes.object.isRequired,
     absolute_url: PropTypes.string.isRequired,
+    functions: PropTypes.object.isRequired,
 }
