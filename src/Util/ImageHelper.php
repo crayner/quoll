@@ -267,4 +267,20 @@ class ImageHelper
     {
         self::$stack = $stack;
     }
+
+    /**
+     * @param string|null $absoluteURL
+     */
+    public static function setAbsoluteURL(?string $absoluteURL): void
+    {
+        self::$absoluteURL = $absoluteURL;
+    }
+
+    /**
+     * @param string|null $absolutePath
+     */
+    public static function setAbsolutePath(?string $absolutePath): void
+    {
+        self::$absolutePath = $absolutePath;
+    }
 }

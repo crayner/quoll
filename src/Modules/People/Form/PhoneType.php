@@ -57,7 +57,7 @@ class PhoneType extends AbstractType
         $builder
             ->add('phoneHeader', HeaderType::class,
                 [
-                    'label' => $options['data']->getId() > 0 ? 'Edit Phone' : 'Add Phone',
+                    'label' => $options['data']->getId() !== null ? 'Edit Phone' : 'Add Phone',
                 ]
             )
             ->add('type', EnumType::class,

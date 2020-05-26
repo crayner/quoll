@@ -30,10 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\RollGroupRepository")
  * @ORM\Table(name="RollGroup",
  *     uniqueConstraints={
- *     @ORM\UniqueConstraint(name="nameAcademicYear", columns={"name","academic_year"}),
- *     @ORM\UniqueConstraint(name="abbrAcademicYear", columns={"abbreviation","academic_year"}),
- *     @ORM\UniqueConstraint(name="tutor1AcademicYear", columns={"tutor1","academic_year"}),
- *     @ORM\UniqueConstraint(name="facilityAcademicYear", columns={"facility","academic_year"})
+ *     @ORM\UniqueConstraint(name="name_academic_year", columns={"name","academic_year"}),
+ *     @ORM\UniqueConstraint(name="abbr_academic_year", columns={"abbreviation","academic_year"}),
+ *     @ORM\UniqueConstraint(name="tutor_academic_year", columns={"tutor1","academic_year"}),
+ *     @ORM\UniqueConstraint(name="facility_academic_year", columns={"facility","academic_year"})
  * })
  * @UniqueEntity({"name","academicYear"})
  * @UniqueEntity({"abbreviation","academicYear"})
@@ -584,7 +584,7 @@ class RollGroup extends AbstractEntity
                     `name` CHAR(10) NOT NULL,
                     `abbreviation` CHAR(5) NOT NULL,
                     `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `website` CHAR(191) NOT NULL,
+                    `website` CHAR(191) DEFAULT NULL,
                     `academic_year` CHAR(36) DEFAULT NULL,
                     `tutor1` CHAR(36) DEFAULT NULL,
                     `tutor2` CHAR(36) DEFAULT NULL,
@@ -595,10 +595,10 @@ class RollGroup extends AbstractEntity
                     `facility` CHAR(36) DEFAULT NULL,
                     `next_roll_group` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `nameAcademicYear` (`name`,`academic_year`),
-                    UNIQUE KEY `abbrAcademicYear` (`abbreviation`,`academic_year`),
-                    UNIQUE KEY `tutor1AcademicYear` (`tutor1`,`academic_year`),
-                    KEY `academicYear` (`academic_year`),
+                    UNIQUE KEY `name_academic_year` (`name`,`academic_year`),
+                    UNIQUE KEY `abbr_academic_year` (`abbreviation`,`academic_year`),
+                    UNIQUE KEY `tutor_academic_year` (`tutor1`,`academic_year`),
+                    KEY `academic_year` (`academic_year`),
                     KEY `tutor1` (`tutor1`),
                     KEY `tutor2` (`tutor2`),
                     KEY `tutor3` (`tutor3`),
@@ -606,7 +606,7 @@ class RollGroup extends AbstractEntity
                     KEY `assistant2` (`assistant2`),
                     KEY `assistant3` (`assistant3`),
                     KEY `facility` (`facility`),
-                    KEY `nextRollGroup` (`next_roll_group`)
+                    KEY `next_roll_group` (`next_roll_group`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 

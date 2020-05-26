@@ -74,12 +74,12 @@ class PhoneController extends AbstractPageController
             return new JsonResponse($data);
         }
 
-        if ($phone->getId() > 0) {
+        if ($phone->getId() !== null) {
             $manager->setAddElementRoute($this->generateUrl('phone_add'));
         }
         $manager->singlePanel($form->createView());
 
-        return $this->getPageManager()->setPopup()->createBreadcrumbs($phone->getId() > 0 ? 'Edit Phone' : 'Add Phone',
+        return $this->getPageManager()->setPopup()->createBreadcrumbs($phone->getId() !== null ? 'Edit Phone' : 'Add Phone',
             [
                 ['uri' => 'phone_list', 'name' => 'Manage Phones'],
             ]

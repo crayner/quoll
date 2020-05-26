@@ -83,7 +83,7 @@ class LocalityType extends AbstractType
         $builder
             ->add('localityHeader', HeaderType::class,
                 [
-                    'label' => $options['data']->getId() > 0 ? 'Edit Locality' : 'Add Locality',
+                    'label' => $options['data']->getId() !== null ? 'Edit Locality' : 'Add Locality',
                     'help' => 'Editing an existing address will change that address for every person or family that uses that address.'
                 ]
             )

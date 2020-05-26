@@ -77,7 +77,7 @@ class AddressType extends AbstractType
         $builder
             ->add('addressHeader', HeaderType::class,
                 [
-                    'label' => $options['data']->getId() > 0 ? 'Edit Address' : 'Add Address',
+                    'label' => $options['data']->getId() !== null ? 'Edit Address' : 'Add Address',
                     'help' => 'Editing an existing address will change that address for every person or family that uses that address.'
                 ]
             )

@@ -13,6 +13,8 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\School\Util\AcademicYearHelper;
+use App\Util\TranslationHelper;
 use Doctrine\DBAL\Connection;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
@@ -96,6 +98,23 @@ class FamilyMemberChildRepository extends ServiceEntityRepository
             ->addOrderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC')
             ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS id'])
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findAllStudentsByRollGroup
+     * @return mixed
+     */
+    public function findCurrentStudentsAsArray()
+    {
+        return $this->createQueryBuilder('m')
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Student', [], 'People')."' AS type", 'p.image_240 AS photo'])
+            ->join('m.person', 'p')
+            ->where('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
             ->getResult();
     }

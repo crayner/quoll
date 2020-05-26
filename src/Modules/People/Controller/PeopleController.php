@@ -91,15 +91,13 @@ class PeopleController extends AbstractPageController
      */
     public function edit(ContainerManager $manager, SidebarContent $sidebar, ?Person $person = null, string $tabName = 'Basic')
     {
-        $request = $this->getPageManager()->getRequest();
+
+        $request = $this->getRequest();
 
         if (is_null($person)) {
             $person = new Person();
-            $person->setStatus('Expected')
-                ->setPrimaryRole('ROLE_USER')
-                ->setCanLogin('N')
-                ->setPasswordForceReset('N');
         }
+
         $photo = new Photo($person, 'getImage240', '200', 'user max200');
         $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
         $sidebar->addContent($photo);
@@ -110,7 +108,7 @@ class PeopleController extends AbstractPageController
 
         $form = $this->createForm(PersonType::class, $person,
             [
-                'action' => $this->generateUrl('person_edit', ['person' => intval($person->getID()), 'tabName' => $tabName]),
+                'action' => $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]),
                 'user_roles' => $this->getUser()->getAllRoles(),
             ]
         );
@@ -149,7 +147,7 @@ class PeopleController extends AbstractPageController
             $panel = new Panel('System', 'People');
             $container->addPanel($panel);
 
-            if ($person->getId() > 0) {
+            if ($person->getId() !== null) {
                 $panel = new Panel('Contact', 'People');
                 $container->addPanel($panel);
 
@@ -164,7 +162,7 @@ class PeopleController extends AbstractPageController
                     $container->addPanel($panel);
                 }
 
-                if (UserHelper::isStudent($person) || UserHelper::isStaff($person)) {
+                if (UserHelper::isStaff($person)) {
                     $panel = new Panel('Emergency', 'People');
                     $container->addPanel($panel);
                 }
@@ -191,7 +189,7 @@ class PeopleController extends AbstractPageController
         $panel = new Panel('System', 'People');
         $container->addPanel($panel);
 
-        if ($person->getId() > 0) {
+        if ($person->getId() !== null) {
             $panel = new Panel('Contact', 'People');
             $container->addPanel($panel);
 
@@ -206,7 +204,7 @@ class PeopleController extends AbstractPageController
                 $container->addPanel($panel);
             }
 
-            if (UserHelper::isStudent($person) || UserHelper::isStaff($person)) {
+            if (UserHelper::isStaff($person)) {
                 $panel = new Panel('Emergency', 'People');
                 $container->addPanel($panel);
             }
@@ -218,7 +216,7 @@ class PeopleController extends AbstractPageController
         $manager->setReturnRoute($this->generateUrl('people_list'));
         $manager->addContainer($container)->buildContainers();
 
-        return $this->getPageManager()->createBreadcrumbs($person->getId() > 0 ? 'Edit Person' : 'Add Person')
+        return $this->getPageManager()->createBreadcrumbs($person->getId() !== null ? 'Edit Person' : 'Add Person')
             ->render(
                 [
                     'containers' => $manager->getBuiltContainers(),
@@ -295,7 +293,7 @@ class PeopleController extends AbstractPageController
         $request = $this->getPageManager()->getRequest();
 
         if ($this->getUser()->getPerson()->isEqualto($person)) {
-            $this->addFlash('info', TranslationHelper::translate('Use the {anchor}preferences{endAnchor} details to change your own password.', ['{endAnchor}' => '</a>', '{anchor}' => '<a href="'.$this->generateUrl('preferences', ['tabName' => 'Reset Password']).'">'], 'People'));
+            $this->addFlash('info', TranslationHelper::translate('Use the {anchor}references{endAnchor} details to change your own password.', ['{endAnchor}' => '</a>', '{anchor}' => '<a href="'.$this->generateUrl('preferences', ['tabName' => 'Reset Password']).'">'], 'People'));
             return $this->redirectToRoute('people_list');
         }
 

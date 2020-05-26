@@ -162,7 +162,7 @@ class PersonType extends AbstractType
                 ]
             )
         ;
-        if ($options['data']->getId() > 0)
+        if ($options['data']->getId() !== null)
             $builder
                 ->add('image240', ReactFileType::class,
                     [
@@ -188,13 +188,13 @@ class PersonType extends AbstractType
         ;
 
         $this->buildSystem($builder, $options);
-        if ($options['data']->getId() > 0) {
+        if ($options['data']->getId() !== null) {
             $this->buildContact($builder, $options);
             $this->buildSchool($builder, $options);
             $this->buildBackground($builder, $options);
             if (UserHelper::isParent($options['data']))
                 $this->buildEmployment($builder, $options);
-            if (UserHelper::isStudent($options['data']) || UserHelper::isStaff($options['data']))
+            if (UserHelper::isStaff($options['data']))
                 $this->buildEmergency($builder, $options);
             $this->buildMiscellaneous($builder, $options);
         }
@@ -252,7 +252,7 @@ class PersonType extends AbstractType
             ->add('systemHeader', HeaderType::class,
                 [
                     'label' => 'System Access: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'System',
                 ]
             )
@@ -331,7 +331,7 @@ class PersonType extends AbstractType
             ->add('contactHeader', HeaderType::class,
                 [
                     'label' => 'Contact Information: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'Contact',
                 ]
             )
@@ -517,7 +517,7 @@ class PersonType extends AbstractType
             ->add('schoolHeader', HeaderType::class,
                 [
                     'label' => 'School Information: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'School',
                 ]
             )
@@ -616,7 +616,7 @@ class PersonType extends AbstractType
             ->add('backgroundHeader', HeaderType::class,
                 [
                     'label' => 'Background Information: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'Background',
                 ]
             )
@@ -650,6 +650,7 @@ class PersonType extends AbstractType
                     'panel' => 'Background',
                     'required' => false,
                     'placeholder' => ' ',
+                    'alpha3' => true,
                 ]
             )
             ->add('birthCertificateScan', ReactFileType::class,
@@ -690,6 +691,7 @@ class PersonType extends AbstractType
                 [
                     'label' => 'Citizenship 1',
                     'panel' => 'Background',
+                    'alpha3' => true,
                     'required' => false,
                     'placeholder' => ' ',
                 ]
@@ -716,6 +718,7 @@ class PersonType extends AbstractType
                     'label' => 'Citizenship 2',
                     'panel' => 'Background',
                     'required' => false,
+                    'alpha3' => true,
                     'placeholder' => ' ',
                 ]
             )
@@ -785,7 +788,7 @@ class PersonType extends AbstractType
             ->add('employmentHeader', HeaderType::class,
                 [
                     'label' => 'Employment Details: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'Employment',
                 ]
             )
@@ -828,73 +831,47 @@ class PersonType extends AbstractType
             ->add('emergencyHeader', HeaderType::class,
                 [
                     'label' => 'Emergency Contacts: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
-                    'help' => 'These details are used when immediate family members (e.g. parent, spouse) cannot be reached first. Please try to avoid listing immediate family members.',
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'help' => 'These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  To add an emergency contact, add the person to the database, then return and link the emergency contact details.',
                     'panel' => 'Emergency',
                 ]
             )
-            ->add('emergency1Name', TextType::class,
+            ->add('emergencyContact1', EntityType::class,
                 [
-                    'label' => 'Contact 1 Name',
-                    'required' => false,
+                    'class' => Person::class,
+                    'label' => 'Primary Emergency Contact',
+                    'help' => 'The person must already exist in the database, and not be a student.',
+                    'choice_label' => 'fullNameReversed',
+                    'placeholder' => 'Please select...',
                     'panel' => 'Emergency',
+                    'required' => false,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('p')
+                            ->orderBy('p.surname', 'ASC')
+                            ->addOrderBy('p.firstName', 'ASC')
+                            ->where('p.primaryRole != :role')
+                            ->setParameter('role', 'ROLE_STUDENT')
+                        ;
+                    }
                 ]
             )
-            ->add('emergency1Relationship', EnumType::class,
+            ->add('emergencyContact2', EntityType::class,
                 [
-                    'label' => 'Contact 1 Relationship',
-                    'choice_list_method' => 'getRelationshipList',
-                    'choice_list_prefix' => 'family.relationship',
-                    'choice_list_class' => FamilyRelationship::class,
-                    'required' => false,
+                    'class' => Person::class,
+                    'label' => 'Secondary Emergency Contact',
+                    'help' => 'The person must already exist in the database, and not be a student.',
+                    'placeholder' => 'Please select...',
                     'panel' => 'Emergency',
-                    'placeholder' => ' ',
-                ]
-            )
-            ->add('emergency1Number1', TextType::class,
-                [
-                    'label' => 'Contact 1 Number 1',
                     'required' => false,
-                    'panel' => 'Emergency',
-                ]
-            )
-            ->add('emergency1Number2', TextType::class,
-                [
-                    'label' => 'Contact 1 Number 2',
-                    'required' => false,
-                    'panel' => 'Emergency',
-                ]
-            )
-            ->add('emergency2Name', TextType::class,
-                [
-                    'label' => 'Contact 2 Name',
-                    'required' => false,
-                    'panel' => 'Emergency',
-                ]
-            )
-            ->add('emergency2Relationship', EnumType::class,
-                [
-                    'label' => 'Contact 2 Relationship',
-                    'choice_list_method' => 'getRelationshipList',
-                    'choice_list_class' => FamilyRelationship::class,
-                    'required' => false,
-                    'panel' => 'Emergency',
-                    'choice_list_prefix' => 'family.relationship',
-                    'placeholder' => ' ',
-                ]
-            )
-            ->add('emergency2Number1', TextType::class,
-                [
-                    'label' => 'Contact 2 Number 1',
-                    'required' => false,
-                    'panel' => 'Emergency',
-                ]
-            )
-            ->add('emergency2Number2', TextType::class,
-                [
-                    'label' => 'Contact 2 Number 2',
-                    'required' => false,
-                    'panel' => 'Emergency',
+                    'choice_label' => 'fullNameReversed',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('p')
+                            ->orderBy('p.surname', 'ASC')
+                            ->addOrderBy('p.firstName', 'ASC')
+                            ->where('p.primaryRole != :role')
+                            ->setParameter('role', 'ROLE_STUDENT')
+                        ;
+                    }
                 ]
             )
             ->add('emergencyBackground', SubmitType::class,
@@ -917,7 +894,7 @@ class PersonType extends AbstractType
             ->add('miscellaneousHeader', HeaderType::class,
                 [
                     'label' => 'Miscellaneous: {name}',
-                    'label_translation_parameters' => ['{name}' => $options['data']->getId() > 0 ? $options['data']->formatName(['reverse' => true]) : ''],
+                    'label_translation_parameters' => ['{name}' => $options['data']->getId() !== null ? $options['data']->formatName(['reverse' => true]) : ''],
                     'panel' => 'Miscellaneous',
                 ]
             )

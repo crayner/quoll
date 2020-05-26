@@ -12,21 +12,18 @@
  * Date: 4/09/2019
  * Time: 13:12
  */
-
 namespace App\Form\Type;
 
 use App\Form\EventSubscriber\ReactFileListener;
 use App\Form\Transform\ReactFileTransformer;
-use App\Manager\AbstractEntity;
+use App\Manager\EntityInterface;
 use App\Twig\Sidebar\Photo;
-use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -123,11 +120,11 @@ class ReactFileType extends AbstractType
 
         $method = $options['imageMethod'];
         if ($method === null)
-            throw new OptionDefinitionException(sprintf('The imageMethod in "%s" must be set when showThumbnail is set to true.', $options['label']));
+            throw new \TypeError(sprintf('The imageMethod in "%s" must be set when showThumbnail is set to true.', $options['label']));
         if ($options['entity'] === null || !$options['entity'] instanceof EntityInterface)
-            throw new OptionDefinitionException(sprintf('The entity in "%s" must be set or must be an object of type "App\Manager\EntityInterface" when showThumbnail is set to true.', $options['label']));
+            throw new \TypeError(sprintf('The entity in "%s" must be set or must be an object of type "App\Manager\EntityInterface" when showThumbnail is set to true.', $options['label']));
         if (!method_exists($options['entity'], $method))
-            throw new OptionDefinitionException(sprintf('The entity "%s" does not contain the image method "%s"', get_class($options['entity']), $method));
+            throw new \TypeError(sprintf('The entity "%s" does not contain the image method "%s"', get_class($options['entity']), $method));
 
         $photo = new Photo($options['entity'], $method, '75', 'user max75');
         $domain = null;

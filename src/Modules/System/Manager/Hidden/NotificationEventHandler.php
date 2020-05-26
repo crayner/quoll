@@ -67,7 +67,7 @@ class NotificationEventHandler
                 $personalListeners = $event->getListenersByPerson($listener);
                 foreach ($personalListeners as $entity) {
                     $event->removeListener($entity);
-                    if ($entity->getId() > 0) {
+                    if ($entity->getId() !== null) {
                         $em->remove($entity);
                         $flush = true;
                     }

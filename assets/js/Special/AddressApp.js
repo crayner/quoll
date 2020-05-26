@@ -132,7 +132,7 @@ export default class AddressApp extends Component {
         data.address['propertyName'] = address.children.propertyName.value
         data.address['locality'] = address.children.locality.value
         data.address['_token'] = address.children._token.value
-        data.address['id'] = parseInt(this.state.address_id)
+        data.address['id'] = this.state.address_id
 
         let url = '/address/' + this.state.address_id + '/edit/popup/'
         if (this.state.address_id === 0) {
@@ -163,7 +163,7 @@ export default class AddressApp extends Component {
         data.locality['country'] = locality.children.country.value
         data.locality['postCode'] = locality.children.postCode.value
         data.locality['_token'] = locality.children._token.value
-        let url = '/locality/' + parseInt(this.state.locality_id) + '/edit/'
+        let url = '/locality/' + this.state.locality_id + '/edit/'
 
         if (this.state.locality_id === 0) {
             url = '/locality/add/'

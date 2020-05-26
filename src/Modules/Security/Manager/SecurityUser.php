@@ -535,7 +535,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getPerson(): Person
     {
-        if (null === $this->person && $this->getId() > 0)
+        if (null === $this->person && $this->getId() !== null)
         {
             $this->person = $this->__construct(ProviderFactory::getRepository(Person::class)->find($this->getId()));
         }

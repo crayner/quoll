@@ -68,7 +68,7 @@ class FamilyChildType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['data']->getId() > 0) {
+        if ($options['data']->getId() !== null) {
             $builder
                 ->add('studentEditHeader', HeaderType::class,
                     [

@@ -16,6 +16,8 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
@@ -116,7 +118,7 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
                 $alertThresholdParams = ['high' => $academicAlertMediumThreshold - 1, 'low' => $academicAlertLowThreshold];
             }
             if ($alertLevelID != '') {
-                if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
+                if ($alert = ProviderFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
                     $alerts[] = $this->resolveAlert([
                         'highestLevel'    => $alert->getName(),
                         'highestColour'   => $alert->getColour(),
@@ -152,7 +154,7 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
             }
 
             if ($alertLevelID != '') {
-                if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
+                if ($alert = ProviderFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
                     $alerts[] = $this->resolveAlert([
                         'highestLevel'    => $alert->getName(),
                         'highestColour'   => $alert->getColour(),
@@ -382,9 +384,9 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
      */
     public function groupedChoiceList(): array
     {
-        $people = $this->getRepository()->findAllStudentsByRollGroup();
+        $people = $this->getRepository(FamilyMemberChild::class)->findCurrentStudentsAsArray();
         $people = array_merge($people, $this->getRepository()->findCurrentStaffAsArray());
-        $people = array_merge($people, $this->getRepository()->findCurrentParentsAsArray());
+        $people = array_merge($people, $this->getRepository(FamilyMemberAdult::class)->findCurrentParentsAsArray());
 
         $type = null;
         $result = [];

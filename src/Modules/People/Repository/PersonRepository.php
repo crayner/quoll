@@ -16,6 +16,7 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Address;
+use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Util\UserHelper;
 use App\Util\ImageHelper;
@@ -276,7 +277,7 @@ class PersonRepository extends ServiceEntityRepository
     public function findAllStudentsByRollGroup()
     {
         return $this->createQueryBuilder('p')
-            ->select(['p.id', 'p.studentID', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", 'rg.name AS rollGroup', 'rg.name AS type', 'p.image_240 AS photo'])
+            ->select(['p.id', 'p.studentIdentifier', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", 'rg.name AS rollGroup', 'rg.name AS type', 'p.image_240 AS photo'])
             ->where('p.status = :full')
             ->setParameter('full', 'Full')
             ->join('p.studentEnrolments', 'se')
@@ -300,26 +301,6 @@ class PersonRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select(['p','fa','s'])
-            ->join('p.adults', 'fa')
-            ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
-            ->andWhere('p.status = :full')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('s.id IS NULL')
-            ->setParameter('full', 'Full')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * findCurrentParents
-     * @return array
-     */
-    public function findCurrentParentsAsArray(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'People')."' AS type", 'p.image_240 AS photo'])
             ->join('p.adults', 'fa')
             ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
             ->andWhere('p.status = :full')

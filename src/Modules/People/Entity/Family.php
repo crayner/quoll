@@ -201,18 +201,20 @@ class Family extends AbstractEntity
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * Id.
+     *
+     * @param string|null $id
      * @return Family
      */
-    public function setId(?int $id): Family
+    public function setId(?string $id): Family
     {
         $this->id = $id;
         return $this;
@@ -264,6 +266,7 @@ class Family extends AbstractEntity
      * @return Family
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
+     * @ORM\PostLoad()
      */
     public function checkFormalName(): Family
     {
@@ -275,7 +278,7 @@ class Family extends AbstractEntity
             $count = 0;
             $name = '';
             foreach($this->getAdults() as $adult) {
-                $name .= $adult->getPerson()->formatName(['title' => true, 'preferred' => false]) . ' & ';
+                $name .= $adult->getPerson()->formatName(['style' => 'formal']) . ' & ';
                 if (++$count > 1) {
                     break;
                 }
@@ -438,7 +441,7 @@ class Family extends AbstractEntity
         $iterator = $adults->getIterator();
         $iterator->uasort(
             function ($a, $b) {
-                return $a->getPriority() < $b->getPriority() ? -1 : 1 ;
+                return $a->getContactPriority() < $b->getContactPriority() ? -1 : 1 ;
             }
         );
 

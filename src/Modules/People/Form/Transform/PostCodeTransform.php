@@ -15,6 +15,7 @@
 namespace App\Modules\People\Form\Transform;
 
 use App\Manager\AbstractEntity;
+use App\Manager\EntityInterface;
 use App\Modules\People\Manager\AddressManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -78,8 +79,11 @@ class PostCodeTransform implements DataTransformerInterface
      * @param EntityInterface $entity
      * @return PostCodeTransform
      */
-    public function setEntity(EntityInterface $entity): PostCodeTransform
+    public function setEntity($entity): PostCodeTransform
     {
+        if (!is_subclass_of($entity, EntityInterface::class)) {
+            throw new \TypeError(sprintf('The argument passed to %s must be an instance of %s, instance of %s given, called in %s on line %s', __METHOD__, EntityInterface::class, get_class($entity), __FILE__, __LINE__));
+        }
         $this->entity = $entity;
         return $this;
     }

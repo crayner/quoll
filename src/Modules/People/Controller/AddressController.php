@@ -100,12 +100,12 @@ class AddressController extends AbstractPageController
             return new JsonResponse($data);
         }
 
-        if ($address->getId() > 0)
+        if ($address->getId() !== null)
             $manager->setAddElementRoute($this->generateUrl('address_add'));
 
         $manager->singlePanel($form->createView());
 
-        return $this->getPageManager()->setPopup(true)->createBreadcrumbs($address->getId() > 0 ? 'Edit Address' : 'Add Address',
+        return $this->getPageManager()->setPopup(true)->createBreadcrumbs($address->getId() !== null ? 'Edit Address' : 'Add Address',
                 [
                     ['uri' => 'address_list', 'name' => 'Manage Addresses'],
                 ]
@@ -174,7 +174,7 @@ class AddressController extends AbstractPageController
             return new JsonResponse($data);
         }
 
-        if ($locality->getId() > 0) {
+        if ($locality->getId() !== null) {
             $manager->setAddElementRoute($this->generateUrl('locality_add'));
         }
         $manager->singlePanel($form->createView());

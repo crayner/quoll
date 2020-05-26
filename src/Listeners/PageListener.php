@@ -21,6 +21,7 @@ use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
+use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -61,10 +62,12 @@ class PageListener implements EventSubscriberInterface
         CacheHelper $cache,
         UserHelper $userHelper,
         SecurityHelper $securityHelper,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        ParameterBagHelper $parameterBagHelper
     ) {
         $this->setPageManager($pageManager);
         $this->setParameterBag($parameterBag);
+        $parameterBagHelper::setParameterBag($parameterBag);
     }
 
     /**
@@ -74,7 +77,7 @@ class PageListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onRequest', 0]
+            KernelEvents::REQUEST => ['onRequest', 0],
         ];
     }
 

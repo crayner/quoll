@@ -182,7 +182,7 @@ class FamilyController extends AbstractPageController
         $manager->setReturnRoute($this->generateUrl('family_list'));
         $manager->addContainer($container)->buildContainers();
 
-        return $this->getPageManager()->createBreadcrumbs($family->getId() > 0 ? 'Edit Family' : 'Add Family')
+        return $this->getPageManager()->createBreadcrumbs($family->getId() !== null ? 'Edit Family' : 'Add Family')
             ->render(
                 [
                     'containers' => $manager->getBuiltContainers(),
@@ -387,7 +387,7 @@ class FamilyController extends AbstractPageController
         }
         $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']))->singlePanel($form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs($student->getId() > 0 ? 'Edit Student' : 'Add Student',
+        return $this->getPageManager()->createBreadcrumbs($student->getId() !== null ? 'Edit Student' : 'Add Student',
             [
                 ['uri' => 'family_list', 'name' => 'Manage Families'],
                 ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'Students'] , 'name' => 'Edit Family']

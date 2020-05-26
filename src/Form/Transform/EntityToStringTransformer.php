@@ -1,7 +1,7 @@
 <?php
 namespace App\Form\Transform;
 
-use App\Manager\AbstractEntity;
+use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +11,10 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class EntityToStringTransformer
+ * @package App\Form\Transform
+ */
 class EntityToStringTransformer implements DataTransformerInterface
 {
 	/**
@@ -61,7 +65,7 @@ class EntityToStringTransformer implements DataTransformerInterface
         $resolver->setAllowedTypes('class', ['string']);
 		$options = $resolver->resolve($options);
 
-		if (!in_array(EntityInterface::class, class_implements($options['class'])))
+		if (!is_subclass_of($options['class'], EntityInterface::class))
 		    throw new OptionDefinitionException(sprintf('The class "%s" must implement "%s"', $options['class'],EntityInterface::class));
 
 		$this->setEntityClass($options['class']);

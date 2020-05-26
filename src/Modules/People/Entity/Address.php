@@ -265,12 +265,16 @@ class Address extends AbstractEntity
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__Address` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `streetName` CHAR(50) DEFAULT NULL,
-                    `propertyName` CHAR(50) DEFAULT NULL,
-                    `locality` CHAR(36) DEFAULT NULL,
+                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `flat_unit_details` char(30) DEFAULT NULL,
+                    `street_number` char(15) DEFAULT NULL,
+                    `street_name` char(70) DEFAULT NULL,
+                    `property_name` char(50) DEFAULT NULL,
+                    `post_code` char(10) DEFAULT NULL,
+                    `locality` char(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    KEY `locality` (`locality`)
+                    UNIQUE KEY `address_in_locality` (`street_name`,`flat_unit_details`,`street_number`,`locality`,`property_name`,`post_code`),
+                    KEY `locality` (`locality`)                
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 

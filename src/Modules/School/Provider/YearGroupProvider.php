@@ -123,7 +123,7 @@ class YearGroupProvider extends AbstractProvider
     {
         if (null === $this->allYears) {
             foreach($this->getRepository()->findAll() as $year) {
-                $this->allYears[intval($year->getId())] = $year;
+                $this->allYears[$year->getId()] = $year;
             }
         }
         return $this->allYears;
@@ -134,16 +134,16 @@ class YearGroupProvider extends AbstractProvider
      * @param $id
      * @return \App\Manager\EntityInterface|void|null
      */
-    public function findOne(int $id): ?YearGroup
+    public function findOne(?string $id): ?YearGroup
     {
-        if (isset($this->allYears[intval($id)]))
-            return $this->allYears[intval($id)];
+        if (isset($this->allYears[$id]))
+            return $this->allYears[$id];
 
-        if (intval($id) > 0 && empty($this->allYears)) {
+        if ($id !== null && empty($this->allYears)) {
             $this->findAll();
 
-            if (isset($this->allYears[intval($id)]))
-                return $this->allYears[intval($id)];
+            if (isset($this->allYears[$id]))
+                return $this->allYears[$id];
         }
         return null;
     }
@@ -153,7 +153,7 @@ class YearGroupProvider extends AbstractProvider
      * @param int $id
      * @return string
      */
-    public function getYearGroupName(int $id): string
+    public function getYearGroupName(string $id): string
     {
         $yg = $this->findOne($id);
         return $yg->getName();

@@ -1,0 +1,14 @@
+associated:
+    facility:
+        entityName: 'App\Modules\School\Entity\Facility'
+        findBy: name
+    academicYear:
+        entityName: 'App\Modules\School\Entity\AcademicYear'
+        findBy: status
+    tutor:
+        entityName: 'App\Modules\People\Entity\Person'
+        findBy: username
+    tutor2:
+        entityName: 'App\Modules\People\Entity\Person'
+        findBy: username
+

@@ -68,7 +68,7 @@ class StringController extends AbstractPageController
         $manager->setTranslationDomain('System');
 
         $stringReplacement = $stringReplacement !== 'Add' ? ProviderFactory::getRepository(StringReplacement::class)->find($stringReplacement) : new StringReplacement();
-        $action = $stringReplacement->getId() > 0 ? $this->generateUrl('string_edit', ['stringReplacement' => $stringReplacement->getId()]) : $this->generateUrl('string_add');
+        $action = $stringReplacement->getId() !== null ? $this->generateUrl('string_edit', ['stringReplacement' => $stringReplacement->getId()]) : $this->generateUrl('string_add');
 
         $form = $this->createForm(StringReplacementType::class, $stringReplacement, ['action' => $action]);
 
@@ -84,7 +84,7 @@ class StringController extends AbstractPageController
                     $em->persist($stringReplacement);
                     $em->flush();
                     $data = ErrorMessageHelper::getSuccessMessage($data, true);
-                    $action = $stringReplacement->getId() > 0 ? $this->generateUrl('string_edit', ['stringReplacement' => $stringReplacement->getId()]) : $this->generateUrl('string_add');
+                    $action = $stringReplacement->getId() !== null ? $this->generateUrl('string_edit', ['stringReplacement' => $stringReplacement->getId()]) : $this->generateUrl('string_add');
                     $form = $this->createForm(StringReplacementType::class, $stringReplacement, ['action' => $action]);
                 } catch (PDOException $e) {
                     $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
@@ -100,11 +100,11 @@ class StringController extends AbstractPageController
         }
 
         $manager->setReturnRoute($this->generateUrl('string_manage'));
-        if ($stringReplacement->getId() > 0)
+        if ($stringReplacement->getId() !== null)
             $manager->setAddElementRoute($this->generateUrl('string_add'));
         $manager->singlePanel($form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs($stringReplacement->getId() > 0 ? 'Edit String' : 'Add String',
+        return $this->getPageManager()->createBreadcrumbs($stringReplacement->getId() !== null ? 'Edit String' : 'Add String',
             [
                 ['uri' => 'string_manage', 'name' => 'String Replacements'],
             ]

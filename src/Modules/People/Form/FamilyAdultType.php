@@ -72,7 +72,7 @@ class FamilyAdultType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $parentRole = 'ROLE_PARENT';
-        if ($options['data']->getId() > 0) {
+        if ($options['data']->getId() !== null) {
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [

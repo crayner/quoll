@@ -41,16 +41,17 @@ trait AuthenticatorTrait
     /**
      * setLanguage
      * @param Request $request
+     * @param string|null $i18nID
      */
-    public function setLanguage(Request $request, int $i18nID = null)
+    public function setLanguage(Request $request, string $i18nID = null)
     {
         $session = $request->getSession();
 
-        if (intval($i18nID) > 0 && intval($i18nID) !== intval($session->get('i18n')->getId()))
+        if ($i18nID !== null && $i18nID !== $session->get('i18n')->getId())
             ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
 
 
-        if (null !== $i18nID && intval($i18nID) !== intval($session->get(['i18n', 'gibboni18nID'])))
+        if (null !== $i18nID && ($i18nID !== $session->get('i18n')->getId()))
             ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
         elseif ($request->request->has('gibboni18nID') && intval($request->request->get('gibboni18nID')) !== intval($session->get(['i18n', 'gibboni18nID'])))
             ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $request->request->get('gibboni18nID')], false);

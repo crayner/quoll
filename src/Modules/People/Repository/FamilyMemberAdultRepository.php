@@ -16,6 +16,7 @@ namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NonUniqueResultException;
@@ -104,11 +105,11 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
 
     /**
      * findByFamilyWithoutAdult
-     * @param int $person
-     * @param int $family
+     * @param string $person
+     * @param string $family
      * @return array
      */
-    public function findByFamilyWithoutAdult(int $person, int $family): array
+    public function findByFamilyWithoutAdult(string $person, string $family): array
     {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.family', 'f')
@@ -117,6 +118,26 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
             ->andWhere('p.id <> :person')
             ->setParameters(['person' => $person, 'family' => $family])
             ->orderBy('a.contactPriority')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findCurrentParentsAsArray
+     * @return array
+     */
+    public function findCurrentParentsAsArray(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->select(['p.id', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", "'".TranslationHelper::translate('Parent', [], 'People')."' AS type", 'p.image_240 AS photo'])
+            ->join('m.person', 'p')
+            ->where('(m.contactPriority <= 2 and m.contactPriority > 0)')
+            ->andWhere('p.status = :full')
+            ->leftJoin('p.staff', 's')
+            ->andWhere('s.id IS NULL')
+            ->setParameter('full', 'Full')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
             ->getResult();
     }

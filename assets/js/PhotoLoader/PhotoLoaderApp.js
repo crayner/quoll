@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RenderPeople from "./RenderPeople"
 import {fetchJson} from "../component/fetchJson"
+import { isEmpty } from '../component/isEmpty'
 
 export default class PhotoLoaderApp extends Component {
     constructor (props) {
@@ -47,7 +48,7 @@ export default class PhotoLoaderApp extends Component {
     selectPerson({target} = e) {
         let person = {}
         let found = false
-        const value = parseInt(target.value, 10) > 0 ? parseInt(target.value, 10) : 0
+        const value = isEmpty(target.value) ? target.value : null
         Object.keys(this.people).map(group => {
             if (found) return
             const groupData = this.people[group]

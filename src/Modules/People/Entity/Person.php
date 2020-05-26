@@ -86,6 +86,11 @@ class Person extends AbstractEntity
         $this->studentEnrolments = new ArrayCollection();
         $this->additionalPhones = new ArrayCollection();
         $this->allRoles = [];
+        $this->setStatus('Expected')
+            ->setPrimaryRole('ROLE_USER')
+            ->setCanLogin('N')
+            ->setPasswordForceReset('N');
+
     }
 
     /**
@@ -351,7 +356,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=75,unique=true,nullable=true)
+     * @ORM\Column(length=75,nullable=true)
      */
     private $username;
 
@@ -1192,9 +1197,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=3)
      */
-    private $citizenship1 = '';
+    private $citizenship1;
 
     /**
      * @return null|string
@@ -1270,9 +1275,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=3)
      */
-    private $citizenship2 = '';
+    private $citizenship2;
 
     /**
      * @return null|string
@@ -1769,9 +1774,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      */
-    private $transport = '';
+    private $transport;
 
     /**
      * @return null|string
@@ -1793,7 +1798,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      */
     private $transportNotes = '';
 
@@ -2824,10 +2829,10 @@ class Person extends AbstractEntity
                     `country_of_birth` CHAR(3) NOT NULL,
                     `birth_certificate_scan` CHAR(191) NOT NULL,
                     `ethnicity` CHAR(191) NOT NULL,
-                    `citizenship1` CHAR(191) NOT NULL,
+                    `citizenship1` CHAR(3) NOT NULL,
                     `citizenship1_passport` CHAR(30) NOT NULL,
                     `citizenship1_passport_scan` CHAR(191) NOT NULL,
-                    `citizenship2` CHAR(191) NOT NULL,
+                    `citizenship2` CHAR(3) NOT NULL,
                     `citizenship2_passport` CHAR(30) NOT NULL,
                     `religion` CHAR(30) NOT NULL,
                     `national_card_number` CHAR(30) NOT NULL,
@@ -2837,16 +2842,16 @@ class Person extends AbstractEntity
                     `profession` CHAR(90) NOT NULL,
                     `employer` CHAR(90) NOT NULL,
                     `jobTitle` CHAR(90) NOT NULL,
-                    `emergency_contact1` CHAR(30) DEFAULT NULL,
-                    `emergency_contact2` CHAR(30) DEFAULT NULL,
+                    `emergency_contact1` CHAR(36) DEFAULT NULL,
+                    `emergency_contact2` CHAR(36) DEFAULT NULL,
                     `student_identifier` CHAR(20) DEFAULT NULL,
                     `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `last_school` CHAR(100) NOT NULL,
                     `next_school` CHAR(100) NOT NULL,
                     `departure_reason` CHAR(50) NOT NULL,
-                    `transport` CHAR(191) NOT NULL,
-                    `transport_notes` longtext NOT NULL,
+                    `transport` CHAR(191) DEFAULT NULL,
+                    `transport_notes` longtext DEFAULT NULL,
                     `calendar_feed_personal` CHAR(191) DEFAULT NULL,
                     `view_calendar_school` CHAR(1) NOT NULL DEFAULT 'Y',
                     `view_calendar_personal` CHAR(1) NOT NULL DEFAULT 'Y',

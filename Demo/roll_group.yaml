@@ -1,0 +1,141 @@
+-
+    academicYear: Current
+    name: '07.1'
+    abbreviation: '07.1'
+    tutor: '2363'
+    facility: C107
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '07.2'
+    abbreviation: '07.2'
+    tutor: '1778'
+    facility: C106
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '07.3'
+    abbreviation: '07.3'
+    tutor: '1601'
+    facility: C202
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '08.1'
+    abbreviation: '08.1'
+    tutor: '2732'
+    facility: C205
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '08.2'
+    abbreviation: '08.2'
+    tutor: '120'
+    facility: C201
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '08.3'
+    abbreviation: '08.3'
+    tutor: '2562'
+    facility: C101
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '09.1'
+    abbreviation: '09.1'
+    tutor: '2134'
+    facility: C102
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '09.2'
+    abbreviation: '09.2'
+    tutor: '1123'
+    facility: C105
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '10.1'
+    abbreviation: '10.1'
+    tutor: '2347'
+    facility: D101
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '10.2'
+    abbreviation: '10.2'
+    tutor: '198'
+    facility: D104
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '11.1'
+    abbreviation: '11.1'
+    tutor: '866'
+    facility: C203
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '11.2'
+    abbreviation: '11.2'
+    tutor: '1119'
+    facility: D102
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '12.1'
+    abbreviation: '12.1'
+    tutor: '867'
+    facility: C103
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '12.2'
+    abbreviation: '12.2'
+    tutor: '869'
+    facility: D002
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '13.1'
+    abbreviation: '13.1'
+    tutor: '124'
+    facility: C306
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: 'SRC'
+    abbreviation: 'SRC'
+    tutor: '375'
+    tutor2: '1117'
+    facility: C208
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '09.3'
+    abbreviation: '09.3'
+    tutor: '2326'
+    facility: C301
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '07.4'
+    abbreviation: '07.4'
+    tutor: '2722'
+    facility: C304
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '10.3'
+    abbreviation: '10.3'
+    tutor: '151'
+    facility: D103
+    attendance: 'Y'
+-
+    academicYear: Current
+    name: '11.3'
+    abbreviation: '11.3'
+    tutor: '2027'
+    facility: C309
+    attendance: 'Y'

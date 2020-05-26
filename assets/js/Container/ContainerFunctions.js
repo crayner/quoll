@@ -348,7 +348,7 @@ export function setChainedSelect(form, forms, formNames)
     let child = findElementById(parent, form.chained_child, {})
     const value = form.value
     let choices = form.chained_values[value]
-    if (typeof choices !== 'object' || Object.keys(choices).length === 0 && parseInt(value) > 0) {
+    if (typeof choices !== 'object' || Object.keys(choices).length === 0 && value !== null) {
         choices = form.chained_values["" + value]
     }
 

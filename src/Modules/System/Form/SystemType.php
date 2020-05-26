@@ -270,6 +270,7 @@ class SystemType extends AbstractType
                     'label' => $country ? $country->getNameDisplay() : 'Country',
                     'help' => $country ? $country->getDescription() : 'The country the school is located in',
                     'panel' => 'Settings',
+                    'alpha3' => true,
                     'placeholder' => ' ',
                     'attr' => [
                         'class' => 'w-full',

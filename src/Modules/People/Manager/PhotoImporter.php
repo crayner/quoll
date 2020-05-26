@@ -19,6 +19,7 @@ use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
+use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -70,7 +71,7 @@ class PhotoImporter implements SpecialInterface
     public function toArray(): array
     {
         $result['people'] = ProviderFactory::create(Person::class)->groupedChoiceList();
-        $result['absolute_url'] = ImageHelper::getAbsoluteURL();
+        $result['absolute_url'] = ParameterBagHelper::get('absoluteURL');
         $result['messages'] = $this->getTranslations();
         $result['name'] = $this->getName();
         return $result;
@@ -89,8 +90,8 @@ class PhotoImporter implements SpecialInterface
         $tx['target_person_help'] = TranslationHelper::translate('Select the person, then drag the image from your computer to set the image for this person.');
         $tx['Remove Photo'] = TranslationHelper::translate('Remove Photo');
         $tx['error_ratio'] = TranslationHelper::translate('The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.');
-        $tx['error_height_width'] = TranslationHelper::translate('The height and width maximum is 960px x 720px. The image supplied was {height} x {width}px.');
-        $tx['error_height_width_minimum'] = TranslationHelper::translate('The height and width minimum is 320px x 240px. The image supplied was {height} x {width}px.');
+        $tx['error_height_width'] = TranslationHelper::translate('The height and width maximum is 960px x 720px. The image supplied was {height} x {width}x.');
+        $tx['error_height_width_minimum'] = TranslationHelper::translate('The height and width minimum is 320px x 240px. The image supplied was {height} x {width}x.');
         $tx['error_size'] = TranslationHelper::translate('The file is too big. Max 750k. File size given is {size}.');
         $tx['aborted'] = TranslationHelper::translate('{name} upload failed...');
         $tx['Target this person...'] = TranslationHelper::translate('Target this person...');

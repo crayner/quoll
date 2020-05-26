@@ -13,10 +13,11 @@ namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class StudentEnrolment
@@ -40,6 +41,7 @@ class StudentEnrolment extends AbstractEntity
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="person",referencedColumnName="id", nullable=false)
+     * @Assert\NotBlank()
      */
     private $person;
 
@@ -47,6 +49,7 @@ class StudentEnrolment extends AbstractEntity
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
+     * @Assert\NotBlank()
      *
      */
     private $academicYear;
@@ -55,6 +58,7 @@ class StudentEnrolment extends AbstractEntity
      * @var YearGroup|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\YearGroup")
      * @ORM\JoinColumn(name="year_group",referencedColumnName="id", nullable=false)
+     * @Assert\NotBlank()
      */
     private $yearGroup;
 
@@ -62,12 +66,14 @@ class StudentEnrolment extends AbstractEntity
      * @var RollGroup|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\RollGroup", inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
+     * @Assert\NotBlank()
      */
     private $rollGroup;
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", nullable=true, columnDefinition="INT(2)")
+     * @ORM\Column(type="smallint",nullable=true)
+     * @Assert\Range(min=1,max=99)
      */
     private $rollOrder;
 

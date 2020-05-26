@@ -130,6 +130,7 @@ family:
         married: Married
         other: Other
         separated: Separated
+        unknown: Unknown
 person:
     address:
         warning: '<div class="warning">Address information for an individual only needs to be set under the following conditions:<ol><li>If the person is not in a family.</li><li>If the person`s family does not have a home address set.</li><li>If the person needs an address in addition to their family`s home address.</li></ol></div>'
@@ -191,7 +192,7 @@ Family: Family
 Full: Full
 Name: Name
 Photo: Photo
-'Use the {anchor}preferences{endAnchor} details to change your own password.': 'Use the {anchor}preferences{endAnchor} details to change your own password.'
+'Use the {anchor}references{endAnchor} details to change your own password.': 'Use the {anchor}references{endAnchor} details to change your own password.'
 Add Person: Add Person
 Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.: Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.
 Drop Image Here: Drop Image Here
@@ -215,10 +216,10 @@ Target Person: Target Person
 Target this person...: Target this person...
 The file is too big. Max 350k. File size given is {size}.: The file is too big. Max 350k. File size given is {size}.
 The file is too big. Max 750k. File size given is {size}.: The file is too big. Max 750k. File size given is {size}.
-The height and width maximum is 480 x 360px. The image supplied was {height} x {width}px.: The height and width maximum is 480 x 360px. The image supplied was {height} x {width}px.
-The height and width maximum is 960px x 720px. The image supplied was {height} x {width}px.: The height and width maximum is 960px x 720px. The image supplied was {height} x {width}px.
-The height and width minimum is 320 x 240px. The image supplied was {height} x {width}px.: The height and width minimum is 320 x 240px. The image supplied was {height} x {width}px.
-The height and width minimum is 320px x 240px. The image supplied was {height} x {width}px.: The height and width minimum is 320px x 240px. The image supplied was {height} x {width}px.
+The height and width maximum is 480 x 360px. The image supplied was {height} x {width}x.: The height and width maximum is 480 x 360px. The image supplied was {height} x {width}x.
+The height and width maximum is 960px x 720px. The image supplied was {height} x {width}x.: The height and width maximum is 960px x 720px. The image supplied was {height} x {width}x.
+The height and width minimum is 320 x 240px. The image supplied was {height} x {width}x.: The height and width minimum is 320 x 240px. The image supplied was {height} x {width}x.
+The height and width minimum is 320px x 240px. The image supplied was {height} x {width}x.: The height and width minimum is 320px x 240px. The image supplied was {height} x {width}x.
 The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.: The image must ratio of {ratio}:1 is outside the allowed limits of 0.7:1 to 0.84:1.
 Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.: Use this page to drag and drop images from your computer to the site for the targeted individual. Existing images are replaced.
 '{name} upload failed...': '{name} upload failed...'
@@ -343,14 +344,6 @@ countryOfBirth: Country of Birth
 dob: Date of Birth
 email: E-Mail
 emailAlternate: E-Mail Alternate
-emergency1Name: Emergency 1 Name
-emergency1Number1: Emergency 1 Number1
-emergency1Number2: Emergency 1 Number2
-emergency1Relationship: Emergency 1 Relationship
-emergency2Name: Emergency 2 Name
-emergency2Number1: Emergency 2 Number 1
-emergency2Number2: Emergency 2 Number 2
-emergency2Relationship: Emergency 2 Relationship
 employer: Employer
 ethnicity: Ethnicity
 firstName: Given Names
@@ -486,3 +479,9 @@ Enter the number of rows to display for field Data: Enter the number of rows to 
 'The option {value} is not valid for {type}.': 'The option {value} is not valid for {type}.'
 'You will need ensure that these options are appropriate for your field.': 'You will need ensure that these options are appropriate for your field.'
 System User: System User
+Primary Emergency Contact: Primary Emergency Contact
+Secondary Emergency Contact: Secondary Emergency Contact
+The person must already exist in the database, and not be a student.: The person must already exist in the database, and not be a student.
+The person must already exist in the database: The person must already exist in the database
+These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  Add the contact as a person in the database.: These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  Add the contact as a person in the database.
+These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  To add an emergency contact, add the person to the database, then return and link the emergency contact details.: These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  To add an emergency contact, add the person to the database, then return and link the emergency contact details.

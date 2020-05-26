@@ -20,6 +20,7 @@ use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Facility
@@ -60,7 +61,7 @@ class Facility extends AbstractEntity
 
     /**
      * @var integer
-     * @ORM\Column(type="integer",columnDefinition="INT(5)",nullable=true)
+     * @ORM\Column(type="smallint",nullable=true)
      * @Assert\Range(min=0,max=99999)
      */
     private $capacity;
@@ -75,6 +76,7 @@ class Facility extends AbstractEntity
     /**
      * @var integer
      * @ORM\Column(type="smallint",options={"default": "0"})
+     * @Assert\Range(min=0,max=999)
      */
     private $studentComputers = 0;
 
@@ -564,17 +566,17 @@ class Facility extends AbstractEntity
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
                     `type` CHAR(50) NOT NULL,
-                    `capacity` int(5) DEFAULT NULL,
+                    `capacity` smallint DEFAULT NULL,
                     `computer` CHAR(1) NOT NULL,
-                    `computer_student` smallint DEFAULT NULL,
+                    `student_computers` smallint DEFAULT NULL,
                     `projector` CHAR(1) NOT NULL,
                     `tv` CHAR(1) NOT NULL,
                     `dvd` CHAR(1) NOT NULL,
                     `hifi` CHAR(1) NOT NULL,
                     `speakers` CHAR(1) NOT NULL,
                     `iwb` CHAR(1) NOT NULL,
-                    `phone_internal` CHAR(5) DEFAULT NULL,
-                    `phone_external` CHAR(20) DEFAULT NULL,
+                    `phone_int` CHAR(5) DEFAULT NULL,
+                    `phone_ext` CHAR(20) DEFAULT NULL,
                     `comment` longtext,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`)

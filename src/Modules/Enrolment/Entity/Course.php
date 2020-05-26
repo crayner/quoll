@@ -37,9 +37,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\Index(name="academicYear",columns={"academic_year"})},
  *     uniqueConstraints={
  *      @ORM\UniqueConstraint(name="name_year",columns={"academic_year","name"}),
- *      @ORM\UniqueConstraint(name="name_short_year",columns={"academic_year","nameShort"})})
+ *      @ORM\UniqueConstraint(name="name_short_year",columns={"academic_year","abbreviation"})})
  * @UniqueEntity({"academicYear", "name"})
- * @UniqueEntity({"academicYear", "nameShort"})
+ * @UniqueEntity({"academicYear", "abbreviation"})
  */
 class Course extends AbstractEntity
 {
@@ -78,10 +78,10 @@ class Course extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="nameShort")
+     * @ORM\Column(length=12)
      * @Assert\NotBlank
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var string|null
@@ -201,18 +201,18 @@ class Course extends AbstractEntity
     /**
      * @return string|null
      */
-    public function getNameShort(): ?string
+    public function getAbbreviation(): ?string
     {
-        return $this->nameShort;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return Course
      */
-    public function setNameShort(?string $nameShort): Course
+    public function setAbbreviation(?string $abbreviation): Course
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -329,7 +329,7 @@ class Course extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getName() . ' ('. $this->getNameShort(). ')';
+        return $this->getName() . ' ('. $this->getAbbreviation(). ')';
     }
 
     /**
@@ -347,16 +347,16 @@ class Course extends AbstractEntity
         return ["CREATE TABLE `__prefix__Course` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(60) NOT NULL,
-                    `nameShort` CHAR(12) NOT NULL,
+                    `abbreviation` CHAR(12) NOT NULL,
                     `description` longtext,
                     `map` CHAR(1) NOT NULL DEFAULT 'Y' COMMENT 'Should this course be included in curriculum maps and other summaries?',
-                    `year_group_list` CHAR(191) NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `year_group_list` text NOT NULL COMMENT '(DC2Type:simple_array)',
                     `order_by` smallint DEFAULT NULL,
                     `academic_year` CHAR(36) DEFAULT NULL,
                     `department` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name_year` (`academic_year`,`name`),
-                    UNIQUE KEY `name_short_year` (`academic_year`,`nameShort`),
+                    UNIQUE KEY `name_short_year` (`academic_year`,`abbreviation`),
                     KEY `department` (`department`),
                     KEY `academic_year` (`academic_year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];

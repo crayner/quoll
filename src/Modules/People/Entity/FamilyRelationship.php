@@ -239,7 +239,6 @@ class FamilyRelationship extends AbstractEntity
         if ($name === 'form')
         {
             TranslationHelper::setDomain('People');
-            dump($this);
             return [
                 'parent' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getAdult()->getPerson()->formatName(['style'=> 'formal'])]),
                 'child' => TranslationHelper::translate('of {name}', ['{name}' => $this->getChild()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),
@@ -267,8 +266,8 @@ class FamilyRelationship extends AbstractEntity
     {
         return "ALTER TABLE `__prefix__FamilyRelationship`
                     ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__Person` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__FamilyMember` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__FamilyMember` (`id`);";
     }
 
     public static function getVersion(): string

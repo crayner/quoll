@@ -240,7 +240,7 @@ export default class DepartmentEditApp extends Component {
             Object.keys(collection.element_delete_options).map(search => {
                 let replace = collection.element_delete_options[search]
                 route = route.replace(search, element.children[replace].value)
-                if (parseInt(element.children[replace].value) < 1) {
+                if (element.children[replace].value === null) {
                     fetch = false
                 }
             })
