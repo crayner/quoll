@@ -486,3 +486,5 @@ The person must already exist in the database: The person must already exist in 
 These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  Add the contact as a person in the database.: These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  Add the contact as a person in the database.
 These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  To add an emergency contact, add the person to the database, then return and link the emergency contact details.: These details are for staff members only. Student emergency contacts are contained in family information to reduce repetition of data.  To add an emergency contact, add the person to the database, then return and link the emergency contact details.
 The photo was removed.: The photo was removed.
+emergencyContact1: 'Emergency Contact 1'
+emergencyContact2: 'Emergency Contact 2'

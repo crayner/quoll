@@ -47,6 +47,7 @@ parameters:
         ROLE_SYSTEM_ADMIN:
             - ROLE_REGISTRAR
             - ROLE_PARENT
+            - ROLE_FINANCE
     timezone: UTC
     locale: en_GB
     mailer_dsn: 'smtp://null'

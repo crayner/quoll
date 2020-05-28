@@ -35,18 +35,14 @@ class RequiredUpdates implements SpecialInterface {
         'title'                  => ['label' => 'Title', 'default' => 'required'],
         'surname'                => ['label' => 'Surname', 'default' => 'required'],
         'firstName'              => ['label' => 'First Name', 'default' => ''],
-        'preferredName'          => ['label' =>  'Preferred Name', 'default' => 'required'],
+        'preferredName'          => ['label' => 'Preferred Name', 'default' => 'required'],
         'officialName'           => ['label' => 'Official Name', 'default' => 'required'],
         'nameInCharacters'       => ['label' => 'Name In Characters', 'default' => ''],
         'dob'                    => ['label' => 'Date of Birth', 'default' => ''],
         'email'                  => ['label' => 'Email', 'default' => ''],
         'emailAlternate'         => ['label' => 'Alternate Email', 'default' => ''],
-        'address1'               => ['label' => 'Address 1', 'default' => 'fixed'],
-        'address1District'       => ['label' => 'Address 1 District', 'default' => 'fixed'],
-        'address1Country'        => ['label' => 'Address 1 Country', 'default' => 'fixed'],
-        'address2'               => ['label' => 'Address 2', 'default' => 'fixed'],
-        'address2District'       => ['label' => 'Address 2 District', 'default' => 'fixed'],
-        'address2Country'        => ['label' => 'Address 2 Country', 'default' => 'fixed'],
+        'address1'               => ['label' => 'Residential Address', 'default' => 'required'],
+        'address2'               => ['label' => 'Postal Address', 'default' => ''],
         'phone1'                 => ['label' => 'Phone 1', 'default' => ''],
         'phone2'                 => ['label' => 'Phone 2', 'default' => ''],
         'phone3'                 => ['label' => 'Phone 3', 'default' => ''],
@@ -67,15 +63,9 @@ class RequiredUpdates implements SpecialInterface {
         'profession'             => ['label' => 'Profession', 'default' => ''],
         'employer'               => ['label' => 'Employer', 'default' => ''],
         'jobTitle'               => ['label' => 'Job Title', 'default' => ''],
-        'emergency1Name'         => ['label' => 'Emergency 1 Name', 'default' => ''],
-        'emergency1Number1'      => ['label' => 'Emergency 1 Number 1', 'default' => ''],
-        'emergency1Number2'      => ['label' => 'Emergency 1 Number 2', 'default' => ''],
-        'emergency1Relationship' => ['label' => 'Emergency 1 Relationship', 'default' => ''],
-        'emergency2Name'         => ['label' => 'Emergency 2 Name', 'default' => ''],
-        'emergency2Number1'      => ['label' => 'Emergency 2 Number 1', 'default' => ''],
-        'emergency2Number2'      => ['label' => 'Emergency 2 Number 2', 'default' => ''],
-        'emergency2Relationship' => ['label' => 'Emergency 2 Relationship', 'default' => ''],
-        'vehicleRegistration'    => ['label' => 'Vehicle Registration', 'default' => '']
+        'vehicleRegistration'    => ['label' => 'Vehicle Registration', 'default' => ''],
+        'emergencyContact1'      => ['label' => 'Emergency Contact 1', 'default' => ''],
+        'emergencyContact2'      => ['label' => 'Emergency Contact 2', 'default' => ''],
     ];
 
     /**
@@ -90,23 +80,6 @@ class RequiredUpdates implements SpecialInterface {
     public function __construct()
     {
         $this->settings = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray( 'People', 'personalDataUpdaterRequiredFields');
-
-        // Convert original Y/N settings
-        if (!isset($this->settings['Staff'])) {
-            foreach ($this->getSettingDefaults() as $name => $field) {
-                $value = (isset($this->settings[$name]) && $this->settings[$name] ==='Y') ? 'required' : $field['default'];
-                unset($this->settings[$name]);
-                $this->settings['Staff'][$name]= $value;
-                $this->settings['Student'][$name] = $value;
-                $this->settings['Parent'][$name]= $value;
-                $this->settings['Other'][$name] = $value;
-            }
-        }
-
-        foreach($this->settings as $q=>$w) {
-            if (!in_array($q, ['Staff','Student','Parent','Other']))
-                unset($this->settings[$q]);
-        }
     }
 
 
@@ -261,9 +234,8 @@ class RequiredUpdates implements SpecialInterface {
         $result = [];
         foreach($this->settings as $group=>$values) {
             foreach($values as $name=>$value) {
-                if ($name === 'address1')
-                    $value = 'fixed';
-                $result[$group][$name] = new ChoiceView($name, $value, TranslationHelper::translate($name));
+                $label = $this->settingDefaults[$name]['label'];
+                $result[$group][$name] = new ChoiceView($value, $value ?? $this->settingDefaults[$name]['default'], TranslationHelper::translate($label));
             }
         }
         return $result;
