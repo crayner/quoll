@@ -630,6 +630,16 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_SYSTEM_ADMIN']
+-
+  name: 'Student Settings'
+  precedence: 0
+  category: 'Settings'
+  description: 'Configure settings relating to Students and Student Note Categories'
+  route_list: ['student_settings']
+  entry_route: 'student_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
 ");
     }
 
@@ -798,6 +808,13 @@ class Action extends AbstractEntity
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: System }
+    target: module
+-
+    findBy: 
+        entryRoute: 'student_settings'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: People }
     target: module
 ");
     }

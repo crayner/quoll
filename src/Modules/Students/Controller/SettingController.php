@@ -12,9 +12,7 @@
  * Date: 3/05/2020
  * Time: 14:06
  */
-
 namespace App\Modules\Students\Controller;
-
 
 use App\Container\Container;
 use App\Container\ContainerManager;
@@ -30,9 +28,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class SettingController
+ * @package App\Modules\Students\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class SettingController extends AbstractPageController
 {
-
     /**
      * Student Settings
      * @Route("/student/settings/{tabName}",name="student_settings")
