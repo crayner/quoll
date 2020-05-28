@@ -24,6 +24,7 @@ use Doctrine\ORM\PersistentCollection;
 use App\Modules\People\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class NotificationEvent
@@ -83,10 +84,21 @@ class NotificationEvent extends AbstractEntity
     private static $typeList = ['Core', 'Additional', 'CLI'];
 
     /**
-     * @var array|null
+     * @var array
      * @ORM\Column(type="simple_array")
+     * @Assert\Choice(callback="getScopeList",multiple=true)
      */
-    private $scopes = 'All';
+    private $scopes = ['All'];
+
+    /**
+     * @var string[] 
+     */
+    private static $scopeList = [
+        'All',
+        'year_group',
+        'student',
+        'staff',
+    ];
 
     /**
      * @var string|null
@@ -149,22 +161,6 @@ class NotificationEvent extends AbstractEntity
     /**
      * @return string|null
      */
-    public function getModuleName(): ?string
-    {
-        return $this->getModule() ? $this->getModule()->getName() : null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getActionName(): ?string
-    {
-        return $this->getAction() ? $this->getAction()->getName() : null;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -187,15 +183,6 @@ class NotificationEvent extends AbstractEntity
     {
         if (!is_array($this->scopes))
             $this->scopes = [];
-        // Legacy
-        foreach($this->scopes as $q=>$w) {
-            if ($w === 'gibbonPersonIDStudent')
-                $this->scopes[$q] = 'Student';
-            if ($w === 'gibbonPersonIDStaff')
-                $this->scopes[$q] = 'Staff';
-            if ($w === 'gibbonYearGroupID')
-                $this->scopes[$q] = 'Year Group';
-        }
         return $this->scopes ?: [];
     }
 
@@ -207,6 +194,14 @@ class NotificationEvent extends AbstractEntity
     {
         $this->scopes = $scopes ?: ['All'];
         return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getScopeList(): array
+    {
+        return self::$scopeList;
     }
 
     /**
@@ -356,16 +351,6 @@ class NotificationEvent extends AbstractEntity
     }
 
     /**
-     * legacyNameCalling
-     * @ORM\PrePersist()
-     */
-    public function legacyNameCalling()
-    {
-            $this->setModuleName($this->getModuleName());
-            $this->setActionName($this->getActionName());
-    }
-
-    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -410,5 +395,40 @@ class NotificationEvent extends AbstractEntity
     public static function getVersion(): string
     {
         return self::VERSION;
+    }
+
+    public function getCoreData(): array
+    {
+        Yaml::parse("
+-
+  event: 'Login - Failed'
+  type: 'Core'
+  scopes: ['All']
+  active: 'Y'
+");
+    }
+
+    /**
+     * coreDataLinks
+     * @return mixed
+     */
+    public function coreDataLinks()
+    {
+        return Yaml::parse("
+-
+    findBy: 
+        event: 'Login - Failed'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'People' }
+    target: module
+-
+    findBy: 
+        event: 'Login - Failed'
+    source: 
+        table: App\Modules\System\Entity\Action
+        findBy: { name: 'Manage People' }
+    target: action
+");
     }
 }

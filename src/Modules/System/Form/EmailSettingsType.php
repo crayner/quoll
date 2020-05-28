@@ -16,12 +16,15 @@
 namespace App\Modules\System\Form;
 
 use App\Form\Transform\NoOnEmptyTransformer;
+use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\MailerSettingsManager;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -49,99 +52,77 @@ class EmailSettingsType extends AbstractType
                     'label' => 'E-Mail',
                 ]
             )
-            ->add('emailSettings', SettingsType::class,
+            ->add('enableMailerSMTP', EnumType::class,
                 [
-                    'settings' => [
-                        [
-                            'scope' => 'System',
-                            'name' => 'enableMailerSMTP',
-                            'entry_type' => ChoiceType::class,
-                            'entry_options' => [
-                                'choices' => [
-                                    'GMail' => 'GMail',
-                                    'SMTP' => 'SMTP',
-                                ],
-                                'placeholder' => 'No E-Mail Settings',
-                                'required' => false,
-                                'visible_by_choice' => true,
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'mailerSMTPUsername',
-                            'entry_type' => TextType::class,
-                            'entry_options' => [
-                                'visible_values' => ['GMail','SMTP'],
-                                'visible_labels' =>
-                                    [
-                                        'GMail' =>
-                                            [
-                                                'label' => TranslationHelper::translate('GMail Account'),
-                                                'help' => TranslationHelper::translate('Gmail uses the full email address for the account name.'),
-                                            ],
-                                        'SMTP' =>
-                                            [
-                                                'label' => TranslationHelper::translate('SMTP Username'),
-                                                'help' => TranslationHelper::translate('Username to use for SMTP authentication. Leave blank for no authentication.'),
-                                            ],
-                                    ],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'mailerSMTPPassword',
-                            'entry_type' => TextType::class,
-                            'entry_options' => [
-                                'visible_values' => ['GMail','SMTP'],
-                                'visible_labels' =>
-                                    [
-                                        'GMail' =>
-                                            [
-                                                'label' => TranslationHelper::translate('GMail Password'),
-                                                'help' => '',
-                                            ],
-                                        'SMTP' =>
-                                            [
-                                                'label' => TranslationHelper::translate('SMTP Password'),
-                                                'help' => TranslationHelper::translate('Password to use for SMTP authentication. Leave blank for no authentication.'),
-                                            ],
-                                    ],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'mailerSMTPHost',
-                            'entry_type' => TextType::class,
-                            'entry_options' => [
-                                'visible_values' => ['SMTP'],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'mailerSMTPPort',
-                            'entry_type' => IntegerType::class,
-                            'entry_options' => [
-                                'visible_values' => ['SMTP'],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'mailerSMTPSecure',
-                            'entry_type' => ChoiceType::class,
-                            'entry_options' => [
-                                'choices' => [
-                                    'Automatic' => 'auto',
-                                    'tls'  => 'tls',
-                                    'ssl'  => 'ssl',
-                                    'None' => 'none',
-                                ],
-                                'visible_values' => ['SMTP'],
-                            ],
-                        ],
-                    ],
+                    'label' => 'Enable Mailer Settings',
+                    'help' => 'Allow the system to send emails.',
+                    'choice_list_prefix' => 'mailer.enable',
+                    'placeholder' => 'No E-Mail Settings',
+                    'required' => false,
+                    'visible_by_choice' => true,
                 ]
             )
-            ->add('submit', SubmitType::class);
+            ->add('mailerSMTPUsername', TextType::class,
+                [
+                    'visible_values' => ['gmail','smtp'],
+                    'visible_labels' =>
+                        [
+                            'gmail' =>
+                                [
+                                    'label' => TranslationHelper::translate('GMail Account'),
+                                    'help' => TranslationHelper::translate('Gmail uses the full email address for the account name.'),
+                                ],
+                            'smtp' =>
+                                [
+                                    'label' => TranslationHelper::translate('SMTP Username'),
+                                    'help' => TranslationHelper::translate('Username to use for SMTP authentication. Leave blank for no authentication.'),
+                                ],
+                        ],
+                    'required' => false,
+                ]
+            )
+            ->add('mailerSMTPPassword', TextType::class,
+                [
+                    'visible_values' => ['gmail','smtp'],
+                    'visible_labels' =>
+                        [
+                            'gmail' =>
+                                [
+                                    'label' => TranslationHelper::translate('GMail Password'),
+                                    'help' => 'You may need to create an application password on your GMail account. See <a href="https://support.google.com/accounts/answer/185833?hl=en" target="_blank">https://support.google.com/accounts/answer/185833?hl=en</a> for details.',
+                                ],
+                            'smtp' =>
+                                [
+                                    'label' => TranslationHelper::translate('SMTP Password'),
+                                    'help' => TranslationHelper::translate('Password to use for SMTP authentication. Leave blank for no authentication.'),
+                                ],
+                        ],
+                ]
+            )
+            ->add('mailerSMTPHost', TextType::class,
+                [
+                    'visible_values' => ['smtp'],
+                    'label' => 'SMTP Host',
+                    'help' => 'The hostname of the email server.',
+                ]
+            )
+            ->add('mailerSMTPPort', TextType::class,
+                [
+                    'visible_values' => ['smtp'],
+                    'label' => 'SMTP Port',
+                    'help' => 'Set the SMTP port number - likely to be 25, 465 or 587.',
+                ]
+            )
+            ->add('mailerSMTPSecure', EnumType::class,
+                [
+                    'visible_values' => ['smtp'],
+                    'label' => 'SMTP Encryption',
+                    'help' => 'Automatically sets the encryption based on the port, otherwise select one manually.',
+                    'choice_list_prefix' => 'mailer.secure',
+                ]
+            )
+            ->add('submit', SubmitType::class)
+        ;
 
         TranslationHelper::setDomain('System');
     }
@@ -155,7 +136,7 @@ class EmailSettingsType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'System',
-                'data_class' => null,
+                'data_class' => MailerSettingsManager::class,
             ]
         );
     }

@@ -35,6 +35,7 @@ parameters:
         ROLE_PRINCIPAL:
             - ROLE_HEAD_TEACHER
             - ROLE_PAST_YEARS
+            - ROLE_LIBRARIAN
         ROLE_SUPPORT:
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_STAFF
@@ -48,7 +49,8 @@ parameters:
             - ROLE_PARENT
     timezone: UTC
     locale: en_GB
-    mailer_dns: 'smtp://null'
+    mailer_dsn: 'smtp://null'
+    messenger_dsn: 'doctrine://default'
     google_oauth: false
     google_api_key: ~
     google_client_id: ~

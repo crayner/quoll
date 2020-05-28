@@ -9,6 +9,9 @@ export default class Messages extends Component {
         super(props)
         this.translate = props.translate
         this.cancelMessage = this.cancelMessage.bind(this)
+        this.state = {
+            messages: props.messages,
+        }
     }
 
     cancelMessage(id) {
@@ -20,8 +23,8 @@ export default class Messages extends Component {
     }
 
     render() {
-        let cells = Object.keys(this.props.messages).map(key => {
-            let message = this.props.messages[key]
+        let cells = Object.keys(this.state.messages).map(key => {
+            let message = this.state.messages[key]
             if (typeof message.close === 'undefined')
                 message.close = true
             if (typeof message === 'undefined')

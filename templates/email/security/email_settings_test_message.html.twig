@@ -1,0 +1,12 @@
+{% trans_default_domain 'System' %}
+
+{% extends 'email/email.html.twig'  %}
+{% set title = 'Test Email Settings'|trans %}
+
+{% block title %}
+<h2 style="margin-top: 0">{{ 'Test Email Settings'|trans }}</h2>
+{% endblock title %}
+
+{% block body %}
+<p>{{ 'This message is sent as a test of the email settings on the Kookaburra Server at {address}'|trans({'{address}': absoluteURL}) }}</p>
+{% endblock body %}

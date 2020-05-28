@@ -427,6 +427,10 @@ class Scale extends AbstractEntity
         return self::VERSION;
     }
 
+    /**
+     * coreDataLinks
+     * @return mixed
+     */
     public function coreDataLinks()
     {
         return Yaml::parse("

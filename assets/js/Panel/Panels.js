@@ -44,7 +44,7 @@ export default function Panels(props) {
             preContent = panel.preContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
-                return ''
+                return Parser(name)
             })
         }
 
@@ -53,10 +53,11 @@ export default function Panels(props) {
         }
 
         if (panel.postContent !== null) {
+            console.log(panel)
             postContent = panel.postContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
-                return ''
+                return Parser(name)
             })
         }
 

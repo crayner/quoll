@@ -21,11 +21,9 @@ E-Mail: E-Mail
 EMail: EMail
 Enable Gibbon-wide integration with the Google APIs?: Enable Gibbon-wide integration with the Google APIs?
 Enable Payments: Enable Payments
-Enable SMTP Mail: Enable SMTP Mail
 First Day Of The Week: First Day Of The Week
 GMail Account: GMail Account
 GMail Password: GMail Password
-GMail: GMail
 General email address for the school: General email address for the school
 Gmail uses the full email address for the account name.: Gmail uses the full email address for the account name.
 Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.: Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.
@@ -100,7 +98,6 @@ SMTP Host: SMTP Host
 SMTP Password: SMTP Password
 SMTP Port: SMTP Port
 SMTP Username: SMTP Username
-SMTP: SMTP
 School Google Calendar ID: School Google Calendar ID
 Security Settings: Security Settings
 Security: Security
@@ -270,3 +267,22 @@ country: country
 Demonstration Data Completed: Demonstration Data Completed
 Full details can be found in the installation-{date}.log file in the /var/log directory.: Full details can be found in the installation-{date}.log file in the /var/log directory.
 Demonstration Data: Demonstration Data
+A list of module categories in display order.: A list of module categories in display order.
+Allow the system to send emails.: Allow the system to send emails.
+Enable Mailer Settings: Enable Mailer Settings
+The hostname of the email server.: The hostname of the email server.
+mailer:
+    enable:
+        gmail: Gmail
+        smtp: SMTP
+    secure:
+        auto: Automatic
+        none: None
+        ssl: SSL
+        tls: TLS
+Please check your email (address) for a successful test message.: Please check your email (address) for a successful test message.
+Test EMail Settings on {address}: Test EMail Settings on {address}
+Test Email Settings: Test Email Settings
+'Test your email settings to your own email address: {address}': 'Test your email settings to your own email address: {address}'
+The email setting where not tested as you do not have an email address recorded in your personal record.: The email setting where not tested as you do not have an email address recorded in your personal record.
+This message is sent as a test of the email settings on the Kookaburra Server at {address}: This message is sent as a test of the email settings on the Kookaburra Server at {address}

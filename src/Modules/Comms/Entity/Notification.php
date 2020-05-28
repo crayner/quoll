@@ -17,6 +17,7 @@ use App\Modules\People\Entity\Person;
 use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Notification

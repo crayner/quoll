@@ -40,6 +40,7 @@ ROLE_SUPPORT: Support Staff
 ROLE_HEAD_TEACHER: Head Teacher
 ROLE_PARENT: Parent
 ROLE_PRINCIPAL: Principal
+ROLE_LIBRARIAN: Librarian
 ROLE_FINANCE: Financial Staff
 ROLE_STAFF: Staff
 ROLE_STUDENT: Student

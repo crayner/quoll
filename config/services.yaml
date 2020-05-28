@@ -99,3 +99,4 @@ services:
     App\Modules\System\Form\SystemType:
         calls:
             - ['setParameterBag', ['@parameter_bag']]
+

@@ -12,16 +12,18 @@
  * Date: 26/03/2020
  * Time: 13:31
  */
-
 namespace App\Modules\System\Controller;
 
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Controller\AbstractPageController;
+use App\Messenger\SendEmailNowMessage;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
+use App\Twig\DefaultContextEmail;
 use App\Util\ErrorMessageHelper;
+use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use App\Modules\System\Form\EmailSettingsType;
 use App\Modules\System\Form\GoogleIntegrationType;
@@ -30,7 +32,19 @@ use App\Modules\System\Form\SMSSettingsType;
 use App\Modules\System\Manager\GoogleSettingManager;
 use App\Modules\System\Manager\MailerSettingsManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Messenger\MessageHandler;
+use Symfony\Component\Mailer\Messenger\SendEmailMessage;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -44,6 +58,9 @@ class ThirdPartyController extends AbstractPageController
      * @param ContainerManager $manager
      * @param string $tabName
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      * @Route("/third/party/settings/{tabName}/", name="third_party_settings")
      * @IsGranted("ROLE_ROUTE"))
      */
@@ -124,27 +141,22 @@ class ThirdPartyController extends AbstractPageController
         $container->addForm('SMS', $form->createView())->addPanel($panel);
 
         // EMail
-        $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'EMail'])]);
+        $msm = new MailerSettingsManager();
+        $msm->parseFromDsn(ParameterBagHelper::get('mailer_dsn'));
+        $form = $this->createForm(EmailSettingsType::class, $msm, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'EMail'])]);
 
         if ($tabName === 'EMail' && $request->getMethod() === 'POST') {
-            $data = [];
-            try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                $msm = new MailerSettingsManager();
-                $msm->handleMailerDsn($request);
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data,true);
-                $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
-            }
-
-            $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'EMail'])]);
+            $msm->handleMailerDsn($form,$request,$this->getUser());
             $manager->singlePanel($form->createView());
+            $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
             $data['form'] = $manager->getFormFromContainer();
-
+            $data['redirect'] = $this->generateUrl('third_party_settings', ['tabName' => 'EMail']);
+            $data['status'] = 'redirect';
             return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('EMail');
+        $panel->setPostContent([$this->renderView('system/test_email_button.html.twig')]);
         $container->addForm('EMail', $form->createView())->addPanel($panel);
 
         // Finally Finished
@@ -154,4 +166,36 @@ class ThirdPartyController extends AbstractPageController
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 
+    /**
+     * testEmail
+     * @param MailerInterface $mailer
+     * @Route("/email/test/",name="test_email")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function testEmail(MailerInterface $mailer)
+    {
+        $result = $this->getParameter('mailer_dsn');
+        // Test Mailer Settings
+        $dsn = Transport\Dsn::fromString($result);
+        if ($dsn instanceof Transport\Dsn) {
+            if ($this->getUser()->getPerson()->getEmail() === null || $this->getUser()->getPerson()->getEmail() === '' ) {
+                $this->addFlash('warning', TranslationHelper::translate('The email setting where not tested as you do not have an email address recorded in your personal record.', [], 'System'));
+            } else {
+                $email = (new DefaultContextEmail())
+                    ->from(new Address(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationEMail', 'quoll@localhost.org.au'),ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName', 'Quoll')))
+                    ->to(new Address($this->getUser()->getPerson()->getEmail(),$this->getUser()->getPerson()->formatName([])))
+                    ->subject(TranslationHelper::translate('Test EMail Settings on {address}', ['{address}' => ParameterBagHelper::get('absoluteURL')], 'System'))
+                    ->htmlTemplate('email/security/email_settings_test_message.html.twig')
+                    ->getEmail()
+                ;
+                try {
+                    $mailer->send($email);
+                    $this->addFlash('info', TranslationHelper::translate('Please check your email (address) for a successful test message.', ['{address}' => $this->getUser()->getPerson()->getEmail()], 'System'));
+                } catch (TransportException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                }
+            }
+        }
+        return $this->redirectToRoute('third_party_settings', ['tabName' => 'EMail']);
+    }
 }

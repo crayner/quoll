@@ -2,3 +2,6 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
         absoluteURL: '%absoluteURL%'
+    paths:
+        # point this wherever your images live
+        '%kernel.project_dir%/public/build/static': images

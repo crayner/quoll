@@ -815,33 +815,6 @@ class Setting extends AbstractEntity
   value: 'Timetable'
 -
   scope: 'System'
-  name: 'enableMailerSMTP'
-  nameDisplay: 'Enable SMTP Mail'
-  description: 'Adds PHPMailer settings for servers with an SMTP connection.'
-  value: 'No'
--
-  scope: 'System'
-  name: 'mailerSMTPHost'
-  nameDisplay: 'SMTP Host'
-  description: 'Set the hostname of the mail server.'
--
-  scope: 'System'
-  name: 'mailerSMTPPort'
-  nameDisplay: 'SMTP Port'
-  description: 'Set the SMTP port number - likely to be 25, 465 or 587.'
-  value: 25
--
-  scope: 'System'
-  name: 'mailerSMTPUsername'
-  nameDisplay: 'SMTP Username'
-  description: 'Username to use for SMTP authentication. Leave blank for no authentication.'
--
-  scope: 'System'
-  name: 'mailerSMTPPassword'
-  nameDisplay: 'SMTP Password'
-  description: 'Password to use for SMTP authentication. Leave blank for no authentication.'
--
-  scope: 'System'
   name: 'organisationName'
   nameDisplay: 'Organisation Name'
   description: ''
@@ -1163,12 +1136,6 @@ class Setting extends AbstractEntity
   nameDisplay: 'Public Applications?'
   description: 'If yes, members of the public can submit applications'
   value: 'N'
--
-  scope: 'System'
-  name: 'mailerSMTPSecure'
-  nameDisplay: 'SMTP Encryption'
-  description: 'Automatically sets the encryption based on the port, otherwise select one manually.'
-  value: 'auto'
 -
   scope: 'Staff'
   name: 'substituteTypes'

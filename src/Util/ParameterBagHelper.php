@@ -54,10 +54,14 @@ class ParameterBagHelper
     /**
      * has
      * @param string $name
+     * @param bool $fail
      * @return mixed
      */
-    public static function get(string $name)
+    public static function get(string $name, bool $fail = true)
     {
+        if (!$fail && !self::has($name)) {
+            return null;
+        }
         return self::getParameterBag()->get($name);
     }
 }

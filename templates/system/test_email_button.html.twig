@@ -1,0 +1,6 @@
+{% trans_default_domain 'System' %}
+
+{% if app.user.person.email is not null or app.user.person.email is not same as('') %}
+<h3>{{ 'Test Email Settings'|trans }}</h3>
+<p class="info">{{ 'Test your email settings to your own email address: {address}'|trans({'{address}': app.user.person.email}) }}<a class="text-right right" href="{{ path('test_email') }}" title="{{ 'Test Email Settings'|trans }}"><span class="fa-fw fa-1-5x far fa-paper-plane text-800-gray hover:text-500-blue" /></a></p>
+{% endif %}

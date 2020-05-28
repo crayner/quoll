@@ -93,7 +93,7 @@ class Kernel extends BaseKernel
         $container->setParameter('installed', false);
         $container->setParameter('installation', []);
         $container->setParameter('messenger_transport_dsn', '');
-        $container->setParameter('mailer_dns', 'smtp://null');
+        $container->setParameter('mailer_dsn', 'smtp://null');
         $container->setParameter('locale', 'en_GB');
         $container->setParameter('system_name', 'Quoll');
         $container->setParameter('organisation_name', 'Quoll');

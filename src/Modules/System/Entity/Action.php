@@ -465,7 +465,7 @@ class Action extends AbstractEntity
   precedence: 0
   category: 'Settings'
   description: 'Allows administrators to configure and make use of third party services.'
-  routeList: ['third_party_settings']
+  routeList: ['third_party_settings','test_email']
   entryRoute: 'third_party_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
