@@ -475,7 +475,7 @@ class Setting extends AbstractEntity
   scope: 'School Admin'
   name: 'facilityTypes'
   nameDisplay: 'FacilityTypes'
-  description: 'A A list of types for facilities.'
+  description: 'A list of types for facilities.'
   value: 'Classroom,Hall,Laboratory,Library,Office,Outdoor,Performance,Staffroom,Storage,Study,Undercover,Other'
 -
   scope: 'Finance'
@@ -1140,7 +1140,7 @@ class Setting extends AbstractEntity
   scope: 'Staff'
   name: 'substituteTypes'
   nameDisplay: 'Substitute Types'
-  description: 'A A list.'
+  description: 'A list of Substitution Types used at your school.'
   value: 'Internal Substitute,External Substitute'
 -
   scope: 'Staff'

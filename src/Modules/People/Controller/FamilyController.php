@@ -287,7 +287,6 @@ class FamilyController extends AbstractPageController
             );
     }
 
-
     /**
      * familyAdultSort
      * @param FamilyMemberAdult $source

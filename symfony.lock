@@ -1,4 +1,7 @@
 {
+    "brick/math": {
+        "version": "0.8.15"
+    },
     "crayner/doctrine-bundle": {
         "version": "1.0.06"
     },
@@ -173,6 +176,12 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "ramsey/collection": {
+        "version": "1.0.1"
+    },
+    "ramsey/uuid": {
+        "version": "4.0.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

@@ -15,6 +15,7 @@
 
 namespace App\Modules\System\Provider;
 
+use App\Manager\EntityInterface;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
@@ -314,7 +315,7 @@ class SettingProvider extends AbstractProvider
     /**
      * Errors.
      *
-     * @param array $errors
+     * @param array $error
      * @return SettingProvider
      */
     public function addError(array $error): SettingProvider
@@ -471,7 +472,6 @@ class SettingProvider extends AbstractProvider
      * @param string $scope
      * @param string $name
      * @param string $class
-     * @param int|null $default
      * @return EntityInterface|null
      * @throws \Exception
      */

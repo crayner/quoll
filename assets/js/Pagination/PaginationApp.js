@@ -13,6 +13,7 @@ import {fetchJson} from "../component/fetchJson"
 import {openUrl, trans} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 import { isEmpty } from '../component/isEmpty'
+import Parser from 'html-react-parser'
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -100,7 +101,7 @@ export default class PaginationApp extends Component {
         if (this.draggableSort) {
             let info = {}
             info.class = 'info'
-            info.message = 'Items rows can be dragged into the correct position.'
+            info.message = 'Items rows can be ordered by dragging onto another item, inserting above that item when dropped. '
             info.close = false
             this.setState({
                 messages: [info],
@@ -572,7 +573,7 @@ export default class PaginationApp extends Component {
         this.storeFilter()
         return (
             <div>
-                {this.preContent}
+                {Parser(this.preContent)}
                 <div className={'text-xs text-gray-600 text-left'}>
                     <Messages messages={this.state.messages} translate={this.translate} />
                     <span className={'float-left clear-both'}>{this.buildPageSizeControls()}</span>

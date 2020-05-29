@@ -286,6 +286,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Close', [], 'messages');
         TranslationHelper::addTranslation('Yes', [], 'messages');
         TranslationHelper::addTranslation('Filter', [], 'messages');
+        TranslationHelper::addTranslation('Delete', [], 'messages');
         TranslationHelper::addTranslation('All', [], 'messages');
         TranslationHelper::addTranslation('Clear', [], 'messages');
         TranslationHelper::addTranslation('Search for', [], 'messages');
@@ -294,7 +295,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Loading Content...', [],'messages');
         TranslationHelper::addTranslation('Default filtering is enforced.', [], 'messages');
         TranslationHelper::addTranslation('Close Message', [], 'messages');
-        TranslationHelper::addTranslation('Items rows can be dragged into the correct position.', [], 'messages');
+        TranslationHelper::addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped. ', [], 'messages');
         TranslationHelper::addTranslation('Loading', [], 'messages');
         return TranslationHelper::getTranslations();
     }
@@ -494,7 +495,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @param bool $sortList
      * @return AbstractPaginationManager
      */
-    public function setSortList(bool $sortList): AbstractPaginationManager
+    public function setSortList(bool $sortList = true): AbstractPaginationManager
     {
         $this->sortList = $sortList;
         return $this;
@@ -537,6 +538,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function setDraggableRoute(string $draggableRoute): AbstractPaginationManager
     {
         $this->draggableRoute = $draggableRoute;
+        if ($draggableRoute !== '') {
+            $this->setDraggableSort();
+        }
         return $this;
     }
 

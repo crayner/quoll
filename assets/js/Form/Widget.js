@@ -286,7 +286,7 @@ export default function Widget(props) {
         widget_attr.type = 'number'
         return (
             <div {...wrapper_attr}>
-                <input {...widget_attr} defaultValue={form.value} />
+                <input {...widget_attr} value={form.value} />
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

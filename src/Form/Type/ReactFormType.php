@@ -17,6 +17,7 @@ namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
 use App\Manager\AbstractEntity;
+use App\Manager\EntityInterface;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
@@ -180,8 +181,12 @@ class ReactFormType extends AbstractType
         $vars['type'] = $this->renderFormType($view->vars['block_prefixes']);
         $vars['value'] = $view->vars['value'];
 
+
         if (is_object($view->vars['value']) && in_array(EntityInterface::class, class_implements($view->vars['value']))) {
             $vars['value'] = $view->vars['value']->getId();
+        }
+        if (is_integer($view->vars['value'])) {
+            $vars['value'] = (string) $view->vars['value'];
         }
 
         if ($vars['type'] === 'choice') {

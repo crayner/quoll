@@ -14,6 +14,14 @@ export default class Messages extends Component {
         }
     }
 
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        if (this.props.messages !== prevState.messages) {
+            this.setState({
+                messages: this.props.messages,
+            })
+        }
+    }
+
     cancelMessage(id) {
         let messages = this.props.messages
         messages.splice(id,1)
