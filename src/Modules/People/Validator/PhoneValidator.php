@@ -14,7 +14,7 @@
  */
 namespace App\Modules\People\Validator;
 
-use App\Modules\People\Manager\PhoneCodes;
+use App\Modules\People\Manager\PhoneManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -35,7 +35,7 @@ class PhoneValidator extends ConstraintValidator
             return;
         }
 
-        if ($value->getCountry() === null || $value->getPhoneNumber() === null || ($regex = PhoneCodes::getValidationRegex($value->getCountry())) === null) {
+        if ($value->getCountry() === null || $value->getPhoneNumber() === null || ($regex = PhoneManager::getValidationRegex($value->getCountry())) === null) {
             return;
         }
 
@@ -47,7 +47,7 @@ class PhoneValidator extends ConstraintValidator
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(Phone::INVALID_PHONE_ERROR)
                 ->setParameter('{value}', $value->getPhoneNumber())
-                ->setParameter('{country}', PhoneCodes::getAlpha3Name($value->getCountry()))
+                ->setParameter('{country}', PhoneManager::getAlpha3Name($value->getCountry()))
                 ->addViolation();
 
         }

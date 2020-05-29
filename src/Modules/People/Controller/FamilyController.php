@@ -124,24 +124,20 @@ class FamilyController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $family->getId();
-
                 $data = $provider->persistFlush($family);
 
                 if ($data['status'] === 'success' && $id !== $family->getId())
                 {
-                    $form = $this->createForm(FamilyGeneralType::class, $family,
-                        ['action' => $this->generateUrl('family_edit', ['family' => $family->getId(), $tabName => 'General'])]
-                    );
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId()]);
+                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
                 }
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data,200);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data,200);
             }
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer();
+            return new JsonResponse($data,200);
         }
 
         $container = new Container();
@@ -234,11 +230,13 @@ class FamilyController extends AbstractPageController
      */
     public function familyAdultEdit(ContainerManager $manager, Family $family, ?FamilyMemberAdult $adult = null)
     {
-        $request = $this->getPageManager()->getRequest();
-        $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
+        $request = $this->getRequest();
+
         if (is_null($adult) || $request->get('_route') === 'family_adult_add') {
             $adult = new FamilyMemberAdult($family);
             $action = $this->generateUrl('family_adult_add', ['family' => $family->getId()]);
+        } else {
+            $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
         }
 
         $form = $this->createForm(FamilyAdultType::class, $adult, ['action' => $action]);
@@ -342,7 +340,7 @@ class FamilyController extends AbstractPageController
      * familyStudentEdit
      * @param Family $family
      * @param ContainerManager $manager
-     * @param FamilyMember|null $student
+     * @param FamilyMemberChild|null $student
      * @return JsonResponse
      * @Route("/family/{family}/student/{student}/edit/",name="family_student_edit")
      * @Route("/family/{family}/student/add/",name="family_student_add")
@@ -350,12 +348,13 @@ class FamilyController extends AbstractPageController
      */
     public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyMemberChild $student = null)
     {
-        $request = $this->getPageManager()->getRequest();
+        $request = $this->getRequest();
 
-        $action = $this->generateUrl('family_student_edit', ['family' => $family->getId(), 'student' => $student->getId()]);
         if (is_null($student) || $request->get('_route') === 'family_student_add') {
-            $student = new FamilyMemberChild($family);
             $action = $this->generateUrl('family_student_add', ['family' => $family->getId()]);
+            $student = new FamilyMemberChild($family);
+        } else {
+            $action = $this->generateUrl('family_student_edit', ['family' => $family->getId(), 'student' => $student->getId()]);
         }
 
         $form = $this->createForm(FamilyChildType::class, $student, ['action' => $action]);

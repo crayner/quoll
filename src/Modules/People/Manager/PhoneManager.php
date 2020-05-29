@@ -25,7 +25,7 @@ use Symfony\Component\Yaml\Yaml;
  * Class PhoneCodes
  * @package App\Modules\People\Manager
  */
-class PhoneCodes
+class PhoneManager
 {
     /**
      * @var array
@@ -173,9 +173,10 @@ class PhoneCodes
     /**
      * formatPhoneNumber
      * @param Phone $phone
+     * @param bool $withIDD
      * @return string
      */
-    public static function formatPhoneNumber(Phone $phone): string
+    public static function formatPhoneNumber(Phone $phone, bool $withIDD = true): string
     {
         if (null !== $phone->getPhoneNumber()) {
             if (($format = self::getPhoneFormat($phone->getCountry())) === null) {
@@ -191,10 +192,10 @@ class PhoneCodes
                 }
 
                 if (count($matches) < 2) {
-                    return ($format['useIdd'] ? str_replace('idd', self::getAlpha3IddCode($phone->getCountry()), $format['useIdd']) : '') . $phone->getPhoneNumber();
+                    return ($format['useIdd'] && $withIDD ? str_replace('idd', self::getAlpha3IddCode($phone->getCountry()), $format['useIdd']) : '') . $phone->getPhoneNumber();
                 }
 
-                return ($format['useIdd'] ? str_replace('idd', self::getAlpha3IddCode($phone->getCountry()), $format['useIdd']) : '') . str_replace(['{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{0}'], $matches, $format['template']);
+                return ($format['useIdd'] && $withIDD ? str_replace('idd', self::getAlpha3IddCode($phone->getCountry()), $format['useIdd']) : '') . str_replace(['{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{0}'], $matches, $format['template']);
             }
         }
         return (string)$phone->getPhoneNumber();
@@ -262,5 +263,15 @@ class PhoneCodes
             }
             throw $e;
         }
+    }
+
+    /**
+     * formatCountryCode
+     * @param Phone $phone
+     * @return string
+     */
+    public static function formatCountryCode(Phone $phone): string
+    {
+        return Countries::getAlpha3Name($phone->getCountry()) . ' (+' . self::getAlpha3IddCode($phone->getCountry()) . ')';
     }
 }

@@ -18,6 +18,7 @@ namespace App\Modules\People\Repository;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Locality;
+use App\Modules\People\Entity\Phone;
 use App\Modules\People\Util\UserHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -432,5 +433,19 @@ class PersonRepository extends ServiceEntityRepository
         } catch (NoResultException | NonUniqueResultException $e) {
             return 0;
         }
+    }
+
+    /**
+     * findPhoneList
+     * @return array
+     */
+    public function findPhoneList(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.personalPhone IS NOT NULL')
+            ->select(['p.id as person','ph.id'])
+            ->join('p.personalPhone', 'ph')
+            ->getQuery()
+            ->getResult();
     }
 }

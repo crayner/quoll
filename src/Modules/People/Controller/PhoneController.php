@@ -16,8 +16,10 @@ namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Modules\People\Form\PhoneType;
+use App\Modules\People\Pagination\PhonePagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -32,14 +34,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class PhoneController extends AbstractPageController
 {
     /**
+     * list
+     * @Route("/phone/list/",name="phone_list")
+     * @IsGranted("ROLE_SUPPORT")
+     * @param PhonePagination $pagination
+     * @return JsonResponse
+     */
+    public function list(PhonePagination $pagination)
+    {
+        return $this->getPagination($pagination);
+    }
+
+    /**
      * edit
      * @param ContainerManager $manager
      * @param Phone|null $phone
-     * @Route("/phone/list/",name="phone_list")
-     * @Route("/phone/list/",name="phone_delete")
      * @Route("/phone/add/popup/",name="phone_add_popup")
      * @Route("/phone/add/",name="phone_add")
      * @Route("/phone/{phone}/edit/popup/",name="phone_edit_popup")
+     * Popup size is 700x350, in window called Phone_Details
      * @IsGranted("ROLE_SUPPORT")
      */
     public function edit(ContainerManager $manager, ?Phone $phone)
@@ -99,5 +112,43 @@ class PhoneController extends AbstractPageController
             $result[] = new ChoiceView($phone, $phone->getId(), $phone->__toString());
         }
         return new JsonResponse(['choices' => $result]);
+    }
+
+    /**
+     * delete
+     * @param Phone $phone
+     * @param PhonePagination $pagination
+     * @return JsonResponse
+     * @Route("/phone/{phone}/delete/",name="phone_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function delete(Phone $phone, PhonePagination $pagination)
+    {
+        ProviderFactory::create(Phone::class)->delete($phone);
+        return $this->getPagination($pagination, ProviderFactory::create(Person::class)->getMessageManager()->pushToJsonData()['errors']);
+    }
+
+    /**
+     * getPagination
+     * @param PhonePagination $pagination
+     * @param array $messages
+     * @return JsonResponse
+     */
+    private function getPagination(PhonePagination $pagination, array $messages = [])
+    {
+        $content = ProviderFactory::getRepository(Phone::class)->findBy([],['phoneNumber' => 'ASC']);
+        $pagination->setContent($content)
+            ->setStack($this->getPageManager()->getStack())
+            ->setAddElementRoute(['url' => $this->generateUrl('phone_add_popup'), 'target' => 'Phone_Details', 'options' => 'width=700,height=350'])
+            ->setRefreshRoute($this->generateUrl('phone_list'))
+        ;
+        return $this->getPageManager()->createBreadcrumbs('Manage Phones')->setMessages($messages)
+            ->render(
+                [
+                    'pagination' => $pagination->toArray(),
+                    'url' => $this->generateUrl('phone_list'),
+                    'title' => 'Manage Phones',
+                ]
+            );
     }
 }

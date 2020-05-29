@@ -174,7 +174,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->add('warning', 'return.warning.3', [], 'messages');
+                $this->getMessageManager()->add('warning', 'return.warning.3', ['{id}' => $id, '{class}' => $this->getEntityName()], 'messages');
                 return $entity;
             }
         } elseif (method_exists($entity, 'canDelete')) {
@@ -185,7 +185,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->add('warning', 'return.warning.3', [], 'messages');
+                $this->getMessageManager()->add('warning', 'return.warning.3', ['{id}' => $id, '{class}' => $this->getEntityName()], 'messages');
                 return $entity;
             }
         } else {
@@ -194,7 +194,6 @@ abstract class AbstractProvider implements EntityProviderInterface
             $this->getMessageManager()->add('success', 'return.success.0', [], 'messages');
             $this->entity = null;
             return $entity;
-
         }
     }
 

@@ -15,6 +15,7 @@ namespace App\Modules\People\Repository;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Entity\Phone;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use App\Modules\People\Entity\District;
@@ -104,6 +105,20 @@ class FamilyRepository extends ServiceEntityRepository
             ->leftJoin('f.children', 'c')
             ->where('(a.person = :person OR c.person = :person)')
             ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findPhoneList
+     * @return array
+     */
+    public function findPhoneList(): array
+    {
+        return $this->createQueryBuilder('f', )
+            ->select(['f.id as family','p.id'])
+            ->where('p.id IS NOT NULL')
+            ->leftJoin('f.familyPhones', 'p')
             ->getQuery()
             ->getResult();
     }

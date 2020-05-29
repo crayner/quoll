@@ -15,7 +15,9 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\People\Manager\PhoneCodes;
+use App\Modules\People\Manager\PhoneManager;
+use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -186,7 +188,14 @@ class Phone extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
-        return [];
+        return [
+            'id' => $this->getId(),
+            'type' => TranslationHelper::translate(strtolower('phone.type.' . $this->getType())),
+            'phoneNumber' => PhoneManager::formatPhoneNumber($this, false),
+            'phoneRaw' => $this->getPhoneNumber(),
+            'country' => PhoneManager::formatCountryCode($this),
+            'canDelete' => ProviderFactory::create(Phone::class)->canDelete($this),
+        ];
     }
 
     /**
@@ -222,7 +231,7 @@ class Phone extends AbstractEntity
      */
     public function __toString(): string
     {
-        return PhoneCodes::formatPhoneNumber($this);
+        return PhoneManager::formatPhoneNumber($this);
     }
 
     public static function getVersion(): string

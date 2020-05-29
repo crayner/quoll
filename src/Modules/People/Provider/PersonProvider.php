@@ -18,6 +18,7 @@ namespace App\Modules\People\Provider;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\Phone;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -439,5 +440,29 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
     public function getPaginationContent(): array
     {
         return $this->getRepository()->getPaginationContent();
+    }
+
+    /**
+     * @var array
+     */
+    private $phoneList;
+
+    /**
+     * isPhoneInPeople
+     * @param Phone $phone
+     * @return bool
+     */
+    public function isPhoneInPeople(Phone $phone): bool
+    {
+        if (is_null($this->phoneList)) {
+            $this->phoneList = [];
+            foreach($this->getRepository()->findPhoneList() as $item) {
+                $this->phoneList[$item['id']] = $item['id'];
+            }
+        }
+        if (key_exists($phone->getId(), $this->phoneList)) {
+            return true;
+        }
+        return false;
     }
 }

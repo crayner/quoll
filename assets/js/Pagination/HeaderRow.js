@@ -22,6 +22,9 @@ export default function HeaderRow(props) {
         let w = sortColumnName
         if (typeof sortColumnName === 'array')
             w = sortColumnName[0]
+        if (column.contentKey === null) {
+            console.error('The columnKey MUST be set in the pagination column: ' + column.label)
+        }
         if (column.contentKey.includes(w)) {
             sort = (<span className={'fas fa-sort-' + sortColumnDirection + ' fa-fw text-gray-800'} style={{float: 'right'}}/>)
         }

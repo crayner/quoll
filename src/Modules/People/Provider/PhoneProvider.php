@@ -18,6 +18,7 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Provider\AbstractProvider;
+use App\Provider\ProviderFactory;
 
 /**
  * Class PhoneProvider
@@ -43,5 +44,21 @@ class PhoneProvider extends AbstractProvider
         }
         array_unique($result);
         return $result;
+    }
+
+    /**
+     * canDelete
+     * @param Phone $phone
+     * @return bool
+     */
+    public function canDelete(Phone $phone): bool
+    {
+        if (ProviderFactory::create(Person::class)->isPhoneInPeople($phone)) {
+            return false;
+        }
+        if (ProviderFactory::create(Family::class)->isPhoneInFamily($phone)) {
+            return false;
+        }
+        return true;
     }
 }

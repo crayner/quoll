@@ -16,7 +16,6 @@ namespace App\Manager;
 
 use App\Modules\School\Entity\Scale;
 use App\Provider\ProviderFactory;
-use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

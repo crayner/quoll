@@ -17,7 +17,7 @@ namespace App\Modules\People\Form;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Modules\People\Manager\PhoneCodes;
+use App\Modules\People\Manager\PhoneManager;
 use App\Modules\People\Entity\Phone;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
@@ -76,10 +76,10 @@ class PhoneType extends AbstractType
             ->add('country', ChoiceType::class,
                 [
                     'label' => 'International Direct Dial Code',
-                    'choices' => PhoneCodes::getIddCodeChoices(),
+                    'choices' => PhoneManager::getIddCodeChoices(),
                     'choice_translation_domain' => false,
                     'placeholder' => ' ',
-                    'preferred_choices' => PhoneCodes::getIddCodePreferredChoices($this->bag)
+                    'preferred_choices' => PhoneManager::getIddCodePreferredChoices($this->bag)
                 ]
             )
             ->add('submit', SubmitType::class)

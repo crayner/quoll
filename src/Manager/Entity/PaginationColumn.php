@@ -122,7 +122,8 @@ class PaginationColumn
     }
 
     /**
-     * @return string|array|null
+     * getContentKey
+     * @return array|string
      */
     public function getContentKey()
     {

@@ -12,7 +12,6 @@
  * Date: 20/02/2020
  * Time: 15:17
  */
-
 namespace App\Manager;
 
 use App\Exception\MissingModuleException;
@@ -26,7 +25,6 @@ use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
-use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
@@ -55,6 +53,7 @@ use Twig\Error\SyntaxError;
 /**
  * Class PageManager
  * @package App\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class PageManager
 {
@@ -409,8 +408,7 @@ class PageManager
             ]
         );
         $x = array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]);
-        $response = new JsonResponse($x);
-        return $response;
+        return new JsonResponse($x);
     }
 
     /**
@@ -616,7 +614,6 @@ class PageManager
      */
     public function getBaseResponse()
     {
-
         try {
             $content = $this->twig->render('react_base.html.twig',
                 [
@@ -783,5 +780,4 @@ class PageManager
     {
         return $this->checker;
     }
-
 }
