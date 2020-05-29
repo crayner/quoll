@@ -295,7 +295,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Loading Content...', [],'messages');
         TranslationHelper::addTranslation('Default filtering is enforced.', [], 'messages');
         TranslationHelper::addTranslation('Close Message', [], 'messages');
-        TranslationHelper::addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped. ', [], 'messages');
+        TranslationHelper::addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped.', [], 'messages');
         TranslationHelper::addTranslation('Loading', [], 'messages');
         return TranslationHelper::getTranslations();
     }

@@ -101,7 +101,7 @@ export default class PaginationApp extends Component {
         if (this.draggableSort) {
             let info = {}
             info.class = 'info'
-            info.message = 'Items rows can be ordered by dragging onto another item, inserting above that item when dropped. '
+            info.message = 'Items rows can be ordered by dragging onto another item, inserting above that item when dropped.'
             info.close = false
             this.setState({
                 messages: [info],
