@@ -59,3 +59,20 @@ Submit: Submit
 'The first day of the term is before the first day of the academic year (first_day).)': 'The first day of the term is before the first day of the academic year (first_day).)'
 'Academic Year: {value}': 'Academic Year: {value}'
 'The last day of the term is after the last day of the academic year (last_day).)': 'The last day of the term is after the last day of the academic year (last_day).)'
+Add Special Day: Add Special Day
+Date: Date
+Description: Description
+Duplicate: Duplicate
+Must be unique in the Academic Year.: Must be unique in the Academic Year.
+School Closes: School Closes
+School Ends: School Ends
+School Opens: School Opens
+School Starts: School Starts
+Special Days: Special Days
+This value is locked. Change it in the Academic Year screen.: This value is locked. Change it in the Academic Year screen.
+This value is locked.: This value is locked.
+Type: Type
+academicyearspecialday:
+    type:
+        school closure: School Closure
+        timing change: Timing Change

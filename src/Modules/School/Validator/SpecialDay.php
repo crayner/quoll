@@ -24,6 +24,14 @@ use Symfony\Component\Validator\Constraint;
  */
 class SpecialDay extends Constraint
 {
+    const INVALID_SPECIAL_DAY_ERROR = 'a6ea5af9-5293-4cb5-a8cd-d776774265d6';
+
+    protected static $errorNames = [
+        self::INVALID_SPECIAL_DAY_ERROR => 'INVALID_SPECIAL_DAY_ERROR',
+    ];
+
+    public $transDomain = 'School';
+
     /**
      * getTargets
      * @return array|string

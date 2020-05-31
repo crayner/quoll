@@ -41,8 +41,8 @@ class AcademicYearHelper
 
     /**
      * getCurrentAcademicYear
-     * @return mixed
-     * @throws \Exception
+     * @return AcademicYear|mixed
+     * 31/05/2020 14:00
      */
     public static function getCurrentAcademicYear()
     {
@@ -57,7 +57,6 @@ class AcademicYearHelper
                 ->setFirstDay(new \DateTimeImmutable(date('Y-01-01')))
                 ->setLastDay(new \DateTimeImmutable(date('Y-12-31')))
                 ->setStatus('Current')
-                ->setSequenceNumber(1)
             ;
             ProviderFactory::getEntityManager()->persist($current);
             ProviderFactory::getEntityManager()->flush();

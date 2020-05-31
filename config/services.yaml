@@ -100,3 +100,6 @@ services:
         calls:
             - ['setParameterBag', ['@parameter_bag']]
 
+    App\Modules\School\Pagination\SpecialDayPagination:
+        calls:
+            - ['setStack', ['@request_stack']]

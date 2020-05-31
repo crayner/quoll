@@ -26,10 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearSpecialDayRepository")
  * @ORM\Table(name="AcademicYearSpecialDay",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="date", columns={"date"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="academic_year_date", columns={"date","academic_year"})},
  *     indexes={@ORM\Index(name="academic_year", columns={"academic_year"})})
  * @Check\SpecialDay()
- * @UniqueEntity("date")
+ * @UniqueEntity({"date","academicYear"})
  */
 class AcademicYearSpecialDay extends AbstractEntity
 {
@@ -46,7 +46,7 @@ class AcademicYearSpecialDay extends AbstractEntity
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear", inversedBy="specialDays")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(referencedColumnName="id",name="academic_year")
      */
     private $academicYear;
 
@@ -375,7 +375,7 @@ class AcademicYearSpecialDay extends AbstractEntity
                     `school_close` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
                     `academic_year` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `date` (`date`),
+                    UNIQUE KEY `academic_year_date` (`date`,`academic_year`),
                     KEY `academic_year` (`academic_year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }

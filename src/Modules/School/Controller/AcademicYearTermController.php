@@ -48,7 +48,7 @@ class AcademicYearTermController extends AbstractPageController
         $pagination->setContent($content)
             ->setAddElementRoute($this->generateUrl('academic_year_term_add'));
 
-        return $this->getPageManager()->createBreadcrumbs('Academic Year Terms', [])
+        return $this->getPageManager()->setMessages(isset($data['errors']) ? $data['errors'] : [])->createBreadcrumbs('Academic Year Terms', [])
             ->render(
                 [
                     'pagination' => $pagination->toArray(),
