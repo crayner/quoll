@@ -44,12 +44,12 @@ abstract class AbstractEntity implements EntityInterface
 
     /**
      * isUpdateRequired
-     * @param \DateTimeImmutable|null $date
+     * @param string|null $version
      * @return bool
      */
-    public function isUpdateRequired(?\DateTimeImmutable $date): bool
+    public function isUpdateRequired(?string $version): bool
     {
-        return self::getVersion() < $date->format('Ymd') || null === $date;
+        return version_compare(static::getVersion(), $version, '<') || null === $version;
     }
 
     /**

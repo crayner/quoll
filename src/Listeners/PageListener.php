@@ -87,6 +87,7 @@ class PageListener implements EventSubscriberInterface
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     * 30/05/2020 15:48
      */
     public function onRequest(RequestEvent $event)
     {
@@ -95,9 +96,11 @@ class PageListener implements EventSubscriberInterface
         $route = $request->attributes->get('_route');
 
         // Ignore Debug Screens
-        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route)) {
+        if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route) || $route === null) {
             return;
         }
+
+        $this->getPageManager()->injectCSS($route, $request->getUser());
 
         $this->getPageManager()->configurePage();
 

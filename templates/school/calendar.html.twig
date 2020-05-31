@@ -1,0 +1,34 @@
+{% trans_default_domain 'School' %}
+{% set return = path('academic_year_list') %}
+
+{% extends 'base.html.twig' %}
+
+{% block meta %}
+    {{ parent() }}
+    <link href="{{ absolute_url('/build/static/css/calendar.css') }}" rel="stylesheet">
+    <link href="{{ absolute_url('/build/static/css/calendar-screen.css') }}" media="screen" rel="stylesheet">
+    <link href="{{ absolute_url('/build/static/css/calendar-print.css') }}" media="print" rel="stylesheet">
+{% endblock meta %}
+
+{% block content %}
+    <h3 style="text-align: center">{{ organisationName }} {{ calendar.academicYear.name }} {{ 'Calendar'|trans }}</h3>
+    <p class="no-print right">{{ 'Use CTRL-P on Windows or CMD-SHIFT-P on MAC to print this calendar'|trans }}.<a href="#" onclick="window.close()" title="{{ 'Close'|trans({}, 'messages') }}"><span class="fa-fw fa-1-5x fas fa-times-circle text-gray-800 hover:text-green-500"/></a></p>
+    <div class="w-full">
+        <div class="month-row">
+            {% for month in calendar.months %}
+                {% include 'school/month.html.twig' %}
+                {%  if loop.index is divisible by(4) %}
+                    </div><div class="month-row">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div style="clear: both" class="w-full">
+        {% for day in calendar.academicYear.specialDays %}
+            <div class="specialDayNotice" title="{{ day.date|date('d/M/Y')}}: {{ day.name }} ({{ day.description }})">
+                <span>{{ day.date|date('d/M/Y')}}: {{ day.name }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    <p class="no-screen right">{{ 'Printed: {date}'|trans({'{date}': 'now'|date('jS M/Y')}) }}.</p>
+{% endblock content %}

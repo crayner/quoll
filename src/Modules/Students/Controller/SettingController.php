@@ -38,6 +38,7 @@ class SettingController extends AbstractPageController
     /**
      * Student Settings
      * @Route("/student/settings/{tabName}",name="student_settings")
+     * @Route("/student/settings/{tabName}",name="student_settings_people")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @param StudentNoteCategoryPagination $pagination

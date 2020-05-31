@@ -40,6 +40,7 @@ class SettingController extends AbstractPageController
     /**
      * Staff Settings
      * @Route("/staff/settings/{tabName}",name="staff_settings")
+     * @Route("/staff/settings/{tabName}",name="staff_settings_people")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @param StaffAbsenceTypePagination $pagination

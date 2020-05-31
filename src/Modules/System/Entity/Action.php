@@ -28,9 +28,11 @@ use Symfony\Component\Yaml\Yaml;
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ActionRepository")
  * @ORM\Table(name="Action",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="moduleName", columns={"name", "module"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="module_name", columns={"name", "module"}),
+ *     @ORM\UniqueConstraint(name="entry_route",columns={"entry_route"})},
  *     indexes={@ORM\Index(name="module", columns={"module"})})
  * @UniqueEntity(fields={"name","module"})
+ * @UniqueEntity(fields={"entryRoute"})
  */
 class Action extends AbstractEntity
 {
@@ -635,8 +637,48 @@ class Action extends AbstractEntity
   precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to Students and Student Note Categories'
-  route_list: ['student_settings']
+  route_list: ['student_settings','student_note_category_edit','student_note_category_add','student_note_category_delete']
   entry_route: 'student_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
+-
+  name: 'Student Settings'
+  precedence: 0
+  category: 'Settings'
+  description: 'Configure settings relating to Students and Student Note Categories'
+  route_list: ['student_settings_people']
+  entry_route: 'student_settings_people'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
+-
+  name: 'Academic Years'
+  precedence: 0
+  category: 'Years, Days & Times'
+  description: 'Allows user to control the definition of academic years within the system.'
+  route_list: ['academic_year_list','academic_year_edit','academic_year_delete','academic_year_add','academic_year_display_popup_raw']
+  entry_route: 'academic_year_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
+-
+  name: 'Staff Settings'
+  precedence: 0
+  category: 'Settings'
+  description: 'Configure settings relating to Students and Student Note Categories'
+  route_list: ['staff_settings','staff_absence_type_add','staff_absence_type_edit','staff_absence_type_delete','staff_absence_type_sort']
+  entry_route: 'staff_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
+-
+  name: 'Staff Settings'
+  precedence: 0
+  category: 'Settings'
+  description: 'Configure settings relating to Students and Student Note Categories'
+  route_list: ['staff_settings_people']
+  entry_route: 'staff_settings_people'
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_REGISTRAR']
@@ -812,6 +854,34 @@ class Action extends AbstractEntity
 -
     findBy: 
         entryRoute: 'student_settings'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: People }
+    target: module
+-
+    findBy: 
+        entryRoute: 'student_settings_people'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: System }
+    target: module
+-
+    findBy: 
+        entryRoute: 'academic_year_list'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: School }
+    target: module
+-
+    findBy: 
+        entryRoute: 'staff_settings'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: Staff }
+    target: module
+-
+    findBy: 
+        entryRoute: 'staff_settings_people'
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: People }

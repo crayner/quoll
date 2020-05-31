@@ -1,1 +1,46 @@
 Academic Year: Academic Year
+Academic Years: Academic Years
+School: School
+'Years, Days & Times': 'Years, Days & Times'
+academicyear:
+    status:
+        current: Current
+        past: Past
+        upcoming: Upcoming
+Dates: Dates
+Delete: Delete
+Display: Display
+Edit: Edit
+Name: Name
+Sequence: Sequence
+Status: Status
+Edit Academic Year: Edit Academic Year
+First Day: First Day
+Last Day: Last Day
+Must be unique. Helps to control chronological ordering.: Must be unique. Helps to control chronological ordering.
+Sequence Number: Sequence Number
+Add Academic Year: Add Academic Year
+April: April
+August: August
+Calendar: Calendar
+December: December
+Empty: Empty
+February: February
+Fri: Fri
+January: January
+July: July
+June: June
+March: March
+May: May
+Mon: Mon
+November: November
+October: October
+Sat: Sat
+September: September
+Sun: Sun
+Term Break: Term Break
+Thu: Thu
+Tue: Tue
+Use CTRL-P on Windows or CMD-SHIFT-P on MAC to print this calendar: Use CTRL-P on Windows or CMD-SHIFT-P on MAC to print this calendar
+Wed: Wed
+'Printed: {date}': 'Printed: {date}'

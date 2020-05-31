@@ -17,19 +17,12 @@
             {% endblock meta %}
         </head>
         <body>
-            <div id="wrapOuter" class="sm:px-6"></div>
+            <div id="wrapOuter" class="sm:px-6">{% block content %}{% endblock content %}</div>
             <div id="idleTimeout"></div>
             <script type="application/javascript" lang="js">
-                {% set link = encore_entry_css_files('css/core') %}
-                {% for css in link %}
-                var newLink = document.createElement("link");
-                newLink.href = '{{ asset(css) }}'
-                newLink.rel = 'stylesheet'
-                newLink.type = 'text/css'
-                newLink.media = 'screen'
-                document.head.appendChild(newLink)
-                {% endfor %}
-                {% set link = encore_entry_css_files('css/fastFinder') %}
+                {% block scripts %}
+                {% for style in page.pageStyles %}
+                {% set link = encore_entry_css_files(style) %}
                 {% for css in link %}
                 newLink = document.createElement("link");
                 newLink.href = '{{ asset(css) }}'
@@ -38,6 +31,8 @@
                 newLink.media = 'screen'
                 document.head.appendChild(newLink)
                 {% endfor %}
+                {% endfor %}
+
                 window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
                 {% if app.user %}
                     window.IDLETIMEOUT_PROPS = {{ page.writeIdleTimeout()|json_encode|raw }}
@@ -45,6 +40,7 @@
                         window.FASTFINDER_PROPS = {{ page.writeFastFinder()|json_encode|raw }}
                     {% endif %}
                 {% endif %}
+                {% endblock scripts %}
             </script>
 
             {% set x = page.writeProperties() %}

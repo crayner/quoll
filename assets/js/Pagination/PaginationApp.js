@@ -170,8 +170,13 @@ export default class PaginationApp extends Component {
     }
 
     loadNewPage(path, options) {
-        if (typeof options.options !== 'string')
+        if (typeof path === 'object' && path.url) {
+            window.open(path.url, path.target, path.options)
+            return
+        }
+        if (typeof options.options !== 'string') {
             options.options = '_self'
+        }
         window.open(path, options.options)
     }
 
@@ -572,9 +577,9 @@ export default class PaginationApp extends Component {
     render () {
         this.storeFilter()
         return (
-            <div>
+            <div className={'paginationApp'}>
                 {Parser(this.preContent)}
-                <div className={'text-xs text-gray-600 text-left'}>
+                <div className={'text-xs text-gray-600 text-left paginationControls'}>
                     <Messages messages={this.state.messages} translate={this.translate} />
                     <span className={'float-left clear-both'}>{this.buildPageSizeControls()}</span>
                     <span className={'float-right'}>{this.buildControl()}</span>

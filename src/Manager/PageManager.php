@@ -18,6 +18,7 @@ use App\Exception\MissingModuleException;
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\System\Entity\I18n;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
@@ -28,6 +29,7 @@ use App\Twig\ModuleMenu;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Util\LocaleHelper;
@@ -171,6 +173,11 @@ class PageManager
      * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $pageStyles;
 
     /**
      * PageManager constructor.
@@ -523,8 +530,10 @@ class PageManager
 
     /**
      * configurePage
+     * @return PageManager
+     * 30/05/2020 15:42
      */
-    public function configurePage(): void
+    public function configurePage(): PageManager
     {
         if ($this->hasSession()) {
             $this->format->setupFromSession($this->getSession());
@@ -537,6 +546,8 @@ class PageManager
         }
 
         $this->setModuleMenu();
+
+        return $this;
     }
 
     /**
@@ -779,5 +790,58 @@ class PageManager
     public function getChecker(): AuthorizationCheckerInterface
     {
         return $this->checker;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPageStyles(): ArrayCollection
+    {
+        if (null === $this->pageStyles)
+            $this->pageStyles = new ArrayCollection();
+
+        return $this->pageStyles;
+    }
+
+    /**
+     * PageStyles.
+     *
+     * @param ArrayCollection $pageStyles
+     * @return PageManager
+     */
+    public function setPageStyles(ArrayCollection $pageStyles): PageManager
+    {
+        $this->pageStyles = $pageStyles;
+        return $this;
+    }
+
+    /**
+     * addPageScript
+     * @param string $style
+     * @return PageManager
+     */
+    public function addPageStyle(string $style): PageManager
+    {
+        if ($this->getPageStyles()->contains($style))
+            return $this;
+
+        $this->pageStyles->add($style);
+        return $this;
+    }
+
+    /**
+     * injectCSS
+     * @param string $route
+     * @param $user
+     * @return $this
+     * 30/05/2020 15:48
+     */
+    public function injectCSS(string $route, $user): PageManager
+    {
+        $this->addPageStyle('css/core');
+        if ($user instanceof SecurityUser) {
+            $this->addPageStyle('css/fastFinder');
+        }
+        return $this;
     }
 }

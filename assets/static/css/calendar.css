@@ -1,0 +1,69 @@
+.day {
+    width: 14.2%;
+    min-height: 20px;
+    border: 1px solid #cccccc;
+    float: left;
+    margin-top: -1px;
+    background-repeat: repeat;
+}
+.day-label {
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+}
+.day-empty {
+    border: 1px solid transparent;
+}
+.header {
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    min-height: 20px;
+}
+.week {
+    text-align: center;
+    padding: 0;
+    margin: 0 -1px;
+    border-left: 1pc solid black;
+    border-right: 1pc solid black;
+}
+.month {
+    width: 24.7%;
+    border: 2px solid black;
+    float: left;
+    margin: 0 -1px 5px -1px;
+    text-align: center;
+    min-height: 140px;
+}
+.month-row {
+    clear: both;
+}
+.termBreak {
+    background-image: url('../TermBreak.png');
+}
+.specialDay {
+    background-image: url('../SpecialDayBackground.png');
+}
+.closed {
+    background-image: url('../Closed.png');
+}
+.specialDayNotice {
+    float: left;
+    width: 16%;
+    border: 1px solid black;
+    border-radius: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 4px 2px;
+    padding: 0 4px;
+    font-size: 0.75rem;
+}
+.notSchoolDay {
+    background-color: beige;
+}
+.w-full {
+    width: 100%;
+}
+.right {
+    float: right;
+}

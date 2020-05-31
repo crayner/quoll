@@ -570,6 +570,16 @@ class Module extends AbstractEntity
   convertDate: { versionDate: '2020-04-01' }
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'
+-
+  name: 'School'
+  description: 'School'
+  entryRoute: 'academic_year_list'
+  type: 'Core'
+  active: 'Y'
+  category: 'Admin'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
 ");
     }
 

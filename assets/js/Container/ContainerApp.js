@@ -534,7 +534,7 @@ export default class ContainerApp extends Component {
 
     render() {
         return (
-            <section>
+            <section className={'containerApp'}>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 {getControlButtons(this.returnRoute,this.addElementRoute,this.functions)}
                 <PanelApp panels={this.state.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />

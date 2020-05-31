@@ -327,10 +327,10 @@ class InstallationManager
         $this->manager->installation($kernel);
         $application = new Application($kernel);
         $application->setAutoExit(false);
-        $this->getLogger()->notice(TranslationsHelper::translate('Module Installation commenced.'));
+        $this->getLogger()->notice(TranslationHelper::translate('Module Installation commenced.'));
 
         $this->setInstallationStatus('system');
-        $this->getLogger()->notice(TranslationsHelper::translate('The database build was completed.'));
+        $this->getLogger()->notice(TranslationHelper::translate('The database build was completed.'));
 
         return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
     }
