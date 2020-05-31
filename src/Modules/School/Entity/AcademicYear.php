@@ -83,7 +83,7 @@ class AcademicYear extends AbstractEntity
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(3)",unique=true)
+     * @ORM\Column(type="smallint",unique=true)
      * @Assert\Range(min=1,max=999)
      */
     private $sequenceNumber;
@@ -383,7 +383,7 @@ class AcademicYear extends AbstractEntity
                     `status` CHAR(8) NOT NULL DEFAULT 'Upcoming',
                     `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `last_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `sequence_number` int(3) DEFAULT NULL,
+                    `sequence_number` smallint DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `sequence` (`sequence_number`)

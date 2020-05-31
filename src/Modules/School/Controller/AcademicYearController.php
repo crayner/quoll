@@ -23,6 +23,7 @@ use App\Modules\School\Pagination\AcademicYearPagination;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,14 +44,20 @@ class AcademicYearController extends AbstractPageController
      * @param AcademicYearPagination $pagination
      * @return mixed
      */
-    public function list(AcademicYearPagination $pagination)
+    public function list(AcademicYearPagination $pagination, array $data = [])
     {
         $content = ProviderFactory::getRepository(AcademicYear::class)->findBy([], ['firstDay' => 'ASC']);
         $pagination->setContent($content)
             ->setAddElementRoute($this->generateUrl('academic_year_add'));
 
-        return $this->getPageManager()->createBreadcrumbs('Academic Years', [])
-            ->render(['pagination' => $pagination->toArray()]);
+        return $this->getPageManager()->setMessages(isset($data['errors']) ? $data['errors'] : [])->createBreadcrumbs('Academic Years', [])
+            ->render(
+                [
+                    'pagination' => $pagination->toArray(),
+                    'url' => $this->generateUrl('academic_year_list'),
+                    'title' => TranslationHelper::translate('Academic Years'),
+                ]
+            );
     }
 
     /**
@@ -124,4 +131,24 @@ class AcademicYearController extends AbstractPageController
         return $this->getPageManager()->createBreadcrumbs($year->getId() > 0 ? 'Edit Academic Year' : 'Add Academic Year')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
+
+    /**
+     * delete
+     * @param AcademicYear $year
+     * @param AcademicYearPagination $pagination
+     * @return mixed
+     * 31/05/2020 11:52
+     * @Route("/academic/year/{year}/delete/", name="academic_year_delete")
+     * @IsGranted("ROLE_ROUTE")
+
+     */
+    public function delete(AcademicYear $year, AcademicYearPagination $pagination)
+    {
+        ProviderFactory::create(AcademicYear::class)->delete($year);
+
+        $data = ProviderFactory::create(AcademicYear::class)->getMessageManager()->pushToJsonData();
+
+        return $this->list($pagination, $data);
+    }
+
 }

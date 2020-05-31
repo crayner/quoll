@@ -44,3 +44,7 @@ Tue: Tue
 Use CTRL-P on Windows or CMD-SHIFT-P on MAC to print this calendar: Use CTRL-P on Windows or CMD-SHIFT-P on MAC to print this calendar
 Wed: Wed
 'Printed: {date}': 'Printed: {date}'
+The first day must be before the last day.: The first day must be before the last day.
+The last day value is not valid.: The last day value is not valid.
+The school academic year should cover a whole year.: The school academic year should cover a whole year.
+The school academic year should not overlap another academic year.: The school academic year should not overlap another academic year.

@@ -96,7 +96,13 @@ class AcademicYearProvider extends AbstractProvider
      */
     public function canDelete(AcademicYear $year): bool
     {
-        return $this->getRepository(StudentEnrolment::class)->countEnrolmentsByAcademicYear($year) === 0;
+        if ($year->getTerms()->count() > 0) {
+            return false;
+        }
+        if ($this->getRepository(StudentEnrolment::class)->countEnrolmentsByAcademicYear($year) > 0) {
+            return false;
+        }
+        return true;
     }
 
     /**

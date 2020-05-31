@@ -36,6 +36,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class AbstractProvider
  * @package App\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 abstract class AbstractProvider implements EntityProviderInterface
 {

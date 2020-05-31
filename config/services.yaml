@@ -19,7 +19,7 @@ services:
 
     App\Modules\:
         resource: '../src/Modules/*'
-        exclude: '../src/Modules/{System/Manager/Hidden}'
+        exclude: '../src/Modules/{System/Manager/Hidden,Provider}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

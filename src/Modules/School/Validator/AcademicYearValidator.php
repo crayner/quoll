@@ -39,24 +39,37 @@ class AcademicYearValidator extends ConstraintValidator
         if ($value->getFirstDay() >= $value->getLastDay())
             $this->context->buildViolation('The first day must be before the last day.')
                 ->atPath('firstDay')
-                ->setTranslationDomain('messages')
+                ->setCode(AcademicYear::INVALID_ACADEMIC_YEAR_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
                 ->addViolation();
 
         if (null === $value->getFirstDay())
             return;
 
-        $last = new \DateTime($value->getFirstDay()->format('Y-m-d') . ' 00:00:00 +1 Year -1 Day');
-
-        if ($value->getLastDay()->format('Y-m-d') !== $last->format('Y-m-d'))
+        $last = new \DateTimeImmutable($value->getFirstDay()->format('Y-m-d') . ' 00:00:00 +1 Year -1 Day');
+        
+        if ($value->getLastDay() === null) {
+            $this->context->buildViolation('The last day value is not valid.')
+                ->atPath('lastDay')
+                ->setCode(AcademicYear::INVALID_ACADEMIC_YEAR_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
+                ->addViolation();
+            return;
+        }
+        
+        if ($value->getLastDay()->format('Y-m-d') !== $last->format('Y-m-d')) {
             $this->context->buildViolation('The school academic year should cover a whole year.')
                 ->atPath('lastDay')
-                ->setTranslationDomain('messages')
+                ->setCode(AcademicYear::INVALID_ACADEMIC_YEAR_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
                 ->addViolation();
-        if (ProviderFactory::create(\App\Modules\School\Entity\AcademicYear::class)->isAcademicYearOverlap($value))
+        }
+        if (ProviderFactory::create(\App\Modules\School\Entity\AcademicYear::class)->isAcademicYearOverlap($value)) {
             $this->context->buildViolation('The school academic year should not overlap another academic year.')
                 ->atPath('name')
-                ->setTranslationDomain('messages')
+                ->setCode(AcademicYear::INVALID_ACADEMIC_YEAR_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
                 ->addViolation();
-
+        }
     }
 }
