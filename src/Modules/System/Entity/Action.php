@@ -661,7 +661,7 @@ class Action extends AbstractEntity
   entry_route: 'academic_year_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  role: ['ROLE_PRINCIPAL']
 -
   name: 'Staff Settings'
   precedence: 0
@@ -681,7 +681,17 @@ class Action extends AbstractEntity
   entry_route: 'staff_settings_people'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  role: ['ROLE_SUPPORT']
+-
+  name: 'Academic Year Terms'
+  precedence: 0
+  category: 'Years, Days & Times'
+  description: 'Allows user to control the definition of academic year terms within the system.'
+  route_list: ['academic_year_term_list','academic_year_term_edit','academic_year_term_delete','academic_year_term_add']
+  entry_route: 'academic_year_term_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
 ");
     }
 
@@ -885,6 +895,13 @@ class Action extends AbstractEntity
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: People }
+    target: module
+-
+    findBy: 
+        entryRoute: 'academic_year_term_list'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: School }
     target: module
 ");
     }

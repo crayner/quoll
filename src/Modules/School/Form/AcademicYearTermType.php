@@ -10,15 +10,17 @@
  *
  * User: craig
  * Date: 21/12/2019
- * Time: 16:20
+ * Time: 20:07
  */
 namespace App\Modules\School\Form;
 
-use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Entity\AcademicYearTerm;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,11 +29,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class AcademicYearType
+ * Class AcademicYearTermType
  * @package App\Modules\School\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AcademicYearType extends AbstractType
+class AcademicYearTermType extends AbstractType
 {
     /**
      * buildForm
@@ -41,21 +43,34 @@ class AcademicYearType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('yearHeader', HeaderType::class,
+            ->add('termHeader', HeaderType::class,
                 [
-                    'label' => intval($options['data']->getId()) > 0 ? 'Edit Academic Year' : 'Add Academic Year',
+                    'label' => intval($options['data']->getId()) > 0 ? 'Edit Academic Year Term' : 'Add Academic Year Term',
+                ]
+            )
+            ->add('academicYear', EntityType::class,
+                [
+                    'label' => 'Academic Year',
+                    'placeholder' => 'Please select...',
+                    'class' => AcademicYear::class,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('y')
+                            ->orderBy('y.firstDay', 'ASC')
+                            ->addOrderBy('y.name', 'ASC');
+                    },
+                    'choice_label' => 'name',
                 ]
             )
             ->add('name', TextType::class,
                 [
                     'label' => 'Name',
-                    'help' => 'Must be unique',
-                    'translation_domain' => 'messages',
+                    'help' => 'Must be unique in the Academic Year',
                 ]
             )
-            ->add('status', EnumType::class,
+            ->add('abbreviation', TextType::class,
                 [
-                    'label' => 'Status',
+                    'label' => 'Abbreviation',
+                    'help' => 'Must be unique in the Academic Year',
                 ]
             )
             ->add('firstDay', ReactDateType::class,
@@ -70,12 +85,7 @@ class AcademicYearType extends AbstractType
                     'input' => 'datetime_immutable'
                 ]
             )
-            ->add('submit', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'translation_domain' => 'messages'
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 
@@ -88,7 +98,7 @@ class AcademicYearType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'School',
-                'data_class' => AcademicYear::class,
+                'data_class' => AcademicYearTerm::class,
             ]
         );
     }

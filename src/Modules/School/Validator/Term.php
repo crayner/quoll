@@ -24,6 +24,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class Term extends Constraint
 {
+    const INVALID_ACADEMIC_YEAR_TERM_ERROR = 'f85ca851-9830-41e5-831f-cb176e76d476';
+
+    protected static $errorNames = [
+        self::INVALID_ACADEMIC_YEAR_TERM_ERROR => 'INVALID_ACADEMIC_YEAR_TERM_ERROR',
+    ];
+
     public $transDomain = 'School';
 
     /**

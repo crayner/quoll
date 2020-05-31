@@ -10,23 +10,27 @@
  *
  * User: craig
  * Date: 21/12/2019
- * Time: 10:46
+ * Time: 20:01
  */
+
 namespace App\Modules\School\Pagination;
 
 use App\Manager\AbstractPaginationManager;
 use App\Manager\Entity\PaginationAction;
 use App\Manager\Entity\PaginationColumn;
+use App\Manager\Entity\PaginationFilter;
 use App\Manager\Entity\PaginationRow;
 use App\Manager\PaginationInterface;
+use App\Modules\School\Entity\AcademicYear;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 
 /**
- * Class AcademicYearPagination
+ * Class AcademicYearTermPagination
  * @package App\Modules\School\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AcademicYearPagination extends AbstractPaginationManager
+class AcademicYearTermPagination extends AbstractPaginationManager
 {
     public function execute(): PaginationInterface
     {
@@ -34,23 +38,29 @@ class AcademicYearPagination extends AbstractPaginationManager
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
+        $column->setLabel('Academic Year')
+            ->setContentKey('year')
+            ->setSort(true)
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
             ->setSort(true)
-            ->setClass('p-2 sm:p-3')
-        ;
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Abbreviation')
+            ->setContentKey(['abbr'])
+            ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
         $column = new PaginationColumn();
         $column->setLabel('Dates')
             ->setContentKey(['dates'])
-            ->setClass('p-2 sm:p-3 hidden sm:table-cell');
-        $row->addColumn($column);
-
-        $column = new PaginationColumn();
-        $column->setLabel('Status')
-            ->setContentKey(['status'])
-            ->setClass('p-2 sm:p-3 hidden md:table-cell');
+            ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
         $action = new PaginationAction();
@@ -58,31 +68,30 @@ class AcademicYearPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('academic_year_edit')
-            ->setRouteParams(['year' => 'id']);
+            ->setRoute('academic_year_term_edit')
+            ->setRouteParams(['term' => 'id']);
         $row->addAction($action);
 
         $action = new PaginationAction();
         $action->setTitle('Delete')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('academic_year_delete')
+            ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500' )
+            ->setRoute('academic_year_term_delete')
             ->setDisplayWhen('canDelete')
             ->setOnClick('areYouSure')
-            ->setRouteParams(['year' => 'id']);
+            ->setRouteParams(['term' => 'id']);
         $row->addAction($action);
 
-        $action = new PaginationAction();
-        $action->setTitle('Display')
-            ->setAClass('thickbox p-3 sm:p-0')
-            ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('far fa-calendar-alt fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute(['url' => 'academic_year_display_popup_raw', 'target' => 'Calendar_Display', 'options' => 'width=1400,height=800'])
-            ->setOnClick('loadNewPage')
-            ->setOptions('Calender Display')
-            ->setRouteParams(['year' => 'id']);
-        $row->addAction($action);
+        foreach(ProviderFactory::getRepository(AcademicYear::class)->findBy([], ['firstDay' => 'ASC']) as $year) {
+            $filter = new PaginationFilter();
+            $filter->setName('Academic Year: ' . $year->getName())
+                ->setValue($year->getName())
+                ->setLabel(['Academic Year: {value}', ['{value}' => $year->getName()], 'School'])
+                ->setGroup('Academic Year')
+                ->setContentKey('year');
+            $row->addFilter($filter);
+        }
 
         $this->setRow($row);
         return $this;

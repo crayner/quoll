@@ -30,9 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class AcademicYear
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearRepository")
- * @ORM\Table(name="AcademicYear", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="sequence", columns={"sequence_number"})})
+ * @ORM\Table(name="AcademicYear",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
+ *     @ORM\UniqueConstraint(name="name_first_day", columns={"name","first_day"}),
+ *     @ORM\UniqueConstraint(name="name_last_day", columns={"name","last_day"})})
  * @Check\AcademicYear()
- * @UniqueEntity("sequenceNumber")
+ * @UniqueEntity({"lastDay","name"})
+ * @UniqueEntity({"firstDay","name"})
  * @UniqueEntity("name")
  */
 class AcademicYear extends AbstractEntity
@@ -80,13 +84,6 @@ class AcademicYear extends AbstractEntity
      * @Assert\NotBlank()
      */
     private $lastDay;
-
-    /**
-     * @var integer
-     * @ORM\Column(type="smallint",unique=true)
-     * @Assert\Range(min=1,max=999)
-     */
-    private $sequenceNumber;
 
     /**
      * @var Collection|AcademicYearTerm[]
@@ -215,24 +212,6 @@ class AcademicYear extends AbstractEntity
     }
 
     /**
-     * @return int
-     */
-    public function getSequenceNumber(): int
-    {
-        return intval($this->sequenceNumber);
-    }
-
-    /**
-     * @param int $sequenceNumber
-     * @return AcademicYear
-     */
-    public function setSequenceNumber(int $sequenceNumber): AcademicYear
-    {
-        $this->sequenceNumber = $sequenceNumber;
-        return $this;
-    }
-
-    /**
      * isEqualTo
      * @param $entity
      * @return bool
@@ -276,7 +255,6 @@ class AcademicYear extends AbstractEntity
             'status' => TranslationHelper::translate('academicyear.status.'.strtolower($this->getStatus()), [], 'School'),
             'dates' => $dates,
             'canDelete' => $this->canDelete(),
-            'sequence' => $this->getSequenceNumber(),
             'id' => $this->getId(),
         ];
     }
@@ -383,10 +361,8 @@ class AcademicYear extends AbstractEntity
                     `status` CHAR(8) NOT NULL DEFAULT 'Upcoming',
                     `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `last_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `sequence_number` smallint DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `sequence` (`sequence_number`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 

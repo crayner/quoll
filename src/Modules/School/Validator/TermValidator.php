@@ -23,15 +23,25 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Class TermValidator
  * @package App\Modules\School\Validator
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class TermValidator extends ConstraintValidator
 {
+    /**
+     * validate
+     * @param mixed $value
+     * @param Constraint $constraint
+     * 31/05/2020 12:21
+     */
     public function validate($value, Constraint $constraint)
     {
-
+        if ($value->getLastDay() === null || $value->getFirstDay() === null) {
+            return;
+        }
         if ($value->getLastDay() <= $value->getFirstDay()){
             $this->context->buildViolation('The last day of the term is before the first day of the term.')
                 ->setTranslationDomain($constraint->transDomain)
+                ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                 ->atPath('lastDay')
                 ->addViolation();
         }
@@ -40,17 +50,19 @@ class TermValidator extends ConstraintValidator
             return;
 
         if ($value->getAcademicYear()->getFirstDay() > $value->getFirstDay()) {
-            $this->context->buildViolation('The first day of the term is before the first day of the academic year ({first-day}).)')
-                ->setParameter('{first-day}', $value->getAcademicYear()->getFirstDay()->format('d M Y'))
+            $this->context->buildViolation('The first day of the term is before the first day of the academic year (first_day).)')
+                ->setParameter('first_day', $value->getAcademicYear()->getFirstDay()->format('d M Y'))
                 ->setTranslationDomain($constraint->transDomain)
+                ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                 ->atPath('firstDay')
                 ->addViolation();
         }
 
         if ($value->getAcademicYear()->getLastDay() < $value->getLastDay()) {
-            $this->context->buildViolation('The last day of the term is after the last day of the academic year ({last-day}).)')
-                ->setParameter('{last-day}', $value->getAcademicYear()->getLastDay()->format('d M Y'))
+            $this->context->buildViolation('The last day of the term is after the last day of the academic year (last_day).)')
+                ->setParameter('last_day', $value->getAcademicYear()->getLastDay()->format('d M Y'))
                 ->setTranslationDomain($constraint->transDomain)
+                ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                 ->atPath('lastDay')
                 ->addViolation();
         }
@@ -64,6 +76,7 @@ class TermValidator extends ConstraintValidator
                 $this->context->buildViolation('The dates overlap {name}: {first} - {last}')
                     ->setTranslationDomain($constraint->transDomain)
                     ->setParameters(['{name}' => $term->getName(), '{first}' => $term->getFirstDay()->format('d M Y'), '{last}' => $term->getLastDay()->format('d M Y')])
+                    ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                     ->atPath('firstDay')
                     ->addViolation();
             }
@@ -72,6 +85,7 @@ class TermValidator extends ConstraintValidator
                 $this->context->buildViolation('The dates overlap {name}: {first} - {last}')
                     ->setTranslationDomain($constraint->transDomain)
                     ->setParameters(['{name}' => $term->getName(), '{first}' => $term->getFirstDay()->format('d M Y'), '{last}' => $term->getLastDay()->format('d M Y')])
+                    ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                     ->atPath('lastDay')
                     ->addViolation();
             }
@@ -79,6 +93,7 @@ class TermValidator extends ConstraintValidator
             if ($value->getFirstDay() <= $term->getFirstDay() && $value->getLastDay() >= $term->getLastDay()) {
                 $this->context->buildViolation('The dates overlap {name}: {first} - {last}')
                     ->setTranslationDomain($constraint->transDomain)
+                    ->setCode(Term::INVALID_ACADEMIC_YEAR_TERM_ERROR)
                     ->setParameters(['{name}' => $term->getName(), '{first}' => $term->getFirstDay()->format('d M Y'), '{last}' => $term->getLastDay()->format('d M Y')])
                     ->atPath('firstDay')
                     ->addViolation();

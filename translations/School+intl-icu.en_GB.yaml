@@ -48,3 +48,14 @@ The first day must be before the last day.: The first day must be before the las
 The last day value is not valid.: The last day value is not valid.
 The school academic year should cover a whole year.: The school academic year should cover a whole year.
 The school academic year should not overlap another academic year.: The school academic year should not overlap another academic year.
+Abbreviation: Abbreviation
+Academic Year Terms: Academic Year Terms
+Add Academic Year Term: Add Academic Year Term
+Edit Academic Year Term: Edit Academic Year Term
+Must be unique in the Academic Year: Must be unique in the Academic Year
+Please select...: Please select...
+Submit: Submit
+'The dates overlap {name}: {first} - {last}': 'The dates overlap {name}: {first} - {last}'
+'The first day of the term is before the first day of the academic year (first_day).)': 'The first day of the term is before the first day of the academic year (first_day).)'
+'Academic Year: {value}': 'Academic Year: {value}'
+'The last day of the term is after the last day of the academic year (last_day).)': 'The last day of the term is after the last day of the academic year (last_day).)'

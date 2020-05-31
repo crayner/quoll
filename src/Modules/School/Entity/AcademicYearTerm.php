@@ -13,6 +13,7 @@
 namespace App\Modules\School\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\School\Validator as Check;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -23,12 +24,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearTermRepository")
  * @ORM\Table(name="AcademicYearTerm",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="sequence_number", columns={"academic_year","sequence_number"}),
- *     @ORM\UniqueConstraint(name="abbr", columns={"academic_year","abbreviation"}),
- *     @ORM\UniqueConstraint(name="name", columns={"academic_year","name"})})
- * @UniqueEntity({"academicYear","sequenceNumber"},errorPath="sequenceNumber")
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="abbr", columns={"academic_year","abbreviation"}),
+ *     @ORM\UniqueConstraint(name="name", columns={"academic_year","name"}),
+ *     @ORM\UniqueConstraint(name="academic_year_first_day", columns={"academic_year","first_day"}),
+ *     @ORM\UniqueConstraint(name="academic_year_last_day", columns={"academic_year","last_day"})})
  * @UniqueEntity({"academicYear","name"},errorPath="name")
  * @UniqueEntity({"academicYear","abbreviation"},errorPath="abbreviation")
+ * @UniqueEntity({"firstDay","academicYear"})
+ * @UniqueEntity({"lastDay","academicYear"})
  * @Check\Term()
  */
 class AcademicYearTerm extends AbstractEntity
@@ -48,14 +51,9 @@ class AcademicYearTerm extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear", inversedBy="terms")
      * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
+     * @ORM\OrderBy({"firstDay" = "ASC"})
      */
     private $academicYear;
-
-    /**
-     * @var integer
-     * @ORM\Column(type="smallint",unique=true)
-     */
-    private $sequenceNumber;
 
     /**
      * @var string|null
@@ -122,24 +120,6 @@ class AcademicYearTerm extends AbstractEntity
     public function setAcademicYear(?AcademicYear $academicYear): AcademicYearTerm
     {
         $this->academicYear = $academicYear;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSequenceNumber(): int
-    {
-        return intval($this->sequenceNumber);
-    }
-
-    /**
-     * @param int $sequenceNumber
-     * @return AcademicYearTerm
-     */
-    public function setSequenceNumber(int $sequenceNumber): AcademicYearTerm
-    {
-        $this->sequenceNumber = $sequenceNumber;
         return $this;
     }
 
@@ -232,8 +212,7 @@ class AcademicYearTerm extends AbstractEntity
             'abbr' => $this->getAbbreviation(),
             'year' => $this->getAcademicYear()->getName(),
             'dates' => $dates,
-            'canDelete' => true,
-            'sequence' => $this->getSequenceNumber(),
+            'canDelete' => ProviderFactory::create(AcademicYearTerm::class)->canDelete($this),
         ];
     }
 
@@ -245,7 +224,6 @@ class AcademicYearTerm extends AbstractEntity
     {
         return ["CREATE TABLE `__prefix__AcademicYearTerm` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `sequence_number` int DEFAULT NULL,
                     `name` CHAR(20) NOT NULL,
                     `abbreviation` CHAR(4) NOT NULL,
                     `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
@@ -254,7 +232,6 @@ class AcademicYearTerm extends AbstractEntity
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`academic_year`,`name`),
                     UNIQUE KEY `abbr` (`academic_year`,`abbreviation`),
-                    UNIQUE KEY `sequence_number` (`academic_year`,`sequence_number`),
                     KEY `academic_year` (`academic_year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
