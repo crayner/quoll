@@ -693,15 +693,24 @@ class Action extends AbstractEntity
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL']
 -
-    name: 'Special Days'
-    precedence: 0
-    category: 'Years, Days & Times'
-    description: 'Allows user to control the definition of special days within the system.'
-    route_list: ['special_day_list','special_day_edit','special_day_delete','special_day_add','special_day_duplicate','special_day_filter_store']
-    entry_route: 'special_day_list'
-    entry_sidebar: 'Y'
-    menu_show: 'Y'
-    role: ['ROLE_PRINCIPAL']
+  name: 'Special Days'
+  precedence: 0
+  category: 'Years, Days & Times'
+  description: 'Allows user to control the definition of special days within the system.'
+  route_list: ['special_day_list','special_day_edit','special_day_delete','special_day_add','special_day_duplicate','special_day_filter_store']
+  entry_route: 'special_day_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+-
+  name: 'Days of the Week'
+  category: 'Years, Days & Times'
+  description: 'Manage the Days of the week for your system.'
+  route_list: ['days_of_the_week']
+  entry_route: 'days_of_the_week'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
 ");
     }
 
@@ -916,6 +925,13 @@ class Action extends AbstractEntity
 -
     findBy: 
         entryRoute: 'special_day_list'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: School }
+    target: module
+-
+    findBy: 
+        entryRoute: 'days_of_the_week'
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: School }

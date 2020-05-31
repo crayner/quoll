@@ -29,6 +29,7 @@ use Symfony\Component\Yaml\Yaml;
  *     @ORM\UniqueConstraint(name="sequence_number",columns={"sequence_number"}) })
  * @UniqueEntity("name")
  * @UniqueEntity("abbreviation")
+ * @todo Days of the Week Validator
  */
 class DaysOfWeek extends AbstractEntity
 {
