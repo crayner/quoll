@@ -59,7 +59,7 @@ class DaysOfTheWeekController extends AbstractPageController
 
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
-            $day = $content['id'] > 0 ? ProviderFactory::getRepository(DaysOfWeek::class)->find($content['id']) : new DaysOfWeek();
+            $day = !empty($content['id']) ? ProviderFactory::getRepository(DaysOfWeek::class)->find($content['id']) : new DaysOfWeek();
             $form = $this->createForm(DayOfTheWeekType::class, $day, ['action' => $this->generateUrl('days_of_the_week', ['tabName' => $tabName])]);
             $form->submit($content);
             $data = [];

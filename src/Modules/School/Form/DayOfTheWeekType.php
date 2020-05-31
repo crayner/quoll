@@ -67,6 +67,7 @@ class DayOfTheWeekType extends AbstractType
             ->add('name', HiddenType::class)
             ->add('abbreviation', HiddenType::class)
             ->add('id', HiddenType::class)
+            ->add('sequenceNumber', HiddenType::class)
             ->add('dayName', HeaderType::class,
                 [
                     'label' => $options['data']->getName(),
