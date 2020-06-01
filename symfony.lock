@@ -1,7 +1,4 @@
 {
-    "brick/math": {
-        "version": "0.8.15"
-    },
     "crayner/doctrine-bundle": {
         "version": "1.0.06"
     },
@@ -177,12 +174,6 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
-    "ramsey/collection": {
-        "version": "1.0.1"
-    },
-    "ramsey/uuid": {
-        "version": "4.0.1"
-    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -243,6 +234,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v5.0.7"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
     },
     "symfony/doctrine-bridge": {
         "version": "v5.0.7"
@@ -422,6 +416,9 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.15.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/polyfill-uuid": {
         "version": "v1.17.0"
     },
@@ -528,6 +525,9 @@
     },
     "symfony/twig-pack": {
         "version": "v1.0.0"
+    },
+    "symfony/uid": {
+        "version": "v5.1.0"
     },
     "symfony/validator": {
         "version": "4.3",

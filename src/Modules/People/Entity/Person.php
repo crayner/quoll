@@ -1076,6 +1076,7 @@ class Person extends AbstractEntity
     /**
      * @var string|null
      * @ORM\Column(length=3)
+     * @ASSERT\Country(alpha3=true)
      */
     private $countryOfBirth = '';
 

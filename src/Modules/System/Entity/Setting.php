@@ -1208,8 +1208,8 @@ class Setting extends AbstractEntity
   value: 'Article,Book,Document,Graphic,Idea,Music,Object,Painting,Person,Photo,Place,Poetry,Prose,Rubric,Text,Video,Website,Work Sample,Other'
 -
   scope: 'System'
-  name: 'organisationNameShort'
-  nameDisplay: 'Organisation Initials'
+  name: 'organisationAbbreviation'
+  nameDisplay: 'Organisation Name Abbreviation'
   description: ''
   value: 'HRS'
 -

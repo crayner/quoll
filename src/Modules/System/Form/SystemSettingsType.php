@@ -49,25 +49,6 @@ class SystemSettingsType extends AbstractType
                     'settings' => [
                         [
                             'scope' => 'System',
-                            'name' => 'absoluteURL',
-                            'entry_type' => UrlType::class,
-                            'entry_options' => [
-                                'attr' => [
-                                    'maxLength' => 100,
-                                ],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'absolutePath',
-                            'entry_options' => [
-                                'attr' => [
-                                    'maxLength' => 100,
-                                ],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
                             'name' => 'systemName',
                             'entry_options' => [
                                 'attr' => [

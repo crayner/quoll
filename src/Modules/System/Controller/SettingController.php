@@ -134,6 +134,8 @@ class SettingController extends AbstractPageController
         $form = $this->createForm(LocalisationSettingsType::class, null,
             [
                 'action' => $this->generateUrl('system_settings', ['tabName' => 'Localisation']),
+                'country' => $this->getParameter('country'),
+                'timezone' => $this->getParameter('timezone'),
             ]
         );
 

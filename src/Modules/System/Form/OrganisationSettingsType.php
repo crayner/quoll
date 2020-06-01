@@ -59,7 +59,7 @@ class OrganisationSettingsType extends AbstractType
                         ],
                         [
                             'scope' => 'System',
-                            'name' => 'organisationNameShort',
+                            'name' => 'organisationAbbreviation',
                             'entry_options' => [
                                 'attr' => [
                                     'maxLength' => 10,
@@ -79,12 +79,12 @@ class OrganisationSettingsType extends AbstractType
                         [
                             'scope' => 'System',
                             'name' => 'organisationLogo',
-                            'entry_type' => FilePathType::class,
+                            'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
                                 'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
                                 'constraints' => [
-                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
+                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 800, 'minHeight' => 100, 'maxHeight' => 200, 'maxRatio' => '0.5', 'minRatio' => '0.5', 'maxSize' => '750k']),
                                 ],
                             ],
                         ],
@@ -106,8 +106,8 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => EntityType::class,
                             'entry_options' => [
                                 'class' => Person::class,
-                                'data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'organisationAdministrator'),
-                                'choice_label' => 'fullName',
+                                'choice_label' => 'fullNameReversed',
+                                'placeholder' => ' ',
                                 'choice_translation_domain' => false,
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('p')
@@ -128,7 +128,8 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => EntityType::class,
                             'entry_options' => [
                                 'class' => Person::class,
-                                'choice_label' => 'fullName',
+                                'choice_label' => 'fullNameReversed',
+                                'placeholder' => ' ',
                                 'choice_translation_domain' => false,
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('p')
@@ -149,7 +150,8 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => EntityType::class,
                             'entry_options' => [
                                 'class' => Person::class,
-                                'choice_label' => 'fullName',
+                                'placeholder' => ' ',
+                                'choice_label' => 'fullNameReversed',
                                 'choice_translation_domain' => false,
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('p')
@@ -170,7 +172,8 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => EntityType::class,
                             'entry_options' => [
                                 'class' => Person::class,
-                                'choice_label' => 'fullName',
+                                'choice_label' => 'fullNameReversed',
+                                'placeholder' => ' ',
                                 'choice_translation_domain' => false,
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('p')

@@ -100,7 +100,7 @@ class SystemType extends AbstractType
         $systemName = $provider->getSettingByScope('System', 'systemName', true);
         $installType = $provider->getSettingByScope('System', 'installType', true);
         $orgName = $provider->getSettingByScope('System', 'organisationName', true);
-        $orgNameShort = $provider->getSettingByScope('System', 'organisationNameShort', true);
+        $orgNameShort = $provider->getSettingByScope('System', 'organisationAbbreviation', true);
         $country = $provider->getSettingByScope('System', 'country', true);
 
         $currency = $provider->getSettingByScope('System', 'currency', true);
@@ -334,7 +334,7 @@ class SystemType extends AbstractType
                     ],
                 ]
             )
-            ->add('organisationNameShort', TextType::class,
+            ->add('organisationAbbreviation', TextType::class,
                 [
                     'label' => $orgNameShort ? $orgNameShort->getNameDisplay() : 'Organisation Initials',
                     'help' => $orgNameShort ? $orgNameShort->getDescription() : '',

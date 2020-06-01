@@ -15,6 +15,7 @@
 namespace App\Modules\System\Manager;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\Scale;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\Setting;
@@ -368,6 +369,11 @@ class InstallationManager
             ->setPerson($person);
         $em->persist($staff);
         $em->flush();
+        $settings = ProviderFactory::create(Setting::class);
+        $settings->setSettingByScope('System','organisationAdministrator', $person);
+        $settings->setSettingByScope('System','organisationDBA', $person);
+        $settings->setSettingByScope('System','organisationAdmissions', $person);
+        $settings->setSettingByScope('System','organisationHR', $person);
         new SecurityUser($person);
     }
 
@@ -382,8 +388,12 @@ class InstallationManager
         $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
         $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());
         $settingProvider->setSettingByScope('System', 'organisationName', $form->get('organisationName')->getData());
-        $settingProvider->setSettingByScope('System', 'organisationNameShort', $form->get('organisationNameShort')->getData());
+        $settingProvider->setSettingByScope('System', 'organisationAbbreviation', $form->get('organisationAbbreviation')->getData());
         $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData());
+
+        $scale = ProviderFactory::getRepository(Scale::class)->findOneBy(['abbraviation' => 'FLG']);
+        $settingProvider->settSettingByScope('System', 'defaultAssessmentScale', $scale);
+
         $config = $this->readParameterFile();
         $config['parameters']['timezone'] = $form->get('timezone')->getData();
         $config['parameters']['country'] = $form->get('country')->getData();

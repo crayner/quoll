@@ -70,7 +70,7 @@ class Locality extends AbstractEntity
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
      * @Assert\Length(max=3)
-     * @Country(alpha3=true)
+     * @Assert\Country(alpha3=true)
      */
     private $country;
 

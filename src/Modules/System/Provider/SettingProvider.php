@@ -141,6 +141,29 @@ class SettingProvider extends AbstractProvider
     }
 
     /**
+     * getSettingByScopeAsEntity
+     * Assumes a single ID filed for the entity
+     * @param string $scope
+     * @param string $name
+     * @param string $entityName
+     * @return EntityInterface|null
+     * 1/06/2020 09:16
+     */
+    public function getSettingByScopeAsEntity(string $scope, string$name, string $entityName): ?EntityInterface
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result)) {
+            return null;
+        }
+
+        try {
+            return $this->getRepository($entityName)->find($result->getvalue);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
      * getSettingByScopeAsArray
      * @param string $scope
      * @param string $name
@@ -201,13 +224,18 @@ class SettingProvider extends AbstractProvider
         if (false === $setting)
             throw new SettingNotFoundException($scope, $name);
 
+
         $setting = $this->getRepository()->findOneBy(['scope' => $setting->getScope(), 'name' => $setting->getName()]);
         $this->setEntity($setting);
 
-        if (is_array($value))
-            $value = implode(',',$value);
-        if ($value instanceof \DateTimeImmutable)
+        if (is_array($value)) {
+            $value = implode(',', $value);
+        } else if ($value instanceof \DateTimeImmutable) {
             $value = $value->format('c');
+        } else if ($value instanceof EntityInterface) {
+            $value = $value->getId();
+        }
+
 
         $setting->setValue($value);
         $this->saveEntity();

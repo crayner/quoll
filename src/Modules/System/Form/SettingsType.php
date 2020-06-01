@@ -17,6 +17,7 @@ namespace App\Modules\System\Form;
 
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -105,7 +106,7 @@ class SettingsType extends AbstractType
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
-            $data =  $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue();
+            $data = $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue();
 
             if ($setting['entry_type'] === 'App\Modules\System\Form\SettingCollectionType' && empty($setting['setting']->getValue()))
                 $data = [];
@@ -114,6 +115,11 @@ class SettingsType extends AbstractType
                     $data = [];
                 else
                     $data = explode(',', $setting['setting']->getValue());
+            }
+
+            if ($setting['entry_type'] === EntityType::class) {
+                $entityName = $setting['entry_options']['class'];
+                $data = ProviderFactory::getRepository($entityName)->find($setting['setting']->getValue());
             }
 
             $builder->add($name, $setting['entry_type'], array_merge(

@@ -347,7 +347,7 @@ class SystemSettings
     /**
      * @var string|null
      */
-    private $organisationNameShort;
+    private $organisationAbbreviation;
 
     /**
      * @return string|null
@@ -374,18 +374,18 @@ class SystemSettings
      */
     public function getOrganisationNameShort(): ?string
     {
-        return $this->organisationNameShort;
+        return $this->organisationAbbreviation;
     }
 
     /**
      * OrganisationNameShort.
      *
-     * @param string|null $organisationNameShort
+     * @param string|null $organisationAbbreviation
      * @return SystemSettings
      */
-    public function setOrganisationNameShort(?string $organisationNameShort): SystemSettings
+    public function setOrganisationNameShort(?string $organisationAbbreviation): SystemSettings
     {
-        $this->organisationNameShort = $organisationNameShort;
+        $this->organisationAbbreviation = $organisationAbbreviation;
         return $this;
     }
 

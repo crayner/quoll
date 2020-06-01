@@ -77,7 +77,7 @@ class MinorLinks implements ContentInterface
             if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
                 $links[] = [
                     'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink'),
-                    'text' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationNameShort', 'Quoll'),
+                    'text' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationAbbreviation', 'Quoll'),
                     'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
@@ -133,7 +133,7 @@ class MinorLinks implements ContentInterface
             if ($provider->hasSettingByScope('System','webLink')) {
                 $links[] = [
                     'url' => $provider->getSettingByScopeAsString('System','webLink'),
-                    'text' => $provider->getSettingByScopeAsString('System', 'organisationNameShort'),
+                    'text' => $provider->getSettingByScopeAsString('System', 'organisationAbbreviation'),
                     'translation_domain' => 'School',
                     'target' => '_blank',
                     'class' => 'link-white',
