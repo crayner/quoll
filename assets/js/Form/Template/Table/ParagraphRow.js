@@ -19,8 +19,11 @@ export default function ParagraphRow(props) {
     }
     let wrapper_attr = wrapperAttr(form, '')
 
+    if (form.row_style === 'hidden') {
+        return ''
+    }
 
-    return (<tr {...row_attr}>
+    return (<tr {...row_attr} style={form.style}>
         <td {...column_attr}>
             <div {...wrapper_attr}>
             {Parser(form.help)}

@@ -711,6 +711,45 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL']
+-
+  name: 'Mark Book Settings'
+  category: 'Assess'
+  description: 'Configure options for the Mark Book Module'
+  route_list: ['mark_book_settings']
+  entry_route: 'mark_book_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+-
+  name: 'Scales'
+  category: 'Assess'
+  description: 'Manage all aspects of grade scales, which are used throughout ARR to control grade input.'
+  route_list: ['scale_list','scale_edit','scale_add','scale_delete','scale_grade_edit','scale_grade_add','scale_grade_delete','scale_grade_sort']
+  entry_route: 'scale_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+-
+  name: 'Mark Book Settings'
+  category: 'Configure'
+  description: 'Configure options for the Mark Book Module'
+  route_list: ['mark_book_configure']
+  entry_route: 'mark_book_configure'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+  module: '8282b1f4-a489-11ea-8213-74d435a91d85'
+-
+  name: 'View Mark Book_allClassesAllData'
+  precedence: 4
+  category: 'Mark Book'
+  description: 'View all mark book information for all users'
+  route_list: ['mark_book_view']
+  entry_route: 'mark_book_view'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+  module: '8282b1f4-a489-11ea-8213-74d435a91d85'
 ");
     }
 
@@ -935,6 +974,34 @@ class Action extends AbstractEntity
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: School }
+    target: module
+-
+    findBy: 
+        entryRoute: 'scale_list'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: School }
+    target: module
+-
+    findBy: 
+        entryRoute: 'mark_book_settings'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: School }
+    target: module
+-
+    findBy: 
+        entryRoute: 'mark_book_configure'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Mark Book' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'mark_book_view'
+    source: 
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Mark Book' }
     target: module
 ");
     }

@@ -572,11 +572,21 @@ class Module extends AbstractEntity
   url: 'https://www.craigrayner.com'
 -
   name: 'School'
-  description: 'School'
+  description: 'Allows administrators to configure school settings.'
   entryRoute: 'academic_year_list'
   type: 'Core'
   active: 'Y'
   category: 'Admin'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
+-
+  name: 'Mark Book'
+  description: 'A module for keeping track of marks'
+  entryRoute: 'mark_book_view'
+  type: 'Core'
+  active: 'Y'
+  category: 'Assess'
   convertDate: { versionDate: '2020-04-01' }
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'

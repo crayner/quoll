@@ -237,7 +237,7 @@ class Setting extends AbstractEntity
   nameDisplay: 'Departure Reasons'
   description: 'A list of reasons for departure from school. If blank, user can enter any text.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'personalisedWarnings'
   nameDisplay: 'Personalised Warnings'
   description: 'Should mark book warnings be based on personal targets, if they are available?'
@@ -275,22 +275,22 @@ class Setting extends AbstractEntity
   nameDisplay: 'Student Agreement Options'
   description: 'A list of agreements that students might be asked to sign in school (e.g. ICT Policy).'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'attainmentAlternativeName'
   nameDisplay: 'Attainment Alternative Name'
   description: 'A name to use instead of ''Attainment'' in the first grade column of the mark book.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'effortAlternativeName'
   nameDisplay: 'Effort Alternative Name'
   description: 'A name to use instead of ''Effort'' in the second grade column of the mark book.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'attainmentAlternativeNameAbrev'
   nameDisplay: 'Attainment Alternative Name Abbreviation'
   description: 'A short name to use instead of ''Attainment'' in the first grade column of the mark book.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'effortAlternativeNameAbrev'
   nameDisplay: 'Effort Alternative Name Abbreviation'
   description: 'A short name to use instead of ''Effort'' in the second grade column of the mark book.'
@@ -580,7 +580,7 @@ class Setting extends AbstractEntity
   description: 'The contents of letter 3, as HTML.'
   value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the final communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableColumnWeighting'
   nameDisplay: 'Enable Column Weighting'
   description: 'Should column weighting and total scores be enabled in the Mark book?'
@@ -768,13 +768,13 @@ class Setting extends AbstractEntity
   nameDisplay: 'Application Form Referee Link'
   description: 'Link to an external form that will be emailed to a referee of the applicant''s choosing.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableRawAttainment'
   nameDisplay: 'Enable Raw Attainment Marks'
   description: 'Should recording of raw marks be enabled in the Mark book?'
   value: 'N'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableGroupByTerm'
   nameDisplay: 'Group Columns by Term'
   description: 'Should columns and total scores be grouped by term?'
@@ -786,13 +786,13 @@ class Setting extends AbstractEntity
   description: 'Allow students to choose a backup, in case enrolled activity is full.'
   value: 'Y'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableEffort'
   nameDisplay: 'Enable Effort'
   description: 'Should columns have the Effort section enabled?'
   value: 'Y'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableRubrics'
   nameDisplay: 'Enable Rubrics'
   description: 'Should columns have Rubrics section enabled?'
@@ -983,7 +983,7 @@ class Setting extends AbstractEntity
   description: 'The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.'
   value: 9
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableDisplayCumulativeMarks'
   nameDisplay: 'Enable Display Cumulative Marks'
   description: 'Should cumulative marks be displayed on the View Mark book page for Students and Parents and in Student Profiles?'
@@ -1099,7 +1099,7 @@ class Setting extends AbstractEntity
   description: 'Which type of data updates should be required.'
   value: 'Personal,Family'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'enableModifiedAssessment'
   nameDisplay: 'Enable Modified Assessment'
   description: 'Allows teachers to specify ''Modified Assessment'' for students with individual needs.'
@@ -1368,9 +1368,9 @@ class Setting extends AbstractEntity
   description: 'Serialized array connected gibbonExternalAssessmentID to gibbonYearGroupID, and specify which field set to use.'
   value: 'a:7:{i:1;s:21:''1-2_KS3 Target Grades'';i:2;s:22:''1-3_GCSE Target Grades'';i:3;s:10:''1-1_Scores'';i:4;s:0:'''';i:5;s:0:'''';i:6;s:0:'''';i:7;s:0:'''';}'
 -
-  scope: 'Mark book'
-  name: 'mark bookType'
-  nameDisplay: 'Mark book Type'
+  scope: 'Mark Book'
+  name: 'markBookType'
+  nameDisplay: 'Mark Book Type'
   description: 'A list of types to make available in the Mark book.'
   value: 'Essay,Exam,Homework,Reflection,Test,Unit,End of Year,Other'
 -
@@ -1498,25 +1498,25 @@ class Setting extends AbstractEntity
   nameDisplay: 'Day-Type Text'
   description: 'Explanatory text to include with Day-Type Options.'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'showStudentAttainmentWarning'
   nameDisplay: 'Show Student Attainment Warning'
   description: 'Show low attainment grade visual warning to students?'
   value: 'Y'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'showStudentEffortWarning'
   nameDisplay: 'Show Student Effort Warning'
   description: 'Show low effort grade visual warning to students?'
   value: 'Y'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'showParentAttainmentWarning'
   nameDisplay: 'Show Parent Attainment Warning'
   description: 'Show low attainment grade visual warning to parents?'
   value: 'Y'
 -
-  scope: 'Mark book'
+  scope: 'Mark Book'
   name: 'showParentEffortWarning'
   nameDisplay: 'Show Parent Effort Warning'
   description: 'Show low effort grade visual warning to parents?'

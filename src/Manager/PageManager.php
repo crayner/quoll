@@ -563,7 +563,7 @@ class PageManager
             $this->action = null;
             return;
         } else if ($controller[0] === 'App' && $controller[1] === 'Modules' && $controller[3] === 'Controller')
-            $module = $controller[2];
+            $module = $this->getModuleName($controller[2]);
         else {
             $this->logger->error(sprintf('The page did not find a valid module for the route: %s', $this->getRequest()->attributes->get('_route')), [$controller]);
             throw new MissingModuleException(implode('\\', $controller));
@@ -843,5 +843,16 @@ class PageManager
             $this->addPageStyle('css/fastFinder');
         }
         return $this;
+    }
+
+    /**
+     * getModuleName
+     * @param string $name
+     * @return string
+     * 2/06/2020 14:43
+     */
+    private function getModuleName(string $name): string
+    {
+        return trim(implode(' ' , preg_split('/(?=[A-Z])/',$name)));
     }
 }
