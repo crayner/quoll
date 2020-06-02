@@ -142,8 +142,10 @@ class StaffController extends AbstractPageController
      */
     public function staffAbsenceTypeSort(StaffAbsenceType $source, StaffAbsenceType $target, StaffAbsenceTypePagination $pagination)
     {
-        $manager = new EntitySortManager($source, $target, $pagination, 'sequenceNumber', 'sequence_number');
-        $manager->setContent($manager->getContent());
+        $manager = new EntitySortManager();
+        $manager->setIndexName('sequence_number')
+            ->setSortField('sequenceNumber')
+            ->execute($source, $target, $pagination);
 
         return new JsonResponse($manager->getDetails());
     }

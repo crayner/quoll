@@ -23,7 +23,7 @@ class ToggleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new ToggleTransformer($options['use_boolean_values']));
+        $builder->addViewTransformer(new ToggleTransformer($options['use_boolean_values']));
     }
 
     /**

@@ -100,7 +100,7 @@ class PageListener implements EventSubscriberInterface
             return;
         }
 
-        $this->getPageManager()->injectCSS($route, $request->getUser());
+        $this->getPageManager()->injectCSS($route);
 
         $this->getPageManager()->configurePage();
 

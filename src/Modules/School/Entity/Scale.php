@@ -17,7 +17,9 @@ use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use App\Manager\Traits\BooleanList;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -73,7 +75,7 @@ class Scale extends AbstractEntity
 
     /**
      * @var ScaleGrade|null
-     * @ORM\OneToOne(targetEntity="App\Modules\School\Entity\ScaleGrade")
+     * @ORM\OneToOne(targetEntity="ScaleGrade")
      * @ORM\JoinColumn(name="lowest_acceptable", referencedColumnName="id", nullable=true)
      */
     private $lowestAcceptable;
@@ -93,7 +95,7 @@ class Scale extends AbstractEntity
     private $numericOnly = 'N';
 
     /**
-     * @var ScaleGrade|null
+     * @var Collection|ScaleGrade[]|null
      * @ORM\OneToMany(targetEntity="ScaleGrade", mappedBy="scale")
      */
     private $scaleGrades;
@@ -257,23 +259,39 @@ class Scale extends AbstractEntity
     }
 
     /**
-     * @return Scale|null
+     * @return ScaleGrade[]|Collection|null
      */
-    public function getScaleGrades(): ?Scale
+    public function getScaleGrades()
     {
+        if (null === $this->scaleGrades) {
+            $this->scaleGrades = new ArrayCollection();
+        }
+
+        if ($this->scaleGrades instanceof PersistentCollection) {
+            $this->scaleGrades->initialize();
+        }
+
         return $this->scaleGrades;
     }
 
     /**
-     * ScaleGrades.
-     *
-     * @param Scale|null $scaleGrades
+     * @param ScaleGrade[]|Collection|null $scaleGrades
      * @return Scale
      */
-    public function setScaleGrades(?Scale $scaleGrades): Scale
+    public function setScaleGrades(?Collection $scaleGrades)
     {
         $this->scaleGrades = $scaleGrades;
         return $this;
+    }
+
+    /**
+     * getLastGradeSequence
+     * @return int
+     * 2/06/2020 10:02
+     */
+    public function getLastGradeSequence(): int
+    {
+        return $this->getScaleGrades()->count();
     }
 
     /**

@@ -836,10 +836,10 @@ class PageManager
      * @return $this
      * 30/05/2020 15:48
      */
-    public function injectCSS(string $route, $user): PageManager
+    public function injectCSS(string $route): PageManager
     {
         $this->addPageStyle('css/core');
-        if ($user instanceof SecurityUser) {
+        if (SecurityHelper::getCurrentUser() instanceof SecurityUser) {
             $this->addPageStyle('css/fastFinder');
         }
         return $this;

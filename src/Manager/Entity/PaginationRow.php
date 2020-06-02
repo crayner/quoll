@@ -48,6 +48,11 @@ class PaginationRow
     private $defaultFilter;
 
     /**
+     * @var array
+     */
+    private $addElement = ['Add', [], 'messages'];
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -168,7 +173,7 @@ class PaginationRow
             'prevPage' => TranslationHelper::translate('Previous Page', [], 'messages'),
             'nextPage' => TranslationHelper::translate('Next Page', [], 'messages'),
             'lastPage' => TranslationHelper::translate('Last Page', [], 'messages'),
-            'addElement' => TranslationHelper::translate('Add', [], 'messages'),
+            'addElement' => $this->getAddElement(),
             'returnPrompt' => TranslationHelper::translate('Return', [], 'messages'),
             'refreshPrompt' => TranslationHelper::translate('Refresh', [], 'messages'),
             'search' => $this->isSearch(),
@@ -250,4 +255,25 @@ class PaginationRow
 
         return $this;
     }
+
+    /**
+     * getAddElement
+     * @return string
+     * 1/06/2020 15:29
+     */
+    public function getAddElement(): string
+    {
+        return TranslationHelper::translate($this->addElement[0],$this->addElement[1], $this->addElement[2]);
+    }
+
+    /**
+     * @param array $addElement
+     * @return PaginationRow
+     */
+    public function setAddElement(array $addElement): PaginationRow
+    {
+        $this->addElement = $addElement;
+        return $this;
+    }
+
 }

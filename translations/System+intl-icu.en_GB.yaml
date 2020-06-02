@@ -286,3 +286,6 @@ Test Email Settings: Test Email Settings
 'Test your email settings to your own email address: {address}': 'Test your email settings to your own email address: {address}'
 The email setting where not tested as you do not have an email address recorded in your personal record.: The email setting where not tested as you do not have an email address recorded in your personal record.
 This message is sent as a test of the email settings on the Kookaburra Server at {address}: This message is sent as a test of the email settings on the Kookaburra Server at {address}
+Country of Location: Country of Location
+Organisation Name Abbreviation: Organisation Name Abbreviation
+Time Zone of the School: Time Zone of the School

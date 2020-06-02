@@ -88,3 +88,20 @@ The date must be in the specified academic year.: The date must be in the specif
 Thursday: Thursday
 Tuesday: Tuesday
 Wednesday: Wednesday
+Access: Access
+Active: Active
+'Active: No': 'Active: No'
+'Active: Yes': 'Active: Yes'
+Brief description of how scale is used.: Brief description of how scale is used.
+Descriptor: Descriptor
+Details: Details
+'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.': 'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.'
+Edit Scale ({name}): Edit Scale ({name})
+Grades: Grades
+Is Default?: Is Default?
+Lowest Acceptable: Lowest Acceptable
+Numeric: Numeric
+Scales: Scales
+This is the lowest grade a student can get without being unsatisfactory.: This is the lowest grade a student can get without being unsatisfactory.
+Usage: Usage
+Value: Value

@@ -42,6 +42,7 @@ class AcademicYearController extends AbstractPageController
      * @Route("/academic/year/list/",name="academic_year_delete")
      * @IsGranted("ROLE_ROUTE")
      * @param AcademicYearPagination $pagination
+     * @param array $data
      * @return mixed
      */
     public function list(AcademicYearPagination $pagination, array $data = [])

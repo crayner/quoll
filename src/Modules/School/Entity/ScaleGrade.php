@@ -28,8 +28,8 @@ use Symfony\Component\Yaml\Yaml;
  * @ORM\Table(name="ScaleGrade",
  *     indexes={@ORM\Index(name="scale",columns={"scale"})},
  *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="scaleValue", columns={"scale","value"}),
-*           @ORM\UniqueConstraint(name="scaleSequence", columns={"scale","sequence_number"})})
+ *          @ORM\UniqueConstraint(name="scale_value", columns={"value","scale"}),
+*           @ORM\UniqueConstraint(name="scale_sequence", columns={"sequence_number","scale"})})
  * @UniqueEntity({"value","scale"})
  * @UniqueEntity({"sequenceNumber","scale"})
  */
@@ -49,8 +49,8 @@ class ScaleGrade extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale", inversedBy="scaleGrades")
-     * @ORM\JoinColumn(name="scale", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale",inversedBy="scaleGrades")
+     * @ORM\JoinColumn(name="scale", referencedColumnName="id")
      */
     private $scale;
 
@@ -79,8 +79,7 @@ class ScaleGrade extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @ORM\Column(length=1,options={"default": "N"})
      */
     private $defaultGrade = 'N';
 
@@ -115,11 +114,11 @@ class ScaleGrade extends AbstractEntity
 
     /**
      * getScaleId
-     * @return integer
+     * @return null|string
      */
-    public function getScaleId(): int
+    public function getScaleId(): ?string
     {
-        return $this->getScale() ? intval($this->getScale()->getId()) : 0;
+        return $this->getScale() ? $this->getScale()->getId() : null;
     }
 
     /**
@@ -187,18 +186,10 @@ class ScaleGrade extends AbstractEntity
     }
 
     /**
-     * @return string|null
-     */
-    public function defaultGradeGrade(): ?string
-    {
-        return $this->getDefaultGrade() === 'Y' ? true : false;
-    }
-
-    /**
      * defaultGrade
      * @return string|null
      */
-    public function defaultGrade(): ?string
+    public function isDefaultGrade(): ?string
     {
         return $this->getDefaultGrade() === 'Y';
     }
@@ -242,12 +233,17 @@ class ScaleGrade extends AbstractEntity
             'descriptor' => $this->getDescriptor(),
             'sequence' => $this->getSequenceNumber(),
             'id' => $this->getId(),
-            'scale' => $this->getScaleId(),
-            'default' => TranslationHelper::translate($this->defaultGradeGrade() ? 'Yes' : 'No', [], 'messages'),
+            'scaleId' => $this->getScaleId(),
+            'default' => self::getYesNo($this->isDefaultGrade()),
             'canDelete' => ProviderFactory::create(ScaleGrade::class)->canDelete($this),
         ];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 2/06/2020 09:20
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__ScaleGrade` (
@@ -259,10 +255,10 @@ class ScaleGrade extends AbstractEntity
                     `scale` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `id` (`id`,`value`),
-                    UNIQUE KEY `scaleValue` (`scale`,`value`),
-                    UNIQUE KEY `scaleSequence` (`sequence_number`,`scale`),
+                    UNIQUE KEY `scale_value` (`value`,`scale`),
+                    UNIQUE KEY `scale_sequence` (`sequence_number`,`scale`),
                     KEY `scale` (`scale`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     public function foreignConstraints(): string

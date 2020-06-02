@@ -41,6 +41,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules\Comms\Entity'
                 prefix: 'App\Modules\Comms\Entity'
                 alias: Comms
+            Curriculum:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules\Curriculum\Entity'
+                prefix: 'App\Modules\Curriculum\Entity'
+                alias: Curriculum
             Enrolment:
                 is_bundle: false
                 type: annotation
@@ -53,6 +59,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules\Finance\Entity'
                 prefix: 'App\Modules\Finance\Entity'
                 alias: Finance
+            MarkBook:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules\MarkBook\Entity'
+                prefix: 'App\Modules\MarkBook\Entity'
+                alias: MarkBook
             People:
                 is_bundle: false
                 type: annotation

@@ -4,6 +4,7 @@
 
 * {
     box-sizing: border-box;
+    outline: none;
 }
 
 *,
@@ -186,6 +187,7 @@ input[type="file"] {
     height: 28px;
     font-size: 13px;
     box-sizing: border-box;
+    outline: none;
 }
 
 input[type="text"],
@@ -216,6 +218,7 @@ textarea {
     font-size: 13px;
     box-sizing: border-box;
     padding: 4px;
+    outline: none;
 }
 
 select {
@@ -231,7 +234,6 @@ select {
 select[multiple] {
     height: auto;
 }
-
 input[type="button"] {
     border: 1px solid #222222;
     background-color: #eeeeee;
@@ -241,6 +243,7 @@ input[type="button"] {
     font-weight: bold;
     margin: 2px;
     font-size: 13px;
+    outline: none;
 }
 
 input[type="button"].buttonAsLink {
@@ -262,6 +265,7 @@ button[type="submit"],input[type="submit"],.btn-gibbon {
     font-weight: bold;
     margin: 2px;
     font-size: 13px;
+    outline: none;
 }
 
 input[type="reset"] {
@@ -273,6 +277,7 @@ input[type="reset"] {
     font-weight: bold;
     margin: 2px;
     font-size: 13px;
+    outline: none;
 }
 
 input[type="submit"]:hover {
@@ -302,6 +307,7 @@ input[type="button"].buttonLink:hover {
 
 input[type="checkbox"][disabled] {
     opacity: 1;
+    outline: none;
 }
 
 button,
@@ -335,6 +341,9 @@ textarea[disabled] {
 }
 .button {
     @apply py-1 px-2 border border-gray-500 text-gray-700 text-xs font-bold leading-normal ;
+}
+span, button, button:focus {
+    outline: none;
 }
 .smallIntBorder {
     background-color: #fafafa;
@@ -464,9 +473,11 @@ table .heading td:not(:first-child), div.table .heading .td:not(:first-child) {
 .striped tbody tr:nth-of-type(even) {
     @apply bg-gray-400;
 }
+
 .striped tbody tr:hover {
-    @apply bg-gray-500
+    @apply bg-gray-500;
 }
+
 .striped tbody tr.dropTarget:nth-of-type(even) {
     @apply bg-green-200;
 }
@@ -626,9 +637,10 @@ table.blank > tbody > tr > td {
     @apply text-indigo-500
 }
 .close-button.red:hover, .delete-button:hover {
-    @apply text-red-500
+    @apply text-red-500;
 }
-@media (min-width: 1024px){
+
+@media (min-width: 1024px) {
     .lg:leading-tight {
         line-height: 1.25;
     }
@@ -798,8 +810,12 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     width: calc(100% - 32px);
 }
 
-.containerApp .close-button, .paginationApp .paginationControls {
-    margin-top: -29px;
+#content .paginationApp {
+    margin-top: -20px;
+}
+
+.react-tabs__tab-panel .react-message {
+    margin-top: 25px;
 }
 
 @media print

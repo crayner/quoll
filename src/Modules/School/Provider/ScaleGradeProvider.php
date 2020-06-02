@@ -15,8 +15,8 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Entity\MarkbookTarget;
-use App\Entity\RubricColumn;
+use App\Modules\Curriculum\Entity\RubricColumn;
+use App\Modules\MarkBook\Entity\MarkBookTarget;
 use App\Modules\School\Entity\ScaleGrade;
 use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
@@ -29,7 +29,6 @@ use Doctrine\DBAL\Schema\SchemaException;
  */
 class ScaleGradeProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
@@ -77,7 +76,7 @@ class ScaleGradeProvider extends AbstractProvider
      */
     public function canDelete(ScaleGrade $grade): bool
     {
-        if ($this->getRepository(MarkbookTarget::class)->countGradeUse($grade) > 0)
+        if ($this->getRepository(MarkBookTarget::class)->countGradeUse($grade) > 0)
             return false;
         if ($this->getRepository(RubricColumn::class)->countGradeUse($grade) > 0)
             return false;

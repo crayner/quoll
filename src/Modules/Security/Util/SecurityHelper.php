@@ -29,6 +29,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class SecurityHelper
@@ -36,7 +37,6 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
  */
 class SecurityHelper
 {
-
     /**
      * @var LoggerInterface
      */
@@ -422,9 +422,9 @@ class SecurityHelper
 
     /**
      * getCurrentUser
-     * @return string|\Stringable|\Symfony\Component\Security\Core\User\UserInterface
+     * @return string|UserInterface
      */
-    public function getCurrentUser()
+    public static function getCurrentUser()
     {
         $token = self::$storage->getToken();
 
