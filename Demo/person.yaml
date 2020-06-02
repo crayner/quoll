@@ -17,7 +17,7 @@
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Nolan"
@@ -37,7 +37,7 @@
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Parrish"
@@ -58,7 +58,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Bates"
@@ -79,7 +79,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Doyle"
@@ -100,7 +100,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Drake"
@@ -121,7 +121,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Dr."
     surname: "Lane"
@@ -262,7 +262,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Ellis"
@@ -303,7 +303,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Blackwell"
@@ -564,7 +564,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Morin"
@@ -585,7 +585,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Mayer"
@@ -606,7 +606,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Dillon"
@@ -847,7 +847,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Berry"
@@ -908,7 +908,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Dalton"
@@ -1006,7 +1006,7 @@
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Stone"
@@ -1027,7 +1027,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Stone"
@@ -1088,7 +1088,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Weeks"
@@ -1149,7 +1149,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Drake"
@@ -1190,7 +1190,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Parks"
@@ -1251,7 +1251,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Davis"
@@ -1312,7 +1312,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Ellis"
@@ -1333,7 +1333,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Wagner"
@@ -1354,7 +1354,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Burt"
@@ -1375,7 +1375,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Parks"
@@ -1416,7 +1416,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Richard"
@@ -1437,7 +1437,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Dennis"
@@ -1458,7 +1458,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Schultz"
@@ -1519,7 +1519,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Meyers"
@@ -1540,7 +1540,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Blankenship"
@@ -1601,7 +1601,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Battle"
@@ -1622,7 +1622,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Ballard"
@@ -1683,7 +1683,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_SUPPORT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Lester"
@@ -1704,7 +1704,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Parks"
@@ -1725,7 +1725,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Blackwell"
@@ -1746,7 +1746,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Mason"
@@ -1767,7 +1767,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Contreras"
@@ -1788,7 +1788,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Contreras"
@@ -1849,7 +1849,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Moore"
@@ -1890,7 +1890,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Shaffer"
@@ -1931,7 +1931,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Fulton"
@@ -1992,7 +1992,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Parks"
@@ -2053,7 +2053,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Payne"
@@ -2074,7 +2074,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Payne"
@@ -2135,7 +2135,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Dennis"
@@ -2156,7 +2156,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Dennis"
@@ -2177,7 +2177,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Galloway"
@@ -2198,7 +2198,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Gentry"
@@ -2279,7 +2279,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Moore"
@@ -2340,7 +2340,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Bray"
@@ -2401,7 +2401,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Trevino"
@@ -2462,7 +2462,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Nolan"
@@ -2543,7 +2543,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Sweet"
@@ -2564,7 +2564,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Sweet"
@@ -2645,7 +2645,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Swanson"
@@ -2706,7 +2706,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Patterson"
@@ -2727,7 +2727,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Zimmerman"
@@ -2748,7 +2748,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Pate"
@@ -2769,7 +2769,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Goodman"
@@ -2790,7 +2790,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Rosa"
@@ -2811,7 +2811,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_SUPPORT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Valentine"
@@ -2832,7 +2832,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Ballard"
@@ -2853,7 +2853,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Hensley"
@@ -2874,7 +2874,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Perry"
@@ -2895,7 +2895,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Morris"
@@ -2917,7 +2917,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Sellers"
@@ -2938,7 +2938,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Phelps"
@@ -2959,7 +2959,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Phelps"
@@ -3020,7 +3020,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Graves"
@@ -3081,7 +3081,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Parks"
@@ -3142,7 +3142,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Lamb"
@@ -3203,7 +3203,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Lang"
@@ -3264,7 +3264,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Beard"
@@ -3285,7 +3285,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Parks"
@@ -3346,7 +3346,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Solis"
@@ -3407,7 +3407,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Zimmerman"
@@ -3448,7 +3448,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Church"
@@ -3509,7 +3509,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Curtis"
@@ -3530,7 +3530,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Vang"
@@ -3591,7 +3591,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Maxwell"
@@ -3652,7 +3652,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Moore"
@@ -3713,7 +3713,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Dr."
     surname: "Patel"
@@ -3774,7 +3774,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Brock"
@@ -3835,7 +3835,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Duke"
@@ -3856,7 +3856,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Duke"
@@ -3917,7 +3917,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Morin"
@@ -3978,7 +3978,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Rowe"
@@ -4039,7 +4039,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -4100,7 +4100,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Moore"
@@ -4161,7 +4161,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Gregory"
@@ -4222,7 +4222,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Reese"
@@ -4243,7 +4243,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Reese"
@@ -4304,7 +4304,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Bolton"
@@ -4365,7 +4365,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Velasquez"
@@ -4386,7 +4386,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Velasquez"
@@ -4547,7 +4547,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Parks"
@@ -4668,7 +4668,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Schultz"
@@ -4729,7 +4729,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Parks"
@@ -4790,7 +4790,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Charles"
@@ -4851,7 +4851,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Moore"
@@ -4912,7 +4912,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Wheeler"
@@ -4973,7 +4973,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Charles"
@@ -5034,7 +5034,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Beasley"
@@ -5055,7 +5055,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Swanson"
@@ -5116,7 +5116,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Blackburn"
@@ -5157,7 +5157,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Stafford"
@@ -5218,7 +5218,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Rutledge"
@@ -5279,7 +5279,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Delaney"
@@ -5300,7 +5300,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Taylor"
@@ -5361,7 +5361,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Blackwell"
@@ -5422,7 +5422,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Moore"
@@ -5443,7 +5443,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Vasquez"
@@ -5504,7 +5504,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Serrano"
@@ -5565,7 +5565,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Dr."
     surname: "Schultz"
@@ -5626,7 +5626,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Gay"
@@ -5687,7 +5687,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Lester"
@@ -5708,7 +5708,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Clay"
@@ -5769,7 +5769,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Goodwin"
@@ -5830,7 +5830,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Johns"
@@ -5891,7 +5891,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Moore"
@@ -5952,7 +5952,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Vang"
@@ -6013,7 +6013,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Lucas"
@@ -6054,7 +6054,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Dennis"
@@ -6115,7 +6115,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Stone"
@@ -6176,7 +6176,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Callahan"
@@ -6197,7 +6197,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Walter"
@@ -6218,7 +6218,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Walter"
@@ -6279,7 +6279,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Blair"
@@ -6340,7 +6340,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_REGISTRAR"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Blackwell"
@@ -6361,7 +6361,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Contreras"
@@ -6382,7 +6382,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Golden"
@@ -6403,7 +6403,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Golden"
@@ -6464,7 +6464,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Hill"
@@ -6525,7 +6525,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Moore"
@@ -6586,7 +6586,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Vasquez"
@@ -6667,7 +6667,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Blackwell"
@@ -6768,7 +6768,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Velasquez"
@@ -6789,7 +6789,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Ruiz"
@@ -6810,7 +6810,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Ruiz"
@@ -6871,7 +6871,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Moore"
@@ -6932,7 +6932,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Pierce"
@@ -6993,7 +6993,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Vincent"
@@ -7054,7 +7054,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Blackwell"
@@ -7075,7 +7075,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Washington"
@@ -7096,7 +7096,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Washington"
@@ -7157,7 +7157,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Washington"
@@ -7178,7 +7178,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Washington"
@@ -7239,7 +7239,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Dale"
@@ -7280,7 +7280,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Weeks"
@@ -7341,7 +7341,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Love"
@@ -7402,7 +7402,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Stout"
@@ -7423,7 +7423,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Sims"
@@ -7484,7 +7484,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Giles"
@@ -7505,7 +7505,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Gilliam"
@@ -7586,7 +7586,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Alvarez"
@@ -7647,7 +7647,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Callahan"
@@ -7708,7 +7708,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Callahan"
@@ -7729,7 +7729,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Mann"
@@ -7750,7 +7750,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Mann"
@@ -7811,7 +7811,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Gregory"
@@ -7872,7 +7872,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Swanson"
@@ -7893,7 +7893,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Vang"
@@ -7914,7 +7914,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Lane"
@@ -7935,7 +7935,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Lane"
@@ -8016,7 +8016,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Price"
@@ -8057,7 +8057,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Trevino"
@@ -8118,7 +8118,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Moore"
@@ -8179,7 +8179,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Schultz"
@@ -8240,7 +8240,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Hancock"
@@ -8301,7 +8301,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Moody"
@@ -8362,7 +8362,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Parks"
@@ -8423,7 +8423,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Cole"
@@ -8444,7 +8444,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Dunn"
@@ -8465,7 +8465,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Carter"
@@ -8486,7 +8486,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Schultz"
@@ -8547,7 +8547,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Gilmore"
@@ -8608,7 +8608,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Lloyd"
@@ -8669,7 +8669,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Curtis"
@@ -8750,7 +8750,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Bowen"
@@ -8771,7 +8771,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Barker"
@@ -8832,7 +8832,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Schultz"
@@ -8893,7 +8893,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Schultz"
@@ -8954,7 +8954,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Dunn"
@@ -8995,7 +8995,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Collier"
@@ -9056,7 +9056,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Trevino"
@@ -9077,7 +9077,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Trevino"
@@ -9138,7 +9138,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Mann"
@@ -9159,7 +9159,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Parks"
@@ -9220,7 +9220,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Dennis"
@@ -9281,7 +9281,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Bolton"
@@ -9302,7 +9302,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Curtis"
@@ -9323,7 +9323,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Curtis"
@@ -9384,7 +9384,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Griffin"
@@ -9405,7 +9405,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Price"
@@ -9466,7 +9466,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Lamb"
@@ -9527,7 +9527,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Stout"
@@ -9588,7 +9588,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Patel"
@@ -9609,7 +9609,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Trevino"
@@ -9630,7 +9630,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Mcknight"
@@ -9690,7 +9690,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Hendrix"
@@ -9751,7 +9751,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Lamb"
@@ -9772,7 +9772,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Moore"
@@ -9833,7 +9833,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Pickett"
@@ -9874,7 +9874,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Nolan"
@@ -9895,7 +9895,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Schultz"
@@ -9916,7 +9916,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Schultz"
@@ -9977,7 +9977,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Byrd"
@@ -10038,7 +10038,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Kirkland"
@@ -10099,7 +10099,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Freeman"
@@ -10120,7 +10120,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Freeman"
@@ -10181,7 +10181,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Fields"
@@ -10242,7 +10242,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Curtis"
@@ -10303,7 +10303,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Giles"
@@ -10324,7 +10324,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Graham"
@@ -10385,7 +10385,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Morse"
@@ -10446,7 +10446,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Nolan"
@@ -10507,7 +10507,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Tyson"
@@ -10528,7 +10528,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Tyson"
@@ -10589,7 +10589,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Blackwell"
@@ -10650,7 +10650,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Moore"
@@ -10711,7 +10711,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Schultz"
@@ -10732,7 +10732,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Parks"
@@ -10793,7 +10793,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Riddle"
@@ -10854,7 +10854,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Gomez"
@@ -10915,7 +10915,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Dr."
     surname: "Vargas"
@@ -10976,7 +10976,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Cortez"
@@ -11037,7 +11037,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Petersen"
@@ -11078,7 +11078,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Mcknight"
@@ -11139,7 +11139,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Guerra"
@@ -11200,7 +11200,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Hendrix"
@@ -11261,7 +11261,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -11322,7 +11322,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Dale"
@@ -11383,7 +11383,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Alford"
@@ -11504,7 +11504,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Bray"
@@ -11565,7 +11565,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Albert"
@@ -11606,7 +11606,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Burt"
@@ -11647,7 +11647,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Dennis"
@@ -11708,7 +11708,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Blackwell"
@@ -11789,7 +11789,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Robbins"
@@ -11870,7 +11870,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Madden"
@@ -11931,7 +11931,7 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Andrews"
@@ -11992,4 +11992,4 @@
 
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W

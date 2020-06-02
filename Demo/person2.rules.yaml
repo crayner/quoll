@@ -2,6 +2,7 @@ empty_count: 589
 associated:
     house:
         entityName: 'App\Modules\School\Entity\House'
+        findBy: abbreviation
 properties:
     dob: 'DateTimeImmutable'
     visaExpiryDate: 'DateTimeImmutable'

@@ -759,6 +759,15 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_REGISTRAR']
+-
+  name: 'Houses'
+  category: 'Groupings'
+  description: ''
+  route_list: ['house_list','house_delete','house_add','house_edit']
+  entry_route: 'house_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
 ");
     }
 
@@ -1015,6 +1024,13 @@ class Action extends AbstractEntity
 -
     findBy: 
         entryRoute: 'year_group_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'house_list'
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }

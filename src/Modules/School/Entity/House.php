@@ -20,6 +20,7 @@ use App\Manager\Traits\ImageRemovalTrait;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use App\Modules\People\Entity\Person;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="House",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"})})
+ * @UniqueEntity("abbreviation")
+ * @UniqueEntity("name")
  * @ORM\HasLifecycleCallbacks()
  */
 class House extends AbstractEntity
@@ -47,7 +50,7 @@ class House extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30,unique=true)
+     * @ORM\Column(length=30)
      * @Assert\NotBlank()
      * @Assert\Length(max=30)
      */
@@ -55,7 +58,7 @@ class House extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=10,name="abbreviation",unique=true)
+     * @ORM\Column(length=10)
      * @Assert\NotBlank()
      * @Assert\Length(max=10)
      */

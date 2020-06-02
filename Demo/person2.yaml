@@ -15,7 +15,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -35,7 +34,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -55,10 +53,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Hensley"
@@ -76,7 +73,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -96,7 +92,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -116,10 +111,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Anderson"
@@ -137,7 +131,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -157,10 +150,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Barker"
@@ -178,7 +170,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -198,7 +189,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -218,10 +208,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Stout"
@@ -239,7 +228,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -259,7 +247,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -279,10 +266,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Blackwell"
@@ -300,7 +286,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -320,7 +305,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -340,10 +324,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Graves"
@@ -361,7 +344,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -381,7 +363,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -401,10 +382,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Schultz"
@@ -422,7 +402,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -442,7 +421,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -462,7 +440,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -482,10 +459,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Parks"
@@ -503,7 +479,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -523,7 +498,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -543,10 +517,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Pickett"
@@ -564,7 +537,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -584,7 +556,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -604,10 +575,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Solis"
@@ -625,7 +595,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -645,7 +614,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -665,10 +633,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -686,7 +653,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -706,7 +672,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -726,10 +691,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Barker"
@@ -747,10 +711,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Bolton"
@@ -768,7 +731,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -788,7 +750,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -808,10 +769,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Richmond"
@@ -829,7 +789,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -849,7 +808,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -869,10 +827,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Blackwell"
@@ -890,7 +847,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -910,7 +866,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -930,10 +885,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Bowen"
@@ -951,7 +905,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -971,7 +924,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -991,10 +943,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Miles"
@@ -1012,7 +963,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1032,7 +982,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1052,7 +1001,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -1072,10 +1020,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Bryan"
@@ -1093,7 +1040,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1113,7 +1059,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1133,10 +1078,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Camacho"
@@ -1154,7 +1098,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1174,7 +1117,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1194,10 +1136,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Parks"
@@ -1215,7 +1156,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1235,7 +1175,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1255,10 +1194,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Brock"
@@ -1276,7 +1214,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1296,7 +1233,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1316,10 +1252,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Lucas"
@@ -1337,10 +1272,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Dr."
     surname: "Lucas"
@@ -1358,7 +1292,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1378,7 +1311,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1398,7 +1330,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -1418,10 +1349,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Miranda"
@@ -1439,7 +1369,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1459,7 +1388,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1479,10 +1407,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Anderson"
@@ -1500,7 +1427,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1520,7 +1446,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1540,10 +1465,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Bolton"
@@ -1561,7 +1485,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1581,7 +1504,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1601,10 +1523,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Perez"
@@ -1622,7 +1543,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1642,7 +1562,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1662,10 +1581,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Dr."
     surname: "Blackwell"
@@ -1683,7 +1601,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1703,7 +1620,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1723,10 +1639,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Ballard"
@@ -1744,7 +1659,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1764,7 +1678,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1784,10 +1697,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Freeman"
@@ -1805,7 +1717,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1825,7 +1736,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1845,10 +1755,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Guerra"
@@ -1866,7 +1775,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1886,7 +1794,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1906,10 +1813,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Moore"
@@ -1927,7 +1833,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1947,7 +1852,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -1967,10 +1871,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Vincent"
@@ -1988,7 +1891,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2008,7 +1910,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2028,10 +1929,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Zimmerman"
@@ -2049,10 +1949,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -2070,7 +1969,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2090,7 +1988,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2110,10 +2007,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Lane"
@@ -2131,7 +2027,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2151,7 +2046,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2171,10 +2065,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Moore"
@@ -2192,7 +2085,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2212,7 +2104,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2232,10 +2123,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Parks"
@@ -2253,7 +2143,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2273,7 +2162,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2293,10 +2181,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "England"
@@ -2314,7 +2201,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2334,7 +2220,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2354,10 +2239,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Andrews"
@@ -2375,10 +2259,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Andrews"
@@ -2396,7 +2279,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2416,7 +2298,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2436,7 +2317,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -2456,7 +2336,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2476,7 +2355,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2496,10 +2374,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Solis"
@@ -2517,10 +2394,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Holt"
@@ -2538,10 +2414,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Holt"
@@ -2559,7 +2434,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2579,7 +2453,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2599,10 +2472,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Moore"
@@ -2620,7 +2492,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2640,7 +2511,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2660,10 +2530,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Walter"
@@ -2681,10 +2550,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Schultz"
@@ -2702,10 +2570,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Madden"
@@ -2723,10 +2590,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Schultz"
@@ -2744,7 +2610,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2764,7 +2629,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2784,10 +2648,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Rosa"
@@ -2805,7 +2668,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2825,7 +2687,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2845,10 +2706,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Stout"
@@ -2866,7 +2726,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2886,7 +2745,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2906,10 +2764,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Ferrell"
@@ -2927,10 +2784,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Ferrell"
@@ -2948,7 +2804,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2968,7 +2823,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -2988,10 +2842,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Schultz"
@@ -3009,7 +2862,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3029,7 +2881,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3049,7 +2900,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -3069,7 +2919,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3089,7 +2938,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3109,10 +2957,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Woodard"
@@ -3130,7 +2977,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3150,7 +2996,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3170,10 +3015,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Day"
@@ -3191,7 +3035,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3211,7 +3054,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3231,10 +3073,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -3252,7 +3093,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3272,7 +3112,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3292,10 +3131,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Schultz"
@@ -3313,7 +3151,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3333,7 +3170,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3353,7 +3189,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_SUPPORT"
 -
@@ -3373,10 +3208,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Lara"
@@ -3394,7 +3228,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3414,7 +3247,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3434,10 +3266,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Bryan"
@@ -3455,7 +3286,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3475,7 +3305,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3495,10 +3324,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Mack"
@@ -3516,7 +3344,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3536,7 +3363,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3556,10 +3382,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Collier"
@@ -3577,7 +3402,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3597,7 +3421,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3617,10 +3440,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Trevino"
@@ -3638,7 +3460,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3658,7 +3479,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3678,10 +3498,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Schultz"
@@ -3699,7 +3518,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3719,7 +3537,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3739,10 +3556,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Dr."
     surname: "Kirkland"
@@ -3760,7 +3576,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3780,7 +3595,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3800,10 +3614,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Lara"
@@ -3821,7 +3634,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3841,7 +3653,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3861,10 +3672,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Gray"
@@ -3882,7 +3692,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3902,7 +3711,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3922,7 +3730,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -3942,10 +3749,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Schultz"
@@ -3963,7 +3769,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -3983,7 +3788,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4003,10 +3807,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Dr."
     surname: "Dillon"
@@ -4024,7 +3827,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4044,7 +3846,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4064,10 +3865,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Schultz"
@@ -4085,10 +3885,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -4106,7 +3905,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4126,10 +3924,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Merritt"
@@ -4147,7 +3944,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4167,7 +3963,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4187,7 +3982,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -4207,10 +4001,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Graves"
@@ -4228,10 +4021,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Armstrong"
@@ -4249,7 +4041,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4269,7 +4060,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4289,10 +4079,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Dickerson"
@@ -4310,7 +4099,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4330,7 +4118,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4350,7 +4137,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -4370,10 +4156,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Blackwell"
@@ -4391,7 +4176,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4411,7 +4195,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4431,10 +4214,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Weeks"
@@ -4452,7 +4234,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4472,7 +4253,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4492,10 +4272,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Wolf"
@@ -4513,7 +4292,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4533,7 +4311,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4553,10 +4330,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Schultz"
@@ -4574,7 +4350,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4594,7 +4369,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4614,10 +4388,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Collier"
@@ -4635,7 +4408,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4655,7 +4427,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4675,10 +4446,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Lara"
@@ -4696,7 +4466,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4716,7 +4485,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4736,10 +4504,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Dillon"
@@ -4757,7 +4524,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4777,7 +4543,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4797,10 +4562,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -4818,7 +4582,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4838,7 +4601,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4858,10 +4620,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Leonard"
@@ -4879,7 +4640,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4899,7 +4659,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4919,10 +4678,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Schultz"
@@ -4940,7 +4698,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4960,7 +4717,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -4980,10 +4736,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Aguilar"
@@ -5001,7 +4756,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5021,7 +4775,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5041,10 +4794,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Anderson"
@@ -5062,7 +4814,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5082,7 +4833,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5102,10 +4852,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Hardy"
@@ -5123,7 +4872,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5143,7 +4891,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5163,10 +4910,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Curtis"
@@ -5184,7 +4930,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5204,7 +4949,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5224,10 +4968,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Carr"
@@ -5245,7 +4988,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5265,7 +5007,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5285,7 +5026,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -5305,10 +5045,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Pierce"
@@ -5326,10 +5065,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Schultz"
@@ -5347,10 +5085,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Schultz"
@@ -5368,7 +5105,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5388,7 +5124,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5408,10 +5143,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Workman"
@@ -5429,7 +5163,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5449,7 +5182,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5469,10 +5201,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Downs"
@@ -5490,7 +5221,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5510,7 +5240,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5530,10 +5259,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -5551,7 +5279,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5571,7 +5298,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5591,7 +5317,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -5611,10 +5336,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Dennis"
@@ -5632,7 +5356,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5652,7 +5375,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5672,10 +5394,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Potts"
@@ -5693,7 +5414,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5713,7 +5433,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5733,10 +5452,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Nolan"
@@ -5754,7 +5472,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5774,7 +5491,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5794,10 +5510,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Dillon"
@@ -5815,7 +5530,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5835,7 +5549,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5855,10 +5568,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Trevino"
@@ -5876,7 +5588,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5896,7 +5607,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5916,7 +5626,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -5936,7 +5645,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5956,7 +5664,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -5976,10 +5683,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Fowler"
@@ -5997,10 +5703,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Fowler"
@@ -6018,7 +5723,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6038,10 +5742,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Bates"
@@ -6059,7 +5762,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6079,7 +5781,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6099,10 +5800,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Parks"
@@ -6120,7 +5820,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6140,7 +5839,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6160,10 +5858,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Alvarez"
@@ -6181,7 +5878,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6201,7 +5897,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6221,10 +5916,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Moore"
@@ -6242,10 +5936,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Gomez"
@@ -6263,7 +5956,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6283,7 +5975,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6303,10 +5994,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Dr."
     surname: "Blackwell"
@@ -6324,7 +6014,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6344,7 +6033,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6364,10 +6052,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -6385,7 +6072,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6405,7 +6091,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6425,10 +6110,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Guerra"
@@ -6446,7 +6130,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6466,7 +6149,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6486,10 +6168,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "White"
@@ -6507,10 +6188,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "White"
@@ -6528,7 +6208,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6548,10 +6227,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Patel"
@@ -6569,10 +6247,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Tran"
@@ -6590,7 +6267,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6610,7 +6286,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6630,10 +6305,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Freeman"
@@ -6651,7 +6325,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6671,7 +6344,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6691,10 +6363,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Soto"
@@ -6712,7 +6383,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6732,7 +6402,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6752,10 +6421,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Nolan"
@@ -6773,7 +6441,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6793,7 +6460,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6813,10 +6479,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Schultz"
@@ -6834,10 +6499,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Miss"
     surname: "Curtis"
@@ -6855,7 +6519,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6875,7 +6538,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6895,10 +6557,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Moore"
@@ -6916,7 +6577,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6936,7 +6596,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6956,10 +6615,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Schultz"
@@ -6977,7 +6635,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -6997,7 +6654,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7017,10 +6673,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Moore"
@@ -7038,7 +6693,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7058,7 +6712,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7078,10 +6731,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Battle"
@@ -7099,7 +6751,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7119,7 +6770,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7139,10 +6789,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Dr."
     surname: "Lara"
@@ -7160,7 +6809,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7180,7 +6828,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7200,10 +6847,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Blackwell"
@@ -7221,7 +6867,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7241,7 +6886,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7261,10 +6905,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Moore"
@@ -7282,7 +6925,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7302,7 +6944,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7322,10 +6963,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Stout"
@@ -7343,7 +6983,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7363,7 +7002,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7383,10 +7021,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Schultz"
@@ -7404,7 +7041,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7424,7 +7060,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7444,10 +7079,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Patel"
@@ -7465,7 +7099,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7485,10 +7118,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Shields"
@@ -7506,7 +7138,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7526,10 +7157,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Britt"
@@ -7547,7 +7177,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7567,7 +7196,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7587,10 +7215,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Gregory"
@@ -7608,7 +7235,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7628,7 +7254,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7648,10 +7273,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Goodwin"
@@ -7669,7 +7293,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7689,7 +7312,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7709,10 +7331,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Hardy"
@@ -7730,7 +7351,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7750,7 +7370,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7770,7 +7389,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7790,7 +7408,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7810,7 +7427,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -7830,10 +7446,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Schultz"
@@ -7851,7 +7466,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7871,7 +7485,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7891,10 +7504,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Schultz"
@@ -7912,7 +7524,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -7932,7 +7543,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7952,7 +7562,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -7972,10 +7581,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Miss"
     surname: "Dennis"
@@ -7993,7 +7601,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8013,7 +7620,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8033,10 +7639,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Dr."
     surname: "Hardy"
@@ -8054,7 +7659,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8074,7 +7678,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8094,10 +7697,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Cherry"
@@ -8115,7 +7717,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -8135,7 +7736,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8155,7 +7755,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8175,10 +7774,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Collier"
@@ -8196,7 +7794,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8216,7 +7813,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8236,10 +7832,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Zimmerman"
@@ -8257,7 +7852,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8277,7 +7871,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8297,10 +7890,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Swanson"
@@ -8318,7 +7910,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8338,7 +7929,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8358,10 +7948,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Solomon"
@@ -8379,7 +7968,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8399,7 +7987,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8419,10 +8006,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Parks"
@@ -8440,7 +8026,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8460,7 +8045,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8480,10 +8064,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Dr."
     surname: "Lee"
@@ -8501,7 +8084,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8521,7 +8103,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8541,10 +8122,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Joyce"
@@ -8562,7 +8142,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8582,7 +8161,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8602,10 +8180,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Farley"
@@ -8623,7 +8200,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8643,7 +8219,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8663,10 +8238,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Blackwell"
@@ -8684,7 +8258,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8704,7 +8277,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8724,10 +8296,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Mcknight"
@@ -8745,7 +8316,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8765,7 +8335,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8785,10 +8354,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Schultz"
@@ -8806,10 +8374,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Schultz"
@@ -8827,7 +8394,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8847,7 +8413,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8867,10 +8432,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Patel"
@@ -8888,10 +8452,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Patel"
@@ -8909,7 +8472,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8929,7 +8491,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8949,10 +8510,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Vang"
@@ -8970,7 +8530,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -8990,7 +8549,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9010,10 +8568,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Alvarez"
@@ -9031,7 +8588,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9051,7 +8607,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9071,10 +8626,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Schultz"
@@ -9092,7 +8646,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9112,7 +8665,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9132,10 +8684,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Rosa"
@@ -9153,7 +8704,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9173,7 +8723,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9193,10 +8742,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Rosa"
@@ -9214,7 +8762,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9234,7 +8781,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9254,10 +8800,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Battle"
@@ -9275,7 +8820,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9295,7 +8839,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9315,10 +8858,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Ramos"
@@ -9336,7 +8878,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9356,7 +8897,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9376,10 +8916,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Miss"
     surname: "Nolan"
@@ -9397,7 +8936,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9417,7 +8955,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9437,10 +8974,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Washington"
@@ -9458,7 +8994,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9478,7 +9013,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9498,10 +9032,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -9519,7 +9052,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9539,7 +9071,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9559,10 +9090,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Schultz"
@@ -9580,7 +9110,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9600,7 +9129,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9620,10 +9148,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Stout"
@@ -9641,10 +9168,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Vang"
@@ -9662,7 +9188,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9682,10 +9207,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Moore"
@@ -9703,7 +9227,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9723,7 +9246,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9743,10 +9265,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Madden"
@@ -9764,7 +9285,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9784,7 +9304,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9804,10 +9323,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Parks"
@@ -9825,7 +9343,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9845,7 +9362,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9865,10 +9381,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Bolton"
@@ -9886,7 +9401,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9906,7 +9420,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9926,10 +9439,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Schultz"
@@ -9947,7 +9459,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -9967,7 +9478,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -9987,7 +9497,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10007,10 +9516,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Doyle"
@@ -10028,7 +9536,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10048,7 +9555,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10068,10 +9574,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Gregory"
@@ -10089,7 +9594,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10109,7 +9613,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10129,10 +9632,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Schultz"
@@ -10150,7 +9652,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10170,7 +9671,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10190,10 +9690,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Payne"
@@ -10211,10 +9710,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Payne"
@@ -10232,7 +9730,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10252,7 +9749,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10272,10 +9768,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Lane"
@@ -10293,7 +9788,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10313,7 +9807,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10333,10 +9826,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Charles"
@@ -10354,7 +9846,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10374,7 +9865,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10394,10 +9884,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Schultz"
@@ -10415,7 +9904,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10435,7 +9923,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10455,10 +9942,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Maldonado"
@@ -10476,7 +9962,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10496,7 +9981,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10516,10 +10000,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: ""
     surname: "Parks"
@@ -10537,10 +10020,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Parks"
@@ -10558,7 +10040,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10578,7 +10059,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10598,10 +10078,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Vang"
@@ -10619,10 +10098,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Vang"
@@ -10640,7 +10118,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10660,10 +10137,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mrs"
     surname: "Moore"
@@ -10681,7 +10157,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10701,7 +10176,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10721,10 +10195,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Schultz"
@@ -10742,7 +10215,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10762,7 +10234,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10782,10 +10253,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Conrad"
@@ -10803,7 +10273,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10823,7 +10292,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10843,10 +10311,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Ms"
     surname: "Schultz"
@@ -10864,7 +10331,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10884,7 +10350,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10904,10 +10369,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: ""
     surname: "Curtis"
@@ -10925,10 +10389,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Price"
@@ -10946,7 +10409,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10966,7 +10428,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -10986,10 +10447,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mrs"
     surname: "Schultz"
@@ -11007,7 +10467,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11027,7 +10486,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11047,7 +10505,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -11067,10 +10524,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mrs"
     surname: "Moore"
@@ -11088,7 +10544,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11108,7 +10563,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11128,10 +10582,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "Schultz"
@@ -11149,7 +10602,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11169,7 +10621,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11189,10 +10640,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Moore"
@@ -11210,7 +10660,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11230,7 +10679,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11250,7 +10698,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -11270,7 +10717,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_TEACHER"
 -
@@ -11290,10 +10736,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Ms"
     surname: "Schultz"
@@ -11311,7 +10756,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11331,7 +10775,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11351,7 +10794,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11371,7 +10813,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11391,7 +10832,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11411,10 +10851,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: "Mr"
     surname: "May"
@@ -11432,7 +10871,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11452,7 +10890,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11482,10 +10919,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Abbott"
@@ -11515,7 +10951,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11535,7 +10970,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11554,10 +10988,9 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"
-    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 1
+    house: L
 -
     title: "Mr"
     surname: "Pickett"
@@ -11574,8 +11007,7 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"
-    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
     title: "Ms"
@@ -11593,8 +11025,7 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"
-    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
     title: ""
@@ -11613,7 +11044,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11633,7 +11063,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11653,10 +11082,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Mr"
     surname: "Dalton"
@@ -11674,7 +11102,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11694,7 +11121,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11714,7 +11140,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11734,7 +11159,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11754,7 +11178,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11774,10 +11197,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 2
+    house: W
 -
     title: ""
     surname: "Moore"
@@ -11795,10 +11217,9 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
-    house: 3
+    house: B
 -
     title: "Ms"
     surname: "Martinez"
@@ -11816,7 +11237,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11836,7 +11256,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11856,7 +11275,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11876,7 +11294,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11896,7 +11313,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11916,7 +11332,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11936,7 +11351,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11956,7 +11370,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -11976,7 +11389,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_STUDENT"
 -
@@ -11996,7 +11408,6 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
 -
@@ -12015,6 +11426,5 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"
-    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
     primaryRole: "ROLE_PARENT"
