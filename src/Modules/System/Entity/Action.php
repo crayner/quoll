@@ -750,6 +750,15 @@ class Action extends AbstractEntity
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL']
   module: '8282b1f4-a489-11ea-8213-74d435a91d85'
+-
+  name: 'Year Groups'
+  category: 'Groupings'
+  description: ''
+  route_list: ['year_group_list','year_group_edit','year_group_add','year_group_delete','year_group_sort']
+  entry_route: 'year_group_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
 ");
     }
 
@@ -1002,6 +1011,13 @@ class Action extends AbstractEntity
     source: 
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Mark Book' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'year_group_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
     target: module
 ");
     }

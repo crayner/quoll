@@ -15,6 +15,9 @@ namespace App\Modules\School\Repository;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -91,5 +94,24 @@ class YearGroupRepository extends ServiceEntityRepository
             ->setParameter('years', $data, Connection::PARAM_INT_ARRAY)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findNextSequence
+     * @return int
+     * 2/06/2020 16:53
+     */
+    public function findNextSequence(): int
+    {
+        try {
+            return intval($this->createQueryBuilder('y')
+                ->select(['y.sequenceNumber'])
+                ->orderBy('y.sequenceNumber', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult()) + 1;
+        } catch (\PDOException | PDOException | NoResultException | NonUniqueResultException $e) {
+            return 1;
+        }
     }
 }

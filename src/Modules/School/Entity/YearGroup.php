@@ -15,6 +15,7 @@ namespace App\Modules\School\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Bundle\FrameworkBundle\Command\YamlLintCommand;
@@ -28,7 +29,7 @@ use Symfony\Component\Yaml\Yaml;
  * @ORM\Table(name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"}),
  *     @ORM\UniqueConstraint(name="sequence_number", columns={"sequence_number"})},
- *     indexes={@ORM\Index(name="headOfYear", columns={"head_of_year"})})
+ *     indexes={@ORM\Index(name="head_of_year", columns={"head_of_year"})})
  * @UniqueEntity({"name"})
  * @UniqueEntity({"abbreviation"})
  * @UniqueEntity({"sequenceNumber"})
@@ -265,5 +266,15 @@ class YearGroup extends AbstractEntity
     public static function getVersion(): string
     {
         return self::VERSION;
+    }
+
+    /**
+     * getNextSequence
+     * @return int
+     * 2/06/2020 16:53
+     */
+    public static function getNextSequence(): int
+    {
+        return ProviderFactory::getRepository(YearGroup::class)->findNextSequence();
     }
 }
