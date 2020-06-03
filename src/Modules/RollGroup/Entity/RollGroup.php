@@ -10,11 +10,12 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Entity;
+namespace App\Modules\RollGroup\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
+use App\Modules\School\Entity\AcademicYear;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,15 +27,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class RollGroup
- * @package App\Modules\School\Entity
- * @ORM\Entity(repositoryClass="App\Modules\School\Repository\RollGroupRepository")
+ * @package App\Modules\RollGroup\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\RollGroup\Repository\RollGroupRepository")
  * @ORM\Table(name="RollGroup",
  *     uniqueConstraints={
  *     @ORM\UniqueConstraint(name="name_academic_year", columns={"name","academic_year"}),
  *     @ORM\UniqueConstraint(name="abbr_academic_year", columns={"abbreviation","academic_year"}),
  *     @ORM\UniqueConstraint(name="tutor_academic_year", columns={"tutor1","academic_year"}),
- *     @ORM\UniqueConstraint(name="facility_academic_year", columns={"facility","academic_year"})
- * })
+ *     @ORM\UniqueConstraint(name="facility_academic_year", columns={"facility","academic_year"})},
+ *     indexes={@ORM\Index(name="tutor1",columns={"tutor1"}),
+ *     @ORM\Index(name="tutor2",columns={"tutor2"}),
+ *     @ORM\Index(name="tutor3",columns={"tutor3"}),
+ *     @ORM\Index(name="assistant1",columns={"assistant1"}),
+ *     @ORM\Index(name="assistant2",columns={"assistant2"}),
+ *     @ORM\Index(name="assistant3",columns={"assistant3"}),
+ *     @ORM\Index(name="facility",columns={"facility"}),
+ *     @ORM\Index(name="academic_year",columns={"academic_year"}),
+ *     @ORM\Index(name="next_roll_group",columns={"next_roll_group"}),})
  * @UniqueEntity({"name","academicYear"})
  * @UniqueEntity({"abbreviation","academicYear"})
  * @UniqueEntity({"tutor","academicYear"})
@@ -130,7 +139,7 @@ class RollGroup extends AbstractEntity
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\RollGroup")
+     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup")
      * @ORM\JoinColumn(name="next_roll_group", referencedColumnName="id",nullable=true)
      */
     private $nextRollGroup;

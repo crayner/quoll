@@ -71,6 +71,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules\People\Entity'
                 prefix: 'App\Modules\People\Entity'
                 alias: People
+            RollGroup:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/RollGroup/Entity'
+                prefix: 'App\Modules\RollGroup\Entity'
+                alias: RollGroup
             School:
                 is_bundle: false
                 type: annotation

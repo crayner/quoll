@@ -33,8 +33,8 @@ use Symfony\Component\Yaml\Yaml;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation",columns={"abbreviation"}),
  * })
- * @UniqueEntity(fields={"name"})
- * @UniqueEntity(fields={"abbreviation"})
+ * @UniqueEntity("name")
+ * @UniqueEntity("abbreviation")
  */
 class Scale extends AbstractEntity
 {

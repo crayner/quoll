@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\LocalityRepository")
  * @ORM\Table(name="Locality",
- *     indexes={@ORM\Index(name="country",columns={"country"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="locality",columns={"name","territory","post_code","country"})}
  * )
  * @UniqueEntity({"name","territory","postCode","country"})

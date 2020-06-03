@@ -16,17 +16,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMemberAdult
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberAdultRepository")
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="family_contact", columns={"family","contactPriority"}),
- *     @ORM\UniqueConstraint(name="family_member", columns={"family","person"})})
- * @UniqueEntity(fields={"family","person"},errorPath="person")
- * @UniqueEntity(fields={"family","contactPriority"},errorPath="contactPriority")
  */
 class FamilyMemberAdult extends FamilyMember
 {

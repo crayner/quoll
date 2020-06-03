@@ -23,8 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class CourseClassPerson
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseClassPersonRepository")
- * @ORM\Table(name="CourseClassPerson", indexes={@ORM\Index(name="course_class", columns={"course_class"}), @ORM\Index(name="person_role", columns={"person", "role"})}, uniqueConstraints={@ORM\UniqueConstraint(name="courseClassPerson",columns={ "course_class", "person"})})
- * @UniqueEntity({"courseClass","person"})
+ * @ORM\Table(name="CourseClassPerson",
+ *     indexes={@ORM\Index(name="course_class", columns={"course_class"}),
+ *     @ORM\Index(name="person_role", columns={"person", "role"}),
+ *     @ORM\Index(name="person", columns={"person"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="course_class_person",columns={ "course_class", "person"})})
+ * @UniqueEntity({"person","courseClass"})
  */
 class CourseClassPerson extends AbstractEntity
 {

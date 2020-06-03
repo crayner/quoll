@@ -15,8 +15,8 @@
 
 namespace App\Twig;
 
-use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Curriculum\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\Person;

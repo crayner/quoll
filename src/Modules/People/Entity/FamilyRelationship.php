@@ -23,7 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRelationshipRepository")
  * @ORM\Table(name="FamilyRelationship",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="FamilyMemberAdultChild", columns={"family","adult","child"})})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="family_adult_child", columns={"family","adult","child"})},
+ *     indexes={@ORM\Index(name="family",columns={"family"}),
+ *     @ORM\Index(name="adult",columns={"adult"}),
+ *     @ORM\Index(name="child",columns={"child"})})
  * @UniqueEntity({"family","adult","child"})
  */
 class FamilyRelationship extends AbstractEntity

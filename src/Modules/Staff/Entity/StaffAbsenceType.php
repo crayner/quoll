@@ -30,9 +30,9 @@ use Symfony\Component\Yaml\Yaml;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"}),
  *     @ORM\UniqueConstraint(name="sequence_number", columns={"sequence_number"})})
- * @UniqueEntity(fields={"name"})
- * @UniqueEntity(fields={"abbreviation"})
- * @UniqueEntity(fields={"sequenceNumber"})
+ * @UniqueEntity({"name"})
+ * @UniqueEntity({"abbreviation"})
+ * @UniqueEntity({"sequenceNumber"})
  */
 class StaffAbsenceType extends AbstractEntity
 {

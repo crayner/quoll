@@ -10,15 +10,14 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-
-namespace App\Modules\Enrolment\Entity;
+namespace App\Modules\Curriculum\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Department;
 use App\Modules\School\Validator as Validator;
-use App\Util\EntityHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,18 +27,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Course
- * @package App\Modules\Enrolment\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseRepository")
- * @ORM\Table(
- *
- *     name="Course",
- *     indexes={
- *      @ORM\Index(name="academicYear",columns={"academic_year"})},
- *     uniqueConstraints={
+ * @package App\Modules\Curriculum\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Curriculum\Repository\CourseRepository")
+ * @ORM\Table(name="Course",
+ *  indexes={
+ *      @ORM\Index(name="academic_year",columns={"academic_year"}),
+ *     @ORM\Index(name="department",columns={"department"})},
+ *  uniqueConstraints={
  *      @ORM\UniqueConstraint(name="name_year",columns={"academic_year","name"}),
- *      @ORM\UniqueConstraint(name="name_short_year",columns={"academic_year","abbreviation"})})
- * @UniqueEntity({"academicYear", "name"})
- * @UniqueEntity({"academicYear", "abbreviation"})
+ *      @ORM\UniqueConstraint(name="abbreviation_year",columns={"academic_year","abbreviation"})})
+ * @UniqueEntity({"name","academicYear"})
+ * @UniqueEntity({"abbreviation", "academicYear"})
  */
 class Course extends AbstractEntity
 {
@@ -110,7 +108,7 @@ class Course extends AbstractEntity
     private $orderBy;
 
     /**
-     * @var Collection|null
+     * @var Collection|CourseClass[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClass", mappedBy="course")
      * @ORM\OrderBy({"name" = "ASC"})
      */

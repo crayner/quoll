@@ -83,9 +83,9 @@ class StringReplacement extends AbstractEntity
 
     /**
      * setOriginal
-     *
      * @param string|null $original
-     * @return StringOriginal
+     * @return $this
+     * 3/06/2020 14:19
      */
     public function setOriginal(?string $original): StringReplacement
     {
@@ -193,7 +193,7 @@ class StringReplacement extends AbstractEntity
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", columnDefinition="INT(2)", options={"default": "0"})
+     * @ORM\Column(type="smallint", options={"default": "0"})
      * @Assert\Range(max="99", min="1")
      */
     private $priority;
@@ -241,7 +241,7 @@ class StringReplacement extends AbstractEntity
                     `replacement` CHAR(100) NOT NULL,
                     `mode` CHAR(8) NOT NULL,
                     `case_sensitive` CHAR(1) NOT NULL,
-                    `priority` int(2) DEFAULT NULL,
+                    `priority` smallint DEFAULT 0 NOT NULL,
                     PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }

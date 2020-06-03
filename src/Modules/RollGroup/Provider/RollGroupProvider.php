@@ -12,13 +12,16 @@
  * Date: 27/07/2019
  * Time: 11:04
  */
-
-namespace App\Modules\School\Provider;
+namespace App\Modules\RollGroup\Provider;
 
 use App\Provider\AbstractProvider;
-use App\Modules\School\Entity\RollGroup;
-use App\Util\TranslationHelper;
+use App\Modules\RollGroup\Entity\RollGroup;
 
+/**
+ * Class RollGroupProvider
+ * @package App\Modules\RollGroup\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class RollGroupProvider extends AbstractProvider
 {
 

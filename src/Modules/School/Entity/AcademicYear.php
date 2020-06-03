@@ -31,13 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearRepository")
  * @ORM\Table(name="AcademicYear",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
- *     @ORM\UniqueConstraint(name="name_first_day", columns={"name","first_day"}),
- *     @ORM\UniqueConstraint(name="name_last_day", columns={"name","last_day"})})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @Check\AcademicYear()
- * @UniqueEntity({"lastDay","name"})
- * @UniqueEntity({"firstDay","name"})
- * @UniqueEntity("name")
+ * @UniqueEntity({"name"})
  */
 class AcademicYear extends AbstractEntity
 {
@@ -53,7 +49,7 @@ class AcademicYear extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=9, unique=true)
+     * @ORM\Column(length=9)
      * @Assert\NotBlank()
      * @Assert\Length(max=9)
      */

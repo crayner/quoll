@@ -20,7 +20,7 @@ use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Phone;
 use App\Modules\School\Entity\House;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\System\Entity\Setting;

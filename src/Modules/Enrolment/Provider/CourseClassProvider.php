@@ -15,7 +15,7 @@
 
 namespace App\Modules\Enrolment\Provider;
 
-use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
 use App\Modules\Enrolment\Manager\Traits\ProviderTrait;
 use App\Modules\Departments\Twig\MyClasses;

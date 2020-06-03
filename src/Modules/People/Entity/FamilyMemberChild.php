@@ -18,22 +18,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class FamilyMemberChild
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberChildRepository")
- * @ORM\Table(indexes={@ORM\Index(name="person", columns={"person"}),
- *     @ORM\Index(name="family", columns={"family"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="family_member", columns={"family","person"})})
- * @UniqueEntity(fields={"family","person"},errorPath="person")
  */
 class FamilyMemberChild extends FamilyMember
 {
     /**
      * @var Collection|FamilyRelationship[]
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyRelationship",mappedBy="child",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="child",orphanRemoval=true)
      */
     private $relationships;
 

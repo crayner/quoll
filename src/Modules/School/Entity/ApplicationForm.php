@@ -798,7 +798,7 @@ class ApplicationForm extends AbstractEntity
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", name="priority", columnDefinition="INT(1)", options={"default": "0"})
+     * @ORM\Column(type="smallint", options={"default": "0"})
      */
     private $priority = 0;
 
@@ -822,7 +822,7 @@ class ApplicationForm extends AbstractEntity
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\RollGroup")
+     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup")
      * @ORM\JoinColumn(name="roll_group", referencedColumnName="id", nullable=true)
      */
     private $rollGroup;
@@ -3549,7 +3549,7 @@ class ApplicationForm extends AbstractEntity
                     `parent2profession` CHAR(30) DEFAULT NULL,
                     `parent2employer` CHAR(30) DEFAULT NULL,
                     `timestamp` datetime DEFAULT NULL,
-                    `priority` int(1) DEFAULT NULL,
+                    `priority` smallint DEFAULT 0 NOT NULL,
                     `milestones` longtext NOT NULL,
                     `notes` longtext NOT NULL,
                     `dateStart` date DEFAULT NULL,

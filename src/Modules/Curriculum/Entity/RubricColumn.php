@@ -23,7 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\Curriculum
  * @ORM\Entity(repositoryClass="App\Modules\Curriculum\Repository\RubricColumnRepository")
  * @ORM\Table(name="RubricColumn",
- *     indexes={@ORM\Index(name="rubric", columns={"rubric"})})
+ *     indexes={@ORM\Index(name="rubric", columns={"rubric"}),
+ *     @ORM\Index(name="scale_grade", columns={"scale_grade"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class RubricColumn extends AbstractEntity

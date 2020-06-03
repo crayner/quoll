@@ -17,13 +17,18 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Staff
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
- * @ORM\Table(name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
+ * @ORM\Table(name="staff",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="person", columns={"person"}),
+ *     @ORM\UniqueConstraint(name="initials", columns={"initials"})})
+ * @UniqueEntity({"person"})
+ * @UniqueEntity({"initials"})
  */
 class Staff extends AbstractEntity
 {
@@ -63,7 +68,7 @@ class Staff extends AbstractEntity
     ];
     /**
      * @var string|null
-     * @ORM\Column(length=4,nullable=true,unique=true)
+     * @ORM\Column(length=4,nullable=true)
      */
     private $initials;
 

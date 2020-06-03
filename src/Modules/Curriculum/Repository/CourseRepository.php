@@ -10,9 +10,9 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\Enrolment\Repository;
+namespace App\Modules\Curriculum\Repository;
 
-use App\Modules\Enrolment\Entity\Course;
+use App\Modules\Curriculum\Entity\Course;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Department;
@@ -22,7 +22,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class CourseRepository
- * @package App\Modules\Enrolment\Repository
+ * @package App\Modules\Curriculum\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class CourseRepository extends ServiceEntityRepository
 {

@@ -30,8 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="House",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"})})
- * @UniqueEntity("abbreviation")
- * @UniqueEntity("name")
+ * @UniqueEntity({"abbreviation"})
+ * @UniqueEntity({"name"})
  * @ORM\HasLifecycleCallbacks()
  */
 class House extends AbstractEntity

@@ -18,7 +18,7 @@ namespace App\Modules\School\Provider;
 use App\Modules\Activities\Entity\ActivitySlot;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Entity\FacilityPerson;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Provider\AbstractProvider;
 
 /**

@@ -12,10 +12,9 @@
  * Date: 11/08/2019
  * Time: 08:22
  */
+namespace App\Modules\Curriculum\Provider;
 
-namespace App\Modules\Enrolment\Provider;
-
-use App\Modules\Enrolment\Entity\Course;
+use App\Modules\Curriculum\Entity\Course;
 use App\Modules\School\Entity\Department;
 use App\Provider\AbstractProvider;
 

@@ -16,7 +16,7 @@
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
-use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClass;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Routing\Annotation\Route;
 

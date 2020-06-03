@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="CustomFieldData",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="person_field",columns={"person","custom_field"})},
  *     indexes={@ORM\Index(name="person",columns={"person"}), @ORM\Index(name="field",columns={"custom_field"})})
- * @UniqueEntity(fields={"customField","person"})
+ * @UniqueEntity({"customField","person"})
  */
 class CustomFieldData extends AbstractEntity
 {

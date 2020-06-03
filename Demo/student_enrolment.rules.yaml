@@ -9,5 +9,5 @@ associated:
         entityName: 'App\Modules\School\Entity\YearGroup'
         findBy: sequenceNumber
     rollGroup:
-        entityName: 'App\Modules\School\Entity\RollGroup'
+        entityName: 'App\Modules\RollGroup\Entity\RollGroup'
         findBy: abbreviation

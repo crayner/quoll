@@ -31,10 +31,10 @@ use Symfony\Component\Yaml\Yaml;
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationEventRepository")
  * @ORM\Table(name="NotificationEvent",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="eventModule", columns={"event","module"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="event_module", columns={"event","module"})},
  *     indexes={@ORM\Index(name="module",columns={"module"}),
  *     @ORM\Index(name="action",columns={"action"})})
- * @UniqueEntity(fields={"event","module"})
+ * @UniqueEntity({"event","module"})
  * @ORM\HasLifecycleCallbacks()
  * */
 class NotificationEvent extends AbstractEntity

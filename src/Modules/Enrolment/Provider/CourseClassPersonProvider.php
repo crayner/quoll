@@ -15,8 +15,8 @@
 
 namespace App\Modules\Enrolment\Provider;
 
-use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Curriculum\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClassPerson;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\AbstractProvider;
 

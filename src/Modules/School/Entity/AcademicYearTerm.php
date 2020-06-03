@@ -24,14 +24,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\AcademicYearTermRepository")
  * @ORM\Table(name="AcademicYearTerm",
+ *     indexes={@ORM\Index(name="academic_year",columns={"academic_year"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="abbr", columns={"academic_year","abbreviation"}),
  *     @ORM\UniqueConstraint(name="name", columns={"academic_year","name"}),
  *     @ORM\UniqueConstraint(name="academic_year_first_day", columns={"academic_year","first_day"}),
  *     @ORM\UniqueConstraint(name="academic_year_last_day", columns={"academic_year","last_day"})})
- * @UniqueEntity({"academicYear","name"},errorPath="name")
- * @UniqueEntity({"academicYear","abbreviation"},errorPath="abbreviation")
- * @UniqueEntity({"firstDay","academicYear"})
- * @UniqueEntity({"lastDay","academicYear"})
+ * @UniqueEntity(fields={"academicYear","name"},errorPath="name")
+ * @UniqueEntity(fields={"academicYear","abbreviation"},errorPath="abbreviation")
+ * @UniqueEntity(fields={"firstDay","academicYear"},errorPath="firstDay")
+ * @UniqueEntity(fields={"lastDay","academicYear"},errorPath="lastDay")
  * @Check\Term()
  */
 class AcademicYearTerm extends AbstractEntity

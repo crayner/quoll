@@ -59,14 +59,8 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
  *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
  *     )
- * @UniqueEntity(
- *     fields={"studentIdentifier"},
- *     ignoreNull=true
- * )
- * @UniqueEntity(
- *     fields={"username"},
- *     ignoreNull=true
- * )
+ * @UniqueEntity(fields={"studentIdentifier"},ignoreNull=true)
+ * @UniqueEntity(fields={"username"},ignoreNull=true)
  * @ORM\HasLifecycleCallbacks()
  * @Username()
  */

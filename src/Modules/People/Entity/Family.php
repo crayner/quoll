@@ -32,11 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     indexes={@ORM\Index(name="physical_address", columns={"physical_address"}),
  *     @ORM\Index(name="postal_address", columns={"postal_address"})})
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(
- *     fields={"familySync"},
- *     ignoreNull=true
- * )
- * @UniqueEntity(fields={"name"})
+ * @UniqueEntity(fields={"familySync"},ignoreNull=true)
+ * @UniqueEntity({"name"})
  */
 class Family extends AbstractEntity
 {
@@ -51,7 +48,7 @@ class Family extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=100,unique=true)
+     * @ORM\Column(length=100)
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -109,7 +106,7 @@ class Family extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=50, nullable=true, unique=true)
+     * @ORM\Column(length=50, nullable=true)
      */
     private $familySync;
 

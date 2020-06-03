@@ -14,7 +14,7 @@ namespace App\Modules\Enrolment\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,7 +64,7 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\RollGroup", inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup", inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */

@@ -21,13 +21,21 @@ use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMember
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
- * @ORM\Table(name="FamilyMember")
+ * @ORM\Table(name="FamilyMember",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="family_person",columns={"family","person"}),
+ *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})},
+ *     indexes={@ORM\Index(name="person",columns={"person"}),
+ *     @ORM\Index(name="family",columns={"family"}),
+ *     @ORM\Index(name="member_type",columns={"member_type"})})
+ * @UniqueEntity({"person","family"})
+ * @UniqueEntity({"contactPriority","family"})
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)

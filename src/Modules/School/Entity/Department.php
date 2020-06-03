@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={ "name"}),
  *     @ORM\UniqueConstraint(name="abbreviation",columns={ "abbreviation"})}
  * )
+ * @UniqueEntity({"name"})
+ * @UniqueEntity({"abbreviation"})
  */
 class Department extends AbstractEntity
 {
@@ -56,7 +59,7 @@ class Department extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(length=40,unique=true)
+     * @ORM\Column(length=40)
      * @Assert\NotBlank()
      * @Assert\Length(40)
      */
@@ -64,7 +67,7 @@ class Department extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(length=4,name="abbreviation",unique=true)
+     * @ORM\Column(length=4,name="abbreviation")
      * @Assert\NotBlank()
      * @Assert\Length(4)
      */

@@ -31,8 +31,8 @@ use Symfony\Component\Yaml\Yaml;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="module_name", columns={"name", "module"}),
  *     @ORM\UniqueConstraint(name="entry_route",columns={"entry_route"})},
  *     indexes={@ORM\Index(name="module", columns={"module"})})
- * @UniqueEntity(fields={"name","module"})
- * @UniqueEntity(fields={"entryRoute"})
+ * @UniqueEntity({"name","module"})
+ * @UniqueEntity({"entryRoute"})
  */
 class Action extends AbstractEntity
 {
@@ -63,7 +63,7 @@ class Action extends AbstractEntity
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", columnDefinition="INT(2)")
+     * @ORM\Column(type="smallint")
      */
     private $precedence;
 
@@ -404,7 +404,7 @@ class Action extends AbstractEntity
         return ["CREATE TABLE IF NOT EXISTS `__prefix__Action` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
-                    `precedence` int(2) DEFAULT NULL,
+                    `precedence` smallint NOT NULL,
                     `category` CHAR(20) NOT NULL,
                     `description` CHAR(191) NOT NULL,
                     `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',

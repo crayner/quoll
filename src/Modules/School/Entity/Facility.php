@@ -26,7 +26,8 @@ use Symfony\Component\Yaml\Yaml;
  * Class Facility
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\FacilityRepository")
- * @ORM\Table(name="Facility", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(name="Facility",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @UniqueEntity({"name"})
  */
 class Facility extends AbstractEntity
@@ -45,7 +46,7 @@ class Facility extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, unique=true)
+     * @ORM\Column(length=30)
      * @Assert\NotBlank()
      * @Assert\Length(max="30")
      */

@@ -23,7 +23,9 @@ use Symfony\Component\Yaml\Yaml;
  * Class Notification
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationRepository")
- * @ORM\Table(name="Notification")
+ * @ORM\Table(name="Notification",
+ *     indexes={@ORM\Index(name="person",columns={"person"}),
+ *     @ORM\Index(name="module",columns={"module"})})
  * @ORM\HasLifecycleCallbacks()
  * */
 class Notification extends AbstractEntity

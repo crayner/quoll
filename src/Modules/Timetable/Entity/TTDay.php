@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"}),
  *     @ORM\Index(name="timetable", columns={"timetable"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable",columns={"name","timetable"}),
- *     @ORM\UniqueConstraint(name="name_short_timetable",columns={"abbreviation","timetable"})})
+ *     @ORM\UniqueConstraint(name="abbreviation_timetable",columns={"abbreviation","timetable"})})
  * @UniqueEntity({"name","TT"})
  * @UniqueEntity({"abbreviation","TT"})
  */

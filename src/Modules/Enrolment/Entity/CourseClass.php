@@ -14,9 +14,9 @@ namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\Curriculum\Entity\Course;
 use App\Modules\School\Entity\Scale;
 use App\Modules\Timetable\Entity\TTDayRowClass;
-use App\Util\EntityHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,9 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     indexes={@ORM\Index(name="course", columns={"course"}),
  *     @ORM\Index(name="scale",columns={"scale"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="nameCourse",columns={ "name", "course"}),
- *     @ORM\UniqueConstraint(name="nameShortCourse",columns={ "nameShort", "course"})})
+ *     @ORM\UniqueConstraint(name="abbreviationCourse",columns={ "abbreviation", "course"})})
  * @UniqueEntity({"name","course"})
- * @UniqueEntity({"nameShort","course"})
+ * @UniqueEntity({"abbreviation","course"})
  */
 class CourseClass extends AbstractEntity
 {
@@ -52,7 +52,7 @@ class CourseClass extends AbstractEntity
 
     /**
      * @var Course|null
-     * @ORM\ManyToOne(targetEntity="Course", inversedBy="courseClasses")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Curriculum\Entity\Course", inversedBy="courseClasses")
      * @ORM\JoinColumn(name="course", referencedColumnName="id", nullable=true)
      */
     private $course;
@@ -66,10 +66,10 @@ class CourseClass extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=8, name="nameShort")
+     * @ORM\Column(length=8)
      * @Assert\NotBlank()
      */
-    private $nameShort;
+    private $abbreviation;
 
     /**
      * @var string|null
@@ -174,24 +174,24 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * getNameShort
+     * getAbbreviation
      * @param bool $withCourse
      * @return string|null
      */
-    public function getNameShort(bool $withCourse = false): ?string
+    public function getAbbreviation(bool $withCourse = false): ?string
     {
         if ($withCourse)
-            return $this->getCourse()->getNameShort() . '.' . $this->nameShort;
-        return $this->nameShort;
+            return $this->getCourse()->getAbbreviation() . '.' . $this->abbreviation;
+        return $this->abbreviation;
     }
 
     /**
-     * @param string|null $nameShort
+     * @param string|null $abbreviation
      * @return CourseClass
      */
-    public function setNameShort(?string $nameShort): CourseClass
+    public function setAbbreviation(?string $abbreviation): CourseClass
     {
-        $this->nameShort = $nameShort;
+        $this->abbreviation = $abbreviation;
         return $this;
     }
 
@@ -385,7 +385,7 @@ class CourseClass extends AbstractEntity
      */
     public function courseClassName(bool $short = false): string
     {
-        return $short ? $this->getCourse()->getNameShort() . '.' . $this->getNameShort() : $this->getCourse()->getName() . '.' . $this->getName();
+        return $short ? $this->getCourse()->getAbbreviation() . '.' . $this->getAbbreviation() : $this->getCourse()->getName() . '.' . $this->getName();
     }
 
     /**
@@ -412,14 +412,14 @@ class CourseClass extends AbstractEntity
         return ["CREATE TABLE `__prefix__CourseClass` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(30) NOT NULL,
-                    `nameShort` CHAR(8) NOT NULL,
+                    `abbreviation` CHAR(8) NOT NULL,
                     `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
                     `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
                     `course` CHAR(36) DEFAULT NULL,
                     `scale` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `nameCourse` (`name`,`course`),
-                    UNIQUE KEY `nameShortCourse` (`nameShort`,`course`),
+                    UNIQUE KEY `abbreviationCourse` (`abbreviation`,`course`),
                     KEY `scale` (`scale`),
                     KEY `course` (`course`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];

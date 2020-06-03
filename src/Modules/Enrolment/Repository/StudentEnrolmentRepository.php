@@ -15,7 +15,7 @@ namespace App\Modules\Enrolment\Repository;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

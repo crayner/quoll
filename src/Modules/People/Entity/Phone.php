@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PhoneRepository")
  * @ORM\Table(name="Phone",
  *     uniqueConstraints={@ORM\UniqueConstraint("number_country",columns={"phone_number","country"})})
- * @UniqueEntity(fields={"phoneNumber","country"})
+ * @UniqueEntity({"phoneNumber","country"})
  * @ORM\HasLifecycleCallbacks()
  * @\App\Modules\People\Validator\Phone()
  */

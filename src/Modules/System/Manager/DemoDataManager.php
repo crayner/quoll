@@ -25,7 +25,7 @@ use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Facility;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
 use App\Provider\ProviderFactory;

@@ -26,7 +26,8 @@ use Symfony\Component\Yaml\Yaml;
  * Class YearGroup
  * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\YearGroupRepository")
- * @ORM\Table(name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
+ * @ORM\Table(name="YearGroup",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"}),
  *     @ORM\UniqueConstraint(name="sequence_number", columns={"sequence_number"})},
  *     indexes={@ORM\Index(name="head_of_year", columns={"head_of_year"})})
@@ -48,22 +49,22 @@ class YearGroup extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=15,unique=true)
-     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
+     * @ORM\Column(length=15)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=4,name="abbreviation",unique=true)
-     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
+     * @ORM\Column(length=4,name="abbreviation")
+     * @Assert\NotBlank()
      */
     private $abbreviation;
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="SMALLINT UNSIGNED",unique=true)
-     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
+     * @ORM\Column(type="smallint")
+     * @Assert\NotBlank()
      * @Assert\Range(min=1,max=999)
     ")
      */

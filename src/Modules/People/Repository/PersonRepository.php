@@ -23,7 +23,7 @@ use App\Modules\People\Util\UserHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\NoResultException;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Entity\District;
 use App\Modules\People\Entity\Person;

@@ -12,8 +12,8 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
-use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Curriculum\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClassPerson;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

@@ -10,23 +10,24 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Repository;
+namespace App\Modules\RollGroup\Repository;
 
-use App\Util\TranslationHelper;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
-use App\Modules\School\Entity\RollGroup;
+use App\Modules\People\Entity\Person;
+use App\Modules\People\Util\UserHelper;
+use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\AcademicYear;
-use App\Modules\People\Util\UserHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class RollGroupRepository
- * @package App\Repository
+ * @package App\Modules\RollGroup\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class RollGroupRepository extends ServiceEntityRepository
 {

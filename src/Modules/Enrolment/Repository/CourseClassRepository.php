@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
-use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Curriculum\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;

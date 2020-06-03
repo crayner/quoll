@@ -18,13 +18,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TT
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTRepository")
- * @ORM\Table(name="TT")
+ * @ORM\Table(name="TT",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
+ *     @ORM\UniqueConstraint(name="abbreviation",columns={"abbreviation"})},
+ *     indexes={@ORM\Index(name="academic_year",columns={"academic_year"})})
+ * @UniqueEntity({"name"})
+ * @UniqueEntity({"abbreviation"})
  */
 class TT extends AbstractEntity
 {
@@ -47,13 +53,13 @@ class TT extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30,unique=true)
+     * @ORM\Column(length=30)
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="abbreviation",unique=true)
+     * @ORM\Column(length=12, name="abbreviation")
      */
     private $abbreviation;
 
