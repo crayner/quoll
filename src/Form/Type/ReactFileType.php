@@ -78,8 +78,8 @@ class ReactFileType extends AbstractType
                 'multiple'          => false,
                 'type'              => 'file',
                 'delete_security'   => false,
-                'showThumbnail'     => false,
-                'imageMethod'            => null,
+                'show_thumbnail'     => false,
+                'image_method'       => null,
                 'entity'            => null,
             ]
         );
@@ -115,18 +115,18 @@ class ReactFileType extends AbstractType
      */
     private function buildPhoto(array $options, FormView $view): array
     {
-        if ($options['showThumbnail'] === false)
+        if ($options['show_thumbnail'] === false)
             return ['exists' => false];
 
-        $method = $options['imageMethod'];
+        $method = $options['image_method'];
         if ($method === null)
-            throw new \TypeError(sprintf('The imageMethod in "%s" must be set when showThumbnail is set to true.', $options['label']));
+            throw new \TypeError(sprintf('The image_method in "%s" must be set when show_thumbnail is set to true.', $options['label']));
         if ($options['entity'] === null || !$options['entity'] instanceof EntityInterface)
-            throw new \TypeError(sprintf('The entity in "%s" must be set or must be an object of type "App\Manager\EntityInterface" when showThumbnail is set to true.', $options['label']));
+            throw new \TypeError(sprintf('The entity in "%s" must be set or must be an object of type "App\Manager\EntityInterface" when show_thumbnail is set to true.', $options['label']));
         if (!method_exists($options['entity'], $method))
             throw new \TypeError(sprintf('The entity "%s" does not contain the image method "%s"', get_class($options['entity']), $method));
 
-        $photo = new Photo($options['entity'], $method, '75', 'user max75');
+        $photo = new Photo($options['entity'], $method, '75', 'user max75 float-left');
         $domain = null;
         $formView = $view;
         while ($domain === null) {

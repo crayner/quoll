@@ -76,8 +76,8 @@ class PreferenceSettingsType extends AbstractType
                         'required' => false,
                         'file_prefix' => 'personal_bg',
                         'delete_security' => 'ROLE_USER',
-                        'showThumbnail' => true,
-                        'imageMethod' => 'getPersonalBackground',
+                        'show_thumbnail' => true,
+                        'image_method' => 'getPersonalBackground',
                         'entity' => $options['data'],
                     ]
                 )

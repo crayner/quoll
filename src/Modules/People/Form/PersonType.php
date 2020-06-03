@@ -171,9 +171,9 @@ class PersonType extends AbstractType
                         'panel' => 'Basic',
                         'file_prefix' => 'personal_',
                         'data' => $options['data']->getImage240(false),
-                        'showThumbnail' => true,
+                        'show_thumbnail' => true,
                         'entity' => $options['data'],
-                        'imageMethod' => 'getImage240',
+                        'image_method' => 'getImage240',
                     ]
                 )
             ;

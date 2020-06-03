@@ -143,7 +143,7 @@ export default function Widget(props) {
                 <div className={'flex-1'}>
                     <div className={'float-left text-center'}>
                         <img src={item.url} title={item.title} className={item.className} key={'photo'} />
-                        <div className={'w-2/3 float-right'}>
+                        <div className={'w-2/3 float-right pt-5'}>
                             <input {...widget_attr} />
                             <div className={'button-right'}>
                                 <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>

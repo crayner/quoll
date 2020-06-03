@@ -65,6 +65,9 @@ class HouseType extends AbstractType
                     'help' => 'Image file size maximum 2MB',
                     'file_prefix' => 'house_logo_',
                     'data' => $options['data']->getLogo(),
+                    'show_thumbnail' => true,
+                    'entity' => $options['data'],
+                    'image_method' => 'getLogo',
                     'constraints' => [
                          new ReactImage([
                              'maxSize' => "2M",
