@@ -103,3 +103,7 @@ services:
     App\Modules\School\Pagination\SpecialDayPagination:
         calls:
             - ['setStack', ['@request_stack']]
+
+    App\Modules\Security\Voter\RouteVoter:
+        arguments:
+            $logger: '@monolog.logger.security'

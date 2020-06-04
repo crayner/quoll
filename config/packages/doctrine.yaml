@@ -35,6 +35,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+            Activity:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Activity/Entity'
+                prefix: 'App\Modules\Activity\Entity'
+                alias: Activity
             Comms:
                 is_bundle: false
                 type: annotation

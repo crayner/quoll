@@ -63,7 +63,7 @@ class Action extends AbstractEntity
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint",nullable=true)
      */
     private $precedence;
 
@@ -404,7 +404,7 @@ class Action extends AbstractEntity
         return ["CREATE TABLE IF NOT EXISTS `__prefix__Action` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `name` CHAR(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
-                    `precedence` smallint NOT NULL,
+                    `precedence` smallint DEFAULT NULL,
                     `category` CHAR(20) NOT NULL,
                     `description` CHAR(191) NOT NULL,
                     `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
@@ -768,6 +768,24 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_REGISTRAR']
+-
+  name: 'Facilities'
+  category: 'Groupings'
+  description: 'Allows users to create a list of facilities and rooms in the school.'
+  route_list: ['facility_list','facility_edit','facility_add','facility_delete']
+  entry_route: 'facility_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
+-
+  name: 'Facility Settings'
+  category: 'Other'
+  description: 'Allows privileged users to manage settings for facilities.'
+  route_list: ['facility_settings']
+  entry_route: 'facility_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_REGISTRAR']
 ");
     }
 
@@ -1031,6 +1049,20 @@ class Action extends AbstractEntity
 -
     findBy: 
         entryRoute: 'house_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'facility_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'facility_settings'
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }

@@ -822,7 +822,7 @@ class Setting extends AbstractEntity
   scope: 'Activities'
   name: 'activityTypes'
   nameDisplay: 'Activity Types'
-  description: 'Comma-seperated list of the different activity types available in school. Leave blank to disable this feature.'
+  description: 'A list of the different activity types available in school. Leave blank to disable this feature.'
   value: 'Creativity,Action,Service'
 -
   scope: 'System'
