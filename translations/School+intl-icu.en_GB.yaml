@@ -138,3 +138,21 @@ Houses: Houses
 Image file size maximum 2MB: Image file size maximum 2MB
 Logo: Logo
 Other: Other
+Activity Settings: Activity Settings
+Dashboard Settings: Dashboard Settings
+Parent Dashboard Default Tab: Parent Dashboard Default Tab
+Settings: Settings
+Staff Dashboard Default Tab: Staff Dashboard Default Tab
+Student Dashboard Default Tab: Student Dashboard Default Tab
+The default landing tab for the parent dashboard.: The default landing tab for the parent dashboard.
+The default landing tab for the staff dashboard.: The default landing tab for the staff dashboard.
+The default landing tab for the student dashboard.: The default landing tab for the student dashboard.
+dashboardsettingstype:
+    school_admin__parentdashboarddefaulttab:
+        activities: Activities
+        learning overview: Learning Overview
+        timetable: Timetable
+    school_admin__staffdashboarddefaulttab:
+        planner: Planner
+    school_admin__studentdashboarddefaulttab:
+        planner: Planner

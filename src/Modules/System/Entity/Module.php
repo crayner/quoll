@@ -590,6 +590,16 @@ class Module extends AbstractEntity
   convertDate: { versionDate: '2020-04-01' }
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'
+-
+  name: 'Activity'
+  description: 'Manage an activity programme.'
+  entryRoute: 'activity_list'
+  type: 'Core'
+  active: 'Y'
+  category: 'Learn'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
 ");
     }
 

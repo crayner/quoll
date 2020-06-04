@@ -27,6 +27,7 @@ return:
     success:
         0: 'Your request was completed successfully.'
 Action: Action
+Learn: Learn
 Required Data: Required Data
 Actions: Actions
 Submit: Submit

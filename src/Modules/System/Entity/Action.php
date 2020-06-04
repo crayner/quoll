@@ -786,6 +786,33 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_REGISTRAR']
+-
+  name: 'Activity Settings'
+  category: 'Administration'
+  description: 'Manage Activity Settings'
+  route_list: ['activity_settings']
+  entry_route: 'activity_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+-
+  name: 'Activity Settings'
+  category: 'Other'
+  description: 'Manage Activity Settings'
+  route_list: ['activity_configuration']
+  entry_route: 'activity_configuration'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+-
+  name: 'Dashboard Settings'
+  category: 'Other'
+  description: 'Manage settings that control Staff, Student and Parent dashboards.'
+  route_list: ['dashboard_settings']
+  entry_route: 'dashboard_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 ");
     }
 
@@ -1063,6 +1090,27 @@ class Action extends AbstractEntity
 -
     findBy: 
         entryRoute: 'facility_settings'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'activity_settings'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Activity' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'activity_configuration'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'dashboard_settings'
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }
