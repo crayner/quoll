@@ -156,3 +156,26 @@ dashboardsettingstype:
         planner: Planner
     school_admin__studentdashboarddefaulttab:
         planner: Planner
+Capacity: Capacity
+Comment: Comment
+DVD Player: DVD Player
+Edit Facility: Edit Facility
+Extension Number {number}: Extension Number {number}
+Extension: Extension
+Facility Type: Facility Type
+Hifi: Hifi
+How many are there: How many are there
+Interactive White Board: Interactive White Board
+Phone Number: Phone Number
+Projector: Projector
+"Room's external phone number.": "Room's external phone number."
+"Room's internal phone number.": "Room's internal phone number."
+Speakers: Speakers
+Student Computers: Student Computers
+Student computers: Student Computers
+TV: TV
+Teacher Computer: Teacher Computer
+Teaching computer: Teaching Computer
+Add Facility: Add Facility
+'{anchor}Manage Facility Types Settings{closeAnchor}': '{anchor}Manage Facility Types Settings{closeAnchor}'
+'Type: {name}': 'Type: {name}'

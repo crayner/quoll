@@ -33,5 +33,6 @@ activitysettingstype:
         selection: Selection
     activities__payment:
         none: None
-        per activity: per Activity
+        'per activity': 'per Activity'
         single: Single
+        'single + per activity': 'Single + per Activity'

@@ -44,15 +44,21 @@ doctrine:
             Comms:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Comms\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Comms/Entity'
                 prefix: 'App\Modules\Comms\Entity'
                 alias: Comms
             Curriculum:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Curriculum\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Curriculum/Entity'
                 prefix: 'App\Modules\Curriculum\Entity'
                 alias: Curriculum
+            Department:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Department/Entity'
+                prefix: 'App\Modules\Department\Entity'
+                alias: Department
             Enrolment:
                 is_bundle: false
                 type: annotation

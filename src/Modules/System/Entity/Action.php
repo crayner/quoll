@@ -779,7 +779,7 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Facility Settings'
-  category: 'Other'
+  category: 'Configure'
   description: 'Allows privileged users to manage settings for facilities.'
   route_list: ['facility_settings']
   entry_route: 'facility_settings'
@@ -797,7 +797,7 @@ class Action extends AbstractEntity
   role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Activity Settings'
-  category: 'Other'
+  category: 'Configure'
   description: 'Manage Activity Settings'
   route_list: ['activity_configuration']
   entry_route: 'activity_configuration'
@@ -806,7 +806,7 @@ class Action extends AbstractEntity
   role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Dashboard Settings'
-  category: 'Other'
+  category: 'Configure'
   description: 'Manage settings that control Staff, Student and Parent dashboards.'
   route_list: ['dashboard_settings']
   entry_route: 'dashboard_settings'

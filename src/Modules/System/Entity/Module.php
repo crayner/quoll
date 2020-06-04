@@ -600,6 +600,16 @@ class Module extends AbstractEntity
   convertDate: { versionDate: '2020-04-01' }
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'
+-
+  name: 'Department'
+  description: 'Manage Department details.'
+  entryRoute: 'department_list'
+  type: 'Core'
+  active: 'Y'
+  category: 'Learn'
+  convertDate: { versionDate: '2020-04-01' }
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
 ");
     }
 
