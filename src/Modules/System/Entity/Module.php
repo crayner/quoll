@@ -603,7 +603,7 @@ class Module extends AbstractEntity
 -
   name: 'Department'
   description: 'Manage Department details.'
-  entryRoute: 'department_list'
+  entryRoute: 'department_view'
   type: 'Core'
   active: 'Y'
   category: 'Learn'

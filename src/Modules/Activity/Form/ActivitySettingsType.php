@@ -42,11 +42,6 @@ class ActivitySettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('activityHeader', HeaderType::class,
-                [
-                    'label' => 'Activity Settings',
-                ]
-            )
             ->add('activitySettings', SettingsType::class,
                 [
                     'settings' => [

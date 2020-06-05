@@ -33,11 +33,6 @@ class DashboardSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dashboardHeader', HeaderType::class,
-                [
-                    'label' => 'Dashboard Settings'
-                ]
-            )
             ->add('facilitySettings', SettingsType::class,
                 [
                     'settings' => [

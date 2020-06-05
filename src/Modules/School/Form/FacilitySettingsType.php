@@ -40,11 +40,6 @@ class FacilitySettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('securitySettingsHeader', HeaderType::class,
-                [
-                    'label' => 'Facility Settings'
-                ]
-            )
             ->add('facilitySettings', SettingsType::class,
                 [
                     'settings' => [

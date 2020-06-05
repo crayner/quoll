@@ -453,7 +453,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_SYSTEM_ADMIN']
 -
-  name: 'Manage People'
+  name: 'People'
   precedence: 0
   category: 'People Management'
   description: 'Allows management of all people database records.'
@@ -523,7 +523,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_SUPPORT']
 -
-  name: 'Manage Families'
+  name: 'Families'
   precedence: 0
   category: 'People Management'
   description: ''
@@ -583,7 +583,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_REGISTRAR']
 -
-  name: 'Manage Addresses'
+  name: 'Addresses'
   precedence: 0
   category: 'People Management'
   description: 'Manage addresses used for contacts in the database.'
@@ -593,7 +593,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_SUPPORT']
 -
-  name: 'Manage Phones'
+  name: 'Phones'
   precedence: 0
   category: 'People Management'
   description: 'Manage phones used for contacts in the database.'
@@ -603,7 +603,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_SUPPORT']
 -
-  name: 'Manage Localities'
+  name: 'Localities'
   precedence: 0
   category: 'People Management'
   description: 'Manage localities used for contacts in the database.'
@@ -613,7 +613,7 @@ class Action extends AbstractEntity
   menuShow: 'Y'
   role: ['ROLE_SUPPORT']
 -
-  name: 'Manage Custom Fields'
+  name: 'Custom Fields'
   precedence: 0
   category: 'People Management'
   description: 'Manage custom fields for personal.'
@@ -810,6 +810,24 @@ class Action extends AbstractEntity
   description: 'Manage settings that control Staff, Student and Parent dashboards.'
   route_list: ['dashboard_settings']
   entry_route: 'dashboard_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+-
+  name: 'Departments'
+  category: 'Groupings'
+  description: 'Allows admins to create learning areas and administrative groups.'
+  route_list: ['department_manage']
+  entry_route: 'department_manage'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: 'ROLE_PRINCIPAL,ROLE_REGISTRAR'
+-
+  name: 'Manage Departments'
+  category: 'Department'
+  description: 'Allows admins to create learning areas and administrative groups.'
+  route_list: ['department_list','department_add','department_content_loader','department.edit','department_delete','department_current_staff_header']
+  entry_route: 'department_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
@@ -1114,6 +1132,20 @@ class Action extends AbstractEntity
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'department_manage'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'department_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Department' }
     target: module
 ");
     }
