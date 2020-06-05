@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
-use App\Modules\Curriculum\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -76,12 +76,12 @@ class CourseClassRepository extends ServiceEntityRepository
     }
 
     /**
-     * findByPersonSchoolYear
-     * @param AcademicYear$academicYear
+     * findByPersonAcademicYear
+     * @param AcademicYear $academicYear
      * @param Person $person
      * @return mixed
      */
-    public function findByPersonSchoolYear(AcademicYear$academicYear, Person $person)
+    public function findByAcademicYearPerson(AcademicYear $academicYear, Person $person)
     {
         return $this->createQueryBuilder('cc')
             ->distinct()
@@ -92,8 +92,8 @@ class CourseClassRepository extends ServiceEntityRepository
             ->setParameter('person', $person)
             ->andWhere('ccp.role NOT LIKE :role')
             ->setParameter('role', '% - Left%')
-            ->orderBy('c.nameShort', 'ASC')
-            ->addOrderBy('cc.nameShort', 'ASC')
+            ->orderBy('c.abbreviation', 'ASC')
+            ->addOrderBy('cc.abbreviation', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -12,13 +12,12 @@
  * Date: 4/01/2020
  * Time: 17:29
  */
-
 namespace App\Modules\School\Provider;
 
-use App\Modules\Activities\Entity\ActivitySlot;
+use App\Modules\Activity\Entity\ActivitySlot;
 use App\Modules\School\Entity\Facility;
-use App\Modules\School\Entity\FacilityPerson;
 use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\School\Entity\FacilityPerson;
 use App\Provider\AbstractProvider;
 
 /**

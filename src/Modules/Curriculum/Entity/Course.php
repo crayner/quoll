@@ -16,7 +16,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Modules\School\Validator as Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -62,7 +62,7 @@ class Course extends AbstractEntity
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Department")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Department\Entity\Department")
      * @ORM\JoinColumn(name="department",referencedColumnName="id",nullable=true)
      */
     private $department;

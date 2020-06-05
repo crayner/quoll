@@ -15,7 +15,7 @@ namespace App\Modules\Curriculum\Repository;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

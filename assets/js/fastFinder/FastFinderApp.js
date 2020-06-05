@@ -108,7 +108,7 @@ export default class FastFinderApp extends Component {
                         <a data-toggle="#fastFinder" className="p-2 pl-4 float-right text-xs underline md:hidden text-gray-600 "
                            href="#" onClick={this.toggleFastFinderClass}><span className={'far fa-times-circle fa-fw'} title={ this.props.trans_close }></span></a>
 
-                        <div className="py-2 md:py-1 px-2 border-solid border-0 border-b border-gray-300 md:text-right text-gray-700 text-xxs font-bold uppercase">
+                        <div className="py-2 md:py-1 px-2 border-solid border-0 border-b border-gray-300 md:text-right text-gray-800 text-xxs font-bold uppercase">
                             { this.props.trans_fastFind }: { this.props.trans_fastFindActions }
                         </div>
 

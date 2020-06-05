@@ -16,7 +16,7 @@
 namespace App\Modules\Staff\Provider;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Staff\Entity\DepartmentStaff;
 use App\Provider\AbstractProvider;

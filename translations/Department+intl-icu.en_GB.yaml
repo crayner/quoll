@@ -1,0 +1,28 @@
+Abbreviation: Abbreviation
+Add Department: Add Department
+Administration: Administration
+Blurb: Blurb
+Delete: Delete
+Department Access: Department Access
+Department: Department
+Departments: Departments
+Edit: Edit
+General: General
+Learning Area: Learning Area
+List: List
+Make Departments Public: Make Departments Public
+Manage Departments: Manage Departments
+Name: Name
+New Staff: New Staff
+Settings: Settings
+Should department information be made available to the public, via the Gibbon homepage?: Should department information be made available to the public, via the Gibbon homepage?
+Staff: Staff
+Subject Listing: Subject Listing
+Submit: Submit
+Type: Type
+department:
+    type:
+        administration: Administration
+        learning area: Learning Area
+Edit Department: Edit Department
+None: None

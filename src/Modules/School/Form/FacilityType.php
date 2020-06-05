@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+ * Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,6 +18,7 @@ use App\Form\Type\EnumType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\School\Entity\Facility;
+use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -52,8 +53,8 @@ class FacilityType extends AbstractType
             ->add('type', EnumType::class,
                 [
                     'label' => 'Facility Type',
-                    'placeholder' => 'Please select...',
-                    'choice_list_prefix' => 'facility.type',
+                    'placeholder' => TranslationHelper::translate('Please select...', [], 'messages'),
+                    'choice_translation_domain' => false,
                     'help' => '{anchor}Manage Facility Types Settings{closeAnchor}',
                     'help_translation_parameters' => ['{anchor}' => '<a href="'.$options['facility_setting_uri'].'">', '{closeAnchor}' => '</a>']
                 ]

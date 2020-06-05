@@ -24,6 +24,7 @@ export default function PageHeader(props) {
     }
 
     let y = []
+    console.log(details)
     y.push(<h3 {...details.headerAttr} key={'header'}>{details.header}{getControlButtons(details.returnRoute, details.addElementRoute, functions)}</h3>)
 
     return (getContent(y))

@@ -340,7 +340,7 @@ textarea[disabled] {
     max-height: 28px;
 }
 .button {
-    @apply py-1 px-2 border border-gray-500 text-gray-700 text-xs font-bold leading-normal ;
+    @apply py-1 px-2 border border-gray-500 text-gray-800 text-xs font-bold leading-normal ;
 }
 span, button, button:focus {
     outline: none;
@@ -810,12 +810,13 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     width: calc(100% - 32px);
 }
 
-#content .paginationApp {
-    margin-top: -20px;
+.react-tabs__tab-list {
+    border-bottom: 1px solid #444444;
+    margin-bottom: 5px;
 }
 
-.react-tabs__tab-panel .react-message {
-    margin-top: 25px;
+.page-header {
+    margin-top: 10px;
 }
 
 @media print

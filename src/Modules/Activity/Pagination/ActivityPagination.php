@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+ * Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -81,7 +81,7 @@ class ActivityPagination extends AbstractPaginationManager
         $action = new PaginationAction();
         $action->setTitle('View')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-info fa-fw fa-1-5x text-gray-700')
+            ->setSpanClass('fas fa-info fa-fw fa-1-5x text-gray-800')
             ->setOnClick('displayInformation')
             ->setRoute('activities__details')
             ->setDisplayWhen('access')

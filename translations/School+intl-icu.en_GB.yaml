@@ -68,6 +68,7 @@ School Closes: School Closes
 School Ends: School Ends
 School Opens: School Opens
 School Starts: School Starts
+Academic Year Special Days: Academic Year Special Days
 Special Days: Special Days
 This value is locked. Change it in the Academic Year screen.: This value is locked. Change it in the Academic Year screen.
 This value is locked.: This value is locked.
@@ -179,3 +180,4 @@ Teaching computer: Teaching Computer
 Add Facility: Add Facility
 '{anchor}Manage Facility Types Settings{closeAnchor}': '{anchor}Manage Facility Types Settings{closeAnchor}'
 'Type: {name}': 'Type: {name}'
+Departments: Departments

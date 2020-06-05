@@ -12,19 +12,18 @@
  * Date: 2/01/2020
  * Time: 09:54
  */
+namespace App\Modules\Department\Provider;
 
-namespace App\Modules\School\Provider;
-
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Provider\AbstractProvider;
 
 /**
  * Class DepartmentProvider
- * @package App\Modules\School\Provider
+ * @package App\Modules\Department\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class DepartmentProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */

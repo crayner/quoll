@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+ * Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -15,7 +15,7 @@ namespace App\Modules\Curriculum\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Modules\School\Entity\Scale;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -84,7 +84,7 @@ class Rubric extends AbstractEntity
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Department")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Department\Entity\Department")
      * @ORM\JoinColumn(name="department", referencedColumnName="id")
      */
     private $department;

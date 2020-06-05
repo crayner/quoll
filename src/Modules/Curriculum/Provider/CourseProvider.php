@@ -15,7 +15,7 @@
 namespace App\Modules\Curriculum\Provider;
 
 use App\Modules\Curriculum\Entity\Course;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Provider\AbstractProvider;
 
 /**

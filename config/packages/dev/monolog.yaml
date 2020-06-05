@@ -5,7 +5,7 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             max_files: 7
-            channels: ["!event", "!doctrine", "!security", "!installation", "!request", "!translation","!installation"]
+            channels: ["!event", "!doctrine", "!security", "!installation", "!request", "!translation", "!installation", "!page"]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:

@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
+ * Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *

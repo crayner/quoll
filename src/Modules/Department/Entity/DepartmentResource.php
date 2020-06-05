@@ -10,16 +10,15 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Entity;
+namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Util\FileHelper;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DepartmentResource
  * @package App\Modules\School\Entity
- * @ORM\Entity(repositoryClass="App\Modules\School\Repository\DepartmentResourceRepository")
+ * @ORM\Entity(repositoryClass="App\Modules\Department\Repository\DepartmentResourceRepository")
  * @ORM\Table(name="DepartmentResource", indexes={@ORM\Index(name="department",columns={"department"})})
  * @ORM\HasLifecycleCallbacks()
  */
@@ -38,7 +37,7 @@ class DepartmentResource extends AbstractEntity
     /**
      * @var Department|null
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="resources")
-     * @ORM\JoinColumn(name="department",referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="department",referencedColumnName="id",nullable=false)
      */
     private $department;
 

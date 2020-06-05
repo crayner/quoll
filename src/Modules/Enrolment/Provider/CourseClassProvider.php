@@ -12,15 +12,15 @@
  * Date: 12/08/2019
  * Time: 14:56
  */
-
 namespace App\Modules\Enrolment\Provider;
 
-use App\Modules\Curriculum\Entity\CourseClass;
+use App\Modules\Department\Twig\MyClasses;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
-use App\Modules\Enrolment\Manager\Traits\ProviderTrait;
-use App\Modules\Departments\Twig\MyClasses;
-use App\Modules\People\Manager\SecurityUser;
-use App\Modules\Enrolment\Twig\SidebarContent;
+use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Security\Manager\SecurityUser;
+use App\Provider\AbstractProvider;
+use App\Twig\SidebarContent;
 
 /**
  * Class CourseClassProvider
@@ -28,7 +28,9 @@ use App\Modules\Enrolment\Twig\SidebarContent;
  */
 class CourseClassProvider extends AbstractProvider
 {
-
+    /**
+     * @var string
+     */
     protected $entityName = CourseClass::class;
 
     /**
@@ -36,15 +38,14 @@ class CourseClassProvider extends AbstractProvider
      * @param Person|SecurityUser|string|null $person
      * @param SidebarContent|null $sidebar
      * @return array
-     * @throws \Exception
      */
-    public function getMyClasses($person, ?SidebarContent $sidebar = null)
+    public function getMyClasses($person, ?SidebarContent $sidebar = null): array
     {
         $result = [];
         if ($person instanceof SecurityUser)
-            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('academicYear'), $person->getPerson());
+            $result = $this->getRepository()->findByAcademicYearPerson(AcademicYearHelper::getCurrentAcademicYear(), $person->getPerson());
         elseif ($person instanceof Person)
-            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('academicYear'), $person);
+            $result = $this->getRepository()->findByAcademicYearPerson(AcademicYearHelper::getCurrentAcademicYear(), $person);
 
         if (count($result) > 0 && null !== $sidebar) {
             $myClasses = new MyClasses();

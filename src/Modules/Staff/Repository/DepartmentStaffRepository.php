@@ -12,7 +12,7 @@
  */
 namespace App\Modules\Staff\Repository;
 
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use App\Modules\Staff\Entity\DepartmentStaff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

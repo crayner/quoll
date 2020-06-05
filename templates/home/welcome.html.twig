@@ -25,7 +25,7 @@
 {% if getSettingByScope('Departments', 'makeDepartmentsPublic') is same as('Y') %}
     <h3>{{ 'Departments'|trans }}</h3>
     <p>
-        {% set url = path('departments__list') %}
+        {% set url = path('department_view') %}
         {{ 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'|trans({'%1$s': '<a href="' ~ url ~ '">', '%2$s': '</a>', '%3$s': organisationName})|raw }}
     </p>
 {% endif %}

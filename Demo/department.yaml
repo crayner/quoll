@@ -1,0 +1,60 @@
+-
+    type: 'Learning Area'
+    name: 'Science'
+    abbreviation: 'SCI'
+    subjectListing: ['Science']
+-
+    type: 'Learning Area'
+    name: 'The Arts'
+    abbreviation: 'TA'
+    subjectListing: ['Art','Dance','Drama','Media','Music']
+-
+    type: 'Learning Area'
+    name: 'Humanities'
+    abbreviation: 'HUM'
+    subjectListing: ['Humanities','Economics','Religious Studies','Environmental Management']
+-
+    type: 'Learning Area'
+    name: 'English'
+    abbreviation: 'ENG'
+    subjectListing: ['English','English as an Additional Language']
+-
+    type: 'Learning Area'
+    name: 'Languages'
+    abbreviation: 'LNG'
+    subjectListing: ['Chinese First Language','Chinese Second Language','Japanese','Spanish']
+-
+    type: 'Learning Area'
+    name: 'Physical Education'
+    abbreviation: 'PE'
+    subjectListing: ['Physical Education']
+-
+    type: 'Administration'
+    name: 'Finance'
+    abbreviation: 'FIN'
+-
+    type: 'Administration'
+    name: 'Library'
+    abbreviation: 'LIB'
+-
+    type: 'Administration'
+    name: 'IT Services'
+    abbreviation: 'ITS'
+-
+    type: 'Learning Area'
+    name: 'Pastoral'
+    abbreviation: 'PAST'
+-
+    type: 'Learning Area'
+    name: 'Mathematics'
+    abbreviation: 'MA'
+    subjectListing: ['Math']
+-
+    type: 'Learning Area'
+    name: 'Human Technologies'
+    abbreviation: 'HT'
+    subjectListing: ['HT','PSHE','DCVT','ENF']
+-
+    type: 'Learning Area'
+    name: 'Individual Needs'
+    abbreviation: 'IN'

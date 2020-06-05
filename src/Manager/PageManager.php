@@ -26,6 +26,7 @@ use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
+use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
@@ -414,6 +415,16 @@ class PageManager
                 'popup' => $this->isPopup(),
             ]
         );
+
+        if ($this->getPageHeader() === []) {
+            $crumbs = isset($this->getBreadCrumbs()['breadCrumbs']) ? $this->getBreadCrumbs()['breadCrumbs'] : [];
+            if ($crumbs !== []) {
+                $header = end($crumbs);
+                $pageHeader = new PageHeader($header['name']);
+                $this->setPageHeader($pageHeader);
+            }
+        }
+
         $x = array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]);
         return new JsonResponse($x);
     }

@@ -14,7 +14,7 @@ namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\Department;
+use App\Modules\Department\Entity\Department;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,7 +42,7 @@ class DepartmentStaff extends AbstractEntity
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Department", inversedBy="staff")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Department\Entity\Department", inversedBy="staff")
      * @ORM\JoinColumn(name="department",referencedColumnName="id", nullable=false)
      * @Assert\NotBlank()
      */

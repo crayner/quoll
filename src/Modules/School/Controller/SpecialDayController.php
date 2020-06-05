@@ -52,7 +52,7 @@ class SpecialDayController extends AbstractPageController
             ->setContent($content)
             ->setAddElementRoute($this->generateUrl('special_day_add'));
 
-        return $this->getPageManager()->setMessages(isset($data['errors']) ? $data['errors'] : [])->createBreadcrumbs('Special Days')
+        return $this->getPageManager()->setMessages(isset($data['errors']) ? $data['errors'] : [])->createBreadcrumbs('Academic Year Special Days')
             ->render(
                 [
                     'pagination' => $pagination->toArray(),

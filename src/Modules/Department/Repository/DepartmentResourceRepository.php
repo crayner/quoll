@@ -10,9 +10,9 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Repository;
+namespace App\Modules\Department\Repository;
 
-use App\Modules\School\Entity\DepartmentResource;
+use App\Modules\Department\Entity\DepartmentResource;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

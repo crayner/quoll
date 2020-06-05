@@ -93,7 +93,7 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $action->setTitle('Edit Adult in Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-700')
+            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800')
             ->setRoute('family_adult_edit')
             ->setRouteParams(['family' => 'family_id', 'adult' => 'adult_id']);
         $row->addAction($action);
@@ -102,7 +102,7 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $action->setTitle('Remove adult from family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-700')
+            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800')
             ->setRoute('family_adult_remove')
             ->setOnClick('areYouSure')
             ->setRouteParams(['family' => 'family_id', 'adult' => 'adult_id']);
@@ -112,7 +112,7 @@ class FamilyAdultsPagination extends AbstractPaginationManager
         $action->setTitle('Reset Password')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-700')
+            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800')
             ->setRoute('person_reset_password')
             ->setRouteParams(['person' => 'person_id']);
         $row->addAction($action);

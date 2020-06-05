@@ -494,7 +494,11 @@ class Facility extends AbstractEntity
     {
         $x = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('School Admin', 'facilityTypes');
         asort($x);
-        return $x;
+        $result = [];
+        foreach($x as $name) {
+            $result[$name] = $name;
+        }
+        return $result;
     }
 
     /**

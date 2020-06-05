@@ -17,6 +17,7 @@ namespace App\Modules\System\Manager;
 
 use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
+use App\Modules\Department\Entity\Department;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyAdult;
@@ -67,6 +68,7 @@ class DemoDataManager
      */
     private $entities = [
         'house' => House::class,
+        'department' => Department::class,
         'person' => Person::class,
         'person2' => Person::class,
         'family' => Family::class,

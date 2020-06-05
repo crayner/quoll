@@ -10,7 +10,7 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Entity;
+namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Staff\Entity\DepartmentStaff;
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class Department
  * @package App\Modules\School\Entity
- * @ORM\Entity(repositoryClass="App\Modules\School\Repository\DepartmentRepository")
+ * @ORM\Entity(repositoryClass="App\Modules\Department\Repository\DepartmentRepository")
  * @ORM\Table(name="Department",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={ "name"}),
  *     @ORM\UniqueConstraint(name="abbreviation",columns={ "abbreviation"})}
@@ -61,7 +61,7 @@ class Department extends AbstractEntity
      * @var string
      * @ORM\Column(length=40)
      * @Assert\NotBlank()
-     * @Assert\Length(40)
+     * @Assert\Length(max=40)
      */
     private $name;
 
@@ -69,37 +69,37 @@ class Department extends AbstractEntity
      * @var string
      * @ORM\Column(length=4,name="abbreviation")
      * @Assert\NotBlank()
-     * @Assert\Length(4)
+     * @Assert\Length(max=4)
      */
     private $abbreviation;
 
     /**
      * @var array
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array",nullable=true)
      */
     private $subjectListing = [];
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text",nullable=true)
      */
     private $blurb;
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      */
     private $logo;
 
     /**
      * @var DepartmentStaff|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Staff\Entity\DepartmentStaff", mappedBy="department", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Modules\Staff\Entity\DepartmentStaff",mappedBy="department",orphanRemoval=true)
      */
     private $staff;
 
     /**
      * @var Collection|DepartmentResource[]|null
-     * @ORM\OneToMany(targetEntity="DepartmentResource", mappedBy="department", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="DepartmentResource",mappedBy="department",cascade={"persist","remove"},orphanRemoval=true)
      */
     private $resources;
 
@@ -191,8 +191,11 @@ class Department extends AbstractEntity
     public function getSubjectListing(): array
     {
         $this->subjectListing =  $this->subjectListing ?: [];
-        foreach($this->subjectListing as $q=>$w)
+
+        foreach($this->subjectListing as $q=>$w) {
             $this->subjectListing[$q] = trim($w);
+        }
+
         return $this->subjectListing;
     }
 
@@ -346,7 +349,7 @@ class Department extends AbstractEntity
         foreach($this->getStaff() as $staff)
             $result[] = $staff->getPerson()->formatName(['style' => 'long', 'reverse' => true]);
         if (empty($result))
-            $result[] = TranslationHelper::translate('None', [], 'Departments');
+            $result[] = TranslationHelper::translate('None', [], 'Department');
         return implode("\n<br/>", $result);
     }
 
@@ -357,9 +360,9 @@ class Department extends AbstractEntity
                     `type` CHAR(16) NOT NULL DEFAULT 'Learning Area',
                     `name` CHAR(40) NOT NULL,
                     `abbreviation` CHAR(4) NOT NULL,
-                    `subject_listing` text COMMENT '(DC2Type:simple_array)',
-                    `blurb` longtext,
-                    `logo` CHAR(191) NOT NULL,
+                    `subject_listing` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    `blurb` longtext DEFAULT NULL,
+                    `logo` CHAR(191) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     UNIQUE KEY `abbreviation` (`abbreviation`)

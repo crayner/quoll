@@ -31,8 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="CourseClass",
  *     indexes={@ORM\Index(name="course", columns={"course"}),
  *     @ORM\Index(name="scale",columns={"scale"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="nameCourse",columns={ "name", "course"}),
- *     @ORM\UniqueConstraint(name="abbreviationCourse",columns={ "abbreviation", "course"})})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name_course",columns={ "name", "course"}),
+ *     @ORM\UniqueConstraint(name="abbreviation_course",columns={ "abbreviation", "course"})})
  * @UniqueEntity({"name","course"})
  * @UniqueEntity({"abbreviation","course"})
  */
@@ -81,7 +81,7 @@ class CourseClass extends AbstractEntity
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
-     * @Assert\Choice({"Y","N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $attendance = 'Y';
 

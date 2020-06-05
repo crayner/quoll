@@ -362,7 +362,7 @@ class SettingProvider extends AbstractProvider
     public function handleSettingsForm(FormInterface $form, Request $request): array
     {
         $content = json_decode($request->getContent(), true);
-dump($content);
+
         $form->submit($content);
 
         if ($form->isValid()) {

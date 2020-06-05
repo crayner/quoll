@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
+ * Quoll
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -75,7 +75,7 @@ class FacilityPagination extends AbstractPaginationManager
         $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-purple-500')
+            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('facility_edit')
             ->setRouteParams(['facility' => 'id']);
         $row->addAction($action);
@@ -96,6 +96,7 @@ class FacilityPagination extends AbstractPaginationManager
         foreach(Facility::getTypeList() as $type) {
             $filter = new PaginationFilter();
             $filter->setName($x.': '.$type)
+                ->setLabel(['Type: {name}', ['{name}' => $type], 'School'])
                 ->setValue($type)
                 ->setGroup('Type')
                 ->setContentKey('type');
