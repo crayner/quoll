@@ -13,7 +13,7 @@
 namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\Staff\Entity\DepartmentStaff;
+use App\Modules\Department\Entity\DepartmentStaff;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -93,7 +93,7 @@ class Department extends AbstractEntity
 
     /**
      * @var DepartmentStaff|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Staff\Entity\DepartmentStaff",mappedBy="department",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Modules\Department\Entity\DepartmentStaff",mappedBy="department",orphanRemoval=true)
      */
     private $staff;
 

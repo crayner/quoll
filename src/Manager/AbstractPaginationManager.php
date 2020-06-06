@@ -558,18 +558,23 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @param string|array $addElementRoute
      * @return AbstractPaginationManager
      */
-    public function setAddElementRoute($addElementRoute): AbstractPaginationManager
+    public function setAddElementRoute($addElementRoute, ?string $addElementPrompt = null): AbstractPaginationManager
     {
         $addElementRoute = is_string($addElementRoute) ? ['url' => $addElementRoute] : $addElementRoute;
 
         $this->addElementRoute = self::resolveRoute($addElementRoute);
+        if (null !== $addElementPrompt) {
+            $addElementPrompt = [$addElementPrompt, [], TranslationHelper::getDomain()];
+            $this->getRow()->setAddElement($addElementPrompt);
+        }
         return $this;
     }
 
     /**
      * resolveRoute
      * @param array|null $route
-     * @return array
+     * @return array|null
+     * 6/06/2020 11:19
      */
     public static function resolveRoute(?array $route)
     {
@@ -586,13 +591,19 @@ abstract class AbstractPaginationManager implements PaginationInterface
             [
                 'target' => '_self',
                 'options' => '',
+                'prompt' => '',
             ]
         );
 
         $resolver->setAllowedTypes('url', ['string']);
+        $resolver->setAllowedTypes('prompt', ['string']);
         $resolver->setAllowedTypes('target', ['string']);
         $resolver->setAllowedTypes('options', ['string']);
-        return $resolver->resolve($route);
+        $route = $resolver->resolve($route);
+        if ($route['prompt'] !== '') {
+            $route['prompt'] = TranslationHelper::translate($route['prompt']);
+        }
+        return $route;
     }
 
     /**

@@ -819,10 +819,28 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     margin-top: 10px;
 }
 
-@media print
-{
-    .no-print, .no-print *
-    {
+.page-header.with-tabs {
+    border-bottom: none;
+}
+
+@media print {
+    .no-print, .no-print * {
         display: none !important;
+    }
+}
+
+@media (min-width: 575px) {
+    .xs\:static {
+        position: static;
+    }
+}
+@media (min-width: 575px) {
+    .xs\:block {
+        display: block;
+    }
+}
+@media (min-width: 575px) {
+    .xs\:hidden {
+        display: none;
     }
 }

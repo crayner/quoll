@@ -10,16 +10,17 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\Staff\Repository;
+namespace App\Modules\Department\Repository;
 
 use App\Modules\Department\Entity\Department;
-use App\Modules\Staff\Entity\DepartmentStaff;
+use App\Modules\Department\Entity\DepartmentStaff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class DepartmentStaffRepository
- * @package App\Modules\Staff\Repository
+ * @package App\Modules\Department\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class DepartmentStaffRepository extends ServiceEntityRepository
 {

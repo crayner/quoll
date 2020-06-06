@@ -67,12 +67,12 @@ class PreferenceController extends AbstractPageController
                     ]
                 );
                 $manager->singlePanel($passwordForm->createView());
-                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);
             } else {
                 $manager->singlePanel($passwordForm->createView());
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);
             }
         }
@@ -115,7 +115,7 @@ class PreferenceController extends AbstractPageController
 
         $manager->addContainer($container)->buildContainers();
 
-        return $pageManager->createBreadcrumbs('Preferences')
+        return $pageManager->createBreadcrumbs('Personal Preferences')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 

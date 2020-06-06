@@ -26,3 +26,17 @@ department:
         learning area: Learning Area
 Edit Department: Edit Department
 None: None
+Current Staff: Current Staff
+'Please select...': 'Please select...'
+Role: Role
+Use Control, Command and/or Shift to select multiple.: Use Control, Command and/or Shift to select multiple.
+departmentstaff:
+    role:
+        administrator: Administrator
+        assistant coordinator: Assistant Coordinator
+        coordinator: Coordinator
+        director: Director
+        manager: Manager
+        other: Other
+        'teacher (curriculum)': 'Teacher (Curriculum)'
+        teacher: Teacher

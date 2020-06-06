@@ -421,6 +421,13 @@ class PageManager
             if ($crumbs !== []) {
                 $header = end($crumbs);
                 $pageHeader = new PageHeader($header['name']);
+                dump($options);
+                if (isset($options['containers'])) {
+                    $x = reset($options['containers']);
+                    if (isset($x['panels']) && count($x['panels'])) {
+                        $pageHeader->setHeaderAttr(['className' => 'page-header with-tabs']);
+                    }
+                }
                 $this->setPageHeader($pageHeader);
             }
         }

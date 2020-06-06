@@ -133,6 +133,7 @@ export default class PaginationApp extends Component {
     loadContent() {
         fetchJson(this.contentLoader, {}, false)
             .then(data => {
+                console.log(data)
                 if (data.status === 'success'){
                     this.content = data.content
                     this.pageMax = data.pageMax
@@ -284,10 +285,16 @@ export default class PaginationApp extends Component {
     }
 
     paginateContent(content, offset, pageMax = 0) {
-        if (pageMax === 0)
+        if (pageMax === 0) {
             pageMax = this.state.pageMax
+        }
+        console.log(content,typeof content,Array.isArray(content),content.length)
 
-        return content.slice(offset, offset + pageMax)
+        if (typeof content === 'object') {
+            return content.slice(offset, offset + pageMax)
+        } else {
+            console.error('The content MUST be an array!')
+        }
     }
 
     firstPage(){

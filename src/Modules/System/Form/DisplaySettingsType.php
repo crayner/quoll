@@ -42,12 +42,6 @@ class DisplaySettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('displaySettingsHeader', HeaderType::class,
-                [
-                    'label' => 'Display Settings',
-                    'help' => 'The settings used here are cached and changes will not be reflected in the display configuration immediately.'
-                ]
-            )
             ->add('systemSettings', SettingsType::class,
                 [
                     'settings' => [

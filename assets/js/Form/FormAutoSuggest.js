@@ -99,9 +99,9 @@ export default function FormAutoSuggest(props) {
 
     function toggleAutoSuggestList()
     {
-        let suggestionsClass = 'md:block absolute md:static top-0 right-0 w-full'
+        let suggestionsClass = 'xs:block absolute xs:static top-0 right-0 w-full'
         if (form.suggestionsClass === suggestionsClass) {
-            suggestionsClass = 'md:block absolute md:static top-0 right-0 w-full hidden'
+            suggestionsClass = 'xs:block absolute xs:static top-0 right-0 w-full hidden'
         }
         form.suggestionsClass = suggestionsClass
         functions.mergeSubForm(form)
@@ -124,10 +124,14 @@ export default function FormAutoSuggest(props) {
         }
     }
 
+    setAutoSuggestValue()
+
+    console.log(form)
+
     return (
         <div id={form.id + '_auto_suggest'} className={ form.suggestionsClass }>
             <div className="z-10 rounded border border-solid border-gray-300 w-full">
-                <a data-toggle={form.id + '_auto_suggest'} className="float-right text-xs underline md:hidden text-gray-600"
+                <a data-toggle={form.id + '_auto_suggest'} className="float-right text-xs underline xs:hidden text-gray-600"
                    href="#" onClick={() => toggleAutoSuggestList()}><span className={'far fa-times-circle fa-fw'} title={'Close'}/></a>
                 <div className="w-full sm:py-2">
                     <div {...wrapper_attr}>

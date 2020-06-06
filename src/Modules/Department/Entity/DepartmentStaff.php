@@ -10,21 +10,21 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\Staff\Entity;
+namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
-use App\Modules\Department\Entity\Department;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class DepartmentStaff
- * @package App\Modules\Staff\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\DepartmentStaffRepository")
+ * @package App\Modules\Department\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Department\Repository\DepartmentStaffRepository")
  * @ORM\Table(name="DepartmentStaff",
- *     indexes={@ORM\Index(name="person",columns={"person"}),@ORM\Index(name="department",columns={"department"})},
+ *     indexes={@ORM\Index(name="person",columns={"person"}),
+ *     @ORM\Index(name="department",columns={"department"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="department_person",columns={"department","person"})})
  * @UniqueEntity({"department","person"})
  */
@@ -42,7 +42,7 @@ class DepartmentStaff extends AbstractEntity
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Department\Entity\Department", inversedBy="staff")
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="staff")
      * @ORM\JoinColumn(name="department",referencedColumnName="id", nullable=false)
      * @Assert\NotBlank()
      */
@@ -161,6 +161,16 @@ class DepartmentStaff extends AbstractEntity
     }
 
     /**
+     * getDepartmentId
+     * @return string|null
+     * 6/06/2020 11:45
+     */
+    public function getDepartmentId(): ?string
+    {
+        return $this->getDepartment()->getId() ?? null;
+    }
+
+    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -168,12 +178,19 @@ class DepartmentStaff extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [
-            'name' => $this->getPerson()->formatName(['style' => 'long', 'reverse' => true, 'preferred' => false]),
+            'name' => $this->getPerson()->getFullNameReversed(),
             'role' => $this->getRole(),
+            'id' => $this->getId(),
+            'departmentId' => $this->getDepartment()->getId(),
             'canDelete' => true,
         ];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 6/06/2020 10:10
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__DepartmentStaff` (

@@ -14,16 +14,17 @@
  */
 namespace App\Modules\Department\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
+use App\Form\Type\DisplayType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
+use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Department\Entity\Department;
 use App\Modules\People\Entity\Person;
-use App\Modules\Staff\Entity\DepartmentStaff;
+use App\Modules\Department\Entity\DepartmentStaff;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,55 +44,59 @@ class DepartmentStaffType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        dump($options['data']);
         $builder
             ->add('staffTitle', HeaderType::class,
                 [
-                    'label' => 'New Staff',
-                    'panel' => 'Staff',
+                    'label' => $options['data']->getId() === null ? 'Add Staff to Department' : 'Edit Department Staff Role',
                 ]
             )
-            ->add('newStaff', EntityType::class,
-                [
-                    'label' => 'Staff',
-                    'help' => 'Use Control, Command and/or Shift to select multiple.',
-                    'class' => Person::class,
-                    'choice_label' => 'fullNameReversed',
-                    'multiple' => true,
-                    'mapped' => false,
-                    'attr' => [
-                        'size' => '8',
-                    ],
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->leftJoin('p.staff', 's')
-                            ->select(['p','s'])
-                            ->where('s.id IS NOT NULL')
-                            ->orderBy('p.surname')
-                            ->addOrderBy('p.firstName')
-                        ;
-                    },
-                ]
-            )
+        ;
+        if ($options['data']->getId() !== null) {
+            $builder
+                ->add('personDisplay', DisplayType::class,
+                    [
+                        'label' => 'Staff',
+                        'help' => 'Value locked.',
+                        'mapped' => false,
+                        'data' => $options['data']->getPerson()->getFullNameReversed(),
+                    ]
+                )
+                ->add('person', HiddenEntityType::class,
+                    [
+                        'class' => Person::class,
+                    ]
+                )
+            ;
+        } else {
+            $builder
+                ->add('person', AutoSuggestEntityType::class,
+                    [
+                        'label' => 'Staff',
+                        'class' => Person::class,
+                        'choice_label' => 'fullNameReversed',
+                        'placeholder' => 'Type a name...',
+                        'data' => $options['data']->getPerson() ?? null,
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('p')
+                                ->leftJoin('p.staff', 's')
+                                ->select(['p', 's'])
+                                ->where('s.id IS NOT NULL')
+                                ->orderBy('p.surname')
+                                ->addOrderBy('p.firstName');
+                        },
+                    ]
+                )
+            ;
+        }
+        $builder
             ->add('role', EnumType::class,
                 [
                     'label' => 'Role',
-                    'mapped' => false,
                     'placeholder' => 'Please select...',
-                    'choice_list_class' => DepartmentStaff::class,
                 ]
             )
-            ->add('formName', HiddenType::class,
-                [
-                    'data' => 'Staff Form',
-                    'mapped' => false,
-                ]
-            )
-            ->add('submit', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'panel' => 'Staff',
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 
@@ -104,7 +109,7 @@ class DepartmentStaffType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Department',
-                'data_class' => Department::class,
+                'data_class' => DepartmentStaff::class,
             ]
         );
     }

@@ -325,16 +325,21 @@ class ContainerManager
     }
 
     /**
-     * AddElementRoute.
-     *
-     * @param string $addElementRoute
-     * @return ContainerManager
+     * setAddElementRoute
+     * @param $addElementRoute
+     * @param string $prompt
+     * @return $this
+     * 6/06/2020 10:58
      */
-    public function setAddElementRoute($addElementRoute): ContainerManager
+    public function setAddElementRoute($addElementRoute, string $prompt = 'Add'): ContainerManager
     {
-        if (is_string($addElementRoute))
+        if (is_string($addElementRoute)) {
             $addElementRoute = ['url' => $addElementRoute];
+        }
+
+        $addElementRoute['prompt'] = $prompt;
         $this->addElementRoute = $addElementRoute;
+
         return $this;
     }
 
@@ -347,16 +352,21 @@ class ContainerManager
     }
 
     /**
-     * ReturnRoute.
-     *
-     * @param string|array $returnRoute
-     * @return ContainerManager
+     * setReturnRoute
+     * @param $returnRoute
+     * @param string $prompt
+     * @return $this
+     * 6/06/2020 10:58
      */
-    public function setReturnRoute($returnRoute): ContainerManager
+    public function setReturnRoute($returnRoute, string $prompt = 'Return'): ContainerManager
     {
-        if (is_string($returnRoute))
+        if (is_string($returnRoute)) {
             $returnRoute = ['url' => $returnRoute];
+        }
+
+        $returnRoute['prompt'] = $prompt;
         $this->returnRoute = $returnRoute;
+
         return $this;
     }
 

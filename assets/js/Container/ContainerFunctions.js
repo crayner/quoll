@@ -25,10 +25,10 @@ export function setPanelErrors(form, panelErrors)
 export function getControlButtons(returnRoute, addRoute, functions) {
     let control = []
     if (!isEmpty(returnRoute)) {
-        control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(returnRoute, '_self')} title={functions.translate('Return')}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
+        control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(returnRoute.url, '_self')} title={returnRoute.prompt}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
     }
     if (!isEmpty(addRoute)) {
-        control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(addRoute, '_self')} title={functions.translate('Add')}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
+        control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(addRoute.url, '_self')} title={addRoute.prompt}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
     }
     return control
 }

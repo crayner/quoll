@@ -25,7 +25,7 @@ use App\Modules\Department\Form\DepartmentType;
 use App\Modules\Department\Pagination\DepartmentPagination;
 use App\Modules\Department\Pagination\DepartmentStaffPagination;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Staff\Entity\DepartmentStaff;
+use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
@@ -34,6 +34,7 @@ use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -58,7 +59,12 @@ class ManageController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * 4/06/2020 13:19
      */
-    public function list(ContainerManager $manager, DepartmentPagination $pagination, SidebarContent $sidebar, array $messages = [], string $tabName = 'Settings')
+    public function list(
+        ContainerManager $manager,
+        DepartmentPagination $pagination,
+        SidebarContent $sidebar,
+        array $messages = [],
+        string $tabName = 'Settings')
     {
         $form = $this->createForm(DepartmentSettingType::class, null, ['action' => $this->generateUrl('department_list')]);
         ProviderFactory::create(CourseClass::class)->getMyClasses($this->getUser(), $sidebar);
@@ -86,7 +92,7 @@ class ManageController extends AbstractPageController
         $container->addForm('Settings', $form->createView())->addPanel($panel);
         $panel = new Panel('List', 'Department');
         $content = ProviderFactory::getRepository(Department::class)->findBy([], ['name' => 'ASC']);
-        $pagination->setContent($content)->setAddElementRoute($this->generateUrl('department_add'));
+        $pagination->setContent($content)->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
         $panel->setPagination($pagination);
         $container->addPanel($panel)->setSelectedPanel($tabName);
         $manager->addContainer($container);
@@ -100,6 +106,7 @@ class ManageController extends AbstractPageController
     /**
      * edit
      * @param ContainerManager $manager
+     * @param DepartmentStaffPagination $pagination
      * @param Department|null $department
      * @param string|null $tabName
      * @return JsonResponse|Response
@@ -108,7 +115,7 @@ class ManageController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * 4/06/2020 15:00
      */
-    public function edit(ContainerManager $manager, ?Department $department = null, ?string $tabName = 'General')
+    public function edit(ContainerManager $manager, DepartmentStaffPagination $pagination, ?Department $department = null, ?string $tabName = 'General', array $data = [])
     {
         if (!$department instanceof Department) {
             $department = new Department();
@@ -119,8 +126,6 @@ class ManageController extends AbstractPageController
 
 
         $form = $this->createForm(DepartmentType::class, $department, ['action' => $action]);
-
-        $staffForm = $this->createForm(DepartmentStaffType::class, $department, ['action' => $action]);
 
         $container = new Container();
         $container->setTarget('formContent')->setSelectedPanel($tabName);
@@ -151,16 +156,6 @@ class ManageController extends AbstractPageController
                 }
 
                 $manager->singlePanel($form->createView());
-            } elseif ($content['formName'] === 'Staff Form') {
-                $manager->singlePanel($staffForm->createView());
-                $data = ProviderFactory::create(DepartmentStaff::class)->writeDepartmentStaff($department, $content['newStaff'], $content['role'], $data);
-                if ($data['status'] === 'success')
-                {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('department_edit', ['department' => $department->getId(), 'tabName' => 'Staff']);
-                }
-                $manager->singlePanel($staffForm->createView());
-
             }
             $data['form'] = $manager->getFormFromContainer();
 
@@ -170,31 +165,27 @@ class ManageController extends AbstractPageController
         $panel = new Panel('General', 'Department');
         $container->addForm('General', $form->createView())->addPanel($panel);
 
-        if ($department->getId() > 0) {
+        if ($department->getId() !== null) {
             $panel = new Panel('Staff', 'Department');
-            $panel->setPreContent(['currentStaffHeader', 'staffPaginationContent']);
-            $container->addForm('Staff', $staffForm->createView())->addPanel($panel);
-            $container->addPanel($panel)->setContentLoader([
-                [
-                    'route' => $this->generateUrl('department_content_loader', ['department' => $department->getId()]),
-                    'target' => 'staffPaginationContent',
-                    'type' => 'pagination',
-                ],
-                [
-                    'route' => $this->generateUrl('department_current_staff_header'),
-                    'target' => 'currentStaffHeader',
-                    'type' => 'text',
-                ],
-            ]);
+            $content = ProviderFactory::getRepository(DepartmentStaff::class)->findStaffByDepartment($department);
+            $pagination->setContent($content)
+                ->setPreContent($this->renderView('department/current_staff_header.html.twig'))
+                ->setRefreshRoute($this->generateUrl('department_edit', ['tabName' => 'Staff', 'department' => $department->getId()]),'Refresh Department Staff')
+                ->setAddElementRoute(['url' => $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]), 'target' => 'Department_Staff', 'options' => 'width=600,height=350'], 'Add Department Staff');
+            $panel->setPagination($pagination);
+            $container->addPanel($panel);
         }
 
-        $manager->addContainer($container)->setReturnRoute($this->generateUrl('department_list', ['tabName' => 'List']));
+        $manager->addContainer($container)
+            ->setReturnRoute($this->generateUrl('department_list', ['tabName' => 'List']), 'Return to Departments');
         $pageHeader = new PageHeader(TranslationHelper::translate($department->getId() === null ? 'Add Department' : 'Edit Department'));
         if ($department->getId() !== null) {
-            $manager->setAddElementRoute($this->generateUrl('department_add'));
+            $manager->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
         }
 
-        return $this->getPageManager()->setPageHeader($pageHeader)
+        return $this->getPageManager()
+            ->setMessages(isset($data['errors']) ? $data['errors'] : [])
+            ->setPageHeader($pageHeader)
             ->createBreadcrumbs($department->getId() === null ? 'Add Department' : 'Edit Department')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
@@ -222,38 +213,65 @@ class ManageController extends AbstractPageController
     }
 
     /**
-     * manageContent
+     * deleteStaff
+     * @param DepartmentStaff $staff
+     * @param ContainerManager $manager
      * @param DepartmentStaffPagination $pagination
-     * @param Department|null $department
-     * @return JsonResponse
-     * @Route("/department/{department}/content/loader/", name="department_content_loader")
+     * @return JsonResponse|Response
+     * @Route("/department/staff/{staff}/delete/", name="department_staff_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 4/06/2020 16:20
+     * 6/06/2020 08:22
      */
-    public function manageContent(DepartmentStaffPagination $pagination, ?Department $department)
+    public function deleteStaff(DepartmentStaff $staff, ContainerManager $manager, DepartmentStaffPagination $pagination)
     {
-        try {
-            $content = ProviderFactory::getRepository(DepartmentStaff::class)->findStaffByDepartment($department);
-            $pagination->setContent($content);
-            return new JsonResponse(['content' => $pagination->toArray(), 'pageMax' => $pagination->getPageMax(), 'status' => 'success']);
-        } catch (\Exception $e) {
-            return new JsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
-        }
+        $provider = ProviderFactory::create(DepartmentStaff::class);
+
+        $provider->delete($staff);
+
+        $data = $provider->getMessageManager()->pushToJsonData();
+
+        return $this->edit($manager,$pagination,$staff->getDepartment(),'Staff', $data);
     }
 
     /**
-     * currentStaffHeader
+     * addDepartmentStaff
+     * @param ContainerManager $manager
+     * @param Department $department
+     * @param DepartmentStaff|null $staff
      * @return JsonResponse
-     * @Route("/department/current/staff/header/", name="department_current_staff_header")
+     * @Route("/department/{department}/staff/{staff}/edit/",name="department_staff_edit_popup")
+     * @Route("/department/{department}/staff/add/",name="department_staff_add_popup")
      * @IsGranted("ROLE_ROUTE")
-     * 4/06/2020 16:20
+     * 6/06/2020 08:12
      */
-    public function currentStaffHeader()
+    public function addDepartmentStaff(ContainerManager $manager, Department $department, ?DepartmentStaff $staff = null)
     {
-        try {
-            return new JsonResponse(['content' => $this->renderView('department/current_staff_header.html.twig'), 'status' => 'success']);
-        } catch (\Exception $e) {
-            return new JsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
+        dump($staff, $this->getRequest()->get('_route'));
+        if (null === $staff || $this->getRequest()->get('_route') === 'department_staff_add_popup') {
+            $staff = new DepartmentStaff();
+            $action = $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]);
+        } else {
+            $action = $this->generateUrl('department_staff_edit_popup', ['department' => $department->getId(), 'staff' => $staff->getId()]);
         }
+dump($staff);
+        $form = $this->createForm(DepartmentStaffType::class, $staff, ['action' => $action]);
+
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(),true);
+            if ($this->isCsrfTokenValid($form->getName(), $content['_token'])) {
+                $data = ProviderFactory::create(DepartmentStaff::class)->writeDepartmentStaff($department, $content['person'], $content['role'], [], $form);
+            } else {
+                $data = ErrorMessageHelper::getInvalidTokenMessage([],true);
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer();
+            return new JsonResponse($data);
+        }
+
+        $manager->singlePanel($form->createView());
+
+        return $this->getPageManager()
+            ->render(['containers' => $manager->getBuiltContainers()]);
     }
 }

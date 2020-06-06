@@ -826,7 +826,7 @@ class Action extends AbstractEntity
   name: 'Manage Departments'
   category: 'Department'
   description: 'Allows admins to create learning areas and administrative groups.'
-  route_list: ['department_list','department_add','department_content_loader','department.edit','department_delete','department_current_staff_header']
+  route_list: ['department_list','department_add','department_content_loader','department.edit','department_delete','department_staff_delete','department_staff_add_popup','department_staff_edit_popup']
   entry_route: 'department_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'

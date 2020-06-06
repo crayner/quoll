@@ -27,6 +27,7 @@ use App\Modules\System\Form\OrganisationSettingsType;
 use App\Modules\System\Form\SecuritySettingsType;
 use App\Modules\System\Form\SystemSettingsType;
 use App\Provider\ProviderFactory;
+use App\Twig\PageHeader;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -220,7 +221,12 @@ class SettingController extends AbstractPageController
 
         $manager->singlePanel($form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs('Display Settings')
+        $pageHeader = new PageHeader('Display Settings');
+        $pageHeader->setContent(TranslationHelper::translate('The settings used here are cached and changes will not be reflected in the display configuration immediately.', [], 'System'));
+
+        return $this->getPageManager()
+            ->setPageHeader($pageHeader)
+            ->createBreadcrumbs('Display Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 }
