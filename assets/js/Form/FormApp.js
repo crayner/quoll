@@ -44,8 +44,20 @@ export default function FormApp(props) {
                 postFormContent.push(<PaginationApp {...form.postFormContent} key={'pagination'} functions={functions} />)
         }
 
+        if (typeof form.attr === 'undefined') {
+            form.attr = {}
+        }
+        if (typeof form.attr.class !== 'undefined') {
+            form.attr.className = form.attr.class
+            delete form.attr.class
+        }
+
         if (singleForm) {
-            return (<div>
+            return (<form
+                action={form.action}
+                id={form.id}
+                {...form.attr}
+                method={form.method !== undefined ? form.method : 'POST'}>
                 {preFormContent}
                 <Messages messages={form.errors} translate={functions.translate} />
                 <table {...table_attr}>
@@ -55,15 +67,10 @@ export default function FormApp(props) {
                     </tbody>
                 </table>
                 {postFormContent}
-            </div>)
+            </form>)
         }
 
-        if (typeof form.attr === 'undefined')
-            form.attr = {}
-        if (typeof form.attr.class !== 'undefined') {
-            form.attr.className = form.attr.class
-            delete form.attr.class
-        }
+
         return (<form
                     action={form.action}
                     id={form.id}
