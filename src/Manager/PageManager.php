@@ -421,7 +421,6 @@ class PageManager
             if ($crumbs !== []) {
                 $header = end($crumbs);
                 $pageHeader = new PageHeader($header['name']);
-                dump($options);
                 if (isset($options['containers'])) {
                     $x = reset($options['containers']);
                     if (isset($x['panels']) && count($x['panels'])) {
@@ -570,6 +569,7 @@ class PageManager
 
     /**
      * setModule
+     * 9/06/2020 09:30
      */
     private function setModule()
     {

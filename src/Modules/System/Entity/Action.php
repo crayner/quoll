@@ -434,7 +434,6 @@ class Action extends AbstractEntity
         return Yaml::parse("
 -
   name: 'Personal Preferences'
-  precedence: 0
   category: 'People Management'
   description: 'Allows you to set your own preferences for background, theme, et.al. Change your password.'
   routeList: ['preferences','person_reset_password']
@@ -444,7 +443,6 @@ class Action extends AbstractEntity
   role: ['ROLE_CURRENT_USER']
 -
   name: 'System Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Allows administrators to configure the system display settings.'
   routeList: ['system_settings']
@@ -454,7 +452,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'People'
-  precedence: 0
   category: 'People Management'
   description: 'Allows management of all people database records.'
   routeList: ['people_list','people_content_loader','person_add','person_edit','person_delete.people_list_filter']
@@ -464,7 +461,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Third Party Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Allows administrators to configure and make use of third party services.'
   routeList: ['third_party_settings','test_email']
@@ -474,7 +470,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'System Check'
-  precedence: 0
   category: 'Extend & Update'
   description: 'Check system versions and extensions installed.'
   routeList: ['system_check']
@@ -484,7 +479,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'String Replacement'
-  precedence: 0
   category: 'Settings'
   description: 'Allows for interface strings to be replaced with custom values.'
   routeList: ['string_manage','string_edit','string_add','string_delete']
@@ -494,7 +488,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Notification Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Manage settings for system notifications.'
   routeList: ['notification_events','notification_event_edit','notification_listener_delete']
@@ -504,7 +497,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Display Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Allows system administrators to configure the system display settings.'
   routeList: ['display_settings']
@@ -514,7 +506,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Import Personal Photos'
-  precedence: 0
   category: 'People Management'
   description: 'Upload photos direct to a users record.'
   routeList: ['personal_photo_import','personal_photo_upload_api','personal_photo_remove_api']
@@ -524,7 +515,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Families'
-  precedence: 0
   category: 'People Management'
   description: ''
   routeList: ['family_list','family_content_loader','family_add','family_edit','family_relationships','family_adult_edit','family_adult_sort','family_adult_add','family_adult_remove','family_student_edit','family_student_add','family_student_remove']
@@ -534,7 +524,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'People Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to people management.'
   routeList: ['people_settings']
@@ -544,7 +533,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Student Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Manage settings for the Student module'
   routeList: ['student_settings','student_note_category_edit','student_note_category_add','student_note_category_delete']
@@ -574,7 +562,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Updater Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure options for the Data Updater module'
   routeList: ['updater_settings']
@@ -584,7 +571,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Addresses'
-  precedence: 0
   category: 'People Management'
   description: 'Manage addresses used for contacts in the database.'
   routeList: ['address_list','address_edit_popup','address_add','address_add_popup','address_delete','address_list_refresh']
@@ -594,7 +580,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Phones'
-  precedence: 0
   category: 'People Management'
   description: 'Manage phones used for contacts in the database.'
   routeList: ['phone_list','phone_edit_popup','phone_add','phone_add_popup','phone_delete','phone_refresh']
@@ -604,7 +589,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Localities'
-  precedence: 0
   category: 'People Management'
   description: 'Manage localities used for contacts in the database.'
   routeList: ['locality_list','locality_edit_popup','locality_add','locality_add_popup','locality_delete','locality_list_refresh']
@@ -614,7 +598,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Custom Fields'
-  precedence: 0
   category: 'People Management'
   description: 'Manage custom fields for personal.'
   routeList: ['custom_field_list','custom_field_edit','custom_field_add','custom_field_delete','custom_field_filter_save']
@@ -624,7 +607,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Demonstration Data'
-  precedence: 0
   category: 'Extend & Update'
   description: 'Load Demonstration Data'
   route_list: ['demonstration_load']
@@ -634,7 +616,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Student Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to Students and Student Note Categories'
   route_list: ['student_settings','student_note_category_edit','student_note_category_add','student_note_category_delete']
@@ -644,7 +625,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Student Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to Students and Student Note Categories'
   route_list: ['student_settings_people']
@@ -654,7 +634,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Academic Years'
-  precedence: 0
   category: 'Years, Days & Times'
   description: 'Allows user to control the definition of academic years within the system.'
   route_list: ['academic_year_list','academic_year_edit','academic_year_delete','academic_year_add','academic_year_display_popup_raw']
@@ -664,7 +643,6 @@ class Action extends AbstractEntity
   role: ['ROLE_PRINCIPAL']
 -
   name: 'Staff Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to Students and Student Note Categories'
   route_list: ['staff_settings','staff_absence_type_add','staff_absence_type_edit','staff_absence_type_delete','staff_absence_type_sort']
@@ -674,7 +652,6 @@ class Action extends AbstractEntity
   role: ['ROLE_REGISTRAR']
 -
   name: 'Staff Settings'
-  precedence: 0
   category: 'Settings'
   description: 'Configure settings relating to Students and Student Note Categories'
   route_list: ['staff_settings_people']
@@ -684,7 +661,6 @@ class Action extends AbstractEntity
   role: ['ROLE_SUPPORT']
 -
   name: 'Academic Year Terms'
-  precedence: 0
   category: 'Years, Days & Times'
   description: 'Allows user to control the definition of academic year terms within the system.'
   route_list: ['academic_year_term_list','academic_year_term_edit','academic_year_term_delete','academic_year_term_add']
@@ -694,7 +670,6 @@ class Action extends AbstractEntity
   role: ['ROLE_PRINCIPAL']
 -
   name: 'Special Days'
-  precedence: 0
   category: 'Years, Days & Times'
   description: 'Allows user to control the definition of special days within the system.'
   route_list: ['special_day_list','special_day_edit','special_day_delete','special_day_add','special_day_duplicate','special_day_filter_store']
@@ -831,6 +806,15 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+-
+  name: 'Library Settings'
+  category: 'Learn'
+  description: 'Manage settings for Libraries.'
+  route_list: ['library_settings','library_add','library_edit']
+  entry_route: 'library_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_LIBRARIAN']
 ");
     }
 
@@ -1146,6 +1130,13 @@ class Action extends AbstractEntity
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Department' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'library_settings'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Library' }
     target: module
 ");
     }

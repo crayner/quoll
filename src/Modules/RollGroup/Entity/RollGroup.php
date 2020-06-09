@@ -16,6 +16,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Entity\Facility;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

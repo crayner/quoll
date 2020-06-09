@@ -74,13 +74,13 @@ class ReactFileType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'compound'          => false,
-                'multiple'          => false,
-                'type'              => 'file',
-                'delete_security'   => false,
-                'show_thumbnail'     => false,
-                'image_method'       => null,
-                'entity'            => null,
+                'compound' => false,
+                'multiple' => false,
+                'type' => 'file',
+                'delete_security' => false,
+                'show_thumbnail' => false,
+                'image_method' => null,
+                'entity' => null,
             ]
         );
 
@@ -102,7 +102,7 @@ class ReactFileType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['public_dir'] = realpath(__DIR__ . '/../../../public');
-        $view->vars['value'] = $options['data'];
+        $view->vars['value'] = $options['data'] ?? null;
         $view->vars['delete_security'] = $options['delete_security'];
         $view->vars['photo'] = $this->buildPhoto($options, $view);
     }

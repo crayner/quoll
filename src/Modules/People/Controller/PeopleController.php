@@ -33,6 +33,7 @@ use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -84,7 +85,7 @@ class PeopleController extends AbstractPageController
      * @param SidebarContent $sidebar
      * @param Person|null $person
      * @param string $tabName
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/person/{person}/edit/{tabName}", name="person_edit")
      * @Route("/person/add/{tabName}", name="person_add")
      * @IsGranted("ROLE_ROUTE")
@@ -284,7 +285,7 @@ class PeopleController extends AbstractPageController
      * resetPassword
      * @param Person $person
      * @param ContainerManager $manager
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/password/{person}/reset/",name="person_reset_password")
      * @IsGranted("ROLE_ROUTE")
      */

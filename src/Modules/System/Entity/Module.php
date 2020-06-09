@@ -610,6 +610,16 @@ class Module extends AbstractEntity
   convertDate: { versionDate: '2020-04-01' }
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'
+-
+  name: 'Library'
+  description: 'Manage Libraries within the school.'
+  entry_route: 'library_settings'
+  type: 'Core'
+  active: 'Y'
+  category: 'Learn'
+  version_date: '2020-04-01'
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
 ");
     }
 

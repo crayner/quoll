@@ -62,25 +62,31 @@ doctrine:
             Enrolment:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Enrolment\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Enrolment/Entity'
                 prefix: 'App\Modules\Enrolment\Entity'
                 alias: Enrolment
             Finance:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Finance\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Finance/Entity'
                 prefix: 'App\Modules\Finance\Entity'
                 alias: Finance
+            Library:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Library/Entity'
+                prefix: 'App\Modules\Library\Entity'
+                alias: Library
             MarkBook:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\MarkBook\Entity'
+                dir: '%kernel.project_dir%/src/Modules/MarkBook/Entity'
                 prefix: 'App\Modules\MarkBook\Entity'
                 alias: MarkBook
             People:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\People\Entity'
+                dir: '%kernel.project_dir%/src/Modules/People/Entity'
                 prefix: 'App\Modules\People\Entity'
                 alias: People
             RollGroup:
@@ -92,37 +98,37 @@ doctrine:
             School:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\School\Entity'
+                dir: '%kernel.project_dir%/src/Modules/School/Entity'
                 prefix: 'App\Modules\School\Entity'
                 alias: School
             Security:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Security\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Security/Entity'
                 prefix: 'App\Modules\Security\Entity'
                 alias: Security
             Staff:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Staff\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Staff/Entity'
                 prefix: 'App\Modules\Staff\Entity'
                 alias: Staff
             Students:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Students\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Students/Entity'
                 prefix: 'App\Modules\Students\Entity'
                 alias: Students
             System:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\System\Entity'
+                dir: '%kernel.project_dir%/src/Modules/System/Entity'
                 prefix: 'App\Modules\System\Entity'
                 alias: System
             Timetable:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Modules\Timetable\Entity'
+                dir: '%kernel.project_dir%/src/Modules/Timetable/Entity'
                 prefix: 'App\Modules\Timetable\Entity'
                 alias: Timetable
         dql:

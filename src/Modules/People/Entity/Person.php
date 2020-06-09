@@ -666,7 +666,7 @@ class Person extends AbstractEntity
      */
     public function setImage240(?string $image_240): Person
     {
-        $this->image_240  = ImageHelper::getRelativePath($image_240);
+        $this->image_240 = ImageHelper::getRelativePath($image_240);
         return $this;
     }
 
