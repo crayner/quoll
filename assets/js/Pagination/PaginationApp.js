@@ -217,6 +217,20 @@ export default class PaginationApp extends Component {
         var data = ev.dataTransfer.getData("text")
         let source = data.replace('pagination', '')
         let target = ev.target.parentNode.id.replace('pagination', '')
+        if (source === target || source === '' || target === '') {
+            if (source === '' || target === '') {
+                let errors = this.state.messages
+                errors.push({
+                    class: 'warning',
+                    message: this.translate('When dropping an item, ensure that the entire row is selected.')
+                })
+                this.setState({
+                    messages: errors
+                })
+            }
+            return
+        }
+
         let route = this.draggableRoute.replace('__source__', source).replace('__target__',target)
         fetchJson(route,
             {},
@@ -288,7 +302,6 @@ export default class PaginationApp extends Component {
         if (pageMax === 0) {
             pageMax = this.state.pageMax
         }
-        console.log(content,typeof content,Array.isArray(content),content.length)
 
         if (typeof content === 'object') {
             return content.slice(offset, offset + pageMax)
