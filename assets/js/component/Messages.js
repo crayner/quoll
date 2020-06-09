@@ -33,26 +33,38 @@ export default class Messages extends Component {
     render() {
         let cells = Object.keys(this.state.messages).map(key => {
             let message = this.state.messages[key]
-            if (typeof message.close === 'undefined')
-                message.close = true
-            if (typeof message === 'undefined')
-                return ''
-            if (typeof message === 'string') {
-                let x = {}
-                x.message = message
-                x.class = 'error'
-                x.id = key
-                message = {...x}
+            if (typeof message !== 'undefined') {
+                if (typeof message.close === 'undefined')
+                    message.close = true
+                if (typeof message === 'undefined')
+                    return ''
+                if (typeof message === 'string') {
+                    let x = {}
+                    x.message = message
+                    x.class = 'error'
+                    x.id = key
+                    message = { ...x }
+                }
+                message['id'] = key
+                return <Message
+                    message={message}
+                    translate={this.translate}
+                    close={message.close}
+                    key={'message_' + message.id}
+                    cancelMessage={this.cancelMessage}
+                />
+            } else {
+                return null
             }
-            message['id'] = key
-            return <Message
-                message={message}
-                translate={this.translate}
-                close={message.close}
-                key={'message_' + message.id}
-                cancelMessage={this.cancelMessage}
-            />
         })
+
+        // Remove empty messages
+        cells = cells.filter(message => {
+            if (message !== null) {
+                return message
+            }
+        })
+
         if (cells.length === 0)
             return null
 
