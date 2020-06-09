@@ -24,6 +24,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
+use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -90,9 +91,14 @@ abstract class AbstractProvider implements EntityProviderInterface
      */
     private $providerFactory;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
+
 
     /**
-     * ProviderTrait constructor.
+     * AbstractProvider constructor.
      * @param ProviderFactory $providerFactory
      * @throws \Exception
      */
@@ -108,6 +114,7 @@ abstract class AbstractProvider implements EntityProviderInterface
         $this->parameterBag = ProviderFactory::getParameterBag();
         if (method_exists($this, 'additionalConstruct'))
             $this->additionalConstruct();
+        $this->logger = $providerFactory::getLogger();
     }
 
     /**
@@ -150,7 +157,7 @@ abstract class AbstractProvider implements EntityProviderInterface
      * delete
      *
      * @param $id
-     * @return object
+     * @return object|string
      * @throws \Exception
      */
     public function delete($id)
@@ -225,7 +232,7 @@ abstract class AbstractProvider implements EntityProviderInterface
 
     /**
      * @param EntityInterface|null $entity
-     * @return ProviderTrait
+     * @return AbstractProvider
      */
     public function setEntity(?EntityInterface $entity)
     {
@@ -338,11 +345,31 @@ abstract class AbstractProvider implements EntityProviderInterface
      * setTranslator
      *
      * @param TranslatorInterface $translator
-     * @return ProviderTrait
+     * @return AbstractProvider
      */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
+        return $this;
+    }
+
+    /**
+     * getLogger
+     * @return Logger
+     * 10/06/2020 09:18
+     */
+    public function getLogger(): Logger
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param Logger $logger
+     * @return AbstractProvider
+     */
+    public function setLogger(Logger $logger): AbstractProvider
+    {
+        $this->logger = $logger;
         return $this;
     }
 
@@ -505,16 +532,21 @@ abstract class AbstractProvider implements EntityProviderInterface
         } catch (NotNullConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (UniqueConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (\PDOException | PDOException | ORMException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (\Exception $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         }
+        dump($data);
         return $data;
     }
 

@@ -132,3 +132,5 @@ Assess: Assess
 Departments: Departments
 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'
 'The colour {colour} is not valid. Must be format {format}.': 'The colour {colour} is not valid. Must be format {format}.'
+No change is required.: No change is required.
+When dropping an item, ensure that the entire row is selected.: When dropping an item, ensure that the entire row is selected.

@@ -86,6 +86,8 @@ services:
 
     App\Provider\ProviderFactory:
         class: App\Provider\ProviderFactory
+        calls:
+            - [setLogger, ['@monolog.logger.doctrine']]
 
     App\Modules\System\Manager\InstallationManager:
         calls:

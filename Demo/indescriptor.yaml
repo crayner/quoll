@@ -1,0 +1,15 @@
+-
+    name: 'Special Education Needs'
+    abbreviation: 'SEN'
+    description: 'Official learning needs that have been professionally identified.'
+    sortOrder: 1
+-
+    name: 'English as an Additional Language'
+    abbreviation: 'EAL'
+    description: 'Obvious language needs in English acquisition.'
+    sortOrder: 2
+-
+    name: 'Other Needs'
+    abbreviation: 'ON'
+    description: 'Any other case. E.g. learning issues that have not been assessed, or ongoing home/family issues that should be known to staff and which may relate to teaching and learning.'
+    sortOrder: 3

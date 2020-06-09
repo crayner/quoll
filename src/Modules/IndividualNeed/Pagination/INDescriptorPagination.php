@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 2/01/2020
- * Time: 14:38
+ * Date: 18/01/2020
+ * Time: 08:27
  */
-namespace App\Modules\Department\Pagination;
+namespace App\Modules\IndividualNeed\Pagination;
 
 use App\Manager\Entity\PaginationAction;
 use App\Manager\Entity\PaginationColumn;
@@ -22,45 +22,48 @@ use App\Manager\AbstractPaginationManager;
 use App\Util\TranslationHelper;
 
 /**
- * Class DepartmentStaffPagination
- * @package Kookaburra\Departments\Pagination
+ * Class IndividualNeedsPagination
+ * @package App\Modules\IndividualNeed\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class DepartmentStaffPagination extends AbstractPaginationManager
+class INDescriptorPagination extends AbstractPaginationManager
 {
     /**
      * execute
-     * @return $this|PaginationInterface
-     * 4/06/2020 16:15
+     * @return PaginationInterface
      */
     public function execute(): PaginationInterface
     {
-        TranslationHelper::setDomain('Department');
-        $row = $this->getRow();
+        TranslationHelper::setDomain('IndividualNeed');
+        $row = new PaginationRow();
 
         $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
-            ->setSort(true)
-            ->setClass('column relative pr-4 cursor-pointer widthAuto')
+            ->setClass('column relative pr-4 widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Role')
-            ->setContentKey('role')
-            ->setSort(true)
-            ->setClass('column relative pr-4 cursor-pointer widthAuto')
+        $column->setLabel('Abbreviation')
+            ->setContentKey('abbr')
+            ->setClass('column relative pr-4 widthAuto')
         ;
         $row->addColumn($column);
 
+        $column = new PaginationColumn();
+        $column->setLabel('Description')
+            ->setContentKey('description')
+            ->setClass('column relative pr-4 w-1/2');
+        $row->addColumn($column);
+
         $action = new PaginationAction();
-        $action->setTitle('Change Role')
+        $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute(['url' => 'department_staff_edit_popup', 'target' => 'Department_Staff', 'options' => 'width=600,height=350'])
-            ->setRouteParams(['staff' => 'id', 'department' => 'departmentId']);
+            ->setRoute('individual_need_edit')
+            ->setRouteParams(['need' => 'id']);
         $row->addAction($action);
 
         $action = new PaginationAction();
@@ -68,12 +71,13 @@ class DepartmentStaffPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('department_staff_delete')
-            ->setRouteParams(['staff' => 'id']);
+            ->setRoute('individual_need_delete')
+            ->setDisplayWhen('canDelete')
+            ->setOnClick('areYouSure')
+            ->setRouteParams(['need' => 'id']);
         $row->addAction($action);
 
         $this->setRow($row);
         return $this;
     }
-
 }

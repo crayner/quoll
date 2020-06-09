@@ -17,6 +17,7 @@ namespace App\Manager;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use App\Util\TranslationHelper;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
 use Symfony\Component\Intl\Exception\MissingResourceException;
@@ -94,23 +95,26 @@ class EntitySortManager
 
         $content = $provider->getRepository()->findBy($this->getFindBy(),[$this->getSortField() => 'ASC']);
 
-        $key = 1;
-        $result = [];
-        $method = 'set' . ucfirst($this->getSortField());
-        foreach($content as $q => $item)
-        {
-            if ($item === $this->getSource()) {
-                continue;
+        if ($source !== $target) {
+            $key = 1;
+            $result = [];
+            $method = 'set' . ucfirst($this->getSortField());
+            foreach ($content as $q => $item) {
+                if ($item === $this->getSource()) {
+                    continue;
+                }
+                if ($item === $this->getTarget()) {
+                    $this->getSource()->$method($key++);
+                    $result[] = $this->getSource();
+                }
+                $item->$method($key++);
+                $result[] = $item;
             }
-            if ($item === $this->getTarget()) {
-                $this->getSource()->$method($key++);
-                $result[] = $this->getSource();
-            }
-            $item->$method($key++);
-            $result[] = $item;
+            $this->setDetails($this->saveSort($provider, $result, $this->details, basename(get_class($this->getSource()))));
+        } else {
+            $this->setDetails(['status' => 'success', 'errors' => ['class' => 'info', 'messages' => TranslationHelper::translate('No change is required.', [], 'messages')]]);
+            $result = $content;
         }
-
-        $this->setDetails($this->saveSort($provider, $result, $this->details, basename(get_class($this->getSource()))));
         $this->setContent($result);
     }
 

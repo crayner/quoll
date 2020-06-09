@@ -12,16 +12,14 @@
  * Date: 28/04/2020
  * Time: 08:47
  */
-
 namespace App\Modules\System\Manager;
 
 use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\People\Entity\FamilyChild;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Person;
@@ -40,6 +38,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class DemoDataManager
  * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class DemoDataManager
 {
@@ -78,6 +77,7 @@ class DemoDataManager
         'facility' => Facility::class,
         'roll_group' => RollGroup::class,
         'student_enrolment' => StudentEnrolment::class,
+        'indescriptor' => INDescriptor::class,
     ];
 
     /**

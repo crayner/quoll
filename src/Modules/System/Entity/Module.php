@@ -623,7 +623,7 @@ class Module extends AbstractEntity
 -
   name: 'Individual Need'
   description: 'Manage student individual needs'
-  entry_route: 'individual_need_settings'
+  entry_route: 'individual_need_list'
   type: 'Core'
   active: 'Y'
   category: 'Learn'

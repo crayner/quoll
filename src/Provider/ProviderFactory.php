@@ -19,6 +19,8 @@ use App\Exception\MissingClassException;
 use App\Manager\MessageManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -69,6 +71,11 @@ class ProviderFactory
     private static $parameterBag;
 
     /**
+     * @var LoggerInterface
+     */
+    private static $logger;
+
+    /**
      * ProviderFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
@@ -92,7 +99,7 @@ class ProviderFactory
         self::$factory = $this;
         self::$stack = $stack;
         self::$parameterBag = $parameterBag;
-    }
+     }
 
     /**
      * getProvider
@@ -234,5 +241,21 @@ class ProviderFactory
     public static function getParameterBag(): ParameterBagInterface
     {
         return self::$parameterBag;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public static function getLogger(): LoggerInterface
+    {
+        return self::$logger;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public static function setLogger(LoggerInterface $logger): void
+    {
+        self::$logger = $logger;
     }
 }

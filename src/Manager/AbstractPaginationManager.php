@@ -278,6 +278,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     /**
      * getTranslations
      * @return array
+     * 9/06/2020 16:47
      */
     public function getTranslations(): array
     {
@@ -296,6 +297,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Default filtering is enforced.', [], 'messages');
         TranslationHelper::addTranslation('Close Message', [], 'messages');
         TranslationHelper::addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped.', [], 'messages');
+        TranslationHelper::addTranslation('When dropping an item, ensure that the entire row is selected.', [], 'messages');
         TranslationHelper::addTranslation('Loading', [], 'messages');
         return TranslationHelper::getTranslations();
     }

@@ -833,6 +833,15 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_PRINCIPAL']
+-
+  name: 'Manage'
+  category: 'Individual Needs'
+  description: 'Manage Individual Need Definitions'
+  route_list: ['individual_need_list','individual_need_edit','individual_need_add','individual_need_delete','individual_need_descriptor_sort']
+  entry_route: 'individual_need_list'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
 ");
     }
 
@@ -1169,6 +1178,13 @@ class Action extends AbstractEntity
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'school' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'individual_need_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Individual Need' }
     target: module
 ");
     }
