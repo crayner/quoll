@@ -815,6 +815,24 @@ class Action extends AbstractEntity
   entry_sidebar: 'Y'
   menu_show: 'Y'
   role: ['ROLE_LIBRARIAN']
+-
+  name: 'Individual Need Settings'
+  category: 'People'
+  description: 'Configure settings for Individual Needs'
+  route_list: ['individual_need_config']
+  entry_route: 'individual_need_config'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
+-
+  name: 'Settings'
+  category: 'Individual Needs'
+  description: 'Configure settings for Individual Needs'
+  route_list: ['individual_need_settings']
+  entry_route: 'individual_need_settings'
+  entry_sidebar: 'Y'
+  menu_show: 'Y'
+  role: ['ROLE_PRINCIPAL']
 ");
     }
 
@@ -1137,6 +1155,20 @@ class Action extends AbstractEntity
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Library' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'individual_need_settings'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Individual Need' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'individual_need_config'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'school' }
     target: module
 ");
     }

@@ -71,6 +71,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/Finance/Entity'
                 prefix: 'App\Modules\Finance\Entity'
                 alias: Finance
+            IndividualNeed:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/IndividualNeed/Entity'
+                prefix: 'App\Modules\IndividualNeed\Entity'
+                alias: IndividualNeed
             Library:
                 is_bundle: false
                 type: annotation

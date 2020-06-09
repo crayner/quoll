@@ -620,6 +620,16 @@ class Module extends AbstractEntity
   version_date: '2020-04-01'
   author: 'Craig Rayner'
   url: 'https://www.craigrayner.com'
+-
+  name: 'Individual Need'
+  description: 'Manage student individual needs'
+  entry_route: 'individual_need_settings'
+  type: 'Core'
+  active: 'Y'
+  category: 'Learn'
+  version_date: '2020-04-01'
+  author: 'Craig Rayner'
+  url: 'https://www.craigrayner.com'
 ");
     }
 
