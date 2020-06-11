@@ -12,18 +12,15 @@
  * Date: 30/11/2019
  * Time: 12:09
  */
-
 namespace App\Modules\Security\Manager;
 
-use App\Manager\SessionManager;
+use App\Modules\People\Util\UserHelper;
 use App\Modules\System\Entity\I18n;
 use App\Modules\School\Entity\AcademicYear;
-use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
-use App\Util\ErrorHelper;
-use App\Modules\Security\Entity\Role;
 use App\Modules\People\Entity\Person;
+use App\Util\ErrorHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,27 +47,22 @@ trait AuthenticatorTrait
         if ($i18nID !== null && $i18nID !== $session->get('i18n')->getId())
             ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
 
-
         if (null !== $i18nID && ($i18nID !== $session->get('i18n')->getId()))
             ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
-        elseif ($request->request->has('gibboni18nID') && intval($request->request->get('gibboni18nID')) !== intval($session->get(['i18n', 'gibboni18nID'])))
-            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $request->request->get('gibboni18nID')], false);
-        elseif ($session->has('gibboni18nIDPersonal') && intval($session->get('gibboni18nIDPersonal')) > 0)
-            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $session->get('gibboni18nIDPersonal'), 'active' => 'Y'], false);
     }
 
     /**
      * setAcademicYear
      * @param SessionInterface $session
-     * @param int $AcademicYear
+     * @param AcademicYear|null $academicYear
      * @return bool
      */
-    public function setAcademicYear(SessionInterface $session, int $AcademicYear)
+    public function setAcademicYear(SessionInterface $session, ?AcademicYear $academicYear = null)
     {
-        $AcademicYear = $AcademicYear === 0 ? ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current') : ProviderFactory::getRepository(AcademicYear::class)->find($AcademicYear);
+        $academicYear = $academicYear === null ? ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current') : ProviderFactory::getRepository(AcademicYear::class)->find($academicYear);
 
-        if ($AcademicYear instanceof AcademicYear) {
-            $session->set('academicYear', $AcademicYear);
+        if ($academicYear instanceof AcademicYear) {
+            $session->set('academicYear', $academicYear);
         } else {
             $session->forget('AcademicYear');
         }
@@ -82,38 +74,38 @@ trait AuthenticatorTrait
      * checkAcademicYear
      * @param Person $person
      * @param SessionInterface $session
-     * @param int $AcademicYear
+     * @param AcademicYear|string $academicYear
      * @return bool|RedirectResponse|Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws \Exception
      */
-    public function checkAcademicYear(Person $person, SessionInterface $session, int $AcademicYear = 0)
+    public function checkAcademicYear(Person $person, SessionInterface $session, $academicYear)
     {
-        if (0 === $AcademicYear || $AcademicYear === intval($session->get('gibbonAcademicYearID')))
-            return $this->setAcademicYear($session, $AcademicYear);
+        if (is_string($academicYear)) {
+            $academicYear = ProviderFactory::getRepository(AcademicYear::class)->find($academicYear);
+        }
+        if (null === $academicYear || $academicYear->getid() === $session->get('academicYear')->getId())
+            return $this->setAcademicYear($session, $academicYear);
 
-        if ($person->getPrimaryRole() === null)
+        if ($person->getSecurityRoles() === null || [] === $person->getSecurityRoles())
             return $this->authenticationFailure('return.fail.9');
 
-        $role = $person->getPrimaryRole();
+        $roles = $person->getSecurityRoles();
 /**
         if (! $role->isFutureYearsLogin() && ! $role->isPastYearsLogin()) {
-            LogProvider::setLog($AcademicYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
+            LogProvider::setLog($academicYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
             return $this->authenticationFailure('return.fail.9');
         }
 */
-        $AcademicYear = ProviderFactory::create(AcademicYear::class)->find($AcademicYear);
 
-        if (!$AcademicYear instanceof AcademicYear)
+        if (!$academicYear instanceof AcademicYear)
             return ErrorHelper::ErrorResponse('Configuration Error: there is a problem accessing the current Academic Year from the database.',[], static::$instance);
 
-        if (!$role->isPastYearsLogin() && $session->get('gibbonAcademicYearSequenceNumber') > $AcademicYear->getSequenceNumber()) {
-            LogProvider::setLog($AcademicYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
+        if (!UserHelper::isPastYearsLogin() && $session->get('academicYear')->getId() > $academicYear->getId()) {
+
             return $this->authenticationFailure('return.fail.9');
         }
 
-        $this->setAcademicYear($session, $AcademicYear->getId());
+        $this->setAcademicYear($session, $academicYear->getId());
         return true;
     }
 
@@ -136,9 +128,6 @@ trait AuthenticatorTrait
         $session->clear('backgroundImage');
         $session->set('person', $userData);
 
-        // all legacy
-        $primaryRole = $userData->getPrimaryRole();
-
         // Cache FF actions on login
         FastFinder::cacheFastFinderActions();
 
@@ -149,14 +138,15 @@ trait AuthenticatorTrait
      * authenticationFailure
      * @param string $message
      * @param Request $request
+     * @param array $options
      * @return RedirectResponse
      */
-    public function authenticationFailure(string $message, Request $request)
+    public function authenticationFailure(string $message, Request $request, array $options = [])
     {
         if ($request->hasSession()) {
             $request->getSession()->clear();
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, new AuthenticationException(TranslationHelper::translate($message, [],'Security')));
-            $request->getSession()->getBag('flashes')->add('warning', [$message, [], 'Security']);
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, new AuthenticationException(TranslationHelper::translate($message, $options,'Security')));
+            $request->getSession()->getBag('flashes')->add('warning', [$message, $options, 'Security']);
         }
         return new RedirectResponse($this->getLoginUrl());
     }

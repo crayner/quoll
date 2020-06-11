@@ -12,9 +12,7 @@
  * Date: 17/04/2020
  * Time: 11:03
  */
-
 namespace App\Modules\People\Controller;
-
 
 use App\Container\Container;
 use App\Container\ContainerManager;
@@ -28,8 +26,14 @@ use App\Modules\Security\Util\SecurityHelper;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class PreferenceController
+ * @package App\Modules\People\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class PreferenceController extends AbstractPageController
 {
     /**
@@ -37,15 +41,13 @@ class PreferenceController extends AbstractPageController
      * @param ContainerManager $manager
      * @param PasswordManager $passwordManager
      * @param string $tabName
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse|Response
      * @Route("/preferences/{tabName}", name="preferences")
-     * @IsGranted("ROLE_ROUTE")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function preferences(ContainerManager $manager, PasswordManager $passwordManager, string $tabName = 'Settings')
     {
-        $pageManager = $this->getPageManager();
-        if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
-        $request = $pageManager->getRequest();
+        $request = $this->getRequest();
 
         $rp = new ResetPassword();
         $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
@@ -85,6 +87,7 @@ class PreferenceController extends AbstractPageController
         $container->addForm('Reset Password', $passwordForm->createView());
 
         $person = $this->getUser()->getPerson();
+        dump($person);
         $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
 
         if ($request->getContent() !== '' && $tabName === 'Settings') {
@@ -115,7 +118,7 @@ class PreferenceController extends AbstractPageController
 
         $manager->addContainer($container)->buildContainers();
 
-        return $pageManager->createBreadcrumbs('Personal Preferences')
+        return $this->getPageManager()->createBreadcrumbs('Personal Preferences')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 

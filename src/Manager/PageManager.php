@@ -230,6 +230,7 @@ class PageManager
         $this->storage = $storage;
         $this->moduleMenu = $moduleMenu;
         $this->logger = $logger;
+        $this->setPageStyles(new ArrayCollection());
     }
 
     /**
@@ -850,7 +851,6 @@ class PageManager
     /**
      * injectCSS
      * @param string $route
-     * @param $user
      * @return $this
      * 30/05/2020 15:48
      */

@@ -88,7 +88,6 @@ class ScaleGradeController extends AbstractPageController
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
             $form->submit($content);
-            dump($form,$content);
             if ($form->isValid()) {
                 $id = $grade->getId();
                 $provider = ProviderFactory::create(ScaleGrade::class);

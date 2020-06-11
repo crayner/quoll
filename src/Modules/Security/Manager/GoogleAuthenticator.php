@@ -6,6 +6,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Provider\SettingProvider;
 use App\Provider\ProviderFactory;
+use App\Util\UrlGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -203,24 +204,24 @@ class GoogleAuthenticator implements AuthenticatorInterface
 		$user = $this->getProvider()->getUser();
 
 		if (!$user->isCanLogin())
-		    return $this->authenticationFailure(['loginReturn' => 'fail2']);
+		    return $this->authenticationFailure('You do not have sufficient privileges to login.', $request);
 
         if ($user->isPasswordForceReset())
             $request->getSession()->set('passwordForceReset', 'Y');
 
-		if (!$user->getPrimaryRole())
-            return $this->authenticationFailure(['loginReturn' => 'fail2']);
+		if (empty($user->getSecurityRoles()))
+            return $this->authenticationFailure('You do not have sufficient privileges to login.', $request);
 
 		if ($user->getFailCount() >= 3 && $user->isLastFailTimestampTooOld()) {
 		    if ($user->getFailCount() === 3) {
 		        $user->incFailCount();
-		        $user->setLastFailTimestamp(new \DateTime('now'));
+		        $user->setLastFailTimestamp(new \DateTimeImmutable('now'));
 		        $user->setLastFailIPAddress($request->server->get('REMOTE_ADDR'));
-                $provider = EntityHelper::getProviderFactory()->create(Person::class);
+                $provider = ProviderFactory::create(Person::class);
                 $provider->setEntity($user)->saveEntity();
             }
             $this->logger->warning('Too many failed login (Google)');
-            return $this->authenticationFailure(['loginReturn' => 'fail6']);
+            return $this->authenticationFailure('Too many failed logins: please {anchor}reset password{close_anchor}.', $request, ['{anchor}' => '<a href="'.UrlGeneratorHelper::getUrl('password_reset').'">', '{close_anchor}' => '</a>']);
         }
 
 		if (null !== $user->getLocale())
@@ -233,17 +234,21 @@ class GoogleAuthenticator implements AuthenticatorInterface
         }
 
         $user = $this->createUserSession($user, $request->getSession());
-        $this->setAcademicYear($request->getSession(), 0);
+        $this->setAcademicYear($request->getSession(), null);
 
         $q = null;
         if ($request->getSession()->has('google_state')) {
             $state = $request->getSession()->get('google_state');
-            list($AcademicYearID, $i18nID, $q) = explode(':', $state);
-            if ($q === 'false')
+            list($academicYearID, $i18nID, $q) = explode(':', $state);
+
+            if ($q === 'false') {
                 $q = null;
+            }
+
             $request->getSession()->forget('google_state');
-            if (($response = $this->checkAcademicYear($user, $request->getSession(), intval($AcademicYearID))) instanceof Response)
+            if (($response = $this->checkAcademicYear($user, $request->getSession(), $academicYearID)) instanceof Response) {
                 return $response;
+            }
 
             $this->setLanguage($request, $i18nID);
             if (null !== $q)

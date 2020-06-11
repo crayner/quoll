@@ -12,7 +12,6 @@
  * Date: 1/07/2019
  * Time: 10:27
  */
-
 namespace App\Modules\System\Provider;
 
 use App\Manager\EntityInterface;
@@ -29,6 +28,11 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class SettingProvider
+ * @package App\Modules\System\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class SettingProvider extends AbstractProvider
 {
 
@@ -47,11 +51,17 @@ class SettingProvider extends AbstractProvider
      * @param string $scope
      * @param string $name
      * @param bool $returnRow
-     * @return mixed
+     * @return EntityInterface|bool
      * @throws \Exception
+     * 10/06/2020 10:47
      */
     public function getSettingByScope(string $scope, string $name, $returnRow = false)
     {
+        // Legacy Trap @TODO Remove this trap.
+        if (in_array($name, ['absoluteURL'])) {
+            throw new \InvalidArgumentException(sprintf('The %s setting is now a parameter. Use Parameter call.', $name));
+        }
+
         try {
             $setting = $this->getSetting($scope, $name) ?: $this->findOneBy(['scope' => $scope, 'name' => $name]);
         } catch (DriverException $e) {

@@ -15,6 +15,7 @@
  */
 namespace App\Modules\System\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Util\LocaleHelper;
@@ -32,6 +33,11 @@ class I18nRepository extends ServiceEntityRepository
      * @var string|null
      */
     private $locale;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $localesByCode;
 
     /**
      * ApplicationFormRepository constructor.
@@ -53,6 +59,7 @@ class I18nRepository extends ServiceEntityRepository
         } catch (DriverException $e) {  //  Installation step over
             $systemDefault = null;
         }
+        $this->addLocaleByCode($systemDefault);
         return $systemDefault ? $systemDefault->getCode() : null;
     }
 
@@ -67,7 +74,7 @@ class I18nRepository extends ServiceEntityRepository
             $this->locale = LocaleHelper::getLocale();
 
         $lang = $this->findOneByCode($this->locale);
-
+        $this->addLocaleByCode($lang);
         return $lang ? $lang->isRtl() : false;
     }
 
@@ -96,6 +103,10 @@ class I18nRepository extends ServiceEntityRepository
      */
     public function findOneByCode(string $code, ?Request $request = null): ?I18n
     {
+        if ($this->getLocalesByCode()->containsKey($code)) {
+            return $this->getLocalesByCode()->get($code);
+        }
+
         $locale = $this->findOneBy(['code' => $code]);
         if (null == $locale) {
             $locale = $this->findOneBy(['systemDefault' => 'Y']);
@@ -104,6 +115,43 @@ class I18nRepository extends ServiceEntityRepository
                 $request->setLocale($locale->getCode());
             }
         }
+
+        $this->addLocaleByCode($locale);
+
         return $locale;
+    }
+
+    /**
+     * getLocalesByCode
+     * @return ArrayCollection
+     * 11/06/2020 09:10
+     */
+    public function getLocalesByCode(): ArrayCollection
+    {
+        return $this->localesByCode = $this->localesByCode ?: new ArrayCollection();
+    }
+
+    /**
+     * @param ArrayCollection $localesByCode
+     * @return I18nRepository
+     */
+    public function setLocalesByCode(ArrayCollection $localesByCode): I18nRepository
+    {
+        $this->localesByCode = $localesByCode ?: new ArrayCollection();
+        return $this;
+    }
+
+    /**
+     * addLocaleByCode
+     * @param I18n|null $locale
+     * @return $this
+     * 11/06/2020 09:12
+     */
+    public function addLocaleByCode(?I18n $locale): I18nRepository
+    {
+        if ($locale !== null) {
+            $this->getLocalesByCode()->set($locale->getCode(), $locale);
+        }
+        return $this;
     }
 }

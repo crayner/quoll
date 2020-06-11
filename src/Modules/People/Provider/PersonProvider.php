@@ -267,10 +267,9 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
         $raw = $form->get('passwordNew')->getData();
         $user = new SecurityUser($person);
         SecurityHelper::encodeAndSetPassword($user, $raw);
-        $person->setStatus(ProviderFactory::create(Setting::class)->getSettingByScope('User Admin', 'publicRegistrationDefaultStatus'));
-        $role = ProviderFactory::create(Setting::class)->getSettingByScope('User Admin', 'publicRegistrationDefaultRole');
-        $person->setPrimaryRole($role = ProviderFactory::getRepository(Role::class)->find($role));
-        $person->setAllRoles([$role->getId()]);
+        $person->setStatus(ProviderFactory::create(Setting::class)->getSettingByScope('People', 'publicRegistrationDefaultStatus'));
+        $role = ProviderFactory::create(Setting::class)->getSettingByScope('People', 'publicRegistrationDefaultRole');
+        $person->setSecurityRoles([$role]);
 
         foreach($form->get('fields')->getData() as $key=>$value)
         {
@@ -375,10 +374,7 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
         if (null === $person)
             $person = $this->getEntity();
 
-        if ($person->getPrimaryRole() === 'Parent')
-            return true;
-
-        return $person->hasRole('Parent');
+        return $person->isParent();
     }
 
     /**
@@ -420,15 +416,12 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
         $reachable = $hierarchy->getReachableRoleNames([$role]);
 
         foreach($people as $person) {
-            if (in_array($person->getPrimaryRole(), $reachable)) {
-                $found[] = $person;
-                continue;
-            }
-
-            foreach ($person->getAllRoles() as $secondaryRole)
-                if (in_array($secondaryRole, $reachable))
+            foreach($person->getSecurityRoles() as $role) {
+                if (in_array($role, $reachable)) {
                     $found[] = $person;
-
+                    continue;
+                }
+            }
         }
         return $found;
     }

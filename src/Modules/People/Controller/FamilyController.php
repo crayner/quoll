@@ -251,7 +251,6 @@ class FamilyController extends AbstractPageController
             if (key_exists('showHideForm', $content))
                 unset($content['showHideForm']);
             $form->submit($content);
-            dump($content, $form, $adult);
             if ($form->isValid()) {
                 $data = ProviderFactory::create(FamilyMemberAdult::class)->persistFlush($adult, $data);
 

@@ -25,6 +25,8 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\Subscriber\FamilyAdultSubscriber;
+use App\Modules\Security\Util\SecurityHelper;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -100,6 +102,7 @@ class FamilyAdultType extends AbstractType
                 )
             ;
         } else {
+            $parentRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(['ROLE_PARENT']);
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
@@ -127,18 +130,14 @@ class FamilyAdultType extends AbstractType
                 )
                 ->add('person', EntityType::class,
                     [
-                        'label' => 'Adult\'s Name',
+                        'label' => "Adult's Name",
                         'class' => Person::class,
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
-                        'query_builder' => function(EntityRepository $er) {
+                        'query_builder' => function(EntityRepository $er) use ($parentRoles) {
                             return $er->createQueryBuilder('p')
-                                ->select(['p','s'])
-                                ->leftJoin('p.staff', 's')
-                                ->where('p.primaryRole = :staffRole')
-                                ->setParameter('staffRole', 'ROLE_PARENT')
-                                ->orWhere('p.allRoles LIKE :staff')
-                                ->setParameter('staff', '%ROLE_PARENT%')
+                                ->where('p.securityRoles IN (:roles)')
+                                ->setParameter('roles', $parentRoles, Connection::PARAM_STR_ARRAY)
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');

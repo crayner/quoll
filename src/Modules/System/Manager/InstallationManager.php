@@ -146,7 +146,6 @@ class InstallationManager
             $message['text'] = 'The file quoll.yaml is not writable, so the installer cannot proceed.';
             $this->getLogger()->error(TranslationHelper::translate($message['text'] ));
         } else { //No config, so continue installer
-            dump($this->getParameterPath(),dirname($this->getParameterPath()));
             if (!is_writable(dirname($this->getParameterPath()))) { // Ensure that config directory is writable
                 $message['class'] = 'error';
                 $message['text'] = 'The directory containing the configuration files is not currently writable, so the installer cannot proceed.';
@@ -355,7 +354,7 @@ class InstallationManager
         $person->setPassword($password);
         $person->setStatus('Full');
         $person->setCanLogin('Y');
-        $person->setPrimaryRole('ROLE_SYSTEM_ADMIN');
+        $person->setSecurityRoles(['ROLE_SYSTEM_ADMIN']);
         $person->setEmail($form->get('email')->getData());
         $person->setViewCalendarSchool('Y');
         $person->setViewCalendarSpaceBooking('Y');

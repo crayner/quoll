@@ -66,7 +66,7 @@ class PreferenceSettingsType extends AbstractType
                 ]
             )
         ;
-        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'personalBackground')) {
+        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('People', 'personalBackground')) {
             $builder
                 ->add('personalBackground', ReactFileType::class,
                     [
@@ -125,11 +125,9 @@ class PreferenceSettingsType extends AbstractType
                 ]
             )
         ;
-        if ($options['data'] instanceof Person){
-            if (UserHelper::isStaff($options['data'])) {
-                $builder
-                    ->add('staff', StaffPreferenceSettingsType::class);
-            }
+        if ($options['data'] instanceof Person && $options['data']->isStaff()) {
+            $builder
+                ->add('staff', StaffPreferenceSettingsType::class, ['data' => $options['data']->getStaff()]);
         }
         $builder
             ->add('submit', SubmitType::class, [

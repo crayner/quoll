@@ -207,7 +207,6 @@ class Department extends AbstractEntity
      */
     public function setSubjectListing(array $subjectListing): Department
     {
-        dump($subjectListing);
         $this->subjectListing = $subjectListing;
         return $this;
     }

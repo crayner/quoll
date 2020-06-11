@@ -420,7 +420,7 @@ class Setting extends AbstractEntity
   name: 'publicRegistrationDefaultRole'
   nameDisplay: 'Public Registration Default Role'
   description: 'System role to be assigned to registering members of the public.'
-  value: 3
+  value: ROLE_STUDENT
 -
   scope: 'System'
   name: 'organisationLogo'

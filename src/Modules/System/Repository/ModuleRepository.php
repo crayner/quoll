@@ -33,41 +33,13 @@ class ModuleRepository extends ServiceEntityRepository
     }
 
     /**
-     * findModuleActionsByRole
-     * @param Module $module
-     * @param Role $role
-     * @return mixed
-     */
-    public function findModuleActionsByRole(Module $module, Role $role)
-    {
-        return $this->createQueryBuilder('m')
-            ->select(['a.category', 'm.name AS moduleName', 'a.name AS actionName', 'm.type', 'a.precedence', 'm.entryRoute AS moduleEntry', 'a.entryRoute', 'a.routeList', 'a.name AS name'])
-            ->join('m.actions', 'a')
-            ->join('a.roles', 'r')
-            ->where('m.id = :module_id')
-            ->setParameter('module_id', intval($module->getId()))
-            ->andWhere('r.id = :role')
-            ->setParameter('role', intval($role->getId()))
-            ->andWhere('a.entryRoute != :empty')
-            ->setParameter('empty', '')
-            ->andWhere('a.menuShow = :yes')
-            ->setParameter('yes', 'Y')
-            ->groupBy('a.name')
-            ->orderBy('a.category')
-            ->addOrderBy('a.name')
-            ->addOrderBy('a.precedence', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * findWithActions
      * @return array
      */
     public function findWithActions(): array
     {
         return $this->createQueryBuilder('m')
-            ->select(['m','a','SUBSTRING_INDEX(a.name, \'_\', 1) as actionName'])
+            ->select(['m','a','a.name AS actionName'])
             ->join('m.actions','a')
             ->orderBy('m.category')
             ->addOrderBy('actionName')

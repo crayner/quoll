@@ -64,16 +64,18 @@ class CacheHelper
      */
     public static function isStale(string $name, int $interval = 10): bool
     {
+        if (!self::isCaching()) {
+            return true;
+        }
         try {
-            if (!self::isCaching())
-                return true;
             $interval = $interval + rand(0, $interval) - intval($interval / 2);
             $cacheTime = self::getSession()->get(self::getCacheName($name), null);
-            if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp())
+            if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp()) {
                 return true;
+            }
         } catch (\Exception $e) {
-            return false;
         }
+        return false;
     }
 
     /**

@@ -22,6 +22,8 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\FamilyMemberChild;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Util\SecurityHelper;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -77,7 +79,7 @@ class FamilyChildType extends AbstractType
                 )
                 ->add('personName', DisplayType::class,
                     [
-                        'label' => 'Student\'s Name',
+                        'label' => "Student's Name",
                         'help' => 'This value cannot be changed',
                         'data' => $options['data']->getPerson()->formatName(['style' => 'long']),
                         'mapped' => false,
@@ -90,6 +92,7 @@ class FamilyChildType extends AbstractType
                 )
             ;
         } else {
+            $studentRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(['ROLE_STUDENT']);
             $builder
                 ->add('studentEditHeader', HeaderType::class,
                     [
@@ -110,17 +113,14 @@ class FamilyChildType extends AbstractType
                 )
                 ->add('person', EntityType::class,
                     [
-                        'label' => 'Student\'s Name',
+                        'label' => "Student's Name",
                         'class' => Person::class,
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
-                        'query_builder' => function(EntityRepository $er) {
+                        'query_builder' => function(EntityRepository $er) use ($studentRoles) {
                             return $er->createQueryBuilder('p')
-                                ->select(['p','s'])
-                                ->leftJoin('p.staff', 's')
-                                ->where('p.primaryRole = :role')
-                                ->orWhere('p.allRoles LIKE :role1')
-                                ->setParameters(['role' => 'ROLE_STUDENT', 'role1' => '%ROLE_STUDENT%'])
+                                ->where('p.securityRoles in (:role)')
+                                ->setParameter('roles', $studentRoles, Connection::PARAM_STR_ARRAY)
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');

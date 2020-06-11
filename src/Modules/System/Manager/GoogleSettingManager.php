@@ -83,7 +83,6 @@ class GoogleSettingManager
             $content = json_decode($request->getContent(), true);
             $fileSystem = new Filesystem();
             $fileSystem->remove(__DIR__ . '/../../../../var/cache');
-            dump($content);
             if($content['googleOAuth'] !== 'Y') {
                 return $this->turnGoogleIntegrationOff();
             }

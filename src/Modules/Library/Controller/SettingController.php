@@ -66,7 +66,6 @@ class SettingController extends AbstractPageController
             $action = $this->generateUrl('library_edit', ['library' => $library->getId()]);
         }
 
-        dump($library,$action);
         $manager->setShowSubmitButton(true);
         TranslationHelper::setDomain('Library');
 

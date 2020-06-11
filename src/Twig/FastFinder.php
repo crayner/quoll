@@ -19,6 +19,7 @@ use App\Modules\Curriculum\Entity\CourseClass;
 use App\Modules\Curriculum\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyAdult;
+use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\Role;
 use App\Modules\Security\Provider\RoleProvider;
@@ -55,17 +56,17 @@ class FastFinder implements ContentInterface
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY'))
             return;
 
-        $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
+        $highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view');
         $person = SecurityHelper::getCurrentUser()->getPerson();;
-        $this->addAttribute('roleCategory', SecurityHelper::getRoleCategory($person->getPrimaryRole()));
+        $this->addAttribute('roleCategory', $person->getHumanisedRole());
 
         $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
         $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')
-            .(SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
-            .(SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->translate('Students', [], 'messages') : '')
-            .(SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->translate('Staff', [], 'messages') : ''));
+            .(SecurityHelper::isActionAccessible('planner_view') && $highestActionClass !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
+            .(SecurityHelper::isActionAccessible('student_view') ? ', '.$this->translate('Students', [], 'messages') : '')
+            .(SecurityHelper::isActionAccessible('staff_view') ? ', '.$this->translate('Staff', [], 'messages') : ''));
         $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
-        $this->addAttribute('themeName', $this->getSession()->get('gibbonThemeName'));
+        $this->addAttribute('themeName', $this->getSession()->get('theme'));
         $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
         $this->addAttribute('trans_close', $this->translate('Close', [], 'messages'));
 
@@ -92,14 +93,11 @@ class FastFinder implements ContentInterface
      */
     public function getFastFinderActions(): array
     {
-        $actions = [];
         CacheHelper::setSession($this->getSession());
-        $person = SecurityHelper::getCurrentUser()->getPerson();
-        $role = $person->getPrimaryRole();
         if (CacheHelper::isStale('fastFinderActions'))
         {
             // Get the accessible actions for the current user
-            $actions = ProviderFactory::create(Action::class)->findFastFinderActions($this->checker);
+            $actions = ProviderFactory::create(Action::class)->findFastFinderActions();
             CacheHelper::setCacheValue('fastFinderActions', $actions, 10);
         } else {
             $actions = CacheHelper::getCacheValue('fastFinderActions') ?: [];
@@ -116,13 +114,13 @@ class FastFinder implements ContentInterface
         $classes = [];
         if (CacheHelper::isStale('fastFinderClasses')) {
             $classIsAccessible = false;
-            $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
-            if (SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses') {
+            if (SecurityHelper::isActionAccessible('planner_view') && ($highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view'))->getRestriction() !== 'viewMyChildrenClasses') {
                 $classIsAccessible = true;
             }
             // CLASSES
             if ($classIsAccessible) {
-                if ($highestActionClass === 'Lesson Planner_viewEditAllClasses' || $highestActionClass === 'Lesson Planner_viewAllEditMyClasses') {
+                $highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view');
+                if ($highestActionClass === 'viewEditAllClasses' || $highestActionClass === 'viewAllEditMyClasses') {
                     $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('academicYear'), '');
                 } else {
                     $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('academicYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
@@ -146,7 +144,7 @@ class FastFinder implements ContentInterface
         if (CacheHelper::isStale('fastFinderStaff'))
         {
             // STAFF
-            $staffIsAccessible = SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php');
+            $staffIsAccessible = SecurityHelper::isActionAccessible('staff_view');
 
             if ($staffIsAccessible) {
                 $staff = ProviderFactory::getRepository(Person::class)->findStaffForFastFinder('');
@@ -168,11 +166,11 @@ class FastFinder implements ContentInterface
         // STUDENTS
         $students = [];
         if (CacheHelper::isStale('fastFinderStudents')) {
-            $studentIsAccessible = SecurityHelper::isActionAccessible('/modules/students/student_view.php');
-            $highestActionStudent = SecurityHelper::getHighestGroupedAction( '/modules/students/student_view.php');
+            $studentIsAccessible = SecurityHelper::isActionAccessible('student_view');
             if ($studentIsAccessible) {
-                if ($highestActionStudent === 'View Student Profile_myChildren') {
-                    $students = ProviderFactory::getRepository(FamilyAdult::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
+                $highestActionStudent = SecurityHelper::getHighestGroupedAction('student_view') ? SecurityHelper::getHighestGroupedAction('student_view')->getRestriction() : null;
+                if ($highestActionStudent === 'myChildren') {
+                    $students = ProviderFactory::getRepository(FamilyMemberAdult::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
                 } elseif ($highestActionStudent == 'View Student Profile_my') {
                     $person = ProviderFactory::getRepository(Person::class)->find(2761);
                     $students = [];

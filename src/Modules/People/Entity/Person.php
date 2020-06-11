@@ -23,6 +23,8 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
+use App\Modules\Security\Manager\RoleHierarchy;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
@@ -54,7 +56,6 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="academic_year_class_of",columns={"class_of_academic_year"}),
  *     @ORM\Index(name="application_form",columns={"application_form"}),
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
- *     @ORM\Index(name="primary_role",columns={"primary_role"}),
  *     @ORM\Index(name="emergency_contact1",columns={"emergency_contact1"}),
  *     @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
  *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
@@ -79,9 +80,8 @@ class Person extends AbstractEntity
         $this->courseClassPerson = new ArrayCollection();
         $this->studentEnrolments = new ArrayCollection();
         $this->additionalPhones = new ArrayCollection();
-        $this->allRoles = [];
         $this->setStatus('Expected')
-            ->setPrimaryRole('ROLE_USER')
+            ->setSecurityRoles([])
             ->setCanLogin('N')
             ->setPasswordForceReset('N');
 
@@ -498,63 +498,26 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=32,nullable=true)
+     * @var array|null
+     * @ORM\Column(type="simple_array",nullable=true)
      */
-    private $primaryRole;
-
-    /**
-     * @return string|null
-     */
-    public function getPrimaryRole(): ?string
-    {
-        return $this->primaryRole;
-    }
-
-    /**
-     * PrimaryRole.
-     *
-     * @param string|null $primaryRole
-     * @return Person
-     */
-    public function setPrimaryRole(?string $primaryRole): Person
-    {
-        $this->primaryRole = $primaryRole;
-        return $this;
-    }
-
-    /**
-     * @var array
-     * @ORM\Column(name="all_roles",type="simple_array",nullable=true)
-     */
-    private $allRoles = [];
+    private $securityRoles;
 
     /**
      * @return array
      */
-    public function getAllRoles(): array
+    public function getSecurityRoles(): array
     {
-        if ($this->getPrimaryRole() !== null) {
-            if ($this->allRoles === null)
-                $this->allRoles = [];
-            array_unshift($this->allRoles, $this->getPrimaryRole());
-        }
-        $this->allRoles = array_unique($this->allRoles ?: []);
-        return $this->allRoles;
+        return $this->securityRoles ?: [];
     }
 
     /**
-     * @param null|array $allRoles
+     * @param array|null $securityRoles
      * @return Person
      */
-    public function setAllRoles(?array $allRoles): Person
+    public function setSecurityRoles(?array $securityRoles): Person
     {
-        if (null === $allRoles)
-            $allRoles = [];
-        if ($this->getPrimaryRole() !== null)
-            $allRoles[] = $this->getPrimaryRole();
-
-        $this->allRoles = array_unique($allRoles ?: []);
+        $this->securityRoles = $securityRoles;
         return $this;
     }
 
@@ -2281,7 +2244,7 @@ class Person extends AbstractEntity
      */
     public function isSystemAdmin(): bool
     {
-        return $this->getPrimaryRole() === 'ROLE_SYSTEM_ADMIN';
+        return in_array('ROLE_SYSTEM_ADMIN', $this->getSecurityRoles() ?: []);
     }
 
     /**
@@ -2652,8 +2615,7 @@ class Person extends AbstractEntity
             'family' => $this->getFamilyName(),
             'family_id' => $this->getFamilyId(),
             'username' => $this->getUsername(),
-            '_role' => $this->getHumanisedRole(),
-            'role' => TranslationHelper::translate($this->getPrimaryRole(), [], 'Security'),
+            'roles' => rtrim(implode(', ', SecurityHelper::translateRoles($this->getSecurityRoles() ?: [])),', '),
             'canDelete' => $this->canDelete(),
             'start_date' => $this->getDateStart() === null || $this->getDateStart() <= new \DateTimeImmutable() ? false : true,
             'end_date' => $this->getDateEnd() === null || $this->getDateEnd() >= new \DateTimeImmutable() ? false : true,
@@ -2662,6 +2624,9 @@ class Person extends AbstractEntity
             'phone' => $this->getPersonalPhone(),
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
+            'student' => $this->isStudent(),
+            'staff' => $this->isStaff(),
+            'parent' => $this->isParent(),
         ];
     }
 
@@ -2714,10 +2679,12 @@ class Person extends AbstractEntity
      * hasRole
      * @param string $role
      * @return bool
+     * 10/06/2020 12:19
      */
     public function hasRole(string $role): bool
     {
-        return $role === $this->getPrimaryRole() || in_array($role, $this->getAllRoles());
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRoles() ?: []);
+        return in_array($role, $roles);
     }
 
     /**
@@ -2760,31 +2727,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * getPersonType
-     * @return string
-     */
-    public function getPersonType(): string
-    {
-        switch ($this->getPrimaryRole()) {
-            case 'ROLE_STUDENT':
-                return 'Student';
-            case 'ROLE_PARENT':
-                return 'Parent';
-            case 'ROLE_REGISTRAR':
-            case 'ROLE_SUPPORT':
-            case 'ROLE_PRINCIPAL':
-            case 'ROLE_TEACHER':
-            case 'ROLE_HEAD_TEACHER':
-            case 'ROLE_LIBRARIAN':
-            case 'ROLE_FINANCE':
-            case 'ROLE_STAFF':
-                return 'Staff';
-            default:
-                return 'Other';
-        }
-    }
-
-    /**
      * create
      * @return string
      */
@@ -2804,7 +2746,7 @@ class Person extends AbstractEntity
                     `password_force_reset` CHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
                     `status` CHAR(16) NOT NULL DEFAULT 'Full',
                     `can_login` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `all_roles` text DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    'security_roles` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `email` CHAR(75) DEFAULT NULL,
                     `email_alternate` CHAR(75) DEFAULT NULL,
@@ -2861,7 +2803,6 @@ class Person extends AbstractEntity
                     `google_api_refresh_token` CHAR(191) NOT NULL,
                     `receive_notification_emails` CHAR(1) NOT NULL DEFAULT 'Y',
                     `fields` longtext COMMENT 'Serialised array of custom field values(DC2Type:array)',
-                    `primary_role` CHAR(32) DEFAULT NULL,
                     `house` CHAR(36) DEFAULT NULL,
                     `class_of_academic_year` CHAR(36) DEFAULT NULL,
                     `application_form` CHAR(36) DEFAULT NULL,
@@ -2874,7 +2815,6 @@ class Person extends AbstractEntity
                     KEY `i18n` (`personal_i18n`),
                     KEY `academic_year_class_of` (`class_of_academic_year`),
                     KEY `application_form` (`application_form`),
-                    KEY `primary_role` (`primary_role`),
                     KEY `emergency_contact1` (`emergency_contact1`),
                     KEY `emergency_contact2` (`emergency_contact2`),
                     KEY `personal_phone` (`personal_phone`),
@@ -2914,26 +2854,59 @@ class Person extends AbstractEntity
     }
 
     /**
-     * coreData
-     * @return string
-     *//**
      * getHumanisedRole
      * @return string
+     * 10/06/2020 11:57
      */
     public function getHumanisedRole(): string
     {
-        switch ($this->getPrimaryRole()) {
-            case 'ROLE_STUDENT':
-                return 'Student';
-                break;
-            case 'ROLE_PARENT':
-                return 'Parent';
-                break;
-            default:
-                return 'Staff';
+        if ($this->isStudent()) {
+            return 'Student';
         }
+        if ($this->isParent()) {
+            return 'Parent';
+        }
+        if ($this->isStaff()) {
+            return 'Staff';
+        }
+        return 'Other';
     }
 
+    /**
+     * isStaff
+     * @return bool
+     * 10/06/2020 11:58
+     */
+    public function isStaff(): bool
+    {
+        return $this->hasRole('ROLE_STAFF');
+    }
+
+    /**
+     * isStudent
+     * @return bool
+     * 10/06/2020 11:59
+     */
+    public function isStudent(): bool
+    {
+        return $this->hasRole('ROLE_STUDENT');
+    }
+
+    /**
+     * isParent
+     * @return bool
+     * 10/06/2020 11:59
+     */
+    public function isParent(): bool
+    {
+        return $this->hasRole('ROLE_PARENT');
+    }
+
+    /**
+     * getVersion
+     * @return string
+     * 10/06/2020 11:57
+     */
     public static function getVersion(): string
     {
         return self::VERSION;

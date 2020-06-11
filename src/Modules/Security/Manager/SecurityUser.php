@@ -48,8 +48,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             $this->setId($user->getId());
             $this->setUserPassword($user);
             $this->setUsername($user->getUsername());
-            $this->setAllRoles($user->getAllRoles());
-            $this->setPrimaryRole($user->getPrimaryRole());
+            $this->setAllRoles($user->getSecurityRoles());
             $this->setEmail($user->getEmail());
             $this->setGoogleAPIRefreshToken($user->getGoogleAPIRefreshToken());
             $this->setLocale($user->getI18nPersonal());
@@ -74,47 +73,11 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     {
         if ($this->roles === null) {
             $roles = [];
-            $roles[] = $this->getPrimaryRole();
-            if ($this->isSystemAdmin())
-                $roles[] = 'ROLE_SYSTEM_ADMIN';
-            foreach ($this->getAllRolesAsArray() as $role)
+            foreach ($this->getAllRoles() as $role) {
                 $roles[] = $role;
+            }
         }
         return $this->roles = array_unique($roles);
-    }
-
-    /**
-     * getAllRolesAsArray
-     * @return array
-     */
-    public function getAllRolesAsArray(): array
-    {
-        return $this->getAllRoles() ?: [];
-    }
-
-    /**
-     * @var string|null
-     */
-    private $primaryRole;
-
-    /**
-     * getPrimaryRole
-     * @return string|null
-     */
-    public function getPrimaryRole(): ?string
-    {
-        return $this->primaryRole;
-    }
-
-    /**
-     * setPrimaryRole
-     * @param string|null $primaryRole
-     * @return SecurityUser
-     */
-    public function setPrimaryRole(?string $primaryRole): SecurityUser
-    {
-        $this->primaryRole = $primaryRole;
-        return $this;
     }
 
     /**
@@ -126,8 +89,9 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     {
         if ($user)
             return $user instanceof Person;
-        if ($this->person instanceof Person && $this->getId() === $this->person->getId())
-            return true;
+
+        return $this->person instanceof Person && $this->getId() === $this->person->getId();
+
         return false;
     }
 
@@ -238,7 +202,6 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             $this->getPassword(),
             $this->getSalt(),
             $this->getEmail(),
-            $this->getPrimaryRole(),
             $this->getAllRoles(),
         ));
     }
@@ -255,7 +218,6 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             $this->password,
             $this->salt,
             $this->email,
-            $this->primaryRole,
             $this->allRoles,
             ) = unserialize($serialized);
     }
@@ -346,7 +308,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getAllRoles(): ?array
     {
-        return $this->getPerson()->getAllRoles() ?: [];
+        return $this->getPerson()->getSecurityRoles() ?: [];
     }
 
     /**

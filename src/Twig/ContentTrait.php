@@ -19,8 +19,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Traits ContentTrait
@@ -49,19 +47,12 @@ trait ContentTrait
     private $attributes;
 
     /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $checker;
-
-    /**
      * MainMenu constructor.
      * @param RequestStack $stack
-     * @param AuthorizationCheckerInterface $checker
      */
-    public function __construct(RequestStack $stack, AuthorizationCheckerInterface $checker)
+    public function __construct(RequestStack $stack)
     {
         $this->stack = $stack;
-        $this->checker = $checker;
     }
 
     /**
@@ -197,13 +188,5 @@ trait ContentTrait
     {
         $this->valid = $valid;
         return $this;
-    }
-
-    /**
-     * @return AuthorizationChecker
-     */
-    public function getChecker(): AuthorizationCheckerInterface
-    {
-        return $this->checker;
     }
 }

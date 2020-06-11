@@ -60,7 +60,7 @@ class ImageHelper
     public static function getAbsoluteURL(): ?string
     {
         if (null === self::$absoluteURL) {
-            self::$absoluteURL = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'absoluteURL');
+            self::$absoluteURL = ParameterBagHelper::get('absoluteURL');
         }
         return self::$absoluteURL;
     }
@@ -118,7 +118,7 @@ class ImageHelper
                 file_put_contents($filePath, $fileContent);
                 break;
             default:
-                dump($type . ' is not handled.');
+                throw new \InvalidArgumentException($type . ' is not handled.');
                 $filePath = null;
         }
         return $filePath;

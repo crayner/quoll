@@ -16,7 +16,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Mr"
@@ -36,7 +36,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Mr"
@@ -57,7 +57,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Ms"
@@ -78,7 +78,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Mr"
@@ -99,7 +99,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Mrs"
@@ -120,7 +120,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Dr."
@@ -141,7 +141,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Moore"
@@ -161,7 +161,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Nolan"
@@ -181,7 +181,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Zimmerman"
@@ -201,7 +201,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Alvarez"
@@ -221,7 +221,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Clay"
@@ -241,7 +241,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Ellison"
@@ -261,7 +261,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: B
 -
     title: "Mr"
@@ -282,7 +282,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Webster"
@@ -302,7 +302,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: ""
@@ -323,7 +323,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Moore"
@@ -343,7 +343,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dennis"
@@ -363,7 +363,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Burt"
@@ -383,7 +383,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dennis"
@@ -403,7 +403,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Parks"
@@ -423,7 +423,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Richard"
@@ -443,7 +443,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Richard"
@@ -463,7 +463,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Wagner"
@@ -483,7 +483,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Wagner"
@@ -503,7 +503,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dillard"
@@ -523,7 +523,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Suarez"
@@ -543,7 +543,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Best"
@@ -563,7 +563,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Mrs"
@@ -584,7 +584,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Mr"
@@ -605,7 +605,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: ""
@@ -626,7 +626,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -646,7 +646,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Fowler"
@@ -666,7 +666,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Rowe"
@@ -686,7 +686,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Benjamin"
@@ -706,7 +706,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Benjamin"
@@ -726,7 +726,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Vang"
@@ -746,7 +746,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Freeman"
@@ -766,7 +766,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -786,7 +786,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -806,7 +806,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Drake"
@@ -826,7 +826,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Berry"
@@ -846,7 +846,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Mr"
@@ -867,7 +867,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Berry"
@@ -887,7 +887,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dalton"
@@ -907,7 +907,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -928,7 +928,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Dalton"
@@ -947,7 +947,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -967,7 +967,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Curry"
@@ -986,7 +986,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Hardy"
@@ -1005,7 +1005,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: ""
@@ -1026,7 +1026,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -1047,7 +1047,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Stone"
@@ -1067,7 +1067,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Nolan"
@@ -1087,7 +1087,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -1108,7 +1108,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Nolan"
@@ -1128,7 +1128,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Drake"
@@ -1148,7 +1148,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -1169,7 +1169,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Cantrell"
@@ -1189,7 +1189,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -1210,7 +1210,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Cantrell"
@@ -1230,7 +1230,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Price"
@@ -1250,7 +1250,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -1271,7 +1271,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Price"
@@ -1291,7 +1291,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Alvarez"
@@ -1311,7 +1311,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -1332,7 +1332,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -1353,7 +1353,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -1374,7 +1374,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -1395,7 +1395,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Bolton"
@@ -1415,7 +1415,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: ""
@@ -1436,7 +1436,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -1457,7 +1457,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -1478,7 +1478,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dennis"
@@ -1498,7 +1498,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Nolan"
@@ -1518,7 +1518,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -1539,7 +1539,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: W
 -
     title: "Mr"
@@ -1560,7 +1560,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -1580,7 +1580,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lane"
@@ -1600,7 +1600,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -1621,7 +1621,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -1642,7 +1642,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Lindsay"
@@ -1662,7 +1662,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Brock"
@@ -1682,7 +1682,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_SUPPORT"
+    securityRoles: ["ROLE_SUPPORT"
     house: L
 -
     title: "Mr"
@@ -1703,7 +1703,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Ms"
@@ -1724,7 +1724,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Ms"
@@ -1745,7 +1745,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Mr"
@@ -1766,7 +1766,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Miss"
@@ -1787,7 +1787,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -1808,7 +1808,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Contreras"
@@ -1828,7 +1828,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lara"
@@ -1848,7 +1848,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -1869,7 +1869,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Shaffer"
@@ -1889,7 +1889,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -1910,7 +1910,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Fulton"
@@ -1930,7 +1930,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -1951,7 +1951,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Fulton"
@@ -1971,7 +1971,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Parks"
@@ -1991,7 +1991,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -2012,7 +2012,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Parks"
@@ -2032,7 +2032,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blackwell"
@@ -2052,7 +2052,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -2073,7 +2073,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -2094,7 +2094,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Bowen"
@@ -2114,7 +2114,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Dennis"
@@ -2134,7 +2134,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Miss"
@@ -2155,7 +2155,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -2176,7 +2176,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -2197,7 +2197,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -2218,7 +2218,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Galloway"
@@ -2238,7 +2238,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Hopkins"
@@ -2258,7 +2258,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Vang"
@@ -2278,7 +2278,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -2299,7 +2299,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Vang"
@@ -2319,7 +2319,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Vang"
@@ -2339,7 +2339,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -2360,7 +2360,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Vang"
@@ -2380,7 +2380,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blackwell"
@@ -2400,7 +2400,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -2421,7 +2421,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -2441,7 +2441,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Horton"
@@ -2461,7 +2461,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -2482,7 +2482,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Horton"
@@ -2502,7 +2502,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Hopkins"
@@ -2522,7 +2522,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Nolan"
@@ -2542,7 +2542,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: L
 -
     title: "Mr"
@@ -2563,7 +2563,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -2584,7 +2584,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Sweet"
@@ -2604,7 +2604,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Shaffer"
@@ -2624,7 +2624,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Payne"
@@ -2644,7 +2644,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -2665,7 +2665,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Payne"
@@ -2685,7 +2685,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Petersen"
@@ -2705,7 +2705,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
     house: B
 -
     title: ""
@@ -2726,7 +2726,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Ms"
@@ -2747,7 +2747,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: B
 -
     title: "Mr"
@@ -2768,7 +2768,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: W
 -
     title: "Mr"
@@ -2789,7 +2789,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Ms"
@@ -2810,7 +2810,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_SUPPORT"
+    securityRoles: ["ROLE_SUPPORT"
     house: W
 -
     title: "Mr"
@@ -2831,7 +2831,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: L
 -
     title: "Ms"
@@ -2852,7 +2852,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Ms"
@@ -2873,7 +2873,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Mr"
@@ -2894,7 +2894,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: B
 -
     title: "Ms"
@@ -2916,7 +2916,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: "Ms"
@@ -2937,7 +2937,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Miss"
@@ -2958,7 +2958,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -2979,7 +2979,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Phelps"
@@ -2999,7 +2999,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schroeder"
@@ -3019,7 +3019,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -3040,7 +3040,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schroeder"
@@ -3060,7 +3060,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Bolton"
@@ -3080,7 +3080,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -3101,7 +3101,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Bolton"
@@ -3121,7 +3121,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lamb"
@@ -3141,7 +3141,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -3162,7 +3162,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -3182,7 +3182,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lang"
@@ -3202,7 +3202,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -3223,7 +3223,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Lang"
@@ -3243,7 +3243,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blankenship"
@@ -3263,7 +3263,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -3284,7 +3284,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -3305,7 +3305,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Beard"
@@ -3325,7 +3325,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Solis"
@@ -3345,7 +3345,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -3366,7 +3366,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Solis"
@@ -3386,7 +3386,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -3406,7 +3406,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -3427,7 +3427,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Church"
@@ -3447,7 +3447,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -3468,7 +3468,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Church"
@@ -3488,7 +3488,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blackwell"
@@ -3508,7 +3508,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -3529,7 +3529,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -3550,7 +3550,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Curtis"
@@ -3570,7 +3570,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Edwards"
@@ -3590,7 +3590,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -3611,7 +3611,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Blackwell"
@@ -3631,7 +3631,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blackwell"
@@ -3651,7 +3651,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -3672,7 +3672,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -3692,7 +3692,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Patel"
@@ -3712,7 +3712,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Dr."
@@ -3733,7 +3733,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Albert"
@@ -3753,7 +3753,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Mcknight"
@@ -3773,7 +3773,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -3794,7 +3794,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Mcknight"
@@ -3814,7 +3814,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Benjamin"
@@ -3834,7 +3834,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -3855,7 +3855,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -3876,7 +3876,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Duke"
@@ -3896,7 +3896,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Blackwell"
@@ -3916,7 +3916,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -3937,7 +3937,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -3957,7 +3957,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Rowe"
@@ -3977,7 +3977,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -3998,7 +3998,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -4018,7 +4018,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Schultz"
@@ -4038,7 +4038,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -4059,7 +4059,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Schultz"
@@ -4079,7 +4079,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -4099,7 +4099,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -4120,7 +4120,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -4140,7 +4140,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Gregory"
@@ -4160,7 +4160,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -4181,7 +4181,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Gregory"
@@ -4201,7 +4201,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lara"
@@ -4221,7 +4221,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -4242,7 +4242,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -4263,7 +4263,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Stout"
@@ -4281,9 +4281,8 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Bolton"
@@ -4301,9 +4300,8 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -4322,9 +4320,8 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Bolton"
@@ -4344,7 +4341,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Schultz"
@@ -4364,7 +4361,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Miss"
@@ -4385,7 +4382,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -4406,7 +4403,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Kelley"
@@ -4426,7 +4423,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Ross"
@@ -4446,7 +4443,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Schultz"
@@ -4466,7 +4463,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -4486,7 +4483,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Larson"
@@ -4506,7 +4503,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Dr."
     surname: "Larson"
@@ -4526,7 +4523,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Blackwell"
@@ -4546,7 +4543,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -4567,7 +4564,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -4587,7 +4584,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Paul"
@@ -4607,7 +4604,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Jackson"
@@ -4627,7 +4624,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Trevino"
@@ -4647,7 +4644,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Zimmerman"
@@ -4667,7 +4664,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -4688,7 +4685,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Zimmerman"
@@ -4708,7 +4705,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Albert"
@@ -4728,7 +4725,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -4749,7 +4746,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Albert"
@@ -4769,7 +4766,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Schultz"
@@ -4789,7 +4786,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -4810,7 +4807,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -4830,7 +4827,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Moore"
@@ -4850,7 +4847,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -4871,7 +4868,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Parks"
@@ -4891,7 +4888,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Wheeler"
@@ -4911,7 +4908,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -4932,7 +4929,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Wheeler"
@@ -4952,7 +4949,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Charles"
@@ -4972,7 +4969,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -4993,7 +4990,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Mann"
@@ -5013,7 +5010,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Blackwell"
@@ -5033,7 +5030,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -5054,7 +5051,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -5075,7 +5072,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Beasley"
@@ -5095,7 +5092,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Blackburn"
@@ -5115,7 +5112,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -5136,7 +5133,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Stafford"
@@ -5156,7 +5153,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -5177,7 +5174,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Madden"
@@ -5197,7 +5194,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Rutledge"
@@ -5217,7 +5214,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -5238,7 +5235,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Rutledge"
@@ -5258,7 +5255,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Church"
@@ -5278,7 +5275,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -5299,7 +5296,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -5320,7 +5317,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Delaney"
@@ -5340,7 +5337,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Madden"
@@ -5360,7 +5357,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -5381,7 +5378,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Madden"
@@ -5401,7 +5398,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Larson"
@@ -5421,7 +5418,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -5442,7 +5439,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -5463,7 +5460,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Moore"
@@ -5483,7 +5480,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Pope"
@@ -5503,7 +5500,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -5524,7 +5521,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Pope"
@@ -5544,7 +5541,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Lamb"
@@ -5564,7 +5561,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Dr."
@@ -5585,7 +5582,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Lamb"
@@ -5605,7 +5602,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Gay"
@@ -5625,7 +5622,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -5646,7 +5643,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Gay"
@@ -5666,7 +5663,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Stone"
@@ -5686,7 +5683,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -5707,7 +5704,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -5728,7 +5725,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Dr."
     surname: "Lester"
@@ -5748,7 +5745,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Burris"
@@ -5768,7 +5765,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -5789,7 +5786,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Solomon"
@@ -5809,7 +5806,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Weiss"
@@ -5829,7 +5826,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -5850,7 +5847,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Weiss"
@@ -5870,7 +5867,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Nolan"
@@ -5890,7 +5887,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -5911,7 +5908,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Nolan"
@@ -5931,7 +5928,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Schultz"
@@ -5951,7 +5948,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -5972,7 +5969,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -5992,7 +5989,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Jacobson"
@@ -6012,7 +6009,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -6033,7 +6030,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Barker"
@@ -6053,7 +6050,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -6074,7 +6071,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Dr."
     surname: "Barker"
@@ -6094,7 +6091,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Stone"
@@ -6114,7 +6111,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -6135,7 +6132,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Stone"
@@ -6155,7 +6152,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Macias"
@@ -6175,7 +6172,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Ms"
@@ -6196,7 +6193,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: ""
@@ -6217,7 +6214,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -6238,7 +6235,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Walter"
@@ -6258,7 +6255,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Blair"
@@ -6278,7 +6275,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -6299,7 +6296,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blair"
@@ -6319,7 +6316,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Gilmore"
@@ -6339,7 +6336,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
     house: B
 -
     title: "Mr"
@@ -6360,7 +6357,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Miss"
@@ -6381,7 +6378,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -6402,7 +6399,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -6423,7 +6420,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Golden"
@@ -6441,9 +6438,8 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Hill"
@@ -6461,9 +6457,8 @@
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
-
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -6484,7 +6479,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Hill"
@@ -6504,7 +6499,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Parks"
@@ -6524,7 +6519,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -6545,7 +6540,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Parks"
@@ -6565,7 +6560,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Schultz"
@@ -6585,7 +6580,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -6606,7 +6601,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -6626,7 +6621,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -6646,7 +6641,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Blackwell"
@@ -6666,7 +6661,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -6687,7 +6682,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Parks"
@@ -6707,7 +6702,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Chang"
@@ -6727,7 +6722,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Stout"
@@ -6747,7 +6742,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Benjamin"
@@ -6767,7 +6762,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Miss"
@@ -6788,7 +6783,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -6809,7 +6804,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -6830,7 +6825,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: "Mr"
     surname: "Ruiz"
@@ -6850,7 +6845,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Moore"
@@ -6870,7 +6865,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -6891,7 +6886,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Hines"
@@ -6911,7 +6906,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Pierce"
@@ -6931,7 +6926,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -6952,7 +6947,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Pierce"
@@ -6972,7 +6967,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Vincent"
@@ -6992,7 +6987,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -7013,7 +7008,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Moore"
@@ -7033,7 +7028,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Hopkins"
@@ -7053,7 +7048,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -7074,7 +7069,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -7095,7 +7090,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -7116,7 +7111,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -7136,7 +7131,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Rowe"
@@ -7156,7 +7151,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -7177,7 +7172,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -7198,7 +7193,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Washington"
@@ -7218,7 +7213,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Dale"
@@ -7238,7 +7233,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -7259,7 +7254,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Schultz"
@@ -7279,7 +7274,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -7300,7 +7295,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -7320,7 +7315,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Schultz"
@@ -7340,7 +7335,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -7361,7 +7356,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -7381,7 +7376,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Schultz"
@@ -7401,7 +7396,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -7422,7 +7417,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -7443,7 +7438,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Stout"
@@ -7463,7 +7458,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Curtis"
@@ -7483,7 +7478,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -7504,7 +7499,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -7525,7 +7520,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Giles"
@@ -7545,7 +7540,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Trevino"
@@ -7565,7 +7560,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Alvarez"
@@ -7585,7 +7580,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -7606,7 +7601,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Blackwell"
@@ -7626,7 +7621,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Callahan"
@@ -7646,7 +7641,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -7667,7 +7662,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Callahan"
@@ -7687,7 +7682,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Callahan"
@@ -7707,7 +7702,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -7728,7 +7723,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -7749,7 +7744,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -7770,7 +7765,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Fulton"
@@ -7790,7 +7785,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Carr"
@@ -7810,7 +7805,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -7831,7 +7826,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Carr"
@@ -7851,7 +7846,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Solis"
@@ -7871,7 +7866,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -7892,7 +7887,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -7913,7 +7908,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -7934,7 +7929,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -7955,7 +7950,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Moore"
@@ -7975,7 +7970,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Wolf"
@@ -7995,7 +7990,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: "Miss"
     surname: "Price"
@@ -8015,7 +8010,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -8036,7 +8031,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Trevino"
@@ -8056,7 +8051,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -8077,7 +8072,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -8097,7 +8092,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Collier"
@@ -8117,7 +8112,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -8138,7 +8133,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Collier"
@@ -8158,7 +8153,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Blackwell"
@@ -8178,7 +8173,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -8199,7 +8194,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -8219,7 +8214,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Hancock"
@@ -8239,7 +8234,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -8260,7 +8255,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Hancock"
@@ -8280,7 +8275,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Moody"
@@ -8300,7 +8295,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -8321,7 +8316,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Moody"
@@ -8341,7 +8336,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Miranda"
@@ -8361,7 +8356,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -8382,7 +8377,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Miranda"
@@ -8402,7 +8397,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Holcomb"
@@ -8422,7 +8417,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: L
 -
     title: "Mr"
@@ -8443,7 +8438,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: W
 -
     title: "Mr"
@@ -8464,7 +8459,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
     house: B
 -
     title: ""
@@ -8485,7 +8480,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Miss"
@@ -8506,7 +8501,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Carter"
@@ -8526,7 +8521,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Gilmore"
@@ -8546,7 +8541,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -8567,7 +8562,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Hale"
@@ -8587,7 +8582,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lloyd"
@@ -8607,7 +8602,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -8628,7 +8623,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Lloyd"
@@ -8648,7 +8643,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Curtis"
@@ -8668,7 +8663,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -8689,7 +8684,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Dennis"
@@ -8709,7 +8704,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Gregory"
@@ -8729,7 +8724,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_SUPPORT"
+    securityRoles: ["ROLE_SUPPORT"
 -
     title: ""
     surname: "Stout"
@@ -8749,7 +8744,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -8770,7 +8765,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -8791,7 +8786,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Bowen"
@@ -8811,7 +8806,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Barker"
@@ -8831,7 +8826,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -8852,7 +8847,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Barker"
@@ -8872,7 +8867,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Swanson"
@@ -8892,7 +8887,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -8913,7 +8908,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Swanson"
@@ -8933,7 +8928,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Dunn"
@@ -8953,7 +8948,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -8974,7 +8969,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Robbins"
@@ -8994,7 +8989,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -9015,7 +9010,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Robbins"
@@ -9035,7 +9030,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Robbins"
@@ -9055,7 +9050,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -9076,7 +9071,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -9097,7 +9092,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Battle"
@@ -9117,7 +9112,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Vincent"
@@ -9137,7 +9132,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Miss"
@@ -9158,7 +9153,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Miss"
@@ -9179,7 +9174,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Mann"
@@ -9199,7 +9194,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Mcknight"
@@ -9219,7 +9214,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -9240,7 +9235,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Mcknight"
@@ -9260,7 +9255,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Zimmerman"
@@ -9280,7 +9275,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: ""
@@ -9301,7 +9296,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -9322,7 +9317,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -9343,7 +9338,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Curtis"
@@ -9363,7 +9358,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Charles"
@@ -9383,7 +9378,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -9404,7 +9399,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -9425,7 +9420,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Griffin"
@@ -9445,7 +9440,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Lamb"
@@ -9465,7 +9460,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -9486,7 +9481,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Terry"
@@ -9506,7 +9501,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -9526,7 +9521,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -9547,7 +9542,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Blackwell"
@@ -9567,7 +9562,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schroeder"
@@ -9587,7 +9582,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -9608,7 +9603,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -9629,7 +9624,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -9649,7 +9644,7 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Trevino"
@@ -9669,7 +9664,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Carr"
@@ -9689,7 +9684,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -9710,7 +9705,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -9730,7 +9725,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Phelps"
@@ -9750,7 +9745,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -9771,7 +9766,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -9792,7 +9787,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Lamb"
@@ -9812,7 +9807,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Trevino"
@@ -9832,7 +9827,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -9853,7 +9848,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Gregory"
@@ -9873,7 +9868,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -9894,7 +9889,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -9915,7 +9910,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -9936,7 +9931,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Schultz"
@@ -9956,7 +9951,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Byrd"
@@ -9976,7 +9971,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -9997,7 +9992,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Byrd"
@@ -10017,7 +10012,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Meyers"
@@ -10037,7 +10032,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -10058,7 +10053,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Meyers"
@@ -10078,7 +10073,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Shaffer"
@@ -10098,7 +10093,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -10119,7 +10114,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -10140,7 +10135,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Trevino"
@@ -10160,7 +10155,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Fields"
@@ -10180,7 +10175,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -10201,7 +10196,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Fields"
@@ -10221,7 +10216,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Vang"
@@ -10241,7 +10236,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -10262,7 +10257,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Dr."
     surname: "Vang"
@@ -10282,7 +10277,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Curry"
@@ -10302,7 +10297,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: ""
@@ -10323,7 +10318,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -10344,7 +10339,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Giles"
@@ -10364,7 +10359,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Morse"
@@ -10384,7 +10379,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -10405,7 +10400,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Morse"
@@ -10425,7 +10420,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Oconnor"
@@ -10445,7 +10440,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Ms"
@@ -10466,7 +10461,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Oconnor"
@@ -10486,7 +10481,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Kelley"
@@ -10506,7 +10501,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Miss"
@@ -10527,7 +10522,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -10548,7 +10543,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Tyson"
@@ -10568,7 +10563,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Brock"
@@ -10588,7 +10583,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -10609,7 +10604,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Brock"
@@ -10629,7 +10624,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Battle"
@@ -10649,7 +10644,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Ms"
@@ -10670,7 +10665,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Battle"
@@ -10690,7 +10685,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Battle"
@@ -10710,7 +10705,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: ""
@@ -10731,7 +10726,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -10752,7 +10747,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Schultz"
@@ -10772,7 +10767,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "King"
@@ -10792,7 +10787,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mrs"
@@ -10813,7 +10808,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "King"
@@ -10833,7 +10828,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Gomez"
@@ -10853,7 +10848,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -10874,7 +10869,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Stout"
@@ -10894,7 +10889,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Vargas"
@@ -10914,7 +10909,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Dr."
@@ -10935,7 +10930,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Vargas"
@@ -10955,7 +10950,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Cortez"
@@ -10975,7 +10970,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -10996,7 +10991,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Roberson"
@@ -11016,7 +11011,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Petersen"
@@ -11036,7 +11031,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -11057,7 +11052,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Mcknight"
@@ -11077,7 +11072,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -11098,7 +11093,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Patel"
@@ -11118,7 +11113,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Guerra"
@@ -11138,7 +11133,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -11159,7 +11154,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Rogers"
@@ -11179,7 +11174,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Hendrix"
@@ -11199,7 +11194,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -11220,7 +11215,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Richardson"
@@ -11240,7 +11235,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -11260,7 +11255,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -11281,7 +11276,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Patel"
@@ -11301,7 +11296,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Dale"
@@ -11321,7 +11316,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -11342,7 +11337,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Dale"
@@ -11362,7 +11357,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Miss"
     surname: "Alford"
@@ -11382,7 +11377,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -11403,7 +11398,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Alford"
@@ -11423,7 +11418,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Nicholson"
@@ -11443,7 +11438,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: "Mr"
     surname: "Sexton"
@@ -11463,7 +11458,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: "Mr"
     surname: "Workman"
@@ -11483,7 +11478,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: ""
     surname: "Lucas"
@@ -11503,7 +11498,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -11524,7 +11519,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Lucas"
@@ -11544,7 +11539,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Albert"
@@ -11564,7 +11559,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: L
 -
     title: "Mr"
@@ -11585,7 +11580,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Burt"
@@ -11605,7 +11600,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -11626,7 +11621,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Brock"
@@ -11646,7 +11641,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mrs"
@@ -11667,7 +11662,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Brock"
@@ -11687,7 +11682,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Stout"
@@ -11707,7 +11702,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mrs"
@@ -11728,7 +11723,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Stout"
@@ -11748,7 +11743,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Pickett"
@@ -11768,7 +11763,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_REGISTRAR"
+    securityRoles: ["ROLE_REGISTRAR"
 -
     title: "Ms"
     surname: "Robbins"
@@ -11788,7 +11783,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W
 -
     title: "Mr"
@@ -11809,7 +11804,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Robbins"
@@ -11829,7 +11824,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
     surname: "Schultz"
@@ -11849,7 +11844,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_TEACHER"
+    securityRoles: ["ROLE_TEACHER"]
 -
     title: ""
     surname: "Madden"
@@ -11869,7 +11864,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Mr"
@@ -11890,7 +11885,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mrs"
     surname: "Madden"
@@ -11910,7 +11905,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: ""
     surname: "Parrish"
@@ -11930,7 +11925,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: B
 -
     title: "Ms"
@@ -11951,7 +11946,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Parrish"
@@ -11971,7 +11966,7 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_PARENT"
+    securityRoles: ["ROLE_PARENT"]
 -
     title: "Mr"
     surname: "Mays"
@@ -11991,5 +11986,5 @@
     viewCalendarSpaceBooking: "Y"
 
     receiveNotificationEmails: "Y"
-    primaryRole: "ROLE_STUDENT"
+    securityRoles: ["ROLE_STUDENT"]
     house: W

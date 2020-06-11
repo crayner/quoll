@@ -12,7 +12,6 @@
  * Date: 29/07/2019
  * Time: 12:08
  */
-
 namespace App\Twig;
 
 use App\Modules\People\Util\UserHelper;
@@ -25,14 +24,20 @@ use App\Util\TranslationHelper;
 /**
  * Class MainMenu
  * @package App\Twig
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class MainMenu implements ContentInterface
 {
     use ContentTrait;
 
     /**
+     * @var bool|array
+     */
+    private $content;
+
+    /**
      * execute
-     * @throws \Exception
+     * 10/06/2020 11:28
      */
     public function execute(): void 
     {
@@ -41,10 +46,9 @@ class MainMenu implements ContentInterface
 
         $this->content = false;
         $user = UserHelper::getSecurityUser();
-        $menuMainItems = false;
         if ($user instanceof SecurityUser) {
-            if (CacheHelper::isStale('mainMenuItems')) {
-                $menuMainItems = ProviderFactory::create(Module::class)->buildMainMenu();
+            if (CacheHelper::isStale('mainMenuItems', 30)) {
+                $menuMainItems = ProviderFactory::create(Module::class)->buildMainMenu($user);
 
                 $items = [];
                 foreach ($menuMainItems as $q => $module)

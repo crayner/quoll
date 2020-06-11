@@ -67,8 +67,9 @@ class RoleHierarchy implements RoleHierarchyInterface
 
     /**
      * getReachableRoleNames
-     * @param array|string[] $roles
-     * @return array|string[]
+     * @param array $roles
+     * @return array
+     * 11/06/2020 10:29
      */
     public function getReachableRoleNames(array $roles): array
     {
@@ -78,6 +79,7 @@ class RoleHierarchy implements RoleHierarchyInterface
     /**
      * getStaffRoles
      * @return array
+     * 11/06/2020 10:29
      */
     public function getStaffRoles(): array
     {

@@ -194,6 +194,7 @@ export default class PageApp extends Component {
             pagination: {},
             containers: {},
             special: {},
+            pageHeader: {}
         })
         fetchJson(
             url,

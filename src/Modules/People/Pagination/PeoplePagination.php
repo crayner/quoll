@@ -63,8 +63,8 @@ class PeoplePagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Primary Role')
-            ->setContentKey(['role'])
+        $column->setLabel('Assigned Roles')
+            ->setContentKey(['roles'])
             ->setSort(false)
             ->setSearch(true)
             ->setTranslate()
@@ -165,23 +165,23 @@ class PeoplePagination extends AbstractPaginationManager
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Student')
-            ->setValue('ROLE_STUDENT')
+            ->setValue(true)
             ->setGroup('Role')
-            ->setContentKey('role');
+            ->setContentKey('student');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Parent')
-            ->setValue('ROLE_PARENT')
+            ->setValue(true)
             ->setGroup('Role')
-            ->setContentKey('role');
+            ->setContentKey('parent');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Staff')
-            ->setValue($this->getHierarchy()->getStaffRoles())
+            ->setValue(true)
             ->setGroup('Role')
-            ->setContentKey('role');
+            ->setContentKey('staff');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();

@@ -121,7 +121,7 @@ class PersonNameManager
         // Backwards Compat
         $options['preferred'] = $options['preferredName'] = $options['preferred'] && $options['preferredName'];
 
-        $personType = $person instanceof Person ? $person->getPersonType() : (isset($person['personType']) ? $person['personType'] : 'other');
+        $personType = $person instanceof Person ? strtolower($person->getHumanisedRole()) : (isset($person['personType']) ? $person['personType'] : 'other');
 
         $template = 'title first surname';
 

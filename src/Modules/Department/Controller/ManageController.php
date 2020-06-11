@@ -246,14 +246,13 @@ class ManageController extends AbstractPageController
      */
     public function addDepartmentStaff(ContainerManager $manager, Department $department, ?DepartmentStaff $staff = null)
     {
-        dump($staff, $this->getRequest()->get('_route'));
         if (null === $staff || $this->getRequest()->get('_route') === 'department_staff_add_popup') {
             $staff = new DepartmentStaff();
             $action = $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]);
         } else {
             $action = $this->generateUrl('department_staff_edit_popup', ['department' => $department->getId(), 'staff' => $staff->getId()]);
         }
-dump($staff);
+
         $form = $this->createForm(DepartmentStaffType::class, $staff, ['action' => $action]);
 
         if ($this->getRequest()->getContent() !== '') {

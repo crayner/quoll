@@ -256,24 +256,14 @@ class PersonType extends AbstractType
                     'panel' => 'System',
                 ]
             )
-            ->add('primaryRole', ChoiceType::class,
+            ->add('securityRoles', ChoiceType::class,
                 [
                     'label' => 'Primary Role',
                     'choices' => $hierarchy,
                     'help' => 'Controls what a user can do and see.',
                     'panel' => 'System',
-                    'placeholder' => 'Please select...',
-                    'choice_translation_domain' => 'Security',
-                ]
-            )
-            ->add('allRoles', ChoiceType::class,
-                [
-                    'label' => 'All Roles',
-                    'help' => "Controls what a user can do and see. Use Control, Command and/or Shift to select multiple.",
-                    'panel' => 'System',
                     'multiple' => true,
-                    'required' => false,
-                    'choices' => $hierarchy,
+                    'placeholder' => 'Please select...',
                     'choice_translation_domain' => 'Security',
                     'attr' => [
                         'size' => 4,
@@ -840,7 +830,7 @@ class PersonType extends AbstractType
                 [
                     'class' => Person::class,
                     'label' => 'Primary Emergency Contact',
-                    'help' => 'The person must already exist in the database, and not be a student.',
+                    'help' => 'The person must already exist in the database, and be marked as a parent or contact.',
                     'choice_label' => 'fullNameReversed',
                     'placeholder' => 'Please select...',
                     'panel' => 'Emergency',
@@ -849,8 +839,8 @@ class PersonType extends AbstractType
                         return $er->createQueryBuilder('p')
                             ->orderBy('p.surname', 'ASC')
                             ->addOrderBy('p.firstName', 'ASC')
-                            ->where('p.primaryRole != :role')
-                            ->setParameter('role', 'ROLE_STUDENT')
+                            ->where('p.securityRole LIKE :role')
+                            ->setParameter('role', '%ROLE_PARENT%')
                         ;
                     }
                 ]
@@ -859,7 +849,7 @@ class PersonType extends AbstractType
                 [
                     'class' => Person::class,
                     'label' => 'Secondary Emergency Contact',
-                    'help' => 'The person must already exist in the database, and not be a student.',
+                    'help' => 'The person must already exist in the database, and be marked as a parent or contact.',
                     'placeholder' => 'Please select...',
                     'panel' => 'Emergency',
                     'required' => false,
@@ -868,8 +858,8 @@ class PersonType extends AbstractType
                         return $er->createQueryBuilder('p')
                             ->orderBy('p.surname', 'ASC')
                             ->addOrderBy('p.firstName', 'ASC')
-                            ->where('p.primaryRole != :role')
-                            ->setParameter('role', 'ROLE_STUDENT')
+                            ->where('p.securityRoles LIKE :role')
+                            ->setParameter('role', '%ROLE_PARENT%')
                         ;
                     }
                 ]

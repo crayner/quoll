@@ -80,15 +80,15 @@ class RouteVoter extends RoleHierarchyVoter
                 return VoterInterface::ACCESS_DENIED;
             }
 
-            if (null === $action->getRole() || [] === $action->getRole()) {
+            if (null === $action->getSecurityRoles() || [] === $action->getSecurityRoles()) {
                 $this->logger->debug('The Action has no restrictions.');
                 return VoterInterface::ACCESS_GRANTED;
             }
 
-            $result = parent::vote($token, $subject, $action->getRole());
+            $result = parent::vote($token, $subject, $action->getSecurityRoles());
 
             if ($result === VoterInterface::ACCESS_ABSTAIN)
-                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, implode(',',$action->getRole())), $action);
+                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, implode(',',$action->getSecurityRoles())), $action);
 
             if ($result === VoterInterface::ACCESS_DENIED) {
                 if ($token->getUser() instanceof SecurityUser)

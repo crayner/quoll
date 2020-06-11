@@ -59,7 +59,7 @@ class Login implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        $lang = ProviderFactory::create(I18n::class)->findOneBy(['systemDefault' => 'Y']);
+        $lang = ProviderFactory::getRepository(I18n::class)->findSystemDefaultCode();
 
         return [
             'googleOAuth' => $this->getGoogleOAuth(),
@@ -68,7 +68,7 @@ class Login implements SidebarContentInterface
                 'academicYears' => ProviderFactory::create(AcademicYear::class)->getSelectList(),
                 'academicYear' => AcademicYearHelper::getCurrentAcademicYear()->getId(),
                 'languages' => ProviderFactory::create(I18n::class)->getSelectedLanguages(),
-                'language' => $lang ? $lang->getId() : 0,
+                'language' => $lang ? ProviderFactory::getRepository(I18n::class)->findOneByCode($lang) : null,
                 'token' => $this->getToken()->getValue(),
             ],
             'translations' => $this->getTranslations(),

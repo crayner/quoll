@@ -546,7 +546,7 @@ abstract class AbstractProvider implements EntityProviderInterface
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         }
-        dump($data);
+
         return $data;
     }
 

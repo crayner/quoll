@@ -106,7 +106,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select([
-                "CONCAT('".$studentTitle."', p.surname, ', ', p.preferredName, ' (', rg.name, ', ', p.studentID, ')') AS text",
+                "CONCAT('".$studentTitle."', p.surname, ', ', p.preferredName, ' (', rg.name, ', ', p.studentIdentifier, ')') AS text",
                 "CONCAT(p.username, ' ', p.firstName, ' ', p.email) AS search",
                 "CONCAT('Stu-', p.id) AS id",
             ])
@@ -166,16 +166,26 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findByRoles(array $roles = [])
     {
-        return $this->createQueryBuilder('p')
+        $query = $this->createQueryBuilder('p')
             ->select(['p', 'r.name'])
-            ->join('p.primaryRole', 'r', 'with', 'p.primaryRole IN (:roles)')
             ->setParameter('roles', $roles, Connection::PARAM_INT_ARRAY)
             ->where('p.status = :full')
             ->setParameter('full', 'Full')
             ->groupBy('p.id')
             ->orderBy('r.name', 'ASC')
             ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', "ASC")
+            ->addOrderBy('p.firstName', "ASC");
+
+        $where = '';
+        $param = [];
+        foreach($roles as $q=>$role) {
+            $where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
+            $param['role' . $q] = '%' . $role . '%';
+        }
+        $where = '(' . trim($where, ' OR') . ')';
+
+        return $query->andWhere($where)
+            ->setParameters($param)
             ->getQuery()
             ->getResult();
     }
@@ -186,15 +196,15 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findCurrentStudents(): array
     {
-        $AcademicYear = AcademicYearHelper::getCurrentAcademicYear();
-        $today = new \DateTime(date('Y-m-d'));
+        $academicYear = AcademicYearHelper::getCurrentAcademicYear();
+        $today = new \DateTimeImmutable(date('Y-m-d'));
         return $this->createQueryBuilder('p')
             ->select(['p','s','fa'])
             ->leftJoin('p.studentEnrolments','se')
             ->leftJoin('p.staff', 's')
             ->leftJoin('p.adults', 'fa')
             ->where('se.academicYear = :academicYear')
-            ->setParameter('academicYear', $AcademicYear)
+            ->setParameter('academicYear', $academicYear)
             ->andWhere('p.status = :full')
             ->setParameter('full', 'Full')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
@@ -362,7 +372,7 @@ class PersonRepository extends ServiceEntityRepository
     public function getPaginationContent(): array
     {
         return $this->createQueryBuilder('p')
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.primaryRole AS role','p.status','f.name AS family','f.id As family_id','p.username'])
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status','f.name AS family','f.id As family_id','p.username'])
             ->leftJoin('p.members', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.staff', 's')

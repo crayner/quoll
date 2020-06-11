@@ -10,30 +10,32 @@ parameters:
     caching: true  # No caching if false
     absoluteURL: ''
     security.hierarchy.roles:
-        ROLE_USER: null
-        ROLE_ALLOWED_TO_SWITCH: null
-        ROLE_FUTURE_YEARS: null
-        ROLE_PAST_YEARS: null
-        ROLE_CURRENT_USER:
+        ROLE_USER: ~
+        ROLE_ALLOWED_TO_SWITCH: !
+        ROLE_FUTURE_YEARS: ~
+        ROLE_PAST_YEARS: ~
+        ROLE_CONTACT:
             - ROLE_USER
         ROLE_PARENT:
-            - ROLE_CURRENT_USER
+            - ROLE_CONTACT
         ROLE_STUDENT:
-            - ROLE_CURRENT_USER
+            - ROLE_USER
         ROLE_STAFF:
-            - ROLE_CURRENT_USER
-        ROLE_TEACHER:
-            - ROLE_ALLOWED_TO_SWITCH
-            - ROLE_STUDENT
-            - ROLE_STAFF
+            - ROLE_USER
         ROLE_LIBRARIAN:
             - ROLE_STAFF
         ROLE_FINANCE:
             - ROLE_STAFF
+        ROLE_TEACHER:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STUDENT
+            - ROLE_STAFF
         ROLE_HEAD_TEACHER:
             - ROLE_TEACHER
+            - ROLE_PAST_YEARS
         ROLE_PRINCIPAL:
             - ROLE_HEAD_TEACHER
+            - ROLE_FUTURE_YEARS
             - ROLE_PAST_YEARS
             - ROLE_LIBRARIAN
         ROLE_SUPPORT:
@@ -42,8 +44,6 @@ parameters:
         ROLE_REGISTRAR:
             - ROLE_PRINCIPAL
             - ROLE_SUPPORT
-            - ROLE_FUTURE_YEARS
-            - ROLE_PAST_YEARS
         ROLE_SYSTEM_ADMIN:
             - ROLE_REGISTRAR
             - ROLE_PARENT

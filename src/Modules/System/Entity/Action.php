@@ -14,12 +14,8 @@ namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
-use App\Modules\Security\Entity\Role;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Yaml\Yaml;
 
@@ -28,11 +24,11 @@ use Symfony\Component\Yaml\Yaml;
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ActionRepository")
  * @ORM\Table(name="Action",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="module_name", columns={"name", "module"}),
- *     @ORM\UniqueConstraint(name="entry_route",columns={"entry_route"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="module_restriction_name", columns={"name","restriction","module"}),
+ *     @ORM\UniqueConstraint(name="entry_route_precedence",columns={"entry_route","precedence"})},
  *     indexes={@ORM\Index(name="module", columns={"module"})})
- * @UniqueEntity({"name","module"})
- * @UniqueEntity({"entryRoute"})
+ * @UniqueEntity({"name","restriction","module"})
+ * @UniqueEntity({"entryRoute","precedence"})
  */
 class Action extends AbstractEntity
 {
@@ -57,9 +53,15 @@ class Action extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=50, options={"comment": "The action name should be unqiue to the module that it is related to"})
+     * @ORM\Column(length=50, options={"comment": "The action name and restriction should be unique to the module that it is related to"})
      */
     private $name;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=50,nullable=true)
+     */
+    private $restriction;
 
     /**
      * @var integer|null
@@ -107,7 +109,7 @@ class Action extends AbstractEntity
      * @var array|null
      * @ORM\Column(type="simple_array",nullable=true)
      */
-    private $role;
+    private $securityRoles;
 
     /**
      * @return string|null
@@ -158,13 +160,21 @@ class Action extends AbstractEntity
     /**
      * getDisplayName
      * @return string|null
+     * 11/06/2020 08:46
      */
     public function getDisplayName(): ?string
     {
-        if (null === $this->getName())
-            return null;
-        $name = explode('_', $this->name);
-        return $name[0];
+        return $this->getName();
+    }
+
+    /**
+     * getFullName
+     * @return string|null
+     * 11/06/2020 08:46
+     */
+    public function getFullName(): ?string
+    {
+        return $this->getRestriction() ? $this->getName() . '_' . $this->getRestriction() : $this->getName();
     }
 
     /**
@@ -174,6 +184,24 @@ class Action extends AbstractEntity
     public function setName(?string $name): Action
     {
         $this->name = mb_substr($name, 0, 50);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRestriction(): ?string
+    {
+        return $this->restriction;
+    }
+
+    /**
+     * @param string|null $restriction
+     * @return Action
+     */
+    public function setRestriction(?string $restriction): Action
+    {
+        $this->restriction = $restriction;
         return $this;
     }
 
@@ -333,20 +361,20 @@ class Action extends AbstractEntity
     /**
      * @return array|null
      */
-    public function getRole(): ?array
+    public function getSecurityRoles(): ?array
     {
-        return $this->role;
+        return $this->securityRoles;
     }
 
     /**
-     * Role.
+     * SecurityRoles.
      *
-     * @param array|null $role
+     * @param array|null $securityRoles
      * @return Action
      */
-    public function setRole(?array $role): Action
+    public function setSecurityRoles(?array $securityRoles): Action
     {
-        $this->role = $role;
+        $this->securityRoles = $securityRoles;
         return $this;
     }
 
@@ -361,7 +389,7 @@ class Action extends AbstractEntity
             return [
                 'category' => $this->getCategory(),
                 'moduleName' => $this->getModule()->getName(),
-                'actionName' => $this->getName(),
+                'actionName' => $this->getFullName(),
                 'type' => $this->getModule()->getType(),
                 'precedence' => $this->getPrecedence(),
                 'moduleEntry' => $this->getModule()->getEntryRoute(),
@@ -403,18 +431,20 @@ class Action extends AbstractEntity
     {
         return ["CREATE TABLE IF NOT EXISTS `__prefix__Action` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(50) NOT NULL COMMENT 'The action name should be unique to the module that it is related to',
+                    `name` VARCHAR(50) NOT NULL COMMENT 'The action name and restriction should be unique to the module that it is related to',
+                    `restriction` VARCHAR(50) DEFAULT NULL,
                     `precedence` smallint DEFAULT NULL,
-                    `category` CHAR(20) NOT NULL,
-                    `description` CHAR(191) NOT NULL,
+                    `category` VARCHAR(20) NOT NULL,
+                    `description` VARCHAR(191) NOT NULL,
                     `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `entry_route` CHAR(191) NOT NULL,
-                    `entry_sidebar` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `menu_show` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `role` CHAR(32) DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    `entry_route` VARCHAR(191) NOT NULL,
+                    `entry_sidebar` VARCHAR(1) NOT NULL DEFAULT 'Y',
+                    `menu_show` VARCHAR(1) NOT NULL DEFAULT 'Y',
+                    `security_roles` longtext DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                     `module` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `moduleName` (`name`,`module`),
+                    UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`),
+                    UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`),
                     KEY `module` (`module`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
@@ -440,7 +470,7 @@ class Action extends AbstractEntity
   entryRoute: 'preferences'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_CURRENT_USER']
+  securityRoles: ['ROLE_CURRENT_USER']
 -
   name: 'System Settings'
   category: 'Settings'
@@ -449,7 +479,7 @@ class Action extends AbstractEntity
   entryRoute: 'system_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'People'
   category: 'People Management'
@@ -458,7 +488,7 @@ class Action extends AbstractEntity
   entryRoute: 'people_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Third Party Settings'
   category: 'Settings'
@@ -467,7 +497,7 @@ class Action extends AbstractEntity
   entryRoute: 'third_party_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'System Check'
   category: 'Extend & Update'
@@ -476,7 +506,7 @@ class Action extends AbstractEntity
   entryRoute: 'system_check'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'String Replacement'
   category: 'Settings'
@@ -485,7 +515,7 @@ class Action extends AbstractEntity
   entryRoute: 'string_manage'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Notification Settings'
   category: 'Settings'
@@ -494,7 +524,7 @@ class Action extends AbstractEntity
   entryRoute: 'notification_events'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Display Settings'
   category: 'Settings'
@@ -503,7 +533,7 @@ class Action extends AbstractEntity
   entryRoute: 'display_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Import Personal Photos'
   category: 'People Management'
@@ -512,7 +542,7 @@ class Action extends AbstractEntity
   entryRoute: 'personal_photo_import'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Families'
   category: 'People Management'
@@ -521,7 +551,7 @@ class Action extends AbstractEntity
   entryRoute: 'family_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'People Settings'
   category: 'Settings'
@@ -530,7 +560,7 @@ class Action extends AbstractEntity
   entryRoute: 'people_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Student Settings'
   category: 'Settings'
@@ -539,9 +569,10 @@ class Action extends AbstractEntity
   entryRoute: 'student_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
-  name: 'View Student Profile_full'
+  name: 'View Student Profile'
+  restriction: full
   precedence: 3
   category: 'Profiles'
   description: 'View full profile of any student in the school.'
@@ -549,9 +580,10 @@ class Action extends AbstractEntity
   entryRoute: 'student_view'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_TEACHER,ROLE_SUPPORT']
+  securityRoles: ['ROLE_TEACHER,ROLE_SUPPORT']
 -
-  name: 'View Staff Profile_full'
+  name: 'View Staff Profile'
+  restriction: full
   precedence: 2
   category: 'Profiles'
   description: 'View full profile of any staff member in the school.'
@@ -559,7 +591,7 @@ class Action extends AbstractEntity
   entryRoute: 'staff_view'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Updater Settings'
   category: 'Settings'
@@ -568,7 +600,7 @@ class Action extends AbstractEntity
   entryRoute: 'updater_settings'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Addresses'
   category: 'People Management'
@@ -577,7 +609,7 @@ class Action extends AbstractEntity
   entryRoute: 'address_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Phones'
   category: 'People Management'
@@ -586,7 +618,7 @@ class Action extends AbstractEntity
   entryRoute: 'phone_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Localities'
   category: 'People Management'
@@ -595,7 +627,7 @@ class Action extends AbstractEntity
   entryRoute: 'locality_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Custom Fields'
   category: 'People Management'
@@ -604,7 +636,7 @@ class Action extends AbstractEntity
   entryRoute: 'custom_field_list'
   entrySidebar: 'Y'
   menuShow: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Demonstration Data'
   category: 'Extend & Update'
@@ -613,7 +645,7 @@ class Action extends AbstractEntity
   entry_route: 'demonstration_load'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_SYSTEM_ADMIN']
+  securityRoles: ['ROLE_SYSTEM_ADMIN']
 -
   name: 'Student Settings'
   category: 'Settings'
@@ -622,7 +654,7 @@ class Action extends AbstractEntity
   entry_route: 'student_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Student Settings'
   category: 'Settings'
@@ -631,7 +663,7 @@ class Action extends AbstractEntity
   entry_route: 'student_settings_people'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Academic Years'
   category: 'Years, Days & Times'
@@ -640,7 +672,7 @@ class Action extends AbstractEntity
   entry_route: 'academic_year_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Staff Settings'
   category: 'Settings'
@@ -649,7 +681,7 @@ class Action extends AbstractEntity
   entry_route: 'staff_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Staff Settings'
   category: 'Settings'
@@ -658,7 +690,7 @@ class Action extends AbstractEntity
   entry_route: 'staff_settings_people'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_SUPPORT']
+  securityRoles: ['ROLE_SUPPORT']
 -
   name: 'Academic Year Terms'
   category: 'Years, Days & Times'
@@ -667,7 +699,7 @@ class Action extends AbstractEntity
   entry_route: 'academic_year_term_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Special Days'
   category: 'Years, Days & Times'
@@ -676,7 +708,7 @@ class Action extends AbstractEntity
   entry_route: 'special_day_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Days of the Week'
   category: 'Years, Days & Times'
@@ -685,7 +717,7 @@ class Action extends AbstractEntity
   entry_route: 'days_of_the_week'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Mark Book Settings'
   category: 'Assess'
@@ -694,7 +726,7 @@ class Action extends AbstractEntity
   entry_route: 'mark_book_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Scales'
   category: 'Assess'
@@ -703,7 +735,7 @@ class Action extends AbstractEntity
   entry_route: 'scale_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Mark Book Settings'
   category: 'Configure'
@@ -712,10 +744,10 @@ class Action extends AbstractEntity
   entry_route: 'mark_book_configure'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
-  module: '8282b1f4-a489-11ea-8213-74d435a91d85'
+  securityRoles: ['ROLE_PRINCIPAL']
 -
-  name: 'View Mark Book_allClassesAllData'
+  name: 'View Mark Book'
+  restriction: allClassesAllData
   precedence: 4
   category: 'Mark Book'
   description: 'View all mark book information for all users'
@@ -723,8 +755,7 @@ class Action extends AbstractEntity
   entry_route: 'mark_book_view'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
-  module: '8282b1f4-a489-11ea-8213-74d435a91d85'
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Year Groups'
   category: 'Groupings'
@@ -733,7 +764,7 @@ class Action extends AbstractEntity
   entry_route: 'year_group_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Houses'
   category: 'Groupings'
@@ -742,7 +773,7 @@ class Action extends AbstractEntity
   entry_route: 'house_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Facilities'
   category: 'Groupings'
@@ -751,7 +782,7 @@ class Action extends AbstractEntity
   entry_route: 'facility_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Facility Settings'
   category: 'Configure'
@@ -760,7 +791,7 @@ class Action extends AbstractEntity
   entry_route: 'facility_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_REGISTRAR']
+  securityRoles: ['ROLE_REGISTRAR']
 -
   name: 'Activity Settings'
   category: 'Administration'
@@ -769,7 +800,7 @@ class Action extends AbstractEntity
   entry_route: 'activity_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+  securityRoles: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Activity Settings'
   category: 'Configure'
@@ -778,7 +809,7 @@ class Action extends AbstractEntity
   entry_route: 'activity_configuration'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+  securityRoles: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Dashboard Settings'
   category: 'Configure'
@@ -787,7 +818,7 @@ class Action extends AbstractEntity
   entry_route: 'dashboard_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+  securityRoles: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Departments'
   category: 'Groupings'
@@ -796,7 +827,7 @@ class Action extends AbstractEntity
   entry_route: 'department_manage'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: 'ROLE_PRINCIPAL,ROLE_REGISTRAR'
+  securityRoles: 'ROLE_PRINCIPAL,ROLE_REGISTRAR'
 -
   name: 'Manage Departments'
   category: 'Department'
@@ -805,7 +836,7 @@ class Action extends AbstractEntity
   entry_route: 'department_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
+  securityRoles: ['ROLE_PRINCIPAL','ROLE_REGISTRAR']
 -
   name: 'Library Settings'
   category: 'Learn'
@@ -814,7 +845,7 @@ class Action extends AbstractEntity
   entry_route: 'library_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_LIBRARIAN']
+  securityRoles: ['ROLE_LIBRARIAN']
 -
   name: 'Individual Need Settings'
   category: 'People'
@@ -823,7 +854,7 @@ class Action extends AbstractEntity
   entry_route: 'individual_need_config'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Settings'
   category: 'Individual Needs'
@@ -832,7 +863,7 @@ class Action extends AbstractEntity
   entry_route: 'individual_need_settings'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
 -
   name: 'Manage'
   category: 'Individual Needs'
@@ -841,7 +872,15 @@ class Action extends AbstractEntity
   entry_route: 'individual_need_list'
   entry_sidebar: 'Y'
   menu_show: 'Y'
-  role: ['ROLE_PRINCIPAL']
+  securityRoles: ['ROLE_PRINCIPAL']
+-
+  name: 'Home'
+  category: 'Home'
+  description: 'The Home Page'
+  route_list: 'home'
+  entry_route: 'home'
+  entry_sidebar: 'N'
+  menu_show: 'N'
 ");
     }
 
@@ -861,7 +900,7 @@ class Action extends AbstractEntity
      */
     public function isArrayField(string $name): bool
     {
-         return in_array($name, ['role','routeList']);
+         return in_array($name, ['securityRoles','routeList']);
     }
 
     /**
@@ -1185,6 +1224,13 @@ class Action extends AbstractEntity
     source:
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Individual Need' }
+    target: module
+-
+    findBy: 
+        entryRoute: 'home'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'System' }
     target: module
 ");
     }

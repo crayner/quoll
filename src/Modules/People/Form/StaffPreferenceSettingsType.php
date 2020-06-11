@@ -49,7 +49,7 @@ class StaffPreferenceSettingsType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Staff::class,
-                'translation_domain' => 'People',
+                'translation_domain' => 'Staff',
                 'row_style' => 'transparent',
             ]
         );

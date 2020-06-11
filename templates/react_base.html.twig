@@ -22,17 +22,16 @@
             <script type="application/javascript" lang="js">
                 {% block scripts %}
                 {% for style in page.pageStyles %}
-                {% set link = encore_entry_css_files(style) %}
-                {% for css in link %}
-                newLink = document.createElement("link");
-                newLink.href = '{{ asset(css) }}'
-                newLink.rel = 'stylesheet'
-                newLink.type = 'text/css'
-                newLink.media = 'screen'
-                document.head.appendChild(newLink)
+                    {% set link = encore_entry_css_files(style) %}
+                    {% for css in link %}
+                        newLink = document.createElement("link");
+                        newLink.href = '{{ asset(css) }}'
+                        newLink.rel = 'stylesheet'
+                        newLink.type = 'text/css'
+                        newLink.media = 'screen'
+                        document.head.appendChild(newLink)
+                    {% endfor %}
                 {% endfor %}
-                {% endfor %}
-
                 window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
                 {% if app.user %}
                     window.IDLETIMEOUT_PROPS = {{ page.writeIdleTimeout()|json_encode|raw }}

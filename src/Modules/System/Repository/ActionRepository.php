@@ -12,13 +12,12 @@
  */
 namespace App\Modules\System\Repository;
 
-use App\Modules\Security\Entity\Role;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Modules\People\Util\UserHelper;
@@ -26,6 +25,7 @@ use App\Modules\People\Util\UserHelper;
 /**
  * Class ActionRepository
  * @package App\Modules\System\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ActionRepository extends ServiceEntityRepository
 {
@@ -98,7 +98,6 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findByRouteListModuleRole(array $criteria)
     {
-        dd($this);
         $result = $this->createQueryBuilder('a')
             ->leftJoin('a.roles', 'r')
             ->where('a.routeList LIKE :name')
@@ -119,17 +118,21 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findHighestGroupedAction(string $route, Module $module)
     {
+        if ($route === 'student_view.php') {
+            dump($route);
+            throw new \Exception('This is the end.');
+        }
         try {
             $result = null;
-            $roles = UserHelper::getCurrentUser()->getAllRoles();
+            $roles = SecurityHelper::getHierarchy()->getReachableRoleNames(UserHelper::getCurrentUser()->getSecurityRoles() ?: []);
             foreach($roles as $role) {
                 $w = $this->createQueryBuilder('a')
                     ->where('a.routeList LIKE :route')
                     ->setParameter('route', '%' . $route . '%')
                     ->andWhere('a.module = :module')
                     ->setParameter('module', $module)
-                    ->andWhere('a.role LIKE :role')
-                    ->setParameter('role', '%'.$role.'%')
+                    ->andWhere('a.role IN (:roles)')
+                    ->setParameter('roles', $roles, Connection::PARAM_STR_ARRAY)
                     ->orderBy('a.precedence', 'DESC')
                     ->setMaxResults(1)
                     ->getQuery()

@@ -208,7 +208,6 @@ class AddressController extends AbstractPageController
         foreach(ProviderFactory::getRepository(Locality::class)->findBy([],['name' => 'ASC','territory' => 'ASC']) as $locality) {
             $result[] = new ChoiceView($locality, $locality->getId(), $locality->toString());
         }
-        dump($result);
         return new JsonResponse(['choices' => $result]);
     }
 

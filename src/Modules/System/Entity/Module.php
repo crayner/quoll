@@ -69,15 +69,21 @@ class Module extends AbstractEntity
     private $entryRoute;
 
     /**
+     * @var array|null
+     * @ORM\Column(type="simple_array")
+     */
+    private $securityRoles;
+
+    /**
      * @var string|null
-     * @ORM\Column(length=12, options={"default": "Core"})
+     * @ORM\Column(length=12,options={"default": "Core"})
      */
     private $type = 'Core';
 
     /**
      * @var array
      */
-    private static $typeList = ['Core', 'Additional'];
+    private static $typeList = ['Core','Additional'];
 
     /**
      * @var string|null
@@ -217,6 +223,24 @@ class Module extends AbstractEntity
     }
 
     /**
+     * @return array|null
+     */
+    public function getSecurityRoles(): ?array
+    {
+        return $this->securityRoles ?: [];
+    }
+
+    /**
+     * @param array|null $securityRoles
+     * @return Module
+     */
+    public function setSecurityRoles(?array $securityRoles): Module
+    {
+        $this->securityRoles = $securityRoles ?: [];
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getType(): ?string
@@ -342,11 +366,12 @@ class Module extends AbstractEntity
     {
         if ($name === 'mainMenu') {
             return [
-                'route' => SecurityHelper::isRouteAccessible($this->getEntryRoute()) ? $this->getEntryRoute() : null,
+                'route' => SecurityHelper::isModuleAccessible($this) ? $this->getEntryRoute() : null,
                 'name' => TranslationHelper::translate($this->getName(), [] , $this->getName()),
                 'textDomain' => $this->getName(),
                 'category' => $this->getCategory(),
                 'type' => $this->getType(),
+                'roles' => $this->getSecurityRoles(),
                 'url' => UrlGeneratorHelper::getUrl($this->getEntryRoute()),
             ];
         }
@@ -507,12 +532,13 @@ class Module extends AbstractEntity
     {
         return ["CREATE TABLE `__prefix__Module` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
+                    `name` VARCHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
                     `description` longtext NOT NULL,
-                    `entry_route` CHAR(191) NOT NULL,
-                    `type` CHAR(12) NOT NULL DEFAULT 'Core',
-                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `category` CHAR(10) NOT NULL,
+                    `entry_route` VARCHAR(191) NOT NULL,
+                    `security_roles` LONGTEXT NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `type` VARCHAR(12) NOT NULL DEFAULT 'Core',
+                    `active` VARCHAR(1) NOT NULL DEFAULT 'Y',
+                    `category` VARCHAR(10) NOT NULL,
                     `version_date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
                     `author` CHAR(40) NOT NULL,
                     `url` CHAR(255) NOT NULL,
@@ -534,6 +560,7 @@ class Module extends AbstractEntity
   name: 'People'
   description: 'Manage people'
   entryRoute: 'people_list'
+  security_role: ['ROLE_REGISTRAR']
   type: 'Core'
   active: 'Y'
   category: 'Admin'
@@ -544,6 +571,7 @@ class Module extends AbstractEntity
   name: 'System'
   description: 'Allows administrators to configure system settings.'
   entryRoute: 'system_settings'
+  security_role: ['ROLE_SYSTEM_ADMIN']
   type: 'Core'
   active: 'Y'
   category: 'Admin'
@@ -554,6 +582,7 @@ class Module extends AbstractEntity
   name: 'Students'
   description: 'Manage students'
   entryRoute: 'student_view'
+  security_role: ['ROLE_TEACHER','ROLE_SUPPORT']
   type: 'Core'
   active: 'Y'
   category: 'People'
@@ -564,6 +593,7 @@ class Module extends AbstractEntity
   name: 'Staff'
   description: 'Manage Staff'
   entryRoute: 'staff_view'
+  security_role: ['ROLE_SUPPORT']
   type: 'Core'
   active: 'Y'
   category: 'People'
@@ -574,6 +604,7 @@ class Module extends AbstractEntity
   name: 'School'
   description: 'Allows administrators to configure school settings.'
   entryRoute: 'academic_year_list'
+  security_role: ['ROLE_PRINCIPAL']
   type: 'Core'
   active: 'Y'
   category: 'Admin'
@@ -584,6 +615,7 @@ class Module extends AbstractEntity
   name: 'Mark Book'
   description: 'A module for keeping track of marks'
   entryRoute: 'mark_book_view'
+  security_role: ['ROLE_PRINCIPAL']
   type: 'Core'
   active: 'Y'
   category: 'Assess'
@@ -594,6 +626,7 @@ class Module extends AbstractEntity
   name: 'Activity'
   description: 'Manage an activity programme.'
   entryRoute: 'activity_list'
+  security_role: ['ROLE_PRINCIPAL']
   type: 'Core'
   active: 'Y'
   category: 'Learn'
@@ -604,6 +637,7 @@ class Module extends AbstractEntity
   name: 'Department'
   description: 'Manage Department details.'
   entryRoute: 'department_view'
+  security_role: []
   type: 'Core'
   active: 'Y'
   category: 'Learn'
@@ -614,6 +648,7 @@ class Module extends AbstractEntity
   name: 'Library'
   description: 'Manage Libraries within the school.'
   entry_route: 'library_settings'
+  security_role: ['ROLE_LIBRARIAN']
   type: 'Core'
   active: 'Y'
   category: 'Learn'
@@ -624,6 +659,7 @@ class Module extends AbstractEntity
   name: 'Individual Need'
   description: 'Manage student individual needs'
   entry_route: 'individual_need_list'
+  security_role: ['ROLE_PRINCIPAL']
   type: 'Core'
   active: 'Y'
   category: 'Learn'

@@ -398,7 +398,6 @@ class ReactFormType extends AbstractType
      * @return string
      */
     private function renderFormType(array $prefixes) {
-    //    dump($prefixes);
         if (in_array('header', $prefixes))
             return 'header';
         if (in_array('date', $prefixes))
@@ -456,8 +455,6 @@ class ReactFormType extends AbstractType
         if (in_array('checkbox', $prefixes))
             return 'checkbox';
 
-
-        //dump($prefixes);
         return 'unknown';
     }
 

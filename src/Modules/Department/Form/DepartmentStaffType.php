@@ -44,7 +44,6 @@ class DepartmentStaffType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options['data']);
         $builder
             ->add('staffTitle', HeaderType::class,
                 [

@@ -15,6 +15,8 @@
 
 namespace App\Modules\System\Provider;
 
+use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Manager\SecurityUser;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Modules\System\Entity\Module;
@@ -43,7 +45,7 @@ class ModuleProvider extends AbstractProvider
         $settingProvider = ProviderFactory::create(Setting::class);
         $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
 
-        $result = $this->buildMainMenu();
+        $result = $this->buildMainMenu(UserHelper::getCurrentSecurityUser());
         $sorted = [];
         foreach(explode(',', $mainMenuCategoryOrder) as $category)
         {
@@ -81,14 +83,15 @@ class ModuleProvider extends AbstractProvider
      * buildMainMenu
      * @return array
      */
-    public function buildMainMenu(): array
+    public function buildMainMenu(SecurityUser $user): array
     {
         if (null === $this->mainMenu) {
             if (CacheHelper::isStale('mainMenu', 30)) {
                 $this->mainMenu = $this->getRepository()->findBy(['active' => 'Y'], ['category' => 'ASC', 'name' => 'ASC']);
                 CacheHelper::setCacheValue('mainMenu', $this->mainMenu, 30);
-            } else
+            } else {
                 $this->mainMenu = CacheHelper::getCacheValue('mainMenu');
+            }
         }
         return $this->mainMenu;
     }

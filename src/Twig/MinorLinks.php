@@ -86,14 +86,14 @@ class MinorLinks implements ContentInterface
         } else {
             $person = SecurityHelper::getCurrentUser()->getPerson();
             $name = $person->formatName(['preferred' => true, 'reverse' => false]);
-            if (SecurityHelper::getRoleCategory($person->getPrimaryRole()) === 'Student') {
-                $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');
+            if ($person->isStudent()) {
+                $highestAction = SecurityHelper::getHighestGroupedAction('student_view');
                 if ($highestAction == 'View Student Profile_brief') {
                     $name = [
                         'class' => 'link-white',
                         'text' => $name,
                         'translation_domain' => false,
-                        'url' => $this->getSession()->get('absoluteURL').'/?q=/modules/Students/student_view_details.php&person='.$person->getId(),
+                        'url' => UrlGeneratorHelper::getUrl('student_view'),
                     ];
                 }
             }

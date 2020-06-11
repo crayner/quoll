@@ -20,6 +20,7 @@ use App\Manager\Traits\BooleanList;
 use App\Modules\Finance\Entity\Payment;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
+use App\Modules\RollGroup\Entity\RollGroup;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

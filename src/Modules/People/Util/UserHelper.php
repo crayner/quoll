@@ -16,6 +16,7 @@
 namespace App\Modules\People\Util;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Provider\AbstractProvider;
@@ -43,6 +44,11 @@ class UserHelper
      * @var UserPasswordEncoderInterface
      */
     private static $encoder;
+
+    /**
+     * @var array|null
+     */
+    private static $allCurrentUserRoles;
 
     /**
      * UserHelper constructor.
@@ -437,5 +443,57 @@ class UserHelper
     public static function getEncoder(): UserPasswordEncoderInterface
     {
         return self::$encoder;
+    }
+
+    /**
+     * isGranted
+     * @param array $roles
+     * @return bool
+     * 11/06/2020 10:07
+     */
+    public static function isGranted(array $roles): bool
+    {
+        foreach($roles as $role) {
+            if (in_array($role, self::getAllCurrentUserRoles())) return true;
+        }
+        return false;
+    }
+
+    /**
+     * getAllCurrentRoles
+     * @return array
+     * 11/06/2020 10:09
+     */
+    public static function getAllCurrentUserRoles(): array
+    {
+        if (! self::getCurrentUser() instanceof Person) {
+            return [];
+        }
+
+        if (self::$allCurrentUserRoles === null) {
+            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRoles());
+        }
+
+        return self::$allCurrentUserRoles;
+    }
+
+    /**
+     * isPastYearsLogin
+     * @return bool
+     * 11/06/2020 15:59
+     */
+    public static function isPastYearsLogin(): bool
+    {
+        return in_array('ROLE_PAST_YEARS', self::getAllCurrentUserRoles());
+    }
+
+    /**
+     * isFutureYearsLogin
+     * @return bool
+     * 11/06/2020 15:59
+     */
+    public static function isFutureYearsLogin(): bool
+    {
+        return in_array('ROLE_FUTURE_YEARS', self::getAllCurrentUserRoles());
     }
 }

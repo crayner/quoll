@@ -18,22 +18,19 @@ use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Entity\Setting;
-use App\Modules\System\Provider\ActionProvider ;
-use App\Modules\System\Provider\ModuleProvider ;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class SecurityHelper
- * @package App\Util
+ * @package App\Modules\Security\Util
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class SecurityHelper
 {
@@ -66,6 +63,11 @@ class SecurityHelper
      * @var TokenStorageInterface
      */
     private static $storage;
+
+    /**
+     * @var SecurityUser|null
+     */
+    private static $currentUser;
 
     /**
      * SecurityHelper constructor.
@@ -106,7 +108,7 @@ class SecurityHelper
         if ($user = UserHelper::getCurrentUser() === null)
             return self::$highestGroupedActionList[$route] = false;
         $result = ProviderFactory::create(Action::class)->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
-        return self::$highestGroupedActionList[$route] = $result ? $result['name'] : false;
+        return self::$highestGroupedActionList[$route] = $result ?: false;
     }
 
     /**
@@ -124,7 +126,11 @@ class SecurityHelper
         if (isset(self::$checkModuleReadyList[$route]))
             return self::$checkModuleReadyList[$route];
         try {
-            return self::$checkModuleReadyList[$route] = ProviderFactory::create(Module::class)->findOneBy(['name' => self::getModuleName($route), 'active' => 'Y']);
+            if (! empty(self::getModuleName($route))) {
+                return self::$checkModuleReadyList[$route] = ProviderFactory::create(Module::class)->findOneBy(['name' => self::getModuleName($route), 'active' => 'Y']);
+            } else {
+                return null;
+            }
         } catch (PDOException | \PDOException $e) {
         }
 
@@ -266,7 +272,7 @@ class SecurityHelper
     /**
      * isActionAccessibleToRole
      * @param Module $module
-     * @param string $action
+     * @param Action $action
      * @param string $route
      * @param string $sub
      * @return bool
@@ -275,11 +281,11 @@ class SecurityHelper
     {
         if (UserHelper::getCurrentUser() instanceof Person) {
             //Check user has a current role set
-            if (! empty(UserHelper::getCurrentUser()->getPrimaryRole())) {
+            if (! empty(UserHelper::getCurrentUser()->getSecurityRoles())) {
                 //Check module ready
                 if ($module instanceof Module && $action instanceof Action) {
-                    //Check current role has access rights to the current action.
-                    return self::$checker->isGranted($action->getRole()) === VoterInterface::ACCESS_GRANTED;
+                    //Check current user has access rights to this action.
+                    return UserHelper::isGranted($action->getSecurityRoles());
                 } else {
                     self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
                 }
@@ -294,6 +300,7 @@ class SecurityHelper
 
         return false;
     }
+
     /**
      * isRouteAccessible
      * @param string $route
@@ -312,6 +319,21 @@ class SecurityHelper
         }
 
         return self::isActionAccessibleToUser(self::$module,self::$action,$route,$sub);
+    }
+
+
+    /**
+     * isRouteAccessible
+     * @param Module $module
+     * @param LoggerInterface|null $logger
+     * @return bool
+     */
+    public static function isModuleAccessible(Module $module, ?LoggerInterface $logger = null): bool
+    {
+        if (null !== $logger)
+            self::$logger = $logger;
+
+        return UserHelper::isGranted($module->getSecurityRoles());
     }
 
     /**
@@ -363,21 +385,15 @@ class SecurityHelper
     /**
      * isGranted
      * @param $role
-     * @param null $object
-     * @param null $field
      * @return bool
+     * 11/06/2020 12:04
      */
-    public static function isGranted($role, $object = null)
+    public static function isGranted($role): bool
     {
-        if (null === self::$checker) {
-            return false;
+        if (is_string($role)) {
+            return self::$checker->isGranted($role);
         }
-
-        try {
-            return self::$checker->isGranted($role, $object);
-        } catch (AuthenticationCredentialsNotFoundException $e) {
-            return false;
-        }
+        return UserHelper::isGranted($role);
     }
 
     /**
@@ -403,31 +419,43 @@ class SecurityHelper
     }
 
     /**
-     * getRoleCategory
-     * @param string $role
-     * @return string
+     * getCurrentUser
+     * @return SecurityUser|null
+     * 11/06/2020 12:01
      */
-    public static function getRoleCategory(string $role): string
+    public static function getCurrentUser(): ?SecurityUser
     {
-        $reachableRoles = self::getHierarchy()->getReachableRoleNames([$role]);
+        if (self::$currentUser === null) {
+            $token = self::$storage->getToken();
 
-        if (in_array('ROLE_STAFF', $reachableRoles))
-            return 'Staff';
-        if (in_array('ROLE_STUDENT', $reachableRoles))
-            return 'Student';
-        if (in_array('ROLE_PARENT', $reachableRoles))
-            return 'Parent';
-        return 'Other';
+            if ($token->getUser() instanceof SecurityUser) {
+                self::$currentUser = $token->getUser();
+            }
+        }
+
+        return self::$currentUser;
     }
 
     /**
-     * getCurrentUser
-     * @return string|UserInterface
+     * translateRoles
+     * @param array $roles
+     * @return array
+     * 10/06/2020 12:12
      */
-    public static function getCurrentUser()
+    public static function translateRoles(array $roles): array
     {
-        $token = self::$storage->getToken();
-
-        return $token->getUser();
+        foreach($roles as $q=>$w) {
+            $roles[$q] = TranslationHelper::translate($w, [], 'Security');
+        }
+        return $roles;
     }
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public static function setLogger(LoggerInterface $logger): void
+    {
+        self::$logger = $logger;
+    }
+
 }
