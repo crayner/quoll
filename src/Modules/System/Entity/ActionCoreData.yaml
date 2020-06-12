@@ -413,7 +413,7 @@
     name: 'Home'
     category: 'Home'
     description: 'The Home Page'
-    route_list: 'home'
+    route_list: ['home']
     entry_route: 'home'
     entry_sidebar: 'N'
     menu_show: 'N'
@@ -421,8 +421,17 @@
     name: 'Resource Settings'
     category: 'Configure'
     description: 'Manage resource settings'
-    route_list: 'resource_settings'
+    route_list: ['resource_settings']
     entry_route: 'resource_settings'
     entry_sidebar: 'Y'
     menu_show: 'Y'
-    security_roles: 'ROLE_PRINCIPAL'
+    security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Alert Levels'
+    category: 'People'
+    description: 'Manage the alert levels which are used throughout the school to flag problems.'
+    route_list: ['alert_level_change','alert_level_list']
+    entry_route: 'alert_level_list'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLE_PRINCIPAL']

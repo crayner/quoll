@@ -327,3 +327,10 @@
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }
     target: module
+-
+    findBy:
+        entryRoute: 'alert_level_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module

@@ -197,3 +197,14 @@ Category: Category
 Miscellaneous: Miscellaneous
 Planner Settings: Planner Settings
 Templates: Templates
+Alert Levels: Alert Levels
+Attendance Settings: Attendance Settings
+Background Colour: Background Colour
+Font/Border Colour: Font/Border Colour
+High: High
+Low: Low
+Medium: Medium
+RGB Hex Value: RGB Hex Value
+Highest level of severity, requiring intense and immediate readiness, action, individual support or differentiation.: Highest level of severity, requiring intense and immediate readiness, action, individual support or differentiation.
+Low severity, requiring little to no readiness, action, individual support or differentiation.: Low severity, requiring little to no readiness, action, individual support or differentiation.
+Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.: Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.
