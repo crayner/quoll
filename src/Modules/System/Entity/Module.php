@@ -553,120 +553,14 @@ class Module extends AbstractEntity
         return '';
     }
 
+    /**
+     * coreData
+     * @return array
+     * 12/06/2020 10:49
+     */
     public function coreData(): array
     {
-        return Yaml::parse("
--
-  name: 'People'
-  description: 'Manage people'
-  entryRoute: 'people_list'
-  security_role: ['ROLE_REGISTRAR']
-  type: 'Core'
-  active: 'Y'
-  category: 'Admin'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'System'
-  description: 'Allows administrators to configure system settings.'
-  entryRoute: 'system_settings'
-  security_role: ['ROLE_SYSTEM_ADMIN']
-  type: 'Core'
-  active: 'Y'
-  category: 'Admin'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Students'
-  description: 'Manage students'
-  entryRoute: 'student_view'
-  security_role: ['ROLE_TEACHER','ROLE_SUPPORT']
-  type: 'Core'
-  active: 'Y'
-  category: 'People'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Staff'
-  description: 'Manage Staff'
-  entryRoute: 'staff_view'
-  security_role: ['ROLE_SUPPORT']
-  type: 'Core'
-  active: 'Y'
-  category: 'People'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'School'
-  description: 'Allows administrators to configure school settings.'
-  entryRoute: 'academic_year_list'
-  security_role: ['ROLE_PRINCIPAL']
-  type: 'Core'
-  active: 'Y'
-  category: 'Admin'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Mark Book'
-  description: 'A module for keeping track of marks'
-  entryRoute: 'mark_book_view'
-  security_role: ['ROLE_PRINCIPAL']
-  type: 'Core'
-  active: 'Y'
-  category: 'Assess'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Activity'
-  description: 'Manage an activity programme.'
-  entryRoute: 'activity_list'
-  security_role: ['ROLE_PRINCIPAL']
-  type: 'Core'
-  active: 'Y'
-  category: 'Learn'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Department'
-  description: 'Manage Department details.'
-  entryRoute: 'department_view'
-  security_role: []
-  type: 'Core'
-  active: 'Y'
-  category: 'Learn'
-  convertDate: { versionDate: '2020-04-01' }
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Library'
-  description: 'Manage Libraries within the school.'
-  entry_route: 'library_settings'
-  security_role: ['ROLE_LIBRARIAN']
-  type: 'Core'
-  active: 'Y'
-  category: 'Learn'
-  version_date: '2020-04-01'
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
--
-  name: 'Individual Need'
-  description: 'Manage student individual needs'
-  entry_route: 'individual_need_list'
-  security_role: ['ROLE_PRINCIPAL']
-  type: 'Core'
-  active: 'Y'
-  category: 'Learn'
-  version_date: '2020-04-01'
-  author: 'Craig Rayner'
-  url: 'https://www.craigrayner.com'
-");
+        return Yaml::parse(file_get_contents('ModuleCoreData.yaml'));
     }
 
     /**

@@ -95,6 +95,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/People/Entity'
                 prefix: 'App\Modules\People\Entity'
                 alias: People
+            Planner:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Planner/Entity'
+                prefix: 'App\Modules\Planner\Entity'
+                alias: Planner
             RollGroup:
                 is_bundle: false
                 type: annotation
