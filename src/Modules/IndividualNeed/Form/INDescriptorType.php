@@ -25,8 +25,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class IndividualNeedsType
- * @package Kookaburra\SchoolAdmin\Form
+ * Class INDescriptorType
+ * @package App\Modules\IndividualNeed\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class INDescriptorType extends AbstractType
 {

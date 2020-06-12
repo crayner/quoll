@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class FacilityPerson
- * @package Kookaburra\SchoolAdmin\Entity
+ * @package App\Modules\School\Entity
  * @ORM\Entity(repositoryClass="App\Modules\School\Repository\FacilityPersonRepository")
  * @ORM\Table(name="FacilityPerson",
  *     indexes={@ORM\Index(name="facility",columns={"facility"}),

@@ -23,7 +23,8 @@ use App\Util\TranslationHelper;
 
 /**
  * Class YearGroupPagination
- * @package Kookaburra\SchoolAdmin\Pagination
+ * @package App\Modules\School\Pagination
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class YearGroupPagination extends AbstractPaginationManager
 {

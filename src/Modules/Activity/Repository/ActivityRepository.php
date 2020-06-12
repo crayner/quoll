@@ -13,14 +13,15 @@
 namespace App\Modules\Activity\Repository;
 
 use App\Modules\Activity\Entity\Activity;
-use Kookaburra\UserAdmin\Entity\Person;
-use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
+use App\Modules\People\Entity\Person;
+use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class ActivityRepository
  * @package App\Modules\Activity\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ActivityRepository extends ServiceEntityRepository
 {

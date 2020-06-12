@@ -22,7 +22,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class INPersonDescriptorRepository
- * @package Kookaburra\SchoolAdmin\Repository
+ * @package App\Modules\IndividualNeed\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class INPersonDescriptorRepository extends ServiceEntityRepository
 {

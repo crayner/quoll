@@ -12,7 +12,6 @@
  * Date: 10/01/2020
  * Time: 08:26
  */
-
 namespace App\Modules\School\Pagination;
 
 use App\Manager\AbstractPaginationManager;
@@ -25,7 +24,8 @@ use App\Util\TranslationHelper;
 
 /**
  * Class ScalePagination
- * @package Kookaburra\SchoolAdmin\Pagination
+ * @package App\Modules\School\Pagination
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScalePagination extends AbstractPaginationManager
 {

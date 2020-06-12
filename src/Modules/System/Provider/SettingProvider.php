@@ -367,9 +367,10 @@ class SettingProvider extends AbstractProvider
      * handleSettingsForm
      * @param FormInterface $form
      * @param Request $request
+     * @param array|null $data
      * @return array
      */
-    public function handleSettingsForm(FormInterface $form, Request $request): array
+    public function handleSettingsForm(FormInterface $form, Request $request, ?array $data = null): array
     {
         $content = json_decode($request->getContent(), true);
 
@@ -378,15 +379,30 @@ class SettingProvider extends AbstractProvider
         if ($form->isValid()) {
             $this->saveSettings($form, $content);
             if (count($this->getErrors()) === 0) {
-                $data['status'] = 'success';
+                if (is_array($data)) {
+                    return ErrorMessageHelper::getSuccessMessage($data, true);
+                }
                 return $this->addError(['class' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true)])->getErrors();
             }
-            else
+            else {
+                if (is_array($data)) {
+                    $data['errors'] = $this->getErrors();
+                    $data['status'] = $this->getStatus();
+                    return $data;
+                }
                 return $this->getErrors();
+            }
         }
+
         foreach($form->getErrors(true) as $error)
         {
             $this->addError(['class' => 'error', 'message' => $error->getOrigin()->getName() . ': ' . $error->getMessage()]);
+        }
+
+        if (is_array($data)) {
+            $data['errors'] = $this->getErrors();
+            $data['status'] = $this->getStatus();
+            return $data;
         }
 
         return $this->addError(['class' => 'error', 'message' => ErrorMessageHelper::onlyInvalidInputsMessage(true)])->getErrors();

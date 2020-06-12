@@ -29,7 +29,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ScaleType
- * @package Kookaburra\SchoolAdmin\Form
+ * @package App\Modules\School\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleType extends AbstractType
 {

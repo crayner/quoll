@@ -29,7 +29,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class DayOfTheWeekType
- * @package Kookaburra\SchoolAdmin\Form
+ * @package App\Modules\School\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class DayOfTheWeekType extends AbstractType
 {
