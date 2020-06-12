@@ -819,7 +819,7 @@
     value: 'Y'
 -
     scope: 'Planner'
-    name: 'parentWeeklyEmailSummaryIncludeMark book'
+    name: 'parentWeeklyEmailSummaryIncludeMarkBook'
     nameDisplay: 'Parent Weekly Email Summary Include Mark book'
     description: 'Should Mark book information be included in the weekly planner email summary that goes out to parents?'
     value: 'N'

@@ -22,6 +22,7 @@ use App\Modules\School\Form\ResourceSettingsType;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,6 +39,7 @@ class ResourceSettingController extends AbstractPageController
      * @param string|null $tabName
      * @return JsonResponse
      * @Route("/resource/settings/",name="resource_settings")
+     * @IsGranted("ROLE_ROUTE")
      * 12/06/2020 09:49
      */
     public function settings(ContainerManager $manager, ?string $tabName = 'Category')
