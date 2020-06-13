@@ -426,26 +426,32 @@ class SettingProvider extends AbstractProvider
                     $settingForm = $child->get($name);
                     $data = $settingForm->getData();
 
-                    if ($data instanceof EntityInterface)
+                    if ($data instanceof EntityInterface) {
                         $data = $data->getId();
+                    }
 
-                    if ($data instanceof File)
+                    if ($data instanceof File) {
                         $data = str_replace(realpath(__DIR__ . '/../../public'), '', $data->getRealPath());
+                    }
 
-                    if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime)
+                    if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime) {
                         $data = $data->format('c');
+                    }
 
-                    if ($data instanceof Collection)
-                    {
+                    if ($data instanceof Collection) {
                         $data = json_encode($data->toArray());
                     }
 
-                    if (is_object($data))
+                    if (is_object($data)) {
                         dump(get_class($data), $data);
+                    }
 
-                    if (is_array($data))
-                        $data = implode(',',$data);
+                    if (is_array($data)) {
+                        dump($data);
+                        $data = implode(',', $data);
+                    }
 
+                    dump($data,$content);
                     $this->setSettingByScope($setting['scope'], $setting['name'], $data);
                 }
             }

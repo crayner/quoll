@@ -1,0 +1,66 @@
+-
+    name: 'Present'
+    code: 'P'
+    type: 'Core'
+    direction: 'In'
+    scope: 'Onsite'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'N'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 1
+-
+    name: 'Present - Late'
+    code: 'PL'
+    type: 'Core'
+    direction: 'In'
+    scope: 'Onsite - Late'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'N'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 2
+-
+    name: 'Present - Offsite'
+    code: 'PS'
+    type: 'Core'
+    direction: 'In'
+    scope: 'Offsite'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'Y'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 3
+-
+    name: 'Absent'
+    code: 'A'
+    type: 'Core'
+    direction: 'Out'
+    scope: 'Offsite'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'Y'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 4
+-
+    name: 'Left'
+    code: 'L'
+    type: 'Core'
+    direction: 'Out'
+    scope: 'Offsite - Left'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'N'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 5
+-
+    name: 'Left - Early'
+    code: 'LE'
+    type: 'Core'
+    direction: 'Out'
+    scope: 'Offsite - Left'
+    active: 'Y'
+    reportable: 'Y'
+    future: 'N'
+    securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
+    sortOrder: 6

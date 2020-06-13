@@ -435,3 +435,21 @@
     entry_sidebar: 'Y'
     menu_show: 'Y'
     security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Attendance Settings'
+    category: 'People'
+    description: 'Attendance Settings'
+    route_list: ['attendance_code_configure']
+    entry_route: 'attendance_code_configure'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Attendance Settings'
+    category: 'Configure'
+    description: 'Attendance Settings'
+    route_list: ['attendance_code_list','attendance_code_edit','attendance_code_add','attendance_code_sort']
+    entry_route: 'attendance_code_list'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLE_PRINCIPAL']

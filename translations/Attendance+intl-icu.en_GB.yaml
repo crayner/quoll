@@ -1,0 +1,70 @@
+A list of reasons which are available when taking attendance.: A list of reasons which are available when taking attendance.
+Attendance Codes: Attendance Codes
+Attendance Reasons: Attendance Reasons
+Attendance Settings: Attendance Settings
+Attendance: Attendance
+Configure: Configure
+Reasons: Reasons
+attendance_code_warning: 'These codes should not be changed during an active school year. Removing an attendace code after attendance has been recorded can result in lost information.'
+A list of IP addresses within which students can self register.: A list of IP addresses within which students can self register.
+Active: Active
+Additional Users to Notify: Additional Users to Notify
+Alert Levels: Alert Levels
+Attendance CLI: Attendance CLI
+CLI: CLI
+Code: Code
+Context: Context
+Delete: Delete
+Direction: Direction
+'Direction: In': 'Direction: In'
+'Direction: Out': 'Direction: Out'
+Edit: Edit
+Enable Notifications by Class: Enable Notifications by Class
+Enable Notifications by Roll Group: Enable Notifications by Roll Group
+Name: Name
+Registration: Registration
+'Scope: Off Site': 'Scope: Off Site'
+'Scope: On Site': 'Scope: On Site'
+Scope: Scope
+Self Registration Redirect: Self Registration Redirect
+Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.: Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.
+Should self registration redirect to Message Wall?: Should self registration redirect to Message Wall?
+Student Self Registration IP Addresses: Student Self Registration IP Addresses
+Student Self Registration: Student Self Registration
+Your current IP address ({ip}) is not included in the saved list.: Your current IP address ({ip}) is not included in the saved list.
+Context and Defaults: Context and Defaults
+Count Class Attendance as School Attendance: Count Class Attendance as School Attendance
+Cross-Fill Classes: Cross-Fill Classes
+Default Class Attendance Type: Default Class Attendance Type
+Default Roll Group Attendance Type: Default Roll Group Attendance Type
+Should attendance from the class context be used to prefill and inform school attendance?: Should attendance from the class context be used to prefill and inform school attendance?
+Should classes prefill with data from other classes?: Should classes prefill with data from other classes?
+The default selection for attendance type when taking Class attendance: The default selection for attendance type when taking Class attendance
+The default selection for attendance type when taking Roll Group attendance: The default selection for attendance type when taking Roll Group attendance
+attendancecontexttype:
+    attendance__defaultrollgroupattendancetype:
+        absent: Absent
+        left - early: Left - Early
+        left: Left
+        present - late: Tardy
+        present - offsite: Present - Offsite
+        present: Present
+Add Attendance Code: Add Attendance Code
+Allow Future Use: Allow Future Use
+Attendance  Code Settings: Attendance  Code Settings
+Available to Roles: Available to Roles
+Can this code be used in Set Future Absence?: Can this code be used in Set Future Absence?
+Must be unique: Must be unique
+Reportable: Reportable
+Submit: Submit
+attendancecode:
+    direction:
+        in: In Class
+        out: Out of Class
+    scope:
+        offsite - left: Offsite - Left
+        offsite: Offsite
+        onsite - late: Onsite - Late
+        onsite: Onsite
+role_multiple_select: Controls who can use this code.<br/>Use Control, Command and/or Shift to select multiple.
+Your current IP address ({ip}) is included in the saved list.: Your current IP address ({ip}) is included in the saved list.

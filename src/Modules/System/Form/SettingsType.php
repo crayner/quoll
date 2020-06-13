@@ -119,7 +119,7 @@ class SettingsType extends AbstractType
 
             if ($setting['entry_type'] === EntityType::class) {
                 $entityName = $setting['entry_options']['class'];
-                $data = ProviderFactory::getRepository($entityName)->find($setting['setting']->getValue());
+                $data = $setting['setting']->getValue() ? ProviderFactory::getRepository($entityName)->find($setting['setting']->getValue()) : null;
             }
 
             $builder->add($name, $setting['entry_type'], array_merge(

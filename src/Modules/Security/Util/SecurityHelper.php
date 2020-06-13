@@ -458,4 +458,17 @@ class SecurityHelper
         self::$logger = $logger;
     }
 
+    /**
+     * getAssignableRoleNames
+     * @param array|string[] $roles
+     * @return array|string[]
+     */
+    public static function getAssignableRoleNames(array $roles =[])
+    {
+        if ($roles === []) {
+            $roles = ['ROLE_SYSTEM_ADMIN'];
+        }
+        return self::getHierarchy()->getAssignableRoleNames($roles);
+    }
+
 }

@@ -17,6 +17,7 @@ namespace App\Manager;
 use App\Exception\MissingModuleException;
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
+use App\Manager\Traits\IPTrait;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\System\Entity\I18n;
@@ -60,6 +61,8 @@ use Twig\Error\SyntaxError;
  */
 class PageManager
 {
+    use IPTrait;
+
     /**
      * @var RequestStack
      */

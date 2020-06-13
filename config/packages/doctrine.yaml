@@ -41,6 +41,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/Activity/Entity'
                 prefix: 'App\Modules\Activity\Entity'
                 alias: Activity
+            Attendance:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Attendance/Entity'
+                prefix: 'App\Modules\Attendance\Entity'
+                alias: Attendance
             Comms:
                 is_bundle: false
                 type: annotation

@@ -12,9 +12,9 @@
  */
 namespace App\Modules\Security\Manager;
 
+use App\Manager\Traits\IPTrait;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +40,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
     use AuthenticatorTrait;
+    use IPTrait;
 
     /**
      * @var RouterInterface
@@ -222,28 +223,4 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         return new RedirectResponse($this->getLoginUrl());
     }
-
-
-    /**
-     * getIPAddress
-     * @return array|bool|false|string
-     */
-    private function getIPAddress(Request $request)
-    {
-        if ($request->server->has('HTTP_CLIENT_IP'))
-            return $request->server->get('HTTP_CLIENT_IP');
-        else if($request->server->has('HTTP_X_FORWARDED_FOR'))
-            return $request->server->get('HTTP_X_FORWARDED_FOR');
-        else if($request->server->has('HTTP_X_FORWARDED'))
-            return $request->server->get('HTTP_X_FORWARDED');
-        else if($request->server->has('HTTP_FORWARDED_FOR'))
-            return $request->server->get('HTTP_FORWARDED_FOR');
-        else if($request->server->has('HTTP_FORWARDED'))
-            return $request->server->get('HTTP_FORWARDED');
-        else if($request->server->has('REMOTE_ADDR'))
-            return $request->server->get('REMOTE_ADDR');
-
-        return false;
-    }
-
 }
