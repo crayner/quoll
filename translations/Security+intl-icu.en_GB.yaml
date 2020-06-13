@@ -46,10 +46,10 @@ ROLE_STAFF: Staff
 ROLE_STUDENT: Student
 ROLE_TEACHER: Teacher
 ROLE_USER: User
-ROLE_ALLOWED_TO_SWITCH: ROLE_ALLOWED_TO_SWITCH
-ROLE_CURRENT_USER: ROLE_CURRENT_USER
-ROLE_FUTURE_YEARS: ROLE_FUTURE_YEARS
-ROLE_PAST_YEARS: ROLE_PAST_YEARS
+ROLE_ALLOWED_TO_SWITCH: Allowed to Switch
+ROLE_FUTURE_YEARS: Allow Future Years
+ROLE_PAST_YEARS: Allow Past Years
+ROLE_CONTACT: Contact
 Force Reset Password?: Force Reset Password?
 Person: Person
 Reset the password for this person.: Reset the password for this person.

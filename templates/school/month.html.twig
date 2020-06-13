@@ -24,7 +24,7 @@
         {% if not day.schoolDay %}
             {% set className = className ~ ' notSchoolDay' %}
         {% endif %}
-        {% if className is same as('day') %}
+        {% if className is same as('day') and day.label is same as('') %}
             {% set className = 'day day-empty' %}
             {% set prompt = 'Empty'|trans %}
         {% endif %}

@@ -100,7 +100,7 @@
     name: 'Individual Need'
     description: 'Manage student individual needs'
     entry_route: 'individual_need_list'
-    security_role: ['ROLE_PRINCIPAL']
+    security_role: ['ROLE_TEACHER']
     type: 'Core'
     active: 'Y'
     category: 'Learn'
@@ -111,10 +111,21 @@
     name: 'Planner'
     description: 'Supports lesson planning and information sharing for staff, student and parents.'
     entry_route: 'planner_view'
-    security_role: ['ROLE_PRINCIPAL']
+    security_role: ['ROLE_TEACHER']
     type: 'Core'
     active: 'Y'
     category: 'Learn'
     version_date: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
+-
+    name: 'Attendance'
+    description: 'School attendance taking'
+    entry_route: 'attendance_code_list'
+    security_roles: ['ROLE_SUPPORT']
+    type: 'Core'
+    active: 'Y'
+    category: 'People'
+    version_date: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'http://www.craigrayner.com'

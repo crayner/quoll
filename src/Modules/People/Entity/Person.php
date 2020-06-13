@@ -2572,7 +2572,7 @@ class Person extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->formatName(['style' => 'long', 'preferred' => false]);
+        return $this->getId();
     }
 
     /**
