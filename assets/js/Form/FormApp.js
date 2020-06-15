@@ -12,6 +12,7 @@ export default function FormApp(props) {
         form,
         formName,
         singleForm,
+        visibleKeys,
     } = props
 
     if (form.template === 'table') {
@@ -19,7 +20,7 @@ export default function FormApp(props) {
         Object.keys(form.children).map(key => {
             const child = form.children[key]
             if (child.panel === false || child.panel === formName)
-                rows.push(<Row key={key} form={child} functions={functions} columns={form.columns}/>)
+                rows.push(<Row key={key} form={child} functions={functions} columns={form.columns} visibleKeys={visibleKeys}/>)
         })
 
         let columns = []
@@ -97,4 +98,5 @@ FormApp.propTypes = {
     functions: PropTypes.object.isRequired,
     formName: PropTypes.string.isRequired,
     singleForm: PropTypes.bool.isRequired,
+    visibleKeys: PropTypes.object.isRequired,
 }

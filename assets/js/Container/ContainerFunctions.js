@@ -173,64 +173,60 @@ export function changeFormValue(form, find, value) {
     }
 }
 
-export function checkHiddenRows(forms) {
+export function checkHiddenRows(forms, visibleKeys) {
     Object.keys(forms).map(key => {
         let form = forms[key]
-        forms[key] = visibleByClassInitial(form, createVisibleSets(form, {}))
+        forms[key] = visibleByChoiceInitial(form, visibleKeys)
+        visibleKeys = {...form.visible_keys}
     })
 
+    forms['visible_keys'] = visibleKeys
     return {...forms}
 }
 
-function visibleByClass(form) {
+function visibleByChoiceInitial(form, visibleKeys) {
     if (typeof form.children !== 'undefined') {
         Object.keys(form.children).map(key => {
             let child = form.children[key]
-            visibleByClass(child)
-        })
-    }
-    if (typeof form.visibleByClass !== 'undefined' && form.visibleByClass !== false){
-        toggleRowsOnValue(form.value,form)
-    }
-    return form
-}
-
-function createVisibleSets(form, visibleSets) {
-    if (typeof form.children !== 'undefined') {
-        Object.keys(form.children).map(key => {
-            let child = form.children[key]
-
-            if (typeof child.visibleByClass !== 'undefined' && child.visibleByClass !== false){
-                var x = false
-                if (child.value === child.visibleWhen)
-                    x = true
-                visibleSets[child.visibleByClass] = x
-            }
-            visibleSets = createVisibleSets(child,visibleSets)
-        })
-    }
-    return visibleSets
-}
-
-function visibleByClassInitial(form, visibleSets) {
-    if (typeof form.children !== 'undefined') {
-        Object.keys(form.children).map(key => {
-            let child = form.children[key]
-            visibleByClassInitial(child,visibleSets)
+            visibleByChoiceInitial(child,visibleKeys)
+            visibleKeys = setVisibleKeysByForm(child, {...child.visible_keys})
         })
     }
 
-    Object.keys(visibleSets).map(name => {
-        let x = visibleSets[name]
-        if (typeof form.row_class === 'string' && form.row_class.includes(name)) {
-            if (!x && form.row_style !== 'hidden') {
-                form.row_style_visible = form.visible
-                form.row_style = 'hidden'
-            }
-        }
-    })
-
+    form['visible_keys'] = visibleKeys
     return {...form}
+}
+
+export function setVisibleKeysByForm(child, visibleKeys) {
+    if (typeof child.visible_by_choice === 'string') {
+        let value = false
+        if (child.value === child.visible_by_choice) {
+            value = true
+        }
+        if (child.type === 'toggle' && child.value === 'Y') {
+            value = true
+        }
+        visibleKeys[child.id + '_' + child.visible_by_choice] = value
+    } else if (typeof child.visible_by_choice === 'object') {
+        child.visible_by_choice.map(name => {
+            let value = false
+            if (child.value === name) {
+                value = true
+            }
+            visibleKeys[child.id + '_' + name] = value
+        })
+    } else if (typeof child.visible_by_choice === 'boolean' && child.visible_by_choice === true) {
+        Object.keys(child.choices).map(key => {
+            let choice = child.choices[key]
+            let value = false
+            if (child.value === choice.value) {
+                value = true
+            }
+            visibleKeys[child.id + '_' + choice.value] = value
+        })
+    }
+
+    return visibleKeys
 }
 
 export function isSubmit(submit) {
@@ -363,89 +359,4 @@ export function setChainedSelect(form, forms, formNames)
     }
     forms = {...mergeParentForm(forms,parentName,parent)}
     return {...forms}
-}
-
-export function checkVisibleByChoice(forms) {
-    Object.keys(forms).map(key => {
-        Object.assign(forms[key], checkVisibleByChoiceInForm(forms[key], {...forms[key]}))
-    })
-
-    return {...forms}
-}
-
-function checkVisibleByChoiceInForm(form, parentForm) {
-    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
-        Object.keys(form.children).map(childKey => {
-            form.children[childKey] = checkVisibleByChoiceInForm(form.children[childKey], parentForm)
-        })
-    }
-
-    if (form.type === 'toggle' && form.visible_by_choice !== false) {
-        parentForm = setVisibleByChoiceElements(form, parentForm)
-    }
-
-    if (form.type === 'choice' && form.visible_by_choice === true) {
-        parentForm = setVisibleByChoiceElements(form, parentForm)
-    }
-    return {...form}
-}
-
-function setVisibleByChoiceElements(condition, parentForm)
-{
-    Object.keys(condition.choices).map(key => {
-        let choice = condition.choices[key].data
-        parentForm = hideVisibleChoice(choice, parentForm)
-    })
-
-    Object.keys(condition.choices).map(key => {
-        let choice = condition.choices[key]
-        if (choice.value === condition.value)
-            parentForm = showVisibleChoice(choice.data, parentForm)
-    })
-
-    return {...parentForm}
-}
-
-function hideVisibleChoice(choice, form) {
-    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
-        Object.keys(form.children).map(childKey => {
-            Object.assign(form.children[childKey], hideVisibleChoice(choice, form.children[childKey]))
-        })
-    }
-    if (typeof form.visible_values !== 'undefined' && Object.keys(form.visible_values).length > 0) {
-        if (form.row_style !== 'hidden')
-            form.row_style_visible = form.row_style
-        form.row_style = 'hidden'
-    }
-
-    return {...form}
-}
-
-function showVisibleChoice(choice, form) {
-    if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
-        Object.keys(form.children).map(childKey => {
-            Object.assign(form.children[childKey], showVisibleChoice(choice, form.children[childKey]))
-        })
-    }
-    if (typeof form.visible_values !== 'undefined' && Object.keys(form.visible_values).length > 0 && form.visible_values.includes(choice)) {
-        if (form.row_style === 'hidden') {
-            if (typeof form.row_style_visible === 'undefined') {
-                form.row_style = 'standard'
-            } else {
-                form.row_style = form.row_style_visible
-                delete form.row_style_visible
-            }
-        }
-
-        if (Object.keys(form.visible_labels).length > 0 && typeof form.visible_labels[choice] !== 'undefined') {
-            form.label = form.visible_labels[choice].label
-            if (typeof form.visible_labels[choice].help === 'string') {
-                form.help = form.visible_labels[choice].help
-            } else {
-                form.help = null
-            }
-        }
-    }
-
-    return {...form}
 }

@@ -24,7 +24,7 @@ import {
     checkHiddenRows,
     initialContentLoaders,
     checkChainedElements,
-    checkVisibleByChoice,
+    setVisibleKeysByForm,
     getControlButtons,
     setChainedSelect
 } from "./ContainerFunctions"
@@ -79,7 +79,8 @@ export default class ContainerApp extends Component {
             panelErrors: {},
             submit: false,
             content: {},
-            panels: props.panels ? props.panels : {}
+            panels: props.panels ? props.panels : {},
+            visibleKeys: {}
         }
 
         this.formNames = {}
@@ -101,10 +102,11 @@ export default class ContainerApp extends Component {
             panelErrors = setPanelErrors({}, {})
         }
         initialContentLoaders(this.contentLoaders, this.contentManager)
-        let forms = checkHiddenRows({...this.state.forms})
+        let forms = checkHiddenRows({...this.state.forms}, {})
+        let visibleKeys = forms.visible_keys
+        delete forms.visible_keys
         forms = checkChainedElements(forms, this.formNames)
-        forms = checkVisibleByChoice(forms, this.formNames)
-        this.setMyState(forms, panelErrors)
+        this.setMyState(forms, panelErrors, visibleKeys)
     }
 
     contentManager(loader,content) {
@@ -119,10 +121,13 @@ export default class ContainerApp extends Component {
         return true
     }
 
-    setMyState(forms, panelErrors){
+    setMyState(forms, panelErrors, visibleKeys){
         if (typeof forms.panelErrors !== 'undefined') {
             panelErrors = forms.panelErrors
             forms = {...forms.forms}
+        }
+        if (typeof visibleKeys === 'undefined') {
+            visibleKeys = {...this.state.visibleKeys}
         }
 
         if (typeof panelErrors === 'undefined')
@@ -132,6 +137,7 @@ export default class ContainerApp extends Component {
             forms: forms,
             panelErrors: panelErrors,
             submit: isSubmit(this.submit),
+            visibleKeys: visibleKeys,
         })
     }
 
@@ -219,8 +225,8 @@ export default class ContainerApp extends Component {
         if (form.type === 'toggle') {
             let value = form.value === 'N' ? 'Y' : 'N'
             forms = mergeParentForm(forms, parentName, changeFormValue(parentForm, form, value))
-            forms = checkVisibleByChoice(forms)
-            this.setMyState(buildState(forms, this.singleForm))
+            let visibleKeys = setVisibleKeysByForm(form,{...this.state.visibleKeys})
+            this.setMyState(buildState(forms, this.singleForm), { ...this.state.panelErrors }, visibleKeys)
             return
         }
         if (form.type === 'file') {
@@ -257,14 +263,16 @@ export default class ContainerApp extends Component {
 
         forms = {...mergeParentForm({...forms},parentName,changeFormValue(parentForm,form,value))}
 
+        let visibleKeys = {...this.state.visibleKeys}
         if (form.type === 'choice') {
             if (form.chained_child !== null)
                 forms = setChainedSelect(form,forms,this.formNames)
-            if (form.visible_by_choice === true)
-                forms = checkVisibleByChoice(forms)
+            if (form.visible_by_choice !== false) {
+                visibleKeys = setVisibleKeysByForm(form, visibleKeys)
+            }
         }
 
-        this.setMyState(buildState(forms, this.singleForm))
+        this.setMyState(buildState(forms, this.singleForm), { ...this.state.panelErrors }, visibleKeys)
         if (submitOnChange)
             this.submitForm({},form)
     }
@@ -313,8 +321,10 @@ export default class ContainerApp extends Component {
                     form.errors = errors
                     this.submit[parentName] = false
                     let forms = checkHiddenRows({...mergeParentForm(this.state.forms, parentName, {...form})})
+                    let visibleKeys = forms.visible_keys
+                    delete forms.visible_keys
                     forms = checkChainedElements(forms, this.formNames)
-                    this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}))
+                    this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}), visibleKeys)
                 }
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
@@ -537,7 +547,7 @@ export default class ContainerApp extends Component {
             <section className={'containerApp'}>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 {getControlButtons(this.returnRoute,this.addElementRoute,this.functions)}
-                <PanelApp panels={this.state.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
+                <PanelApp panels={this.state.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} visibleKeys={this.state.visibleKeys} />
             </section>
         )
     }

@@ -28,7 +28,7 @@ export default function PanelApp(props) {
                 Parser(panel.content)
             )
         }
-        return <FormApp {...props} form={forms[name]} functions={functions} formName={name} singleForm={singleForm} />
+        return <FormApp {...props} form={forms[name]} functions={functions} formName={name} singleForm={singleForm}  />
     }
     return (
         <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} singleForm={singleForm} externalContent={content} />

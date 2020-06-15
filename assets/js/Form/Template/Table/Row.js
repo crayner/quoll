@@ -13,7 +13,28 @@ export default function Row(props) {
         form,
         functions,
         columns,
+        visibleKeys
     } = props
+
+
+    if (form.visible_values.length > 0) {
+        let visible = false
+        form.visible_values.map(name => {
+            let key = form.visible_parent + '_' + name
+            if (visible === false) {
+                let value = true
+                if (typeof visibleKeys[key] !== 'undefined') {
+                    value = visibleKeys[key]
+                }
+                if (value === true) {
+                    visible = true
+                }
+            }
+        })
+        if (visible === false) {
+            return (<tr className={'hidden'}><td><Widget form={form} functions={functions} /></td></tr>)
+        }
+    }
 
     form.columns = columns
     if (form.type === 'hidden' && form.row_style !== 'hidden') form.row_style = 'hidden'
@@ -29,7 +50,7 @@ export default function Row(props) {
     if (form.type === 'transparent') {
         return Object.keys(form.children).map(name => {
             let child = form.children[name]
-            return (<Row form={child} key={child.name} functions={functions} columns={columns}/>)
+            return (<Row form={child} key={child.name} functions={functions} columns={columns} visibleKeys={visibleKeys}/>)
         })
     }
 
@@ -38,7 +59,7 @@ export default function Row(props) {
     }
 
     if (form.row_style === 'hidden') {
-        return (<tr style={{display: 'none'}}><td><Widget form={form} functions={functions} /></td></tr>)
+        return (<tr className={'hidden'}><td><Widget form={form} functions={functions} /></td></tr>)
     }
 
     if (form.row_style === 'standard') {
@@ -63,7 +84,7 @@ export default function Row(props) {
             if (child.type === 'password_generator' && childKey === 'second') {
                 child.type = 'password'
             }
-            return (<Row form={child} key={child.name} functions={functions} columns={columns} />)
+            return (<Row form={child} key={child.name} functions={functions} columns={columns} visibleKeys={visibleKeys}/>)
         })
     }
 
@@ -82,4 +103,5 @@ Row.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     columns: PropTypes.number.isRequired,
+    visibleKeys: PropTypes.object.isRequired,
 }

@@ -140,8 +140,6 @@ export default class PageApp extends Component {
         if (e.target.classList.contains('react-tabs__tab'))
             return
 
-//        console.log(e.target)
-//        console.log(e.target.tagName)
         this.setState({
             sidebarOpen: 'closed',
         });
