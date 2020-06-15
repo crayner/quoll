@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -208,9 +209,16 @@ class ReactFormType extends AbstractType
             $vars['visible_by_choice'] = $view->vars['visible_by_choice'];
         }
 
-        if (isset($view->vars['visible_values'])) {
+        if (isset($view->vars['visible_values']) ) {
             $vars['visible_values'] = $view->vars['visible_values'];
             $vars['visible_labels'] = $view->vars['visible_labels'];
+            if (!empty($vars['visible_values'])) {
+                // who is the parent.
+                if ($view->vars['visible_parent'] === null) {
+                    throw new InvalidArgumentException(sprintf('The "visible_parent" must be defined when the "visible_values" are defined. %s',$view->vars['id']));
+                }
+                $vars['visible_parent'] = $view->vars['visible_parent'];
+            }
         }
 
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {

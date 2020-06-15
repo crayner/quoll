@@ -62,7 +62,7 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('add_url', ['null','string','array']);
         $resolver->setAllowedTypes('chained_child', ['null','string']);
         $resolver->setAllowedTypes('chained_values', ['array']);
-        $resolver->setAllowedTypes('visible_by_choice', ['boolean']);
+        $resolver->setAllowedTypes('visible_by_choice', ['boolean','string','array']);
     }
 
     /**

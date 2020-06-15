@@ -1,0 +1,34 @@
+A link to the school behaviour policy.: A link to the school behaviour policy.
+After how many negative records should letter 1 be sent?: After how many negative records should letter 1 be sent?
+After how many negative records should letter 2 be sent?: After how many negative records should letter 2 be sent?
+After how many negative records should letter 3 be sent?: After how many negative records should letter 3 be sent?
+Allowable choices for negative behaviour: Allowable choices for negative behaviour
+Allowable choices for positive behaviour: Allowable choices for positive behaviour
+Allowable choices for severity level (from lowest to highest): Allowable choices for severity level (from lowest to highest)
+Behaviour Letters: Behaviour Letters
+Behaviour Settings: Behaviour Settings
+Behaviour: Behaviour
+Configure: Configure
+Descriptors: Descriptors
+Enable Behaviour Letters: Enable Behaviour Letters
+Enable Descriptors: Enable Descriptors
+Enable Levels: Enable Levels
+Letter 1 Count: Letter 1 Count
+Letter 1 Text: Letter 1 Text
+Letter 2 Count: Letter 2 Count
+Letter 2 Text: Letter 2 Text
+Letter 3 Count: Letter 3 Count
+Letter 3 Text: Letter 3 Text
+Letters: Letters
+Levels: Levels
+Miscellaneous: Miscellaneous
+Negative Descriptors: Negative Descriptors
+Policy Link: Policy Link
+Positive Descriptors: Positive Descriptors
+Setting to No reduces complexity of behaviour tracking.: Setting to No reduces complexity of behaviour tracking.
+Should automated behaviour letter functionality be enabled?: Should automated behaviour letter functionality be enabled?
+The contents of letter 1, as HTML.: The contents of letter 1, as HTML.
+The contents of letter 2, as HTML.: The contents of letter 2, as HTML.
+The contents of letter 3, as HTML.: The contents of letter 3, as HTML.
+behaviour_letters_help: 'By using an included CLI script, Kookaburra can be configured to automatically generate and email behaviour letters to parents and tutors, once certain negative behaviour threshold levels have been reached. In your letter text you may use the following fields: [studentName], [rollGroup], [behaviourCount], [behaviourRecord]'
+

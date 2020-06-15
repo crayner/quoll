@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -77,9 +78,12 @@ class ToggleType extends AbstractType
         $view->vars['visible_values'] = $options['visible_values'];
         if (is_string($options['visible_by_choice'])) {
             $view->vars['choices'] = [
-                'Y' => ['data' => $options['visible_by_choice'], 'value' => 'Y', 'label' => TranslationHelper::translate('Yes', [], 'messages')],
+                'Y' => ['data' => $options['visible_parent'] . '_' . $options['visible_by_choice'], 'value' => 'Y', 'label' => TranslationHelper::translate('Yes', [], 'messages')],
                 'N' => ['value' => 'N', 'data' => 'N', 'label' => TranslationHelper::translate('No', [], 'messages')],
             ];
+        }
+        if ($options['visible_by_choice'] === true) {
+            throw new InvalidArgumentException(sprintf('The toggle options "visible_by_choice" must be false or a string to identify the value. for %s.', $view->vars['id']));
         }
         $view->vars['choice_translation_domain'] = false;
         $view->vars['values'] = $options['values'];

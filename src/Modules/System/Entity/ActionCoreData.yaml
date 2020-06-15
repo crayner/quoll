@@ -453,3 +453,21 @@
     entry_sidebar: 'Y'
     menu_show: 'Y'
     security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Behaviour Settings'
+    category: 'People'
+    description: 'Manage settings for the Behaviour module'
+    route_list: ['behaviour_configure']
+    entry_route: 'behaviour_configure'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Behaviour Settings'
+    category: 'Configure'
+    description: 'Manage settings for the Behaviour module'
+    route_list: ['behaviour_settings']
+    entry_route: 'behaviour_settings'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLE_PRINCIPAL']

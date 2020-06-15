@@ -334,3 +334,17 @@
         table: App\Modules\System\Entity\Module
         findBy: { name: 'School' }
     target: module
+-
+    findBy:
+        entryRoute: 'behaviour_configure'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy:
+        entryRoute: 'behaviour_settings'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Behaviour' }
+    target: module

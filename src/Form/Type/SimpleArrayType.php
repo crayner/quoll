@@ -82,8 +82,11 @@ class SimpleArrayType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $subscriber = new SimpleArraySubscriber();
+        $subscriber->setOptions($options);
+
         $builder
-            ->addEventSubscriber(new SimpleArraySubscriber())
+            ->addEventSubscriber($subscriber)
         ;
     }
 }

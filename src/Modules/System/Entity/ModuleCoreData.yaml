@@ -129,3 +129,14 @@
     version_date: '2020-04-01'
     author: 'Craig Rayner'
     url: 'http://www.craigrayner.com'
+-
+    name: 'Behaviour'
+    description: 'Tracking student behaviour'
+    entry_route: 'behaviour_settings'
+    type: 'Core'
+    active: 'Y'
+    category: 'People'
+    version_date: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'https://www.craigrayner.com'
+    security_roles: ['ROLE_SUPPORT']

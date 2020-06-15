@@ -12,7 +12,6 @@
  * Date: 2/01/2020
  * Time: 09:42
  */
-
 namespace App\Form\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,9 +23,15 @@ use Symfony\Component\Form\FormEvents;
 /**
  * Class SimpleArraySubscriber
  * @package App\Form\EventSubscriber
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class SimpleArraySubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var array
+     */
+    private $options;
+
     /**
      * @return array
      */
@@ -60,10 +65,12 @@ class SimpleArraySubscriber implements EventSubscriberInterface
         $name = count($data);
         $data[] = '';
         $event->setData($data);
-        foreach($form->all() as $child)
+        foreach($form->all() as $child) {
             $form->remove($child->getName());
-        foreach($data as $q=>$w)
-            $form->add($q, TextType::class);
+        }
+        foreach($data as $q=>$w) {
+            $form->add($q, TextType::class, ['visible_values' => $this->options['visible_values'], 'visible_labels' => $this->options['visible_labels'], 'visible_parent' => $this->options['visible_parent']]);
+        }
     }
 
     /**
@@ -88,5 +95,23 @@ class SimpleArraySubscriber implements EventSubscriberInterface
             $form->remove($child->getName());
         foreach($data as $q=>$w)
             $form->add($q, TextType::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return SimpleArraySubscriber
+     */
+    public function setOptions(array $options): SimpleArraySubscriber
+    {
+        $this->options = $options;
+        return $this;
     }
 }
