@@ -93,6 +93,7 @@ class DepartmentType extends AbstractType
                         'label' => 'Subject Listing',
                         'panel' => 'General',
                         'visible_values' => ['Learning Area'],
+                        'visible_parent' => 'department_type',
                     ]
                 )
             ;

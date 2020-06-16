@@ -142,6 +142,7 @@ class PeopleSettingsType extends AbstractType
                                     'rows' => 6,
                                 ],
                                 'visible_values' => ['privacy_row'],
+                                'visible_parent' => 'people_settings_privacySettings_People__privacy',
                             ],
                         ],
                         [
@@ -149,13 +150,11 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'privacyOptions',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
                                 'constraints' => [
                                     new SimpleArray(),
                                 ],
                                 'visible_values' => ['privacy_row'],
+                                'visible_parent' => 'people_settings_privacySettings_People__privacy',
                             ],
                         ],
                     ],

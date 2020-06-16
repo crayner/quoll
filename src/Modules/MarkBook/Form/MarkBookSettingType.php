@@ -80,12 +80,13 @@ class MarkBookSettingType extends AbstractType
         ;
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'defaultAssessmentScale')) {
             $builder
-                ->add('enableColumnWeighting', ParagraphType::class,
+                ->add('enableColumnWeightingDescription', ParagraphType::class,
                     [
                         'help' => 'Calculation of cumulative marks and weightings is currently only available when using Percentage as the Default Assessment Scale. This value can be changed in System Settings.',
                         'panel' => 'Features',
                         'wrapper_class' => 'warning flex relative',
                         'visible_values' => ['enableColumnWeighting'],
+                        'visible_parent' => 'mark_book_setting_featureSettings_Mark_Book__enableColumnWeighting',
                     ]
                 )
                 ->add('featureSettings2', SettingsType::class,
@@ -97,6 +98,7 @@ class MarkBookSettingType extends AbstractType
                                 'entry_type' => ToggleType::class,
                                 'entry_options' => [
                                     'visible_values' => ['enableColumnWeighting'],
+                                    'visible_parent' => 'mark_book_setting_featureSettings_Mark_Book__enableColumnWeighting',
                                 ],
                             ],
                             [

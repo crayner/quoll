@@ -29,13 +29,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
  * @ORM\Table(name="FamilyMember",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="family_person",columns={"family","person"}),
- *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})},
+ *     uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="family_person",columns={"family","person"}),
+ *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})
+ * },
  *     indexes={@ORM\Index(name="person",columns={"person"}),
  *     @ORM\Index(name="family",columns={"family"}),
- *     @ORM\Index(name="member_type",columns={"member_type"})})
+ *     @ORM\Index(name="member_type",columns={"member_type"})
+ * })
  * @UniqueEntity({"person","family"})
- * @UniqueEntity({"contactPriority","family"})
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)

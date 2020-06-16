@@ -118,14 +118,19 @@ class FamilyChildType extends AbstractType
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
                         'query_builder' => function(EntityRepository $er) use ($studentRoles) {
-                            return $er->createQueryBuilder('p')
-                                ->where('p.securityRoles in (:role)')
-                                ->setParameter('roles', $studentRoles, Connection::PARAM_STR_ARRAY)
+                            $query = $er->createQueryBuilder('p')
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');
+                            foreach($studentRoles as $q=>$role) {
+                                $query->orWhere('p.securityRoles lIKE :role' . $q)
+                                    ->setParameter('role' . $q, '%' . $role . '%');
+
+                            }
+                            return $query;
                         },
                         'visible_values' => ['showChildAdd'],
+                        'visible_parent' => 'family_child_showHideForm',
                     ]
                 )
             ;
@@ -137,6 +142,7 @@ class FamilyChildType extends AbstractType
                     'label' => 'Comment'   ,
                     'required' => false,
                     'visible_values' => ['showChildAdd'],
+                    'visible_parent' => 'family_child_showHideForm',
                     'attr' => [
                         'rows' => 5,
                         'class' => 'w-full',
@@ -152,6 +158,7 @@ class FamilyChildType extends AbstractType
             ->add('submit', SubmitType::class,
                 [
                     'visible_values' => ['showChildAdd'],
+                    'visible_parent' => 'family_child_showHideForm',
                     'label' => 'Submit',
                 ]
             )

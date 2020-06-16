@@ -111,7 +111,7 @@ class FamilyController extends AbstractPageController
         TranslationHelper::setDomain('People');
 
         $family = $family ?: new Family();
-        $action = intval($family->getId()) > 0 ? $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => $tabName]) : $this->generateUrl('family_add', ['tabName' => $tabName]);
+        $action = $family->getId() !== null ? $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => $tabName]) : $this->generateUrl('family_add', ['tabName' => $tabName]);
         $form = $this->createForm(FamilyGeneralType::class, $family,
             ['action' => $action]
         );
@@ -148,7 +148,7 @@ class FamilyController extends AbstractPageController
 
         $childrenPagination->setContent(FamilyManager::getChildren($family))->setPageMax(25)->setTargetElement('pagination');
         $child = new FamilyMemberChild($family);
-        $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ?: 0]), 'postFormContent' => $childrenPagination->toArray()]);
+        $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ]), 'postFormContent' => $childrenPagination->toArray()]);
 
         $panel = new Panel('Students', 'People');
         $container->addPanel($panel->setDisabled(intval($family->getId()) === 0))->addForm('Students', $addChild->createView());
@@ -246,12 +246,13 @@ class FamilyController extends AbstractPageController
             $data['status'] = 'success';
             $data['errors'] = [];
             $content = json_decode($request->getContent(), true);
-            if ($content['contactPriority'] === '' || $adult->getId() == 0)
+            if ($content['contactPriority'] === '' || $adult->getId() === null)
                 $content['contactPriority'] = ProviderFactory::getRepository(FamilyMemberAdult::class)->getNextContactPriority($family);
             if (key_exists('showHideForm', $content))
                 unset($content['showHideForm']);
             $form->submit($content);
             if ($form->isValid()) {
+                $adult->setFamily($family);
                 $data = ProviderFactory::create(FamilyMemberAdult::class)->persistFlush($adult, $data);
 
                 $manager->singlePanel($form->createView());
@@ -364,16 +365,19 @@ class FamilyController extends AbstractPageController
             $form->submit($content);
 
             if ($form->isValid()) {
-
+                $student->setFamily($family);
                 $data = ProviderFactory::create(FamilyMemberChild::class)->persistFlush($student, []);
+                dump($data,$content,$student);
 
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
                 if ($data['status'] === 'success') {
                     $data['status'] = 'redirect';
                     $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']);
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
                 }
+
+                $manager->singlePanel($form->createView());
+                $data['form'] = $manager->getFormFromContainer();
+
                 return new JsonResponse($data, 200);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);

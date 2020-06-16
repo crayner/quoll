@@ -73,12 +73,12 @@ class FamilyAdultType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $parentRole = 'ROLE_PARENT';
         if ($options['data']->getId() !== null) {
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Edit Adult / Guardian',
+                        'label' => 'Edit Adult',
+                        'help' => 'This person could be a parent, guardian or emergency contact for any student.'
                     ]
                 )
                 ->add('adultNote', ParagraphType::class,
@@ -89,7 +89,7 @@ class FamilyAdultType extends AbstractType
                 )
                 ->add('personName', DisplayType::class,
                     [
-                        'label' => 'Adult\'s Name',
+                        'label' => "Adult's Name",
                         'help' => 'This value cannot be changed',
                         'data' => $options['data']->getPerson()->formatName(['style' => 'formal']),
                         'mapped' => false,
@@ -124,6 +124,7 @@ class FamilyAdultType extends AbstractType
                 ->add('adultNote', ParagraphType::class,
                     [
                         'visible_values' => ['showAdultAdd'],
+                        'visible_parent' => 'family_adult_showHideForm',
                         'wrapper_class' => 'warning',
                         'help' => 'contact_priority_logic'
                     ]
@@ -135,14 +136,18 @@ class FamilyAdultType extends AbstractType
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
                         'query_builder' => function(EntityRepository $er) use ($parentRoles) {
-                            return $er->createQueryBuilder('p')
-                                ->where('p.securityRoles IN (:roles)')
-                                ->setParameter('roles', $parentRoles, Connection::PARAM_STR_ARRAY)
+                            $query = $er->createQueryBuilder('p')
                                 ->orderBy('p.surname', 'ASC')
                                 ->groupBy('p.id')
                                 ->addOrderBy('p.preferredName', 'ASC');
+                            foreach($parentRoles as $q=>$role) {
+                                $query->orWhere('p.securityRoles LIKE :role' . $q)
+                                    ->setParameter('role' . $q, '%'.$role.'%');
+                            }
+                            return $query;
                         },
                         'visible_values' => ['showAdultAdd'],
+                        'visible_parent' => 'family_adult_showHideForm',
                     ]
                 )
             ;
@@ -153,6 +158,7 @@ class FamilyAdultType extends AbstractType
                     'label' => 'Comment'   ,
                     'required' => false,
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'attr' => [
                         'rows' => 5,
                         'class' => 'w-full',
@@ -162,6 +168,7 @@ class FamilyAdultType extends AbstractType
             ->add('childDataAccess', ToggleType::class,
                 [
                     'label' => 'Data Access?',
+                    'visible_parent' => 'family_adult_showHideForm',
                     'visible_values' => ['showAdultAdd'],
                     'help' => 'Access data on family members?',
                     'wrapper_class' => 'flex-1 relative text-right',
@@ -171,6 +178,7 @@ class FamilyAdultType extends AbstractType
                 [
                     'label' => 'Contact Priority',
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'help' => 'The order in which school should contact family members.',
                 ]
             )
@@ -178,6 +186,7 @@ class FamilyAdultType extends AbstractType
                 [
                     'label' => 'Contact by phone call?',
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'help' => 'Receive non-emergency phone calls from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
@@ -186,6 +195,7 @@ class FamilyAdultType extends AbstractType
                 [
                     'label' => 'Contact by SMS?',
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'help' => 'Receive non-emergency SMS messages from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
@@ -194,6 +204,7 @@ class FamilyAdultType extends AbstractType
                 [
                     'label' => 'Contact by Email?',
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'help' => 'Receive non-emergency emails from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
@@ -202,6 +213,7 @@ class FamilyAdultType extends AbstractType
                 [
                     'label' => 'Contact by Mail?',
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'help' => 'Receive postage mail from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
@@ -220,6 +232,7 @@ class FamilyAdultType extends AbstractType
             ->add('submit', SubmitType::class,
                 [
                     'visible_values' => ['showAdultAdd'],
+                    'visible_parent' => 'family_adult_showHideForm',
                     'label' => 'Submit',
                 ]
             )
