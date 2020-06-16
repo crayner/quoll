@@ -23,9 +23,7 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
-use App\Modules\Security\Manager\RoleHierarchy;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
@@ -2248,65 +2246,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff", mappedBy="person")
-     */
-    private $staff;
-
-    /**
-     * @return Staff|null
-     */
-    public function getStaff(): ?Staff
-    {
-        return $this->staff;
-    }
-
-    /**
-     * setStaff
-     * @param Staff|null $staff
-     * @param bool $add
-     * @return Person
-     */
-    public function setStaff(?Staff $staff, bool $add = true): Person
-    {
-        if ($staff instanceof Staff && $add)
-            $staff->setPerson($this, false);
-        $this->staff = $staff;
-        return $this;
-    }
-
-    /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClassPerson", mappedBy="person")
-     */
-    private $courseClassPerson;
-
-    /**
-     * getCourseClassPerson
-     * @return Collection|null
-     */
-    public function getCourseClassPerson(): ?Collection
-    {
-        if (empty($this->courseClassPerson))
-            $this->courseClassPerson = new ArrayCollection();
-
-        if ($this->courseClassPerson instanceof PersistentCollection)
-            $this->courseClassPerson->initialize();
-
-        return $this->courseClassPerson;
-    }
-
-    /**
-     * @param Collection|null $courseClassPerson
-     * @return Person
-     */
-    public function setCourseClassPerson(?Collection $courseClassPerson): Person
-    {
-        $this->courseClassPerson = $courseClassPerson;
-        return $this;
-    }
-
-    /**
      * renderImage
      * @param int $dimension
      * @param bool $asHeight
@@ -2696,8 +2635,6 @@ class Person extends AbstractEntity
         if ($this->getStatus() === 'Full')
             return false;
         if ($this->getStudentEnrolments()->count() > 0)
-            return false;
-        if ($this->getStaff() instanceof Staff)
             return false;
         if ($this->getChildren()->count() > 0)
             return false;

@@ -20,6 +20,7 @@ use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Phone;
 use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\NoResultException;
@@ -63,8 +64,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('p')
-                ->select(['p', 's'])
-                ->leftJoin('p.staff', 's')
+                ->select(['p'])
                 ->where('p.email = :username OR p.username = :username')
                 ->setParameter('username', $username)
                 ->getQuery()
@@ -82,15 +82,22 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findStaffForFastFinder(string $staffTitle): ?array
     {
+        $where = '(';
+        $params = [];
+        foreach(SecurityHelper::getHierarchy()->getStaffRoles() as $q=>$role) {
+            $where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
+            $params['role' . $q] = '%' . $role . '%';
+        }
+        $where = rtrim($where, ' OR') . ')';
+
         return $this->createQueryBuilder('p')
             ->select(["CONCAT('".$staffTitle . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(p.username, ' ', p.email) AS search"])
-            ->join('p.staff', 's')
             ->where('p.status = :full')
-            ->andWhere('s.person IS NOT NULL')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
             ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameters(['full' => 'Full', 'today' => new \DateTime(date('Y-m-d'))])
             ->orderBy('text')
+            ->andWhere($where)
+            ->setParameters(array_merge($params, ['full' => 'Full', 'today' => new \DateTimeImmutable(date('Y-m-d'))]))
             ->getQuery()
             ->getResult();
     }
@@ -125,14 +132,14 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * findStudentsByRollGroup
      * @param RollGroup $rollGroup
+     * @param string $sortBy
      * @return mixed
      */
     public function findStudentsByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
     {
         $query = $this->createQueryBuilder('p')
-            ->select(['p','se','s'])
+            ->select(['p','se'])
             ->join('p.studentEnrolments', 'se')
-            ->leftJoin('p.staff', 's')
             ->where('se.rollGroup = :rollGroup')
             ->andWhere('s.id IS NULL')
             ->setParameter('rollGroup', $rollGroup)
@@ -199,9 +206,8 @@ class PersonRepository extends ServiceEntityRepository
         $academicYear = AcademicYearHelper::getCurrentAcademicYear();
         $today = new \DateTimeImmutable(date('Y-m-d'));
         return $this->createQueryBuilder('p')
-            ->select(['p','s','fa'])
+            ->select(['p','fa'])
             ->leftJoin('p.studentEnrolments','se')
-            ->leftJoin('p.staff', 's')
             ->leftJoin('p.adults', 'fa')
             ->where('se.academicYear = :academicYear')
             ->setParameter('academicYear', $academicYear)
@@ -225,10 +231,8 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentStaff(): array
     {
         $today = new \DateTime(date('Y-m-d'));
+        throw new \Exception('Fix this with search using roles.');
         return $this->createQueryBuilder('p')
-            ->select(['p','s'])
-            ->join('p.staff','s')
-            ->where('s.id IS NOT NULL')
             ->andWhere('p.status = :full')
             ->setParameter('full', 'Full')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
