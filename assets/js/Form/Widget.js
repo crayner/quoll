@@ -12,11 +12,13 @@ import Parser from "react-html-parser"
 import SimpleArray from "./SimpleArray"
 import FormExpandedSelect from "./FormExpandedSelect"
 import FormAutoSuggest from './FormAutoSuggest'
+import ParagraphRow from './Template/Table/ParagraphRow'
 
 export default function Widget(props) {
     const {
         form,
         functions,
+        columns,
     } = props
 
     let wrapper_attr = wrapperAttr(form, 'flex-1 relative')
@@ -307,6 +309,12 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'paragraph') {
+        return (
+            <ParagraphRow form={form} functions={functions} columns={columns} noWrapper={true} />
+        )
+    }
+
     console.log(form)
     return (<div {...wrapper_attr}>
         {element}
@@ -316,4 +324,5 @@ export default function Widget(props) {
 Widget.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
+    columns: PropTypes.number.isRequired,
 }

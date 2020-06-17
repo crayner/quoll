@@ -36,6 +36,9 @@ export default function ModuleMenu(props) {
 }
 
 ModuleMenu.propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
     getContent: PropTypes.func.isRequired,
 }

@@ -236,7 +236,7 @@ export default class AddressApp extends Component {
             return (
                 <form className={'smallIntBorder fullWidth standardForm'}>
                     <Messages messages={this.state.errors} translate={this.functions.translate} />
-                    <Widget form={this.state.locality.children._token} functions={this.functions} />
+                    <Widget form={this.state.locality.children._token} functions={this.functions} columns={2} />
                     <table className={'smallIntBorder fullWidth standardForm relative'}>
                         <tbody>
                             <Row form={this.state.locality.children.localityHeader} functions={this.functions} columns={2} />
@@ -287,8 +287,8 @@ export default class AddressApp extends Component {
                         <Row form={this.state.address.children.submit} functions={this.functions} columns={2} />
                     </tbody>
                 </table>
-                <Widget form={this.state.address.children._token} functions={this.functions} />
-                <Widget form={this.state.address.children.id} functions={this.functions} />
+                <Widget form={this.state.address.children._token} functions={this.functions} columns={2}/>
+                <Widget form={this.state.address.children.id} functions={this.functions} columns={2} />
             </form>)
     }
 }

@@ -54,11 +54,7 @@ export default function FormApp(props) {
         }
 
         if (singleForm) {
-            return (<form
-                action={form.action}
-                id={form.id}
-                {...form.attr}
-                method={form.method !== undefined ? form.method : 'POST'}>
+            return (<section className={'panelSection'}>
                 {preFormContent}
                 <Messages messages={form.errors} translate={functions.translate} />
                 <table {...table_attr}>
@@ -68,7 +64,7 @@ export default function FormApp(props) {
                     </tbody>
                 </table>
                 {postFormContent}
-            </form>)
+            </section>)
         }
 
 

@@ -53,7 +53,6 @@ export default function Panels(props) {
         }
 
         if (panel.postContent !== null) {
-            console.log(panel)
             postContent = panel.postContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
@@ -125,7 +124,6 @@ function renderPanelContent(panel, props){
     if (null !== panel.content){
         return Parser(panel.content)
     }
-
     let form = props.forms[panel.name]
     if (typeof form === 'undefined')
         form = props.forms[Object.keys(props.forms)[0]]

@@ -133,7 +133,6 @@ export default class PaginationApp extends Component {
     loadContent() {
         fetchJson(this.contentLoader, {}, false)
             .then(data => {
-                console.log(data)
                 if (data.status === 'success'){
                     this.content = data.content
                     this.pageMax = data.pageMax

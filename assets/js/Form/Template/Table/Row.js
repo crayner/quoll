@@ -17,22 +17,27 @@ export default function Row(props) {
     } = props
 
 
-    if (form.visible_values.length > 0) {
+    if (form.visible_values.length > 0 && Object.keys(visibleKeys).length > 0) {
         let visible = false
         form.visible_values.map(name => {
             let key = form.visible_parent + '_' + name
-            if (visible === false) {
-                let value = true
-                if (typeof visibleKeys[key] !== 'undefined') {
-                    value = visibleKeys[key]
-                }
-                if (value === true) {
-                    visible = true
+            if (typeof visibleKeys[key] === 'undefined') {
+                console.log(visibleKeys)
+                console.error('The key "' + key + '" does not exist in visible keys.  Please ensure that it exists in the Symfony form type for ' + form.full_name)
+            } else {
+                if (visible === false) {
+                    let value = true
+                    if (typeof visibleKeys[key] !== 'undefined') {
+                        value = visibleKeys[key]
+                    }
+                    if (value === true) {
+                        visible = true
+                    }
                 }
             }
         })
         if (visible === false) {
-            return (<tr className={'hidden'}><td><Widget form={form} functions={functions} /></td></tr>)
+            return (<tr className={'hidden'}><td><Widget form={form} functions={functions} columns={columns} /></td></tr>)
         }
     }
 
@@ -59,15 +64,15 @@ export default function Row(props) {
     }
 
     if (form.row_style === 'hidden') {
-        return (<tr className={'hidden'}><td><Widget form={form} functions={functions} /></td></tr>)
+        return (<tr className={'hidden'}><td><Widget form={form} functions={functions} columns={columns} /></td></tr>)
     }
 
     if (form.row_style === 'standard') {
-        return (<Standard form={form} functions={functions} />)
+        return (<Standard form={form} functions={functions} columns={columns} />)
     }
 
     if (form.row_style === 'multiple_widget') {
-        return (<Standard form={form} functions={functions} />)
+        return (<Standard form={form} functions={functions} columns={columns} />)
     }
 
     if (form.row_style === 'transparent' || form.row_style === 'repeated')
@@ -75,7 +80,7 @@ export default function Row(props) {
         if (form.type === 'collection') {
             Object.keys(form.children).map(childKey => {
                 let child = form.children[childKey]
-                return (<Widget form={child} functions={functions} />)
+                return (<Widget form={child} functions={functions} columns={columns} />)
             })
         }
 
@@ -89,7 +94,7 @@ export default function Row(props) {
     }
 
     if (form.row_style === 'simple_array') {
-        return (<Standard form={form} functions={functions} />)
+        return (<Standard form={form} functions={functions} columns={columns} />)
     }
 
 

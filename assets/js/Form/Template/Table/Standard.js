@@ -10,6 +10,7 @@ export default function Standard(props) {
     const {
         form,
         functions,
+        columns,
     } = props
 
     let row_attr = rowAttr(form, 'flex flex-col sm:flex-row justify-between content-center p-0')
@@ -18,7 +19,7 @@ export default function Standard(props) {
     if (form.row_style === 'multiple_widget') {
         const widgets = Object.keys(form.children).map(key => {
             const child = form.children[key]
-            return (<Widget key={key} form={child} functions={functions} />)
+            return (<Widget key={key} form={child} functions={functions} columns={columns} />)
         })
         return (<tr {...row_attr}>
             <td className={'flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0'}>
@@ -35,7 +36,7 @@ export default function Standard(props) {
             <LabelHelp form={form}/>
         </td>
         <td {...column_attr}>
-            <Widget form={form} functions={functions} />
+            <Widget form={form} functions={functions} columns={columns} />
         </td>
     </tr>)
 }
@@ -43,4 +44,5 @@ export default function Standard(props) {
 Standard.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
+    columns: PropTypes.number.isRequired,
 }

@@ -45,16 +45,16 @@ export default function CollectionRows(props) {
                 if (row.type !== 'hidden') {
                     columns.push(<RowTemplate form={{...row}} functions={functions} columns={cCount}/>)
                 } else {
-                    hidden.push(<Widget form={{...row}} functions={functions} key={hiddenKey++}/>)
+                    hidden.push(<Widget form={{...row}} functions={functions} key={hiddenKey++} columns={cCount}/>)
                 }
 
             } else {
                 Object.keys(row.children).map(childKey => {
                     let child = row.children[childKey]
                     if (child.type !== 'hidden') {
-                        columns.push(<td key={childKey} className={'w-1/' + cCount}><Widget form={{...child}} functions={functions}/></td>)
+                        columns.push(<td key={childKey} className={'w-1/' + cCount}><Widget form={{...child}} functions={functions} columns={cCount}/></td>)
                     } else {
-                        hidden.push(<Widget form={{...child}} functions={functions} key={hiddenKey++}/>)
+                        hidden.push(<Widget form={{...child}} functions={functions} key={hiddenKey++} columns={cCount}/>)
                     }
                 })
             }
