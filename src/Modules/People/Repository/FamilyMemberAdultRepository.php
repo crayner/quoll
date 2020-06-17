@@ -16,6 +16,7 @@ namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
@@ -76,8 +77,7 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
             return $query->select(['a.comment','a.contactPriority','a.contactSMS AS sms','a.contactMail AS mail','a.contactEmail AS email','a.contactCall AS phone','a.id AS adult_id','a.childDataAccess', 'p.status', 'p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS family_id', 'p.id AS person', 'a.id'])
                 ->getQuery()
                 ->getResult();
-        return $query->select(['a','p','s'])
-            ->leftJoin('p.staff', 's')
+        return $query->select(['a','p'])
             ->getQuery()
             ->getResult();
     }
@@ -128,15 +128,16 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
      */
     public function findCurrentParentsAsArray(): array
     {
+
         $parentLabel = TranslationHelper::translate('Parent', [], 'People');
         return $this->createQueryBuilder('m')
             ->select(['p.id as value', "CONCAT('".$parentLabel.": ', p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "CONCAT(p.surname, p.firstName,p.preferredName) AS data", "'".$parentLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo"])
             ->join('m.person', 'p')
             ->where('(m.contactPriority <= 2 and m.contactPriority > 0)')
+            ->andWhere('p.securityRoles LIKE :role')
             ->andWhere('p.status = :full')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('s.id IS NULL')
             ->setParameter('full', 'Full')
+            ->setParameter('role', '%ROLE_PARENT%')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()

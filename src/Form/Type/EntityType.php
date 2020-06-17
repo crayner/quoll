@@ -12,7 +12,6 @@
  * Date: 7/11/2019
  * Time: 09:33
  */
-
 namespace App\Form\Type;
 
 use App\Form\Transform\EntityToStringTransformer;
@@ -23,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Class EntityType
  * @package App\Form\Type
+ * @deprecated Never Use, use Symfony EntityType
  */
 class EntityType extends AbstractType
 {
@@ -37,6 +37,7 @@ class EntityType extends AbstractType
      */
     public function __construct(EntityManagerInterface $em)
     {
+        trigger_error('Do not use this class, use Symfony EntityType.', E_USER_DEPRECATED);
         $this->em = $em;
     }
 

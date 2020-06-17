@@ -12,12 +12,9 @@
  * Date: 22/11/2019
  * Time: 15:00
  */
-
 namespace App\Modules\People\Form;
 
-use App\Form\Extension\ChoiceTranslations;
 use App\Form\Type\AutoSuggestEntityType;
-use App\Form\Type\EntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ParagraphType;
@@ -26,17 +23,18 @@ use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Address;
-use App\Modules\People\Entity\FamilyRelationship;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Modules\People\Manager\AddressManager;
 use App\Modules\People\Util\UserHelper;
+use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -372,6 +370,7 @@ class PersonType extends AbstractType
                     },
                     'panel' => 'Contact',
                     'visible_values' => ['address_info'],
+                    'visible_parent' => 'person_enterPersonalAddress',
                     'buttons' => [
                         'add' => [
                             'class' => 'fa-fw fas fa-plus-circle',
@@ -414,6 +413,7 @@ class PersonType extends AbstractType
                     'choice_label' => 'toString',
                     'panel' => 'Contact',
                     'visible_values' => ['address_info'],
+                    'visible_parent' => 'person_enterPersonalAddress',
                     'buttons' => [
                         'add' => [
                             'class' => 'fa-fw fas fa-plus-circle',
@@ -549,14 +549,14 @@ class PersonType extends AbstractType
         ;
         if (UserHelper::isStudent($options['data'])) {
             $builder
-                ->add('AcademicYearClassOf', EntityType::class,
+                ->add('academicYearClassOf', EntityType::class,
                     [
                         'label' => 'Class of',
                         'class' => AcademicYear::class,
                         'choice_label' => 'name',
                         'query_builder' => function (EntityRepository $er) {
-                            return $er->createQueryBuilder('sy')
-                                ->orderBy('sy.firstDay', 'ASC');
+                            return $er->createQueryBuilder('ay')
+                                ->orderBy('ay.firstDay', 'ASC');
                         },
                         'required' => false,
                         'help' => 'When is the student expected to graduate?',
@@ -896,10 +896,9 @@ class PersonType extends AbstractType
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('h')
                             ->orderBy('h.name')
-                            ;
+                        ;
                     },
                     'required' => false,
-                    'data' => $options['data']->getHouse() ? $options['data']->getHouse()->getId() : null,
                     'panel' => 'Miscellaneous',
                     'placeholder' => ' ',
                 ]
@@ -907,7 +906,7 @@ class PersonType extends AbstractType
         ;
         if (UserHelper::isStudent($options['data'])) {
             $builder
-                ->add('studentID', TextType::class,
+                ->add('studentIdentifier', TextType::class,
                     [
                         'label' => 'Student Identifier',
                         'help' => 'Must be unique if set.',

@@ -23,6 +23,7 @@ use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\House;
@@ -33,6 +34,7 @@ use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -43,12 +45,78 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class PersonRepository extends ServiceEntityRepository
 {
     /**
+     * @var string|null
+     */
+    private $where;
+
+    /**
+     * @var array|null
+     */
+    private $params;
+
+    /**
      * PersonRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Person::class);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWhere(): ?string
+    {
+        return $this->where;
+    }
+
+    /**
+     * @param string|null $where
+     * @return PersonRepository
+     */
+    public function setWhere(?string $where): PersonRepository
+    {
+        $this->where = $where;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        if (null === $this->params) {
+            $this->params = [];
+        }
+
+        return $this->params;
+    }
+
+    /**
+     * @param array|null $params
+     * @return PersonRepository
+     */
+    public function setParams(?array $params): PersonRepository
+    {
+        $this->params = $params;
+        return $this;
+    }
+
+    /**
+     * addParam
+     * @param $name
+     * @param $value
+     * @return PersonRepository
+     * 17/06/2020 10:37
+     */
+    public function addParam($name, $value): PersonRepository
+    {
+        $this->getParams();
+
+        $this->params[$name] = $value;
+
+        return $this;
     }
 
     /**
@@ -82,22 +150,15 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findStaffForFastFinder(string $staffTitle): ?array
     {
-        $where = '(';
-        $params = [];
-        foreach(SecurityHelper::getHierarchy()->getStaffRoles() as $q=>$role) {
-            $where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
-            $params['role' . $q] = '%' . $role . '%';
-        }
-        $where = rtrim($where, ' OR') . ')';
-
+        $this->getStaffSearch();
         return $this->createQueryBuilder('p')
             ->select(["CONCAT('".$staffTitle . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(p.username, ' ', p.email) AS search"])
             ->where('p.status = :full')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
             ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
             ->orderBy('text')
-            ->andWhere($where)
-            ->setParameters(array_merge($params, ['full' => 'Full', 'today' => new \DateTimeImmutable(date('Y-m-d'))]))
+            ->andWhere($this->where)
+            ->setParameters(array_merge($this->params, ['full' => 'Full', 'today' => new \DateTimeImmutable(date('Y-m-d'))]))
             ->getQuery()
             ->getResult();
     }
@@ -254,15 +315,17 @@ class PersonRepository extends ServiceEntityRepository
     {
         $today = new \DateTime(date('Y-m-d'));
         $staffLabel = TranslationHelper::translate('Staff', [], 'People');
+        $this->getStaffSearch();
+        $this->addParam('full', 'Full')
+            ->addParam('today', $today);
+
         return $this->createQueryBuilder('p')
             ->select(['p.id as value', "CONCAT('".$staffLabel.": ',p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "'".$staffLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, p.firstName,p.preferredName) AS data"])
-            ->join('p.staff','s')
-            ->where('s.id IS NOT NULL')
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full')
+            ->where('p.status = :full')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
             ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameter('today', $today)
+            ->andWhere($this->where)
+            ->setParameters($this->params)
             ->orderBy('p.surname')
             ->addOrderBy('p.preferredName')
             ->getQuery()
@@ -300,8 +363,6 @@ class PersonRepository extends ServiceEntityRepository
             ->andWhere('se.academicYear = :currentYear')
             ->setParameter('currentYear', AcademicYearHelper::getCurrentAcademicYear())
             ->join('se.rollGroup', 'rg')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('s.id IS NULL')
             ->orderBy('rg.name', 'ASC')
             ->addOrderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
@@ -316,12 +377,10 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentParents(): array
     {
         return $this->createQueryBuilder('p')
-            ->select(['p','fa','s'])
+            ->select(['p','fa'])
             ->join('p.adults', 'fa')
             ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
             ->andWhere('p.status = :full')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('s.id IS NULL')
             ->setParameter('full', 'Full')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
@@ -356,13 +415,17 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findOthers(): array
     {
+        $this->getStaffSearch();
+        $where = trim($this->getWhere(), ')') . ' OR p.securityRoles LIKE :parent OR p.securityRoles LIKE :student)';
+        $this->addParam('parent', '%ROLE_PARENT%')
+            ->addParam('student', '%ROLE_STUDENT%');
         return $this->createQueryBuilder('p')
             ->leftJoin('p.adults', 'fa')
             ->where('fa.id IS NULL')
-            ->leftJoin('p.studentEnrolments', 'se')
-            ->andWhere('se.id IS NULL')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('s.id IS NULL')
+            ->leftJoin('p.children', 'fc')
+            ->andWhere('fc.id IS NULL')
+            ->andWhere('!' . $where)
+            ->setParameters($this->getParams())
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
@@ -379,7 +442,6 @@ class PersonRepository extends ServiceEntityRepository
             ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status','f.name AS family','f.id As family_id','p.username'])
             ->leftJoin('p.members', 'fm')
             ->leftJoin('fm.family', 'f')
-            ->leftJoin('p.staff', 's')
             ->leftJoin('p.personalPhone', 'ph')
             ->leftJoin('p.studentEnrolments', 'se')
             ->orderBy('p.surname')
@@ -461,5 +523,42 @@ class PersonRepository extends ServiceEntityRepository
             ->join('p.personalPhone', 'ph')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * getStaffQueryBuilder
+     * @param string $status
+     * @return QueryBuilder
+     * 17/06/2020 11:33
+     */
+    public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
+    {
+        $this->getStaffSearch()
+            ->addParam('status', $status);
+        return $this->createQueryBuilder('p')
+            ->where('p.status = :status')
+            ->andWhere($this->getWhere())
+            ->setParameters($this->getParams())
+            ->orderBy('p.surname')
+            ->addOrderBy('p.firstName')
+        ;
+    }
+
+    /**
+     * getStaffSearch
+     * @return PersonRepository
+     * 17/06/2020 10:42
+     */
+    public function getStaffSearch(): PersonRepository
+    {
+        $this->setWhere('(');
+        $this->setParams([]);
+        foreach(SecurityHelper::getHierarchy()->getStaffRoles() as $q=>$role) {
+            $this->where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
+            $this->addParam('role' . $q, '%' . $role . '%');
+        }
+        $this->where = rtrim($this->where, ' OR') . ')';
+
+        return $this;
     }
 }

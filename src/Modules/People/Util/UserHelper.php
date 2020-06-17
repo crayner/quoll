@@ -140,7 +140,7 @@ class UserHelper
     {
         $person = $person ?: self::getCurrentUser();
 
-        return $person instanceof Person && $person->getStaff() instanceof Staff;
+        return $person instanceof Person && $person->isStaff();
     }
 
     /**
@@ -152,7 +152,7 @@ class UserHelper
     {
         $person = $person ?: self::getCurrentUser();
 
-        return $person instanceof Person && self::$provider->isStudent($person);
+        return $person instanceof Person && $person->isStudent($person);
     }
 
     /**
@@ -164,7 +164,7 @@ class UserHelper
     {
         $person = $person ?: self::getCurrentUser();
 
-        return $person instanceof Person && self::$provider->isParent($person);
+        return $person instanceof Person && $person->isParent($person);
     }
 
     /**

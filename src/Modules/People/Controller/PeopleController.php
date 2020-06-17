@@ -34,6 +34,7 @@ use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -97,6 +98,9 @@ class PeopleController extends AbstractPageController
 
         if (is_null($person)) {
             $person = new Person();
+            $action = $this->generateUrl('person_add', ['tabName' => 'Basic']);
+        } else {
+            $action = $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]);
         }
 
         $photo = new Photo($person, 'getImage240', '200', 'user max200');
@@ -107,9 +111,11 @@ class PeopleController extends AbstractPageController
         $container->setSelectedPanel($tabName);
         TranslationHelper::setDomain('People');
 
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
         $form = $this->createForm(PersonType::class, $person,
             [
-                'action' => $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]),
+                'action' => $action,
                 'user_roles' => $this->getUser()->getAllRoles(),
             ]
         );

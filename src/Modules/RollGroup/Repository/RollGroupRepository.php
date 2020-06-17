@@ -103,10 +103,9 @@ class RollGroupRepository extends ServiceEntityRepository
     public function findByAcademicYear(AcademicYear $year): array
     {
         return $this->createQueryBuilder('r')
-            ->select(['r','s','t','staff'])
+            ->select(['r','s','t'])
             ->leftJoin('r.space', 's')
             ->leftJoin('r.tutor', 't')
-            ->leftJoin('t.staff', 'staff')
             ->leftJoin('r.studentEnrolments', 'se')
             ->where('r.academicYear = :year')
             ->setParameter('year', $year)

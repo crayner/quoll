@@ -142,9 +142,10 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=5)
+     * @ORM\Column(length=5,nullable=true)
+     * @ASSERT\Choice(callback="getTitleList")
      */
-    private $title = '';
+    private $title;
 
     /**
      * @var array
@@ -262,10 +263,10 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=150)
+     * @ORM\Column(length=150,nullable=true)
      * @ASSERT\NotBlank()
      */
-    private $officialName = '';
+    private $officialName;
 
     /**
      * @return null|string
@@ -289,9 +290,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=60, name="name_in_characters")
+     * @ORM\Column(length=60,name="name_in_characters",nullable=true)
      */
-    private $nameInCharacters = '';
+    private $nameInCharacters;
 
     /**
      * @return null|string
@@ -633,9 +634,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=15,name="last_ip_address")
+     * @ORM\Column(length=15,name="last_ip_address",nullable=true)
      */
-    private $lastIPAddress = '';
+    private $lastIPAddress;
 
     /**
      * @return null|string
@@ -934,9 +935,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      */
-    private $website = '';
+    private $website;
 
     /**
      * @return null|string
@@ -958,9 +959,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=5)
+     * @ORM\Column(length=5,nullable=true)
      */
-    private $languageFirst = '';
+    private $languageFirst;
 
     /**
      * @return null|string
@@ -982,9 +983,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=5)
+     * @ORM\Column(length=5,nullable=true)
      */
-    private $languageSecond = '';
+    private $languageSecond;
 
     /**
      * @return null|string
@@ -1006,9 +1007,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=5)
+     * @ORM\Column(length=5,nullable=true)
      */
-    private $languageThird = '';
+    private $languageThird;
 
     /**
      * @return null|string
@@ -1030,10 +1031,10 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=3)
+     * @ORM\Column(length=3,nullable=true)
      * @ASSERT\Country(alpha3=true)
      */
-    private $countryOfBirth = '';
+    private $countryOfBirth;
 
     /**
      * @return null|string
@@ -1055,13 +1056,13 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      * @ASSERTLOCAL\ReactFile(
      *     maxSize = "2048k",
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
      * )
      */
-    private $birthCertificateScan = '';
+    private $birthCertificateScan;
 
     /**
      * @return null|string
@@ -1083,9 +1084,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      */
-    private $ethnicity = '';
+    private $ethnicity;
 
     /**
      * @var array
@@ -1177,9 +1178,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="citizenship1_passport")
+     * @ORM\Column(length=30,name="citizenship1_passport",nullable=true)
      */
-    private $citizenship1Passport = '';
+    private $citizenship1Passport;
 
     /**
      * getCitizenship1Passport
@@ -1203,13 +1204,13 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="citizenship1_passport_scan")
+     * @ORM\Column(length=191,name="citizenship1_passport_scan",nullable=true)
      * @ASSERTLOCAL\ReactFile(
      *     maxSize = "2048k",
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
      * )
      */
-    private $citizenship1PassportScan = '';
+    private $citizenship1PassportScan;
 
     /**
      * @return null|string
@@ -1255,9 +1256,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="citizenship2_passport")
+     * @ORM\Column(length=30,name="citizenship2_passport",nullable=true)
      */
-    private $citizenship2Passport = '';
+    private $citizenship2Passport;
 
     /**
      * @return null|string
@@ -1279,9 +1280,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30,nullable=true)
      */
-    private $religion = '';
+    private $religion;
 
     /**
      * @return null|string
@@ -1312,9 +1313,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, name="national_card_number")
+     * @ORM\Column(length=30,name="national_card_number",nullable=true)
      */
-    private $nationalIDCardNumber = '';
+    private $nationalIDCardNumber;
 
     /**
      * @return null|string
@@ -1336,9 +1337,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="national_card_scan")
+     * @ORM\Column(length=191,name="national_card_scan",nullable=true)
      */
-    private $nationalIDCardScan = '';
+    private $nationalIDCardScan;
 
     /**
      * @return null|string
@@ -1360,9 +1361,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      */
-    private $residencyStatus = '';
+    private $residencyStatus;
 
     /**
      * @return null|string
@@ -1410,9 +1411,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=90)
+     * @ORM\Column(length=90,nullable=true)
      */
-    private $profession = '';
+    private $profession;
 
     /**
      * @return null|string
@@ -1434,9 +1435,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=90)
+     * @ORM\Column(length=90,nullable=true)
      */
-    private $employer = '';
+    private $employer;
 
     /**
      * @return null|string
@@ -1458,9 +1459,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=90, name="jobTitle")
+     * @ORM\Column(length=90,nullable=true)
      */
-    private $jobTitle = '';
+    private $jobTitle;
 
     /**
      * @return null|string
@@ -1634,7 +1635,7 @@ class Person extends AbstractEntity
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(nullable=true, name="class_of_academic_year", referencedColumnName="id")
+     * @ORM\JoinColumn(nullable=true,name="class_of_academic_year",referencedColumnName="id")
      */
     private $academicYearClassOf;
 
@@ -1658,9 +1659,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100,nullable=true)
      */
-    private $lastSchool = '';
+    private $lastSchool;
 
     /**
      * @return null|string
@@ -1682,9 +1683,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100,nullable=true)
      */
-    private $nextSchool = '';
+    private $nextSchool;
 
     /**
      * @return null|string
@@ -1706,9 +1707,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=50,nullable=true)
      */
-    private $departureReason = '';
+    private $departureReason;
 
     /**
      * @return null|string
@@ -1756,7 +1757,7 @@ class Person extends AbstractEntity
      * @var string|null
      * @ORM\Column(type="text",nullable=true)
      */
-    private $transportNotes = '';
+    private $transportNotes;
 
     /**
      * @return null|string
@@ -1902,9 +1903,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20,nullable=true)
      */
-    private $lockerNumber = '';
+    private $lockerNumber;
 
     /**
      * @return null|string
@@ -1926,9 +1927,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20,nullable=true)
      */
-    private $vehicleRegistration = '';
+    private $vehicleRegistration;
 
     /**
      * @return null|string
@@ -1950,7 +1951,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191)
+     * @ORM\Column(length=191,nullable=true)
      * @ASSERTLOCAL\ReactImage(
      *     mimeTypes = {"image/jpg","image/jpeg","image/png","image/gif"},
      *     maxSize = "1536k",
@@ -1959,7 +1960,7 @@ class Person extends AbstractEntity
      * )
      * 16/9, 800/640
      */
-    private $personalBackground = '';
+    private $personalBackground;
 
     /**
      * @return null|string
@@ -2127,9 +2128,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=191, name="google_api_refresh_token")
+     * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
      */
-    private $googleAPIRefreshToken = '';
+    private $googleAPIRefreshToken;
 
     /**
      * @return null|string
@@ -2670,81 +2671,81 @@ class Person extends AbstractEntity
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__Person` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `title` CHAR(5) NOT NULL,
-                    `surname` CHAR(60) NOT NULL,
-                    `first_name` CHAR(60) NOT NULL,
-                    `preferred_name` CHAR(60) NOT NULL,
-                    `official_name` CHAR(150) NOT NULL,
-                    `name_in_characters` CHAR(60) NOT NULL,
-                    `gender` CHAR(16) NOT NULL DEFAULT 'Unspecified',
-                    `username` CHAR(20) DEFAULT NULL,
-                    `password` CHAR(191) DEFAULT NULL,
-                    `password_force_reset` CHAR(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
-                    `status` CHAR(16) NOT NULL DEFAULT 'Full',
-                    `can_login` CHAR(1) NOT NULL DEFAULT 'Y',
-                    'security_roles` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
+                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                    `title` varchar(5) DEFAULT NULL,
+                    `surname` varchar(60) NOT NULL,
+                    `first_name` varchar(60) NOT NULL,
+                    `preferred_name` varchar(60) NOT NULL,
+                    `official_name` varchar(150) DEFAULT NULL,
+                    `name_in_characters` varchar(60) DEFAULT NULL,
+                    `gender` varchar(16) NOT NULL DEFAULT 'Unspecified',
+                    `username` varchar(75) DEFAULT NULL,
+                    `password` varchar(191) DEFAULT NULL,
+                    `password_force_reset` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
+                    `status` varchar(16) NOT NULL DEFAULT 'Full',
+                    `can_login` varchar(1) NOT NULL DEFAULT 'Y',
+                    `security_roles` longtext COMMENT '(DC2Type:simple_array)',
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `email` CHAR(75) DEFAULT NULL,
-                    `email_alternate` CHAR(75) DEFAULT NULL,
-                    `image_240` CHAR(191) DEFAULT NULL,
-                    `last_ip_address` CHAR(15) NOT NULL,
+                    `email` varchar(75) DEFAULT NULL,
+                    `email_alternate` varchar(75) DEFAULT NULL,
+                    `image_240` varchar(191) DEFAULT NULL,
+                    `last_ip_address` varchar(15) DEFAULT NULL,
                     `last_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `last_fail_ip_address` CHAR(15) DEFAULT NULL,
+                    `last_fail_ip_address` varchar(15) DEFAULT NULL,
                     `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `fail_count` smallint DEFAULT NULL,
-                    `physical_address` CHAR(36) DEFAULT NULL,
-                    `postal_address` CHAR(36) DEFAULT NULL,
-                    `personal_phone` CHAR(36) DEFAULT NULL,
-                    `website` CHAR(191) NOT NULL,
-                    `language_first` CHAR(5) NOT NULL,
-                    `language_second` CHAR(5) NOT NULL,
-                    `language_third` CHAR(5) NOT NULL,
-                    `country_of_birth` CHAR(3) NOT NULL,
-                    `birth_certificate_scan` CHAR(191) NOT NULL,
-                    `ethnicity` CHAR(191) NOT NULL,
-                    `citizenship1` CHAR(3) NOT NULL,
-                    `citizenship1_passport` CHAR(30) NOT NULL,
-                    `citizenship1_passport_scan` CHAR(191) NOT NULL,
-                    `citizenship2` CHAR(3) NOT NULL,
-                    `citizenship2_passport` CHAR(30) NOT NULL,
-                    `religion` CHAR(30) NOT NULL,
-                    `national_card_number` CHAR(30) NOT NULL,
-                    `national_card_scan` CHAR(191) NOT NULL,
-                    `residency_status` CHAR(191) NOT NULL,
+                    `fail_count` smallint(6) DEFAULT '0',
+                    `physical_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `postal_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `personal_phone` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `website` varchar(191) DEFAULT NULL,
+                    `language_first` varchar(5) DEFAULT NULL,
+                    `language_second` varchar(5) DEFAULT NULL,
+                    `language_third` varchar(5) DEFAULT NULL,
+                    `country_of_birth` varchar(3) DEFAULT NULL,
+                    `birth_certificate_scan` varchar(191) DEFAULT NULL,
+                    `ethnicity` varchar(191) DEFAULT NULL,
+                    `citizenship1` varchar(3) NOT NULL,
+                    `citizenship1_passport` varchar(30) DEFAULT NULL,
+                    `citizenship1_passport_scan` varchar(191) DEFAULT NULL,
+                    `citizenship2` varchar(3) NOT NULL,
+                    `citizenship2_passport` varchar(30) DEFAULT NULL,
+                    `religion` varchar(30) DEFAULT NULL,
+                    `national_card_number` varchar(30) DEFAULT NULL,
+                    `national_card_scan` varchar(191) DEFAULT NULL,
+                    `residency_status` varchar(191) DEFAULT NULL,
                     `visa_expiry_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `profession` CHAR(90) NOT NULL,
-                    `employer` CHAR(90) NOT NULL,
-                    `jobTitle` CHAR(90) NOT NULL,
-                    `emergency_contact1` CHAR(36) DEFAULT NULL,
-                    `emergency_contact2` CHAR(36) DEFAULT NULL,
-                    `student_identifier` CHAR(20) DEFAULT NULL,
+                    `profession` varchar(90) DEFAULT NULL,
+                    `employer` varchar(90) DEFAULT NULL,
+                    `job_title` varchar(90) CHARACTER SET utf8mb4 DEFAULT NULL,
+                    `emergency_contact1` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `emergency_contact2` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `student_identifier` varchar(20) DEFAULT NULL,
                     `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `last_school` CHAR(100) NOT NULL,
-                    `next_school` CHAR(100) NOT NULL,
-                    `departure_reason` CHAR(50) NOT NULL,
-                    `transport` CHAR(191) DEFAULT NULL,
-                    `transport_notes` longtext DEFAULT NULL,
-                    `calendar_feed_personal` CHAR(191) DEFAULT NULL,
-                    `view_calendar_school` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `view_calendar_personal` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `view_calendar_space_booking` CHAR(1) NOT NULL DEFAULT 'N',
-                    `locker_number` CHAR(20) NOT NULL,
-                    `vehicle_registration` CHAR(20) NOT NULL,
-                    `personal_background` CHAR(191) NOT NULL,
+                    `last_school` varchar(100) DEFAULT NULL,
+                    `next_school` varchar(100) DEFAULT NULL,
+                    `departure_reason` varchar(50) DEFAULT NULL,
+                    `transport` varchar(191) DEFAULT NULL,
+                    `transport_notes` longtext CHARACTER SET utf8mb4,
+                    `calendar_feed_personal` varchar(191) DEFAULT NULL,
+                    `view_calendar_school` varchar(1) NOT NULL DEFAULT 'Y',
+                    `view_calendar_personal` varchar(1) NOT NULL DEFAULT 'Y',
+                    `view_calendar_space_booking` varchar(1) NOT NULL DEFAULT 'N',
+                    `locker_number` varchar(20) DEFAULT NULL,
+                    `vehicle_registration` varchar(20) DEFAULT NULL,
+                    `personal_background` varchar(191) DEFAULT NULL,
                     `messenger_last_bubble` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `privacy` longtext,
-                    `day_type` CHAR(191) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
+                    `day_type` varchar(191) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
                     `student_agreements` longtext,
-                    `google_api_refresh_token` CHAR(191) NOT NULL,
-                    `receive_notification_emails` CHAR(1) NOT NULL DEFAULT 'Y',
+                    `google_api_refresh_token` varchar(191) DEFAULT NULL,
+                    `receive_notification_emails` varchar(1) NOT NULL DEFAULT 'Y',
                     `fields` longtext COMMENT 'Serialised array of custom field values(DC2Type:array)',
-                    `house` CHAR(36) DEFAULT NULL,
-                    `class_of_academic_year` CHAR(36) DEFAULT NULL,
-                    `application_form` CHAR(36) DEFAULT NULL,
-                    `personal_theme` CHAR(36) DEFAULT NULL,
-                    `personal_i18n` CHAR(36) DEFAULT NULL,
+                    `house` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `class_of_academic_year` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `application_form` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `personal_theme` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `personal_i18n` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `username` (`username`),
                     KEY `house` (`house`),
@@ -2758,7 +2759,7 @@ class Person extends AbstractEntity
                     KEY `username_email` (`username`,`email`),
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
-                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
                 "CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
                     `person` CHAR(36) NOT NULL,
                     `phone` CHAR(36) NOT NULL,

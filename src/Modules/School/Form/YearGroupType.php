@@ -18,6 +18,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\YearGroup;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +38,7 @@ class YearGroupType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+        $personRepository = ProviderFactory::getRepository(Person::class);
         $builder
             ->add('ygheader', HeaderType::class,
                 [
@@ -71,15 +72,7 @@ class YearGroupType extends AbstractType
                     'choice_label' => 'fullNameReversed',
                     'placeholder' => ' ',
                     'choice_translation_domain' => false,
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->leftJoin('p.staff', 's')
-                            ->select(['p','s'])
-                            ->where('s.id IS NOT NULL')
-                            ->orderBy('p.surname')
-                            ->addOrderBy('p.firstName')
-                            ;
-                    },
+                    'query_builder' => $personRepository->getStaffQueryBuider(),
                 ]
             )
             ->add('submit', SubmitType::class)

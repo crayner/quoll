@@ -43,6 +43,8 @@ class AttendanceCLIType extends AbstractType
         if ($people === []) {
             $people = null;
         }
+
+        $personRepository = ProviderFactory::getRepository(Person::class);
         $builder
             ->add('header', HeaderType::class,
                 [
@@ -72,17 +74,7 @@ class AttendanceCLIType extends AbstractType
                                 'data' => $people,
                                 'choice_label' => 'fullNameReversed',
                                 'choice_translation_domain' => false,
-                                'query_builder' => function(EntityRepository $er){
-                                    return $er->createQueryBuilder('p')
-                                        ->select(['p','s'])
-                                        ->join('p.staff', 's')
-                                        ->where('p.status = :full')
-                                        ->andWhere('s.id IS NOT NULL')
-                                        ->setParameter('full', 'Full')
-                                        ->orderBy('p.surname')
-                                        ->addOrderBy('p.firstName')
-                                    ;
-                                },
+                                'query_builder' => $personRepository->getStaffQueryBuilder(),
                                 'attr' => [
                                     'style' => ['height' => '140px'],
                                 ],

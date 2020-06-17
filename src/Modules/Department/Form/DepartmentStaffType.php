@@ -23,6 +23,8 @@ use App\Form\Type\ReactFormType;
 use App\Modules\Department\Entity\Department;
 use App\Modules\People\Entity\Person;
 use App\Modules\Department\Entity\DepartmentStaff;
+use App\Modules\People\Repository\PersonRepository;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -44,6 +46,7 @@ class DepartmentStaffType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $personRepository = ProviderFactory::getRepository(Person::class);
         $builder
             ->add('staffTitle', HeaderType::class,
                 [
@@ -76,14 +79,7 @@ class DepartmentStaffType extends AbstractType
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Type a name...',
                         'data' => $options['data']->getPerson() ?? null,
-                        'query_builder' => function (EntityRepository $er) {
-                            return $er->createQueryBuilder('p')
-                                ->leftJoin('p.staff', 's')
-                                ->select(['p', 's'])
-                                ->where('s.id IS NOT NULL')
-                                ->orderBy('p.surname')
-                                ->addOrderBy('p.firstName');
-                        },
+                        'query_builder' => $personRepository->getStaffQueryBuilder(),
                     ]
                 )
             ;

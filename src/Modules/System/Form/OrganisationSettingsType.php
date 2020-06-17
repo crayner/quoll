@@ -109,17 +109,7 @@ class OrganisationSettingsType extends AbstractType
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => function(EntityRepository $er){
-                                    return $er->createQueryBuilder('p')
-                                        ->select(['p','s'])
-                                        ->join('p.staff', 's')
-                                        ->where('p.status = :full')
-                                        ->andWhere('s.id IS NOT NULL')
-                                        ->setParameter('full', 'Full')
-                                        ->orderBy('p.surname')
-                                        ->addOrderBy('p.firstName')
-                                        ;
-                                },
+                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
                             ],
                         ],
                         [
@@ -131,17 +121,7 @@ class OrganisationSettingsType extends AbstractType
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => function(EntityRepository $er){
-                                    return $er->createQueryBuilder('p')
-                                        ->select(['p','s'])
-                                        ->join('p.staff', 's')
-                                        ->where('p.status = :full')
-                                        ->andWhere('s.id IS NOT NULL')
-                                        ->setParameter('full', 'Full')
-                                        ->orderBy('p.surname')
-                                        ->addOrderBy('p.firstName')
-                                        ;
-                                },
+                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
                             ],
                         ],
                         [
@@ -153,17 +133,7 @@ class OrganisationSettingsType extends AbstractType
                                 'placeholder' => ' ',
                                 'choice_label' => 'fullNameReversed',
                                 'choice_translation_domain' => false,
-                                'query_builder' => function(EntityRepository $er){
-                                    return $er->createQueryBuilder('p')
-                                        ->select(['p','s'])
-                                        ->join('p.staff', 's')
-                                        ->where('p.status = :full')
-                                        ->andWhere('s.id IS NOT NULL')
-                                        ->setParameter('full', 'Full')
-                                        ->orderBy('p.surname')
-                                        ->addOrderBy('p.firstName')
-                                        ;
-                                },
+                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
                             ],
                         ],
                         [
@@ -175,17 +145,7 @@ class OrganisationSettingsType extends AbstractType
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => function(EntityRepository $er){
-                                    return $er->createQueryBuilder('p')
-                                        ->select(['p','s'])
-                                        ->join('p.staff', 's')
-                                        ->where('p.status = :full')
-                                        ->andWhere('s.id IS NOT NULL')
-                                        ->setParameter('full', 'Full')
-                                        ->orderBy('p.surname')
-                                        ->addOrderBy('p.firstName')
-                                        ;
-                                },
+                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
                             ],
                         ],
                     ],
