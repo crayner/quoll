@@ -12,10 +12,8 @@
  * Date: 21/02/2020
  * Time: 08:52
  */
+namespace App\Manager;
 
-namespace App\Manager\Entity;
-
-use App\Modules\System\Util\LocaleHelper;
 use App\Twig\MainMenu;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -26,7 +24,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class HeaderManager
- * @package App\Manager\Entity
+ * @package App\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class HeaderManager
 {

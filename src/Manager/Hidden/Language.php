@@ -13,7 +13,7 @@
  * Time: 09:26
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 
 class Language

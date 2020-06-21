@@ -13,7 +13,7 @@
  * Time: 08:43
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

@@ -12,7 +12,7 @@
  * Date: 14/10/2019
  * Time: 16:59
  */
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 /**
  * Class Message

@@ -12,19 +12,19 @@
  * Date: 27/07/2019
  * Time: 08:43
  */
+namespace App\Manager;
 
-namespace App\Manager\Entity;
-
+use App\Manager\Hidden\BreadCrumbItem;
 use App\Modules\System\Entity\Action;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class BreadCrumbs
- * @package App\Manager\Entity
+ * @package App\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class BreadCrumbs
 {
