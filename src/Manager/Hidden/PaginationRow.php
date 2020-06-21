@@ -13,7 +13,7 @@
  * Time: 11:43
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;

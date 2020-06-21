@@ -16,9 +16,9 @@
 namespace App\Modules\System\Pagination;
 
 use App\Manager\AbstractPaginationManager;
-use App\Manager\Entity\PaginationAction;
-use App\Manager\Entity\PaginationColumn;
-use App\Manager\Entity\PaginationRow;
+use App\Manager\Hidden\PaginationAction;
+use App\Manager\Hidden\PaginationColumn;
+use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Util\TranslationHelper;
 

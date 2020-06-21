@@ -13,7 +13,7 @@
  * Time: 11:44
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 /**
  * Class PaginationColumn

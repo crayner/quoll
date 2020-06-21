@@ -13,7 +13,7 @@
  * Time: 12:47
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 use App\Util\TranslationHelper;
 
 /**

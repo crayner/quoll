@@ -13,7 +13,7 @@
  * Time: 12:12
  */
 
-namespace App\Manager\Entity;
+namespace App\Manager\Hidden;
 
 use App\Manager\AbstractPaginationManager;
 

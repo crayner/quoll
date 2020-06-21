@@ -15,6 +15,7 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Schema\Index;
@@ -63,4 +64,16 @@ class FamilyMemberAdultProvider extends AbstractProvider
 
         return $data;
     }
+
+    /**
+     * getStudentsOfParent
+     * @param Person|null $parent
+     * @return array
+     * 19/06/2020 08:49
+     */
+    public function getStudentsOfParent(Person $parent = null): array
+    {
+        return $parent ? $this->getRepository()->findStudentsOfParent($parent) : [];
+    }
+
 }
