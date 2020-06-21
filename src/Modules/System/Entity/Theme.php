@@ -73,18 +73,18 @@ class Theme extends AbstractEntity
     private $url;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * @param string|null $id
      * @return Theme
      */
-    public function setId(?int $id): Theme
+    public function setId(?string $id): Theme
     {
         $this->id = $id;
         return $this;

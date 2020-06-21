@@ -19,10 +19,9 @@ namespace App\Manager;
 interface EntityInterface
 {
     /**
-     * getId
-     * @return string|int|null
+     * @return string|null
      */
-    public function getId();
+    public function getId(): ?string;
 
     /**
      * toArray

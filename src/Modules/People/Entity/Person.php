@@ -2841,6 +2841,56 @@ class Person extends AbstractEntity
     }
 
     /**
+     * isTeacher
+     * @return bool
+     * 18/06/2020 15:25
+     */
+    public function isTeacher(): bool
+    {
+        return $this->hasRole('ROLE_TEACHER');
+    }
+
+    /**
+     * isRegistrar
+     * @return bool
+     * 18/06/2020 15:25
+     */
+    public function isRegistrar(): bool
+    {
+        return $this->hasRole('ROLE_REGISTRAR');
+    }
+
+    /**
+     * isSupport
+     * @return bool
+     * 20/06/2020 11:50
+     */
+    public function isSupport(): bool
+    {
+        return $this->hasRole('ROLE_SUPPORT');
+    }
+
+    /**
+     * isRegistrar
+     * @return bool
+     * 18/06/2020 15:25
+     */
+    public function isPrincipal(): bool
+    {
+        return $this->hasRole('ROLE_PRINCIPAL');
+    }
+
+    /**
+     * isRegistrar
+     * @return bool
+     * 18/06/2020 15:25
+     */
+    public function isHeadTeacher(): bool
+    {
+        return $this->hasRole('ROLE_HEAD_TEACHER');
+    }
+
+    /**
      * getVersion
      * @return string
      * 10/06/2020 11:57

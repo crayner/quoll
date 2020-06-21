@@ -31,7 +31,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class DepartmentStaffProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
@@ -88,4 +87,18 @@ class DepartmentStaffProvider extends AbstractProvider
 
         return $status ?? [];
     }
+
+    /**
+     * isHeadTeacherOf
+     * @param Person $person
+     * @param array $staffIDList
+     * @param bool $includeAssistant
+     * @return bool
+     * 19/06/2020 14:09
+     */
+    public function isHeadTeacherOf(Person $person, array $staffIDList, bool $includeAssistant = true): bool
+    {
+        return $this->getRepository()->countWhenPersonIsHeadOf($person,$staffIDList,$includeAssistant) > 0;
+    }
+
 }

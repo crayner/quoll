@@ -13,7 +13,9 @@
 namespace App\Modules\Department\Repository;
 
 use App\Modules\Department\Entity\Department;
+use App\Modules\People\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

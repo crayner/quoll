@@ -15,6 +15,7 @@ namespace App\Modules\RollGroup\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
+use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
 use App\Provider\ProviderFactory;
@@ -22,7 +23,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use App\Modules\People\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -480,16 +480,6 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * __toArray
-     * @param array $ignore
-     * @return array
-     */
-    public function __toArray(array $ignore = []): array
-    {
-        return EntityHelper::__toArray(RollGroup::class, $this, $ignore);
-    }
-
-    /**
      * getTutors
      * @return array
      */
@@ -520,12 +510,12 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * getSpaceName
+     * getFacilityName
      * @return string
      */
-    public function getSpaceName(): string
+    public function getFacilityName(): string
     {
-        return $this->getSpace() ? $this->getSpace()->getName() : '';
+        return $this->getFacility() ? $this->getFacility()->getName() : '';
     }
 
     /**
@@ -555,15 +545,6 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * __toString
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getName() . ' (' . $this->getAbbreviation() . ')';
-    }
-
-    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -574,27 +555,36 @@ class RollGroup extends AbstractEntity
             'name' => $this->getName(),
             'abbr' => $this->getAbbreviation(),
             'tutors' => $this->getFormatTutors(),
-            'location' => $this->getSpace() ? $this->getSpace()->getName() : '',
+            'location' => $this->getFacilityName(),
             'website' => $this->getWebsite(),
             'students' => $this->getStudentEnrolments()->count(),
             'canDelete' => $this->canDelete(),
         ];
     }
 
+    /**
+     * canDelete
+     * @return bool
+     * 17/06/2020 12:54
+     */
     public function canDelete(): bool
     {
         return ProviderFactory::create(RollGroup::class)->canDelete($this);
-        return false;
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 17/06/2020 12:54
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__RollGroup` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(10) NOT NULL,
-                    `abbreviation` CHAR(5) NOT NULL,
-                    `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `website` CHAR(191) DEFAULT NULL,
+                    `name` VARCHAR(10) NOT NULL,
+                    `abbreviation` VARCHAR(5) NOT NULL,
+                    `attendance` VARCHAR(1) NOT NULL DEFAULT 'Y',
+                    `website` VARCHAR(191) DEFAULT NULL,
                     `academic_year` CHAR(36) DEFAULT NULL,
                     `tutor1` CHAR(36) DEFAULT NULL,
                     `tutor2` CHAR(36) DEFAULT NULL,
@@ -620,6 +610,11 @@ class RollGroup extends AbstractEntity
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 17/06/2020 12:55
+     */
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__RollGroup`
@@ -634,8 +629,13 @@ class RollGroup extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`next_roll_group`) REFERENCES `__prefix__RollGroup` (`id`);';
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 17/06/2020 12:55
+     */
     public static function getVersion(): string
     {
-        return self::VERSION;
+        return static::VERSION;
     }
 }

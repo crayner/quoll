@@ -16,6 +16,7 @@ namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -128,7 +129,6 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
      */
     public function findCurrentParentsAsArray(): array
     {
-
         $parentLabel = TranslationHelper::translate('Parent', [], 'People');
         return $this->createQueryBuilder('m')
             ->select(['p.id as value', "CONCAT('".$parentLabel.": ', p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "CONCAT(p.surname, p.firstName,p.preferredName) AS data", "'".$parentLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo"])
@@ -140,6 +140,23 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
             ->setParameter('role', '%ROLE_PARENT%')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findFamiliesOfParent
+     * @param Person $parent
+     * @return int|mixed|string
+     * 19/06/2020 09:31
+     */
+    public function findFamiliesOfParent(Person $parent)
+    {
+        return $this->createQueryBuilder('fa')
+            ->select(['f','fa'])
+            ->leftJoin('fa.family', 'f')
+            ->where('fa.person = :parent')
+            ->setParameter('parent', $parent)
             ->getQuery()
             ->getResult();
     }

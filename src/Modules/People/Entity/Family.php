@@ -426,7 +426,7 @@ class Family extends AbstractEntity
     }
 
     /**
-     * @return FamilyMember[]|Collection|null
+     * @return FamilyMemberAdult[]|Collection|null
      */
     public function getAdults(): Collection
     {
@@ -446,9 +446,9 @@ class Family extends AbstractEntity
     }
 
     /**
-     * @return FamilyMember[]|Collection|null
+     * @return FamilyMemberChild[]|Collection|null
      */
-    public function getChildren(): Collection
+    public function getStudents(): Collection
     {
         return $this->getMembers()->filter(function (FamilyMember $member) {
             if ($member instanceof FamilyMemberChild)
@@ -467,7 +467,7 @@ class Family extends AbstractEntity
             'name' => $this->getName(),
             'status' => $this->getStatus(),
             'adults' => FamilyManager::getAdultNames($this),
-            'children' => FamilyManager::getChildrenNames($this),
+            'students' => FamilyManager::getChildrenNames($this),
         ];
     }
 

@@ -348,3 +348,17 @@
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Behaviour' }
     target: module
+-
+    findBy:
+        entryRoute: 'roll_group_catalogue'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'School' }
+    target: module
+-
+    findBy:
+        entryRoute: 'roll_group_list'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'Roll Group' }
+    target: module

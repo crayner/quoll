@@ -15,6 +15,7 @@
 
 namespace App\Modules\People\Provider;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Provider\AbstractProvider;
 use App\Modules\People\Entity\Family;

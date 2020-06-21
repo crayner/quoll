@@ -202,8 +202,9 @@ class PersonRepository extends ServiceEntityRepository
             ->select(['p','se'])
             ->join('p.studentEnrolments', 'se')
             ->where('se.rollGroup = :rollGroup')
-            ->andWhere('s.id IS NULL')
+            ->andWhere('p.securityRoles LIKE :role')
             ->setParameter('rollGroup', $rollGroup)
+            ->setParameter('role', '%ROLE_STUDENT%')
             ->andWhere('p.status = :full')
             ->setParameter('full', 'Full');
 

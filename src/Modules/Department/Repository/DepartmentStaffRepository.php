@@ -14,7 +14,11 @@ namespace App\Modules\Department\Repository;
 
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
+use App\Modules\People\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -50,4 +54,40 @@ class DepartmentStaffRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * countWhenPersonIsHeadOf
+     * @param Person $headTeacher
+     * @param array $staffIDList
+     * @param bool $includeAssistant
+     * @return int
+     * 19/06/2020 14:19
+     */
+    public function countWhenPersonIsHeadOf(Person $headTeacher, array $staffIDList, bool $includeAssistant): int
+    {
+        $coordinatorList = [];
+        $coordinatorList[] = 'Coordinator';
+        if ($includeAssistant) {
+            $coordinatorList[] = 'Assistant Coordinator';
+        }
+        try {
+            return intval($this->createQueryBuilder('ht')
+                ->select(['COUNT(d.id)'])
+                ->leftJoin('ht.department', 'd')
+                ->leftJoin('d.staff', 's')
+                ->leftJoin('s.person','p')
+                ->where('p.id IN (:staffList)')
+                ->andWhere('ht.person = :headTeacher')
+                ->andWhere('ht.role IN (:leaders)')
+                ->setParameter('headTeacher', $headTeacher)
+                ->setParameter('staffList', $staffIDList, Connection::PARAM_STR_ARRAY)
+                ->setParameter('leaders', $coordinatorList, Connection::PARAM_STR_ARRAY)
+                ->getQuery()
+                ->getSingleResult()
+            );
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
 }

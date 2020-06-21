@@ -12,9 +12,11 @@
  */
 namespace App\Modules\System\Repository;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
+use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOException;
@@ -122,31 +124,29 @@ class ActionRepository extends ServiceEntityRepository
             dump($route);
             throw new \Exception('This is the end.');
         }
+
+        $where = '(';
+        $params = [];
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames(UserHelper::getCurrentUser()->getSecurityRoles() ?: []);
+        foreach($roles as $q=>$role) {
+            $where .= 'a.securityRoles LIKE :role' . $q . ' OR ';
+            $params['role' . $q] = $role;
+        }
+        $where = rtrim($where, ' OR') . ')';
+        $params['route'] = '%' . $route . '%';
+        $params['module'] = $module;
+        $params['module'] = $module;
+
         try {
-            $result = null;
-            $roles = SecurityHelper::getHierarchy()->getReachableRoleNames(UserHelper::getCurrentUser()->getSecurityRoles() ?: []);
-            foreach($roles as $role) {
-                $w = $this->createQueryBuilder('a')
-                    ->where('a.routeList LIKE :route')
-                    ->setParameter('route', '%' . $route . '%')
-                    ->andWhere('a.module = :module')
-                    ->setParameter('module', $module)
-                    ->andWhere('a.role IN (:roles)')
-                    ->setParameter('roles', $roles, Connection::PARAM_STR_ARRAY)
-                    ->orderBy('a.precedence', 'DESC')
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getOneOrNullResult();
-                if ($w instanceof Action) {
-                    if ($result === null) {
-                        $result = $w;
-                        continue;
-                    }
-                    if ($w->getPrecedence() > $result->getPrecedence())
-                        $result = $w;
-                }
-            }
-            return $result ? [$result->getName()] : null;
+            return $this->createQueryBuilder('a')
+                ->where('a.routeList LIKE :route')
+                ->andWhere('a.module = :module')
+                ->andWhere($where)
+                ->setParameters($params)
+                ->orderBy('a.precedence', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
         } catch (NonUniqueResultException | PDOException | \PDOException $e) {
             return null;
         }

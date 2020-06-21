@@ -471,3 +471,21 @@
     entry_sidebar: 'Y'
     menu_show: 'Y'
     security_roles: ['ROLE_PRINCIPAL']
+-
+    name: 'Roll Groups'
+    category: 'Groupings'
+    description: 'View a brief profile of roll groups in school.'
+    route_list: ['roll_group_catalogue']
+    entry_route: 'roll_group_catalogue'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLL_SUPPORT','ROLE_PARENT','ROLE_STUDENT']
+-
+    name: 'View Roll Groups'
+    category: 'Roll Groups'
+    description: 'View a brief profile of roll groups in school.'
+    route_list: ['roll_group_list','roll_group_detail']
+    entry_route: 'roll_group_list'
+    entry_sidebar: 'Y'
+    menu_show: 'Y'
+    security_roles: ['ROLL_SUPPORT','ROLE_PARENT','ROLE_STUDENT']

@@ -50,18 +50,18 @@ class TTDayDate extends AbstractEntity
     private $date;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * @param string|null $id
      * @return TTDayDate
      */
-    public function setId(?int $id): TTDayDate
+    public function setId(?string $id): TTDayDate
     {
         $this->id = $id;
         return $this;

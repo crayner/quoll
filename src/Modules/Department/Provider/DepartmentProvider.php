@@ -15,6 +15,7 @@
 namespace App\Modules\Department\Provider;
 
 use App\Modules\Department\Entity\Department;
+use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
 
 /**
