@@ -12,11 +12,9 @@
  * Date: 2/01/2020
  * Time: 08:18
  */
-
 namespace App\Form\Type;
 
 use App\Form\EventSubscriber\SimpleArraySubscriber;
-use App\Form\Transform\SimpleArrayTransform;
 use App\Validator\SimpleArray;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -50,6 +48,9 @@ class SimpleArrayType extends AbstractType
             [
                 'allow_add' => true,
                 'allow_delete' => true,
+                'constraints' => [
+                    new SimpleArray(),
+                ],
             ]
         );
     }

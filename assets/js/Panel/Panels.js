@@ -21,10 +21,9 @@ export default function Panels(props) {
         hideSingleFormWarning,
     } = props
 
-    if (Object.keys(panels).length === 1) {
+     if (Object.keys(panels).length === 1) {
         const name = Object.keys(panels)[0]
-        const panel = panels[name]
-        return <Panel {...props} panel={panel} singlePanel={true} />
+        return (<Panel {...props} panelName={name} singlePanel={true} />)
     }
 
     const tabTags = Object.keys(panels).map(name => {
@@ -41,8 +40,9 @@ export default function Panels(props) {
     })
 
     const content = Object.keys(panels).map(name => {
-        const panel = panels[name]
-        const panelContent = <Panel {...props} panel={panel} />
+        const panel = {...panels[name]}
+        let panelContent = []
+        panelContent.push(<Panel {...props} panelName={name} key={name}/>)
 
         let preContent = []
         if (panel.preContent !== null) {

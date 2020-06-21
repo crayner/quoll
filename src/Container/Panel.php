@@ -333,9 +333,10 @@ class Panel
     public function setPagination(PaginationInterface $pagination): Panel
     {
         $section = new Section('pagination', $pagination);
+        $this->addSection($section);
         trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
-        $this->content = null;
-        $this->pagination = $pagination;
+//        $this->content = null;
+//        $this->pagination = $pagination;
         return $this;
     }
 

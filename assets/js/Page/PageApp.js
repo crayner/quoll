@@ -210,6 +210,9 @@ export default class PageApp extends Component {
                 messages: this.state.messages.concat(data.messages),
                 pageHeader: data.pageHeader
             })
+            if (data.url.includes('?path=') > 0) {
+                data.url = data.url.slice(0,data.url.includes('?path=') + 3)
+            }
             window.history.pushState('', data.title, data.url ? data.url : url);
             setTimeout(this.functions.getContentSize,100)
         })

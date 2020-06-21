@@ -17,6 +17,7 @@ namespace App\Modules\People\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Form\PeopleSettingsType;
 use App\Modules\People\Form\UpdaterSettingsType;
@@ -36,18 +37,19 @@ class SettingController extends AbstractPageController
 {
     /**
      * peopleSettings
-     * @Route("/people/settings/",name="people_settings")
+     * @Route("/people/settings/{tabName}",name="people_settings")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
+     * @param string|null $tabName
      * @return JsonResponse
      */
-    public function peopleSettings(ContainerManager $manager)
+    public function peopleSettings(ContainerManager $manager, ?string $tabName = 'Field Values')
     {
         $provider = ProviderFactory::create(Setting::class);
         $request = $this->getRequest();
 
         // System Settings
-        $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings')]);
+        $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings', ['tabName' => $tabName])]);
 
         if ($request->getContent() !== '') {
 
@@ -55,19 +57,27 @@ class SettingController extends AbstractPageController
             try {
                 $data['errors'] = $provider->handleSettingsForm($form, $request);
                 if ('success' === $provider->getStatus())
-                    $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings')]);
+                    $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings', ['tabName' => $tabName])]);
             } catch (\Exception $e) {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage([],true);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+            $data['form'] = $manager->getFormFromContainer();
 
             return new JsonResponse($data, 200);
         }
 
-        $manager->singlePanel($form->createView());
-        $manager->buildContainers();
+        $section = new Section('form', 'single');
+        $container = new Container($tabName);
+        $panel = new Panel('Field Values', 'People', $section);
+        $container->addPanel($panel);
+        $panel = new Panel('Privacy / Data Options', 'People', $section);
+        $container->addPanel($panel);
+        $panel = new Panel('Day Type Options', 'People', $section);
+        $container->addPanel($panel)->addForm('single', $form->createView());
+
+        $manager->addContainer($container);
 
         return $this->getPageManager()->createBreadcrumbs('People Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);

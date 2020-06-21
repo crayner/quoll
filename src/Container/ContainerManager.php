@@ -80,6 +80,8 @@ class ContainerManager
         TranslationHelper::addTranslation('Return', [], 'messages');
         TranslationHelper::addTranslation('Add', [], 'messages');
         TranslationHelper::addTranslation('Erase Content', [], 'messages');
+        TranslationHelper::addTranslation('Yes/No', [], 'messages');
+        TranslationHelper::addTranslation('Let me ponder your request', [], 'messages');
     }
 
     /**

@@ -8,11 +8,13 @@ import Parser from 'react-html-parser'
 
 export default function Panel(props) {
     const {
-        panel,
-        singlePanel
+        panelName,
+        singlePanel,
+        panels,
     } = props
 
     let sections = []
+    const panel = {...panels[panelName]}
 
     Object.keys(panel.sections).map(sectionKey => {
         const section = panel.sections[sectionKey]
@@ -33,8 +35,9 @@ export default function Panel(props) {
 }
 
 Panel.propTypes = {
-    panel: PropTypes.object.isRequired,
+    panels: PropTypes.object.isRequired,
     singlePanel: PropTypes.bool,
+    panelName: PropTypes.string.isRequired,
 }
 
 Panel.defaultProps = {

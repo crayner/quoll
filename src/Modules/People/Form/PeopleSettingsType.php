@@ -12,7 +12,6 @@
  * Date: 30/11/2019
  * Time: 15:02
  */
-
 namespace App\Modules\People\Form;
 
 use App\Form\Type\HeaderType;
@@ -30,6 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class PeopleSettingsType
  * @package App\Modules\People\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class PeopleSettingsType extends AbstractType
 {
@@ -37,6 +37,7 @@ class PeopleSettingsType extends AbstractType
      * buildForm
      * @param FormBuilderInterface $builder
      * @param array $options
+     * 22/06/2020 08:42
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -44,6 +45,7 @@ class PeopleSettingsType extends AbstractType
             ->add('fieldValueHeader', HeaderType::class,
                 [
                     'label' => 'Field Values',
+                    'panel' => 'Field Values',
                 ]
             )
             ->add('fieldValueSettings', SettingsType::class,
@@ -54,12 +56,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'nationality',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ]
+                                'panel' => 'Field Values',
                             ],
                         ],
                         [
@@ -67,12 +64,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'ethnicity',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ]
+                                'panel' => 'Field Values',
                             ],
                         ],
                         [
@@ -80,12 +72,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'religions',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ]
+                                'panel' => 'Field Values',
                             ],
                         ],
                         [
@@ -93,12 +80,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'residencyStatus',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ]
+                                'panel' => 'Field Values',
                             ],
                         ],
                         [
@@ -106,20 +88,22 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'departureReasons',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ]
+                                'panel' => 'Field Values',
                             ],
                         ],
                     ],
+                    'panel' => 'Field Values',
+                ]
+            )
+            ->add('submit2', SubmitType::class,
+                [
+                    'panel' => 'Field Values',
                 ]
             )
             ->add('privacyHeader', HeaderType::class,
                 [
                     'label' => 'Privacy Options',
+                    'panel' => 'Privacy / Data Options',
                 ]
             )
             ->add('privacySettings', SettingsType::class,
@@ -130,6 +114,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'privacy',
                             'entry_type' => ToggleType::class,
                             'entry_options' => [
+                                'panel' => 'Privacy / Data Options',
                                 'visible_by_choice' => 'privacy_row',
                             ],
                         ],
@@ -138,6 +123,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'privacyBlurb',
                             'entry_type' => TextareaType::class,
                             'entry_options' => [
+                                'panel' => 'Privacy / Data Options',
                                 'attr' => [
                                     'rows' => 6,
                                 ],
@@ -150,19 +136,19 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'privacyOptions',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
-                                'constraints' => [
-                                    new SimpleArray(),
-                                ],
+                                'panel' => 'Privacy / Data Options',
                                 'visible_values' => ['privacy_row'],
                                 'visible_parent' => 'people_settings_privacySettings_People__privacy',
                             ],
                         ],
                     ],
+                    'panel' => 'Privacy / Data Options',
                 ]
             )
             ->add('peopleDataHeader', HeaderType::class,
                 [
                     'label' => 'People Data Options',
+                    'panel' => 'Privacy / Data Options',
                 ]
             )
             ->add('peopleDataSettings', SettingsType::class,
@@ -172,18 +158,31 @@ class PeopleSettingsType extends AbstractType
                             'scope' => 'People',
                             'name' => 'uniqueEmailAddress',
                             'entry_type' => ToggleType::class,
+                            'entry_options' => [
+                                'panel' => 'Privacy / Data Options',
+                            ],
                         ],
                         [
                             'scope' => 'People',
                             'name' => 'personalBackground',
                             'entry_type' => ToggleType::class,
+                            'entry_options' => [
+                                'panel' => 'Privacy / Data Options',
+                            ],
                         ],
                     ],
+                    'panel' => 'Privacy / Data Options',
+                ]
+            )
+            ->add('submit1', SubmitType::class,
+                [
+                    'panel' => 'Privacy / Data Options',
                 ]
             )
             ->add('dayTypeHeader', HeaderType::class,
                 [
                     'label' => 'Day-Type Options',
+                    'panel' => 'Day Type Options',
                 ]
             )
             ->add('dayTypeSettings', SettingsType::class,
@@ -194,6 +193,7 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'dayTypeOptions',
                             'entry_type' => SimpleArrayType::class,
                             'entry_options' => [
+                                'panel' => 'Day Type Options',
                                 'attr' => [
                                     'rows' => 6,
                                 ],
@@ -207,15 +207,22 @@ class PeopleSettingsType extends AbstractType
                             'name' => 'dayTypeText',
                             'entry_type' => TextareaType::class,
                             'entry_options' => [
+                                'panel' => 'Day Type Options',
                                 'attr' => [
                                     'rows' => 6,
                                 ],
                             ],
                         ],
                     ],
+                    'panel' => 'Day Type Options',
                 ]
             )
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class,
+                [
+                    'panel' => 'Day Type Options',
+                ]
+            )
+        ;
     }
 
     /**

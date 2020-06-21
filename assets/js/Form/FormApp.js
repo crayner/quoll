@@ -13,13 +13,14 @@ export default function FormApp(props) {
         formName,
         singleForm,
         visibleKeys,
+        panelName
     } = props
 
     if (form.template === 'table') {
         let rows = []
         Object.keys(form.children).map(key => {
             const child = form.children[key]
-            if (child.panel === false || child.panel === formName)
+            if (child.panel === false || child.panel === formName || child.panel === panelName)
                 rows.push(<Row key={key} form={child} functions={functions} columns={form.columns} visibleKeys={visibleKeys}/>)
         })
 
@@ -92,6 +93,7 @@ FormApp.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     formName: PropTypes.string.isRequired,
+    panelName: PropTypes.string.isRequired,
     singleForm: PropTypes.bool.isRequired,
     visibleKeys: PropTypes.object.isRequired,
 }
