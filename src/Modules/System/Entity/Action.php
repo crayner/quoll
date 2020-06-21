@@ -341,20 +341,34 @@ class Action extends AbstractEntity
     }
 
     /**
-     * @return string
+     * isMenuShow
+     * @return bool
+     * 21/06/2020 10:34
      */
-    public function getMenuShow(): string
+    public function isMenuShow(): bool
     {
-        return $this->menuShow;
+        return $this->getMenuShow() === 'Y';
     }
 
     /**
+     * getMenuShow
+     * @return string
+     * 21/06/2020 10:34
+     */
+    public function getMenuShow(): string
+    {
+        return self::checkBoolean($this->menuShow);
+    }
+
+    /**
+     * setMenuShow
      * @param string $menuShow
-     * @return Action
+     * @return $this
+     * 21/06/2020 10:34
      */
     public function setMenuShow(string $menuShow): Action
     {
-        $this->menuShow = in_array($menuShow, self::getBooleanList()) ? $menuShow : 'Y';
+        $this->menuShow = self::checkBoolean($menuShow);
         return $this;
     }
 

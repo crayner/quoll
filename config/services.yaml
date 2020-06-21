@@ -15,7 +15,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php,Provider}'
+        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php,Provider,Manager/Hidden}'
 
     App\Modules\:
         resource: '../src/Modules/*'
@@ -106,10 +106,16 @@ services:
         calls:
             - ['setStack', ['@request_stack']]
 
-    App\Modules\Security\Voter\RouteVoter:
-        arguments:
-            $logger: '@monolog.logger.security'
+#    App\Modules\Security\Voter\RouteVoter:
+#        arguments:
+#            $logger: '@monolog.logger.security'
 
     App\Modules\Security\Util\SecurityHelper:
         calls:
             - ['setLogger', ['@monolog.logger.security']]
+
+    App\Modules\Security\Voter\:
+        resource: '../src\Modules/Security/Voter/*'
+        arguments:
+            $logger: '@monolog.logger.security'
+

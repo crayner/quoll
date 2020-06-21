@@ -5,9 +5,9 @@ import PropTypes from 'prop-types'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../css/react-tabs.scss';
 import Parser from "html-react-parser"
-import FormApp from "../Form/FormApp"
 import PaginationApp from "../Pagination/PaginationApp"
 import SpecialApp from '../Special/SpecialApp'
+import Panel from './panel'
 
 export default function Panels(props) {
     const {
@@ -20,6 +20,12 @@ export default function Panels(props) {
         panelErrors,
         hideSingleFormWarning,
     } = props
+
+    if (Object.keys(panels).length === 1) {
+        const name = Object.keys(panels)[0]
+        const panel = panels[name]
+        return <Panel {...props} panel={panel} singlePanel={true} />
+    }
 
     const tabTags = Object.keys(panels).map(name => {
         let tab = panels[name]
@@ -36,11 +42,11 @@ export default function Panels(props) {
 
     const content = Object.keys(panels).map(name => {
         const panel = panels[name]
-        const panelContent = renderPanelContent(panel, props)
+        const panelContent = <Panel {...props} panel={panel} />
+
         let preContent = []
-        let postContent = []
-        let special = []
         if (panel.preContent !== null) {
+            console.info('preContent is deprecated.  Add this to html or text section in the panel.')
             preContent = panel.preContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
@@ -48,11 +54,15 @@ export default function Panels(props) {
             })
         }
 
+        let special = []
         if (panel.special !== null) {
+            console.info('special is deprecated.  Add this to special section in the panel.')
             special.push(<SpecialApp {...panel.special} functions={functions} key={'special'} />)
         }
 
+        let postContent = []
         if (panel.postContent !== null) {
+            console.info('postContent is deprecated.  Add this to html or text section in the panel.')
             postContent = panel.postContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
                     return renderExternalContent(externalContent[name], functions)
@@ -70,7 +80,7 @@ export default function Panels(props) {
         )
     })
 
-    if (singleForm) {
+    if (singleForm && Object.keys(panels).length > 1) {
         let form = props.forms[Object.keys(props.forms)[0]]
         let warning = null
         if (!hideSingleFormWarning) {
@@ -114,24 +124,6 @@ Panels.propTypes = {
     selectedIndex: PropTypes.number.isRequired,
     singleForm: PropTypes.bool.isRequired,
     hideSingleFormWarning: PropTypes.bool.isRequired,
-}
-
-function renderPanelContent(panel, props){
-    if (Object.keys(panel.pagination).length > 0) {
-        return (<PaginationApp {...panel.pagination} functions={props.functions} />)
-    }
-
-    if (null !== panel.content){
-        return Parser(panel.content)
-    }
-    let form = props.forms[panel.name]
-    if (typeof form === 'undefined')
-        form = props.forms[Object.keys(props.forms)[0]]
-
-    return <FormApp
-        {...props}
-        formName={panel.name}
-        form={form} />
 }
 
 function renderExternalContent(data,functions){

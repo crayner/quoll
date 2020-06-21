@@ -1,0 +1,121 @@
+<?php
+/**
+ * Created by PhpStorm.
+ *
+ * Quoll
+ * (c) 2020 Craig Rayner <craig@craigrayner.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * User: craig
+ * Date: 17/06/2020
+ * Time: 12:23
+ */
+namespace App\Modules\RollGroup\Controller;
+
+use App\Container\ContainerManager;
+use App\Controller\AbstractPageController;
+use App\Modules\People\Entity\Person;
+use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\RollGroup\Form\DetailStudentSortType;
+use App\Modules\RollGroup\Pagination\RollGroupListPagination;
+use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Security\Util\SecurityHelper;
+use App\Provider\ProviderFactory;
+use App\Twig\PageHeader;
+use App\Twig\Sidebar\Photo;
+use App\Twig\SidebarContent;
+use App\Util\TranslationHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Class ViewController
+ * @package App\Modules\RollGroup\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
+class ViewController extends AbstractPageController
+{
+    /**
+     * list
+     * @param RollGroupListPagination $pagination
+     * @return JsonResponse
+     * @Route("/roll/group/list/",name="roll_group_list")
+     * @Route("/roll/group/list/",name="roll_group_catalogue")
+     * @Route("/roll/group/list/",name="report_generate")
+     * @IsGranted("ROLE_ROUTE")
+     * 17/06/2020 12:30
+     */
+    public function list(RollGroupListPagination $pagination)
+    {
+        $academicYear = AcademicYearHelper::getCurrentAcademicYear();
+        $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['academicYear' => $academicYear],['name' => 'ASC']);
+
+        $pagination->setCurrentUser($this->getUser())
+            ->setContent($rollGroups);
+
+        $pageHeader = new PageHeader('Roll Groups');
+        $pageHeader->setContent(TranslationHelper::translate('This page shows all roll groups in the current academic year.', [], 'Roll Group'))
+        ->setContentAttr(['className' => 'info']);
+        return $this->getPageManager()
+            ->setPageHeader($pageHeader)
+            ->createBreadcrumbs('Roll Groups')
+            ->render(['pagination' => $pagination->toArray()]);
+    }
+
+    /**
+     * detail
+     * @param RollGroup $rollGroup
+     * @param SidebarContent $sidebar
+     * @param ContainerManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/roll/group/{rollGroup}/detail/",name="roll_group_detail")
+     * @IsGranted("ROLE_ROUTE")
+     * 17/06/2020 12:39
+     */
+    public function detail(RollGroup $rollGroup,SidebarContent $sidebar, ContainerManager $manager)
+    {
+        if ($rollGroup->getTutor()) {
+            $image = new Photo($rollGroup->getTutor(), 'getImage240', 200, 'max200 user');
+            $sidebar->addContent($image);
+        }
+
+        $canPrint = SecurityHelper::isActionAccessible('report_students_roll_group_print');
+
+        $canViewStudents = $this->isGranted('ROLE_ROLL_GROUP', $rollGroup);
+        $this->isGranted('ROLE_STUDENT_PROFILE');
+
+        $sortBy = $this->getRequest()->request->has('detail_student_sort') ? $this->getRequest()->request->get('detail_student_sort')['sortBy'] : 'rollOrder';
+
+        $form = $this->createForm(DetailStudentSortType::class, null,
+            [
+                'action' => $this->generateUrl('roll_group_detail', ['rollGroup' => $rollGroup->getId()])
+            ]
+        );
+        $form->handleRequest($this->getRequest());
+
+        $manager
+            ->setContent($this->renderView('roll_group/details.html.twig',
+                [
+                    'rollGroup' => $rollGroup,
+                    'staffView' => SecurityHelper::isActionAccessible('staff_view_details'),
+                    'sortBy' => $sortBy,
+                    'form' => $form->createView(),
+                    'canPrint' => $canPrint,
+                    'canViewStudents' => $canViewStudents,
+                    'students' => ProviderFactory::getRepository(Person::class)->findStudentsByRollGroup($rollGroup, $sortBy),
+                ]
+            )
+        );
+
+        if ($canViewStudents) {
+            $manager->singlePanel($form->createView());
+        }
+
+        return $this->getPageManager()
+            ->createBreadcrumbs('Roll Groups')
+            ->render(['containers' => $manager->getBuiltContainers()]);
+    }
+}

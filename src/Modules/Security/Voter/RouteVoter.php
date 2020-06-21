@@ -12,26 +12,22 @@
  * Date: 18/04/2020
  * Time: 12:37
  */
-
 namespace App\Modules\Security\Voter;
 
-use App\Modules\Security\Exception\RoleRouteException;
 use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class RouteVoter
  * @package App\Modules\Security\Voter
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class RouteVoter extends RoleHierarchyVoter
 {
@@ -46,7 +42,7 @@ class RouteVoter extends RoleHierarchyVoter
     private $stack;
 
     /**
-     * GibbonVoter constructor.
+     * RouteVoter constructor.
      * @param LoggerInterface $logger
      * @param RequestStack $stack
      * @param RoleHierarchyInterface $roleHierarchy
@@ -116,5 +112,4 @@ class RouteVoter extends RoleHierarchyVoter
             $this->request = $this->stack->getCurrentRequest();
         return $this->request;
     }
-
 }

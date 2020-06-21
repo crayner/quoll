@@ -17,7 +17,7 @@ namespace App\Modules\System\Form;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Manager\Entity\Language;
+use App\Manager\Hidden\Language;
 use App\Modules\System\Entity\I18n;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -15,12 +15,14 @@
 namespace App\Manager;
 
 use App\Exception\MissingModuleException;
-use App\Manager\Entity\BreadCrumbs;
-use App\Manager\Entity\HeaderManager;
 use App\Manager\Traits\IPTrait;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Module;
+use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
@@ -31,15 +33,11 @@ use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
+use App\Util\TranslationHelper;
+use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
-use App\Modules\System\Util\LocaleHelper;
-use App\Util\TranslationHelper;
-use App\Util\UrlGeneratorHelper;
-use App\Modules\System\Entity\Action;
-use App\Modules\System\Entity\Module;
-use App\Modules\Security\Util\SecurityHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -796,7 +794,7 @@ class PageManager
      */
     private function setModuleMenu(): PageManager
     {
-        if (!$this->getModule())
+        if (!$this->getModule() || !$this->getAction() || !$this->getAction()->isMenuShow())
             return $this;
 
         $this->getModuleMenu()->setRequest($this->getRequest())->setChecker($this->getChecker())->execute();

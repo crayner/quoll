@@ -161,7 +161,7 @@ class PaginationFilter
         $result = (array) $this;
         $x = [];
         foreach($result as $q=>$w)
-            $x[str_replace("\x00App\Manager\Entity\PaginationFilter\x00", '', $q)] = $w;
+            $x[str_replace("\x00App\Manager\Hidden\PaginationFilter\x00", '', $q)] = $w;
         if (is_array($x['label']))
             $x['label'] = TranslationHelper::translate($x['label'][0],$x['label'][1],$x['label'][2]);
         else

@@ -342,11 +342,4 @@ class PeopleController extends AbstractPageController
         return $this->getPageManager()->createBreadcrumbs('Reset Password')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
-
-    /**
-     * stuff
-     * @Route("/people/settings/", name="people_settings")
-     */
-    public function stuff(){}
-
 }

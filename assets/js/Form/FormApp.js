@@ -67,7 +67,6 @@ export default function FormApp(props) {
             </section>)
         }
 
-
         return (<form
                     action={form.action}
                     id={form.id}

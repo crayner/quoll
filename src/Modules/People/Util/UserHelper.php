@@ -234,24 +234,6 @@ class UserHelper
     }
 
     /**
-     * @var array
-     */
-    private static $childrenOfParent;
-
-    /**
-     * getChildrenOfParent
-     * @return array
-     * @throws \Exception
-     */
-    public static function getChildrenOfParent(Person $person = null): array
-    {
-        if (! empty(self::$childrenOfParent))
-            return self::$childrenOfParent;
-        self::$provider->setEntity($person ?: self::getCurrentUser());
-        return self::$childrenOfParent = self::$provider->getChildrenOfParent();
-    }
-
-    /**
      * getStaffRollGroups
      * @param string $returnStyle
      * @return array

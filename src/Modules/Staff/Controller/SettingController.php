@@ -17,6 +17,7 @@ namespace App\Modules\Staff\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Staff\Entity\StaffAbsenceType;
 use App\Modules\Staff\Form\StaffSettingsType;
@@ -71,16 +72,19 @@ class SettingController extends AbstractPageController
 
         }
 
-        $container = new Container();
-        $panel = new Panel('List');
+        $container = new Container($tabName);
         $content =  ProviderFactory::getRepository(StaffAbsenceType::class)->findBy([], ['sequenceNumber' => 'ASC']);
         $pagination->setContent($content)->setDraggableRoute('staff_absence_type_sort')
-            ->setPreContent('<h3>'.TranslationHelper::translate('Staff Absence Types').'</h3>')
             ->setAddElementRoute($this->generateUrl('staff_absence_type_add'))
         ;
-        $panel->setPagination($pagination);
+        $section = new Section('html','<h3>'.TranslationHelper::translate('Staff Absence Types').'</h3>');
+
+        $panel = new Panel('List', 'Staff', $section);
+        $section = new Section('pagination', $pagination);
+        $panel->addSection($section);
         $container->addPanel($panel);
-        $panel = new Panel('Settings');
+        $section = new Section('form','Settings');
+        $panel = new Panel('Settings', 'Staff', $section);
         $container->addForm('Settings', $form->createView())->addPanel($panel);
         $manager->addContainer($container);
 

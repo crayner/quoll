@@ -17,11 +17,13 @@ namespace App\Container;
 
 use App\Manager\PaginationInterface;
 use App\Manager\SpecialInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Psr\Log\NullLogger;
 
 /**
  * Class Panel
  * @package App\Container
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class Panel
 {
@@ -42,6 +44,7 @@ class Panel
 
     /**
      * @var string
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $content;
 
@@ -57,33 +60,46 @@ class Panel
 
     /**
      * @var array|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $preContent;
 
     /**
      * @var array|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $postContent;
 
     /**
      * @var PaginationInterface
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $pagination;
 
     /**
      * @var SpecialInterface|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $special;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $sections;
 
     /**
      * Panel constructor.
      * @param null|string $name
      * @param string|null $translationDomain
      */
-    public function __construct(?string $name = null, ?string $translationDomain = null)
+    public function __construct(?string $name = null, ?string $translationDomain = null, ?Section $section = null)
     {
         $this->setName($name);
         $this->setTranslationDomain($translationDomain);
+        $this->setSections(new ArrayCollection());
+        if (null !== $section) {
+            $this->addSection($section);
+        }
     }
 
     /**
@@ -168,6 +184,7 @@ class Panel
             'postContent' => $this->getPostContent(),
             'pagination' => $this->getPagination() ? $this->getPagination()->toArray() : [],
             'special' => $this->getSpecial() ? $this->getSpecial()->toArray() : null,
+            'sections' => $this->sectionsToArray(),
         ];
 
         return $result;
@@ -175,9 +192,11 @@ class Panel
 
     /**
      * @return null|string
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     public function getContent(): ?string
     {
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         return $this->content;
     }
 
@@ -186,10 +205,14 @@ class Panel
      *
      * @param string $content
      * @param string|null $contentLoaderTarget
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return Panel
      */
     public function setContent(string $content, ?string $contentLoaderTarget = null): Panel
     {
+        $section = new Section('postLoad', $content);
+        $this->addSection($section);
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         if (is_string($contentLoaderTarget))
             $this->setPreContent([$contentLoaderTarget]);
 
@@ -239,9 +262,11 @@ class Panel
 
     /**
      * @return array|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     public function getPreContent(): ?array
     {
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         return $this->preContent;
     }
 
@@ -249,19 +274,25 @@ class Panel
      * PreContent.
      * Inject the names of containers for content.
      * @param array|null $preContent
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return Panel
      */
     public function setPreContent(?array $preContent): Panel
     {
+        $section = new Section('html', $preContent);
+        $this->addSection($section);
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         $this->preContent = $preContent;
         return $this;
     }
 
     /**
      * @return array|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     public function getPostContent(): ?array
     {
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         return $this->postContent;
     }
 
@@ -269,20 +300,26 @@ class Panel
      * PostContent.
      * Inject the names of containers for content.
      * @param array|null $postContent
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return Panel
      */
     public function setPostContent(?array $postContent): Panel
     {
+        $section = new Section('html', $postContent);
+        $this->addSection($section);
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         $this->postContent = $postContent;
         return $this;
     }
 
     /**
      * getPagination
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return PaginationInterface|null
      */
     public function getPagination(): ?PaginationInterface
     {
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         return $this->pagination;
     }
 
@@ -290,10 +327,13 @@ class Panel
      * Pagination.
      *
      * @param PaginationInterface $pagination
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return Panel
      */
     public function setPagination(PaginationInterface $pagination): Panel
     {
+        $section = new Section('pagination', $pagination);
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         $this->content = null;
         $this->pagination = $pagination;
         return $this;
@@ -301,9 +341,11 @@ class Panel
 
     /**
      * @return SpecialInterface|null
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     public function getSpecial(): ?SpecialInterface
     {
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         return $this->special;
     }
 
@@ -311,12 +353,69 @@ class Panel
      * Special.
      *
      * @param SpecialInterface|null $special
+     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      * @return Panel
      */
     public function setSpecial(?SpecialInterface $special): Panel
     {
+        $section = new Section('special', $special);
+        $this->addSection($section);
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         $this->special = $special;
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getSections(): ArrayCollection
+    {
+        if (null === $this->sections) {
+            $this->sections = new ArrayCollection();
+        }
+        return $this->sections;
+    }
+
+    /**
+     * @param ArrayCollection $sections
+     * @return Panel
+     */
+    public function setSections(ArrayCollection $sections): Panel
+    {
+        $this->sections = $sections;
+        return $this;
+    }
+
+    /**
+     * addSection
+     * @param Section $section
+     * @return $this
+     * 20/06/2020 10:24
+     */
+    public function addSection(Section $section): Panel
+    {
+        if ($this->getSections()->contains($section)) {
+            return $this;
+        }
+
+        $this->sections->add($section);
+
+        return $this;
+    }
+
+    /**
+     * sectionsToArray
+     * @return array
+     * @throws \Exception
+     * 20/06/2020 10:41
+     */
+    private function sectionsToArray(): array
+    {
+        $result = [];
+        foreach($this->getSections()->getIterator() as $section) {
+            $result[] = $section->toArray();
+        }
+
+        return $result;
+    }
 }

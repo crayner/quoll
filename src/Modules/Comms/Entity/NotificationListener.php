@@ -83,18 +83,18 @@ class NotificationListener extends AbstractEntity
     private $scopeIdentifier;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * @param string|null $id
      * @return NotificationListener
      */
-    public function setId(?int $id): NotificationListener
+    public function setId(?string $id): NotificationListener
     {
         $this->id = $id;
         return $this;

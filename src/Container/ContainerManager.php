@@ -12,7 +12,6 @@
  * Date: 19/08/2019
  * Time: 11:19
  */
-
 namespace App\Container;
 
 use App\Manager\AbstractPaginationManager;
@@ -27,6 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class ContainerManager
  * @package App\Container
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ContainerManager
 {
@@ -263,19 +263,24 @@ class ContainerManager
      * @param string|null $application
      * @param string $target
      * @param string $domain
+     * @return $this
+     * 20/06/2020 10:49
      */
-    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'messages')
+    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'messages'): ContainerManager
     {
         $container = new Container();
         $container->addForm('single', $view);
         $panel = new Panel('single');
-        $container->addPanel($panel)->setTarget($target)->setApplication($application);
+        $section = new Section('form', 'single');
+        $container->addPanel($panel->addSection($section))->setTarget($target)->setApplication($application);
         $this->setTranslationDomain($domain)->addContainer($container);
+        return $this;
     }
 
     /**
      * setContent
      * @param string $content
+     * @param string $domain
      */
     public function setContent(string $content, string $domain = 'messages')
     {

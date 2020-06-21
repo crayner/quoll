@@ -291,7 +291,7 @@ class PaginationColumn
         $result = (array) $this;
         $x = [];
         foreach($result as $q=>$w)
-            $x[str_replace("\x00App\Manager\Entity\PaginationColumn\x00", '', $q)] = $w;
+            $x[str_replace("\x00App\Manager\Hidden\PaginationColumn\x00", '', $q)] = $w;
         return $x;
     }
 

@@ -142,7 +142,7 @@ class PlannerEntry extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=10,options={"Default": ""})
+     * @ORM\Column(length=10,options={"default": ""})
      */
     private $homeworkSubmissionType;
 
@@ -877,7 +877,7 @@ class PlannerEntry extends AbstractEntity
                     `homework_submission` varchar(1) NOT NULL,
                     `homework_submission_date_open` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `homework_submission_drafts` varchar(1) NOT NULL DEFAULT 'N',
-                    `homework_submission_type` varchar(10) NOT NULL,
+                    `homework_submission_type` varchar(10) NOT NULL DEFAULT '',
                     `homework_submission_required` varchar(10) NOT NULL DEFAULT 'Optional',
                     `homework_crowd_assess` varchar(1) NOT NULL DEFAULT 'N',
                     `homework_crowd_assess_other_teachers_read` varchar(1) NOT NULL DEFAULT 'N',

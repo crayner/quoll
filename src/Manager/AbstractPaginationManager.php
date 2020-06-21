@@ -14,7 +14,7 @@
  */
 namespace App\Manager;
 
-use App\Manager\Entity\PaginationRow;
+use App\Manager\Hidden\PaginationRow;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;

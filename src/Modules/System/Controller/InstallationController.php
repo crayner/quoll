@@ -20,7 +20,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Controller\AbstractPageController;
 use App\Form\Type\SubmitOnlyType;
-use App\Manager\Entity\Language;
+use App\Manager\Hidden\Language;
 use App\Manager\PageManager;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Form\Entity\MySQLSettings;

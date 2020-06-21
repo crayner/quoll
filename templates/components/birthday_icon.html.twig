@@ -1,0 +1,10 @@
+{% trans_default_domain 'People' %}
+
+{% if person is defined %}
+    {% set birthdayNews = person.birthdayIcon %}
+    {% if birthdayNews is iterable %}
+        <div class="{{ birthdayNews.colour }}" title="{{ 'birthday_icon'|trans(birthdayNews.params) }}" style="margin-top: 2px;">
+            <span class="fas fa-birthday-cake fa-fw fa-2x"></span>
+        </div>
+    {% endif %}
+{% endif %}

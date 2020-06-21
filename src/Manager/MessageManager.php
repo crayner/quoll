@@ -1,7 +1,7 @@
 <?php
 namespace App\Manager;
 
-use App\Manager\Entity\Message;
+use App\Manager\Hidden\Message;
 use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

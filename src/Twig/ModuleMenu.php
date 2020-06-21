@@ -70,6 +70,9 @@ class ModuleMenu implements SidebarContentInterface
     public function execute(): ModuleMenu
     {
         $request = $this->getRequest();
+        if (false === $request->attributes->has('action') || false === $request->attributes->get('action') || false === $request->attributes->get('action')->isMenuShow()) {
+            return $this;
+        }
 
         if ($request->attributes->has('module') && false !== $request->attributes->get('module'))
         {

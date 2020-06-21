@@ -66,6 +66,15 @@ class Container
     private $contentLoader;
 
     /**
+     * Container constructor.
+     * @param string|null $selectedPanel
+     */
+    public function __construct(?string $selectedPanel = null)
+    {
+        $this->setSelectedPanel($selectedPanel);
+    }
+
+    /**
      * @return string
      */
     public function getTarget(): string
@@ -177,6 +186,7 @@ class Container
                 'name',
                 'label',
                 'index',
+                'sections',
             ]
         );
 
@@ -201,6 +211,7 @@ class Container
         $resolver->setAllowedTypes('postContent', ['array', 'null']);
         $resolver->setAllowedTypes('pagination', ['array', 'null']);
         $resolver->setAllowedTypes('special', ['array', 'null']);
+        $resolver->setAllowedTypes('sections', ['array']);
 
         $resolver->resolve($panel->toArray());
 

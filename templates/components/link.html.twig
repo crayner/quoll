@@ -1,0 +1,22 @@
+{# do NO translations here #}
+{% if url|length is same as(0) %}
+    {{ text }}
+{% else %}
+    {% if text|length is same as(0) %}
+        {% set text = url %}
+    {% endif %}
+    {% if wrapper is defined and wrapper is iterable %}
+        <{{ wrapper['type'] }} class="{{ wrapper['class']|default('') }}" style="{{ wrapper['style']|default('') }}">{{ ' . ' }}
+    {% endif %}
+    {% if absoluteURL in url or target|default('') is same as('_blank') %}
+        {% set attr = attr ~ ' target="_blank"' %}
+        {% set url = url|trim('./', 'left') %}
+        {% set url = url|replace({absoluteURL: ''}) %}
+        <a href="{{ absoluteURL }}/{{ url }}" {{ attr|raw }}>{{ text }}</a>
+    {% else %}
+        <a href="{{ url }}" {{ attr|raw }}>{{ text }}</a>
+    {% endif %}
+    {% if wrapper is defined and wrapper is iterable %}
+        </{{ wrapper['type'] }}>
+    {% endif %}
+{% endif %}

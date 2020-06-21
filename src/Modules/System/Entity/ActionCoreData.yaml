@@ -413,7 +413,7 @@
     name: 'Home'
     category: 'Home'
     description: 'The Home Page'
-    route_list: ['home']
+    route_list: ['home','unauthenticated','personal_page']
     entry_route: 'home'
     entry_sidebar: 'N'
     menu_show: 'N'

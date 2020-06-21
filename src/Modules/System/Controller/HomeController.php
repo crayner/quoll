@@ -15,6 +15,7 @@
 
 namespace App\Modules\System\Controller;
 
+use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
@@ -24,6 +25,7 @@ use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -88,12 +90,10 @@ class HomeController extends AbstractPageController
     /**
      * legacy
      * @Route("/personal/page/", name="personal_page")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function personalPage()
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
-            return $this->redirectToRoute('home');
-
         return $this->getPageManager()->render(
             [
                 'content' => '<h3 key="personal_page">Personal Page</h3>',
