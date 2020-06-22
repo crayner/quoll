@@ -24,6 +24,8 @@ parameters:
             - ROLE_USER
         ROLE_LIBRARIAN:
             - ROLE_STAFF
+        ROLE_MEDICAL:
+            - ROLE_STAFF
         ROLE_FINANCE:
             - ROLE_STAFF
         ROLE_TEACHER:

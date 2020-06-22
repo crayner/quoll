@@ -157,16 +157,6 @@ class PageManager
     private $popup = false;
 
     /**
-     * @var Action|null
-     */
-    private $action;
-
-    /**
-     * @var Module|null
-     */
-    private $module;
-
-    /**
      * @var ModuleMenu
      */
     private $moduleMenu;
@@ -180,6 +170,11 @@ class PageManager
      * @var ArrayCollection
      */
     private $pageStyles;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $pageScripts;
 
     /**
      * PageManager constructor.
@@ -579,8 +574,8 @@ class PageManager
         $controller = explode('\\', $this->getRequest()->attributes->get('_controller'));
         $module = null;
         if (in_array($method[1], ['urlRedirectAction'])) {
-            $this->module = null;
-            $this->action = null;
+            $module1 = null;
+            $action = null;
             return;
         } else if ($controller[0] === 'App' && $controller[1] === 'Modules' && $controller[3] === 'Controller')
             $module = $this->getModuleName($controller[2]);
@@ -836,9 +831,10 @@ class PageManager
     }
 
     /**
-     * addPageScript
+     * addPageStyle
      * @param string $style
-     * @return PageManager
+     * @return $this
+     * 22/06/2020 11:52
      */
     public function addPageStyle(string $style): PageManager
     {
@@ -873,5 +869,49 @@ class PageManager
     private function getModuleName(string $name): string
     {
         return trim(implode(' ' , preg_split('/(?=[A-Z])/',$name)));
+    }
+
+    /**
+     * getPageScripts
+     * @return ArrayCollection
+     * 22/06/2020 11:54
+     */
+    public function getPageScripts(): ArrayCollection
+    {
+        if (null === $this->pageScripts) {
+            $this->pageScripts = new ArrayCollection();
+        }
+        return $this->pageScripts;
+    }
+
+    /**
+     * @param ArrayCollection $pageScripts
+     * @return PageManager
+     */
+    public function setPageScripts(ArrayCollection $pageScripts): PageManager
+    {
+        $this->pageScripts = $pageScripts;
+        return $this;
+    }
+
+    /**
+     * addPageScript
+     * @param string $script
+     * @param array $options
+     * @return $this
+     * 22/06/2020 11:56
+     */
+    public function addPageScript(string $script, array $options = []): PageManager
+    {
+        $object = new \stdClass();
+        $object->script = $script;
+        $object->options = $options;
+        if ($this->getPageScripts()->contains($object)) {
+            return $this;
+        }
+
+        $this->pageScripts->add($object);
+
+        return $this;
     }
 }

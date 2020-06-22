@@ -51,6 +51,9 @@
                     {{ encore_entry_script_tags('notificationTray') }}
                 {% endif %}
             {% endif %}
+            {% for script in page.pageScripts %}
+                {% include script.script with script.options %}
+            {% endfor %}
         </body>
     </html>
 {% endblock full_document %}

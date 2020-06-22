@@ -17,7 +17,7 @@ export default function Footer(props) {
             <span className="text-xs">
                 {details.translations['Created under the']} <a className="link-white" target="_blank"
                                      href='https://opensource.org/licenses/MIT'>MIT</a> {details.translations['licence']},&nbsp;
-                {details.translations['from a fork of']} <a className="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
+                {details.translations['from a fork of']} <a className="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.01</a>
                     <br />
                 {details.footerThemeAuthor}<br />
              </span>

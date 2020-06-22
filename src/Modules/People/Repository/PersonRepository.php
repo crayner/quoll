@@ -562,4 +562,24 @@ class PersonRepository extends ServiceEntityRepository
 
         return $this;
     }
+
+    /**
+     * findAllStudents
+     * @param string $status
+     * @return array
+     * 22/06/2020 11:17
+     */
+    public function findAllStudents(string $status = 'Full'): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.securityRoles LIKE :role')
+            ->andWhere('p.status LIKE :status')
+            ->andWhere('(p.dateStart <= :today OR p.dateStart IS NULL)')
+            ->andWhere('(p.dateEnd >= :today OR p.dateEnd IS NULL)')
+            ->setParameters(['role' => '%ROLE_STUDENT%', 'status' => '%'.$status.'%', 'today' => new \DateTimeImmutable('now')])
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

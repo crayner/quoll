@@ -45,7 +45,7 @@ class MarkBookEntryRepository extends ServiceEntityRepository
     public function findAttainmentOrEffortConcerns(Person $person, AcademicYear $schoolYear)
     {
         return $this->createQueryBuilder('me')
-            ->join('me.markbookColumn', 'mc')
+            ->join('me.markBookColumn', 'mc')
             ->join('mc.courseClass', 'cc')
             ->join('cc.course', 'c')
             ->where('me.student = :person')
@@ -57,8 +57,8 @@ class MarkBookEntryRepository extends ServiceEntityRepository
             ->setParameter('person', $person)
             ->setParameter('yes', 'Y')
             ->setParameter('academicYear', $schoolYear)
-            ->setParameter('today', new \DateTime(date('Y-m-d'))) // today
-            ->setParameter('date', new \DateTime(date('Y-m-d', strtotime('-60 day')))) // 60 days ago
+            ->setParameter('today', new \DateTimeImmutable(date('Y-m-d'))) // today
+            ->setParameter('date', new \DateTimeImmutable(date('Y-m-d', strtotime('-60 day')))) // 60 days ago
             ->getQuery()
             ->getResult();
     }

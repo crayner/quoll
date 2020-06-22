@@ -8,5 +8,5 @@
     <div class="text-center">
         <img title="{{ photo.title }}" class="{{ photo.class }}" src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="{{ asset(photo.fileName) }}" />
     </div>
-    {{ addPageScript('components/photo_loader.html.twig', []) }}
+    {% set x = addPageScript('components/photo_loader.html.twig', []) %}
 {% endif %}

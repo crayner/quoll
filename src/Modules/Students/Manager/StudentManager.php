@@ -14,10 +14,15 @@
  */
 namespace App\Modules\Students\Manager;
 
+use App\Modules\Behaviour\Entity\Behaviour;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
 use App\Modules\MarkBook\Entity\MarkBookEntry;
+use App\Modules\Medical\Entity\PersonMedical;
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\AlertLevel;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Voter\StudentProfileVoter;
+use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,7 +30,7 @@ class StudentManager
 {
     /**
      * getAlertBar
-     * @param Person $person
+     * @param Person $student
      * @param string $divExtras
      * @param bool $div
      * @param bool $large
@@ -37,6 +42,7 @@ class StudentManager
         $output = '';
         $alerts = [];
         $privacy = $student->getPrivacy();
+
         if (StudentProfileVoter::getStudentProfileAccess() === 'Staff' && StudentProfileVoter::isStudentAccessible($student)) {
 
             // Individual Needs
@@ -58,10 +64,10 @@ class StudentManager
             }
 
             // Academic
-            $alertLevelID = 0;
+            $alertName = '';
             $alertThresholdText = '';
 
-            $results = ProviderFactory::getRepository(MarkBookEntry::class)->findAttainmentOrEffortConcerns($person, $this->getSession()->get('AcademicYear'));
+            $results = ProviderFactory::getRepository(MarkBookEntry::class)->findAttainmentOrEffortConcerns($student, AcademicYearHelper::getCurrentAcademicYear());
 
             $settingProvider = ProviderFactory::create(Setting::class);
             $academicAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertLowThreshold');
@@ -69,18 +75,18 @@ class StudentManager
             $academicAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertHighThreshold');
 
             if (count($results) >= $academicAlertHighThreshold) {
-                $alertLevelID = 001;
+                $alertName = 'Low';
                 $alertThresholdParams = ['low' => $academicAlertHighThreshold];
             } elseif (count($results) >= $academicAlertMediumThreshold) {
-                $alertLevelID = 002;
+                $alertName = 'Medium';
                 $alertThresholdParams = ['high' => $academicAlertHighThreshold - 1, 'low' => $academicAlertMediumThreshold];
             } elseif (count($results) >= $academicAlertLowThreshold) {
-                $alertLevelID = 003;
+                $alertName = "High";
                 $alertThresholdParams = ['high' => $academicAlertMediumThreshold - 1, 'low' => $academicAlertLowThreshold];
             }
-            if ($alertLevelID != '') {
-                if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
-                    $alerts[] = $this->resolveAlert([
+            if ($alertName !== '') {
+                if ($alert = ProviderFactory::getRepository(AlertLevel::class)->findByName($alertName)) {
+                    $alerts[] = self::resolveAlert([
                         'highestLevel'    => $alert->getName(),
                         'highestColour'   => $alert->getColour(),
                         'highestColourBG' => $alert->getColourBG(),
@@ -88,51 +94,50 @@ class StudentManager
                         'title'           => 'concerns_alert_level', // 'Student has a %name% alert for academic concern over the past 60 days.',
                         'title_params'    => array_merge(['name' => $alert->getName(), 'highest_level' => $alert->getName()],  $alertThresholdParams),
                         'translation_domain'    => 'kookaburra',
-                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Markbook&filter='.$this->getSession()->get('AcademicYear')->getId(),
+                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$student->getId().'&subpage=MarkBook&filter='.AcademicYearHelper::getCurrentAcademicYear()->getId(),
                     ]);
                 }
             }
 
             // Behaviour
-            $alertLevelID = '';
+            $alertName = '';
             $alertThresholdText = '';
 
-            $results = ProviderFactory::getRepository(Behaviour::class)->findNegativeInLast60Days($person);
+            $results = ProviderFactory::getRepository(Behaviour::class)->findNegativeInLast60Days($student);
 
             $behaviourAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertLowThreshold');
             $behaviourAlertMediumThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertMediumThreshold');
             $behaviourAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertHighThreshold');
 
             if (count($results) >= $behaviourAlertHighThreshold) {
-                $alertLevelID = 001;
+                $alertName = 'Low';
                 $alertThresholdParams = ['low' => $behaviourAlertHighThreshold];
             } elseif (count($results) >= $behaviourAlertMediumThreshold) {
-                $alertLevelID = 002;
+                $alertName = 'Medium';
                 $alertThresholdParams = ['high' => $behaviourAlertHighThreshold - 1, 'low' => $behaviourAlertMediumThreshold];
             } elseif (count($results) >= $behaviourAlertLowThreshold) {
-                $alertLevelID = 003;
+                $alertName = 'High';
                 $alertThresholdParams = ['high' => $behaviourAlertMediumThreshold - 1, 'low' => $behaviourAlertLowThreshold];
             }
 
-            if ($alertLevelID != '') {
-                if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
-                    $alerts[] = $this->resolveAlert([
+            if ($alertName !== '') {
+                if ($alert = ProviderFactory::getRepository(AlertLevel::class)->findByName($alertName)) {
+                    $alerts[] = self::resolveAlert([
                         'highestLevel'    => $alert->getName(),
                         'highestColour'   => $alert->getColour(),
                         'highestColourBG' => $alert->getColourBG(),
                         'tag'             => 'B',
                         'title'           => 'behaviour_alert_level', // 'Student has a %name% alert for academic concern over the past 60 days.',
                         'title_params'    => array_merge(['name' => $alert->getName(), 'highest_level' => $alert->getName()],  $alertThresholdParams),
-                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Behaviour',
+                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$student->getId().'&subpage=Behaviour',
                         'translation_domain' => 'messages',
                     ]);
                 }
             }
 
             // Medical
-            if ($alert = ProviderFactory::getRepository(PersonMedical::class)->findHighestMedicalRisk($person)) {
-                dd($alert);
-                $alerts[] = $this->resolveAlert([
+            if ($alert = ProviderFactory::getRepository(PersonMedical::class)->findHighestMedicalRisk($student)) {
+                $alerts[] = self::resolveAlert([
                     'highestLevel'    => $alert[1],
                     'highestColour'   => $alert[3],
                     'highestColourBG' => $alert[4],
@@ -140,15 +145,15 @@ class StudentManager
                     'title'           => 'medical_alert_level',
                     'title_params'    => ['name' => $alert->getName()],
                     'translation_domain' => 'messages',
-                    'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Medical',
+                    'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$student->getId().'&subpage=Medical',
                 ]);
             }
 
             // Privacy
-            $privacySetting = $settingProvider->getSettingByScopeAsBoolean('User Admin', 'privacy');
+            $privacySetting = $settingProvider->getSettingByScopeAsBoolean('People', 'privacy');
             if ($privacySetting && $privacy !== '' && null !== $privacy) {
                 if ($alert = ProviderFactory::getRepository(AlertLevel::class)->find(1)) {
-                    $alerts[] = $this->resolveAlert([
+                    $alerts[] = self::resolveAlert([
                         'highestLevel'    => $alert->getName(),
                         'highestColour'   => $alert->getColour(),
                         'highestColourBG' => $alert->getColourBG(),
@@ -156,7 +161,7 @@ class StudentManager
                         'title'           => 'privacy_alert_level', // sprintf(__('Privacy is required: {oneString}'), $privacy),
                         'title_params'    => ['message' => $privacy],
                         'translation_domain' => 'messages',
-                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId(),
+                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$student->getId(),
                     ]);
                 }
             }
@@ -213,4 +218,17 @@ class StudentManager
         return $resolver->resolve($alert);
     }
 
+    /**
+     * getStudentsOfStaff
+     * @param Person $staff
+     * @return array
+     * 22/06/2020 11:14
+     */
+    public static function getStudentsOfStaff(Person $staff): array
+    {
+        if ($staff->isSystemAdmin() || $staff->isRegistrar() || $staff->isPrincipal()) {
+            return ProviderFactory::getRepository(Person::class)->findAllStudents();
+        }
+        return [];
+    }
 }

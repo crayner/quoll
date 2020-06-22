@@ -47,7 +47,7 @@ class INPersonDescriptorRepository extends ServiceEntityRepository
             ->join('i.alertLevel', 'al')
             ->where('i.person = :person')
             ->setParameter('person', $person)
-            ->orderBy('al.sequenceNumber', 'DESC')
+            ->orderBy('al.priority', 'DESC')
             ->getQuery()
             ->getResult();
     }
