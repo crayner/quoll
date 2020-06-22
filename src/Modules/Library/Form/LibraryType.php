@@ -2,7 +2,9 @@
 /**
  * Created by PhpStorm.
  *
- * Quoll
+  * Project: Kookaburra
+ * Build: Quoll
+ *
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -156,18 +158,7 @@ class LibraryType extends AbstractType
                     'entity' => $options['data'],
                 ]
             )
-            ->add('submit', SubmitType::class,
-                [
-                    'label' => '<span class="far fa-save fa-fw"></span>',
-                    'label_html' => true,
-                    'attr' => [
-                        'style' => 'float: right;',
-                        'title' => TranslationHelper::translate('Submit',[],'messages'),
-                        'class' => 'btn-gibbon',
-                    ],
-                    'translation_domain' => false,
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 

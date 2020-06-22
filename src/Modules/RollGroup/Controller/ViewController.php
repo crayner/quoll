@@ -2,7 +2,9 @@
 /**
  * Created by PhpStorm.
  *
- * Quoll
+  * Project: Kookaburra
+ * Build: Quoll
+ *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -29,6 +31,7 @@ use App\Twig\SidebarContent;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -43,9 +46,10 @@ class ViewController extends AbstractPageController
      * @param RollGroup $rollGroup
      * @param SidebarContent $sidebar
      * @param ContainerManager $manager
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/roll/group/{rollGroup}/detail/",name="roll_group_detail")
      * @IsGranted("ROLE_ROUTE")
+     * @todo This method is not finished.
      * 17/06/2020 12:39
      */
     public function detail(RollGroup $rollGroup,SidebarContent $sidebar, ContainerManager $manager)
