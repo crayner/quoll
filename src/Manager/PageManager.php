@@ -177,6 +177,11 @@ class PageManager
     private $pageScripts;
 
     /**
+     * @var string|null
+     */
+    private $title;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -371,6 +376,16 @@ class PageManager
     }
 
     /**
+     * @param string|null $url
+     * @return PageManager
+     */
+    public function setUrl(?string $url): PageManager
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
      * getFooter
      * @return array
      */
@@ -438,15 +453,26 @@ class PageManager
      */
     private function getTitle()
     {
-        $title = 'messages';
-        if ($this->getRequest()->attributes->has('_route_params')) {
-            $x = $this->getRequest()->attributes->get('_route_params');
-            if (!key_exists('module', $x))
-                return '';
-            $title = ucfirst($x['module']);
+        if (null === $this->title) {
+            $this->title = 'messages';
+            if ($this->getRequest()->attributes->has('_route_params')) {
+                $x = $this->getRequest()->attributes->get('_route_params');
+                if (!key_exists('module', $x))
+                    return '';
+                $this->title = ucfirst($x['module']);
+            }
         }
+        return TranslationHelper::translate($this->title, [], str_replace(' ', '', $this->title));
+    }
 
-        return TranslationHelper::translate($title, [], str_replace(' ', '', $title));
+    /**
+     * @param string|null $title
+     * @return PageManager
+     */
+    public function setTitle(?string $title): PageManager
+    {
+        $this->title = $title;
+        return $this;
     }
 
     /**

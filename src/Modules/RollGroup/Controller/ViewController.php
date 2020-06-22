@@ -39,33 +39,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewController extends AbstractPageController
 {
     /**
-     * list
-     * @param RollGroupListPagination $pagination
-     * @return JsonResponse
-     * @Route("/roll/group/list/",name="roll_group_list")
-     * @Route("/roll/group/list/",name="roll_group_catalogue")
-     * @Route("/roll/group/list/",name="report_generate")
-     * @IsGranted("ROLE_ROUTE")
-     * 17/06/2020 12:30
-     */
-    public function list(RollGroupListPagination $pagination)
-    {
-        $academicYear = AcademicYearHelper::getCurrentAcademicYear();
-        $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['academicYear' => $academicYear],['name' => 'ASC']);
-
-        $pagination->setCurrentUser($this->getUser())
-            ->setContent($rollGroups);
-
-        $pageHeader = new PageHeader('Roll Groups');
-        $pageHeader->setContent(TranslationHelper::translate('This page shows all roll groups in the current academic year.', [], 'Roll Group'))
-        ->setContentAttr(['className' => 'info']);
-        return $this->getPageManager()
-            ->setPageHeader($pageHeader)
-            ->createBreadcrumbs('Roll Groups')
-            ->render(['pagination' => $pagination->toArray()]);
-    }
-
-    /**
      * detail
      * @param RollGroup $rollGroup
      * @param SidebarContent $sidebar

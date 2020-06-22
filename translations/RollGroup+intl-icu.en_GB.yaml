@@ -8,3 +8,35 @@ Tutors: Tutors
 View Roll Groups: View Roll Groups
 View: View
 Website: Website
+Basic Information: Basic Information
+Educational Assistants: Educational Assistants
+Filters: Filters
+Location: Location
+Print: Print
+Show Confidential Data: Show Confidential Data
+Sort By: Sort By
+detailstudentsorttype:
+    sortby:
+        preferredname: Preferred Name
+        rollorder: Roll Order
+        surname: Surname
+2nd Educational Assistant: 2nd Educational Assistant
+2nd Tutor: 2nd Tutor
+3rd Educational Assistant: 3rd Educational Assistant
+3rd Tutor: 3rd Tutor
+Abbreviation: Abbreviation
+Academic Year: Academic Year
+Delete: Delete
+Edit: Edit
+Educational Assistant: Educational Assistant
+Main Tutor: Main Tutor
+Needs to be unique in the academic year.: Needs to be unique in the academic year.
+New Roll Group: New Roll Group
+Next Roll Group: Next Roll Group
+None: None
+Roll Group {rollGroup}: Roll Group {rollGroup}
+Sets student progression on rollover.: Sets student progression on rollover.
+Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
+Submit: Submit
+This value cannot be changed.: This value cannot be changed.
+Track Attendance: Track Attendance

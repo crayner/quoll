@@ -511,3 +511,12 @@ Assigned Roles: Assigned Roles
 Employment Details: {name}: Employment Details: {name}
 Employment: Employment
 Return: Return
+A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.: A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.
+A list of ethnicities available in system: A list of ethnicities available in system
+A list of nationalities available in system. If blank, system will default to list of countries: A list of nationalities available in system. If blank, system will default to list of countries
+A list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.: A list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.
+A list of reasons for departure from school. If blank, user can enter any text.: A list of reasons for departure from school. If blank, user can enter any text.
+A list of religions available in system: A list of religions available in system
+A list of residency status available in system. If blank, system will allow text input: A list of residency status available in system. If blank, system will allow text input
+Day Type Options: Day Type Options
+Privacy / Data Options: Privacy / Data Options

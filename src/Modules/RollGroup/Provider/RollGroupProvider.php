@@ -24,7 +24,6 @@ use App\Modules\RollGroup\Entity\RollGroup;
  */
 class RollGroupProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
@@ -37,6 +36,6 @@ class RollGroupProvider extends AbstractProvider
      */
     public function canDelete(RollGroup $roll): bool
     {
-        return $roll->getStudentCount() === 0;
+        return $roll->getStudentEnrolments()->count() === 0;
     }
 }

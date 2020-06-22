@@ -19,6 +19,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -548,16 +549,18 @@ class RollGroup extends AbstractEntity
      * toArray
      * @param string|null $name
      * @return array
+     * 22/06/2020 13:55
      */
     public function toArray(?string $name = null): array
     {
         return [
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'abbr' => $this->getAbbreviation(),
             'tutors' => $this->getFormatTutors(),
             'location' => $this->getFacilityName(),
             'website' => $this->getWebsite(),
-            'students' => $this->getStudentEnrolments()->count(),
+            'students' => $this->getStudentEnrolments()->count() ?: TranslationHelper::translate('None'),
             'canDelete' => $this->canDelete(),
         ];
     }

@@ -288,23 +288,13 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * findCurrentStaff
      * @return array
-     * @throws \Exception
+     * 22/06/2020 14:07
      */
     public function findCurrentStaff(): array
     {
-        $today = new \DateTime(date('Y-m-d'));
-        throw new \Exception('Fix this with search using roles.');
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameter('today', $today)
-            ->orderBy('p.surname')
-            ->addOrderBy('p.preferredName')
+        return $this->getStaffQueryBuilder()
             ->getQuery()
-            ->getResult();
-        ;
+            ->getResult();;
     }
 
     /**
@@ -534,11 +524,17 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
     {
+        $today = new \DateTimeImmutable(date('Y-m-d'));
         $this->getStaffSearch()
-            ->addParam('status', $status);
+            ->addParam('status', $status)
+            ->addParam('today', $today);
+
         return $this->createQueryBuilder('p')
             ->where('p.status = :status')
             ->andWhere($this->getWhere())
+            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
+            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+            ->setParameter('today', $today)
             ->setParameters($this->getParams())
             ->orderBy('p.surname')
             ->addOrderBy('p.firstName')

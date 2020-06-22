@@ -484,7 +484,7 @@
     name: 'View Roll Groups'
     category: 'Roll Groups'
     description: 'View a brief profile of roll groups in school.'
-    route_list: ['roll_group_list','roll_group_detail']
+    route_list: ['roll_group_list','roll_group_detail','roll_group_add','roll_group_edit','roll_group_delete']
     entry_route: 'roll_group_list'
     entry_sidebar: 'Y'
     menu_show: 'Y'
