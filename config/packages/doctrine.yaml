@@ -101,6 +101,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/MarkBook/Entity'
                 prefix: 'App\Modules\MarkBook\Entity'
                 alias: MarkBook
+            Medical:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Medical/Entity'
+                prefix: 'App\Modules\Medical\Entity'
+                alias: Medical
             People:
                 is_bundle: false
                 type: annotation
