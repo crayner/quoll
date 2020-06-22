@@ -50,6 +50,10 @@ export default function Widget(props) {
         widget_attr.type = 'button'
         widget_attr.style = {float: 'right'}
         widget_attr.className = 'btn-gibbon'
+        if (form.label_class === 'use_save_button') {
+            widget_attr.title = functions.translate('Submit')
+            form.label = '<span class="far fa-save fa-fw"></span>'
+        }
         widget_attr.onClick = (e) => functions.submitForm(e,form)
         return (
             <div {...wrapper_attr}>

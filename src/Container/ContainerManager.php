@@ -33,11 +33,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ContainerManager
 {
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var null|string
      */
     private $translationDomain;
@@ -69,12 +64,10 @@ class ContainerManager
 
     /**
      * ContainerManager constructor.
-     * @param TranslatorInterface $translator
      * @param RequestStack $stack
      */
-    public function __construct(TranslatorInterface $translator, RequestStack $stack)
+    public function __construct(RequestStack $stack)
     {
-        $this->translator = $translator;
         $this->stack = $stack;
 
         TranslationHelper::addTranslation('Errors on Tab', [], 'messages');
@@ -84,6 +77,7 @@ class ContainerManager
         TranslationHelper::addTranslation('Erase Content', [], 'messages');
         TranslationHelper::addTranslation('Yes/No', [], 'messages');
         TranslationHelper::addTranslation('Let me ponder your request', [], 'messages');
+        TranslationHelper::addTranslation('Submit', [], 'messages');
     }
 
     /**
@@ -209,7 +203,7 @@ class ContainerManager
         $containers = [];
         foreach($this->getContainers() as $target=>$container) {
             foreach($container['panels'] as $q=>$panel) {
-                $panel['label'] = $this->translator->trans($panel['name'], [], $this->getTranslationDomain($panel));
+                $panel['label'] = TranslationHelper::translate($panel['name'], [], $this->getTranslationDomain($panel));
                 $container['panels'][$q] = $panel;
             }
             $container['panels'] = $container['panels']->toArray();
