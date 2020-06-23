@@ -20,6 +20,7 @@ namespace App\Modules\System\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Form\DisplaySettingsType;
@@ -39,6 +40,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class SettingController
  * @package App\Modules\System\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class SettingController extends AbstractPageController
 {
@@ -77,7 +79,7 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('System');
+        $panel = new Panel('System', 'System', new Section('form', 'System'));
         $container->addForm('System', $form->createView())->addPanel($panel);
 
         // Organisation Settings
@@ -106,7 +108,7 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Organisation');
+        $panel = new Panel('Organisation', 'System', new Section('form', 'Organisation'));
         $container->addForm('Organisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Security Settings
@@ -130,7 +132,7 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Security');
+        $panel = new Panel('Security', 'System', new Section('form', 'Security'));
         $container->addForm('Security', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Localisation
@@ -156,7 +158,7 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Localisation');
+        $panel = new Panel('Localisation', 'System', new Section('form', 'Localisation'));
         $container->addForm('Localisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Miscellaneous
@@ -181,7 +183,7 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Miscellaneous');
+        $panel = new Panel('Miscellaneous', 'System', new Section('form', 'Miscellaneous'));
         $container->addForm('Miscellaneous', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Finally Finished
