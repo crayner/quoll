@@ -18,6 +18,7 @@
 namespace App\Modules\People\Form;
 
 use App\Modules\People\Util\UserHelper;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
@@ -128,8 +129,9 @@ class PreferenceSettingsType extends AbstractType
             )
         ;
         if ($options['data'] instanceof Person && $options['data']->isStaff()) {
+            $staff = ProviderFactory::getRepository(Staff::class)->findOneByPersonOrCreate($options['data']);
             $builder
-                ->add('staff', StaffPreferenceSettingsType::class, ['data' => $options['data']->getStaff()]);
+                ->add('staff', StaffPreferenceSettingsType::class, ['data' => $staff]);
         }
         $builder
             ->add('submit', SubmitType::class, [

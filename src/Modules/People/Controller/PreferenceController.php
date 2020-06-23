@@ -19,6 +19,7 @@ namespace App\Modules\People\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Form\PreferenceSettingsType;
 use App\Modules\Security\Form\Entity\ResetPassword;
@@ -44,7 +45,7 @@ class PreferenceController extends AbstractPageController
      * @param PasswordManager $passwordManager
      * @param string $tabName
      * @return JsonResponse|Response
-     * @Route("/preferences/{tabName}", name="preferences")
+     * @Route("/personal/preferences/{tabName}", name="preferences")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function preferences(ContainerManager $manager, PasswordManager $passwordManager, string $tabName = 'Settings')
@@ -85,11 +86,11 @@ class PreferenceController extends AbstractPageController
         $manager->setTranslationDomain('People');
         $container = new Container();
         $container->setSelectedPanel($tabName);
-        $passwordPanel = new Panel('Reset Password');
+        $passwordPanel = new Panel('Reset Password', 'Security', new Section('form', 'Reset Password'));
         $container->addForm('Reset Password', $passwordForm->createView());
 
         $person = $this->getUser()->getPerson();
-        dump($person);
+
         $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
 
         if ($request->getContent() !== '' && $tabName === 'Settings') {
@@ -113,8 +114,7 @@ class PreferenceController extends AbstractPageController
             }
         }
 
-        $settingsPanel = new Panel();
-        $settingsPanel->setName('Settings');
+        $settingsPanel = new Panel('Settings', 'People', new Section('form','Settings'));
         $container->addForm('Settings', $settingsForm->createView());
         $container->addPanel($passwordPanel)->addPanel($settingsPanel)->setTarget('preferences');
 

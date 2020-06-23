@@ -108,7 +108,7 @@ class Staff extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(name="qualifications",nullable=true,length=191)
+     * @ORM\Column(nullable=true,length=191)
      */
     private $qualifications;
 
@@ -129,6 +129,15 @@ class Staff extends AbstractEntity
      * @ORM\Column(type="smallint",nullable=true)
      */
     private $biographicalGroupingPriority;
+
+    /**
+     * Staff constructor.
+     * @param Person|null $person
+     */
+    public function __construct(?Person $person = null)
+    {
+        $this->person = $person;
+    }
 
     /**
      * @return string|null
