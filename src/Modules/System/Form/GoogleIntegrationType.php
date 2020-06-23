@@ -90,6 +90,7 @@ class GoogleIntegrationType extends AbstractType
                     'file_prefix' => 'temp',
                     'data' => '',
                     'visible_values' => ['System__googleOAuth'],
+                    'visible_parent' => 'google_integration_googleOAuth',
                 ]
             )
             ->add('developerKey', TextType::class ,
@@ -101,6 +102,7 @@ class GoogleIntegrationType extends AbstractType
                         '{anchorClose}' => "</a>",
                     ],
                     'visible_values' => ['System__googleOAuth'],
+                    'visible_parent' => 'google_integration_googleOAuth',
                     'data' => $this->parameterBag->get('google_api_key'),
                 ]
             )
@@ -113,6 +115,7 @@ class GoogleIntegrationType extends AbstractType
                             'entry_type' => EmailType::class,
                             'entry_options' => [
                                 'visible_values' => ['System__googleOAuth'],
+                                'visible_parent' => 'google_integration_googleOAuth',
                             ],
                         ],
                     ],

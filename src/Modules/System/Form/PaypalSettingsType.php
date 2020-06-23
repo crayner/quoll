@@ -62,6 +62,7 @@ class PaypalSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                             'entry_options' => [
                                 'visible_values' => ['System__enablePayment'],
+                                'visible_parent' => 'paypal_settings_paypalSettings_System__enablePayments',
                             ],
                         ],
                         [
@@ -70,6 +71,7 @@ class PaypalSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                             'entry_options' => [
                                 'visible_values' => ['System__enablePayment'],
+                                'visible_parent' => 'paypal_settings_paypalSettings_System__enablePayments',
                             ],
                         ],
                         [
@@ -78,6 +80,7 @@ class PaypalSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                             'entry_options' => [
                                 'visible_values' => ['System__enablePayment'],
+                                'visible_parent' => 'paypal_settings_paypalSettings_System__enablePayments',
                             ],
                         ],
                     ],

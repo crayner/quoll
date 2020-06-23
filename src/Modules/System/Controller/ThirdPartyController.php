@@ -19,6 +19,7 @@ namespace App\Modules\System\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Messenger\SendEmailNowMessage;
 use App\Modules\System\Entity\Setting;
@@ -36,6 +37,7 @@ use App\Modules\System\Manager\MailerSettingsManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
@@ -59,7 +61,7 @@ class ThirdPartyController extends AbstractPageController
      * thirdParty
      * @param ContainerManager $manager
      * @param string $tabName
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse|Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -98,7 +100,7 @@ class ThirdPartyController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Google');
+        $panel = new Panel('Google', 'System', new Section('form', 'Google'));
         $container->addForm('Google', $form->createView())->addPanel($panel);
 
         // PayPal
@@ -119,7 +121,7 @@ class ThirdPartyController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('PayPal');
+        $panel = new Panel('PayPal', 'System', new Section('form', 'PayPal'));
         $container->addForm('PayPal', $form->createView())->addPanel($panel);
 
         // SMS
@@ -139,7 +141,7 @@ class ThirdPartyController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('SMS');
+        $panel = new Panel('SMS', 'System', new Section('form', 'SMS'));
         $container->addForm('SMS', $form->createView())->addPanel($panel);
 
         // EMail
@@ -157,8 +159,8 @@ class ThirdPartyController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('EMail');
-        $panel->setPostContent([$this->renderView('system/test_email_button.html.twig')]);
+        $panel = new Panel('EMail', 'System', new Section('form', 'EMail'));
+        $panel->addSection(new Section('html', $this->renderView('system/test_email_button.html.twig')));
         $container->addForm('EMail', $form->createView())->addPanel($panel);
 
         // Finally Finished

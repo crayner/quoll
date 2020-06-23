@@ -67,6 +67,7 @@ class EmailSettingsType extends AbstractType
             ->add('mailerSMTPUsername', TextType::class,
                 [
                     'visible_values' => ['gmail','smtp'],
+                    'visible_parent' => 'email_settings_enableMailerSMTP',
                     'visible_labels' =>
                         [
                             'gmail' =>
@@ -86,6 +87,7 @@ class EmailSettingsType extends AbstractType
             ->add('mailerSMTPPassword', TextType::class,
                 [
                     'visible_values' => ['gmail','smtp'],
+                    'visible_parent' => 'email_settings_enableMailerSMTP',
                     'visible_labels' =>
                         [
                             'gmail' =>
@@ -104,6 +106,7 @@ class EmailSettingsType extends AbstractType
             ->add('mailerSMTPHost', TextType::class,
                 [
                     'visible_values' => ['smtp'],
+                    'visible_parent' => 'email_settings_enableMailerSMTP',
                     'label' => 'SMTP Host',
                     'help' => 'The hostname of the email server.',
                 ]
@@ -111,6 +114,7 @@ class EmailSettingsType extends AbstractType
             ->add('mailerSMTPPort', TextType::class,
                 [
                     'visible_values' => ['smtp'],
+                    'visible_parent' => 'email_settings_enableMailerSMTP',
                     'label' => 'SMTP Port',
                     'help' => 'Set the SMTP port number - likely to be 25, 465 or 587.',
                 ]
@@ -118,6 +122,7 @@ class EmailSettingsType extends AbstractType
             ->add('mailerSMTPSecure', EnumType::class,
                 [
                     'visible_values' => ['smtp'],
+                    'visible_parent' => 'email_settings_enableMailerSMTP',
                     'label' => 'SMTP Encryption',
                     'help' => 'Automatically sets the encryption based on the port, otherwise select one manually.',
                     'choice_list_prefix' => 'mailer.secure',

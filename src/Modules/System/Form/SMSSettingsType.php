@@ -81,6 +81,7 @@ class SMSSettingsType extends AbstractType
                                     'maxLength' => 50,
                                 ],
                                 'visible_values' => ['OneWaySMS','Twilio','Nexmo','Clockwork','TextLocal','Mail to SMS'],
+                                'visible_parent' => 'sms_settings_smsSettings_Messenger__smsGateway',
                             ],
                         ],
                         [
@@ -92,6 +93,7 @@ class SMSSettingsType extends AbstractType
                                     'maxLength' => 50,
                                 ],
                                 'visible_values' => ['OneWaySMS','Twilio', 'Nexmo', 'Clockwork', 'TextLocal', 'Mail to SMS'],
+                                'visible_parent' => 'sms_settings_smsSettings_Messenger__smsGateway',
                                 'visible_labels' => [
                                     'OneWaySMS' => [
                                         'label' => TranslationHelper::translate('SMS Username'),
@@ -129,6 +131,7 @@ class SMSSettingsType extends AbstractType
                                     'maxLength' => 50,
                                 ],
                                 'visible_values' => ['OneWaySMS','Twilio','Nexmo'],
+                                'visible_parent' => 'sms_settings_smsSettings_Messenger__smsGateway',
                                 'visible_labels' => [
                                     'OneWaySMS' => [
                                         'label' => TranslationHelper::translate('SMS Password'),
@@ -151,6 +154,7 @@ class SMSSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                             'entry_options' => [
                                 'visible_values' => ['OneWaySMS'],
+                                'visible_parent' => 'sms_settings_smsSettings_Messenger__smsGateway',
                             ],
                         ],
                         [
@@ -159,6 +163,7 @@ class SMSSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                             'entry_options' => [
                                 'visible_values' => ['OneWaySMS'],
+                                'visible_parent' => 'sms_settings_smsSettings_Messenger__smsGateway',
                             ],
                         ],
                     ],
