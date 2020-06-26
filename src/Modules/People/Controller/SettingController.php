@@ -29,6 +29,7 @@ use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -90,7 +91,7 @@ class SettingController extends AbstractPageController
      * @Route("/updater/settings/", name="updater_settings")
      * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse|Response
      */
     public function updaterSettings(ContainerManager $manager)
     {
@@ -103,8 +104,9 @@ class SettingController extends AbstractPageController
             $data = [];
             try {
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                if ('success' === $settingProvider->getStatus())
+                if ('success' === $settingProvider->getStatus()) {
                     $form = $this->createForm(UpdaterSettingsType::class, null, ['action' => $this->generateUrl('updater_settings')]);
+                }
             } catch (\Exception $e) {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage();
             }
@@ -114,15 +116,15 @@ class SettingController extends AbstractPageController
         }
 
         $container = new Container();
-        $panel = new Panel('Settings');
+        $panel = new Panel('Settings', 'People', new Section('form', 'Settings'));
         $container->addPanel($panel);
         $container->addForm('Settings', $form->createView());
-        $panel = new Panel('Required Data');
-        $panel->setSpecial($required);
+        $panel = new Panel('Required Data', 'People', new Section('special', $required->toArray()));
         $container->addPanel($panel);
         $manager->addContainer($container);
 
-        return $this->getPageManager()->createBreadcrumbs('Data Updater Settings')
+        return $this->getPageManager()
+            ->createBreadcrumbs('Data Updater Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 

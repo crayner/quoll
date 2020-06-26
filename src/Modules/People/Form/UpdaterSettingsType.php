@@ -19,9 +19,7 @@ namespace App\Modules\People\Form;
 use App\Form\Type\DateSettingType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
-use App\Modules\Security\Manager\RoleHierarchy;
 use App\Modules\System\Form\SettingsType;
-use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,6 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class UpdaterSettingsType
  * @package App\Modules\People\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class UpdaterSettingsType extends AbstractType
 {
@@ -62,6 +61,7 @@ class UpdaterSettingsType extends AbstractType
      * buildForm
      * @param FormBuilderInterface $builder
      * @param array $options
+     * 27/06/2020 09:19
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -88,6 +88,7 @@ class UpdaterSettingsType extends AbstractType
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
                                 'visible_values' => ['require_updates'],
+                                'visible_parent' => 'updater_settings_updaterSettings_Data_Updater__requiredUpdates',
                                 'multiple' => true,
                                 'choices' => [
                                     'updater.bytype.family' => 'Family',
@@ -103,6 +104,7 @@ class UpdaterSettingsType extends AbstractType
                             'entry_type' => DateSettingType::class,
                             'entry_options' => [
                                 'visible_values' => ['require_updates'],
+                                'visible_parent' => 'updater_settings_updaterSettings_Data_Updater__requiredUpdates',
                             ],
                         ],
                         [
@@ -111,6 +113,7 @@ class UpdaterSettingsType extends AbstractType
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
                                 'visible_values' => ['require_updates'],
+                                'visible_parent' => 'updater_settings_updaterSettings_Data_Updater__requiredUpdates',
                                 'multiple' => true,
                                 'choices' => $choices,
                             ],

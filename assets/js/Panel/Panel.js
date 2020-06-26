@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import SectionForm from '../Section/SectionForm'
 import PaginationApp from '../Pagination/PaginationApp'
 import Parser from 'react-html-parser'
+import SpecialApp from '../Special/SpecialApp'
 
 export default function Panel(props) {
     const {
@@ -25,6 +26,9 @@ export default function Panel(props) {
             sections.push(<PaginationApp {...props} {...pagination} key={sectionKey} />)
         } else if (section.style === 'html') {
             sections.push(Parser(section.content))
+        } else if (section.style === 'special') {
+            const special = section.content
+            sections.push(<SpecialApp {...special} {...props} name={section.content.name} key={sectionKey} />)
         } else {
             console.log(props,section)
             console.error('Section style [' + section.style + '] is not defined.')
