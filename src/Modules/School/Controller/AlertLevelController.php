@@ -19,6 +19,7 @@ namespace App\Modules\School\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Entity\AlertLevel;
 use App\Modules\School\Form\AlertLevelType;
@@ -52,7 +53,7 @@ class AlertLevelController extends AbstractPageController
         $levels = ProviderFactory::getRepository(AlertLevel::class)->findBy([],['priority' => 'DESC']);
         foreach($levels as $q=>$level) {
             $form = $this->createForm(AlertLevelType::class, $level, ['action' => $this->generateUrl('alert_level_change', ['level' => $level->getId()])]);
-            $panel = new Panel($level->getName(), 'School');
+            $panel = new Panel($level->getName(), 'School', new Section('form', $level->getName()));
             $container
                 ->addForm($level->getName(), $form->createView())
                 ->addPanel($panel);
