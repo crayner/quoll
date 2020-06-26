@@ -19,6 +19,7 @@ namespace App\Modules\Attendance\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
 use App\Modules\Attendance\Entity\AttendanceCode;
@@ -64,33 +65,32 @@ class AttendanceController extends AbstractPageController
             return $this->saveSettings($tabName, $manager);
         }
 
-        $container = new Container();
-        $panel = new Panel('Code', 'Attendance');
+        $container = new Container($tabName);
         $content = ProviderFactory::getRepository(AttendanceCode::class)->findBy([], ['sortOrder' => 'ASC']);
         $pagination->setContent($content)
             ->setDraggableRoute('attendance_code_sort')
             ->setPreContent($this->renderView('attendance/code_manage.html.twig'))
             ->setAddElementRoute($this->generateUrl('attendance_code_add'));
-        $panel->setPagination($pagination);
+        $panel = new Panel('Code', 'Attendance', new Section('pagination', $pagination));
 
         $container->addPanel($panel);
 
         $form = $this->getForm('Reasons');
-        $panel = new Panel('Reasons', 'Attendance');
+        $panel = new Panel('Reasons', 'Attendance', new Section('form', 'Reasons'));
         $container->addForm('Reasons', $form->createView())->addPanel($panel);
 
         $form = $this->getForm('Context');
-        $panel = new Panel('Context', 'Attendance');
+        $panel = new Panel('Context', 'Attendance', new Section('form', 'Context'));
         $container->addForm('Context', $form->createView())
             ->addPanel($panel);
 
         $form = $this->getForm('Registration');
-        $panel = new Panel('Registration', 'Attendance');
+        $panel = new Panel('Registration', 'Attendance', new Section('form', 'Registration'));
         $container->addForm('Registration', $form->createView())
             ->addPanel($panel);
 
         $form = $this->getForm('CLI');
-        $panel = new Panel('CLI', 'Attendance');
+        $panel = new Panel('CLI', 'Attendance', new Section('form', 'CLI'));
         $container->addForm('CLI', $form->createView())
             ->addPanel($panel);
 
