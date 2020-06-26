@@ -19,6 +19,7 @@ namespace App\Modules\Planner\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Planner\Form\PlannerSettingType;
 use App\Modules\System\Entity\Setting;
@@ -71,15 +72,15 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $container = new Container();
-        $panel = new Panel('Templates');
+        $container = new Container($tabName);
+        $panel = new Panel('Templates', 'Planner', new Section('form', 'single'));
         $container->setTranslationDomain('School')
-            ->addForm('Templates', $form->createView())
-            ->addPanel($panel)->setSelectedPanel($tabName)
+            ->addForm('single', $form->createView())
+            ->addPanel($panel)
         ;
-        $panel = new Panel('Access');
+        $panel = new Panel('Access', 'Planner', new Section('form', 'single'));
         $container->addPanel($panel);
-        $panel = new Panel('Miscellaneous');
+        $panel = new Panel('Miscellaneous', 'Planner', new Section('form', 'single'));
         $container->addPanel($panel);
 
         $manager->addContainer($container);
