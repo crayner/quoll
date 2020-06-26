@@ -19,6 +19,7 @@ namespace App\Modules\Department\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Form\DepartmentSettingType;
@@ -90,12 +91,11 @@ class ManageController extends AbstractPageController
         }
 
         $container = new Container();
-        $panel = new Panel('Settings', 'Department');
+        $panel = new Panel('Settings', 'Department', new Section('form','Settings'));
         $container->addForm('Settings', $form->createView())->addPanel($panel);
-        $panel = new Panel('List', 'Department');
         $content = ProviderFactory::getRepository(Department::class)->findBy([], ['name' => 'ASC']);
         $pagination->setContent($content)->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
-        $panel->setPagination($pagination);
+        $panel = new Panel('List', 'Department', new Section('pagination', $pagination));
         $container->addPanel($panel)->setSelectedPanel($tabName);
         $manager->addContainer($container);
 
@@ -111,14 +111,20 @@ class ManageController extends AbstractPageController
      * @param DepartmentStaffPagination $pagination
      * @param Department|null $department
      * @param string|null $tabName
+     * @param array $data
      * @return JsonResponse|Response
      * @Route("/department/{department}/edit/{tabName}", name="department_edit")
      * @Route("/department/add/{tabName}", name="department_add")
      * @IsGranted("ROLE_ROUTE")
      * 4/06/2020 15:00
      */
-    public function edit(ContainerManager $manager, DepartmentStaffPagination $pagination, ?Department $department = null, ?string $tabName = 'General', array $data = [])
-    {
+    public function edit(
+        ContainerManager $manager,
+        DepartmentStaffPagination $pagination,
+        ?Department $department = null,
+        ?string $tabName = 'General',
+        array $data = []
+    ) {
         if (!$department instanceof Department) {
             $department = new Department();
             $action = $this->generateUrl('department_add', ['tabName' => $tabName]);
@@ -164,17 +170,16 @@ class ManageController extends AbstractPageController
             return new JsonResponse($data);
         }
 
-        $panel = new Panel('General', 'Department');
+        $panel = new Panel('General', 'Department', new Section('form', 'General'));
         $container->addForm('General', $form->createView())->addPanel($panel);
 
         if ($department->getId() !== null) {
-            $panel = new Panel('Staff', 'Department');
             $content = ProviderFactory::getRepository(DepartmentStaff::class)->findStaffByDepartment($department);
             $pagination->setContent($content)
                 ->setPreContent($this->renderView('department/current_staff_header.html.twig'))
                 ->setRefreshRoute($this->generateUrl('department_edit', ['tabName' => 'Staff', 'department' => $department->getId()]),'Refresh Department Staff')
                 ->setAddElementRoute(['url' => $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]), 'target' => 'Department_Staff', 'options' => 'width=600,height=350'], 'Add Department Staff');
-            $panel->setPagination($pagination);
+            $panel = new Panel('Staff', 'Department', new Section('pagination', $pagination));
             $container->addPanel($panel);
         }
 
