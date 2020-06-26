@@ -44,7 +44,6 @@ class AcademicYearHelper
     /**
      * getCurrentAcademicYear
      * @return AcademicYear|mixed
-     * @throws \Exception
      * 26/06/2020 08:58
      */
     public static function getCurrentAcademicYear()

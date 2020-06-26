@@ -383,6 +383,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      */
     public function setInitialFilter(array $initialFilter): AbstractPaginationManager
     {
+        dump($initialFilter);
         $this->initialFilter = $initialFilter;
         return $this;
     }
@@ -479,7 +480,6 @@ abstract class AbstractPaginationManager implements PaginationInterface
     {
         $session = $this->getSession();
         $name = StringHelper::toSnakeCase(basename(get_class($this)));
-        // @todo Filter modification ???
 
         $session->set($name, $filter);
         return $this;
