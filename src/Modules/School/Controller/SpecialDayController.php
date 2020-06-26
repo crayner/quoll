@@ -54,6 +54,7 @@ class SpecialDayController extends AbstractPageController
             ->setContent($content)
             ->setAddElementRoute($this->generateUrl('special_day_add'));
 
+        dump($pagination);
         return $this->getPageManager()->setMessages(isset($data['errors']) ? $data['errors'] : [])->createBreadcrumbs('Academic Year Special Days')
             ->render(
                 [
@@ -83,9 +84,10 @@ class SpecialDayController extends AbstractPageController
         if ($request->attributes->get('_route') === 'special_day_duplicate') {
             $copy = clone $day;
             $day = new AcademicYearSpecialDay();
+            $nextAcademicYear = AcademicYearHelper::getNextAcademicYear($copy->getAcademicYear());
             $day->setName($copy->getName())
                 ->setDescription($copy->getDescription())
-                ->setAcademicYear(AcademicYearHelper::getNextAcademicYear($copy->getAcademicYear()))
+                ->setAcademicYear($nextAcademicYear)
                 ->setDate(SpecialDayManager::getDuplicateDate($copy))
                 ->setType($copy->getType())
                 ->setSchoolClose($copy->getSchoolClose())
@@ -94,16 +96,26 @@ class SpecialDayController extends AbstractPageController
                 ->setSchoolOpen($copy->getSchoolOpen())
             ;
             $action = $this->generateUrl('special_day_add');
+            $filter['filter'][] = [
+                'name' => 'Academic Year: ' . $nextAcademicYear->getName(),
+                'label' => TranslationHelper::translate('Academic Year: {value}', ['{value}' => $nextAcademicYear->getName()], 'School'),
+                'value' => $nextAcademicYear->getName(),
+                "contentKey" => "year",
+                "group" => "Academic Year",
+                "defaultFilter" => false,
+            ];
+            $this->getRequest()->getSession()->set('special_day_pagination',$filter);
         } else if (!$day instanceof AcademicYearSpecialDay) {
             $day = new AcademicYearSpecialDay();
             $action = $this->generateUrl('special_day_add');
             $whichYear = $request->getSession()->get('special_day_pagination');
             if (isset($whichYear['filter'])) {
-                foreach($whichYear['filter'] as $w)
-                    if (mb_strpos($w, 'Academic Year: ') === 0) {
-                        $whichYear = $w;
+                foreach($whichYear['filter'] as $w) {
+                    if (mb_strpos($w['name'], 'Academic Year: ') === 0) {
+                        $whichYear = $w['name'];
                         break;
                     }
+                }
             } else {
                 $whichYear = '';
             }
@@ -175,6 +187,7 @@ class SpecialDayController extends AbstractPageController
     {
         $content = json_decode($this->getRequest()->getContent(), true);
         $pagination->writeFilter($content);
+
         return new JsonResponse([],200);
     }
 

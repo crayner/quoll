@@ -58,6 +58,7 @@ class SpecialDayPagination extends AbstractPaginationManager
         $column->setLabel('Name')
             ->setContentKey(['name','description'])
             ->setSort(true)
+            ->setSearch()
             ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
         ;
         $row->addColumn($column);
@@ -110,7 +111,7 @@ class SpecialDayPagination extends AbstractPaginationManager
         }
 
         $year = AcademicYearHelper::getCurrentAcademicYear();
-        $row->setDefaultFilter(['Academic Year: ' . $year->getName()]);
+        $row->addDefaultFilter('Academic Year: ' . $year->getName());
         $this->setRow($row);
 
         return $this;

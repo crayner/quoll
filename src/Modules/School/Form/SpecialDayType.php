@@ -55,6 +55,12 @@ class SpecialDayType extends AbstractType
         ]);
     }
 
+    /**
+     * buildForm
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * 26/06/2020 11:53
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $day = $options['data'];
@@ -124,6 +130,7 @@ class SpecialDayType extends AbstractType
                         'input' => 'datetime_immutable',
                         'widget' => 'single_text',
                         'visible_values' => ['Timing Change'],
+                        'visible_parent' => 'special_day_type',
                     ]
                 )
                 ->add('schoolStart', TimeType::class,
@@ -133,6 +140,7 @@ class SpecialDayType extends AbstractType
                         'input' => 'datetime_immutable',
                         'widget' => 'single_text',
                         'visible_values' => ['Timing Change'],
+                        'visible_parent' => 'special_day_type',
                     ]
                 )
                 ->add('schoolEnd', TimeType::class,
@@ -142,6 +150,7 @@ class SpecialDayType extends AbstractType
                         'input' => 'datetime_immutable',
                         'widget' => 'single_text',
                         'visible_values' => ['Timing Change'],
+                        'visible_parent' => 'special_day_type',
                     ]
                 )
                 ->add('schoolClose', TimeType::class,
@@ -151,6 +160,7 @@ class SpecialDayType extends AbstractType
                         'input' => 'datetime_immutable',
                         'widget' => 'single_text',
                         'visible_values' => ['Timing Change'],
+                        'visible_parent' => 'special_day_type',
                     ]
                 )
                 ->add('submit', SubmitType::class)

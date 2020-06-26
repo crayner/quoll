@@ -125,7 +125,7 @@ export default class PaginationApp extends Component {
     setInitialFilter() {
         if (this.initialFilter.length > 0) {
             this.initialFilter.map(value => {
-                this.changeFilter(this.filters[value.value])
+                this.changeFilter(this.filters[value.name])
             })
         }
     }
