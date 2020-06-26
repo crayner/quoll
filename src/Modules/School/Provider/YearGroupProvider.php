@@ -48,7 +48,7 @@ class YearGroupProvider extends AbstractProvider
             if ($useEntity)
                 $result[$w->getId()] = $w;
             else
-                $result[]= new ChoiceView([], $w->getId(), $w->getName(), []);
+                $result[]= new ChoiceView($w->toArray('short'), $w->getId(), $w->getName(), []);
         }
         return $result;
     }

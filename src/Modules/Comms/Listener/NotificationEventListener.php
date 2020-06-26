@@ -15,15 +15,16 @@
  * Time: 16:02
  */
 
-namespace App\Modules\System\Listener;
+namespace App\Modules\Comms\Listener;
 
 use App\Modules\System\Manager\NotificationSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class NotificationListener
- * @package App\Modules\System\Listener
+ * Class NotificationEventListener
+ * @package App\Modules\Comms\Listener
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class NotificationEventListener implements EventSubscriberInterface
 {

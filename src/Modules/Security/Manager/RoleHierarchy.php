@@ -92,4 +92,26 @@ class RoleHierarchy implements RoleHierarchyInterface
         array_unique($result);
         return $result;
     }
+
+    /**
+     * getRoleNamesThatReach
+     *
+     * Grab roles that are parents of the roles supplied.
+     * @param array|string[] $roles
+     * @return array|string[]
+     * 23/06/2020 14:29
+     */
+    public function getRoleNamesThatReach(array $roles): array
+    {
+        $result = [];
+
+        foreach($roles as $role) {
+            foreach($this->hierarchy as $name => $w) {
+                if (in_array($role, $this->getReachableRoleNames([$name]))) {
+                    $result[] = $name;
+                }
+            }
+        }
+        return array_unique($result);
+    }
 }

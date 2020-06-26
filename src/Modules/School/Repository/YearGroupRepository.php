@@ -39,11 +39,12 @@ class YearGroupRepository extends ServiceEntityRepository
     /**
      * findCurrentYearGroups
      * @return array
+     * 24/06/2020 14:57
      */
     public function findCurrentYearGroups(): array
     {
         return $this->createQueryBuilder('yg')
-            ->orderBy('yg.sequenceNumber')
+            ->orderBy('yg.sequenceNumber', 'ASC')
             ->getQuery()
             ->getResult();
         ;

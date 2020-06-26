@@ -23,6 +23,7 @@ use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\Role;
 use App\Modules\Security\Provider\RoleProvider;
 use App\Modules\Security\Util\SecurityHelper;
@@ -189,7 +190,7 @@ class FastFinder implements ContentInterface
                     $student['search'] = $person->getUsername() . ' ' . $person->getFirstName() . ' ' . $person->getEmail();
                     $students[] = $student;
                 } else {
-                    $students = ProviderFactory::getRepository(Person::class)->findStudentsForFastFinder($this->getSession()->get('academicYear'), '');
+                    $students = ProviderFactory::getRepository(Person::class)->findStudentsForFastFinder(AcademicYearHelper::getCurrentAcademicYear(), '');
                 }
             }
             CacheHelper::setCacheValue('fastFinderStudents', $students);

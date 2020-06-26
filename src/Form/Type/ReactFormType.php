@@ -14,7 +14,6 @@
  * Date: 28/08/2019
  * Time: 13:40
  */
-
 namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
@@ -333,13 +332,13 @@ class ReactFormType extends AbstractType
         if (key_exists('choices', $view->vars)) {
             if (false !== $view->vars['choice_translation_domain']) {
                 foreach ($view->vars['choices'] as $q => $choice) {
-                    if (!key_exists('translated', $choice->attr)) {
+                    if (!property_exists($choice, 'attr') || !key_exists('translated', $choice->attr)) {
                         $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                         $choice->attr['translated'] = true;
                     }
                     if (isset($choice->choices)) {
                         foreach ($choice->choices as $e => $w) {
-                            if (!key_exists('translated', $w->attr)) {
+                            if (!property_exists($w, 'attr') || !key_exists('translated', $w->attr)) {
                                 $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                                 $w->attr['translated'] = true;
                             }
@@ -347,13 +346,13 @@ class ReactFormType extends AbstractType
                     }
                 }
                 foreach ($view->vars['preferred_choices'] as $q => $choice) {
-                    if (!key_exists('translated', $choice->attr)) {
+                    if (!property_exists($choice, 'attr') || !key_exists('translated', $choice->attr)) {
                         $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                         $choice->attr['translated'] = true;
                     }
                     if (isset($choice->choices)) {
                         foreach ($choice->choices as $e => $w) {
-                            if (!key_exists('translated', $w->attr)) {
+                            if (!property_exists($w, 'attr') || !key_exists('translated', $w->attr)) {
                                 $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                                 $w->attr['translated'] = true;
                             }

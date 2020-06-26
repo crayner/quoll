@@ -290,3 +290,19 @@ Country of Location: Country of Location
 Organisation Name Abbreviation: Organisation Name Abbreviation
 Time Zone of the School: Time Zone of the School
 Home: Home
+All: All
+Available only to users with the required permission.: Available only to users with the required permission.
+Edit Notification Event: Edit Notification Event
+Edit Subscribers: Edit Subscribers
+Event: Event
+Permission Required: Permission Required
+Scope Choices: Scope Choices
+Scope: Scope
+The listener is NOT unique.: The listener is NOT unique.
+This value cannot be blank when the Scope is set to {name}: This value cannot be blank when the Scope is set to {name}
+Student: Student
+staff: Staff
+student: Student
+year_group: Year Group
+Login - Failed: Login - Failed
+People: People

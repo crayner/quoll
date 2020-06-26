@@ -38,6 +38,7 @@ class HomeController extends AbstractPageController
 {
     /**
      * @Route("/home/{timeout}", name="home")
+     * @Route("/craig/{timeout}", name="craig")
      * @Route("/", name="unauthenticated")
      */
     public function home(string $timeout = '')

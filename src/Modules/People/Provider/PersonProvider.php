@@ -118,7 +118,7 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
             if ($useEntity)
                 $result[$w->getId()] = $w;
             else
-                $result[] = new ChoiceView([], $w->getId(), $w->formatName(['style' => 'long', 'reverse' => true]), []);
+                $result[] = new ChoiceView($w->toArray('short'), $w->getId(), $w->getFullNameReversed(), []);
         }
         return $result;
     }
@@ -141,7 +141,7 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
                 if ($useEntity)
                     $result[$w->getId()] = $w;
                 else
-                    $result[] = new ChoiceView($w, $w->getId(), $w->formatName(['style' => 'long', 'reverse' => true]), []);
+                    $result[] = new ChoiceView($w->toArray('short'), $w->getId(), $w->getFullNameReversed(), []);
             }
             $this->staffChoiceList = $result;
         }
@@ -152,12 +152,13 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
      * isStudent
      * @param Person $person
      * @return bool
-     * @throws \Exception
+     * 26/06/2020 10:54
+     * @deprecated Use Person::isStudent() directly
      */
     public function isStudent(Person $person): bool
     {
-        $result = $this->getRepository(StudentEnrolment::class)->findOneBy(['person' => $person, 'academicYear' => AcademicYearHelper::getCurrentAcademicYear()]);
-        return $result instanceof StudentEnrolment;
+        trigger_error(sprintf('%s id deprecated. Please use %s::isStudent() directly.', __METHOD__, Person::class), E_USER_DEPRECATED);
+        return $person->isStudent();
     }
 
     /**
@@ -216,26 +217,14 @@ class PersonProvider extends AbstractProvider implements UserLoaderInterface
     }
 
     /**
-     * findByRole
-     * @param string $role
-     * @param RoleHierarchyInterface $hierarchy
+     * findByRoles
+     * @param array $roles
      * @return array
+     * 23/06/2020 11:49
      */
-    public function findByRole(string $role, RoleHierarchyInterface $hierarchy): array
+    public function findByRoles(array $roles): array
     {
-        $people = $this->getRepository()->findBy([],['surname' => 'ASC', 'firstName' => 'ASC']);
-        $found = [];
-        $reachable = $hierarchy->getReachableRoleNames([$role]);
-
-        foreach($people as $person) {
-            foreach($person->getSecurityRoles() as $role) {
-                if (in_array($role, $reachable)) {
-                    $found[] = $person;
-                    continue;
-                }
-            }
-        }
-        return $found;
+        return $this->getRepository()->findByRoles(SecurityHelper::getHierarchy()->getRoleNamesThatReach($roles));
     }
 
     /**

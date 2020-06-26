@@ -1,20 +1,22 @@
 <?php
-namespace App\Modules\Security\Manager;
+namespace App\Modules\Security\Listeners;
 
 use App\Modules\School\Entity\AcademicYear;
 use App\Provider\ProviderFactory;
-use App\Modules\System\Util\LocaleHelper;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\SecurityBundle\EventListener\FirewallListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 /**
- * Class LogoutSuccessHandler
+ * Class LogoutSuccessListener
  * @package App\Modules\Security\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
+class LogoutSuccessListener
 {
 	/**
 	 * @var RouterInterface
@@ -35,33 +37,28 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 	public function __construct(RouterInterface $router, LoggerInterface $logger)
 	{
 		$this->router = $router;
-        $this->logger = $logger->withName('security');
+        $this->logger = $logger;
 	}
+
 
     /**
      * onLogoutSuccess
-     * @param Request $request
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param LogoutEvent $event
+     * @return void
      */
-	public function onLogoutSuccess(Request $request)
+	public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $event)
     {
+        $request = $event->getRequest();
         if ($request->hasSession())
         {
             $session = $request->getSession();
-            $flashBag = $session->getFlashBag()->all();
             try {
-                $session->clear();
+                $session->invalidate();
             } catch(\ErrorException $e) {
                 $flashBag = null;
             }
-
-            if (null !== $flashBag)
-                $session->getFlashBag()->setAll($flashBag);
-
-            ProviderFactory::create(AcademicYear::class)->setCurrentAcademicYear($session);
         }
 		$request->setLocale($request->getDefaultLocale());
-
         $this->logger->info(sprintf('A user logged out from machine %s', $request->server->get('REMOTE_ADDRESS')));
 
         $query = [];
@@ -70,6 +67,6 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
             $query['timeout'] = 'timeout';
         }
 
-		return new RedirectResponse($this->router->generate('home', $query));
+		$event->setResponse(new RedirectResponse($this->router->generate('home', $query)));
 	}
 }

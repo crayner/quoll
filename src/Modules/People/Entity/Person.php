@@ -2545,9 +2545,20 @@ class Person extends AbstractEntity
      * toArray
      * @param string|null $name
      * @return array
+     * 26/06/2020 10:56
      */
     public function toArray(?string $name = NULL): array
     {
+        if ($name === 'short') {
+            return [
+                $this->getId(),
+                $this->getSurname(),
+                $this->getPreferredName(),
+                $this->getFirstName(),
+                $this->getEmail(),
+                $this->getUsername(),
+            ];
+        }
         return [
             'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
             'photo' => $this->getImage240(false) ? ImageHelper::getRelativeImageURL($this->getImage240(false)) : '/build/static/DefaultPerson.png',
@@ -2569,6 +2580,8 @@ class Person extends AbstractEntity
             'staff' => $this->isStaff(),
             'parent' => $this->isParent(),
         ];
+
+
     }
 
     /**

@@ -19,11 +19,15 @@ namespace App\Modules\System\Manager\Hidden;
 
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Comms\Entity\NotificationListener;
+use App\Modules\Comms\Validator\EventListener;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
@@ -45,53 +49,62 @@ class NotificationEventHandler
     {
         $content = json_decode($request->getContent(), true);
         $em = ProviderFactory::getEntityManager();
-        $em->refresh($event);
-        $event->getListeners();
+
+        foreach ($content['listeners'] as $q => $w) {
+            $content['listeners'][$q]['event'] = $event->getId();
+        }
+
         $validator = Validation::createValidator();
         $violations = new ConstraintViolationList();
-        foreach($content['listeners'] as $q=>$w) {
-            $w['id'] = array_key_exists('id',$w) ? $w['id'] : 0 ;
-            $listener = ProviderFactory::getRepository(NotificationListener::class)->find(intval($w['id'])) ?: new NotificationListener();
-            $person = ProviderFactory::getRepository(Person::class)->find(intval($w['person']));
-            $listener->setPerson($person)
-                ->setScopeType($w['scopeType'])
-                ->setScopeID($w['scopeID'])
-                ->setEvent($event);
-            ;
-            $violations->addAll($validator->validate($listener));
-        }
 
-        $people = [];
-        $flush = false;
-        foreach($event->getListeners() as $listener)
-        {
-            if ($listener->getScopeType() === 'All') {
-                $personalListeners = $event->getListenersByPerson($listener);
-                foreach ($personalListeners as $entity) {
-                    $event->removeListener($entity);
-                    if ($entity->getId() !== null) {
-                        $em->remove($entity);
-                        $flush = true;
+        $listeners = new ArrayCollection();
+        try {
+            foreach ($content['listeners'] as $q => $w) {
+                $w['id'] = array_key_exists('id', $w) ? $w['id'] : null;
+                $listener = ProviderFactory::getRepository(NotificationListener::class)->find($w['id']) ?: new NotificationListener();
+                $person = ProviderFactory::getRepository(Person::class)->find($w['person']);
+                if (count($event->getScopes()) === 1) {
+                    $w['scopeType'] = $event->getScopes()[0];
+                }
+                $listener->setPerson($person)
+                    ->setScopeType($w['scopeType'])
+                    ->setScopeIdentifier($w['scopeType'] === 'All' ? null : ($w['scopeIdentifier'] ?: ''))
+                    ->setEvent($event);
+                $lv = $validator->validate($listener, [new EventListener()]);
+                if ($lv->count() > 0) {
+                    $form->get('listeners')->get($q)->get('person')->addError(new FormError($lv->get(0)->getMessage()));
+                }
+                $violations->addAll($lv);
+                $listener = clone $listener;
+                $listeners->add($listener);
+            }
+
+            if ($violations->count() === 0) {
+                $listeners = $event->sortListeners($listeners)->getListeners();
+                $all = [];
+                foreach($listeners as $listener) {
+                    if ($listener->getScopeType() === 'All') {
+                        $all[] = $listener->getPerson()->getId();
+                    }
+                    if ($listener->getScopeType() !== 'All' && in_array($listener->getPerson()->getId(), $all)) {
+                        $listeners->removeElement($listener);
                     }
                 }
-            }
-        }
-        if ($flush)
-            $em->flush();
 
-        $violations->addAll($validator->validate($event));
-
-        if ($violations->count() === 0) {
-            try {
+                ProviderFactory::getRepository(NotificationListener::class)->deleteAllForEvent($event);
+                foreach($listeners as $listener) {
+                    $em->persist($listener);
+                }
+                $event->setActive($content['active']);
                 $em->persist($event);
                 $em->flush();
 
                 $data = ErrorMessageHelper::getSuccessMessage([], true);
-            } catch (PDOException | \PDOException $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             }
-        } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+        } catch (PDOException | \PDOException | NotNullConstraintViolationException $e) {
+            $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
         }
 
         return $data;

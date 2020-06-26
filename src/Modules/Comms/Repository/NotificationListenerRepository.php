@@ -16,6 +16,8 @@ namespace App\Modules\Comms\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Comms\Entity\NotificationListener;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Modules\People\Entity\Person;
 
@@ -86,5 +88,46 @@ class NotificationListenerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * isUnique
+     * @param NotificationListener $listener
+     * @return bool
+     * 23/06/2020 16:25
+     */
+    public function isUnique(NotificationListener $listener): bool
+    {
+        try {
+            return intval($this->createQueryBuilder('l')
+                    ->select(['COUNT(l.id)'])
+                    ->where('l.person = :person')
+                    ->andWhere('l.id != :identifier')
+                    ->andWhere('l.event = :event')
+                    ->andWhere('l.scopeType = :scopeType')
+                    ->andWhere('l.scopeIdentifier = :scopeIdentifier')
+                    ->setParameters($listener->toArray('unique'))
+                    ->getQuery()
+                    ->getSingleScalarResult()) === 0;
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return true;
+        }
+    }
+
+    /**
+     * deleteAllForEvent
+     * @param NotificationEvent $event
+     * @return NotificationListenerRepository
+     * 25/06/2020 12:07
+     */
+    public  function deleteAllForEvent(NotificationEvent $event): NotificationListenerRepository
+    {
+        $this->createQueryBuilder('l')
+            ->delete(NotificationListener::class, 'l')
+            ->where('l.event = :event')
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+        return $this;
     }
 }

@@ -80,5 +80,6 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
         $view->vars['chained_child'] = $options['chained_child'];
         $view->vars['chained_values'] = $options['chained_values'];
         $view->vars['visible_by_choice'] = $options['visible_by_choice'];
+        $view->vars['choice_translation_domain'] = $options['choice_translation_domain'];
     }
 }

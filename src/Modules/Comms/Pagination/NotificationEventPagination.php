@@ -14,8 +14,7 @@
  * Date: 26/03/2020
  * Time: 15:27
  */
-
-namespace App\Modules\System\Pagination;
+namespace App\Modules\Comms\Pagination;
 
 use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;

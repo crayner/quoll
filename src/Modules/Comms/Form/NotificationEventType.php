@@ -14,8 +14,7 @@
  * Date: 10/09/2019
  * Time: 13:34
  */
-
-namespace App\Modules\System\Form;
+namespace App\Modules\Comms\Form;
 
 use App\Form\Type\DisplayType;
 use App\Form\Type\HeaderType;
@@ -34,7 +33,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class NotificationEventType
- * @package App\Modules\System\Form
+ * @package App\Modules\Comms\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class NotificationEventType extends AbstractType
 {
@@ -46,14 +46,9 @@ class NotificationEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('header1', HeaderType::class,
-                [
-                    'label' => 'Edit Notification Event',
-                ]
-            )
             ->add('notEvent', DisplayType::class,
                 [
-                    'data' => TranslationHelper::translate($options['data']->getModule()->getName()) . ': ' .  TranslationHelper::translate($options['data']->getEvent()),
+                    'data' => TranslationHelper::translate($options['data']->getModule()->getName(), [], 'System') . ': ' .  TranslationHelper::translate($options['data']->getEvent(), [], 'System'),
                     'label' => 'Event',
                     'mapped' => false,
                 ]

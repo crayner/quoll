@@ -14,7 +14,6 @@
  * Date: 28/03/2020
  * Time: 12:35
  */
-
 namespace App\Modules\Comms\Validator;
 
 use App\Modules\Comms\Entity\NotificationListener;
@@ -35,6 +34,7 @@ class EventListenerValidator extends ConstraintValidator
      * validate
      * @param mixed $value
      * @param Constraint $constraint
+     * 24/06/2020 15:36
      */
     public function validate($value, Constraint $constraint)
     {
@@ -42,46 +42,86 @@ class EventListenerValidator extends ConstraintValidator
             return ;
 
         if ($value->getScopeType() === 'All' || $value->getScopeType() === '' || $value->getScopeType() === null) {
-            $value->setScopeID(null);
+            $value->setScopeIdentifier('');
+        }
+
+        if ($value->getScopeType() === '' || $value->getScopeType() === null) {
             return;
         }
 
-        if (null === $value->getScopeID() || '' === $value->getScopeID())
-        {
-            $this->context->buildViolation('This value cannot be blank when the Scope is set to {name}')
-                ->atPath('scopeID')
-                ->setTranslationDomain('System')
-                ->setParameter('{name}', TranslationHelper::tranlate($value->getScopeType(), [], 'messages'))
+        if ($value->getPerson() === null) {
+            $this->context->buildViolation($constraint->personMissingMessage)
+                ->atPath('person')
+                ->setCode(EventListener::PERSON_MISSING_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
+                ->addViolation();
+            return;
+
+        }
+
+        if ($value->getScopeType() === null) {
+            $this->context->buildViolation($constraint->scopeTypeMissingMessage)
+                ->atPath('scopeType')
+                ->setCode(EventListener::SCOPE_TYPE_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
                 ->addViolation();
             return;
         }
 
-        if ($value->getScopeType() === 'Student') {
-            $person = ProviderFactory::getRepository(Person::class)->find($value->getScopeID());
+        // Check unique
+        if (!ProviderFactory::getRepository(NotificationListener::class)->isUnique($value)) {
+            $this->context->buildViolation($constraint->uniqueNotificationListenerMessage)
+                ->atPath('person')
+                ->setCode(EventListener::UNIQUE_NOTIFICATION_LISTENER_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
+                ->addViolation();
+            return;
+        }
+
+        if ($value->getScopeType() === 'All') {
+            return;
+        }
+
+        if (null === $value->getScopeIdentifier() || '' === $value->getScopeIdentifier())
+        {
+            $this->context->buildViolation($constraint->scopeIdentifierMessage)
+                ->atPath('scopeIdentifier')
+                ->setCode(EventListener::SCOPE_IDENTIFIER_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
+                ->setParameter('{name}', TranslationHelper::translate($value->getScopeType(), [], $constraint->transDomain))
+                ->addViolation();
+            return;
+        }
+
+        if ($value->getScopeType() === 'student') {
+            $person = ProviderFactory::getRepository(Person::class)->find($value->getScopeIdentifier());
             if (null === $person || !$person->isStudent())
-                $this->context->buildViolation('The value is not a valid student.')
-                    ->atPath('scopeID')
-                    ->setTranslationDomain('System')
+                $this->context->buildViolation($constraint->studentMessage)
+                    ->atPath('scopeIdentifier')
+                    ->setCode(EventListener::STUDENT_ERROR)
+                    ->setTranslationDomain($constraint->transDomain)
                     ->addViolation();
             return;
         }
 
-        if ($value->getScopeType() === 'Staff') {
-            $person = ProviderFactory::getRepository(Person::class)->find($value->getScopeID());
+        if ($value->getScopeType() === 'staff') {
+            $person = ProviderFactory::getRepository(Person::class)->find($value->getScopeIdentifier());
             if (null === $person || !$person->isStaff())
-                $this->context->buildViolation('The value is not a valid staff member.')
-                    ->atPath('scopeID')
-                    ->setTranslationDomain('System')
+                $this->context->buildViolation($constraint->staffMessage)
+                    ->atPath('scopeIdentifier')
+                    ->setCode(EventListener::STAFF_ERROR)
+                    ->setTranslationDomain($constraint->transDomain)
                     ->addViolation();
             return;
         }
 
-        if ($value->getScopeType() === 'Year Group') {
-            $yg = ProviderFactory::getRepository(YearGroup::class)->find($value->getScopeID());
+        if ($value->getScopeType() === 'year_group') {
+            $yg = ProviderFactory::getRepository(YearGroup::class)->find($value->getScopeIdentifier());
             if (!$yg instanceof YearGroup)
-                $this->context->buildViolation('The value is not a valid Year Group.')
-                    ->atPath('scopeID')
-                    ->setTranslationDomain('System')
+                $this->context->buildViolation($constraint->yearGroupMessage)
+                    ->atPath('scopeIdentifier')
+                    ->setCode(EventListener::YEAR_GROUP_ERROR)
+                    ->setTranslationDomain($constraint->transDomain)
                     ->addViolation();
             return;
         }

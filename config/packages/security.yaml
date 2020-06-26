@@ -29,7 +29,6 @@ security:
             logout:
                 path:                   logout
                 target:                 home
-                success_handler:        App\Modules\Security\Manager\LogoutSuccessHandler
             remember_me:                false
             #                secret:               '%env(APP_SECRET)%'
             #                name:                 '%session_name%_remember_me'

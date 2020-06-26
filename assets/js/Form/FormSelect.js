@@ -14,7 +14,7 @@ export default function FormSelect(props) {
 
     var options = []
     if (typeof form.placeholder !== 'undefined' && form.placeholder !== false){
-        options.push(<option key={'placeholder'} className={'text-gray-500'}>{form.placeholder}</option>)
+        options.push(<option key={'placeholder'} value='' className={'text-gray-500'}>{form.placeholder}</option>)
     }
 
     Object.keys(form.preferred_choices).map(choice => {

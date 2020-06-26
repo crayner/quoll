@@ -38,6 +38,9 @@ services:
     App\Translation\Translator:
         decorates: translator
 
+    App\Translation\LoggerTranslator:
+        decorates: translator.logging
+
     App\Logger\UserDetailProcessor:
         tags:
             - { name: 'monolog.processor' }
@@ -119,3 +122,10 @@ services:
         arguments:
             $logger: '@monolog.logger.security'
 
+    App\Modules\Security\Listeners\LogoutSuccessListener:
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              dispatcher: security.event_dispatcher.main
+        arguments:
+            $logger: '@monolog.logger.security'

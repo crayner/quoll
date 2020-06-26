@@ -13,12 +13,13 @@
  */
 namespace App\Modules\Comms\Entity;
 
+use App\Modules\Comms\Validator\EventListener;
 use App\Provider\ProviderFactory;
 use App\Modules\School\Entity\YearGroup;
-use App\Modules\Comms\Validator as Valid;
 use App\Modules\People\Entity\Person;
 use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,9 +27,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\Comms\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Comms\Repository\NotificationListenerRepository")
  * @ORM\Table(name="NotificationListener",
- *     indexes={@ORM\Index(name="person",columns={"person"}),
- *     @ORM\Index(name="notification_event",columns={"notification_event"})})
- * @Valid\EventListener()
+ *      indexes={@ORM\Index(name="person",columns={"person"}),
+ *          @ORM\Index(name="notification_event",columns={"notification_event"})},
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="unique_listnener",columns={"notification_event","person","scope_type","scope_identifier"})}
+ * )
+ * @EventListener()
+ * @UniqueEntity({"person","event","scopeType","scopeIdentifier"})
  */
 class NotificationListener extends AbstractEntity
 {
@@ -71,15 +75,16 @@ class NotificationListener extends AbstractEntity
      * @var array
      */
     private static $scopeTypeList = [
-        'All',
-        'Student',
-        'Staff',
-        'Year Group'
+        'All' => 'All',
+        'Student' => 'student',
+        'Staff' => 'staff',
+        'Year Group' => 'year_group',
     ];
 
     /**
-     * @var string|null
+     * @var string
      * @ORM\Column(length=36,nullable=true)
+     * @Assert\Choice(callback="getIdentifierChoices")
      */
     private $scopeIdentifier;
 
@@ -110,8 +115,11 @@ class NotificationListener extends AbstractEntity
     }
 
     /**
-     * @param NotificationEvent|null $notification
-     * @return NotificationListener
+     * setEvent
+     * @param NotificationEvent|null $event
+     * @param bool $mirror
+     * @return $this
+     * 24/06/2020 09:06
      */
     public function setEvent(?NotificationEvent $event, bool $mirror = true): NotificationListener
     {
@@ -154,19 +162,23 @@ class NotificationListener extends AbstractEntity
     public function setScopeType(?string $scopeType): NotificationListener
     {
         $this->scopeType = $scopeType;
-        if ($scopeType === 'All')
+        if ($scopeType === 'All') {
             $this->setScopeIdentifier(null);
+        }
         return $this;
     }
 
     /**
      * getScopeIdentifier
-     * @return string|null
+     * @return string
+     * 24/06/2020 15:45
      */
     public function getScopeIdentifier(): ?string
     {
-        if ($this->getScopeType() === 'All')
+        if ($this->getScopeType() === 'All') {
             $this->scopeIdentifier = null;
+        }
+
         return $this->scopeIdentifier;
     }
 
@@ -177,9 +189,12 @@ class NotificationListener extends AbstractEntity
      */
     public function setScopeIdentifier(?string $scopeIdentifier): NotificationListener
     {
-        if ($this->getScopeType() === 'All')
-            $scopeIdentifier  = null;
+        if ($this->getScopeType() === 'All') {
+            $scopeIdentifier = null;
+        }
+
         $this->scopeIdentifier = $scopeIdentifier;
+
         return $this;
     }
 
@@ -190,8 +205,8 @@ class NotificationListener extends AbstractEntity
     public static function getScopeTypeList(): array
     {
         $result = [];
-        foreach(self::$scopeTypeList as $name)
-            $result[$name] = $name;
+        foreach(self::$scopeTypeList as $label=>$value)
+            $result[$label] = $value;
         return $result;
     }
 
@@ -202,6 +217,15 @@ class NotificationListener extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'unique') {
+            return [
+                'identifier' => $this->getId(),
+                'person' => $this->getPerson(),
+                'event' => $this->getEvent(),
+                'scopeType' => $this->getScopeType(),
+                'scopeIdentifier' => $this->getScopeIdentifier(),
+            ];
+        }
         return [];
     }
 
@@ -213,21 +237,26 @@ class NotificationListener extends AbstractEntity
     public static function getChainedValues(array $available): array
     {
         $result = [];
-        if (array_key_exists('All', $available) || $available === [])
+        if (in_array('All', $available) || $available === [])
             $result['All'] = [];
 
-        if (array_key_exists('Student', $available) || $available === [])
-            $result['Student'] = ProviderFactory::create(Person::class)->getCurrentStudentChoiceList();
+        if (in_array('student', $available) || $available === [])
+            $result['student'] = ProviderFactory::create(Person::class)->getCurrentStudentChoiceList();
 
-        if (array_key_exists('Staff', $available) || $available === [])
-            $result['Staff'] = ProviderFactory::create(Person::class)->getCurrentStaffChoiceList();
+        if (in_array('staff', $available) || $available === [])
+            $result['staff'] = ProviderFactory::create(Person::class)->getCurrentStaffChoiceList();
 
-        if (array_key_exists('Year Group', $available) || $available === [])
-            $result['Year Group'] = ProviderFactory::create(YearGroup::class)->getCurrentYearGroupChoiceList();
+        if (in_array('year_group', $available) || $available === [])
+            $result['year_group'] = ProviderFactory::create(YearGroup::class)->getCurrentYearGroupChoiceList();
 
         return $result;
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 24/06/2020 09:31
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__NotificationListener` (
@@ -238,10 +267,16 @@ class NotificationListener extends AbstractEntity
                     `person` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     KEY `notification_event` (`notification_event`),
-                    KEY `person` (`person`)
+                    KEY `person` (`person`),
+                    UNIQUE KEY `unique_listener` (`notification_event`,`person`,`scope_type`,`scope_identifier`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 23/06/2020 15:31
+     */
     public function foreignConstraints(): string
     {
         return 'ALTER TABLE `__prefix__NotificationListener`
@@ -249,8 +284,23 @@ class NotificationListener extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`notification_event`) REFERENCES `__prefix__NotificationEvent` (`id`);';
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 23/06/2020 15:31
+     */
     public static function getVersion(): string
     {
         return self::VERSION;
+    }
+
+    /**
+     * getIdentifierChoices
+     * @return array
+     * 25/06/2020 09:52
+     */
+    public function getIdentifierChoices(): array
+    {
+        return self::getChainedValues([$this->getScopeType()]);
     }
 }

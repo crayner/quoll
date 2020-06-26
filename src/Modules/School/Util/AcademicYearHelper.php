@@ -44,7 +44,8 @@ class AcademicYearHelper
     /**
      * getCurrentAcademicYear
      * @return AcademicYear|mixed
-     * 31/05/2020 14:00
+     * @throws \Exception
+     * 26/06/2020 08:58
      */
     public static function getCurrentAcademicYear()
     {
@@ -63,6 +64,7 @@ class AcademicYearHelper
             ProviderFactory::getEntityManager()->persist($current);
             ProviderFactory::getEntityManager()->flush();
         }
+        $session->set("academicYear", $current);
         return $current;
     }
 

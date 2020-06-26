@@ -187,12 +187,20 @@ class YearGroup extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'short') {
+            return [
+                $this->getId(),
+                $this->getName(),
+                $this->getAbbreviation(),
+                $this->getHeadOfYear() ? $this->getHeadOfYear()->fullName() : '',
+            ];
+        }
         return [
             'sequence' => $this->getSequenceNumber(),
             'name' => $this->getName(),
             'abbr' => $this->getAbbreviation(),
             'canDelete' => $this->canDelete(),
-            'head' => $this->getHeadOfYear() ? $this->getHeadOfYear()->formatName(['style' => 'long', 'reverse' => false]) : '',
+            'head' => $this->getHeadOfYear() ? $this->getHeadOfYear()->fullName() : '',
         ];
     }
 

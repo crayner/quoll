@@ -1,0 +1,14 @@
+-
+    findBy:
+        event: 'Login - Failed'
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy: { name: 'People' }
+    target: module
+-
+    findBy:
+        event: 'Login - Failed'
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy: { name: 'People' }
+    target: action

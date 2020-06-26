@@ -14,22 +14,23 @@
  * Date: 24/04/2020
  * Time: 16:04
  */
-
 namespace App\Modules\System\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Comms\Entity\NotificationListener;
-use App\Modules\System\Form\NotificationEventType;
-use App\Modules\System\Listener\NotificationEventListener;
-use App\Modules\System\Pagination\NotificationEventPagination;
+use App\Modules\Comms\Form\NotificationEventType;
+use App\Modules\Comms\Pagination\NotificationEventPagination;
+use App\Modules\People\Entity\Person;
+use App\Modules\System\Manager\Hidden\NotificationEventHandler;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\ReactFormHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -60,27 +61,29 @@ class NotificationController extends AbstractPageController
      * notificationEventEdit
      * @param NotificationEvent $event
      * @param ContainerManager $manager
-     * @param ReactFormHelper $helper
+     * @param ReactFormHelper $helper Initiate this class.
      * @Route("/notification/{event}/edit/", name="notification_event_edit")
      * @Route("/notification/{event}/edit/", name="notification_edit")
      * @IsGranted("ROLE_ROUTE")
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse|Response
      */
     public function notificationEventEdit(NotificationEvent $event, ContainerManager $manager, ReactFormHelper $helper)
     {
-        $request = $this->getPageManager()->getRequest();
+        $request = $this->getRequest();
 
         $form = $this->createForm(NotificationEventType::class, $event, ['action' => $this->generateUrl('notification_event_edit', ['event' => $event->getId()]), 'listener_delete_route' => $this->generateUrl('notification_listener_delete', ['listener' => '__id__', 'event' => '__event__'])]);
 
         if ($request->getContent() !== '') {
             $handler = new NotificationEventHandler();
-            $data = $handler->handleRequest($request, $form, $event);
-            if ($data['status'] === 'success')
+            $data = $handler->handleRequest($request,$form,$event);
+            if ($data['status'] === 'success') {
+                ProviderFactory::getEntityManager()->refresh($event);
                 $form = $this->createForm(NotificationEventType::class, $event, ['action' => $this->generateUrl('notification_event_edit', ['event' => $event->getId()]), 'listener_delete_route' => $this->generateUrl('notification_listener_delete', ['listener' => '__id__', 'event' => '__event__'])]);
+            }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
 
-            return new JsonResponse($data, 200);
+            return new JsonResponse($data);
         }
 
         $manager->singlePanel($form->createView());

@@ -45,5 +45,4 @@ class NoOnEmptyTransformer implements DataTransformerInterface
     {
         return $value === null || $value === '' ? 'No' : $value;
     }
-
 }

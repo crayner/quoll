@@ -14,7 +14,6 @@
  * Date: 9/08/2019
  * Time: 12:57
  */
-
 namespace App\Translation;
 
 use App\Modules\System\Entity\StringReplacement;
@@ -27,6 +26,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
+use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -45,7 +45,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
      * @param string $id
      * @param array $parameters
      * @param string $domain
-     * @param null $locale
+     * @param string $locale
      * @return string
      * @throws \Exception
      */
@@ -56,10 +56,15 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
         if (null === $id || '' === $id)
             return '';
+
         if (trim($id) === '')
             return $id;
 
         $id = trim($id);
+
+        if (intval($id) > 0 || is_int($id)) {
+            return $id;
+        }
 
         // Change translation domain to 'messages' if a translation can't be found in the
         // current domain

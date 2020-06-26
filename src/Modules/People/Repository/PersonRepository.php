@@ -232,30 +232,23 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * findByRoles
      * @param array $roles
+     * @param string $status
      * @return mixed
      */
-    public function findByRoles(array $roles = [])
+    public function findByRoles(array $roles = [], string $status = 'Full')
     {
-        $query = $this->createQueryBuilder('p')
-            ->select(['p', 'r.name'])
-            ->setParameter('roles', $roles, Connection::PARAM_INT_ARRAY)
-            ->where('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->groupBy('p.id')
-            ->orderBy('r.name', 'ASC')
-            ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', "ASC");
-
-        $where = '';
-        $param = [];
-        foreach($roles as $q=>$role) {
-            $where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
-            $param['role' . $q] = '%' . $role . '%';
-        }
-        $where = '(' . trim($where, ' OR') . ')';
-
-        return $query->andWhere($where)
-            ->setParameters($param)
+        $today = new \DateTimeImmutable(date('Y-m-d'));
+        $this->getRoleSearch($roles)
+            ->addParam('status', $status)
+            ->addParam('today', $today);
+        return $this->createQueryBuilder('p')
+            ->where('p.status = :status')
+            ->andWhere($this->getWhere())
+            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
+            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', "ASC")
+            ->setParameters($this->getParams())
             ->getQuery()
             ->getResult();
     }
@@ -266,12 +259,11 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findCurrentStudents(): array
     {
+        return $this->findAllStudents('Full');
         $academicYear = AcademicYearHelper::getCurrentAcademicYear();
         $today = new \DateTimeImmutable(date('Y-m-d'));
         return $this->createQueryBuilder('p')
-            ->select(['p','fa'])
             ->leftJoin('p.studentEnrolments','se')
-            ->leftJoin('p.adults', 'fa')
             ->where('se.academicYear = :academicYear')
             ->setParameter('academicYear', $academicYear)
             ->andWhere('p.status = :full')
@@ -305,23 +297,11 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findCurrentStaffAsArray(): array
     {
-        $today = new \DateTime(date('Y-m-d'));
         $staffLabel = TranslationHelper::translate('Staff', [], 'People');
-        $this->getStaffSearch();
-        $this->addParam('full', 'Full')
-            ->addParam('today', $today);
-
-        return $this->createQueryBuilder('p')
+        return $this->getStaffQueryBuilder()
             ->select(['p.id as value', "CONCAT('".$staffLabel.": ',p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "'".$staffLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, p.firstName,p.preferredName) AS data"])
-            ->where('p.status = :full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->andWhere($this->where)
-            ->setParameters($this->params)
-            ->orderBy('p.surname')
-            ->addOrderBy('p.preferredName')
             ->getQuery()
-            ->getResult();
+            ->getResult()
         ;
     }
 
@@ -549,9 +529,20 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getStaffSearch(): PersonRepository
     {
+        return $this->getRoleSearch(SecurityHelper::getHierarchy()->getStaffRoles());
+    }
+
+    /**
+     * getRoleSearch
+     * @param array $roles
+     * @return $this
+     * 23/06/2020 11:14
+     */
+    public function getRoleSearch(array $roles): PersonRepository
+    {
         $this->setWhere('(');
         $this->setParams([]);
-        foreach(SecurityHelper::getHierarchy()->getStaffRoles() as $q=>$role) {
+        foreach($roles as $q=>$role) {
             $this->where .= 'p.securityRoles LIKE :role' . $q . ' OR ';
             $this->addParam('role' . $q, '%' . $role . '%');
         }

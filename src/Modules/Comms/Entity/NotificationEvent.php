@@ -60,15 +60,15 @@ class NotificationEvent extends AbstractEntity
 
     /**
      * @var Module|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="events")
-     * @ORM\JoinColumn(name="module", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module",inversedBy="events")
+     * @ORM\JoinColumn(name="module",referencedColumnName="id",nullable=true)
      */
     private $module;
 
     /**
      * @var Action|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Action")
-     * @ORM\JoinColumn(name="action", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="action",referencedColumnName="id",nullable=true)
      */
     private $action;
 
@@ -109,7 +109,7 @@ class NotificationEvent extends AbstractEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="NotificationListener", mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="NotificationListener",mappedBy="event",orphanRemoval=true)
      */
     private $listeners;
 
@@ -256,26 +256,12 @@ class NotificationEvent extends AbstractEntity
     }
 
     /**
-     * getListenersByPerson
-     *
-     * @param NotificationListener $listener
-     * @return Collection
-     */
-    public function getListenersByPerson(NotificationListener $listener): Collection
-    {
-        return $this->getListeners()->filter(function (NotificationListener $entity) use ($listener) {
-            if ($listener->getScopeType() !== $entity->getScopeType() && $listener->getPerson()->isEqualTo($entity->getPerson()))
-                return $entity;
-        });
-    }
-
-    /**
      * Listeners.
      *
-     * @param Collection $listeners
+     * @param Collection|null $listeners
      * @return NotificationEvent
      */
-    public function setListeners(Collection $listeners): NotificationEvent
+    public function setListeners(?Collection $listeners): NotificationEvent
     {
         $this->listeners = $listeners;
         return $this;
@@ -285,7 +271,8 @@ class NotificationEvent extends AbstractEntity
      * addListener
      * @param NotificationListener $listener
      * @param bool $mirror
-     * @return NotificationEvent
+     * @return $this
+     * 24/06/2020 09:06
      */
     public function addListener(NotificationListener $listener, bool $mirror = true): NotificationEvent
     {
@@ -369,6 +356,11 @@ class NotificationEvent extends AbstractEntity
         ];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 23/06/2020 10:57
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__NotificationEvent` (
@@ -386,6 +378,11 @@ class NotificationEvent extends AbstractEntity
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 23/06/2020 10:57
+     */
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__NotificationEvent`
@@ -393,43 +390,53 @@ class NotificationEvent extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 23/06/2020 10:57
+     */
     public static function getVersion(): string
     {
         return self::VERSION;
     }
 
+    /**
+     * getCoreData
+     * @return array
+     * 23/06/2020 10:57
+     */
     public function getCoreData(): array
     {
-        Yaml::parse("
--
-  event: 'Login - Failed'
-  type: 'Core'
-  scopes: ['All']
-  active: 'Y'
-");
+        Yaml::parse(file_get_contents('NotificationEventCoreData.yaml'));
     }
 
     /**
      * coreDataLinks
      * @return mixed
+     * 23/06/2020 10:57
      */
     public function coreDataLinks()
     {
-        return Yaml::parse("
--
-    findBy: 
-        event: 'Login - Failed'
-    source: 
-        table: App\Modules\System\Entity\Module
-        findBy: { name: 'People' }
-    target: module
--
-    findBy: 
-        event: 'Login - Failed'
-    source: 
-        table: App\Modules\System\Entity\Action
-        findBy: { name: 'Manage People' }
-    target: action
-");
+        return Yaml::parse(file_get_contents('NotificationEventCoreLinks.yaml'));
+    }
+
+    /**
+     * sortListeners
+     * @return NotificationEvent
+     * 24/06/2020 12:18
+     */
+    public function sortListeners(?ArrayCollection $listeners): NotificationEvent
+    {
+        $listeners = $listeners ?: $this->getListeners();
+
+        $iterator = $listeners->getIterator();
+
+        $iterator->uasort(
+            function (NotificationListener $a, NotificationListener $b) {
+                return $a->getScopeType() <= $b->getScopeType() ? -1 : 1;
+            }
+        );
+
+        return $this->setListeners(new ArrayCollection(iterator_to_array($iterator, false)));
     }
 }

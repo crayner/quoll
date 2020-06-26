@@ -14,25 +14,27 @@
  * Date: 10/09/2019
  * Time: 14:45
  */
-
-namespace App\Modules\System\Form;
+namespace App\Modules\Comms\Form;
 
 use App\Form\Type\HiddenEntityType;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Comms\Entity\NotificationListener;
+use App\Modules\Comms\Validator\EventListener;
 use App\Modules\People\Entity\Person;
 use App\Modules\System\Entity\Action;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
  * Class NotificationListenerType
- * @package App\Modules\System\Form
+ * @package App\Modules\Comms\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class NotificationListenerType extends AbstractType
 {
@@ -62,42 +64,44 @@ class NotificationListenerType extends AbstractType
 
         $people = [];
         if ($action) {
-            $result = ProviderFactory::create(Person::class)->findByRole($action->getRole(), $this->hierarchy);
-            foreach ($result as $person) {
-                $people[$person['name']][] = $person[0];
-            }
+            $people = ProviderFactory::create(Person::class)->findByRoles($action->getSecurityRoles());
         }
 
         $allScopes = NotificationListener::getScopeTypeList();
-        $eventScopes = array_flip($event->getScopes());
-        $availableScopes = array_intersect_key($allScopes, $eventScopes);
+        $eventScopes = $event->getScopes();
+        $availableScopes = [];
+        foreach($eventScopes as $scope) {
+            $key = array_search($scope,$allScopes);
+            $availableScopes[$key] = $scope;
+        }
 
         $builder
             ->add('person', EntityType::class,
                 [
                     'class' => Person::class,
-                    'choice_label' => 'fullName',
+                    'choice_label' => 'fullNameReversed',
+                    'choice_translation_domain' => false,
                     'label' => 'Name',
                     'help' => 'Available only to users with the required permission.',
                     'choices' => $people,
-                    'placeholder' => 'Please Select...',
+                    'placeholder' => 'Please select...',
                 ]
             )
             ->add('scopeType', ChoiceType::class,
                 [
                     'label' => 'Scope',
                     'placeholder' => 'Please select...',
-                    'choices' => array_flip($availableScopes),
-                    'chained_child' => 'scopeID',
-                    'chained_values' => NotificationListener::getChainedValues(array_flip($availableScopes)),
+                    'choices' => $availableScopes,
+                    'chained_child' => 'scopeIdentifier',
+                    'chained_values' => NotificationListener::getChainedValues(array_values($availableScopes)),
                 ]
             )
-            ->add('scopeID', ChoiceType::class,
+            ->add('scopeIdentifier', ChoiceType::class,
                 [
                     'label' => 'Scope Choices',
                     'placeholder' => ' ',
                     'choices' => NotificationListener::getChainedValues([]),
-                    'required' => false,
+                    'choice_translation_domain' => false,
                 ]
             )
             ->add('event', HiddenEntityType::class,
@@ -105,6 +109,7 @@ class NotificationListenerType extends AbstractType
                     'class' => NotificationEvent::class,
                 ]
             )
+            ->add('id', HiddenType::class)
         ;
     }
 
@@ -123,6 +128,9 @@ class NotificationListenerType extends AbstractType
             [
                 'data_class' => NotificationListener::class,
                 'translation_domain' => 'System',
+                'constraints' => [
+                    new EventListener(),
+                ],
             ]
         );
     }
