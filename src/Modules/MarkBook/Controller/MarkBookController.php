@@ -19,6 +19,7 @@ namespace App\Modules\MarkBook\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\MarkBook\Form\MarkBookSettingType;
 use App\Modules\System\Entity\Setting;
@@ -52,7 +53,7 @@ class MarkBookController extends AbstractPageController
 
         $settingProvider = ProviderFactory::create(Setting::class);
         $settingProvider->getSettingsByScope('Mark Book');
-        $container = new Container();
+        $container = new Container($tabName);
 
         $form = $this->createForm(MarkBookSettingType::class, null, ['action' => $this->generateUrl('mark_book_settings')]);
 
@@ -72,11 +73,13 @@ class MarkBookController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $panel = new Panel('Features');
-        $container->setTranslationDomain('School')->addForm('Features', $form->createView())->addPanel($panel)->setSelectedPanel($tabName)->setTarget('formContent');
-        $panel = new Panel('Interface');
+        $panel = new Panel('Features','MarkBook', new Section('form', 'single'));
+        $container->setTranslationDomain('MarkBook')
+            ->addForm('single', $form->createView())
+            ->addPanel($panel);
+        $panel = new Panel('Interface','MarkBook', new Section('form', 'single'));
         $container->addPanel($panel);
-        $panel = new Panel('Warnings');
+        $panel = new Panel('Warnings','MarkBook', new Section('form', 'single'));
         $container->addPanel($panel);
 
         // Finally Finished
