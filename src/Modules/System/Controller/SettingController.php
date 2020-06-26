@@ -35,6 +35,7 @@ use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -196,7 +197,7 @@ class SettingController extends AbstractPageController
     /**
      * systemSettings
      * @param ContainerManager $manager
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse|Response
      * @Route("/display/settings/", name="display_settings")
      * @IsGranted("ROLE_ROUTE")
      */

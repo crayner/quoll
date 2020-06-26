@@ -437,7 +437,7 @@ class PageManager
                 $pageHeader = new PageHeader($header['name']);
                 if (isset($options['containers'])) {
                     $x = reset($options['containers']);
-                    if (isset($x['panels']) && count($x['panels'])) {
+                    if (isset($x['panels']) && count($x['panels']) > 1) {
                         $pageHeader->setHeaderAttr(['className' => 'page-header with-tabs']);
                     }
                 }
