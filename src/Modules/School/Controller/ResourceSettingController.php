@@ -19,6 +19,7 @@ namespace App\Modules\School\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Form\ResourceSettingsType;
 use App\Modules\System\Entity\Setting;
@@ -69,14 +70,13 @@ class ResourceSettingController extends AbstractPageController
             return new JsonResponse($data);
         }
 
-        $container = new Container();
-        $panel = new Panel('Category', 'School');
+        $container = new Container($tabName);
+        $panel = new Panel('Category', 'School', new Section('form', 'Features'));
         $container->setTranslationDomain('School')
             ->addForm('Features', $form->createView())
             ->addPanel($panel)
-            ->setSelectedPanel($tabName)
         ;
-        $panel = new Panel('Purpose');
+        $panel = new Panel('Purpose', 'School', new Section('form', 'Features'));
         $container->addPanel($panel);
 
         $manager->addContainer($container);
