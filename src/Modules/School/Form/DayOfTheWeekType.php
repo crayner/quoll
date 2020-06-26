@@ -27,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -80,7 +81,7 @@ class DayOfTheWeekType extends AbstractType
             ->add('schoolDay', ToggleType::class,
                 [
                     'label' => 'School Day',
-                    'visible_by_choice' => 'is-school-day-' . $options['data']->getAbbreviation(),
+                    'visible_by_choice' => 'id_school_day_' . $options['data']->getAbbreviation(),
                 ]
             )
             ->add('schoolOpen', TimeType::class,
@@ -89,7 +90,8 @@ class DayOfTheWeekType extends AbstractType
                     'with_seconds' => false,
                     'input' => 'datetime_immutable',
                     'widget' => 'single_text',
-                    'visible_values' => ['is-school-day-' . $options['data']->getAbbreviation()],
+                    'visible_values' => ['id_school_day_' . $options['data']->getAbbreviation()],
+                    'visible_parent' => 'day_of_the_week_'.strtolower($options['data']->getName()).'_schoolDay'
                 ]
             )
             ->add('schoolStart', TimeType::class,
@@ -98,7 +100,8 @@ class DayOfTheWeekType extends AbstractType
                     'with_seconds' => false,
                     'input' => 'datetime_immutable',
                     'widget' => 'single_text',
-                    'visible_values' => ['is-school-day-' . $options['data']->getAbbreviation()],
+                    'visible_values' => ['id_school_day_' . $options['data']->getAbbreviation()],
+                    'visible_parent' => 'day_of_the_week_'.strtolower($options['data']->getName()).'_schoolDay'
                 ]
             )
             ->add('schoolEnd', TimeType::class,
@@ -107,7 +110,8 @@ class DayOfTheWeekType extends AbstractType
                     'with_seconds' => false,
                     'input' => 'datetime_immutable',
                     'widget' => 'single_text',
-                    'visible_values' => ['is-school-day-' . $options['data']->getAbbreviation()],
+                    'visible_values' => ['id_school_day_' . $options['data']->getAbbreviation()],
+                    'visible_parent' => 'day_of_the_week_'.strtolower($options['data']->getName()).'_schoolDay'
                 ]
             )
             ->add('schoolClose', TimeType::class,
@@ -116,7 +120,8 @@ class DayOfTheWeekType extends AbstractType
                     'with_seconds' => false,
                     'input' => 'datetime_immutable',
                     'widget' => 'single_text',
-                    'visible_values' => ['is-school-day-' . $options['data']->getAbbreviation()],
+                    'visible_values' => ['id_school_day_' . $options['data']->getAbbreviation()],
+                    'visible_parent' => 'day_of_the_week_'.strtolower($options['data']->getName()).'_schoolDay'
                 ]
             )
             ->add('submit', SubmitType::class)

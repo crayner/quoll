@@ -19,6 +19,7 @@ namespace App\Modules\School\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Entity\DaysOfWeek;
 use App\Modules\School\Form\DayOfTheWeekType;
@@ -55,7 +56,7 @@ class DaysOfTheWeekController extends AbstractPageController
 
         foreach (ProviderFactory::getRepository(DaysOfWeek::class)->findBy([], ['sequenceNumber' => 'ASC']) as $day) {
             $form = $this->createForm(DayOfTheWeekType::class, $day, ['action' => $this->generateUrl('days_of_the_week', ['tabName' => $day->getName()])]);
-            $panel = new Panel($day->getName(), 'School');
+            $panel = new Panel($day->getName(), 'School', new Section('form', $day->getName()));
             $container->addForm($day->getName(), $form->createView())->addPanel($panel);
         }
 
