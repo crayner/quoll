@@ -85,9 +85,12 @@ class SettingController extends AbstractPageController
         $section = new Section('pagination', $pagination);
         $panel->addSection($section);
         $container->addPanel($panel);
-        $section = new Section('form','Settings');
-        $panel = new Panel('Settings', 'Staff', $section);
-        $container->addForm('Settings', $form->createView())->addPanel($panel);
+        $section = new Section('form','single');
+        $panel = new Panel('Absence Settings', 'Staff', $section);
+        $container->addForm('single', $form->createView())
+            ->addPanel($panel);
+        $panel = new Panel('Field Values', 'Staff', $section);
+        $container->addPanel($panel);
         $manager->addContainer($container);
 
         return $this->getPageManager()->createBreadcrumbs('Staff Settings')

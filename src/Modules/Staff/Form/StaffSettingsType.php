@@ -47,6 +47,7 @@ class StaffSettingsType extends AbstractType
             ->add('staffAbsenceHeader', HeaderType::class,
                 [
                     'label' => 'Staff Absence',
+                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffAbsenceSettings', SettingsType::class,
@@ -77,12 +78,14 @@ class StaffSettingsType extends AbstractType
                                 ],
                             ],
                         ],
-                    ]
+                    ],
+                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffCoverageHeader', HeaderType::class,
                 [
                     'label' => 'Staff Coverage',
+                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffCoverageSettings', SettingsType::class,
@@ -93,12 +96,15 @@ class StaffSettingsType extends AbstractType
                             'name' => 'substituteTypes',
                             'entry_type' => SimpleArrayType::class,
                         ],
-                    ]
+                    ],
+                    'panel' => 'Absence Settings',
+
                 ]
             )
             ->add('notificationHeader', HeaderType::class,
                 [
                     'label' => 'Notifications',
+                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('notificationSettings', SettingsType::class,
@@ -109,12 +115,19 @@ class StaffSettingsType extends AbstractType
                             'name' => 'absenceNotificationGroups',
                             'entry_type' => TextType::class,
                         ],
-                    ]
+                    ],
+                    'panel' => 'Absence Settings',
+                ]
+            )
+            ->add('submit2', SubmitType::class,
+                [
+                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('fieldValuesHeader', HeaderType::class,
                 [
                     'label' => 'Field Values',
+                    'panel' => 'Field Values',
                 ]
             )
             ->add('fieldValueSettings', SettingsType::class,
@@ -135,12 +148,14 @@ class StaffSettingsType extends AbstractType
                             'name' => 'jobOpeningDescriptionTemplate',
                             'entry_type' => CKEditorType::class,
                         ],
-                    ]
+                    ],
+                    'panel' => 'Field Values'
                 ]
             )
             ->add('submit', SubmitType::class,
                 [
-                    'label' => 'Submit',
+                    'panel' => 'Field Values'
+
                 ]
             )
         ;

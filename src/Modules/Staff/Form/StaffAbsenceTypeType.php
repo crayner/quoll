@@ -96,12 +96,6 @@ class StaffAbsenceTypeType extends AbstractType
                     'help' => 'An optional list of reasons which are available when submitting this type of absence',
                 ]
             )
-            ->add('sequenceNumber', IntegerType::class,
-                [
-                    'label' => 'Sequence Number',
-                    'help'  => 'Must be unique. Leave as zero (0) to let the system correctly allocate a sequence.',
-                ]
-            )
             ->add('submit', SubmitType::class,
                 [
                     'label' => 'Submit',
