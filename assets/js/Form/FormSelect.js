@@ -60,8 +60,8 @@ export default function FormSelect(props) {
                                  className="button" style={{marginRight: '20px'}}><span className={'fas fa-plus fa-fw'} /></button>)
     }
 
-    if (typeof form.value === 'undefined') {
-        form.value = null
+    if (typeof form.value === 'undefined' || form.value === null) {
+        form.value = ''
     }
 
     return (
