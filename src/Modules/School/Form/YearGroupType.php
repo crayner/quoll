@@ -74,7 +74,7 @@ class YearGroupType extends AbstractType
                     'choice_label' => 'fullNameReversed',
                     'placeholder' => ' ',
                     'choice_translation_domain' => false,
-                    'query_builder' => $personRepository->getStaffQueryBuider(),
+                    'query_builder' => $personRepository->getStaffQueryBuilder(),
                 ]
             )
             ->add('submit', SubmitType::class)
