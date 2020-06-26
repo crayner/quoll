@@ -19,6 +19,7 @@ namespace App\Modules\Behaviour\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Behaviour\Form\BehaviourSettingsType;
 use App\Modules\System\Entity\Setting;
@@ -67,17 +68,17 @@ class SettingController extends AbstractPageController
             return new JsonResponse($data, 200);
         }
 
-        $container = new Container();
-        $panel = new Panel('Descriptors', 'Behaviour');
+        $container = new Container($tabName);
+        $section = new Section('form','single');
+        $panel = new Panel('Descriptors', 'Behaviour', $section);
         $container->setTranslationDomain('Behaviour')
-            ->addForm('Descriptors', $form->createView())
-            ->addPanel($panel)
-            ->setSelectedPanel($tabName);
-        $panel = new Panel('Levels', 'Behaviour');
+            ->addForm('single', $form->createView())
+            ->addPanel($panel);
+        $panel = new Panel('Levels', 'Behaviour', $section);
         $container->addPanel($panel);
-        $panel = new Panel('Letters', 'Behaviour');
+        $panel = new Panel('Letters', 'Behaviour', $section);
         $container->addPanel($panel);
-        $panel = new Panel('Miscellaneous', 'Behaviour');
+        $panel = new Panel('Miscellaneous', 'Behaviour', $section);
         $container->addPanel($panel);
 
         $manager->addContainer($container);

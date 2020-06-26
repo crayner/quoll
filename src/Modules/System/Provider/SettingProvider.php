@@ -444,14 +444,13 @@ class SettingProvider extends AbstractProvider
 
                     if (is_object($data)) {
                         dump(get_class($data), $data);
+                        throw new \InvalidArgumentException('Work out how to handle an object!');
                     }
 
                     if (is_array($data)) {
-                        dump($data);
                         $data = implode(',', $data);
                     }
 
-                    dump($data,$content);
                     $this->setSettingByScope($setting['scope'], $setting['name'], $data);
                 }
             }
