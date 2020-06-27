@@ -22,7 +22,6 @@ export default function RenderPeople(props) {
         autoSuggestValue,
     } = props
 
-    console.log(autoSuggestValue)
     const SingleFileAutoSubmit = () => {
 
         const getUploadParams = () => {
@@ -133,8 +132,15 @@ export default function RenderPeople(props) {
     }
 
     function getPhoto(chosen) {
-        if (chosen.photo.length > 1 && chosen.photo[0] === '/')
+        if (chosen.photo.includes(absolute_url) && chosen.photo[0] === '/') {
+            return chosen.photo.slice(1)
+        }
+        if (chosen.photo.length > 1 && chosen.photo[0] === '/') {
             return chosen.photo
+        }
+        if (chosen.photo.includes(absolute_url)) {
+            return chosen.photo
+        }
         return '/' + chosen.photo
 
     }

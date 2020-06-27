@@ -10,6 +10,7 @@ export default function RenderPhotos(props) {
     } = props
 
     const photos = images.map(image => {
+        console.log(image.url)
         return (<img src={image.url} key={image.basename} className={'user max150 left'} title={image.basename} />)
     })
 

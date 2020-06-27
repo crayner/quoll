@@ -17,6 +17,7 @@
 
 namespace App\Modules\People\Controller;
 
+use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PhotoImporter;
@@ -51,7 +52,8 @@ class PhotoController extends AbstractPageController
      */
     public function import(PhotoImporter $importer)
     {
-        return $this->getPageManager()->createBreadcrumbs('Import People Photos')
+        return $this->getPageManager()
+            ->createBreadcrumbs('Import People Photos')
             ->render(['special' => $importer->toArray()]);
     }
 

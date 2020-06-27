@@ -406,7 +406,7 @@ export default class ContainerApp extends Component {
     }
 
     addElement(form) {
-        const uuidv4 = require('uuid/v4')
+        const uuidv4 = require('uuidv4')
         let id = uuidv4()
         let forms = {...this.state.forms}
         let element = {...replaceName({...form.prototype}, id)}
