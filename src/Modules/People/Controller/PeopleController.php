@@ -19,6 +19,7 @@ namespace App\Modules\People\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\ChangePasswordType;
@@ -109,8 +110,8 @@ class PeopleController extends AbstractPageController
         $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
         $sidebar->addContent($photo);
 
-        $container = new Container();
-        $container->setSelectedPanel($tabName);
+        $container = new Container($tabName);
+        $section = new Section('form', 'single');
         TranslationHelper::setDomain('People');
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -150,33 +151,33 @@ class PeopleController extends AbstractPageController
                 $errors = $data['errors'];
             }
 
-            $panel = new Panel('Basic', 'People');
+            $panel = new Panel('Basic', 'People', $section);
             $container->addForm('single', $form->createView())->addPanel($panel);
 
-            $panel = new Panel('System', 'People');
+            $panel = new Panel('System', 'People', $section);
             $container->addPanel($panel);
 
             if ($person->getId() !== null) {
-                $panel = new Panel('Contact', 'People');
+                $panel = new Panel('Contact', 'People', $section);
                 $container->addPanel($panel);
 
-                $panel = new Panel('School', 'People');
+                $panel = new Panel('School', 'People', $section);
                 $container->addPanel($panel);
 
-                $panel = new Panel('Background', 'People');
+                $panel = new Panel('Background', 'People', $section);
                 $container->addPanel($panel);
 
                 if (UserHelper::isParent($person)) {
-                    $panel = new Panel('Employment', 'People');
+                    $panel = new Panel('Employment', 'People', $section);
                     $container->addPanel($panel);
                 }
 
                 if (UserHelper::isStaff($person)) {
-                    $panel = new Panel('Emergency', 'People');
+                    $panel = new Panel('Emergency', 'People', $section);
                     $container->addPanel($panel);
                 }
 
-                $panel = new Panel('Miscellaneous', 'People');
+                $panel = new Panel('Miscellaneous', 'People', $section);
                 $container->addPanel($panel);
             }
 
@@ -192,33 +193,34 @@ class PeopleController extends AbstractPageController
                 200);
         }
 
-        $panel = new Panel('Basic', 'People');
+        $panel = new Panel('Basic', 'People', $section);
+
         $container->addForm('single', $form->createView())->addPanel($panel);
 
-        $panel = new Panel('System', 'People');
+        $panel = new Panel('System', 'People', $section);
         $container->addPanel($panel);
 
         if ($person->getId() !== null) {
-            $panel = new Panel('Contact', 'People');
+            $panel = new Panel('Contact', 'People', $section);
             $container->addPanel($panel);
 
-            $panel = new Panel('School', 'People');
+            $panel = new Panel('School', 'People', $section);
             $container->addPanel($panel);
 
-            $panel = new Panel('Background', 'People');
+            $panel = new Panel('Background', 'People', $section);
             $container->addPanel($panel);
 
             if (UserHelper::isParent($person)) {
-                $panel = new Panel('Employment', 'People');
+                $panel = new Panel('Employment', 'People', $section);
                 $container->addPanel($panel);
             }
 
             if (UserHelper::isStaff($person)) {
-                $panel = new Panel('Emergency', 'People');
+                $panel = new Panel('Emergency', 'People', $section);
                 $container->addPanel($panel);
             }
 
-            $panel = new Panel('Miscellaneous', 'People');
+            $panel = new Panel('Miscellaneous', 'People', $section);
             $container->addPanel($panel);
         }
 
