@@ -17,6 +17,7 @@
 
 namespace App\Modules\People\Form;
 
+use App\Modules\People\Form\Subscriber\PreferenceStaffSubscriber;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;

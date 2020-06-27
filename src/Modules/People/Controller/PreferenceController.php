@@ -84,8 +84,7 @@ class PreferenceController extends AbstractPageController
 
 
         $manager->setTranslationDomain('People');
-        $container = new Container();
-        $container->setSelectedPanel($tabName);
+        $container = new Container($tabName);
         $passwordPanel = new Panel('Reset Password', 'Security', new Section('form', 'Reset Password'));
         $container->addForm('Reset Password', $passwordForm->createView());
 
@@ -104,12 +103,12 @@ class PreferenceController extends AbstractPageController
                 $data = ErrorMessageHelper::getSuccessMessage($data, true);
                 $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
                 $manager->singlePanel($settingsForm->createView());
-                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
                 $manager->singlePanel($settingsForm->createView());
-                $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+                $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);
             }
         }

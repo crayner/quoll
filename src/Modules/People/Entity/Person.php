@@ -25,6 +25,7 @@ use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
@@ -2912,5 +2913,15 @@ class Person extends AbstractEntity
     public static function getVersion(): string
     {
         return self::VERSION;
+    }
+
+    /**
+     * getStaff
+     * @return Staff|null
+     * 27/06/2020 10:19
+     */
+    public function getStaff(): ?Staff
+    {
+        return $this->isStaff() ? ProviderFactory::getRepository(Staff::class)->findOneByPerson($this) : null;
     }
 }
