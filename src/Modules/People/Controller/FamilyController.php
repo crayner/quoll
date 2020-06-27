@@ -20,6 +20,7 @@ namespace App\Modules\People\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMember;
@@ -142,18 +143,18 @@ class FamilyController extends AbstractPageController
             return new JsonResponse($data,200);
         }
 
-        $container = new Container();
-        $container->setSelectedPanel($tabName);
+        $container = new Container($tabName);
 
-        $panel = new Panel('General', 'People');
+        $panel = new Panel('General', 'People', new Section('form', 'General'));
         $container->addForm('General', $form->createView())->addPanel($panel);
 
         $childrenPagination->setContent(FamilyManager::getChildren($family))->setPageMax(25)->setTargetElement('pagination');
         $child = new FamilyMemberChild($family);
         $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ]), 'postFormContent' => $childrenPagination->toArray()]);
 
-        $panel = new Panel('Students', 'People');
-        $container->addPanel($panel->setDisabled(intval($family->getId()) === 0))->addForm('Students', $addChild->createView());
+        $panel = new Panel('Students', 'People', new Section('form', 'Students'));
+        $container->addPanel($panel->setDisabled($family->getId() === null))
+            ->addForm('Students', $addChild->createView());
 
         $adultsPagination->setDraggableSort()
             ->setDraggableRoute('family_adult_sort')
@@ -163,17 +164,18 @@ class FamilyController extends AbstractPageController
         $adult = new FamilyMemberAdult($family);
         $addAdult = $this->createForm(FamilyAdultType::class, $adult, ['action' => $this->generateUrl('family_adult_add', ['family' => $family->getId() ?: 0]), 'postFormContent' => $adultsPagination->toArray()]);
 
-        $panel = new Panel('Adults', 'People');
-        $container->addPanel($panel->setDisabled(intval($family->getId()) === 0))->addForm('Adults', $addAdult->createView());
+        $panel = new Panel('Adults', 'People', new Section('form', 'Adults'));
+        $container->addPanel($panel->setDisabled($family->getId() === null))
+            ->addForm('Adults', $addAdult->createView());
 
         $relationship = $this->createForm(RelationshipsType::class, $relationshipManager->getRelationships($family),
             ['action' => $this->generateUrl('family_relationships', ['family' => $family->getId() ?: 0])]
         );
 
-        $relationshipManager->setFamily($family)->setForm($relationship->createView()->vars['toArray']);
-        $panel = new Panel('Relationships', 'People');
-        $panel->setSpecial($relationshipManager)
-            ->setDisabled(intval($family->getId()) === 0);
+        $relationshipManager->setFamily($family)
+            ->setForm($relationship->createView()->vars['toArray']);
+        $panel = new Panel('Relationships', 'People', new Section('special', $relationshipManager->toArray()));
+        $panel->setDisabled($family->getId() === null);
 
         $container->addPanel($panel);
 
@@ -380,7 +382,7 @@ class FamilyController extends AbstractPageController
                 $manager->singlePanel($form->createView());
                 $data['form'] = $manager->getFormFromContainer();
 
-                return new JsonResponse($data, 200);
+                return new JsonResponse($data);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
                 $manager->singlePanel($form->createView());

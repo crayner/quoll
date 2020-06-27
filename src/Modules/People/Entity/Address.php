@@ -18,6 +18,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Validator\PostCode;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Countries;
@@ -291,15 +292,13 @@ class Address extends AbstractEntity
     }
 
     /**
-     * coreData
-     * @return string
-     *//**
      * canDelete
-     * @return bool
+     * @return mixed
+     * 27/06/2020 12:15
      */
     public function canDelete()
     {
-        return true;
+        return ProviderFactory::create(Address::class)->canDelete($this);
     }
 
     /**

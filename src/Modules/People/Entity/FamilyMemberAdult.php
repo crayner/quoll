@@ -37,7 +37,7 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @var int|null
-     * @ORM\Column(type="smallint",options={"default": 1})
+     * @ORM\Column(type="smallint",nullable=true)
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=99)
      */
