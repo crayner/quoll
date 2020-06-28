@@ -16,6 +16,7 @@ namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\People\Entity\Person;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -132,6 +133,11 @@ class I18n extends AbstractEntity
         'zh_CN' => '汉语 - 中国',
         'zh_HK' => '體字 - 香港',
     );
+
+    /**
+     * @var Person|null
+     */
+    private $person;
 
     /**
      * @return string|null
@@ -898,5 +904,23 @@ class I18n extends AbstractEntity
     public static function getVersion(): string
     {
         return self::VERSION;
+    }
+
+    /**
+     * @return Person|null
+     */
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person|null $person
+     * @return I18n
+     */
+    public function setPerson(?Person $person): I18n
+    {
+        $this->person = $person;
+        return $this;
     }
 }

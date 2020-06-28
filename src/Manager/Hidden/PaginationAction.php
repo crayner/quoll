@@ -56,7 +56,7 @@ class PaginationAction
     private $columnClass = '';
 
     /**
-     * @var string
+     * @var string|boolean
      */
     private $onClick = '';
 
@@ -216,9 +216,9 @@ class PaginationAction
     }
 
     /**
-     * @return string
+     * @return string|boolean
      */
-    public function getOnClick(): string
+    public function getOnClick()
     {
         return $this->onClick;
     }
@@ -226,12 +226,16 @@ class PaginationAction
     /**
      * OnClick.
      *
-     * @param string $onClick
+     * @param string|boolean $onClick
      * @return PaginationAction
      */
-    public function setOnClick(string $onClick): PaginationAction
+    public function setOnClick($onClick): PaginationAction
     {
-        $this->onClick = $onClick;
+        if ($onClick === false || is_string($onClick)) {
+            $this->onClick = $onClick;
+        } else {
+            throw new \InvalidArgumentException('$onClick must be a string OR (bool) false.');
+        }
         return $this;
     }
 

@@ -62,10 +62,14 @@ trait BooleanList
     /**
      * getYesNo
      * @param bool $w
+     * @param bool $translate
      * @return string
      */
-    protected static function getYesNo(bool $w): string
+    protected static function getYesNo(bool $w, bool $translate = true): string
     {
-        return TranslationHelper::translate($w ? 'Yes' : 'No', [], 'messages');
+        if ($translate) {
+            return TranslationHelper::translate($w ? 'Yes' : 'No', [], 'messages');
+        }
+        return $w ? 'Yes' : 'No';
     }
 }

@@ -361,6 +361,21 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
+     * findAllStudentContactsQuery
+     * @return QueryBuilder
+     * 28/06/2020 12:22
+     */
+    public function findAllStudentContactsQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.members', 'fm')
+            ->where('fm.id IS NOT NULL')
+            ->andWhere('fm.contactPriority IS NOT NULL')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC');
+    }
+
+    /**
      * findOneUsingQuickSearch
      * @param string $search
      * @return Person|null
@@ -410,16 +425,45 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getPaginationContent(): array
     {
-        return $this->createQueryBuilder('p')
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ', ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status','f.name AS family','f.id As family_id','p.username'])
+        $students = $this->findAllStudentsQuery()
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status','f.name AS family','f.id As family_id','p.username', "'Student' AS role", 'p.canLogin'])
             ->leftJoin('p.members', 'fm')
             ->leftJoin('fm.family', 'f')
-            ->leftJoin('p.personalPhone', 'ph')
-            ->leftJoin('p.studentEnrolments', 'se')
-            ->orderBy('p.surname')
-            ->addOrderBy('p.preferredName')
             ->getQuery()
             ->getResult();
+        $parents = $this->findAllStudentContactsQuery()
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status','f.name AS family','f.id As family_id','p.username', "'Parent' AS role", 'p.canLogin'])
+            ->leftJoin('fm.family', 'f')
+            ->getQuery()
+            ->getResult();
+        $staff = $this->getStaffQueryBuilder()
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status', "'' AS family", "'' AS family_id", 'p.username', "'Staff' AS role", 'p.canLogin'])
+            ->getQuery()
+            ->getResult();
+        $all = [];
+        foreach($students as $person) {
+            $all[] = $person['id'];
+        }
+        foreach($staff as $person) {
+            $all[] = $person['id'];
+        }
+        foreach($parents as $person) {
+            $all[] = $person['id'];
+        }
+        $others = $this->createQueryBuilder('p')
+            ->where('p.id NOT IN (:list)')
+            ->setParameter('list', $all, Connection::PARAM_STR_ARRAY)
+            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.securityRoles as roles','p.status', "'' AS family", "'' As family_id", 'p.username', "'Other' AS role", "'N' AS canLogin"])
+            ->getQuery()
+            ->getResult();
+
+        $all = array_merge($students,$parents,$staff,$others);
+
+        usort($all, function($a,$b) {
+            return $a['fullName'] <= $b['fullName'] ? -1 : 1;
+        });
+
+        return $all;
     }
 
     /**
@@ -555,9 +599,22 @@ class PersonRepository extends ServiceEntityRepository
      * findAllStudents
      * @param string $status
      * @return array
-     * 22/06/2020 11:17
+     * 28/06/2020 12:05
      */
     public function findAllStudents(string $status = 'Full'): array
+    {
+        return $this->findAllStudentsQuery($status)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findAllStudentsQuery
+     * @param string $status
+     * @return QueryBuilder
+     * 28/06/2020 12:05
+     */
+    public function findAllStudentsQuery(string $status = 'Full'): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->where('p.securityRoles LIKE :role')
@@ -566,8 +623,6 @@ class PersonRepository extends ServiceEntityRepository
             ->andWhere('(p.dateEnd >= :today OR p.dateEnd IS NULL)')
             ->setParameters(['role' => '%ROLE_STUDENT%', 'status' => '%'.$status.'%', 'today' => new \DateTimeImmutable('now')])
             ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->addOrderBy('p.firstName', 'ASC');
     }
 }

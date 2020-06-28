@@ -14,11 +14,10 @@
  * Date: 29/07/2019
  * Time: 14:32
  */
-
 namespace App\Twig;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
-use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
@@ -29,6 +28,7 @@ use App\Util\UrlGeneratorHelper;
 /**
  * Class MinorLinks
  * @package App\Twig
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class MinorLinks implements ContentInterface
 {
@@ -51,31 +51,12 @@ class MinorLinks implements ContentInterface
     public function execute(): void
     {
         if (!$this->hasSession())
-            return ;
+            return;
 
         $links = [];
-        $languageLink = false;
-        // Add a link to go back to the system/personal default language, if we're not using it
-        if ($this->getSession()->has('i18n')) {
-            $locale = $this->getSession()->get('i18n');
-            if ($locale->getCode() !== $this->getRequest()->getDefaultLocale()) {
-                $defaultLocale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getRequest()->getDefaultLocale());
-                $languageLink =
-                    [
-                        'url' => [
-                            'route' => 'locale_switch',
-                            'params' => ['i18n' => $defaultLocale->getCode()],
-                        ],
-                        'text' => $defaultLocale->getShortName(),
-                        'class' => 'link-white',
-                        'translation_domain' => false,
-                    ];
-            }
-        }
+        $person = $this->getPerson();
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
-            if ($languageLink)
-                $links[] = $languageLink;
             if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
                 $links[] = [
                     'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink'),
@@ -86,8 +67,7 @@ class MinorLinks implements ContentInterface
                 ];
             }
         } else {
-            $person = SecurityHelper::getCurrentUser()->getPerson();
-            $name = $person->formatName(['preferred' => true, 'reverse' => false]);
+            $name = $person->getFullName();
             if ($person->isStudent()) {
                 $highestAction = SecurityHelper::getHighestGroupedAction('student_view');
                 if ($highestAction == 'View Student Profile_brief') {
@@ -100,7 +80,6 @@ class MinorLinks implements ContentInterface
                 }
             }
 
-
             if (is_string($name) && '' !== $name){
                 $name = [
                     'text' => $name,
@@ -111,12 +90,21 @@ class MinorLinks implements ContentInterface
             $links[] = $name;
             $provider = ProviderFactory::create(Setting::class);
 
-            $links[] = [
-                'class' => 'link-white',
-                'text' => TranslationHelper::translate('Logout', [], 'Security'),
-                'url' => UrlGeneratorHelper::getUrl('logout'),
-                'translation_domain' => 'Security',
-            ];
+            if (SecurityHelper::isGranted('IS_IMPERSONATOR')) {
+                $links[] = [
+                    'class' => 'link-white',
+                    'text' => TranslationHelper::translate('Restore Self', [], 'Security'),
+                    'url' => UrlGeneratorHelper::getUrl('personal_page', ['_switch_user' => '_exit']),
+                    'translation_domain' => 'Security',
+                ];
+            } else {
+                $links[] = [
+                    'class' => 'link-white',
+                    'text' => TranslationHelper::translate('Logout', [], 'Security'),
+                    'url' => UrlGeneratorHelper::getUrl('logout'),
+                    'translation_domain' => 'Security',
+                ];
+            }
             $links[] = [
                 'class' => 'link-white',
                 'text' => TranslationHelper::translate('Preferences', [], 'People'),
@@ -143,8 +131,7 @@ class MinorLinks implements ContentInterface
                 ];
             }
 
-            if ($languageLink)
-                $links[] = $languageLink;
+            $links = $this->getLocaleLinks($links);
 
             //Check for house logo (needed to get bubble, below, in right spot)
             if ($person->getHouse() instanceof House) {
@@ -190,5 +177,44 @@ class MinorLinks implements ContentInterface
     public function getHouseLogo(): array
     {
         return $this->houseLogo;
+    }
+
+    /**
+     * getPerson
+     * @return Person|null
+     * 28/06/2020 09:40
+     */
+    private function getPerson(): ?Person
+    {
+        return SecurityHelper::getCurrentUser() ? SecurityHelper::getCurrentUser()->getPerson() : null;
+    }
+
+    /**
+     * getLocaleLinks
+     * @param array $links
+     * @return array
+     * 28/06/2020 09:54
+     */
+    private function getLocaleLinks(array $links)
+    {
+        // Add a link to go back to the system/personal default language, if we're not using it.
+        $languageLinks = false;
+        if ($this->getSession()->has('i18n') && $this->getSession()->get('i18n')->getPerson()->isEqualTo($this->getPerson())) {
+            $locale = $this->getSession()->get('i18n');
+        }
+        if (isset($locale) && $locale->getCode() !== $this->getRequest()->getDefaultLocale()) {
+            $defaultLocale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getRequest()->getDefaultLocale());
+            $links[] =
+                [
+                    'url' => [
+                        'route' => 'locale_switch',
+                        'params' => ['i18n' => $defaultLocale->getCode()],
+                    ],
+                    'text' => $defaultLocale->getCode(),
+                    'class' => 'link-white',
+                    'translation_domain' => false,
+                ];
+        }
+        return $links;
     }
 }

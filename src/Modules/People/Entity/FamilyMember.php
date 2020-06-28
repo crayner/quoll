@@ -79,7 +79,15 @@ class FamilyMember extends AbstractEntity
      * @ORM\Column(type="text",nullable=true)
      */
     private $comment;
-    
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="smallint",nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1,max=99)
+     */
+    private $contactPriority;
+
     /**
      * FamilyMember constructor.
      * @param Family|null $family
@@ -161,6 +169,24 @@ class FamilyMember extends AbstractEntity
     public function setComment(?string $comment): FamilyMember
     {
         $this->comment = $comment;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getContactPriority(): ?int
+    {
+        return $this->contactPriority;
+    }
+
+    /**
+     * @param int|null $contactPriority
+     * @return FamilyMemberAdult
+     */
+    public function setContactPriority(?int $contactPriority): FamilyMemberAdult
+    {
+        $this->contactPriority = $contactPriority;
         return $this;
     }
 

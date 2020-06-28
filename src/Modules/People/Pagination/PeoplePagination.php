@@ -24,7 +24,6 @@ use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Manager\AbstractPaginationManager;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Manager\RoleHierarchy;
 use App\Util\TranslationHelper;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
@@ -146,10 +145,21 @@ class PeoplePagination extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
+        $action->setTitle('Impersonation')
+            ->setAClass('thickbox p-3 sm:p-0')
+            ->setColumnClass('column p-2 sm:p-3')
+            ->setSpanClass('fas fa-people-arrows fa-fw fa-1-5x text-gray-800 hover:text-blue-500')
+            ->setRoute('personal_page')
+            ->setDisplayWhen('canLogin')
+            ->setOnClick(false)
+            ->setRouteParams(['_switch_user' => 'username']);
+        $row->addAction($action);
+
+        $action = new PaginationAction();
         $action->setTitle('Reset Password')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
+            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800 hover:text-orange-500')
             ->setRoute('person_reset_password')
             ->setRouteParams(['person' => 'id']);
         $row->addAction($action);
@@ -167,23 +177,30 @@ class PeoplePagination extends AbstractPaginationManager
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Student')
-            ->setValue(true)
+            ->setValue('Student')
             ->setGroup('Role')
-            ->setContentKey('student');
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Parent')
-            ->setValue(true)
+            ->setValue('Parent')
             ->setGroup('Role')
-            ->setContentKey('parent');
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
         $filter->setName('Role: Staff')
-            ->setValue(true)
+            ->setValue('Staff')
             ->setGroup('Role')
-            ->setContentKey('staff');
+            ->setContentKey('role');
+        $row->addFilter($filter);
+
+        $filter = new PaginationFilter();
+        $filter->setName('Role: Other')
+            ->setValue('Other')
+            ->setGroup('Role')
+            ->setContentKey('role');
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();

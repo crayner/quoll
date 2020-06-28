@@ -77,8 +77,9 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             foreach ($this->getAllRoles() as $role) {
                 $roles[] = $role;
             }
+            return $this->roles = array_unique($roles);
         }
-        return $this->roles = array_unique($roles);
+        return $this->roles;
     }
 
     /**
@@ -320,6 +321,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     public function setAllRoles(?array $allRoles): SecurityUser
     {
         $this->allRoles = $allRoles;
+        $this->getRoles();
         return $this;
     }
 
@@ -500,8 +502,9 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     {
         if (null === $this->person && $this->getId() !== null)
         {
-            $this->person = $this->__construct(ProviderFactory::getRepository(Person::class)->find($this->getId()));
+            $this->__construct(ProviderFactory::getRepository(Person::class)->find($this->getId()));
         }
+
         return $this->person;
     }
 

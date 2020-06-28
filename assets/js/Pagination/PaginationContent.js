@@ -120,14 +120,23 @@ export default function PaginationContent(props) {
         let actions = Object.keys(row.actions).map(actionKey => {
             let action = row.actions[actionKey]
             rowContent.options = action.options
-            if (action.displayWhen === '' || rowContent[action.displayWhen]) {
-                if (action.onClick === '')
-                    return (<a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass} key={actionKey}
-                               title={action.title}><span className={action.spanClass}></span></a>)
+            if (action.displayWhen === '' || rowContent[action.displayWhen] === true || rowContent[action.displayWhen] === 'Y') {
+                if (action.onClick === '') {
+                    return (
+                        <a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass}
+                           key={actionKey}
+                           title={action.title}><span className={action.spanClass} /></a>)
+                }
+                if (action.onClick === false) {
+                    return (
+                        <a href={rowContent.actions[actionKey].url} className={action.aClass}
+                           key={actionKey}
+                           title={action.title}><span className={action.spanClass} /></a>)
+                }
 
                 return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey],rowContent)}
                            className={action.aClass} key={actionKey} title={action.title}>
-                    <span className={action.spanClass}></span></a>)
+                    <span className={action.spanClass} /></a>)
             }
         })
         if (row.actions.length > 0) {

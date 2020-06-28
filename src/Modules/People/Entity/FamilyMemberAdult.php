@@ -36,14 +36,6 @@ class FamilyMemberAdult extends FamilyMember
     private $childDataAccess = 'N';
 
     /**
-     * @var int|null
-     * @ORM\Column(type="smallint",nullable=true)
-     * @Assert\NotBlank()
-     * @Assert\Range(min=1,max=99)
-     */
-    private $contactPriority;
-
-    /**
      * @var string|null
      * @ORM\Column(length=1)
      * @Assert\Choice(callback="getBooleanList")
@@ -101,24 +93,6 @@ class FamilyMemberAdult extends FamilyMember
     public function setChildDataAccess(?string $childDataAccess): FamilyMemberAdult
     {
         $this->childDataAccess = $childDataAccess;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getContactPriority(): ?int
-    {
-        return $this->contactPriority;
-    }
-
-    /**
-     * @param int|null $contactPriority
-     * @return FamilyMemberAdult
-     */
-    public function setContactPriority(?int $contactPriority): FamilyMemberAdult
-    {
-        $this->contactPriority = $contactPriority;
         return $this;
     }
 

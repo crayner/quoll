@@ -2577,12 +2577,7 @@ class Person extends AbstractEntity
             'phone' => $this->getPersonalPhone(),
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
-            'student' => $this->isStudent(),
-            'staff' => $this->isStaff(),
-            'parent' => $this->isParent(),
         ];
-
-
     }
 
     /**

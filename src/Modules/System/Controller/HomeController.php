@@ -14,10 +14,8 @@
  * Date: 11/04/2020
  * Time: 14:21
  */
-
 namespace App\Modules\System\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
@@ -28,11 +26,13 @@ use App\Twig\Sidebar\Register;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class HomeController
  * @package App\Modules\System\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class HomeController extends AbstractPageController
 {
@@ -91,16 +91,26 @@ class HomeController extends AbstractPageController
     }
 
     /**
-     * legacy
+     * personalPage
+     * @return JsonResponse
      * @Route("/personal/page/", name="personal_page")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("ROLE_USER")
+     * 28/06/2020 10:33
      */
     public function personalPage()
     {
-        return $this->getPageManager()->render(
-            [
-                'content' => '<h3 key="personal_page">Personal Page</h3>',
-            ]
-        );
+        if ($this->getRequest()->attributes->has('_switch_user')) {
+            return $this->getPageManager()->render(
+                [
+                    'content' => $this->renderView('components/redirect_on_page_load.html.twig', ['page' => $this->generateUrl('personal_page')]),
+                ]
+            );
+        } else {
+            return $this->getPageManager()->render(
+                [
+                    'content' => '<h3 key="personal_page">Personal Page</h3>',
+                ]
+            );
+        }
     }
 }

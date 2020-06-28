@@ -427,14 +427,21 @@ class PageManager
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl(),
                 'popup' => $this->isPopup(),
+                'redirect' => null,
             ]
         );
+
+        dump($options);
+        $resolver->setAllowedTypes('redirect', ['null','string']);
+
+        $options = $resolver->resolve($options);
 
         if ($this->getPageHeader() === []) {
             $crumbs = isset($this->getBreadCrumbs()['breadCrumbs']) ? $this->getBreadCrumbs()['breadCrumbs'] : [];
             if ($crumbs !== []) {
                 $header = end($crumbs);
                 $pageHeader = new PageHeader($header['name']);
+                $pageHeader->setHeaderAttr(['className' => 'page-header']);
                 if (isset($options['containers'])) {
                     $x = reset($options['containers']);
                     if (isset($x['panels']) && count($x['panels']) > 1) {
@@ -445,7 +452,7 @@ class PageManager
             }
         }
 
-        $x = array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]);
+        $x = array_merge($options, $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]);
         return new JsonResponse($x);
     }
 
