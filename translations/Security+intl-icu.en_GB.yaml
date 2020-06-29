@@ -56,3 +56,41 @@ Person: Person
 Reset the password for this person.: Reset the password for this person.
 The person will need to change their password at the next attempt to sign in.: The person will need to change their password at the next attempt to sign in.
 Your account has been successfully updated. You can now continue to use the system as per normal.: Your account has been successfully updated. You can now continue to use the system as per normal.
+Category: Category
+Child Security Roles: Child Security Roles
+Children: Children
+Delete: Delete
+Edit: Edit
+Future Years: Future Years
+Group roles.: Group roles.
+Label: Label
+Past Years: Past Years
+Please select...: Please select...
+Role Category: Role Category
+Role Label: Role Label
+Role: Role
+Security Role: Security Role
+Work in Future Years: Work in Future Years
+Work in Past Years: Work in Past Years
+securityrole:
+    category:
+        contact: Contact
+        parent: Parent
+        staff: Staff
+        student: Student
+        system: System
+reachable:
+    roles: 'Reachable Roles: {roles}'
+All Staff: All Staff
+Allow Login: Allow Login
+Allowed to impersonate appropriate people: Allowed to impersonate appropriate people
+Any User: Any User
+Can Access Site (Login): Can Access Site (Login)
+Contact: Contact
+Head Teacher: Head Teacher
+Librarian: Librarian
+Principal: Principal
+Reachable Roles: Reachable Roles
+Student: Student
+Support Staff: Support Staff
+Teacher: Teacher
