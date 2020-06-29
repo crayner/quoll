@@ -520,3 +520,9 @@ A list of religions available in system: A list of religions available in system
 A list of residency status available in system. If blank, system will allow text input: A list of residency status available in system. If blank, system will allow text input
 Day Type Options: Day Type Options
 Privacy / Data Options: Privacy / Data Options
+Add Security Role: Add Security Role
+Class of: Class of
+Edit Security Role: Edit Security Role
+'Employment Details: {name}': 'Employment Details: {name}'
+Impersonation: Impersonation
+Security Roles: Security Roles
