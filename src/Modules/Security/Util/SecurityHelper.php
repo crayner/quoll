@@ -472,4 +472,19 @@ class SecurityHelper
         return self::getHierarchy()->getAssignableRoleNames($roles);
     }
 
+    /**
+     * @param Module|null $module
+     */
+    public static function setModule(Module $module): void
+    {
+        self::$module = $module;
+    }
+
+    /**
+     * @param Action|null $action
+     */
+    public static function setAction(Action $action): void
+    {
+        self::$action = $action;
+    }
 }

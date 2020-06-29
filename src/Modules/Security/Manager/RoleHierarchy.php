@@ -14,14 +14,17 @@
  * Date: 25/04/2020
  * Time: 14:23
  */
-
 namespace App\Modules\Security\Manager;
 
+use App\Modules\Security\Entity\SecurityRole;
+use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
- * Class RoleHierachy
+ * Class RoleHierarchy
  * @package App\Modules\Security\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class RoleHierarchy implements RoleHierarchyInterface
 {
@@ -36,15 +39,21 @@ class RoleHierarchy implements RoleHierarchyInterface
     private $hierarchy;
 
     /**
+     * @var SecurityRole[]|ArrayCollection
+     */
+    private static $roles;
+
+    /**
      * RoleHierarchy constructor.
      * @param RoleHierarchyInterface $roleHierarchy
-     * @param array $hierarchy
      */
-    public function __construct(RoleHierarchyInterface $roleHierarchy, array $hierarchy)
+    public function __construct(RoleHierarchyInterface $roleHierarchy)
     {
         $this->roleHierarchy = $roleHierarchy;
 
-        $this->hierarchy = $hierarchy;
+        $this->hierarchy = $this->buildHierarchyRoles();
+
+        $this->roleHierarchy->__construct($this->hierarchy);
     }
 
     /**
@@ -55,14 +64,6 @@ class RoleHierarchy implements RoleHierarchyInterface
     public function getAssignableRoleNames(array $roles)
     {
         $roles = $this->getReachableRoleNames($roles);
-        if (($key = array_search('ROLE_CURRENT_USER', $roles)) !== false)
-            unset($roles[$key]);
-        if (($key = array_search('ROLE_FUTURE_YEARS', $roles)) !== false)
-            unset($roles[$key]);
-        if (($key = array_search('ROLE_PAST_YEARS', $roles)) !== false)
-            unset($roles[$key]);
-        if (($key = array_search('ROLE_ALLOWED_TO_SWITCH', $roles)) !== false)
-            unset($roles[$key]);
 
         return $roles;
     }
@@ -113,5 +114,73 @@ class RoleHierarchy implements RoleHierarchyInterface
             }
         }
         return array_unique($result);
+    }
+
+    /**
+     * buildHierarchyRoles
+     * @return array
+     * 29/06/2020 14:44
+     */
+    private function buildHierarchyRoles(): array
+    {
+        $result = [];
+
+        foreach(ProviderFactory::getRepository(SecurityRole::class)->findAll() as $role) {
+            $result[$role->getRole()] = [];
+            foreach($role->getChildRoles() as $child) {
+                $result[$role->getRole()][] = $child->getRole();
+            }
+            self::addRole($role);
+        }
+
+        return $result;
+    }
+
+    /**
+     * getRoles
+     * @return ArrayCollection
+     * 29/06/2020 14:40
+     */
+    private static function getRoles(): ArrayCollection
+    {
+        if (self::$roles === null) {
+            self::$roles = new ArrayCollection();
+        }
+        return self::$roles;
+    }
+
+    /**
+     * setRoles
+     * @param array $roles
+     * 29/06/2020 14:42
+     */
+    private static function setRoles(array $roles): void
+    {
+        self::$roles = $roles;
+    }
+
+    /**
+     * addRole
+     * @param $role
+     * 29/06/2020 14:42
+     */
+    private static function addRole($role)
+    {
+        self::getRoles()->set($role->getRole(), $role);
+    }
+
+    /**
+     * getCategory
+     * @param $role
+     * @return string
+     * 29/06/2020 14:37
+     */
+    public static function getCategory($role): string
+    {
+        if (is_string($role)) {
+            $role = self::getRoles()->get($role);
+        }
+
+        return $role->getCategory();
     }
 }
