@@ -362,10 +362,3 @@
         table: App\Modules\System\Entity\Module
         findBy: { name: 'Roll Group' }
     target: module
--
-    findBy:
-        entryRoute: 'security_role_list'
-    source:
-        table: App\Modules\System\Entity\Module
-        findBy: { name: 'People' }
-    target: module

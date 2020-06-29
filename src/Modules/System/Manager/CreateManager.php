@@ -276,9 +276,6 @@ class CreateManager
         }
         $sourceEntity = ProviderFactory::getRepository($data['source']['table'])->findOneBy($sourceCriteria);
         $method = 'set' . ucfirst($data['target']);
-        if (!method_exists($targetEntity, $method)) {
-            $method = 'add' . ucfirst($data['target']);
-        }
         $targetEntity->$method($sourceEntity);
         $this->getEm()->persist($targetEntity);
     }

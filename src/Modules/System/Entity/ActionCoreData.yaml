@@ -489,12 +489,3 @@
     entry_sidebar: 'Y'
     menu_show: 'Y'
     security_roles: ['ROLL_SUPPORT','ROLE_PARENT','ROLE_STUDENT']
--
-    name: 'Security Roles'
-    category: 'People Management'
-    description: ''
-    route_list: ['security_role_list','security_role_add','security_role_edit','security_role_delete']
-    entry_route: 'security_role_list'
-    entry_sidebar: 'Y'
-    menu_show: 'Y'
-    security_roles: ['ROLE_SYSTEM_ADMIN']

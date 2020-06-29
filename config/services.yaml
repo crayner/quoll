@@ -68,6 +68,8 @@ services:
 
     App\Modules\Security\Manager\RoleHierarchy:
         decorates: 'security.role_hierarchy'
+        arguments:
+            $hierarchy: '%security.hierarchy.roles%'
 
     App\Listeners\ImageListener:
         tags:

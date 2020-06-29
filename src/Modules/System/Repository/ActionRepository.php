@@ -14,7 +14,6 @@
 namespace App\Modules\System\Repository;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
@@ -23,7 +22,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Modules\People\Util\UserHelper;
 
@@ -256,44 +254,4 @@ class ActionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /**
-     * countRoleUse
-     * @param SecurityRole $role
-     * @return int
-     * 29/06/2020 10:38
-     */
-    public function countRoleUse(SecurityRole $role): int
-    {
-        try {
-            return intval($this->createQueryBuilder('a')
-                ->select("COUNT(a.id)")
-                ->where('a.securityRoles LIKE :role')
-                ->setParameter('role', '%' . $role->getRole() . '%')
-                ->getQuery()
-                ->getSingleScalarResult());
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
-     * findLikeRoute
-     * @param string $route
-     * @return Action|null
-     * 29/06/2020 11:42
-     */
-    public function findOneByLikeRoute(string $route): ?Action
-    {
-        try {
-            return $this->createQueryBuilder('a')
-                ->where('a.routeList LIKE :route')
-                ->setParameter('route', '%' . $route . '%')
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            return null;
-        }
-    }
 }
-

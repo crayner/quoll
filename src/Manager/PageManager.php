@@ -431,6 +431,7 @@ class PageManager
             ]
         );
 
+        dump($options);
         $resolver->setAllowedTypes('redirect', ['null','string']);
 
         $options = $resolver->resolve($options);
@@ -634,12 +635,8 @@ class PageManager
             $module = null;
         }
         $this->getRequest()->attributes->set('module', $module ?: false);
-        if (null !== $module) {
+        if (null !== $module)
             $this->setAction($module);
-            SecurityHelper::setModule($module);
-        } else {
-            $this->setActionModuleByRoute();
-        }
     }
 
     /**
@@ -660,7 +657,6 @@ class PageManager
         } else if ($this->getSession()->has('action') && $this->getSession()->get('action') instanceof Action)
             $action = $this->getSession()->get('action');
         $this->getRequest()->attributes->set('action', $action ?: false);
-        SecurityHelper::setAction($action);
     }
 
     /**
@@ -952,24 +948,5 @@ class PageManager
         $this->pageScripts->add($object);
 
         return $this;
-    }
-
-    /**
-     * setActionModuleByRoute
-     * 29/06/2020 11:52
-     */
-    private function setActionModuleByRoute()
-    {
-        $route = $this->getRoute();
-        $action = ProviderFactory::getRepository(Action::class)->findOneByLikeRoute($route);
-        if ($action !== null) {
-            $this->getRequest()->attributes->set('action', $action);
-            $this->getRequest()->attributes->set('module', $action->getModule());
-            $this->getSession()->set('action', $action);
-            $this->getSession()->set('module', $action->getModule());
-            SecurityHelper::setAction($action);
-            SecurityHelper::setModule($action->getModule());
-            $this->logger->debug(sprintf('The action %s was set by the route alone.', $action->getName()));
-        }
     }
 }
