@@ -64,8 +64,8 @@ class PeoplePagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Assigned Roles')
-            ->setContentKey(['roles'])
+        $column->setLabel('Role')
+            ->setContentKey(['role'])
             ->setSort(false)
             ->setSearch(true)
             ->setTranslate()

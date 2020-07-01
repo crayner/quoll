@@ -58,4 +58,26 @@ class SecurityRoleRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * findByCategoryAsStrings
+     * @param string $category
+     * @param bool $returnEntity
+     * @return array
+     * 1/07/2020 08:20
+     */
+    public function findByCategoryAsStrings(string $category, bool $returnEntity = false): array
+    {
+        $select = 'r.role';
+        if ($returnEntity) {
+            $select = 'r';
+        }
+        return $this->createQueryBuilder('r')
+            ->select([$select])
+            ->orderBy('r.role','ASC')
+            ->where('r.category = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->getResult();
+    }
 }

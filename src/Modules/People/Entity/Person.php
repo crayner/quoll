@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: Quoll
+ * Build: __prefix__
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -24,6 +24,7 @@ use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
+use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
@@ -76,13 +77,12 @@ class Person extends AbstractEntity
      */
     public function __construct()
     {
-        $this->members = new ArrayCollection();
-        $this->courseClassPerson = new ArrayCollection();
-        $this->studentEnrolments = new ArrayCollection();
-        $this->additionalPhones = new ArrayCollection();
         $this->setStatus('Expected')
-            ->setSecurityRoles([])
+            ->setSecurityRoles(new ArrayCollection())
             ->setCanLogin('N')
+            ->setStudentEnrolments(new ArrayCollection())
+            ->setMembers(new ArrayCollection())
+            ->setAdditionalPhones(new ArrayCollection())
             ->setPasswordForceReset('N');
 
     }
@@ -499,26 +499,71 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var array|null
-     * @ORM\Column(type="simple_array",nullable=true)
+     * @var SecurityRole[]|Collection
+     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole",cascade={"all"},orphanRemoval=true)
+     * @ORM\JoinTable(name="PersonSecurityRole",
+     *      joinColumns={@ORM\JoinColumn(name="person",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="security_role",referencedColumnName="id")}
+     *  )
      */
     private $securityRoles;
 
     /**
-     * @return array
+     * getSecurityRoles
+     * @return Collection
+     * 30/06/2020 10:17
      */
-    public function getSecurityRoles(): array
+    public function getSecurityRoles(): Collection
     {
-        return $this->securityRoles ?: [];
+        if ($this->securityRoles === null) {
+            $this->securityRoles = new ArrayCollection();
+        }
+
+        if ($this->securityRoles instanceof PersistentCollection) {
+            $this->securityRoles->initialize();
+        }
+
+        return $this->securityRoles;
     }
 
     /**
-     * @param array|null $securityRoles
+     * getSecurityRolesAsStrings
+     * @return array
+     * 30/06/2020 11:04
+     */
+    public function getSecurityRolesAsStrings(): array
+    {
+        $result = [];
+        foreach($this->getSecurityRoles() as $role) {
+            $result[] = $role->getRole();
+        }
+        return $result;
+    }
+
+    /**
+     * @param SecurityRole[]|Collection $securityRoles
      * @return Person
      */
-    public function setSecurityRoles(?array $securityRoles): Person
+    public function setSecurityRoles(?Collection $securityRoles): Person
     {
         $this->securityRoles = $securityRoles;
+        return $this;
+    }
+
+    /**
+     * addSecurityRole
+     * @param SecurityRole|null $role
+     * @return $this
+     * 30/06/2020 10:17
+     */
+    public function addSecurityRole(?SecurityRole $role): Person
+    {
+        if ($role !== null && $this->getSecurityRoles()->contains($role)) {
+            return $this;
+        }
+
+        $this->securityRoles->add($role);
+
         return $this;
     }
 
@@ -1156,7 +1201,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=3)
+     * @ORM\Column(length=3,nullable=true)
      */
     private $citizenship1;
 
@@ -1234,7 +1279,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=3)
+     * @ORM\Column(length=3,nullable=true)
      */
     private $citizenship2;
 
@@ -2427,10 +2472,10 @@ class Person extends AbstractEntity
     /**
      * StudentEnrolments.
      *
-     * @param StudentEnrolment|null $studentEnrolments
+     * @param StudentEnrolment[]|Collection $studentEnrolments
      * @return Person
      */
-    public function setStudentEnrolments(?StudentEnrolment $studentEnrolments): Person
+    public function setStudentEnrolments(Collection $studentEnrolments): Person
     {
         $this->studentEnrolments = $studentEnrolments;
         return $this;
@@ -2460,10 +2505,10 @@ class Person extends AbstractEntity
     /**
      * Members.
      *
-     * @param FamilyMember|null $members
+     * @param FamilyMember[]|Collection|null $members
      * @return Person
      */
-    public function setMembers(?FamilyMember $members): Person
+    public function setMembers(?Collection $members): Person
     {
         $this->members = $members;
         return $this;
@@ -2514,7 +2559,7 @@ class Person extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getId();
+        return $this->getId() ?: $this->getOfficialName() ?: $this->getSurname().' '.$this->getPreferredName();
     }
 
     /**
@@ -2633,7 +2678,7 @@ class Person extends AbstractEntity
      */
     public function hasRole(string $role): bool
     {
-        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRoles() ?: []);
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRolesAsStrings());
         return in_array($role, $roles);
     }
 
@@ -2694,7 +2739,6 @@ class Person extends AbstractEntity
                     `password_force_reset` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
                     `status` varchar(16) NOT NULL DEFAULT 'Full',
                     `can_login` varchar(1) NOT NULL DEFAULT 'Y',
-                    `security_roles` longtext COMMENT '(DC2Type:simple_array)',
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `email` varchar(75) DEFAULT NULL,
                     `email_alternate` varchar(75) DEFAULT NULL,
@@ -2714,10 +2758,10 @@ class Person extends AbstractEntity
                     `country_of_birth` varchar(3) DEFAULT NULL,
                     `birth_certificate_scan` varchar(191) DEFAULT NULL,
                     `ethnicity` varchar(191) DEFAULT NULL,
-                    `citizenship1` varchar(3) NOT NULL,
+                    `citizenship1` varchar(3) DEFAULT NULL,
                     `citizenship1_passport` varchar(30) DEFAULT NULL,
                     `citizenship1_passport_scan` varchar(191) DEFAULT NULL,
-                    `citizenship2` varchar(3) NOT NULL,
+                    `citizenship2` varchar(3) DEFAULT NULL,
                     `citizenship2_passport` varchar(30) DEFAULT NULL,
                     `religion` varchar(30) DEFAULT NULL,
                     `national_card_number` varchar(30) DEFAULT NULL,
@@ -2770,13 +2814,20 @@ class Person extends AbstractEntity
                     KEY `physical_address` (`physical_address`),
                     KEY `postal_address` (`postal_address`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-                "CREATE TABLE IF NOT EXISTS `__prefix__PersonalPhone` (
+                "CREATE TABLE `__prefix__PersonalPhone` (
                     `person` CHAR(36) NOT NULL,
                     `phone` CHAR(36) NOT NULL,
                     PRIMARY KEY (`person`,`phone`),
                     KEY `person` (`person`),
                     KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+                "CREATE TABLE `__prefix__PersonSecurityRole` (
+                    `person` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
+                    `security_role` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
+                    INDEX `person` (`person`), 
+                    INDEX 1security_role (`security_role`), 
+                    PRIMARY KEY(`person`, `security_role`)
+                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
     }
 
     /**
@@ -2798,7 +2849,10 @@ class Person extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`emergency_contact2`) REFERENCES `__prefix__Person` (`id`);
                 ALTER TABLE `__prefix__PersonalPhone`
                     ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);
+                ALTER TABLE `__prefix__PersonSecurityRole`
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`security_role`) REFERENCES `__prefix__SecurityRole` (`id`);";
     }
 
     /**

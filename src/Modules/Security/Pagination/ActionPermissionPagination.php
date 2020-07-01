@@ -11,8 +11,8 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 29/06/2020
- * Time: 10:11
+ * Date: 30/06/2020
+ * Time: 08:48
  */
 namespace App\Modules\Security\Pagination;
 
@@ -24,11 +24,11 @@ use App\Manager\PaginationInterface;
 use App\Util\TranslationHelper;
 
 /**
- * Class SecurityRolePagination
+ * Class ActionPermissionPagination
  * @package App\Modules\Security\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class SecurityRolePagination extends AbstractPaginationManager
+class ActionPermissionPagination extends AbstractPaginationManager
 {
     /**
      * execute
@@ -41,15 +41,23 @@ class SecurityRolePagination extends AbstractPaginationManager
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
-        $column->setLabel('Role')
-            ->setContentKey(['role'])
+        $column->setLabel('Action')
+            ->setContentKey(['name'])
+            ->setSearch()
             ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Label')
-            ->setContentKey('label')
+        $column->setLabel('Restriction')
+            ->setContentKey(['restriction'])
+            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Description')
+            ->setContentKey('description')
+            ->setSearch()
             ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
@@ -57,32 +65,15 @@ class SecurityRolePagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Category')
             ->setContentKey('category')
+            ->setSearch()
             ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
         $column = new PaginationColumn();
         $column->setLabel('Reachable Roles')
-            ->setContentKey('children')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
-        $row->addColumn($column);
-
-        $column = new PaginationColumn();
-        $column->setLabel('Allow Login')
-            ->setContentKey('login')
+            ->setContentKey('roles')
             ->setSort()
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
-        $row->addColumn($column);
-
-        $column = new PaginationColumn();
-        $column->setLabel('Future Years')
-            ->setContentKey('future_years')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
-        $row->addColumn($column);
-
-        $column = new PaginationColumn();
-        $column->setLabel('Past Years')
-            ->setContentKey('past_years')
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -91,18 +82,8 @@ class SecurityRolePagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('security_role_edit')
-            ->setRouteParams(['role' => 'id']);
-        $row->addAction($action);
-
-        $action = new PaginationAction();
-        $action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
-            ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('security_role_delete')
-            ->setDisplayWhen('canDelete')
-            ->setRouteParams(['role' => 'id']);
+            ->setRoute('action_permission_edit')
+            ->setRouteParams(['item' => 'id']);
         $row->addAction($action);
 
         $this->setRow($row);

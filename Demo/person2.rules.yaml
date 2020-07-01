@@ -3,6 +3,10 @@ associated:
     house:
         entityName: 'App\Modules\School\Entity\House'
         findBy: abbreviation
+    securityRoles:
+        entityName: 'App\Modules\Security\Entity\SecurityRole'
+        findBy: role
+        useCollection: true
 properties:
     dob: 'DateTimeImmutable'
     visaExpiryDate: 'DateTimeImmutable'

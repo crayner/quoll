@@ -43,4 +43,3 @@ security:
                     - App\Modules\Security\Manager\GoogleAuthenticator
                 entry_point: App\Modules\Security\Manager\LoginFormAuthenticator
             context: main
-    role_hierarchy: '%security.hierarchy.roles%'

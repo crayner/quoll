@@ -19,6 +19,8 @@ use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Driver\PDOException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -75,7 +77,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
         if ($this->roles === null) {
             $roles = [];
             foreach ($this->getAllRoles() as $role) {
-                $roles[] = $role;
+                $roles[] = $role->getRole();
             }
             return $this->roles = array_unique($roles);
         }
@@ -306,19 +308,21 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
 
     /**
      * getAllRoles
-     * @return array|null
+     * @return Collection
+     * 30/06/2020 11:00
      */
-    public function getAllRoles(): ?array
+    public function getAllRoles(): Collection
     {
-        return $this->getPerson()->getSecurityRoles() ?: [];
+        return $this->getPerson()->getSecurityRoles();
     }
 
     /**
      * setAllRoles
-     * @param array|null $allRoles
-     * @return SecurityUser
+     * @param Collection $allRoles
+     * @return $this
+     * 30/06/2020 11:00
      */
-    public function setAllRoles(?array $allRoles): SecurityUser
+    public function setAllRoles(Collection $allRoles): SecurityUser
     {
         $this->allRoles = $allRoles;
         $this->getRoles();

@@ -326,6 +326,16 @@ class SecurityRole extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'buildContent') {
+            return [
+                'role' => $this->getRole(),
+                'label' => $this->getLabel(),
+                'category' => $this->getCategory(),
+                'allow_future_years' => $this->isAllowFutureYears(),
+                'allow_past_years' => $this->isAllowPastYears(),
+                'allow_login' => $this->isAllowLogin(),
+            ];
+        }
         return [
             'id' => $this->getId(),
             'role' => $this->getRole(),

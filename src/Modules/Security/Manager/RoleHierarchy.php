@@ -70,9 +70,9 @@ class RoleHierarchy implements RoleHierarchyInterface
 
     /**
      * getReachableRoleNames
-     * @param array $roles
+     * @param Collection $roles
      * @return array
-     * 11/06/2020 10:29
+     * 30/06/2020 11:02
      */
     public function getReachableRoleNames(array $roles): array
     {
@@ -82,15 +82,14 @@ class RoleHierarchy implements RoleHierarchyInterface
     /**
      * getStaffRoles
      * @return array
-     * 11/06/2020 10:29
+     * 1/07/2020 08:24
      */
     public function getStaffRoles(): array
     {
         $result = [];
-        foreach($this->hierarchy as $name => $w)
-            if (in_array('ROLE_STAFF', $this->getReachableRoleNames([$name])))
-                $result[] = $name;
-        array_unique($result);
+        foreach(ProviderFactory::getRepository(SecurityRole::class)->findByCategoryAsStrings('Staff') as $role) {
+            $result[] = $role['role'];
+        }
         return $result;
     }
 

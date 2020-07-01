@@ -177,24 +177,27 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * Content.
      *
      * @param array $content
+     * @param string|null $serialisationName
      * @return AbstractPaginationManager
      */
-    public function setContent(array $content): AbstractPaginationManager
+    public function setContent(array $content, ?string $serialisationName = null): AbstractPaginationManager
     {
         $this->content = $content;
-        return $this->translateContent();
+        return $this->translateContent($serialisationName);
     }
 
     /**
      * translateContent
+     * @param string|null $serialisationName
      * @return AbstractPaginationManager
-     * @throws InvalidOptionsException
      */
-    private function translateContent(): AbstractPaginationManager
+    private function translateContent(?string $serialisationName): AbstractPaginationManager
     {
         $this->execute();
         foreach($this->getContent() as $q=>$content) {
-            $this->content[$q] = gettype($content) === 'object' ? array_merge(['id' => $content->getId()], $content->toArray()) : $content;
+            $this->content[$q] = gettype($content) === 'object' ? array_merge(['id' => $content->getId()], $content->toArray($serialisationName)) : $content;
+            $content = $this->content[$q];
+
             foreach($this->getRow()->getActions() as $action)
             {
                 $action->setTitle(TranslationHelper::translate($action->getTitle()));
@@ -204,11 +207,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
                     if (gettype($content) === 'array' && isset($content[$contentName])) {
                         $params[$name] = $content[$contentName];
                     } else if (gettype($content) === 'object') {
-                        $contentName = 'get' . ucfirst($contentName);
-                        if (method_exists($content,$contentName))
-                            $params[$name] = $content->$contentName();
-                        else
-                            throw new InvalidOptionsException(sprintf('The method %s was not found in %s ', $contentName, get_class($content)));
+                        throw new \InvalidArgumentException(sprintf('The content must be serialised for %s in %s', $contentName, get_class($content)));
                     } else {
                         throw new InvalidOptionsException(sprintf('Not able to correctly collect the content %s ', $contentName));
                     }

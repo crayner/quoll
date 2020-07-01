@@ -81,6 +81,8 @@ securityrole:
         system: System
 reachable:
     roles: 'Reachable Roles: {roles}'
+parent:
+    roles: 'Roles with access: {roles}'
 All Staff: All Staff
 Allow Login: Allow Login
 Allowed to impersonate appropriate people: Allowed to impersonate appropriate people
@@ -94,3 +96,10 @@ Reachable Roles: Reachable Roles
 Student: Student
 Support Staff: Support Staff
 Teacher: Teacher
+Action Name: Action Name
+Action: Action
+Description: Description
+Restriction: Restriction
+Route List: Route List
+Security Roles: Security Roles
+Full Access: Full Access

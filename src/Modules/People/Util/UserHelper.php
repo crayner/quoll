@@ -453,7 +453,7 @@ class UserHelper
         }
 
         if (self::$allCurrentUserRoles === null) {
-            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRoles());
+            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRolesAsStrings());
         }
 
         return self::$allCurrentUserRoles;

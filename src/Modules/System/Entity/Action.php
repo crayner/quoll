@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: Quoll
+ * Build: __prefix__
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -15,8 +15,13 @@ namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\Security\Entity\SecurityRole;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Yaml\Yaml;
 
@@ -107,8 +112,12 @@ class Action extends AbstractEntity
     private $menuShow = 'Y';
 
     /**
-     * @var array|null
-     * @ORM\Column(type="simple_array",nullable=true)
+     * @var SecurityRole[]|Collection
+     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole")
+     * @ORM\JoinTable(name="ActionSecurityRole",
+     *      joinColumns={@ORM\JoinColumn(name="action",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="security_role",referencedColumnName="id")}
+     *  )
      */
     private $securityRoles;
 
@@ -374,22 +383,61 @@ class Action extends AbstractEntity
     }
 
     /**
-     * @return array|null
+     * getSecurityRoles
+     * @return Collection
+     * 30/06/2020 10:17
      */
-    public function getSecurityRoles(): ?array
+    public function getSecurityRoles(): Collection
     {
+        if ($this->securityRoles === null) {
+            $this->securityRoles = new ArrayCollection();
+        }
+
+        if ($this->securityRoles instanceof PersistentCollection) {
+            $this->securityRoles->initialize();
+        }
+
         return $this->securityRoles;
     }
 
     /**
-     * SecurityRoles.
-     *
-     * @param array|null $securityRoles
+     * getSecurityRolesAsStrings
+     * @return array
+     * 30/06/2020 11:10
+     */
+    public function getSecurityRolesAsStrings(): array
+    {
+        $result = [];
+        foreach($this->getSecurityRoles() as $role) {
+            $result[] = $role->getRole();
+        }
+        return $result;
+    }
+
+    /**
+     * @param SecurityRole[]|Collection $securityRoles
      * @return Action
      */
-    public function setSecurityRoles(?array $securityRoles): Action
+    public function setSecurityRoles(?Collection $securityRoles): Action
     {
         $this->securityRoles = $securityRoles;
+        return $this;
+    }
+
+    /**
+     * addSecurityRole
+     * @param SecurityRole|null $role
+     * @return $this
+     * 30/06/2020 10:17
+     */
+    public function addSecurityRole(?SecurityRole $role): Action
+    {
+        if ($role !== null && $this->getSecurityRoles()->contains($role)) {
+            return $this;
+        }
+
+        $this->securityRoles->add($role);
+
         return $this;
     }
 
@@ -411,6 +459,30 @@ class Action extends AbstractEntity
                 'entryRoute' => $this->getentryRoute(),
                 'routeList' => $this->getRouteList(),
                 'name' => $this->getDisplayName(),
+            ];
+        }
+        if ($name === 'actionPermissions') {
+            $roles = implode(', ', $this->getSecurityRolesAsStrings());
+            return [
+                'id' => $this->getId(),
+                'name' => $this->getName(),
+                'restriction' => $this->getRestriction(),
+                'description' => $this->getDescription(),
+                'category' => $this->getCategory(),
+                'roles' => $roles ?: TranslationHelper::translate('Full Access', [], 'Security')
+            ];
+        }
+        if ($name === 'buildContent') {
+            return [
+                'name' => $this->name,
+                'category' => $this->category,
+                'description' => $this->getDescription(),
+                'routeList' => $this->routeList,
+                'entryRoute' => $this->entryRoute,
+                'entrySidebar' => $this->entrySidebar,
+                'menuShow' => $this->menuShow,
+                'precedence' => $this->precedence,
+                'restriction' => $this->restriction
             ];
         }
         return [
@@ -455,13 +527,19 @@ class Action extends AbstractEntity
                     `entry_route` VARCHAR(191) NOT NULL,
                     `entry_sidebar` VARCHAR(1) NOT NULL DEFAULT 'Y',
                     `menu_show` VARCHAR(1) NOT NULL DEFAULT 'Y',
-                    `security_roles` longtext DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                     `module` CHAR(36) DEFAULT NULL,
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`),
                     UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`),
                     KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+                "CREATE TABLE __prefix__ActionSecurityRole (
+                    `action` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
+                    `security_role` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
+                    INDEX `action` (`action`), 
+                    INDEX `security_role` (`security_role`), 
+                    PRIMARY KEY(`action`, `security_role`)
+                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
     }
 
     /**
@@ -471,7 +549,10 @@ class Action extends AbstractEntity
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Action`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);
+                ALTER TABLE `__prefix__ActionSecurityRole` 
+                    ADD CONSTRAINT FOREIGN KEY (`action`) REFERENCES `__prefix__Action` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`security_role`) REFERENCES `__prefix__SecurityRole` (`id`);";
     }
 
     /**

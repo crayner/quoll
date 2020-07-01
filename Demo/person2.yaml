@@ -37,7 +37,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Hensley"
     firstName: "Adria"
     preferredName: "Adria"
@@ -250,7 +249,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dennis"
     firstName: "Lucius"
     preferredName: "Lucius"
@@ -443,7 +441,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Washington"
     firstName: "Chester"
     preferredName: "Chester"
@@ -559,7 +556,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Herrera"
     firstName: "Emma"
     preferredName: "Emma"
@@ -617,7 +613,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Zimmerman"
     firstName: "Owen"
     preferredName: "Owen"
@@ -695,7 +690,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Barker"
     firstName: "Charles"
     preferredName: "Charles"
@@ -869,7 +863,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Stuart"
     preferredName: "Stuart"
@@ -1062,7 +1055,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Camacho"
     firstName: "Micah"
     preferredName: "Micah"
@@ -1120,7 +1112,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Tarik"
     preferredName: "Tarik"
@@ -1276,7 +1267,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: "Dr."
+    title: Dr
     surname: "Lucas"
     firstName: "Grady"
     preferredName: "Grady"
@@ -1295,7 +1286,7 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: "Dr."
+    title: Dr
     surname: "Harrison"
     firstName: "Xyla"
     preferredName: "Xyla"
@@ -1314,7 +1305,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Richard"
     firstName: "Amanda"
     preferredName: "Amanda"
@@ -1333,7 +1323,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Miranda"
     firstName: "Levi"
     preferredName: "Levi"
@@ -1391,7 +1380,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gregory"
     firstName: "Hakeem"
     preferredName: "Hakeem"
@@ -1449,7 +1437,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Amy"
     preferredName: "Amy"
@@ -1565,7 +1552,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Price"
     preferredName: "Price"
@@ -1585,7 +1571,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: "Dr."
+    title: Dr
     surname: "Blackwell"
     firstName: "Bianca"
     preferredName: "Bianca"
@@ -1623,7 +1609,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dennis"
     firstName: "Grady"
     preferredName: "Grady"
@@ -1681,7 +1666,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Freeman"
     firstName: "Justin"
     preferredName: "Justin"
@@ -1797,7 +1781,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Nolan"
     firstName: "Lacota"
     preferredName: "Lacota"
@@ -1855,7 +1838,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Vincent"
     firstName: "Caleb"
     preferredName: "Caleb"
@@ -1933,7 +1915,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Zimmerman"
     firstName: "Ferris"
     preferredName: "Ferris"
@@ -1991,7 +1972,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stout"
     firstName: "Gabriel"
     preferredName: "Gabriel"
@@ -2049,7 +2029,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Harrison"
     preferredName: "Harrison"
@@ -2107,7 +2086,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Cyrus"
     preferredName: "Cyrus"
@@ -2165,7 +2143,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "England"
     firstName: "Oren"
     preferredName: "Oren"
@@ -2223,7 +2200,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Herrera"
     firstName: "Cecilia"
     preferredName: "Cecilia"
@@ -2243,7 +2219,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Andrews"
     firstName: "Flavia"
     preferredName: "Flavia"
@@ -2301,7 +2276,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Garner"
     firstName: "Lewis"
     preferredName: "Lewis"
@@ -2398,7 +2372,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Holt"
     firstName: "Keaton"
     preferredName: "Keaton"
@@ -2456,7 +2429,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Silas"
     preferredName: "Silas"
@@ -2514,7 +2486,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Fulton"
     firstName: "Teagan"
     preferredName: "Teagan"
@@ -2534,7 +2505,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Walter"
     firstName: "Scott"
     preferredName: "Scott"
@@ -2554,7 +2524,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Schultz"
     firstName: "Imelda"
     preferredName: "Imelda"
@@ -2632,7 +2601,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Curtis"
     firstName: "Bruno"
     preferredName: "Bruno"
@@ -2748,7 +2716,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Cortez"
     firstName: "Drake"
     preferredName: "Drake"
@@ -2768,7 +2735,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Ferrell"
     firstName: "Wallace"
     preferredName: "Wallace"
@@ -2826,7 +2792,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gregory"
     firstName: "Hiram"
     preferredName: "Hiram"
@@ -2865,7 +2830,7 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: "Dr."
+    title: Dr
     surname: "Gregory"
     firstName: "Galvin"
     preferredName: "Galvin"
@@ -2884,7 +2849,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stout"
     firstName: "Geoffrey"
     preferredName: "Geoffrey"
@@ -2941,7 +2905,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Woodard"
     firstName: "David"
     preferredName: "David"
@@ -2999,7 +2962,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Trevino"
     firstName: "Malik"
     preferredName: "Malik"
@@ -3115,7 +3077,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Colette"
     preferredName: "Colette"
@@ -3190,9 +3151,8 @@
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
     receiveNotificationEmails: "Y"
-    securityRoles: ["ROLE_SUPPORT"
+    securityRoles: ["ROLE_SUPPORT"]
 -
-    title: ""
     surname: "Lara"
     firstName: "Hamish"
     preferredName: "Hamish"
@@ -3250,7 +3210,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Hensley"
     firstName: "Sarah"
     preferredName: "Sarah"
@@ -3308,7 +3267,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Mack"
     firstName: "Maya"
     preferredName: "Maya"
@@ -3424,7 +3382,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Collier"
     firstName: "Bertha"
     preferredName: "Bertha"
@@ -3540,7 +3497,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Kirkland"
     firstName: "Rooney"
     preferredName: "Rooney"
@@ -3560,7 +3516,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: "Dr."
+    title: Dr
     surname: "Kirkland"
     firstName: "Haley"
     preferredName: "Haley"
@@ -3598,7 +3554,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Bolton"
     firstName: "Casey"
     preferredName: "Casey"
@@ -3656,7 +3611,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gray"
     firstName: "Jermaine"
     preferredName: "Jermaine"
@@ -3733,7 +3687,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Cantrell"
     firstName: "Hedley"
     preferredName: "Hedley"
@@ -3811,7 +3764,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: "Dr."
+    title: Dr
     surname: "Dillon"
     firstName: "Quinn"
     preferredName: "Quinn"
@@ -3849,7 +3802,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Ruiz"
     firstName: "Gavin"
     preferredName: "Gavin"
@@ -3869,7 +3821,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Schultz"
     firstName: "Ursa"
     preferredName: "Ursa"
@@ -3908,7 +3859,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Isabella"
     preferredName: "Isabella"
@@ -4005,7 +3955,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Graves"
     firstName: "Macey"
     preferredName: "Macey"
@@ -4256,7 +4205,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Haviva"
     preferredName: "Haviva"
@@ -4314,7 +4262,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Maris"
     preferredName: "Maris"
@@ -4372,7 +4319,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Collier"
     firstName: "Edan"
     preferredName: "Edan"
@@ -4430,7 +4376,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Barker"
     firstName: "Claire"
     preferredName: "Claire"
@@ -4488,7 +4433,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Carlson"
     firstName: "Ashton"
     preferredName: "Ashton"
@@ -4546,7 +4490,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Zimmerman"
     firstName: "Angelica"
     preferredName: "Angelica"
@@ -4604,7 +4547,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Leonard"
     firstName: "Fitzgerald"
     preferredName: "Fitzgerald"
@@ -4720,7 +4662,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Houston"
     firstName: "Neville"
     preferredName: "Neville"
@@ -4836,7 +4777,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Hardy"
     firstName: "Marshall"
     preferredName: "Marshall"
@@ -4894,7 +4834,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Evans"
     firstName: "Ella"
     preferredName: "Ella"
@@ -4952,7 +4891,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Bates"
     firstName: "Tad"
     preferredName: "Tad"
@@ -5010,7 +4948,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dalton"
     firstName: "Kristen"
     preferredName: "Kristen"
@@ -5029,7 +4966,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Wheeler"
     firstName: "Jermaine"
     preferredName: "Jermaine"
@@ -5049,7 +4985,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Pierce"
     firstName: "Hayes"
     preferredName: "Hayes"
@@ -5069,7 +5004,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Schultz"
     firstName: "Deanna"
     preferredName: "Deanna"
@@ -5127,7 +5061,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Workman"
     firstName: "Barbara"
     preferredName: "Barbara"
@@ -5185,7 +5118,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Downs"
     firstName: "Kirsten"
     preferredName: "Kirsten"
@@ -5243,7 +5175,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Cecilia"
     preferredName: "Cecilia"
@@ -5320,7 +5251,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Mcknight"
     firstName: "Kasimir"
     preferredName: "Kasimir"
@@ -5378,7 +5308,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gregory"
     firstName: "Peter"
     preferredName: "Peter"
@@ -5436,7 +5365,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Nolan"
     firstName: "Kalia"
     preferredName: "Kalia"
@@ -5494,7 +5422,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Rudyard"
     preferredName: "Rudyard"
@@ -5552,7 +5479,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Zimmerman"
     firstName: "Damon"
     preferredName: "Damon"
@@ -5591,7 +5517,7 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: "Dr."
+    title: Dr
     surname: "Zimmerman"
     firstName: "Kieran"
     preferredName: "Kieran"
@@ -5610,7 +5536,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Forrest"
     preferredName: "Forrest"
@@ -5667,7 +5592,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stone"
     firstName: "Plato"
     preferredName: "Plato"
@@ -5687,7 +5611,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Fowler"
     firstName: "Nell"
     preferredName: "Nell"
@@ -5726,7 +5649,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Bates"
     firstName: "Cheryl"
     preferredName: "Cheryl"
@@ -5784,7 +5706,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Rebecca"
     preferredName: "Rebecca"
@@ -5842,7 +5763,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Damian"
     preferredName: "Damian"
@@ -5900,7 +5820,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Rutledge"
     firstName: "Ora"
     preferredName: "Ora"
@@ -5920,7 +5839,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Moore"
     firstName: "Nora"
     preferredName: "Nora"
@@ -5978,7 +5896,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Clay"
     firstName: "Buckminster"
     preferredName: "Buckminster"
@@ -5998,7 +5915,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: "Dr."
+    title: Dr
     surname: "Blackwell"
     firstName: "Kyra"
     preferredName: "Kyra"
@@ -6017,7 +5934,7 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: "Dr."
+    title: Dr
     surname: "Clay"
     firstName: "Vernon"
     preferredName: "Vernon"
@@ -6036,7 +5953,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Bree"
     preferredName: "Bree"
@@ -6094,7 +6010,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Guerra"
     firstName: "Amethyst"
     preferredName: "Amethyst"
@@ -6152,7 +6067,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Vielka"
     preferredName: "Vielka"
@@ -6172,7 +6086,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "White"
     firstName: "Jordan"
     preferredName: "Jordan"
@@ -6211,7 +6124,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "White"
     firstName: "Halla"
     preferredName: "Halla"
@@ -6231,7 +6143,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Patel"
     firstName: "Dennis"
     preferredName: "Dennis"
@@ -6289,7 +6200,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Freeman"
     firstName: "Paula"
     preferredName: "Paula"
@@ -6347,7 +6257,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Soto"
     firstName: "Bruce"
     preferredName: "Bruce"
@@ -6483,7 +6392,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Schultz"
     firstName: "Aretha"
     preferredName: "Aretha"
@@ -6541,7 +6449,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Vang"
     firstName: "Mariko"
     preferredName: "Mariko"
@@ -6657,7 +6564,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Collier"
     firstName: "Marshall"
     preferredName: "Marshall"
@@ -6715,7 +6621,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Jemima"
     preferredName: "Jemima"
@@ -6773,7 +6678,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Madden"
     firstName: "Aristotle"
     preferredName: "Aristotle"
@@ -6793,7 +6697,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: "Dr."
+    title: Dr
     surname: "Lara"
     firstName: "Gillian"
     preferredName: "Gillian"
@@ -6831,7 +6735,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Dennis"
     preferredName: "Dennis"
@@ -6889,7 +6792,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Zeph"
     preferredName: "Zeph"
@@ -6947,7 +6849,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stout"
     firstName: "Clinton"
     preferredName: "Clinton"
@@ -7005,7 +6906,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Quintessa"
     preferredName: "Quintessa"
@@ -7102,7 +7002,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Shields"
     firstName: "Yael"
     preferredName: "Yael"
@@ -7141,7 +7040,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Britt"
     firstName: "Kirk"
     preferredName: "Kirk"
@@ -7199,7 +7097,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gregory"
     firstName: "Gareth"
     preferredName: "Gareth"
@@ -7315,7 +7212,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Katelyn"
     preferredName: "Katelyn"
@@ -7430,7 +7326,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Baker"
     preferredName: "Baker"
@@ -7488,7 +7383,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Velasquez"
     firstName: "David"
     preferredName: "David"
@@ -7508,7 +7402,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Schultz"
     firstName: "Amaya"
     preferredName: "Amaya"
@@ -7565,7 +7458,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Kasimir"
     preferredName: "Kasimir"
@@ -7623,7 +7515,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Hardy"
     firstName: "Kelsie"
     preferredName: "Kelsie"
@@ -7643,7 +7534,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: "Dr."
+    title: Dr
     surname: "Hardy"
     firstName: "Dustin"
     preferredName: "Dustin"
@@ -7681,7 +7572,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Lara"
     firstName: "Alan"
     preferredName: "Alan"
@@ -7701,7 +7591,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Cherry"
     firstName: "Kaden"
     preferredName: "Kaden"
@@ -7758,7 +7647,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Kaseem"
     preferredName: "Kaseem"
@@ -7816,7 +7704,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Brennan"
     preferredName: "Brennan"
@@ -7874,7 +7761,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dennis"
     firstName: "Garrett"
     preferredName: "Garrett"
@@ -7932,7 +7818,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Solomon"
     firstName: "Nadine"
     preferredName: "Nadine"
@@ -7990,7 +7875,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Parks"
     firstName: "Signe"
     preferredName: "Signe"
@@ -8048,7 +7932,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Lee"
     firstName: "Dane"
     preferredName: "Dane"
@@ -8068,7 +7951,7 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: "Dr."
+    title: Dr
     surname: "Lee"
     firstName: "Isabella"
     preferredName: "Isabella"
@@ -8106,7 +7989,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Joyce"
     firstName: "Callum"
     preferredName: "Callum"
@@ -8164,7 +8046,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Farley"
     firstName: "Ayanna"
     preferredName: "Ayanna"
@@ -8222,7 +8103,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Blackwell"
     firstName: "Sybil"
     preferredName: "Sybil"
@@ -8280,7 +8160,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Mcknight"
     firstName: "Ryan"
     preferredName: "Ryan"
@@ -8338,7 +8217,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Washington"
     firstName: "Kevin"
     preferredName: "Kevin"
@@ -8358,7 +8236,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Schultz"
     firstName: "Dakota"
     preferredName: "Dakota"
@@ -8436,7 +8313,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Patel"
     firstName: "Ashely"
     preferredName: "Ashely"
@@ -8494,7 +8370,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Patton"
     firstName: "Maite"
     preferredName: "Maite"
@@ -8552,7 +8427,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Alvarez"
     firstName: "Vernon"
     preferredName: "Vernon"
@@ -8610,7 +8484,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Patel"
     firstName: "Dennis"
     preferredName: "Dennis"
@@ -8668,7 +8541,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Rosa"
     firstName: "Barclay"
     preferredName: "Barclay"
@@ -8726,7 +8598,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Rosa"
     firstName: "Craig"
     preferredName: "Craig"
@@ -8784,7 +8655,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Battle"
     firstName: "Joseph"
     preferredName: "Joseph"
@@ -8842,7 +8712,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Ramos"
     firstName: "Yen"
     preferredName: "Yen"
@@ -8900,7 +8769,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Caleb"
     preferredName: "Caleb"
@@ -8958,7 +8826,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Washington"
     firstName: "Jael"
     preferredName: "Jael"
@@ -9016,7 +8883,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Kirk"
     preferredName: "Kirk"
@@ -9074,7 +8940,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Zimmerman"
     firstName: "Griffith"
     preferredName: "Griffith"
@@ -9132,7 +8997,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Fletcher"
     preferredName: "Fletcher"
@@ -9152,7 +9016,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Stout"
     firstName: "Tallulah"
     preferredName: "Tallulah"
@@ -9191,7 +9054,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stout"
     firstName: "Malachi"
     preferredName: "Malachi"
@@ -9249,7 +9111,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Isabella"
     preferredName: "Isabella"
@@ -9307,7 +9168,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Madden"
     firstName: "Herrod"
     preferredName: "Herrod"
@@ -9365,7 +9225,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Damian"
     preferredName: "Damian"
@@ -9423,7 +9282,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Sarah"
     preferredName: "Sarah"
@@ -9443,7 +9301,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Schultz"
     firstName: "Gay"
     preferredName: "Gay"
@@ -9500,7 +9357,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Bowers"
     firstName: "Lavinia"
     preferredName: "Lavinia"
@@ -9616,7 +9472,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Wolf"
     firstName: "Xyla"
     preferredName: "Xyla"
@@ -9674,7 +9529,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Gregory"
     firstName: "Octavius"
     preferredName: "Octavius"
@@ -9694,7 +9548,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Payne"
     firstName: "Conan"
     preferredName: "Conan"
@@ -9752,7 +9605,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schroeder"
     firstName: "Shay"
     preferredName: "Shay"
@@ -9810,7 +9662,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Bolton"
     firstName: "Naida"
     preferredName: "Naida"
@@ -9868,7 +9719,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Jermaine"
     preferredName: "Jermaine"
@@ -9926,7 +9776,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Maldonado"
     firstName: "Ryan"
     preferredName: "Ryan"
@@ -9984,7 +9833,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Stafford"
     firstName: "Reuben"
     preferredName: "Reuben"
@@ -10004,7 +9852,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
-    title: ""
     surname: "Parks"
     firstName: "Slade"
     preferredName: "Slade"
@@ -10062,7 +9909,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Tyson"
     firstName: "Nichole"
     preferredName: "Nichole"
@@ -10082,7 +9928,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Vang"
     firstName: "Salvador"
     preferredName: "Salvador"
@@ -10121,7 +9966,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Hayes"
     preferredName: "Hayes"
@@ -10179,7 +10023,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Adele"
     preferredName: "Adele"
@@ -10237,7 +10080,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Conrad"
     firstName: "Alisa"
     preferredName: "Alisa"
@@ -10295,7 +10137,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Charles"
     firstName: "Valentine"
     preferredName: "Valentine"
@@ -10373,7 +10214,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: B
 -
-    title: ""
     surname: "Curtis"
     firstName: "Rooney"
     preferredName: "Rooney"
@@ -10431,7 +10271,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Madden"
     firstName: "Carol"
     preferredName: "Carol"
@@ -10508,7 +10347,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Moore"
     firstName: "Claire"
     preferredName: "Claire"
@@ -10566,7 +10404,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Caryn"
     preferredName: "Caryn"
@@ -10624,7 +10461,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Mcknight"
     firstName: "Jena"
     preferredName: "Jena"
@@ -10720,7 +10556,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_TEACHER"]
 -
-    title: ""
     surname: "Rosa"
     firstName: "Leandra"
     preferredName: "Leandra"
@@ -10778,7 +10613,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Schultz"
     firstName: "Mira"
     preferredName: "Mira"
@@ -10835,7 +10669,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Hardy"
     firstName: "Audrey"
     preferredName: "Audrey"
@@ -10893,7 +10726,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Abbott"
     firstName: "Reese"
     preferredName: "Reese"
@@ -10936,18 +10768,12 @@
     status: "Left"
     canLogin: "Y"
     email: "2747@localhost.local"
-    phone1Type: "Mobile"
-    phone1CountryCode: 13
-    phone1: 0456560018
-    phone2Type: "Home"
-    phone2CountryCode: 13
-    phone2: 0263525571
-    languageFirst: "en"
-    countryOfBirth: "GB"
+    languageFirst: "EN"
+    countryOfBirth: "GBR"
     residencyStatus: "Permanent"
     visaExpiryDate: "2021-06-14"
-    dateStart: "2005-01-23"
-    dateEnd: "2006-12-15"
+    dateStart: "2019-01-23"
+    dateEnd: "2025-12-15"
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
     viewCalendarSpaceBooking: "Y"
@@ -10973,7 +10799,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Pickett"
     firstName: "Janna"
     preferredName: "Janna"
@@ -10988,7 +10813,8 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"
+    receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_STUDENT"]
     house: L
 -
@@ -11007,7 +10833,8 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"
+    receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
     title: "Ms"
@@ -11025,10 +10852,10 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"
+    receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Calista"
     preferredName: "Calista"
@@ -11066,7 +10893,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dalton"
     firstName: "Megan"
     preferredName: "Megan"
@@ -11124,7 +10950,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dennis"
     firstName: "Victor"
     preferredName: "Victor"
@@ -11181,7 +11006,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Dennis"
     firstName: "Kristen"
     preferredName: "Kristen"
@@ -11201,7 +11025,6 @@
     securityRoles: ["ROLE_STUDENT"]
     house: W
 -
-    title: ""
     surname: "Moore"
     firstName: "Reuben"
     preferredName: "Reuben"
@@ -11259,7 +11082,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Higgins"
     firstName: "Roary"
     preferredName: "Roary"
@@ -11316,7 +11138,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Swanson"
     firstName: "Hayes"
     preferredName: "Hayes"
@@ -11335,7 +11156,7 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_STUDENT"]
 -
-    title: "Dr."
+    title: Dr
     surname: "Martinez"
     firstName: "Kylan"
     preferredName: "Kylan"
@@ -11373,7 +11194,6 @@
     receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]
 -
-    title: ""
     surname: "Battle"
     firstName: "Ezra"
     preferredName: "Ezra"
@@ -11426,5 +11246,6 @@
     website: ""
     viewCalendarSchool: "Y"
     viewCalendarPersonal: "Y"
-    viewCalendarSpaceBooking: "Y"    receiveNotificationEmails: "Y"
+    viewCalendarSpaceBooking: "Y"
+    receiveNotificationEmails: "Y"
     securityRoles: ["ROLE_PARENT"]

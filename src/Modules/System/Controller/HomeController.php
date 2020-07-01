@@ -94,7 +94,7 @@ class HomeController extends AbstractPageController
      * personalPage
      * @return JsonResponse
      * @Route("/personal/page/", name="personal_page")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * 28/06/2020 10:33
      */
     public function personalPage()

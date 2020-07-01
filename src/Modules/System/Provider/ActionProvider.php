@@ -90,7 +90,8 @@ class ActionProvider extends AbstractProvider
 
     /**
      * findFastFinderActions
-     * @return mixed
+     * @return array
+     * 30/06/2020 11:11
      */
     public function findFastFinderActions(): array
     {
@@ -98,7 +99,7 @@ class ActionProvider extends AbstractProvider
         $answer = [];
         foreach($result as $action)
         {
-            if (UserHelper::isGranted($action->getSecurityRoles())) {
+            if (UserHelper::isGranted($action->getSecurityRolesAsStrings())) {
                 $act = [];
                 $act['id'] = 'Act-' . $action->getName() . '/' . $action->getEntryRoute();
                 $name = explode('_', $action->getName());
@@ -123,7 +124,7 @@ class ActionProvider extends AbstractProvider
      * @param AuthorizationCheckerInterface $checker
      * @return array
      */
-    public function moduleMenuItems(Module $module, AuthorizationCheckerInterface $checker): array
+    public function moduleMenuItems(Module $module): array
     {
         $result = $this->getRepository()->findByModule($module);
 
@@ -131,9 +132,10 @@ class ActionProvider extends AbstractProvider
         $precedence = [];
         foreach($result as $action)
         {
-            if ($action->isEntrySidebar() && UserHelper::isGranted($action->getSecurityRoles())) {
-                if ((key_exists($action->getDisplayName(), $precedence) && $action->getPrecedence() > $precedence[$action->getDisplayName()])
-                    || !key_exists($action->getDisplayName(), $precedence)) {
+            if ($action->isEntrySidebar() && (UserHelper::isGranted($action->getSecurityRolesAsStrings()) || [] === $action->getSecurityRoles())) {
+                if ((key_exists($action->getDisplayName(), $precedence)
+                        && $action->getPrecedence() > $precedence[$action->getDisplayName()])
+                        || !key_exists($action->getDisplayName(), $precedence)) {
                     $categories[$action->getCategory()][$action->getDisplayName()] = $action->toArray('module_menu');
                     $precedence[$action->getDisplayName()] = $action->getPrecedence();
                 }

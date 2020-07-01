@@ -286,7 +286,7 @@ class SecurityHelper
                 //Check module ready
                 if ($module instanceof Module && $action instanceof Action) {
                     //Check current user has access rights to this action.
-                    return UserHelper::isGranted($action->getSecurityRoles());
+                    return UserHelper::isGranted($action->getSecurityRolesAsStrings());
                 } else {
                     self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
                 }
@@ -464,7 +464,7 @@ class SecurityHelper
      * @param array|string[] $roles
      * @return array|string[]
      */
-    public static function getAssignableRoleNames(array $roles =[])
+    public static function getAssignableRoleNames(array $roles =[]): array
     {
         if ($roles === []) {
             $roles = ['ROLE_SYSTEM_ADMIN'];
@@ -486,5 +486,28 @@ class SecurityHelper
     public static function setAction(Action $action): void
     {
         self::$action = $action;
+    }
+
+    /**
+     * rolesThatHaveAccess
+     * @param array $attributes
+     * @return array
+     * 30/06/2020 17:20
+     */
+    public static function rolesThatHaveAccess(array $attributes): array
+    {
+        $roles = self::getHierarchy()->getReachableRoleNames(['ROLE_SYSTEM_ADMIN']);
+        $result = [];
+        foreach ($roles as $role) {
+
+            $accessAvailable = self::getHierarchy()->getReachableRoleNames([$role]);
+
+            foreach ($attributes as $attribute) {
+                if (in_array($attribute, $accessAvailable)) {
+                    $result[] = $role;
+                }
+            }
+        }
+        return array_unique($result);
     }
 }

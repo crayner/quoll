@@ -30,6 +30,7 @@ use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
 use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -155,6 +156,8 @@ class DemoDataManager
         $valid = 0;
         foreach($content as $q=>$w) {
             $entity = new $entityName();
+            $entity = $this->renderDefaultValues($entity, $rules['defaults']);
+            $entity = $this->renderConstantValues($entity, $rules['constants']);
             foreach($w as $propertyName => $value) {
                 $method = 'set' . ucfirst($propertyName);
 
@@ -174,13 +177,11 @@ class DemoDataManager
                     $this->getLogger()->warning(sprintf('A setter was not found for %s in %s', $propertyName, $entityName));
             }
 
-            $entity = $this->renderDefaultValues($entity, $rules['defaults']);
-            $entity = $this->renderConstantValues($entity, $rules['constants']);
             $validatorList = $validator->validate($entity);
             if ($validatorList->count() === 0) {
                 $data = ProviderFactory::create($entityName)->persistFlush($entity, [], false);
                 if ($data['status'] !== 'success')
-                    $this->getLogger('Something when wrong with persist', [$entity]);
+                    $this->getLogger('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
                 $valid++;
             } else {
                 $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$w, $entity, $validatorList->__toString()]);
@@ -238,9 +239,9 @@ class DemoDataManager
      * @param $value
      * @param string $name
      * @param string $propertyName
-     * @return EntityInterface|null
+     * @return EntityInterface|EntityInterface[]|ArrayCollection|null
      */
-    private function getAssociatedValue($value, string $name, string $propertyName): ?EntityInterface
+    private function getAssociatedValue($value, string $name, string $propertyName)
     {
         $rules = $this->getEntityRules($name);
 
@@ -266,6 +267,7 @@ class DemoDataManager
             $resolver->setDefaults(
                 [
                     'findBy' => 'id',
+                    'useCollection' => false,
                 ]
             );
 
@@ -280,6 +282,45 @@ class DemoDataManager
             return     $this->associatedEntities[$propertyName][$key];
 
         } else {
+            $resolver = new OptionsResolver();
+            $resolver->setRequired(
+                [
+                    'entityName',
+                ]
+            );
+            $resolver->setDefaults(
+                [
+                    'findBy' => [],
+                    'useCollection' => false,
+                ]
+            );
+
+            $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
+
+            if ($associateRules['useCollection']) {
+                $result = new ArrayCollection();
+                foreach($value as $q=>$w) {
+                    if (!is_array($associateRules['findBy'])) {
+                        $associateRules['findBy'] = [$associateRules['findBy']];
+                    }
+                    if (!is_array($w)) {
+                        $w = [$w];
+                    }
+
+                    $criteria = [];
+                    foreach($associateRules['findBy'] as $a=>$b) {
+                        $criteria[$b] = $value[$a];
+                    }
+
+                    $item = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($criteria);
+                    if (null !== $item) {
+                        $result->add($item);
+                    } else {
+                        $this->getLogger()->notice(sprintf('The entity %s does not have a row defined by %s => %s', $associateRules['entityName'], (string)$associateRules['findBy'], (string)$value));
+                    }
+                }
+                return $result;
+            }
             $key = '';
             foreach($value as $q=>$w) {
                 $key .= $q.'.';
@@ -293,19 +334,6 @@ class DemoDataManager
             if (is_string($rules['associated'][$propertyName]))
                 $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
 
-            $resolver = new OptionsResolver();
-            $resolver->setRequired(
-                [
-                    'entityName',
-                ]
-            );
-            $resolver->setDefaults(
-                [
-                    'findBy' => [],
-                ]
-            );
-
-            $associateRules = $rules['associated'][$propertyName];
             return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value);
         }
     }
