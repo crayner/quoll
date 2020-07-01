@@ -18,7 +18,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
-use App\Modules\Students\Util\StudentHelper;
+use App\Modules\Student\Util\StudentHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;

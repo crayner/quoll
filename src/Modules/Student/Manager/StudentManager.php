@@ -14,7 +14,7 @@
  * Date: 20/06/2020
  * Time: 11:31
  */
-namespace App\Modules\Students\Manager;
+namespace App\Modules\Student\Manager;
 
 use App\Modules\Behaviour\Entity\Behaviour;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;

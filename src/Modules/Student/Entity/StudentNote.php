@@ -11,7 +11,7 @@
  * Date: 5/12/2018
  * Time: 16:22
  */
-namespace App\Modules\Students\Entity;
+namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
@@ -19,8 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class StudentNote
- * @package App\Modules\Students\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteRepository")
+ * @package App\Modules\Student\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Student\Repository\StudentNoteRepository")
  * @ORM\Table(name="StudentNote",
  *     indexes={@ORM\Index("person", columns={"person"}),
  *     @ORM\Index("student_note_category",columns={"student_note_category"}),
@@ -48,7 +48,7 @@ class StudentNote extends AbstractEntity
 
     /**
      * @var StudentNoteCategory|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Students\Entity\StudentNoteCategory")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\StudentNoteCategory")
      * @ORM\JoinColumn(name="student_note_category",referencedColumnName="id")
      */
     private $studentNoteCategory;

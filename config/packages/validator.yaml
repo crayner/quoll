@@ -13,6 +13,6 @@ framework:
             App\Modules\School\Entity\: []
             App\Modules\Security\Entity\: []
             App\Modules\Staff\Entity\: []
-            App\Modules\Students\Entity\: []
+            App\Modules\Student\Entity\: []
             App\Modules\System\Entity\: []
             App\Modules\Timetable\Entity\: []

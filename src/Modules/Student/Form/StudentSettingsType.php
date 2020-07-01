@@ -15,14 +15,14 @@
  * Time: 16:17
  */
 
-namespace App\Modules\Students\Form;
+namespace App\Modules\Student\Form;
 
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
-use App\Modules\Students\Util\StudentHelper;
+use App\Modules\Student\Util\StudentHelper;
 use App\Modules\System\Form\SettingsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -32,7 +32,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class StudentSettingsType
- * @package App\Modules\Students\Form
+ * @package App\Modules\Student\Form
  */
 class StudentSettingsType extends AbstractType
 {

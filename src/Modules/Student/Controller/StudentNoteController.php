@@ -15,13 +15,13 @@
  * Time: 10:56
  */
 
-namespace App\Modules\Students\Controller;
+namespace App\Modules\Student\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
-use App\Modules\Students\Entity\StudentNoteCategory;
-use App\Modules\Students\Form\NoteCategoryType;
-use App\Modules\Students\Pagination\StudentNoteCategoryPagination;
+use App\Modules\Student\Entity\StudentNoteCategory;
+use App\Modules\Student\Form\NoteCategoryType;
+use App\Modules\Student\Pagination\StudentNoteCategoryPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Driver\PDOException;
@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class StudentNoteController
- * @package App\Modules\Students\Controller
+ * @package App\Modules\Student\Controller
  */
 class StudentNoteController extends AbstractPageController
 {

@@ -14,15 +14,15 @@
  * Date: 18/06/2020
  * Time: 11:03
  */
-namespace App\Modules\Students\Twig\Extension;
+namespace App\Modules\Student\Twig\Extension;
 
-use App\Modules\Students\Manager\StudentManager;
+use App\Modules\Student\Manager\StudentManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
  * Class StudentExtension
- * @package App\Modules\Students\Twig\Extension
+ * @package App\Modules\Student\Twig\Extension
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class StudentExtension extends AbstractExtension

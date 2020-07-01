@@ -15,12 +15,12 @@
  * Time: 08:13
  */
 
-namespace App\Modules\Students\Form;
+namespace App\Modules\Student\Form;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\ToggleType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Students\Entity\StudentNoteCategory;
+use App\Modules\Student\Entity\StudentNoteCategory;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -30,7 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class NoteCategoryType
- * @package App\Modules\Students\Form
+ * @package App\Modules\Student\Form
  */
 class NoteCategoryType extends AbstractType
 {

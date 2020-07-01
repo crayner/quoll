@@ -121,29 +121,6 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * Loads the user for the given username.
-     *
-     * This method must return null if the user is not found.
-     *
-     * @param string $username The username
-     *
-     * @return Person|null
-     */
-    public function loadUserByUsernameOrEmail($username): ?Person
-    {
-        try {
-            return $this->createQueryBuilder('p')
-                ->select(['p'])
-                ->where('p.email = :username OR p.username = :username')
-                ->setParameter('username', $username)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            return null;
-        }
-    }
-
-    /**
      * findStaffForFastFinder
      * @param string $staffTitle
      * @return array|null

@@ -14,7 +14,7 @@
  * Date: 3/05/2020
  * Time: 14:47
  */
-namespace App\Modules\Students\Controller;
+namespace App\Modules\Student\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class StudentController
- * @package App\Modules\Students\Controller
+ * @package App\Modules\Student\Controller
  */
 class StudentController extends AbstractPageController
 {

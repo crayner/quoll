@@ -42,28 +42,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class PersonProvider
  * @package App\Modules\people\Provider
  */
-class PersonProvider extends AbstractProvider implements UserLoaderInterface
+class PersonProvider extends AbstractProvider
 {
     /**
      * @var string
      */
     protected $entityName = Person::class;
-
-    /**
-     * Loads the user for the given username.
-     *
-     * This method must return null if the user is not found.
-     *
-     * @param string $username The username
-     *
-     * @return UserInterface|null
-     */
-    public function loadUserByUsername($username): ?UserInterface
-    {
-        $person = $this->getRepository()->loadUserByUsernameOrEmail($username);
-
-        return $person ? new SecurityUser($person) : null;
-    }
 
     /**
      * handleRegistration

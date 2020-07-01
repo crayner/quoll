@@ -14,7 +14,7 @@
 namespace App\Modules\Security\Manager;
 
 use App\Manager\Traits\IPTrait;
-use App\Modules\People\Entity\Person;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -139,9 +139,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         if (!$this->csrfTokenManager->isTokenValid($token))
             throw new InvalidCsrfTokenException();
 
-        $provider = ProviderFactory::create(Person::class);
+        $provider = ProviderFactory::create(SecurityUser::class);
         $user = $provider->loadUserByUsername($credentials['email']);
-        $provider->refresh($user->getPerson());
 
         if (!$user) {
             // fail authentication with a custom error

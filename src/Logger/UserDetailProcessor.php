@@ -39,7 +39,7 @@ class UserDetailProcessor
     public function __invoke(array $record)
     {
         $record['extra']['user']['id'] = $this->getUserId();
-        $record['extra']['user']['name'] = $this->getUserName();
+        $record['extra']['user']['name'] = $this->getUsername();
 
         return $record;
     }

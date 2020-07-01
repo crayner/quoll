@@ -1,11 +1,27 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ *
+ * Project: Kookaburra
+ * Build: Quoll
+ *
+ * (c) 2020 Craig Rayner <craig@craigrayner.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * User: craig
+ * Date: 2/05/2020
+ * Time: 10:14
+ */
 namespace App\Modules\Security\ControllerNoPrefix;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Provider\ProviderFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -19,13 +35,13 @@ class SecurityController extends AbstractController
     /**
      * login
      * @param AuthenticationUtils $authenticationUtils
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @Route("/login/", name="login", methods={"GET", "POST"})
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {
-        $this->addFlash('warning', 'return.error.0');
-        $provider = ProviderFactory::create(Person::class);
+        $this->addFlash('error', 'return.error.0');
+        $provider = ProviderFactory::create(SecurityUser::class);
         if ($this->getUser() instanceof UserInterface && !$this->isGranted('ROLE_USER'))
             return $this->redirectToRoute('home');
 
@@ -35,9 +51,8 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $user = $provider->getRepository()->loadUserByUsernameOrEmail($lastUsername) ?: new Person();
+        $user = $provider->getRepository()->loadUserByUsernameOrEmail($lastUsername) ?: new SecurityUser();
         $user->setUsername($lastUsername);
-        new SecurityUser($user);
 
         return $this->redirectToRoute('home');
     }

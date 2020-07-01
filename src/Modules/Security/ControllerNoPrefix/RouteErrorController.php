@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-  * Project: Kookaburra
+ * Project: Kookaburra
  * Build: Quoll
  *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
@@ -14,7 +14,6 @@
  * Date: 2/05/2020
  * Time: 10:14
  */
-
 namespace App\Modules\Security\ControllerNoPrefix;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

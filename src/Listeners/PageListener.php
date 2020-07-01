@@ -17,6 +17,7 @@
 
 namespace App\Listeners;
 
+use App\Controller\AbstractPageController;
 use App\Manager\PageManager;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
@@ -94,6 +95,8 @@ class PageListener implements EventSubscriberInterface
     public function onRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
+
+        $controller = explode('::', $request->attributes->get('_controller'));
 
         $route = $request->attributes->get('_route');
 

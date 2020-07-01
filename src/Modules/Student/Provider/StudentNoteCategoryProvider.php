@@ -15,14 +15,14 @@
  * Time: 13:54
  */
 
-namespace App\Modules\Students\Provider;
+namespace App\Modules\Student\Provider;
 
-use App\Modules\Students\Entity\StudentNoteCategory;
+use App\Modules\Student\Entity\StudentNoteCategory;
 use App\Provider\AbstractProvider;
 
 /**
  * Class StudentNoteCategoryProvider
- * @package App\Modules\Students\Provider
+ * @package App\Modules\Student\Provider
  */
 class StudentNoteCategoryProvider extends AbstractProvider
 {

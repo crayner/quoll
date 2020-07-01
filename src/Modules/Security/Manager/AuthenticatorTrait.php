@@ -16,12 +16,13 @@
  */
 namespace App\Modules\Security\Manager;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
-use App\Modules\System\Entity\I18n;
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\System\Entity\I18n;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
-use App\Modules\People\Entity\Person;
 use App\Util\ErrorHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -123,9 +124,9 @@ trait AuthenticatorTrait
         if ($username instanceof Person)
             $userData = $username;
         elseif ($username instanceof SecurityUser)
-            $userData = ProviderFactory::getRepository(Person::class)->find($username->getId());
+            $userData = ProviderFactory::getRepository(SecurityUser::class)->find($username->getId());
         else
-            $userData = ProviderFactory::getRepository(Person::class)->loadUserByUsernameOrEmail($username);
+            $userData = ProviderFactory::getRepository(SecurityUser::class)->loadUserByUsernameOrEmail($username);
 
         $session->clear('backgroundImage');
         $session->set('person', $userData);

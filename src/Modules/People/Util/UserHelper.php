@@ -17,9 +17,8 @@ namespace App\Modules\People\Util;
 
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Staff\Entity\Staff;
-use App\Modules\Security\Manager\SecurityUser;
-use App\Provider\AbstractProvider;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -53,6 +52,7 @@ class UserHelper
     /**
      * UserHelper constructor.
      * @param TokenStorageInterface $tokenStorage
+     * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(TokenStorageInterface $tokenStorage, UserPasswordEncoderInterface $encoder)
     {
@@ -92,10 +92,10 @@ class UserHelper
 
     /**
      * getCurrentSecurityUser
-     * @param Person|null $person
      * @return SecurityUser|null
+     * 1/07/2020 14:54
      */
-    public static function getCurrentSecurityUser(Person $person = null): ?SecurityUser
+    public static function getCurrentSecurityUser(): ?SecurityUser
     {
         if (empty(self::$tokenStorage))
             return self::$currentSecurityUser = null;
@@ -106,19 +106,6 @@ class UserHelper
             return self::$currentSecurityUser = null;
 
         self::$currentSecurityUser = $token->getUser() instanceof SecurityUser ? $token->getUser() : null;
-        return self::$currentSecurityUser;
-    }
-
-    /**
-     * getSecurityUser
-     * @param Person|null $person
-     * @return SecurityUser|null
-     */
-    public static function getSecurityUser(?Person $person = null): ?SecurityUser
-    {
-        if (is_null($person))
-            return self::getCurrentSecurityUser();
-        self::$currentSecurityUser = new SecurityUser($person);
         return self::$currentSecurityUser;
     }
 

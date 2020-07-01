@@ -15,15 +15,15 @@
  * Time: 12:05
  */
 
-namespace App\Modules\Students\Repository;
+namespace App\Modules\Student\Repository;
 
-use App\Modules\Students\Entity\StudentNoteCategory;
+use App\Modules\Student\Entity\StudentNoteCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class StudentNoteCategoryCategoryRepository
- * @package App\Modules\Students\Repository
+ * @package App\Modules\Student\Repository
  */
 class StudentNoteCategoryRepository extends ServiceEntityRepository
 {

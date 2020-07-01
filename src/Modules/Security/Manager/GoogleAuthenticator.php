@@ -1,8 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ *
+ * Project: Kookaburra
+ * Build: Quoll
+ *
+ * (c) 2019 Craig Rayner <craig@craigrayner.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * User: craig
+ * Date: 30/11/2019
+ * Time: 12:09
+ */
 namespace App\Modules\Security\Manager;
 
 use App\Manager\MessageManager;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Provider\SecurityUserProvider;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Provider\SettingProvider;
 use App\Provider\ProviderFactory;

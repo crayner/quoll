@@ -14,16 +14,16 @@
  * Date: 3/05/2020
  * Time: 14:06
  */
-namespace App\Modules\Students\Controller;
+namespace App\Modules\Student\Controller;
 
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\Students\Entity\StudentNoteCategory;
-use App\Modules\Students\Form\StudentSettingsType;
-use App\Modules\Students\Pagination\StudentNoteCategoryPagination;
+use App\Modules\Student\Entity\StudentNoteCategory;
+use App\Modules\Student\Form\StudentSettingsType;
+use App\Modules\Student\Pagination\StudentNoteCategoryPagination;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -34,7 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SettingController
- * @package App\Modules\Students\Controller
+ * @package App\Modules\Student\Controller
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class SettingController extends AbstractPageController

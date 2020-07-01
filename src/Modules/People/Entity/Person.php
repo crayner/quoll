@@ -20,13 +20,12 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Manager\PersonNameManager;
-use App\Modules\People\Validator\Username;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\School\Entity\House;
-use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
+use App\Modules\Student\Entity\Student;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Setting;
 use App\Modules\System\Entity\Theme;
@@ -48,9 +47,7 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PersonRepository")
  * @ORM\Table(
  *     name="Person",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"})},
- *     indexes={@ORM\Index(name="username_email", columns={"username", "email"}),
- *     @ORM\Index(name="personal_phone",columns={"personal_phone"}),
+ *     indexes={@ORM\Index(name="personal_phone",columns={"personal_phone"}),
  *     @ORM\Index(name="house",columns={"house"}),
  *     @ORM\Index(name="physical_address",columns={"physical_address"}),
  *     @ORM\Index(name="postal_address",columns={"postal_address"}),
@@ -59,12 +56,11 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *     @ORM\Index(name="theme",columns={"personal_theme"}),
  *     @ORM\Index(name="emergency_contact1",columns={"emergency_contact1"}),
  *     @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
- *     @ORM\Index(name="i18n",columns={"personal_i18n"})}
+ *     @ORM\Index(name="i18n",columns={"personal_i18n"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="student",columns={"student"})}
  *     )
- * @UniqueEntity(fields={"studentIdentifier"},ignoreNull=true)
- * @UniqueEntity(fields={"username"},ignoreNull=true)
+ * @UniqueEntity("student")
  * @ORM\HasLifecycleCallbacks()
- * @Username()
  */
 class Person extends AbstractEntity
 {
@@ -78,13 +74,10 @@ class Person extends AbstractEntity
     public function __construct()
     {
         $this->setStatus('Expected')
-            ->setSecurityRoles(new ArrayCollection())
-            ->setCanLogin('N')
             ->setStudentEnrolments(new ArrayCollection())
             ->setMembers(new ArrayCollection())
             ->setAdditionalPhones(new ArrayCollection())
             ->setPasswordForceReset('N');
-
     }
 
     /**
@@ -351,87 +344,6 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=75,nullable=true)
-     */
-    private $username;
-
-    /**
-     * @return null|string
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param null|string $username
-     * @return Person
-     */
-    public function setUsername(?string $username): Person
-    {
-        $this->username = $username ? mb_substr($username, 0, 75) : null;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191, name="password",nullable=true)
-     */
-    private $password;
-
-    /**
-     * @return null|string
-     */
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param null|string $password
-     * @return Person
-     */
-    public function setPassword(?string $password): Person
-    {
-        $this->password = mb_substr($password, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1,options={"default": "N", "comment": "Force user to reset password on next login."})
-     */
-    private $passwordForceReset = 'N';
-
-    /**
-     * isPasswordForceReset
-     * @return bool
-     */
-    public function isPasswordForceReset(): bool
-    {
-        return $this->getPasswordForceReset() === 'Y';
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPasswordForceReset(): ?string
-    {
-        return $this->passwordForceReset = in_array($this->passwordForceReset, self::getBooleanList()) ? $this->passwordForceReset : 'N' ;
-    }
-
-    /**
-     * @param null|string $passwordForceReset
-     * @return Person
-     */
-    public function setPasswordForceReset(?string $passwordForceReset): Person
-    {
-        $this->passwordForceReset = in_array($passwordForceReset, self::getBooleanList()) ? $passwordForceReset : 'N' ;
-        return $this;
-    }
-
-    /**
-     * @var string|null
      * @ORM\Column(length=16, options={"default": "Full"})
      * @ASSERT\Choice(callback="getStatusList")
      */
@@ -462,108 +374,6 @@ class Person extends AbstractEntity
     public function setStatus(?string $status): Person
     {
         $this->status = in_array($status, self::getStatusList()) ? $status : 'Full' ;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     */
-    private $canLogin = 'Y';
-
-    /**
-     * isCanLogin
-     * @return bool
-     */
-    public function isCanLogin(): bool
-    {
-        return $this->getCanLogin() === 'Y' ? true : false;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getCanLogin(): ?string
-    {
-        return $this->canLogin = in_array($this->canLogin, self::getBooleanList()) ? $this->canLogin : 'N' ;
-    }
-
-    /**
-     * @param null|string $canLogin
-     * @return Person
-     */
-    public function setCanLogin(?string $canLogin): Person
-    {
-        $this->canLogin = in_array($canLogin, self::getBooleanList()) ? $canLogin : 'N' ;
-        return $this;
-    }
-
-    /**
-     * @var SecurityRole[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole",cascade={"all"},orphanRemoval=true)
-     * @ORM\JoinTable(name="PersonSecurityRole",
-     *      joinColumns={@ORM\JoinColumn(name="person",referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="security_role",referencedColumnName="id")}
-     *  )
-     */
-    private $securityRoles;
-
-    /**
-     * getSecurityRoles
-     * @return Collection
-     * 30/06/2020 10:17
-     */
-    public function getSecurityRoles(): Collection
-    {
-        if ($this->securityRoles === null) {
-            $this->securityRoles = new ArrayCollection();
-        }
-
-        if ($this->securityRoles instanceof PersistentCollection) {
-            $this->securityRoles->initialize();
-        }
-
-        return $this->securityRoles;
-    }
-
-    /**
-     * getSecurityRolesAsStrings
-     * @return array
-     * 30/06/2020 11:04
-     */
-    public function getSecurityRolesAsStrings(): array
-    {
-        $result = [];
-        foreach($this->getSecurityRoles() as $role) {
-            $result[] = $role->getRole();
-        }
-        return $result;
-    }
-
-    /**
-     * @param SecurityRole[]|Collection $securityRoles
-     * @return Person
-     */
-    public function setSecurityRoles(?Collection $securityRoles): Person
-    {
-        $this->securityRoles = $securityRoles;
-        return $this;
-    }
-
-    /**
-     * addSecurityRole
-     * @param SecurityRole|null $role
-     * @return $this
-     * 30/06/2020 10:17
-     */
-    public function addSecurityRole(?SecurityRole $role): Person
-    {
-        if ($role !== null && $this->getSecurityRoles()->contains($role)) {
-            return $this;
-        }
-
-        $this->securityRoles->add($role);
-
         return $this;
     }
 
@@ -676,145 +486,6 @@ class Person extends AbstractEntity
     public function setImage240(?string $image_240): Person
     {
         $this->image_240 = ImageHelper::getRelativePath($image_240);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=15,name="last_ip_address",nullable=true)
-     */
-    private $lastIPAddress;
-
-    /**
-     * @return null|string
-     */
-    public function getLastIPAddress(): ?string
-    {
-        return $this->lastIPAddress;
-    }
-
-    /**
-     * @param null|string $lastIPAddress
-     * @return Person
-     */
-    public function setLastIPAddress(?string $lastIPAddress): Person
-    {
-        $this->lastIPAddress = mb_substr($lastIPAddress, 0, 15);
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $lastTimestamp;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getLastTimestamp(): ?\DateTimeImmutable
-    {
-        return $this->lastTimestamp;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $lastTimestamp
-     */
-    public function setLastTimestamp(?\DateTimeImmutable $lastTimestamp): void
-    {
-        $this->lastTimestamp = $lastTimestamp;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=15,nullable=true,name="last_fail_ip_address")
-     */
-    private $lastFailIPAddress;
-
-    /**
-     * @return null|string
-     */
-    public function getLastFailIPAddress(): ?string
-    {
-        return $this->lastFailIPAddress;
-    }
-
-    /**
-     * @param null|string $lastFailIPAddress
-     * @return Person
-     */
-    public function setLastFailIPAddress(?string $lastFailIPAddress): Person
-    {
-        $this->lastFailIPAddress = mb_substr($lastFailIPAddress, 0, 15);
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $lastFailTimestamp;
-
-    /**
-     * isLastFailTimestampTooOld
-     * @param int $timeout
-     * @return bool
-     */
-    public function isLastFailTimestampTooOld(int $timeout = 1200): bool
-    {
-        if (null === $this->getLastFailTimestamp() || $this->getLastFailTimestamp()->getTimestamp() < strtotime('-'.$timeout.' seconds'))
-            return true;
-        return false;
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getLastFailTimestamp(): ?\DateTimeImmutable
-    {
-        return $this->lastFailTimestamp;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $lastFailTimestamp
-     */
-    public function setLastFailTimestamp(?\DateTimeImmutable $lastFailTimestamp): void
-    {
-        $this->lastFailTimestamp = $lastFailTimestamp;
-    }
-
-    /**
-     * @var integer|null
-     * @ORM\Column(type="smallint",nullable=true,options={"default": "0"})
-     */
-    private $failCount;
-
-    /**
-     * incFailCount
-     * @return int
-     */
-    public function incFailCount(): int
-    {
-        $failCount = intval($this->failCount);
-        $this->setFailCount(++$failCount);
-        return $this->getFailCount();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getFailCount(): int
-    {
-        return intval($this->failCount);
-    }
-
-    /**
-     * @param int|null $failCount
-     * @return Person
-     */
-    public function setFailCount(?int $failCount): Person
-    {
-        $this->failCount = $failCount;
         return $this;
     }
 
@@ -1608,30 +1279,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=20,nullable=true)
-     */
-    private $studentIdentifier;
-
-    /**
-     * @return null|string
-     */
-    public function getStudentIdentifier(): ?string
-    {
-        return $this->studentIdentifier;
-    }
-
-    /**
-     * @param null|string $studentIdentifier
-     * @return Person
-     */
-    public function setStudentIdentifier(?string $studentIdentifier): Person
-    {
-        $this->studentIdentifier = mb_substr($studentIdentifier, 0, 10) ?: null;
-        return $this;
-    }
-
-    /**
      * @var \DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      */
@@ -2151,30 +1798,6 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(type="text",nullable=true)
-     */
-    private $studentAgreements;
-
-    /**
-     * @return null|string
-     */
-    public function getStudentAgreements(): ?string
-    {
-        return $this->studentAgreements;
-    }
-
-    /**
-     * @param null|string $studentAgreements
-     * @return Person
-     */
-    public function setStudentAgreements(?string $studentAgreements): Person
-    {
-        $this->studentAgreements = $studentAgreements;
-        return $this;
-    }
-
-    /**
-     * @var string|null
      * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
      */
     private $googleAPIRefreshToken;
@@ -2449,39 +2072,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var StudentEnrolment[]|Collection||null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="person")
-     */
-    private $studentEnrolments;
-
-    /**
-     * getStudentEnrolments
-     * @return Collection|null
-     */
-    public function getStudentEnrolments(): ?Collection
-    {
-        if (null === $this->studentEnrolments)
-            $this->studentEnrolments = new ArrayCollection();
-
-        if ($this->studentEnrolments instanceof PersistentCollection)
-            $this->studentEnrolments->initialize();
-
-        return $this->studentEnrolments;
-    }
-
-    /**
-     * StudentEnrolments.
-     *
-     * @param StudentEnrolment[]|Collection $studentEnrolments
-     * @return Person
-     */
-    public function setStudentEnrolments(Collection $studentEnrolments): Person
-    {
-        $this->studentEnrolments = $studentEnrolments;
-        return $this;
-    }
-
-    /**
      * @var Collection|FamilyMember[]|null
      * @ORM\OneToMany(targetEntity="FamilyMember", mappedBy="person")
      */
@@ -2734,20 +2324,11 @@ class Person extends AbstractEntity
                     `official_name` varchar(150) DEFAULT NULL,
                     `name_in_characters` varchar(60) DEFAULT NULL,
                     `gender` varchar(16) NOT NULL DEFAULT 'Unspecified',
-                    `username` varchar(75) DEFAULT NULL,
-                    `password` varchar(191) DEFAULT NULL,
-                    `password_force_reset` varchar(1) NOT NULL DEFAULT 'N' COMMENT 'Force user to reset password on next login.',
                     `status` varchar(16) NOT NULL DEFAULT 'Full',
-                    `can_login` varchar(1) NOT NULL DEFAULT 'Y',
                     `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `email` varchar(75) DEFAULT NULL,
                     `email_alternate` varchar(75) DEFAULT NULL,
                     `image_240` varchar(191) DEFAULT NULL,
-                    `last_ip_address` varchar(15) DEFAULT NULL,
-                    `last_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `last_fail_ip_address` varchar(15) DEFAULT NULL,
-                    `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `fail_count` smallint(6) DEFAULT '0',
                     `physical_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `postal_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `personal_phone` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
@@ -2800,8 +2381,10 @@ class Person extends AbstractEntity
                     `application_form` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `personal_theme` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `personal_i18n` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `student` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `username` (`username`),
+                    UNIQUE INDEX `student` (`student`)
                     KEY `house` (`house`),
                     KEY `theme` (`personal_theme`),
                     KEY `i18n` (`personal_i18n`),
@@ -2820,14 +2403,7 @@ class Person extends AbstractEntity
                     PRIMARY KEY (`person`,`phone`),
                     KEY `person` (`person`),
                     KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-                "CREATE TABLE `__prefix__PersonSecurityRole` (
-                    `person` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    `security_role` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    INDEX `person` (`person`), 
-                    INDEX 1security_role (`security_role`), 
-                    PRIMARY KEY(`person`, `security_role`)
-                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**
@@ -2849,10 +2425,7 @@ class Person extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`emergency_contact2`) REFERENCES `__prefix__Person` (`id`);
                 ALTER TABLE `__prefix__PersonalPhone`
                     ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);
-                ALTER TABLE `__prefix__PersonSecurityRole`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`security_role`) REFERENCES `__prefix__SecurityRole` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
@@ -2885,13 +2458,38 @@ class Person extends AbstractEntity
     }
 
     /**
+     * @var Student|null
+     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",fetch="EAGER")
+     * @ORM\JoinColumn(name="student",nullable=true)
+     */
+    private $student;
+
+    /**
      * isStudent
      * @return bool
      * 10/06/2020 11:59
      */
     public function isStudent(): bool
     {
-        return $this->hasRole('ROLE_STUDENT');
+        return $this->getStudent() instanceof Student;
+    }
+
+    /**
+     * @return Student|null
+     */
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student|null $student
+     * @return Person
+     */
+    public function setStudent(?Student $student): Person
+    {
+        $this->student = $student;
+        return $this;
     }
 
     /**

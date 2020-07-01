@@ -18,6 +18,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
+use App\Modules\Student\Entity\Student;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,7 +26,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class StudentEnrolment
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentEnrolmentRepository")
- * @ORM\Table(name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="year_group", columns={"year_group"}), @ORM\Index(name="person", columns={"person"}), @ORM\Index(name="roll_group", columns={"roll_group"}), @ORM\Index(name="person_academic_year", columns={"person","academic_year"})})
+ * @ORM\Table(name="StudentEnrolment",
+ *     indexes={@ORM\Index(name="academic_year", columns={"academic_year"}),
+ *     @ORM\Index(name="year_group", columns={"year_group"}),
+ *     @ORM\Index(name="student", columns={"student"}),
+ *     @ORM\Index(name="roll_group", columns={"roll_group"}),
+ *     @ORM\Index(name="student_academic_year", columns={"student","academic_year"})})
  */
 class StudentEnrolment extends AbstractEntity
 {
@@ -40,12 +46,12 @@ class StudentEnrolment extends AbstractEntity
     private $id;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="studentEnrolments")
-     * @ORM\JoinColumn(name="person",referencedColumnName="id", nullable=false)
+     * @var Student|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student", inversedBy="studentEnrolments")
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $person;
+    private $student;
 
     /**
      * @var AcademicYear|null
@@ -100,20 +106,20 @@ class StudentEnrolment extends AbstractEntity
     }
 
     /**
-     * @return Person|null
+     * @return Student|null
      */
-    public function getPerson(): ?Person
+    public function getStudent(): ?Student
     {
-        return $this->person;
+        return $this->student;
     }
 
     /**
-     * @param Person|null $person
+     * @param Student|null $student
      * @return StudentEnrolment
      */
-    public function setPerson(?Person $person): StudentEnrolment
+    public function setStudent(?Student $student): StudentEnrolment
     {
-        $this->person = $person;
+        $this->student = $student;
         return $this;
     }
 

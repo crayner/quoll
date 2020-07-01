@@ -29,7 +29,6 @@ use App\Util\CacheHelper;
  */
 class ModuleProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */

@@ -20,7 +20,7 @@ use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\Students\Manager\StudentManager;
+use App\Modules\Student\Manager\StudentManager;
 use App\Provider\ProviderFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;

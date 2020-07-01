@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class SecurityUser
  * @package App\Modules\Security\Manager
  */
-class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
+class __SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
 {
     /**
      * @var array

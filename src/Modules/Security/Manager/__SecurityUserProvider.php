@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * Class SecurityUserProvider
  * @package App\Modules\Security\Manager
  */
-class SecurityUserProvider implements UserProviderInterface
+class __SecurityUserProvider implements UserProviderInterface
 {
 
     /**

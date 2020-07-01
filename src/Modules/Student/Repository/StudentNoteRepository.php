@@ -11,15 +11,15 @@
  * Date: 5/12/2018
  * Time: 16:23
  */
-namespace App\Modules\Students\Repository;
+namespace App\Modules\Student\Repository;
 
-use App\Modules\Students\Entity\StudentNote;
+use App\Modules\Student\Entity\StudentNote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class StudentNoteRepository
- * @package App\Modules\Students\Repository
+ * @package App\Modules\Student\Repository
  */
 class StudentNoteRepository extends ServiceEntityRepository
 {

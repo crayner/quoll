@@ -15,7 +15,7 @@
  * Time: 17:19
  */
 
-namespace App\Modules\Students\Pagination;
+namespace App\Modules\Student\Pagination;
 
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
@@ -26,7 +26,7 @@ use App\Util\TranslationHelper;
 
 /**
  * Class StudentNoteCategoryPagination
- * @package App\Modules\Students\Pagination
+ * @package App\Modules\Student\Pagination
  */
 class StudentNoteCategoryPagination extends AbstractPaginationManager
 {

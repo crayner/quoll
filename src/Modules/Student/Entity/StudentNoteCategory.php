@@ -15,7 +15,7 @@
  * Time: 08:59
  */
 
-namespace App\Modules\Students\Entity;
+namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
@@ -25,8 +25,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class StudentNoteCategory
- * @package App\Modules\Students\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Students\Repository\StudentNoteCategoryRepository")
+ * @package App\Modules\Student\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Student\Repository\StudentNoteCategoryRepository")
  * @ORM\Table(name="StudentNoteCategory")
  */
 class StudentNoteCategory extends AbstractEntity

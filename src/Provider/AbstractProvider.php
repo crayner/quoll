@@ -508,6 +508,7 @@ abstract class AbstractProvider implements EntityProviderInterface
     public function refresh(?EntityInterface $entity = null): EntityInterface
     {
         if (null !== $entity && $this->entityName === get_class($entity)) {
+            $this->getEntityManager()->refresh($entity);
             $this->setEntity($entity);
             return $this->getEntity();
         }

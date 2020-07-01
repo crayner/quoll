@@ -5,7 +5,7 @@ security:
             cost: 15
     providers:
         security_user_provider:
-            id: App\Modules\Security\Manager\SecurityUserProvider
+            id: App\Modules\Security\Provider\SecurityUserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|home)|css|images|build|js)/
