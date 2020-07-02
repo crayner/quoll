@@ -32,13 +32,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
  * @ORM\Table(name="FamilyMember",
  *     uniqueConstraints={
- *     @ORM\UniqueConstraint(name="family_person",columns={"family","person"}),
+ *     @ORM\UniqueConstraint(name="family_parent",columns={"family","parent"}),
+ *     @ORM\UniqueConstraint(name="family_student",columns={"family","student"}),
  *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})},
- *     indexes={@ORM\Index(name="person",columns={"person"}),
+ *     indexes={
+ *     @ORM\Index(name="parent",columns={"parent"}),
+ *     @ORM\Index(name="student",columns={"student"}),
  *     @ORM\Index(name="family",columns={"family"}),
  *     @ORM\Index(name="member_type",columns={"member_type"})}
  * )
- * @UniqueEntity({"person","family"})
+ * @UniqueEntity({"student","family"})
+ * @UniqueEntity({"parent","family"})
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
@@ -65,14 +69,6 @@ class FamilyMember extends AbstractEntity
      * @Assert\NotBlank()
      */
     private $family;
-
-    /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="members")
-     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
-     * @Assert\NotBlank()
-     */
-    private $person;
 
     /**
      * @var string|null
@@ -133,24 +129,6 @@ class FamilyMember extends AbstractEntity
     public function setFamily(?Family $family): FamilyMember
     {
         $this->family = $family;
-        return $this;
-    }
-
-    /**
-     * @return Person|null
-     */
-    public function getPerson(): ?Person
-    {
-        return $this->person;
-    }
-
-    /**
-     * @param Person|null $person
-     * @return FamilyMember
-     */
-    public function setPerson(?Person $person): FamilyMember
-    {
-        $this->person = $person;
         return $this;
     }
 

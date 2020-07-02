@@ -50,10 +50,10 @@ class CustomFieldData extends AbstractEntity
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="additionalFields")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
-    private $peron;
+    private $person;
 
     /**
      * @var string
@@ -104,20 +104,20 @@ class CustomFieldData extends AbstractEntity
     /**
      * @return Person|null
      */
-    public function getPeron(): ?Person
+    public function getPerson(): ?Person
     {
-        return $this->peron;
+        return $this->person;
     }
 
     /**
-     * Peron.
+     * Person.
      *
-     * @param Person|null $peron
+     * @param Person|null $person
      * @return CustomFieldData
      */
-    public function setPeron(?Person $peron): CustomFieldData
+    public function setPerson(?Person $person): CustomFieldData
     {
-        $this->peron = $peron;
+        $this->person = $person;
         return $this;
     }
 

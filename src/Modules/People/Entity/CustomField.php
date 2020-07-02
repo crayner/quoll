@@ -33,8 +33,6 @@ class CustomField extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
@@ -60,11 +58,10 @@ class CustomField extends AbstractEntity
     private $description;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $active = 'Y';
+    private $active = true;
 
     /**
      * @var string|null
@@ -111,32 +108,28 @@ class CustomField extends AbstractEntity
     ];
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $required = 'Y';
+    private $required = true;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $dataUpdater = 'Y';
+    private $dataUpdater = true;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $applicationForm = 'N';
+    private $applicationForm = false;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $publicRegistrationForm = 'N';
+    private $publicRegistrationForm = false;
 
     /**
      * @return string|null
@@ -199,30 +192,20 @@ class CustomField extends AbstractEntity
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function isActive(): bool
     {
-        return $this->getActive() === 'Y';
+        return (bool)$this->active;
     }
 
     /**
-     * @return string|null
-     */
-    public function getActive(): ?string
-    {
-        return self::checkBoolean($this->active);
-    }
-
-    /**
-     * Active.
-     *
-     * @param string|null $active
+     * @param bool|null $active
      * @return CustomField
      */
-    public function setActive(?string $active): CustomField
+    public function setActive(?bool $active): CustomField
     {
-        $this->active = self::checkBoolean($active);
+        $this->active = (bool)$active;
         return $this;
     }
 
@@ -307,82 +290,52 @@ class CustomField extends AbstractEntity
      */
     public function isRequired(): bool
     {
-        return $this->getRequired() === 'Y';
+        return (bool)$this->required;
     }
 
     /**
-     * @return string|null
-     */
-    public function getRequired(): ?string
-    {
-        return self::checkBoolean($this->required);
-    }
-
-    /**
-     * Required.
-     *
-     * @param string|null $required
+     * @param bool|null $required
      * @return CustomField
      */
-    public function setRequired(?string $required): CustomField
+    public function setRequired(?bool $required): CustomField
     {
-        $this->required = self::checkBoolean($required);
+        $this->required = (bool)$required;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function isDataUpdater(): bool
+    public function getDataUpdater(): bool
     {
-        return $this->getDataUpdater() === 'Y';
+        return (bool)$this->dataUpdater;
     }
 
     /**
-     * @return string|null
-     */
-    public function getDataUpdater(): ?string
-    {
-        return self::checkBoolean($this->dataUpdater);
-    }
-
-    /**
-     * DataUpdater.
-     *
-     * @param string|null $dataUpdater
+     * @param bool|null $dataUpdater
      * @return CustomField
      */
-    public function setDataUpdater(?string $dataUpdater): CustomField
+    public function setDataUpdater(?bool $dataUpdater): CustomField
     {
-        $this->dataUpdater = self::checkBoolean($dataUpdater);
+        $this->dataUpdater = (bool)$dataUpdater;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool|null
      */
     public function isApplicationForm(): bool
     {
-        return $this->getApplicationForm() === 'Y';
+        return (bool)$this->applicationForm;
     }
 
     /**
-     * @return string|null
-     */
-    public function getApplicationForm(): ?string
-    {
-        return self::checkBoolean($this->applicationForm, 'N');
-    }
-
-    /**
-     * ApplicationForm.
-     *
-     * @param string|null $applicationForm
+     * @param bool|null $applicationForm
      * @return CustomField
      */
-    public function setApplicationForm(?string $applicationForm): CustomField
+    public function setApplicationForm(?bool $applicationForm): CustomField
     {
-        $this->applicationForm = self::checkBoolean($applicationForm, 'N');
+        $this->applicationForm = (bool)$applicationForm;
         return $this;
     }
 
@@ -391,26 +344,16 @@ class CustomField extends AbstractEntity
      */
     public function isPublicRegistrationForm(): bool
     {
-        return $this->getPublicRegistrationForm() === 'Y';
+        return (bool)$this->publicRegistrationForm;
     }
 
     /**
-     * @return string|null
-     */
-    public function getPublicRegistrationForm(): ?string
-    {
-        return self::checkBoolean($this->publicRegistrationForm, 'N');
-    }
-
-    /**
-     * PublicRegistrationForm.
-     *
-     * @param string|null $publicRegistrationForm
+     * @param bool|null $publicRegistrationForm
      * @return CustomField
      */
-    public function setPublicRegistrationForm(?string $publicRegistrationForm): CustomField
+    public function setPublicRegistrationForm(?bool $publicRegistrationForm): CustomField
     {
-        $this->publicRegistrationForm = self::checkBoolean($publicRegistrationForm, 'N');
+        $this->publicRegistrationForm = (bool) $publicRegistrationForm;
         return $this;
     }
 

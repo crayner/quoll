@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMemberChild
@@ -29,10 +30,36 @@ use Doctrine\ORM\PersistentCollection;
 class FamilyMemberChild extends FamilyMember
 {
     /**
+     * @var FamilyMemberChild|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyMemberChild")
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $student;
+
+    /**
      * @var Collection|FamilyRelationship[]
      * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="child",orphanRemoval=true)
      */
     private $relationships;
+
+    /**
+     * @return FamilyMemberChild|null
+     */
+    public function getStudent(): ?FamilyMemberChild
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param FamilyMemberChild|null $student
+     * @return FamilyMemberChild
+     */
+    public function setStudent(?FamilyMemberChild $student): FamilyMemberChild
+    {
+        $this->student = $student;
+        return $this;
+    }
 
     /**
      * @return Collection|FamilyRelationship[]

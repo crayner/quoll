@@ -29,6 +29,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FamilyMemberAdult extends FamilyMember
 {
     /**
+     * @var ParentContact|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\ParentContact")
+     * @ORM\JoinColumn(name="parent",referencedColumnName="id",nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $parent;
+
+    /**
      * @var string|null
      * @ORM\Column(length=1)
      * @Assert\Choice({"Y","N"})
@@ -68,6 +76,24 @@ class FamilyMemberAdult extends FamilyMember
      * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="adult",orphanRemoval=true)
      */
     private $relationships;
+
+    /**
+     * @return ParentContact|null
+     */
+    public function getParent(): ?ParentContact
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ParentContact|null $parent
+     * @return FamilyMemberAdult
+     */
+    public function setParent(?ParentContact $parent): FamilyMemberAdult
+    {
+        $this->parent = $parent;
+        return $this;
+    }
 
     /**
      * isChildDataAccess

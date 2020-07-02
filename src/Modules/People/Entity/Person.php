@@ -17,22 +17,13 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Manager\PersonNameManager;
-use App\Modules\School\Entity\AcademicYear;
-use App\Modules\School\Entity\ApplicationForm;
-use App\Modules\School\Entity\House;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
-use App\Modules\System\Entity\I18n;
-use App\Modules\System\Entity\Setting;
-use App\Modules\System\Entity\Theme;
-use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
-use App\Validator as ASSERTLOCAL;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,40 +36,26 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * Class Person
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\PersonRepository")
- * @ORM\Table(
- *     name="Person",
- *     indexes={@ORM\Index(name="personal_phone",columns={"personal_phone"}),
- *     @ORM\Index(name="house",columns={"house"}),
- *     @ORM\Index(name="physical_address",columns={"physical_address"}),
- *     @ORM\Index(name="postal_address",columns={"postal_address"}),
- *     @ORM\Index(name="academic_year_class_of",columns={"class_of_academic_year"}),
- *     @ORM\Index(name="application_form",columns={"application_form"}),
- *     @ORM\Index(name="theme",columns={"personal_theme"}),
- *     @ORM\Index(name="emergency_contact1",columns={"emergency_contact1"}),
- *     @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
- *     @ORM\Index(name="i18n",columns={"personal_i18n"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="student",columns={"student"})}
+ * @ORM\Table(name="Person",
+ *  uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="student",columns={"student"}),
+ *      @ORM\UniqueConstraint(name="security_user",columns={"security_user"}),
+ *      @ORM\UniqueConstraint(name="staff",columns={"staff"}),
+ *      @ORM\UniqueConstraint(name="contact",columns={"contact"}),
+ *      @ORM\UniqueConstraint(name="personal_documentation",columns={"personal_documentation"}),
+ *      @ORM\UniqueConstraint(name="parent",columns={"parent"})}
  *     )
  * @UniqueEntity("student")
+ * @UniqueEntity("security_user")
+ * @UniqueEntity("staff")
+ * @UniqueEntity("contact")
+ * @UniqueEntity("personal_documentation")
+ * @UniqueEntity("staff")
  * @ORM\HasLifecycleCallbacks()
  */
 class Person extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-
-    use BooleanList;
-
-    /**
-     * Person constructor.
-     */
-    public function __construct()
-    {
-        $this->setStatus('Expected')
-            ->setStudentEnrolments(new ArrayCollection())
-            ->setMembers(new ArrayCollection())
-            ->setAdditionalPhones(new ArrayCollection())
-            ->setPasswordForceReset('N');
-    }
 
     /**
      * @var string|null
@@ -87,6 +64,148 @@ class Person extends AbstractEntity
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=5,nullable=true)
+     * @ASSERT\Choice(callback="getTitleList")
+     */
+    private $title;
+
+    /**
+     * @var array
+     */
+    private static $titleList = [
+        'Ms',
+        'Miss',
+        'Mr',
+        'Mrs',
+        'Dr',
+    ];
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=60)
+     * @ASSERT\NotBlank()
+     */
+    private $surname;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=60)
+     * @ASSERT\NotBlank()
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=60)
+     * @ASSERT\NotBlank()
+     */
+    private $preferredName;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=150,nullable=true)
+     * @ASSERT\NotBlank()
+     */
+    private $officialName;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=60,name="name_in_characters",nullable=true)
+     */
+    private $nameInCharacters;
+
+    /**
+     * @var Collection|CustomFieldData[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="person")
+     */
+    private $additionalFields;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=16,options={"default": "Unspecified"})
+     * @ASSERT\Choice(callback="getGenderAssert")
+     */
+    private $gender = 'Unspecified';
+
+    /**
+     * @var array
+     */
+    private static $genderList = [
+        'Female' => 'F',
+        'Male' => 'M',
+        'Other' => 'Other',
+        'Unspecified' => 'Unspecified',
+    ];
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=16, options={"default": "Full"})
+     * @ASSERT\Choice(callback="getStatusList")
+     */
+    private $status = 'Full';
+
+    /**
+     * @var array
+     */
+    private static $statusList = [
+        'Full',
+        'Expected',
+        'Left',
+        'Pending Approval',
+    ];
+
+    /**
+     * @var Student|null
+     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",fetch="EAGER")
+     * @ORM\JoinColumn(name="student",nullable=true)
+     */
+    private $student;
+
+    /**
+     * @var ParentContact|null
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person")
+     * @ORM\JoinColumn(name="parent",referencedColumnName="id")
+     */
+    private $parent;
+
+    /**
+     * @var Contact|null
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person")
+     * @ORM\JoinColumn(name="contact",referencedColumnName="id")
+     */
+    private $contact;
+
+    /**
+     * @var PersonalDocumentation|null
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person")
+     * @ORM\JoinColumn(name="personal_documentation",referencedColumnName="id")
+     */
+    private $personalDocumentation;
+
+    /**
+     * @var Staff|null
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff", mappedBy="person")
+     * @ORM\JoinColumn(name="staff",referencedColumnName="id")
+     */
+    private $staff;
+
+    /**
+     * @var SecurityUser|null
+     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser", mappedBy="person")
+     * @ORM\JoinColumn(name="security_user",referencedColumnName="id")
+     */
+    private $securityUser;
+
+    /**
+     * Person constructor.
+     */
+    public function __construct()
+    {
+        $this->setStatus('Expected');
+    }
 
     /**
      * @return array
@@ -136,24 +255,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=5,nullable=true)
-     * @ASSERT\Choice(callback="getTitleList")
-     */
-    private $title;
-
-    /**
-     * @var array
-     */
-    private static $titleList = [
-        'Ms',
-        'Miss',
-        'Mr',
-        'Mrs',
-        'Dr',
-    ];
-
-    /**
      * @return null|string
      */
     public function getTitle(): ?string
@@ -170,13 +271,6 @@ class Person extends AbstractEntity
         $this->title = in_array($title, self::getTitleList()) ? $title : '';
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=60)
-     * @ASSERT\NotBlank()
-     */
-    private $surname;
 
     /**
      * @return null|string
@@ -196,13 +290,6 @@ class Person extends AbstractEntity
         $this->setOfficialName(null);
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=60)
-     * @ASSERT\NotBlank()
-     */
-    private $firstName;
 
     /**
      * @return null|string
@@ -225,13 +312,6 @@ class Person extends AbstractEntity
 
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=60)
-     * @ASSERT\NotBlank()
-     */
-    private $preferredName;
 
     /**
      * @return null|string
@@ -257,13 +337,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=150,nullable=true)
-     * @ASSERT\NotBlank()
-     */
-    private $officialName;
-
-    /**
      * @return null|string
      */
     public function getOfficialName(): ?string
@@ -284,12 +357,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=60,name="name_in_characters",nullable=true)
-     */
-    private $nameInCharacters;
-
-    /**
      * @return null|string
      */
     public function getNameInCharacters(): ?string
@@ -306,23 +373,6 @@ class Person extends AbstractEntity
         $this->nameInCharacters = mb_substr($nameInCharacters, 0, 60);
         return $this;
     }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=16, options={"default": "Unspecified"})
-     * @ASSERT\Choice(callback="getGenderAssert")
-     */
-    private $gender = 'Unspecified';
-
-    /**
-     * @var array
-     */
-    private static $genderList = [
-        'Female' => 'F',
-        'Male' => 'M',
-        'Other' => 'Other',
-        'Unspecified' => 'Unspecified',
-    ];
 
     /**
      * @return null|string
@@ -343,23 +393,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=16, options={"default": "Full"})
-     * @ASSERT\Choice(callback="getStatusList")
-     */
-    private $status = 'Full';
-
-    /**
-     * @var array
-     */
-    private static $statusList = [
-        'Full',
-        'Expected',
-        'Left',
-        'Pending Approval',
-    ];
-
-    /**
      * @return null|string
      */
     public function getStatus(): ?string
@@ -376,1489 +409,6 @@ class Person extends AbstractEntity
         $this->status = in_array($status, self::getStatusList()) ? $status : 'Full' ;
         return $this;
     }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dob;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDob(): ?\DateTimeImmutable
-    {
-        return $this->dob;
-    }
-
-    /**
-     * Dob.
-     *
-     * @param \DateTimeImmutable|null $dob
-     * @return Person
-     */
-    public function setDob(?\DateTimeImmutable $dob): Person
-    {
-        $this->dob = $dob;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=75, nullable=true)
-     */
-    private $email;
-
-    /**
-     * @return null|string
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param null|string $email
-     * @return Person
-     */
-    public function setEmail(?string $email): Person
-    {
-        $this->email = mb_substr($email, 0, 75);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=75,nullable=true)
-     */
-    private $emailAlternate;
-
-    /**
-     * @return null|string
-     */
-    public function getEmailAlternate(): ?string
-    {
-        return $this->emailAlternate;
-    }
-
-    /**
-     * @param null|string $emailAlternate
-     * @return Person
-     */
-    public function setEmailAlternate(?string $emailAlternate): Person
-    {
-        $this->emailAlternate = mb_substr($emailAlternate, 0, 75);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191, nullable=true)
-     * @ASSERTLOCAL\ReactImage(
-     *     maxSize = "750k",
-     *     mimeTypes = {"image/jpg","image/gif","image/png","image/jpeg"},
-     *     maxRatio = 0.84,
-     *     minRatio = 0.7,
-     *     minWidth = 240,
-     *     minHeight = 320,
-     *     maxWidth = 720,
-     *     maxHeight = 960
-     * )
-     */
-    private $image_240;
-
-    /**
-     * getImage240
-     * @param bool $default
-     * @return string|null
-     */
-    public function getImage240(bool $default = true): ?string
-    {
-        if (in_array($this->image_240, ['', null]) && $default)
-            return ImageHelper::getRelativePath('/build/static/DefaultPerson.png');
-        return $this->image_240;
-    }
-
-    /**
-     * @param null|string $image_240
-     * @return Person
-     */
-    public function setImage240(?string $image_240): Person
-    {
-        $this->image_240 = ImageHelper::getRelativePath($image_240);
-        return $this;
-    }
-
-    /**
-     * @var Address|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="physical_address",referencedColumnName="id",nullable=true)
-     */
-    private $physicalAddress;
-
-    /**
-     * @return Address|null
-     */
-    public function getPhysicalAddress(): ?Address
-    {
-        return $this->physicalAddress;
-    }
-
-    /**
-     * Address.
-     *
-     * @param Address|null $address
-     * @return Person
-     */
-    public function setPhysicalAddress(?Address $address): Person
-    {
-        $this->physicalAddress = $address;
-        return $this;
-    }
-
-    /**
-     * @var Address|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="postal_address",referencedColumnName="id",nullable=true)
-     */
-    private $postalAddress;
-
-    /**
-     * @return Address|null
-     */
-    public function getPostalAddress(): ?Address
-    {
-        return $this->postalAddress;
-    }
-
-    /**
-     * PostalAddress.
-     *
-     * @param Address|null $postalAddress
-     * @return Person
-     */
-    public function setPostalAddress(?Address $postalAddress): Person
-    {
-        $this->postalAddress = $postalAddress;
-        return $this;
-    }
-
-    /**
-     * @var Phone|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Phone")
-     * @ORM\JoinColumn(name="personal_phone", referencedColumnName="id",nullable=true)
-     */
-    private $personalPhone;
-
-    /**
-     * @return Phone|null
-     */
-    public function getPersonalPhone(): ?Phone
-    {
-        return $this->personalPhone;
-    }
-
-    /**
-     * PersonalPhone.
-     *
-     * @param Phone|null $personalPhone
-     * @return Person
-     */
-    public function setPersonalPhone(?Phone $personalPhone): Person
-    {
-        $this->personalPhone = $personalPhone;
-        return $this;
-    }
-
-    /**
-     * @var Collection|null
-     * @ORM\ManyToMany(targetEntity="App\Modules\People\Entity\Phone")
-     * @ORM\JoinTable(name="PersonalPhone",
-     *      joinColumns={@ORM\JoinColumn(name="person",referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="phone",referencedColumnName="id")}
-     *      )
-     */
-    private $additionalPhones;
-
-    /**
-     * @return Collection
-     */
-    public function getAdditionalPhones(): Collection
-    {
-        if (null === $this->additionalPhones)
-            $this->additionalPhones = new ArrayCollection();
-
-        if ($this->additionalPhones instanceof PersistentCollection)
-            $this->additionalPhones->initialize();
-
-        return $this->additionalPhones;
-    }
-
-    /**
-     * AdditionalPhones.
-     *
-     * @param Collection|null $additionalPhones
-     * @return Person
-     */
-    public function setAdditionalPhones(?Collection $additionalPhones): Person
-    {
-        $this->additionalPhones = $additionalPhones;
-        return $this;
-    }
-
-    /**
-     * addAdditionalPhone
-     * @param Phone $phone
-     * @return $this
-     */
-    public function addAdditionalPhone(Phone $phone): Person
-    {
-        if ($this->getAdditionalPhones()->contains($phone))
-            return $this;
-
-        $this->additionalPhones->add($phone);
-
-        return $this;
-    }
-
-    /**
-     * removeAdditionalPhone
-     * @param Phone $phone
-     * @return $this
-     */
-    public function removeAdditionalPhone(Phone $phone): Person
-    {
-        $this->getAdditionalPhones()->removeElement($phone);
-        return $this;
-    }
-
-
-    public function getPhoneList(bool $includeFamily = false): array
-    {
-        $result = [];
-        if ($this->getPersonalPhone())
-        {
-            $result[] = $this->getPersonalPhone()->__toString();
-        }
-        foreach($this->getAdditionalPhones() as $phone) {
-            $result[] = $phone->__toString();
-        }
-        if ($includeFamily) {
-            foreach (ProviderFactory::create(Phone::class)->getFamilyPhonesOfPerson($this) as $phone) {
-                $result[] = $phone->__toString();
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $website;
-
-    /**
-     * @return null|string
-     */
-    public function getWebsite(): ?string
-    {
-        return $this->website;
-    }
-
-    /**
-     * @param null|string $website
-     * @return Person
-     */
-    public function setWebsite(?string $website): Person
-    {
-        $this->website = mb_substr($website, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=5,nullable=true)
-     */
-    private $languageFirst;
-
-    /**
-     * @return null|string
-     */
-    public function getLanguageFirst(): ?string
-    {
-        return $this->languageFirst;
-    }
-
-    /**
-     * @param null|string $languageFirst
-     * @return Person
-     */
-    public function setLanguageFirst(?string $languageFirst): Person
-    {
-        $this->languageFirst = mb_substr($languageFirst, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=5,nullable=true)
-     */
-    private $languageSecond;
-
-    /**
-     * @return null|string
-     */
-    public function getLanguageSecond(): ?string
-    {
-        return $this->languageSecond;
-    }
-
-    /**
-     * @param null|string $languageSecond
-     * @return Person
-     */
-    public function setLanguageSecond(?string $languageSecond): Person
-    {
-        $this->languageSecond = mb_substr($languageSecond, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=5,nullable=true)
-     */
-    private $languageThird;
-
-    /**
-     * @return null|string
-     */
-    public function getLanguageThird(): ?string
-    {
-        return $this->languageThird;
-    }
-
-    /**
-     * @param null|string $languageThird
-     * @return Person
-     */
-    public function setLanguageThird(?string $languageThird): Person
-    {
-        $this->languageThird = mb_substr($languageThird, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=3,nullable=true)
-     * @ASSERT\Country(alpha3=true)
-     */
-    private $countryOfBirth;
-
-    /**
-     * @return null|string
-     */
-    public function getCountryOfBirth(): ?string
-    {
-        return $this->countryOfBirth;
-    }
-
-    /**
-     * @param null|string $countryOfBirth
-     * @return Person
-     */
-    public function setCountryOfBirth(?string $countryOfBirth): Person
-    {
-        $this->countryOfBirth = mb_substr($countryOfBirth, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     * @ASSERTLOCAL\ReactFile(
-     *     maxSize = "2048k",
-     *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
-     * )
-     */
-    private $birthCertificateScan;
-
-    /**
-     * @return null|string
-     */
-    public function getBirthCertificateScan(): ?string
-    {
-        return $this->birthCertificateScan;
-    }
-
-    /**
-     * @param null|string $birthCertificateScan
-     * @return Person
-     */
-    public function setBirthCertificateScan(?string $birthCertificateScan): Person
-    {
-        $this->birthCertificateScan = mb_substr($birthCertificateScan, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $ethnicity;
-
-    /**
-     * @var array
-     */
-    private static $ethnicityList = [
-        'Australian Peoples',
-        'New Zealand Peoples',
-        'Melanesian and Papuan',
-        'Micronesian',
-        'Polynesian',
-        'British',
-        'Irish',
-        'Western European',
-        'Northern European',
-        'Southern European',
-        'South Eastern European',
-        'Eastern European',
-        'Arab',
-        'Jewish',
-        'Peoples of the Sudan',
-        'Other North African and Middle Eastern',
-        'Mainland South-East Asian',
-        'Maritime South-East Asian',
-        'Chinese Asian',
-        'Other North-East Asian',
-        'Southern Asian',
-        'Central Asian',
-        'North American',
-        'South American',
-        'Central American',
-        'Caribbean Islander',
-        'Central and West African',
-        'Southern and East African'
-    ];
-
-    /**
-     * getEthnicityList
-     * @return array
-     */
-    public static function getEthnicityList(): array
-    {
-        if (($x = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('User Admin', 'ethnicity')) !== []) {
-            return $x;
-        }
-        return self::$ethnicityList;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getEthnicity(): ?string
-    {
-        return $this->ethnicity;
-    }
-
-    /**
-     * @param null|string $ethnicity
-     * @return Person
-     */
-    public function setEthnicity(?string $ethnicity): Person
-    {
-        $this->ethnicity = mb_substr($ethnicity, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=3,nullable=true)
-     */
-    private $citizenship1;
-
-    /**
-     * @return null|string
-     */
-    public function getCitizenship1(): ?string
-    {
-        return $this->citizenship1;
-    }
-
-    /**
-     * @param null|string $citizenship1
-     * @return Person
-     */
-    public function setCitizenship1(?string $citizenship1): Person
-    {
-        $this->citizenship1 = mb_substr($citizenship1, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30,name="citizenship1_passport",nullable=true)
-     */
-    private $citizenship1Passport;
-
-    /**
-     * getCitizenship1Passport
-     * @return string|null
-     */
-    public function getCitizenship1Passport(): ?string
-    {
-        return $this->citizenship1Passport;
-    }
-
-    /**
-     * setCitizenship1Passport
-     * @param string|null $citizenship1Passport
-     * @return Person
-     */
-    public function setCitizenship1Passport(?string $citizenship1Passport): Person
-    {
-        $this->citizenship1Passport = mb_substr($citizenship1Passport, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,name="citizenship1_passport_scan",nullable=true)
-     * @ASSERTLOCAL\ReactFile(
-     *     maxSize = "2048k",
-     *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
-     * )
-     */
-    private $citizenship1PassportScan;
-
-    /**
-     * @return null|string
-     */
-    public function getCitizenship1PassportScan(): ?string
-    {
-        return $this->citizenship1PassportScan;
-    }
-
-    /**
-     * @param null|string $citizenship1PassportScan
-     * @return Person
-     */
-    public function setCitizenship1PassportScan(?string $citizenship1PassportScan): Person
-    {
-        $this->citizenship1PassportScan = mb_substr($citizenship1PassportScan, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=3,nullable=true)
-     */
-    private $citizenship2;
-
-    /**
-     * @return null|string
-     */
-    public function getCitizenship2(): ?string
-    {
-        return $this->citizenship2;
-    }
-
-    /**
-     * @param null|string $citizenship2
-     * @return Person
-     */
-    public function setCitizenship2(?string $citizenship2): Person
-    {
-        $this->citizenship2 = mb_substr($citizenship2, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30,name="citizenship2_passport",nullable=true)
-     */
-    private $citizenship2Passport;
-
-    /**
-     * @return null|string
-     */
-    public function getCitizenship2Passport(): ?string
-    {
-        return $this->citizenship2Passport;
-    }
-
-    /**
-     * @param null|string $citizenship2Passport
-     * @return Person
-     */
-    public function setCitizenship2Passport(?string $citizenship2Passport): Person
-    {
-        $this->citizenship2Passport = mb_substr($citizenship2Passport, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30,nullable=true)
-     */
-    private $religion;
-
-    /**
-     * @return null|string
-     */
-    public function getReligion(): ?string
-    {
-        return $this->religion;
-    }
-
-    /**
-     * @param null|string $religion
-     * @return Person
-     */
-    public function setReligion(?string $religion): Person
-    {
-        $this->religion = mb_substr($religion, 0, 30);
-        return $this;
-    }
-
-    /**
-     * getReligionList
-     * @return array
-     */
-    public static function getReligionList(): array
-    {
-        return ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('User Admin', 'religions');
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=30,name="national_card_number",nullable=true)
-     */
-    private $nationalIDCardNumber;
-
-    /**
-     * @return null|string
-     */
-    public function getNationalIDCardNumber(): ?string
-    {
-        return $this->nationalIDCardNumber;
-    }
-
-    /**
-     * @param null|string $nationalIDCardNumber
-     * @return Person
-     */
-    public function setNationalIDCardNumber(?string $nationalIDCardNumber): Person
-    {
-        $this->nationalIDCardNumber = mb_substr($nationalIDCardNumber, 0, 30);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,name="national_card_scan",nullable=true)
-     */
-    private $nationalIDCardScan;
-
-    /**
-     * @return null|string
-     */
-    public function getNationalIDCardScan(): ?string
-    {
-        return $this->nationalIDCardScan;
-    }
-
-    /**
-     * @param null|string $nationalIDCardScan
-     * @return Person
-     */
-    public function setNationalIDCardScan(?string $nationalIDCardScan): Person
-    {
-        $this->nationalIDCardScan = mb_substr($nationalIDCardScan, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $residencyStatus;
-
-    /**
-     * @return null|string
-     */
-    public function getResidencyStatus(): ?string
-    {
-        return $this->residencyStatus;
-    }
-
-    /**
-     * @param null|string $residencyStatus
-     * @return Person
-     */
-    public function setResidencyStatus(?string $residencyStatus): Person
-    {
-        $this->residencyStatus = mb_substr($residencyStatus, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(nullable=true, type="date_immutable")
-     */
-    private $visaExpiryDate;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getVisaExpiryDate(): ?\DateTimeImmutable
-    {
-        return $this->visaExpiryDate;
-    }
-
-    /**
-     * VisaExpiryDate.
-     *
-     * @param \DateTimeImmutable|null $visaExpiryDate
-     * @return Person
-     */
-    public function setVisaExpiryDate(?\DateTimeImmutable $visaExpiryDate): Person
-    {
-        $this->visaExpiryDate = $visaExpiryDate;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=90,nullable=true)
-     */
-    private $profession;
-
-    /**
-     * @return null|string
-     */
-    public function getProfession(): ?string
-    {
-        return $this->profession;
-    }
-
-    /**
-     * @param null|string $profession
-     * @return Person
-     */
-    public function setProfession(?string $profession): Person
-    {
-        $this->profession = mb_substr($profession, 0, 90);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=90,nullable=true)
-     */
-    private $employer;
-
-    /**
-     * @return null|string
-     */
-    public function getEmployer(): ?string
-    {
-        return $this->employer;
-    }
-
-    /**
-     * @param null|string $employer
-     * @return Person
-     */
-    public function setEmployer(?string $employer): Person
-    {
-        $this->employer = mb_substr($employer, 0, 90);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=90,nullable=true)
-     */
-    private $jobTitle;
-
-    /**
-     * @return null|string
-     */
-    public function getJobTitle(): ?string
-    {
-        return $this->jobTitle;
-    }
-
-    /**
-     * @param null|string $jobTitle
-     * @return Person
-     */
-    public function setJobTitle(?string $jobTitle): Person
-    {
-        $this->jobTitle = mb_substr($jobTitle, 0, 90);
-        return $this;
-    }
-
-    /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(nullable=true,name="emergency_contact1")
-     */
-    public $emergencyContact1;
-
-    /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(nullable=true,name="emergency_contact2")
-     */
-    public $emergencyContact2;
-
-    /**
-     * @return Person|null
-     */
-    public function getEmergencyContact1(): ?Person
-    {
-        return $this->emergencyContact1;
-    }
-
-    /**
-     * EmergencyContact1.
-     *
-     * @param Person|null $emergencyContact1
-     * @return Person
-     */
-    public function setEmergencyContact1(?Person $emergencyContact1): Person
-    {
-        $this->emergencyContact1 = $emergencyContact1;
-        return $this;
-    }
-
-    /**
-     * @return Person|null
-     */
-    public function getEmergencyContact2(): ?Person
-    {
-        return $this->emergencyContact2;
-    }
-
-    /**
-     * EmergencyContact2.
-     *
-     * @param Person|null $emergencyContact2
-     * @return Person
-     */
-    public function setEmergencyContact2(?Person $emergencyContact2): Person
-    {
-        $this->emergencyContact2 = $emergencyContact2;
-        return $this;
-    }
-
-    /**
-     * @var House|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\House")
-     * @ORM\JoinColumn(nullable=true, name="house", referencedColumnName="id")
-     */
-    private $house;
-
-    /**
-     * @return House|null
-     */
-    public function getHouse(): ?House
-    {
-        return $this->house;
-    }
-
-    /**
-     * @param House|null $house
-     * @return Person
-     */
-    public function setHouse(?House $house): Person
-    {
-        $this->house = $house;
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateStart;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateStart(): ?\DateTimeImmutable
-    {
-        return $this->dateStart;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $dateStart
-     * @return Person
-     */
-    public function setDateStart(?\DateTimeImmutable $dateStart): Person
-    {
-        $this->dateStart = $dateStart;
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateEnd;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateEnd(): ?\DateTimeImmutable
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $dateEnd
-     * @return Person
-     */
-    public function setDateEnd(?\DateTimeImmutable $dateEnd): Person
-    {
-        $this->dateEnd = $dateEnd;
-        return $this;
-    }
-
-    /**
-     * @var AcademicYear|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(nullable=true,name="class_of_academic_year",referencedColumnName="id")
-     */
-    private $academicYearClassOf;
-
-    /**
-     * @return AcademicYear|null
-     */
-    public function getAcademicYearClassOf(): ?AcademicYear
-    {
-        return $this->academicYearClassOf;
-    }
-
-    /**
-     * @param AcademicYear|null $academicYearClassOf
-     * @return Person
-     */
-    public function setAcademicYearClassOf(?AcademicYear $academicYearClassOf): Person
-    {
-        $this->academicYearClassOf = $academicYearClassOf;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=100,nullable=true)
-     */
-    private $lastSchool;
-
-    /**
-     * @return null|string
-     */
-    public function getLastSchool(): ?string
-    {
-        return $this->lastSchool;
-    }
-
-    /**
-     * @param null|string $lastSchool
-     * @return Person
-     */
-    public function setLastSchool(?string $lastSchool): Person
-    {
-        $this->lastSchool = mb_substr($lastSchool, 0, 100);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=100,nullable=true)
-     */
-    private $nextSchool;
-
-    /**
-     * @return null|string
-     */
-    public function getNextSchool(): ?string
-    {
-        return $this->nextSchool;
-    }
-
-    /**
-     * @param null|string $nextSchool
-     * @return Person
-     */
-    public function setNextSchool(?string $nextSchool): Person
-    {
-        $this->nextSchool = mb_substr($nextSchool, 0, 100);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=50,nullable=true)
-     */
-    private $departureReason;
-
-    /**
-     * @return null|string
-     */
-    public function getDepartureReason(): ?string
-    {
-        return $this->departureReason;
-    }
-
-    /**
-     * @param null|string $departureReason
-     * @return Person
-     */
-    public function setDepartureReason(?string $departureReason): Person
-    {
-        $this->departureReason = mb_substr($departureReason, 0, 50);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $transport;
-
-    /**
-     * @return null|string
-     */
-    public function getTransport(): ?string
-    {
-        return $this->transport;
-    }
-
-    /**
-     * @param null|string $transport
-     * @return Person
-     */
-    public function setTransport(?string $transport): Person
-    {
-        $this->transport = mb_substr($transport, 0, 50);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(type="text",nullable=true)
-     */
-    private $transportNotes;
-
-    /**
-     * @return null|string
-     */
-    public function getTransportNotes(): ?string
-    {
-        return $this->transportNotes;
-    }
-
-    /**
-     * @param null|string $transportNotes
-     * @return Person
-     */
-    public function setTransportNotes(?string $transportNotes): Person
-    {
-        $this->transportNotes = $transportNotes;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $calendarFeedPersonal;
-
-    /**
-     * @return null|string
-     */
-    public function getCalendarFeedPersonal(): ?string
-    {
-        return $this->calendarFeedPersonal;
-    }
-
-    /**
-     * @param null|string $calendarFeedPersonal
-     * @return Person
-     */
-    public function setCalendarFeedPersonal(?string $calendarFeedPersonal): Person
-    {
-        $this->calendarFeedPersonal = $calendarFeedPersonal;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     */
-    private $viewCalendarSchool = 'N';
-
-    /**
-     * getViewCalendarSchool
-     * @return string|null
-     */
-    public function getViewCalendarSchool(): ?string
-    {
-        return $this->viewCalendarSchool;
-    }
-
-    /**
-     * @param null|string $viewCalendarSchool
-     * @return Person
-     */
-    public function setViewCalendarSchool(?string $viewCalendarSchool): Person
-    {
-        $this->viewCalendarSchool = in_array($viewCalendarSchool, self::getBooleanList()) ? $viewCalendarSchool : 'Y';
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     */
-    private $viewCalendarPersonal = 'Y';
-
-    /**
-     * getViewCalendarPersonal
-     * @return string|null
-     */
-    public function getViewCalendarPersonal(): ?string
-    {
-        return $this->viewCalendarPersonal;
-    }
-
-    /**
-     * @param null|string $viewCalendarPersonal
-     * @return Person
-     */
-    public function setViewCalendarPersonal(?string $viewCalendarPersonal): Person
-    {
-        $this->viewCalendarPersonal = in_array($viewCalendarPersonal, self::getBooleanList()) ? $viewCalendarPersonal : 'Y';
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "N"})
-     */
-    private $viewCalendarSpaceBooking = 'N';
-
-    /**
-     * @return null|string
-     */
-    public function getViewCalendarSpaceBooking(): ?string
-    {
-        return $this->viewCalendarSpaceBooking;
-    }
-
-    /**
-    /**
-     * @param null|string $viewCalendarSpaceBooking
-     * @return Person
-     */
-    public function setViewCalendarSpaceBooking(?string $viewCalendarSpaceBooking): Person
-    {
-        $this->viewCalendarSpaceBooking = in_array($viewCalendarSpaceBooking, self::getBooleanList()) ? $viewCalendarSpaceBooking : 'N';
-        return $this;
-    }
-
-    /**
-     * @var ApplicationForm|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ApplicationForm")
-     * @ORM\JoinColumn(name="application_form", referencedColumnName="id", nullable=true)
-     */
-    private $applicationForm;
-
-    /**
-     * @return ApplicationForm|null
-     */
-    public function getApplicationForm(): ?ApplicationForm
-    {
-        return $this->applicationForm;
-    }
-
-    /**
-     * @param ApplicationForm|null $applicationForm
-     * @return Person
-     */
-    public function setApplicationForm(?ApplicationForm $applicationForm): Person
-    {
-        $this->applicationForm = $applicationForm;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20,nullable=true)
-     */
-    private $lockerNumber;
-
-    /**
-     * @return null|string
-     */
-    public function getLockerNumber(): ?string
-    {
-        return $this->lockerNumber;
-    }
-
-    /**
-     * @param null|string $lockerNumber
-     * @return Person
-     */
-    public function setLockerNumber(?string $lockerNumber): Person
-    {
-        $this->lockerNumber = mb_substr($lockerNumber, 0, 20);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20,nullable=true)
-     */
-    private $vehicleRegistration;
-
-    /**
-     * @return null|string
-     */
-    public function getVehicleRegistration(): ?string
-    {
-        return $this->vehicleRegistration;
-    }
-
-    /**
-     * @param null|string $vehicleRegistration
-     * @return Person
-     */
-    public function setVehicleRegistration(?string $vehicleRegistration): Person
-    {
-        $this->vehicleRegistration = mb_substr($vehicleRegistration, 0, 20);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     * @ASSERTLOCAL\ReactImage(
-     *     mimeTypes = {"image/jpg","image/jpeg","image/png","image/gif"},
-     *     maxSize = "1536k",
-     *     maxRatio = 1.777,
-     *     minRatio = 1.25,
-     * )
-     * 16/9, 800/640
-     */
-    private $personalBackground;
-
-    /**
-     * @return null|string
-     */
-    public function getPersonalBackground(): ?string
-    {
-        return $this->personalBackground;
-    }
-
-    /**
-     * @param null|string $personalBackground
-     * @return Person
-     */
-    public function setPersonalBackground(?string $personalBackground): Person
-    {
-        $this->personalBackground = mb_substr($personalBackground, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable", nullable=true)
-     */
-    private $messengerLastBubble;
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getMessengerLastBubble(): ?\DateTimeImmutable
-    {
-        return $this->messengerLastBubble;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $messengerLastBubble
-     * @return Person
-     */
-    public function setMessengerLastBubble(?\DateTimeImmutable $messengerLastBubble): Person
-    {
-        $this->messengerLastBubble = $messengerLastBubble;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $privacy;
-
-    /**
-     * @return null|string
-     */
-    public function getPrivacy(): ?string
-    {
-        return $this->privacy;
-    }
-
-    /**
-     * @param null|string $privacy
-     * @return Person
-     */
-    public function setPrivacy(?string $privacy): Person
-    {
-        $this->privacy = $privacy;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true,options={"comment": "Student day type, as specified in the application form."})
-     */
-    private $dayType;
-
-    /**
-     * @return null|string
-     */
-    public function getDayType(): ?string
-    {
-        return $this->dayType;
-    }
-
-    /**
-     * @param null|string $dayType
-     * @return Person
-     */
-    public function setDayType(?string $dayType): Person
-    {
-        $this->dayType = mb_substr($dayType, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var Theme|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Theme")
-     * @ORM\JoinColumn(name="personal_theme", referencedColumnName="id", nullable=true)
-     */
-    private $theme;
-
-    /**
-     * @return Theme|null
-     */
-    public function getTheme(): ?Theme
-    {
-        return $this->theme;
-    }
-
-    /**
-     * @param Theme|null $theme
-     * @return Person
-     */
-    public function setTheme(?Theme $theme): Person
-    {
-        $this->theme = $theme;
-        return $this;
-    }
-
-    /**
-     * @var I18n|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
-     * @ORM\JoinColumn(name="personal_i18n", referencedColumnName="id", nullable=true)
-     */
-    private $i18nPersonal;
-
-    /**
-     * @return I18n|null
-     */
-    public function getI18nPersonal(): ?I18n
-    {
-        return $this->i18nPersonal;
-    }
-
-    /**
-     * @param I18n|null $i18nPersonal
-     * @return Person
-     */
-    public function setI18nPersonal(?I18n $i18nPersonal): Person
-    {
-        $this->i18nPersonal = $i18nPersonal;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
-     */
-    private $googleAPIRefreshToken;
-
-    /**
-     * @return null|string
-     */
-    public function getGoogleAPIRefreshToken(): ?string
-    {
-        return $this->googleAPIRefreshToken;
-    }
-
-    /**
-     * @param null|string $googleAPIRefreshToken
-     * @return Person
-     */
-    public function setGoogleAPIRefreshToken(?string $googleAPIRefreshToken): Person
-    {
-        $this->googleAPIRefreshToken = mb_substr($googleAPIRefreshToken, 0, 191);
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     * @ASSERT\Choice(callback="getBooleanList")
-     */
-    private $receiveNotificationEmails = 'Y';
-
-    /**
-     * @return bool
-     */
-    public function isReceiveNotificationEmails(): bool
-    {
-        return $this->getReceiveNotificationEmails() === 'Y';
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getReceiveNotificationEmails(): ?string
-    {
-        return $this->receiveNotificationEmails = self::checkBoolean($this->receiveNotificationEmails);
-    }
-
-    /**
-     * @param null|string $receiveNotificationEmails
-     * @return Person
-     */
-    public function setReceiveNotificationEmails(?string $receiveNotificationEmails): Person
-    {
-        $this->receiveNotificationEmails = self::checkBoolean($receiveNotificationEmails);
-        return $this;
-    }
-
-    /**
-     * @var string
-     * @ORM\Column(type="array", options={"comment": "Serialised array of custom field values"}, nullable=true)
-     * Gibbon does not support NULL for this field.
-     */
-    private $fields = [];
 
     /**
      * @return array
@@ -2072,61 +622,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @var Collection|FamilyMember[]|null
-     * @ORM\OneToMany(targetEntity="FamilyMember", mappedBy="person")
-     */
-    private $members;
-
-    /**
-     * getMembers
-     * @return Collection
-     */
-    public function getMembers(): Collection
-    {
-        if (null === $this->members)
-            $this->members = new ArrayCollection();
-
-        if ($this->members instanceof PersistentCollection)
-            $this->members->initialize();
-
-        return $this->members;
-    }
-
-    /**
-     * Members.
-     *
-     * @param FamilyMember[]|Collection|null $members
-     * @return Person
-     */
-    public function setMembers(?Collection $members): Person
-    {
-        $this->members = $members;
-        return $this;
-    }
-
-    /**
-     * @return Collection|FamilyMember[]|null
-     */
-    public function getAdults(): Collection
-    {
-        return $this->getMembers()->filter(function(FamilyMember $member) {
-            if ($member instanceof FamilyMemberAdult)
-                return $member;
-        });
-    }
-
-    /**
-     * @return Collection|FamilyMember[]|null
-     */
-    public function getChildren(): Collection
-    {
-        return $this->getMembers()->filter(function(FamilyMember $member) {
-            if ($member instanceof FamilyMemberChild)
-                return $member;
-        });
-    }
-
-    /**
      * getEmergencyRelationshipList
      * @return array
      */
@@ -2149,7 +644,7 @@ class Person extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getId() ?: $this->getOfficialName() ?: $this->getSurname().' '.$this->getPreferredName();
+        return $this->getOfficialName() ?: $this->getSurname().' '.$this->getPreferredName();
     }
 
     /**
@@ -2213,51 +708,6 @@ class Person extends AbstractEntity
             'rego' => $this->getVehicleRegistration() ?: '',
             'name' => $this->getSurname().' '.$this->getFirstName().' '.$this->getPreferredName(),
         ];
-    }
-
-    /**
-     * @var
-     */
-    private $family;
-
-    /**
-     * getFamily
-     * @return Family|null
-     */
-    public function getFamily(): ?Family
-    {
-        if ($this->family instanceof Family)
-            return $this->family;
-        if ($this->getAdults()->count() > 0) {
-            $adult = $this->getAdults()->first();
-            if ($adult->getFamily() instanceof Family)
-                return $this->family = $adult->getFamily();
-        }
-        if ($this->getChildren()->count() > 0) {
-            $child = $this->getChildren()->first();
-            if ($child->getFamily() instanceof Family)
-                return $this->family = $child->getFamily();
-        }
-        $this->family = null;
-        return $this->family;
-    }
-
-    /**
-     * getFamilyName
-     * @return string
-     */
-    public function getFamilyName(): string
-    {
-        return $this->getFamily() ? $this->getFamily()->getName() : '';
-    }
-
-    /**
-     * getFamilyName
-     * @return string
-     */
-    public function getFamilyId(): string
-    {
-        return $this->getFamily() ? $this->getFamily()->getName() : '';
     }
 
     /**
@@ -2448,23 +898,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * isStaff
-     * @return bool
-     * 10/06/2020 11:58
-     */
-    public function isStaff(): bool
-    {
-        return $this->hasRole('ROLE_STAFF');
-    }
-
-    /**
-     * @var Student|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",fetch="EAGER")
-     * @ORM\JoinColumn(name="student",nullable=true)
-     */
-    private $student;
-
-    /**
      * isStudent
      * @return bool
      * 10/06/2020 11:59
@@ -2483,12 +916,18 @@ class Person extends AbstractEntity
     }
 
     /**
+     * setStudent
      * @param Student|null $student
-     * @return Person
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:22
      */
-    public function setStudent(?Student $student): Person
+    public function setStudent(?Student $student, bool $reflect = true): Person
     {
         $this->student = $student;
+        if ($reflect && $student instanceof Student) {
+            $student->setPerson($this, false);
+        }
         return $this;
     }
 
@@ -2499,7 +938,79 @@ class Person extends AbstractEntity
      */
     public function isParent(): bool
     {
-        return $this->hasRole('ROLE_PARENT');
+        return $this->getParent() instanceof ParentContact;
+    }
+
+    /**
+     * @return ParentContact|null
+     */
+    public function getParent(): ?ParentContact
+    {
+        return $this->parent;
+    }
+
+    /**
+     * setParent
+     * @param ParentContact|null $parent
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:13
+     */
+    public function setParent(?ParentContact $parent, bool $reflect = true): Person
+    {
+        $this->parent = $parent;
+        if ($reflect && $parent instanceof ParentContact) {
+            $parent->setPerson($this, false);
+        }
+        return $this;
+    }
+
+    /**
+     * @return Contact|null
+     */
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    /**
+     * setContact
+     * @param Contact|null $contact
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:10
+     */
+    public function setContact(?Contact $contact, bool $reflect = true): Person
+    {
+        $this->contact = $contact;
+        if ($reflect) {
+            $contact->setPerson($this, false);
+        }
+        return $this;
+    }
+
+    /**
+     * @return PersonalDocumentation|null
+     */
+    public function getPersonalDocumentation(): ?PersonalDocumentation
+    {
+        return $this->personalDocumentation;
+    }
+
+    /**
+     * setPersonalDocumentation
+     * @param PersonalDocumentation|null $personalDocumentation
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:10
+     */
+    public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation, bool $reflect = true): Person
+    {
+        $this->personalDocumentation = $personalDocumentation;
+        if ($reflect) {
+            $personalDocumentation->setPerson($this, false);
+        }
+        return $this;
     }
 
     /**
@@ -2563,12 +1074,70 @@ class Person extends AbstractEntity
     }
 
     /**
-     * getStaff
+     * isStaff
+     * @return bool
+     * 2/07/2020 09:17
+     */
+    public function isStaff(): bool
+    {
+        return $this->getStaff() instanceof Staff;
+    }
+
+    /**
      * @return Staff|null
-     * 27/06/2020 10:19
      */
     public function getStaff(): ?Staff
     {
-        return $this->isStaff() ? ProviderFactory::getRepository(Staff::class)->findOneByPerson($this) : null;
+        return $this->staff;
+    }
+
+    /**
+     * setStaff
+     * @param Staff|null $staff
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:19
+     */
+    public function setStaff(?Staff $staff, bool $reflect = true): Person
+    {
+        $this->staff = $staff;
+        if ($reflect && $staff instanceof Staff) {
+            $staff->setPerson($this, false);
+        }
+        return $this;
+    }
+
+    /**
+     * isSecurityUser
+     * @return bool
+     * 2/07/2020 09:17
+     */
+    public function isSecurityUser(): bool
+    {
+        return $this->getSecurityUser() instanceof SecurityUser;
+    }
+
+    /**
+     * @return SecurityUser|null
+     */
+    public function getSecurityUser(): ?SecurityUser
+    {
+        return $this->securityUser;
+    }
+
+    /**
+     * setSecurityUser
+     * @param SecurityUser|null $securityUser
+     * @param bool $reflect
+     * @return $this
+     * 2/07/2020 09:19
+     */
+    public function setSecurityUser(?SecurityUser $securityUser, bool $reflect = true): Person
+    {
+        $this->securityUser = $securityUser;
+        if ($reflect && $securityUser instanceof SecurityUser) {
+            $securityUser->setPerson($this, false);
+        }
+        return $this;
     }
 }

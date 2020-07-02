@@ -55,7 +55,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="securityUser")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -83,7 +83,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean",options={"default": "0", "comments": "Force user to reset password on next login."})
+     * @ORM\Column(type="boolean",options={"default": 0, "comment": "Force user to reset password on next login."})
      */
     private $passwordForceReset;
 
@@ -128,6 +128,12 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     private $securityRoles;
 
     /**
+     * @var string|null
+     * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
+     */
+    private $googleAPIRefreshToken;
+
+    /**
      * SecurityUser constructor.
      * @param Person $person
      */
@@ -167,9 +173,12 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      * @param Person $person
      * @return SecurityUser
      */
-    public function setPerson(Person $person): SecurityUser
+    public function setPerson(Person $person, bool $reflect = true): SecurityUser
     {
         $this->person = $person;
+        if ($reflect && $person instanceof Person) {
+            $person->setSecurityUser($this, false);
+        }
         return $this;
     }
 
@@ -393,6 +402,26 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
         $this->securityRoles->add($role);
 
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getGoogleAPIRefreshToken(): ?string
+    {
+        return $this->googleAPIRefreshToken;
+    }
+
+    /**
+     * setGoogleAPIRefreshToken
+     * @param string|null $googleAPIRefreshToken
+     * @return $this
+     * 2/07/2020 09:28
+     */
+    public function setGoogleAPIRefreshToken(?string $googleAPIRefreshToken): SecurityUser
+    {
+        $this->googleAPIRefreshToken = mb_substr($googleAPIRefreshToken, 0, 191);
         return $this;
     }
 
