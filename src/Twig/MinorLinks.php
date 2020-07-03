@@ -55,7 +55,6 @@ class MinorLinks implements ContentInterface
 
         $links = [];
         $person = $this->getPerson();
-dump(SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY'), $person, SecurityHelper::getCurrentUser());
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
             if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {

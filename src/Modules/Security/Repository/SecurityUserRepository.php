@@ -17,6 +17,7 @@
 namespace App\Modules\Security\Repository;
 
 use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,17 +49,31 @@ class SecurityUserRepository extends ServiceEntityRepository
      */
     public function loadUserByUsernameOrEmail(string $username): ?SecurityUser
     {
-        try {
-            return $this->createQueryBuilder('u')
-                ->select(['u','p','c'])
-                ->leftJoin('u.person', 'p')
-                ->leftJoin('p.contact', 'c')
-                ->where('c.email = :username OR u.username = :username')
-                ->setParameter('username', $username)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            return null;
+        if (SecurityHelper::useEmailAsUsername()) {
+            try {
+                return $this->createQueryBuilder('u')
+                    ->select(['u', 'p', 'c'])
+                    ->join('u.person', 'p')
+                    ->leftJoin('p.contact', 'c')
+                    ->where('(c.email = :username OR u.username = :username)')
+                    ->setParameter('username', $username)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+            } catch (NonUniqueResultException $e) {
+                return null;
+            }
+        } else {
+            try {
+                return $this->createQueryBuilder('u')
+                    ->select(['u', 'p'])
+                    ->join('u.person', 'p')
+                    ->where('u.username = :username')
+                    ->setParameter('username', $username)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+            } catch (NonUniqueResultException $e) {
+                return null;
+            }
         }
     }
 

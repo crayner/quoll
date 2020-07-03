@@ -17,8 +17,11 @@
 namespace App\Modules\Security\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
+use App\Util\ParameterBagHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -198,6 +201,27 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     {
         $this->username = $username;
         return $this;
+    }
+
+    /**
+     * hasUsername
+     * @param string $username
+     * @return bool
+     * 3/07/2020 10:20
+     */
+    public function hasUsername(string $username): bool
+    {
+        if ($this->getUsername() === $username) {
+            return true;
+        }
+
+        if (SecurityHelper::useEmailAsUsername()) {
+            if ($this->getPerson() instanceof Person && $this->getPerson()->getContact() instanceof Contact && $this->getPerson()->getContact()->getEmail() === $username) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -577,4 +601,34 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         ProviderFactory::create(SecurityUser::class)->setEntity(null);
     }
 
+    /**
+     * getEmail
+     * @return string|null
+     * 3/07/2020 11:15
+     */
+    public function getEmail(): ?string
+    {
+        if($this->getPerson() && $this->getPerson()->getContact()) {
+            return $this->getPerson()->getContact()->getEmail();
+        }
+        return null;
+    }
+
+    /**
+     * getLocale
+     * @return string
+     * 3/07/2020 11:20
+     */
+    public function getLocale(): string
+    {
+        $locale = null;
+        if ($this->getPerson() && $this->getPerson()->isStaff()) {
+            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStaff()->getLocale()->getCode() : null;
+        } elseif ($this->getPerson() && $this->getPerson()->isStudent()) {
+            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStudent()->getLocale()->getCode() : null;
+        } elseif ($this->getPerson() && $this->getPerson()->isParent()) {
+            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getParent()->getLocale()->getCode() : null;
+        }
+        return $locale ?: ParameterBagHelper::get('locale');
+    }
 }

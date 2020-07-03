@@ -139,23 +139,16 @@ class GoogleAuthenticator implements AuthenticatorInterface
     {
         $refreshToken = isset($credentials['refresh_token']) ? $credentials['refresh_token'] : null;
 
-        if (empty($user)) {
-            // 2) do we have a matching user by email?
-            $user = $userProvider->loadUserByUsername($this->getGoogleUser()->getEmail());
+        // 2) do we have a matching user by email?
+        $user = $userProvider->loadUserByUsername($this->getGoogleUser()->getEmail());
 
-            if (!empty($refreshToken)) {
-                $userProvider->getUser()->setGoogleAPIRefreshToken($refreshToken);
+        if (!empty($refreshToken)) {
+            $userProvider->getEntity()->setGoogleAPIRefreshToken($refreshToken);
 
-                $this->em->persist($userProvider->getUser());
-                $this->em->flush();
-            }
+            $this->em->persist($userProvider->getEntity());
+            $this->em->flush();
         }
 
-		// 3) Maybe you just want to "register" them by creating
-		// a UserProvider object
-//		$user->setGoogleId($googleUser->getId());
-//		$this->em->persist($user);
-//		$this->em->flush();
         $this->logger->debug(sprintf('Google Authentication: The user "%s" authenticated using Google.', $this->getGoogleUser()->getName()));
 
         $this->setAccessToken($credentials);
@@ -215,19 +208,20 @@ class GoogleAuthenticator implements AuthenticatorInterface
 		$user = $token->getUser();
 		$this->logger->notice("Google Authentication: UserProvider #" . $user->getId() . " (" . $user->getEmail() . ") The user authenticated via Google.");
 
-		$this->getProvider()->setSecurityUser($user);
+		$this->getProvider()->setEntity($user);
 
-		$user = $this->getProvider()->getUser();
+		$user = $this->getProvider()->getEntity();
 
-		if (!$user->isCanLogin())
-		    return $this->authenticationFailure('You do not have sufficient privileges to login.', $request);
-
-        if ($user->isPasswordForceReset())
-            $request->getSession()->set('passwordForceReset', 'Y');
-
-		if (empty($user->getSecurityRoles()))
+		if (!$user->isCanLogin()) {
             return $this->authenticationFailure('You do not have sufficient privileges to login.', $request);
+        }
 
+        if ($user->isPasswordForceReset()) {
+            $request->getSession()->set('passwordForceReset', 'Y');
+        }
+		if (empty($user->getSecurityRoles())) {
+            return $this->authenticationFailure('You do not have sufficient privileges to login.', $request);
+        }
 		if ($user->getFailCount() >= 3 && $user->isLastFailTimestampTooOld()) {
 		    if ($user->getFailCount() === 3) {
 		        $user->incFailCount();

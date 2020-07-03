@@ -19,6 +19,7 @@ use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
+use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
@@ -555,5 +556,15 @@ class SecurityHelper
     public static function getEncoder(): UserPasswordEncoderInterface
     {
         return self::$encoder;
+    }
+
+    /**
+     * useEmailAsUsername
+     * @return bool
+     * 3/07/2020 10:41
+     */
+    public static function useEmailAsUsername(): bool
+    {
+        return ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
     }
 }

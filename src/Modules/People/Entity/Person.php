@@ -24,10 +24,8 @@ use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as ASSERT;
@@ -525,15 +523,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * getLocale
-     * @return string|null
-     */
-    public function getLocale(): ?string
-    {
-        return $this->getI18nPersonal();
-    }
-
-    /**
      * @return array
      */
     public static function getTitleList(bool $forChoice = false): array
@@ -963,6 +952,16 @@ class Person extends AbstractEntity
             $parent->setPerson($this, false);
         }
         return $this;
+    }
+
+    /**
+     * isContact
+     * @return Contact|null
+     * 3/07/2020 11:24
+     */
+    public function isContact(): ?Contact
+    {
+        return $this->getContact() instanceof Contact;
     }
 
     /**

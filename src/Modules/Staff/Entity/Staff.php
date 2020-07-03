@@ -230,6 +230,7 @@ class Staff extends AbstractEntity
      * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $messengerLastBubble;
+
     /**
      * @var I18n|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
