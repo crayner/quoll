@@ -447,12 +447,12 @@ class Family extends AbstractEntity
     }
 
     /**
-     * @return FamilyMemberChild[]|Collection|null
+     * @return FamilyMemberStudent[]|Collection|null
      */
     public function getStudents(): Collection
     {
         return $this->getMembers()->filter(function (FamilyMember $member) {
-            if ($member instanceof FamilyMemberChild)
+            if ($member instanceof FamilyMemberStudent)
                 return $member;
         });
     }

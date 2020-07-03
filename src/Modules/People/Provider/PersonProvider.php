@@ -18,7 +18,7 @@ namespace App\Modules\People\Provider;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Phone;
 use App\Modules\School\Entity\House;
 use App\Modules\RollGroup\Entity\RollGroup;

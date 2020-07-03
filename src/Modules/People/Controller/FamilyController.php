@@ -25,7 +25,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMember;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Form\FamilyAdultType;
 use App\Modules\People\Form\FamilyChildType;
 use App\Modules\People\Form\FamilyGeneralType;
@@ -149,7 +149,7 @@ class FamilyController extends AbstractPageController
         $container->addForm('General', $form->createView())->addPanel($panel);
 
         $childrenPagination->setContent(FamilyManager::getChildren($family))->setPageMax(25)->setTargetElement('pagination');
-        $child = new FamilyMemberChild($family);
+        $child = new FamilyMemberStudent($family);
         $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ]), 'postFormContent' => $childrenPagination->toArray()]);
 
         $panel = new Panel('Students', 'People', new Section('form', 'Students'));
@@ -344,19 +344,19 @@ class FamilyController extends AbstractPageController
      * familyStudentEdit
      * @param Family $family
      * @param ContainerManager $manager
-     * @param FamilyMemberChild|null $student
+     * @param FamilyMemberStudent|null $student
      * @return JsonResponse
      * @Route("/family/{family}/student/{student}/edit/",name="family_student_edit")
      * @Route("/family/{family}/student/add/",name="family_student_add")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyMemberChild $student = null)
+    public function familyStudentEdit(Family $family, ContainerManager $manager, ?FamilyMemberStudent $student = null)
     {
         $request = $this->getRequest();
 
         if (is_null($student) || $request->get('_route') === 'family_student_add') {
             $action = $this->generateUrl('family_student_add', ['family' => $family->getId()]);
-            $student = new FamilyMemberChild($family);
+            $student = new FamilyMemberStudent($family);
         } else {
             $action = $this->generateUrl('family_student_edit', ['family' => $family->getId(), 'student' => $student->getId()]);
         }
@@ -370,7 +370,7 @@ class FamilyController extends AbstractPageController
 
             if ($form->isValid()) {
                 $student->setFamily($family);
-                $data = ProviderFactory::create(FamilyMemberChild::class)->persistFlush($student, []);
+                $data = ProviderFactory::create(FamilyMemberStudent::class)->persistFlush($student, []);
                 dump($data,$content,$student);
 
                 if ($data['status'] === 'success') {
@@ -414,12 +414,12 @@ class FamilyController extends AbstractPageController
      * @param FamilyMember $student
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function familyStudentRemove(Family $family, FamilyMemberChild $student)
+    public function familyStudentRemove(Family $family, FamilyMemberStudent $student)
     {
         $request = $this->getPageManager()->getRequest();
         if ($student->getFamily()->isEqualTo($family)) {
 
-            $data = ProviderFactory::create(FamilyMemberChild::class)->remove($student, []);
+            $data = ProviderFactory::create(FamilyMemberStudent::class)->remove($student, []);
 
             $messages = array_unique($data['errors'], SORT_REGULAR);
             foreach($messages as $message)

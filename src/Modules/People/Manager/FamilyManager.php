@@ -19,7 +19,7 @@ namespace App\Modules\People\Manager;
 
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Provider\ProviderFactory;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
@@ -52,7 +52,7 @@ class FamilyManager
             $familyList[] = $family['id'];
 
         self::$allAdults = ProviderFactory::getRepository(FamilyMemberAdult::class)->findByFamilyList($familyList);
-        self::$allStudents = ProviderFactory::getRepository(FamilyMemberChild::class)->findByFamilyList($familyList);
+        self::$allStudents = ProviderFactory::getRepository(FamilyMemberStudent::class)->findByFamilyList($familyList);
 
         foreach($result as $q=>$family)
         {
@@ -138,7 +138,7 @@ class FamilyManager
      */
     public static function getChildren($family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyMemberChild::class)->findByFamily($family);
+        $result = ProviderFactory::getRepository(FamilyMemberStudent::class)->findByFamily($family);
         if ($asArray)
             foreach($result as $q=>$child)
                 $result[$q] = $child->toArray();

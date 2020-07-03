@@ -22,7 +22,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use Doctrine\DBAL\Connection;
@@ -50,7 +50,7 @@ class FamilyChildType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => FamilyMemberChild::class,
+                'data_class' => FamilyMemberStudent::class,
                 'preFormContent' => ['childPaginationContent'],
             ]
         );

@@ -23,7 +23,7 @@ use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Facility;
 use App\Modules\RollGroup\Entity\RollGroup;
@@ -75,7 +75,7 @@ class DemoDataManager
         'person2' => Person::class,
         'family' => Family::class,
         'family_adult' => FamilyMemberAdult::class,
-        'family_child' => FamilyMemberChild::class,
+        'family_child' => FamilyMemberStudent::class,
         'staff' => Staff::class,
         'facility' => Facility::class,
         'roll_group' => RollGroup::class,

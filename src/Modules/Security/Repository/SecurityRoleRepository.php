@@ -18,6 +18,7 @@ namespace App\Modules\Security\Repository;
 
 use App\Modules\Security\Entity\SecurityRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;

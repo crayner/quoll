@@ -18,22 +18,22 @@ namespace App\Modules\People\Provider;
 
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 
 /**
- * Class FamilyMemberChildProvider
+ * Class FamilyMemberStudentProvider
  * @package App\Modules\People\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class FamilyMemberChildProvider extends AbstractProvider
+class FamilyMemberStudentProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected $entityName = FamilyMemberChild::class;
+    protected $entityName = FamilyMemberStudent::class;
 
     /**
      * getStudentsOfParent

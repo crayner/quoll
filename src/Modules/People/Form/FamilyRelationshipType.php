@@ -20,7 +20,7 @@ use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\FamilyRelationship;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -59,7 +59,7 @@ class FamilyRelationshipType extends AbstractType
             ->add('child', HiddenEntityType::class,
                 [
                     'label' => false,
-                    'class' => FamilyMemberChild::class,
+                    'class' => FamilyMemberStudent::class,
                 ]
             )
             ->add('family', HiddenEntityType::class,

@@ -19,6 +19,9 @@ namespace App\Modules\Security\Manager;
 use App\Modules\Security\Entity\SecurityRole;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -44,12 +47,20 @@ class RoleHierarchy implements RoleHierarchyInterface
     private static $roles;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * RoleHierarchy constructor.
      * @param RoleHierarchyInterface $roleHierarchy
+     * @param SessionInterface $session
      */
-    public function __construct(RoleHierarchyInterface $roleHierarchy)
+    public function __construct(RoleHierarchyInterface $roleHierarchy, SessionInterface $session)
     {
         $this->roleHierarchy = $roleHierarchy;
+
+        $this->session = $session;
 
         $this->hierarchy = $this->buildHierarchyRoles();
 
@@ -70,7 +81,7 @@ class RoleHierarchy implements RoleHierarchyInterface
 
     /**
      * getReachableRoleNames
-     * @param Collection $roles
+     * @param array $roles
      * @return array
      * 30/06/2020 11:02
      */
@@ -123,8 +134,12 @@ class RoleHierarchy implements RoleHierarchyInterface
     private function buildHierarchyRoles(): array
     {
         $result = [];
+        if ($this->session->has('role_hierarchy')  && is_array($this->session->get('role_hierarchy')) && !empty($this->session->get('role_hierarchy'))) {
+            return $this->session->get('role_hierarchy');
+        }
+        $roles = self::getRoles()->count() > 0 ? self::getRoles() : ProviderFactory::getRepository(SecurityRole::class)->findAll();
 
-        foreach(ProviderFactory::getRepository(SecurityRole::class)->findAll() as $role) {
+        foreach($roles as $role) {
             $result[$role->getRole()] = [];
             foreach($role->getChildRoles() as $child) {
                 $result[$role->getRole()][] = $child->getRole();
@@ -132,6 +147,7 @@ class RoleHierarchy implements RoleHierarchyInterface
             self::addRole($role);
         }
 
+        $this->session->set('role_hierarchy', $result);
         return $result;
     }
 

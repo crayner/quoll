@@ -13,7 +13,7 @@
  */
 namespace App\Modules\People\Repository;
 
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Util\TranslationHelper;
 use Doctrine\DBAL\Connection;
@@ -23,10 +23,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class FamilyMemberChildRepository
+ * Class FamilyMemberStudentRepository
  * @package App\Modules\People\Repository
  */
-class FamilyMemberChildRepository extends ServiceEntityRepository
+class FamilyMemberStudentRepository extends ServiceEntityRepository
 {
     /**
      * FamilyChildRepository constructor.
@@ -34,7 +34,7 @@ class FamilyMemberChildRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FamilyMemberChild::class);
+        parent::__construct($registry, FamilyMemberStudent::class);
     }
 
     /**

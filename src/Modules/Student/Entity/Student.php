@@ -18,8 +18,7 @@ namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
-use App\Modules\People\Entity\FamilyMember;
-use App\Modules\People\Entity\FamilyMemberChild;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
@@ -221,10 +220,10 @@ class Student extends AbstractEntity
     private $house;
 
     /**
-     * @var Collection|FamilyMemberChild[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberChild", mappedBy="person")
+     * @var Collection|FamilyMemberStudent[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberStudent",mappedBy="student")
      */
-    private $members;
+    private $students;
 
     /**
      * @return string|null
@@ -686,6 +685,49 @@ class Student extends AbstractEntity
     public function setHouse(?House $house): Student
     {
         $this->house = $house;
+        return $this;
+    }
+
+    /**
+     * @return FamilyMemberStudent[]|Collection|null
+     */
+    public function getStudents(): Collection
+    {
+        if (null === $this->students) {
+            $this->students = new ArrayCollection();
+        }
+
+        if ($this->students instanceof PersistentCollection) {
+            $this->students->initialize();
+        }
+
+        return $this->students;
+    }
+
+    /**
+     * @param FamilyMemberStudent[]|Collection|null $students
+     * @return Student
+     */
+    public function setStudents($students): Student
+    {
+        $this->students = $students;
+        return $this;
+    }
+
+    /**
+     * addStudent
+     * @param FamilyMemberStudent|null $student
+     * @return $this
+     * 3/07/2020 14:14
+     */
+    public function addStudent(?FamilyMemberStudent $student): Student
+    {
+        if (null === $student || $this->getStudents()->contains($student)) {
+            return $this;
+        }
+
+        $this->students->add($student);
+
         return $this;
     }
 

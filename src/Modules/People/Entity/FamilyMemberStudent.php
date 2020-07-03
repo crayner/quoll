@@ -16,6 +16,7 @@
  */
 namespace App\Modules\People\Entity;
 
+use App\Modules\Student\Entity\Student;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,15 +24,15 @@ use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class FamilyMemberChild
+ * Class FamilyMemberStudent
  * @package App\Modules\People\Entity
- * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberChildRepository")
+ * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberStudentRepository")
  */
-class FamilyMemberChild extends FamilyMember
+class FamilyMemberStudent extends FamilyMember
 {
     /**
-     * @var FamilyMemberChild|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyMemberChild")
+     * @var Student|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="students")
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
      * @Assert\NotBlank()
      */
@@ -44,18 +45,29 @@ class FamilyMemberChild extends FamilyMember
     private $relationships;
 
     /**
-     * @return FamilyMemberChild|null
+     * FamilyMemberStudent constructor.
+     * @param Family|null $family
      */
-    public function getStudent(): ?FamilyMemberChild
+    public function __construct(?Family $family = null)
+    {
+        parent::__construct($family);
+        $this->student = new ArrayCollection();
+        $this->relationships = new ArrayCollection();
+    }
+
+    /**
+     * @return Student|null
+     */
+    public function getStudent(): ?Student
     {
         return $this->student;
     }
 
     /**
-     * @param FamilyMemberChild|null $student
-     * @return FamilyMemberChild
+     * @param Student|null $student
+     * @return FamilyMemberStudent
      */
-    public function setStudent(?FamilyMemberChild $student): FamilyMemberChild
+    public function setStudent(?Student $student): FamilyMemberStudent
     {
         $this->student = $student;
         return $this;
@@ -79,9 +91,9 @@ class FamilyMemberChild extends FamilyMember
      * Relationships.
      *
      * @param Collection|FamilyRelationship[] $relationships
-     * @return FamilyMemberChild
+     * @return FamilyMemberStudent
      */
-    public function setRelationships(Collection $relationships): FamilyMemberChild
+    public function setRelationships(Collection $relationships): FamilyMemberStudent
     {
         if ($relationships instanceof PersistentCollection)
             $relationships->initialize();

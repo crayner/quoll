@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
- * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberChild", "member" = "FamilyMember"})
+ * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
  */
 class FamilyMember extends AbstractEntity
 {
@@ -91,7 +91,6 @@ class FamilyMember extends AbstractEntity
     public function __construct(?Family $family = null)
     {
         $this->setFamily($family);
-        $this->setRelationships(new ArrayCollection());
     }
 
     /**

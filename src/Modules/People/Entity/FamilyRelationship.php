@@ -59,8 +59,8 @@ class FamilyRelationship extends AbstractEntity
     private $adult;
 
     /**
-     * @var FamilyMemberChild|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\FamilyMemberChild",inversedBy="relationships")
+     * @var FamilyMemberStudent|null
+     * @ORM\ManyToOne(targetEntity="FamilyMemberStudent",inversedBy="relationships")
      * @ORM\JoinColumn(name="child",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -163,9 +163,9 @@ class FamilyRelationship extends AbstractEntity
     }
 
     /**
-     * @return FamilyMemberChild|null
+     * @return FamilyMemberStudent|null
      */
-    public function getChild(): ?FamilyMemberChild
+    public function getChild(): ?FamilyMemberStudent
     {
         return $this->child;
     }
@@ -173,10 +173,10 @@ class FamilyRelationship extends AbstractEntity
     /**
      * Child.
      *
-     * @param FamilyMemberChild|null $child
+     * @param FamilyMemberStudent|null $child
      * @return FamilyRelationship
      */
-    public function setChild(?FamilyMemberChild $child): FamilyRelationship
+    public function setChild(?FamilyMemberStudent $child): FamilyRelationship
     {
         $this->child = $child;
         return $this;

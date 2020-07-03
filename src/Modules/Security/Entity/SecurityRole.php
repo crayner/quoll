@@ -84,7 +84,7 @@ class SecurityRole extends AbstractEntity
 
     /**
      * @var SecurityRole[]|Collection|null
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole")
      * @ORM\JoinTable(name="SecurityRoleChildren",
      *      joinColumns={@ORM\JoinColumn(name="parent",referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="child",referencedColumnName="id")}
@@ -243,6 +243,7 @@ class SecurityRole extends AbstractEntity
 
     /**
      * getChildRolesAsString
+     * @param bool $useHierachy
      * @return string
      * 29/06/2020 09:43
      */
