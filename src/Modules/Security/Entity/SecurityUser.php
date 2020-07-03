@@ -55,8 +55,8 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="securityUser")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="securityUser",fetch="EAGER")
+     * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
     private $person;
@@ -497,26 +497,34 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         return serialize(array(
             $this->getId(),
             $this->getUsername(),
-            $this->getPassword(),
-            $this->getSecurityRolesAsStrings(),
-            $this->getPerson()->getId(),
         ));
     }
 
     /**
      * unserialize
      * @param string $serialized
+     * 3/07/2020 09:54
      */
     public function unserialize($serialized)
     {
         list (
             $this->id,
             $this->username,
-            $this->password,
-            $roles,
-            $person,
             ) = unserialize($serialized);
-        ProviderFactory::create(SecurityUser::class)->refreshUser($this);
+
+        $su = ProviderFactory::create(SecurityUser::class)->loadUserByUsername($this->username);
+
+        $this->setPerson($su->getPerson())
+            ->setCanLogin($su->isCanLogin())
+            ->setPasswordForceReset($su->isPasswordForceReset())
+            ->setFailCount($su->getFailCount())
+            ->setLastIPAddress($su->getLastIPAddress())
+            ->setLastFailIPAddress($su->getLastFailIPAddress())
+            ->setLastTimestamp($su->getLastTimestamp())
+            ->setLastFailTimestamp($su->getLastFailTimestamp())
+            ->setPassword($su->getPassword())
+            ->setGoogleAPIRefreshToken($su->getGoogleAPIRefreshToken())
+            ->setSecurityRoles($su->getSecurityRoles());
     }
 
     /**

@@ -135,8 +135,10 @@ class CacheHelper
      */
     public static function clearCacheValue(string $name)
     {
-        self::getSession()->clear($name);
-        self::getSession()->clear(self::getCacheName($name));
+        if (self::getSession()) {
+            self::getSession()->clear($name);
+            self::getSession()->clear(self::getCacheName($name));
+        }
     }
 
     /**

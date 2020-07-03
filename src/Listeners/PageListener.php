@@ -14,13 +14,9 @@
  * Date: 15/04/2020
  * Time: 14:36
  */
-
 namespace App\Listeners;
 
-use App\Controller\AbstractPageController;
 use App\Manager\PageManager;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -30,11 +26,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class PageListener
  * @package App\Listeners
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class PageListener implements EventSubscriberInterface
 {
@@ -54,16 +50,15 @@ class PageListener implements EventSubscriberInterface
      * @param ProviderFactory $factory Pre load to Container
      * @param TranslationHelper $helper
      * @param CacheHelper $cache
-     * @param UserHelper $userHelper
      * @param SecurityHelper $securityHelper
      * @param ParameterBagInterface $parameterBag
+     * @param ParameterBagHelper $parameterBagHelper
      */
     public function __construct(
         PageManager $pageManager,
         ProviderFactory $factory,
         TranslationHelper $helper,
         CacheHelper $cache,
-        UserHelper $userHelper,
         SecurityHelper $securityHelper,
         ParameterBagInterface $parameterBag,
         ParameterBagHelper $parameterBagHelper

@@ -16,8 +16,8 @@
  */
 namespace App\Twig;
 
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Module;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -47,7 +47,7 @@ class MainMenu implements ContentInterface
             return;
 
         $this->content = false;
-        $user = UserHelper::getSecurityUser();
+        $user = SecurityHelper::getCurrentUser();
         if ($user instanceof SecurityUser) {
             if (CacheHelper::isStale('mainMenuItems', 30)) {
                 $menuMainItems = ProviderFactory::create(Module::class)->buildMainMenu($user);

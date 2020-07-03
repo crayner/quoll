@@ -26,8 +26,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * Class UserHelper
  * @package App\Util
+ * @deprecated Use SecurityHelper
  */
-class UserHelper
+class __UserHelper
 {
     /**
      * @var TokenStorageInterface
@@ -59,6 +60,7 @@ class UserHelper
         self::$tokenStorage = $tokenStorage;
         self::$provider = ProviderFactory::create(Person::class);
         self::$encoder = $encoder;
+        trigger_deprecation('Kookaburra - Quoll', '0.0.00',__CLASS__ . ' is deprecated. Use SecurityHelper.');
     }
 
     /**
@@ -412,38 +414,6 @@ class UserHelper
     public static function getEncoder(): UserPasswordEncoderInterface
     {
         return self::$encoder;
-    }
-
-    /**
-     * isGranted
-     * @param array $roles
-     * @return bool
-     * 11/06/2020 10:07
-     */
-    public static function isGranted(array $roles): bool
-    {
-        foreach($roles as $role) {
-            if (in_array($role, self::getAllCurrentUserRoles())) return true;
-        }
-        return false;
-    }
-
-    /**
-     * getAllCurrentRoles
-     * @return array
-     * 11/06/2020 10:09
-     */
-    public static function getAllCurrentUserRoles(): array
-    {
-        if (! self::getCurrentUser() instanceof Person) {
-            return [];
-        }
-
-        if (self::$allCurrentUserRoles === null) {
-            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRolesAsStrings());
-        }
-
-        return self::$allCurrentUserRoles;
     }
 
     /**

@@ -12,15 +12,12 @@
  * Date: 20/07/2019
  * Time: 16:01
  */
-
 namespace App\Modules\System\Provider;
 
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Entity\Role;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Provider\AbstractProvider;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -29,7 +26,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ActionProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
@@ -99,7 +95,7 @@ class ActionProvider extends AbstractProvider
         $answer = [];
         foreach($result as $action)
         {
-            if (UserHelper::isGranted($action->getSecurityRolesAsStrings())) {
+            if (SecurityHelper::isGranted($action->getSecurityRolesAsStrings())) {
                 $act = [];
                 $act['id'] = 'Act-' . $action->getName() . '/' . $action->getEntryRoute();
                 $name = explode('_', $action->getName());
@@ -132,7 +128,7 @@ class ActionProvider extends AbstractProvider
         $precedence = [];
         foreach($result as $action)
         {
-            if ($action->isEntrySidebar() && (UserHelper::isGranted($action->getSecurityRolesAsStrings()) || [] === $action->getSecurityRoles())) {
+            if ($action->isEntrySidebar() && (SecurityHelper::isGranted($action->getSecurityRolesAsStrings()) || [] === $action->getSecurityRoles())) {
                 if ((key_exists($action->getDisplayName(), $precedence)
                         && $action->getPrecedence() > $precedence[$action->getDisplayName()])
                         || !key_exists($action->getDisplayName(), $precedence)) {

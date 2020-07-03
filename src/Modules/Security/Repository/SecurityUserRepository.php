@@ -50,9 +50,10 @@ class SecurityUserRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('u')
-                ->select(['u','p'])
+                ->select(['u','p','c'])
                 ->leftJoin('u.person', 'p')
-                ->where('p.email = :username OR u.username = :username')
+                ->leftJoin('p.contact', 'c')
+                ->where('c.email = :username OR u.username = :username')
                 ->setParameter('username', $username)
                 ->getQuery()
                 ->getOneOrNullResult();

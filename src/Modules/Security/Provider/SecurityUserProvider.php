@@ -16,8 +16,10 @@
  */
 namespace App\Modules\Security\Provider;
 
+use App\Manager\EntityInterface;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Provider\AbstractProvider;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -29,6 +31,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class SecurityUserProvider extends AbstractProvider implements UserProviderInterface
 {
+    /**
+     * @var string
+     */
     protected $entityName = SecurityUser::class;
 
     /**
@@ -42,24 +47,36 @@ class SecurityUserProvider extends AbstractProvider implements UserProviderInter
      */
     public function loadUserByUsername($username): ?UserInterface
     {
-        $this->setEntity($this->getRepository()->loadUserByUsernameOrEmail($username));
+        if ($this->getSession()->has('person') && ($user = $this->getSession()->get('person')) instanceof SecurityUser) {
+            if ($user->getUsername() !== $username) {
+                $this->setEntity($this->getRepository()->loadUserByUsernameOrEmail($username));
+            } else {
+                $this->setEntity($user);
+            }
+        } else {
+            $this->setEntity($this->getRepository()->loadUserByUsernameOrEmail($username));
+        }
         return $this->getEntity();
     }
 
     /**
      * refreshUser
      * @param UserInterface $user
-     * @return \App\Manager\EntityInterface|object|UserInterface|null
+     * @return EntityInterface|object|UserInterface|null
      * 1/07/2020 13:00\
      */
     public function refreshUser(UserInterface $user)
     {
-        if ($this->supportsClass(get_class($user))) {
+        if (!$this->supportsClass(get_class($user))) {
             throw new UnsupportedUserException(sprintf('The user provided was not valid.'));
         }
 
         $this->loadUserByUsername($user->getUsername());
-        $this->refresh();
+        try {
+            $this->refresh();
+        } catch (ORMInvalidArgumentException $e) {
+            $this->setEntity($this->getRepository()->find($user->getId()));
+        }
         return $this->getEntity();
     }
 

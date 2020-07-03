@@ -14,11 +14,11 @@
  * Date: 2/10/2019
  * Time: 09:50
  */
-
 namespace App\Logger;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 
 /**
  * Class UErDetailProcessor
@@ -27,7 +27,7 @@ use App\Modules\People\Util\UserHelper;
 class UserDetailProcessor
 {
     /**
-     * @var null|Person
+     * @var null|SecurityUser
      */
     private $user;
 
@@ -45,16 +45,19 @@ class UserDetailProcessor
     }
 
     /**
-     * @return Person|null
+     * getUser
+     * @return SecurityUser|null
+     * 3/07/2020 09:12
      */
-    public function getUser(): ?Person
+    public function getUser(): ?SecurityUser
     {
-        return $this->user = $this->user ?: UserHelper::getCurrentUser();
+        return $this->user = $this->user ?: SecurityHelper::getCurrentUser();
     }
 
     /**
      * getUserId
      * @return string
+     * 3/07/2020 09:14
      */
     public function getUserId(): string
     {
@@ -62,11 +65,12 @@ class UserDetailProcessor
     }
 
     /**
-     * getUserId
+     * getUsername
      * @return string
+     * 3/07/2020 09:14
      */
     public function getUsername(): string
     {
-        return $this->getUser() ? $this->getUser()->formatName(['style' => 'long', 'preferredName' => true]) : '';
+        return $this->getUser() ? $this->getUser()->getPerson()->getFullName() : '';
     }
 }

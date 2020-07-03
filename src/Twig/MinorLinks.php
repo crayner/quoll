@@ -55,6 +55,7 @@ class MinorLinks implements ContentInterface
 
         $links = [];
         $person = $this->getPerson();
+dump(SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY'), $person, SecurityHelper::getCurrentUser());
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
             if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
@@ -133,9 +134,8 @@ class MinorLinks implements ContentInterface
 
             $links = $this->getLocaleLinks($links);
 
-            //Check for house logo (needed to get bubble, below, in right spot)
-            if ($person->getHouse() instanceof House) {
-                $house = $person->getHouse();
+            // Check for house logo (needed to get bubble, below, in right spot)
+            if (($person->isStudent() && ($house = $person->getStudent()->getHouse()) instanceof House) || ($person->isStaff() && ($house = $person->getStaff()->getHouse()) instanceof House)) {
                 if ($house->getLogo() !== '') {
                     $this->houseLogo = [
                         'class' => 'ml-1 w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16',

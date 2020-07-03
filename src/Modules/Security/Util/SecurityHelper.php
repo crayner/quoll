@@ -14,8 +14,7 @@
 namespace App\Modules\Security\Util;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Entity\Setting;
@@ -26,6 +25,7 @@ use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -71,22 +71,35 @@ class SecurityHelper
     private static $currentUser;
 
     /**
+     * @var UserPasswordEncoderInterface
+     */
+    private static $encoder;
+
+    /**
+     * @var array|null
+     */
+    private static $allCurrentUserRoles;
+
+    /**
      * SecurityHelper constructor.
      * @param LoggerInterface $logger
      * @param AuthorizationCheckerInterface $checker
      * @param TokenStorageInterface $storage
      * @param RoleHierarchyInterface $hierarchy
+     * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(
         LoggerInterface $logger,
         AuthorizationCheckerInterface $checker,
         TokenStorageInterface $storage,
-        RoleHierarchyInterface $hierarchy
+        RoleHierarchyInterface $hierarchy,
+        UserPasswordEncoderInterface $encoder
     ) {
         self::$logger = $logger;
         self::$checker = $checker;
         self::$hierarchy = $hierarchy;
         self::$storage = $storage;
+        self::$encoder = $encoder;
     }
 
     /**
@@ -106,7 +119,7 @@ class SecurityHelper
             return false;
         if (isset(self::$highestGroupedActionList[$route]))
             return self::$highestGroupedActionList[$route];
-        if ($user = UserHelper::getCurrentUser() === null)
+        if ($user = self::getCurrentUser() === null)
             return self::$highestGroupedActionList[$route] = false;
         $result = ProviderFactory::create(Action::class)->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
         return self::$highestGroupedActionList[$route] = $result ?: false;
@@ -280,13 +293,13 @@ class SecurityHelper
      */
     private static function isActionAccessibleToUser(Module $module, Action $action, string $route, string $sub)
     {
-        if (UserHelper::getCurrentUser() instanceof Person) {
+        if (self::getCurrentUser() instanceof Person) {
             //Check user has a current role set
-            if (! empty(UserHelper::getCurrentUser()->getSecurityRoles())) {
+            if (! empty(self::getCurrentUser()->getSecurityRoles())) {
                 //Check module ready
                 if ($module instanceof Module && $action instanceof Action) {
                     //Check current user has access rights to this action.
-                    return UserHelper::isGranted($action->getSecurityRolesAsStrings());
+                    return self::isGranted($action->getSecurityRolesAsStrings());
                 } else {
                     self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
                 }
@@ -297,7 +310,7 @@ class SecurityHelper
             self::$logger->debug(sprintf('The user was not valid!' ));
         }
 
-        self::$logger->debug(sprintf('The action "%s", role "%s" and sub-action "%s" combination is not accessible.', $action,isset($role) ? $role : '', $sub ));
+        self::$logger->debug(sprintf('The action "%s", route "%s" and sub-action "%s" combination is not accessible.', $action->getName(), $route, $sub ));
 
         return false;
     }
@@ -334,7 +347,7 @@ class SecurityHelper
         if (null !== $logger)
             self::$logger = $logger;
 
-        return UserHelper::isGranted($module->getSecurityRoles());
+        return self::isGranted($module->getSecurityRoles());
     }
 
     /**
@@ -385,16 +398,38 @@ class SecurityHelper
 
     /**
      * isGranted
-     * @param $role
+     * @param string|string[] $roles
      * @return bool
      * 11/06/2020 12:04
      */
-    public static function isGranted($role): bool
+    public static function isGranted($roles): bool
     {
-        if (is_string($role)) {
-            return self::$checker->isGranted($role);
+        if (is_string($roles)) {
+            $roles = [$roles];
         }
-        return UserHelper::isGranted($role);
+
+        foreach($roles as $role) {
+            if (self::$checker->isGranted($role)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * getAllCurrentRoles
+     * @return array
+     * 11/06/2020 10:09
+     */
+    public static function getAllCurrentUserRoles(): array
+    {
+        if (! self::getCurrentUser() instanceof SecurityUser) {
+            return [];
+        }
+
+        if (self::isGr === null) {
+            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRolesAsStrings());
+        }
+
+        return self::$allCurrentUserRoles;
     }
 
     /**
@@ -404,7 +439,7 @@ class SecurityHelper
      */
     public static function encodeAndSetPassword(SecurityUser $user, string $raw)
     {
-        $password = UserHelper::getEncoder()->encodePassword($user, $raw);
+        $password = self::getEncoder()->encodePassword($user, $raw);
 
         $person = $user->getPerson();
 
@@ -426,12 +461,15 @@ class SecurityHelper
      */
     public static function getCurrentUser(): ?SecurityUser
     {
-        if (self::$currentUser === null) {
+        if (self::$currentUser === null && self::$storage !== null) {
             $token = self::$storage->getToken();
 
-            if ($token->getUser() instanceof SecurityUser) {
+            if ($token !== null && $token->getUser() instanceof SecurityUser) {
                 self::$currentUser = $token->getUser();
             }
+        }
+        if (self::$storage === null) {
+            self::$currentUser = null;
         }
 
         return self::$currentUser;
@@ -509,5 +547,13 @@ class SecurityHelper
             }
         }
         return array_unique($result);
+    }
+
+    /**
+     * @return UserPasswordEncoderInterface
+     */
+    public static function getEncoder(): UserPasswordEncoderInterface
+    {
+        return self::$encoder;
     }
 }
