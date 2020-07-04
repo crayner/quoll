@@ -211,7 +211,7 @@ class StudentEnrolment extends AbstractEntity
      */
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__StudentEnrolment` (
+        return ["CREATE TABLE `__prefix__StudentEnrolment` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `roll_order` smallint DEFAULT NULL,
                     `person` CHAR(36) DEFAULT NULL,

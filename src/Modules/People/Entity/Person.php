@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: __prefix__
+ * Build: Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -707,7 +707,7 @@ class Person extends AbstractEntity
      */
     public function hasRole(string $role): bool
     {
-        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRolesAsStrings());
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRoles());
         return in_array($role, $roles);
     }
 
@@ -755,86 +755,28 @@ class Person extends AbstractEntity
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__Person` (
-                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `title` varchar(5) DEFAULT NULL,
-                    `surname` varchar(60) NOT NULL,
-                    `first_name` varchar(60) NOT NULL,
-                    `preferred_name` varchar(60) NOT NULL,
-                    `official_name` varchar(150) DEFAULT NULL,
-                    `name_in_characters` varchar(60) DEFAULT NULL,
-                    `gender` varchar(16) NOT NULL DEFAULT 'Unspecified',
-                    `status` varchar(16) NOT NULL DEFAULT 'Full',
-                    `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `email` varchar(75) DEFAULT NULL,
-                    `email_alternate` varchar(75) DEFAULT NULL,
-                    `image_240` varchar(191) DEFAULT NULL,
-                    `physical_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `postal_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `personal_phone` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `website` varchar(191) DEFAULT NULL,
-                    `language_first` varchar(5) DEFAULT NULL,
-                    `language_second` varchar(5) DEFAULT NULL,
-                    `language_third` varchar(5) DEFAULT NULL,
-                    `country_of_birth` varchar(3) DEFAULT NULL,
-                    `birth_certificate_scan` varchar(191) DEFAULT NULL,
-                    `ethnicity` varchar(191) DEFAULT NULL,
-                    `citizenship1` varchar(3) DEFAULT NULL,
-                    `citizenship1_passport` varchar(30) DEFAULT NULL,
-                    `citizenship1_passport_scan` varchar(191) DEFAULT NULL,
-                    `citizenship2` varchar(3) DEFAULT NULL,
-                    `citizenship2_passport` varchar(30) DEFAULT NULL,
-                    `religion` varchar(30) DEFAULT NULL,
-                    `national_card_number` varchar(30) DEFAULT NULL,
-                    `national_card_scan` varchar(191) DEFAULT NULL,
-                    `residency_status` varchar(191) DEFAULT NULL,
-                    `visa_expiry_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `profession` varchar(90) DEFAULT NULL,
-                    `employer` varchar(90) DEFAULT NULL,
-                    `job_title` varchar(90) CHARACTER SET utf8mb4 DEFAULT NULL,
-                    `emergency_contact1` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `emergency_contact2` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `student_identifier` varchar(20) DEFAULT NULL,
-                    `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `last_school` varchar(100) DEFAULT NULL,
-                    `next_school` varchar(100) DEFAULT NULL,
-                    `departure_reason` varchar(50) DEFAULT NULL,
-                    `transport` varchar(191) DEFAULT NULL,
-                    `transport_notes` longtext CHARACTER SET utf8mb4,
-                    `calendar_feed_personal` varchar(191) DEFAULT NULL,
-                    `view_calendar_school` varchar(1) NOT NULL DEFAULT 'Y',
-                    `view_calendar_personal` varchar(1) NOT NULL DEFAULT 'Y',
-                    `view_calendar_space_booking` varchar(1) NOT NULL DEFAULT 'N',
-                    `locker_number` varchar(20) DEFAULT NULL,
-                    `vehicle_registration` varchar(20) DEFAULT NULL,
-                    `personal_background` varchar(191) DEFAULT NULL,
-                    `messenger_last_bubble` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `privacy` longtext,
-                    `day_type` varchar(191) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
-                    `student_agreements` longtext,
-                    `google_api_refresh_token` varchar(191) DEFAULT NULL,
-                    `receive_notification_emails` varchar(1) NOT NULL DEFAULT 'Y',
-                    `fields` longtext COMMENT 'Serialised array of custom field values(DC2Type:array)',
-                    `house` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `class_of_academic_year` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `application_form` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `personal_theme` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `personal_i18n` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `student` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `id` char(36) COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:guid)',
+                    `title` varchar(5) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                    `surname` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+                    `first_name` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+                    `preferred_name` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+                    `official_name` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                    `name_in_characters` varchar(60) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                    `gender` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Unspecified',
+                    `status` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Full',
+                    `student` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `parent` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `contact` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `staff` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `security_user` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `personal_documentation` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `username` (`username`),
-                    UNIQUE INDEX `student` (`student`)
-                    KEY `house` (`house`),
-                    KEY `theme` (`personal_theme`),
-                    KEY `i18n` (`personal_i18n`),
-                    KEY `academic_year_class_of` (`class_of_academic_year`),
-                    KEY `application_form` (`application_form`),
-                    KEY `emergency_contact1` (`emergency_contact1`),
-                    KEY `emergency_contact2` (`emergency_contact2`),
-                    KEY `personal_phone` (`personal_phone`),
-                    KEY `username_email` (`username`,`email`),
-                    KEY `physical_address` (`physical_address`),
-                    KEY `postal_address` (`postal_address`)
+                    UNIQUE KEY `student` (`student`),
+                    UNIQUE KEY `security_user` (`security_user`),
+                    UNIQUE KEY `staff` (`staff`),
+                    UNIQUE KEY `contact` (`contact`),
+                    UNIQUE KEY `parent` (`parent`),
+                    UNIQUE KEY `personal_documentation` (`personal_documentation`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
                 "CREATE TABLE `__prefix__PersonalPhone` (
                     `person` CHAR(36) NOT NULL,
@@ -852,16 +794,12 @@ class Person extends AbstractEntity
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Person`
-                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__House` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`class_of_academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`personal_theme`) REFERENCES `__prefix__Theme` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`personal_i18n`) REFERENCES `__prefix__I18n` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact1`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact2`) REFERENCES `__prefix__Person` (`id`);
+                    ADD CONSTRAINT FOREIGN KEY (`parent`) REFERENCES `__prefix__ParentContact` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`staff`) REFERENCES `__prefix__Staff` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`contact`) REFERENCES `__prefix__Contact` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`security_user`) REFERENCES `__prefix__SecurityUser` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`student`) REFERENCES `__prefix__Student` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`personal_documentation`) REFERENCES `__prefix__PersonalDocumentation` (`id`);
                 ALTER TABLE `__prefix__PersonalPhone`
                     ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";

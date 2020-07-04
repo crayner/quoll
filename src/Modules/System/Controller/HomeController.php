@@ -17,6 +17,8 @@
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Entity\Setting;
 use App\Provider\ProviderFactory;
@@ -27,6 +29,8 @@ use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -40,6 +44,8 @@ class HomeController extends AbstractPageController
      * @Route("/home/{timeout}", name="home")
      * @Route("/craig/{timeout}", name="craig")
      * @Route("/", name="unauthenticated")
+     * @param string $timeout
+     * @return JsonResponse|RedirectResponse|Response
      */
     public function home(string $timeout = '')
     {

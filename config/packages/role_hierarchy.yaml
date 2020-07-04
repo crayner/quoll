@@ -1,2 +1,36 @@
 parameters:
-    role_hierarchy: ~
+    security.hierarchy.roles:
+        ROLE_LIBRARIAN:
+            - ROLE_STAFF
+        ROLE_HEAD_TEACHER:
+            - ROLE_TEACHER
+        ROLE_PRINCIPAL:
+            - ROLE_LIBRARIAN
+            - ROLE_HEAD_TEACHER
+        ROLE_TEACHER:
+            - ROLE_STUDENT
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_STAFF
+        ROLE_STUDENT:
+            - ROLE_USER
+        ROLE_SUPPORT:
+            - ROLE_STAFF
+        ROLE_REGISTRAR:
+            - ROLE_SUPPORT
+            - ROLE_PARENT
+            - ROLE_ALLOWED_TO_SWITCH
+        ROLE_USER: ~
+        ROLE_CONTACT:
+            - ROLE_USER
+        ROLE_FINANCE:
+            - ROLE_STAFF
+        ROLE_PARENT:
+            - ROLE_CONTACT
+        ROLE_MEDICAL:
+            - ROLE_STAFF
+        ROLE_ALLOWED_TO_SWITCH: ~
+        ROLE_STAFF:
+            - ROLE_USER
+        ROLE_SYSTEM_ADMIN:
+            - ROLE_PRINCIPAL
+            - ROLE_REGISTRAR

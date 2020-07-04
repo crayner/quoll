@@ -426,18 +426,56 @@ class Contact extends AbstractEntity
         // TODO: Implement toArray() method.
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 4/07/2020 09:44
+     */
     public function create(): array
     {
-        // TODO: Implement create() method.
+        return [
+            "CREATE TABLE `__prefix__Contact` (
+                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                `physical_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `postal_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `email` varchar(75) DEFAULT NULL,
+                `email_alternate` varchar(75) DEFAULT NULL,
+                `website` varchar(191) DEFAULT NULL,
+                `profession` varchar(90) DEFAULT NULL,
+                `employer` varchar(90) DEFAULT NULL,
+                `job_title` varchar(90) DEFAULT NULL,
+                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `personal_phone` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `person` (`person`),
+                KEY `physical_address` (`physical_address`),
+                KEY `postal_address` (`postal_address`),
+                KEY `personal_phone` (`personal_phone`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+        ];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 4/07/2020 09:44
+     */
     public function foreignConstraints(): string
     {
-        // TODO: Implement foreignConstraints() method.
+        return "ALTER TABLE `__prefix__Contact`
+                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`);";
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 4/07/2020 09:44
+     */
     public static function getVersion(): string
     {
-        // TODO: Implement getVersion() method.
+        return static::VERSION;
     }
 }

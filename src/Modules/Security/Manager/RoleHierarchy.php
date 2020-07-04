@@ -18,11 +18,13 @@ namespace App\Modules\Security\Manager;
 
 use App\Modules\Security\Entity\SecurityRole;
 use App\Provider\ProviderFactory;
+use App\Util\ParameterBagHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class RoleHierarchy
@@ -42,29 +44,15 @@ class RoleHierarchy implements RoleHierarchyInterface
     private $hierarchy;
 
     /**
-     * @var SecurityRole[]|ArrayCollection
-     */
-    private static $roles;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
      * RoleHierarchy constructor.
      * @param RoleHierarchyInterface $roleHierarchy
-     * @param SessionInterface $session
+     * @param array $hierarchy
      */
-    public function __construct(RoleHierarchyInterface $roleHierarchy, SessionInterface $session)
+    public function __construct(RoleHierarchyInterface $roleHierarchy, array $hierarchy)
     {
         $this->roleHierarchy = $roleHierarchy;
 
-        $this->session = $session;
-
-        $this->hierarchy = $this->buildHierarchyRoles();
-
-        $this->roleHierarchy->__construct($this->hierarchy);
+        $this->hierarchy = $hierarchy;
     }
 
     /**
@@ -127,75 +115,17 @@ class RoleHierarchy implements RoleHierarchyInterface
     }
 
     /**
-     * buildHierarchyRoles
-     * @return array
-     * 29/06/2020 14:44
-     */
-    private function buildHierarchyRoles(): array
-    {
-        $result = [];
-        if ($this->session->has('role_hierarchy')  && is_array($this->session->get('role_hierarchy')) && !empty($this->session->get('role_hierarchy'))) {
-            return $this->session->get('role_hierarchy');
-        }
-        $roles = self::getRoles()->count() > 0 ? self::getRoles() : ProviderFactory::getRepository(SecurityRole::class)->findAll();
-
-        foreach($roles as $role) {
-            $result[$role->getRole()] = [];
-            foreach($role->getChildRoles() as $child) {
-                $result[$role->getRole()][] = $child->getRole();
-            }
-            self::addRole($role);
-        }
-
-        $this->session->set('role_hierarchy', $result);
-        return $result;
-    }
-
-    /**
-     * getRoles
-     * @return ArrayCollection
-     * 29/06/2020 14:40
-     */
-    private static function getRoles(): ArrayCollection
-    {
-        if (self::$roles === null) {
-            self::$roles = new ArrayCollection();
-        }
-        return self::$roles;
-    }
-
-    /**
-     * setRoles
-     * @param array $roles
-     * 29/06/2020 14:42
-     */
-    private static function setRoles(array $roles): void
-    {
-        self::$roles = $roles;
-    }
-
-    /**
-     * addRole
-     * @param $role
-     * 29/06/2020 14:42
-     */
-    private static function addRole($role)
-    {
-        self::getRoles()->set($role->getRole(), $role);
-    }
-
-    /**
      * getCategory
      * @param $role
      * @return string
      * 29/06/2020 14:37
      */
-    public static function getCategory($role): string
+    public static function getCategory(string $role): string
     {
         if (is_string($role)) {
-            $role = self::getRoles()->get($role);
+            $role = ProviderFactory::getRepository(SecurityRole::class)->findOneByRole($role);
         }
 
-        return $role->getCategory();
+        return $role ? $role->getCategory() : 'Other';
     }
 }

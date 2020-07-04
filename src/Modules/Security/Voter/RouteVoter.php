@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Security\Voter;
 
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,10 +83,10 @@ class RouteVoter extends RoleHierarchyVoter
                 return VoterInterface::ACCESS_GRANTED;
             }
 
-            $result = parent::vote($token, $subject, $action->getSecurityRolesAsStrings());
+            $result = parent::vote($token, $subject, $action->getSecurityRoles());
 
             if ($result === VoterInterface::ACCESS_ABSTAIN)
-                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, implode(',',$action->getSecurityRolesAsStrings())), $action);
+                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, implode(',',$action->getSecurityRoles())), $action);
 
             if ($result === VoterInterface::ACCESS_DENIED) {
                 if ($token->getUser() instanceof SecurityUser)

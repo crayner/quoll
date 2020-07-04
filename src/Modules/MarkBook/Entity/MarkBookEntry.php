@@ -412,7 +412,7 @@ class MarkBookEntry extends AbstractEntity
      */
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__MarkBookEntry` (
+        return ["CREATE TABLE `__prefix__MarkBookEntry` (
                     `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `mark_book_column` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `student` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',

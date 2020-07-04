@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: __prefix__
+ * Build: Quoll
  *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
@@ -121,12 +121,8 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     private $failCount = 0;
 
     /**
-     * @var SecurityRole[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole",cascade={"all"},orphanRemoval=true)
-     * @ORM\JoinTable(name="SecurityUserRole",
-     *      joinColumns={@ORM\JoinColumn(name="security_user",referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="security_role",referencedColumnName="id")}
-     *  )
+     * @var array|null
+     * @ORM\Column(type="simple_array")
      */
     private $securityRoles;
 
@@ -369,44 +365,22 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * getSecurityRoles
-     * @return Collection
-     * 30/06/2020 10:17
+     * @return array|null
      */
-    public function getSecurityRoles(): Collection
+    public function getSecurityRoles(): array
     {
-        if ($this->securityRoles === null) {
-            $this->securityRoles = new ArrayCollection();
-        }
-
-        if ($this->securityRoles instanceof PersistentCollection) {
-            $this->securityRoles->initialize();
+        if (null === $this->securityRoles) {
+            $this->securityRoles = [];
         }
 
         return $this->securityRoles;
     }
 
     /**
-     * getSecurityRolesAsStrings
-     * @return array
-     * 30/06/2020 11:04
+     * @param array|null $securityRoles
+     * @return SecurityUser
      */
-    public function getSecurityRolesAsStrings(): array
-    {
-        $result = [];
-        foreach($this->getSecurityRoles() as $role) {
-            $result[] = $role->getRole();
-        }
-        return $result;
-    }
-
-    /**
-     * setSecurityRoles
-     * @param Collection|null $securityRoles
-     * @return $this
-     * 1/07/2020 12:07
-     */
-    public function setSecurityRoles(?Collection $securityRoles): SecurityUser
+    public function setSecurityRoles(?array $securityRoles): SecurityUser
     {
         $this->securityRoles = $securityRoles;
         return $this;
@@ -414,17 +388,17 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * addSecurityRole
-     * @param SecurityRole|null $role
-     * @return $this
-     * 30/06/2020 10:17
+     * @param string|null $role
+     * @return $this|SecurityRole
+     * 4/07/2020 09:13
      */
-    public function addSecurityRole(?SecurityRole $role): SecurityUser
+    public function addSecurityRole(?string $role): SecurityRole
     {
-        if ($role !== null && $this->getSecurityRoles()->contains($role)) {
+        if (null === $role || in_array($role, $this->getSecurityRoles())) {
             return $this;
         }
 
-        $this->securityRoles->add($role);
+        $this->securityRoles[] = $role;
 
         return $this;
     }
@@ -463,27 +437,23 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     {
         return [
             "CREATE TABLE `__prefix__SecurityUser` (
-                `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                `person` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)', 
-                `username` VARCHAR(64) NOT NULL, password VARCHAR(191) NOT NULL, 
-                `can_login` TINYINT(1) NOT NULL, 
-                `password_force_reset` TINYINT(1) DEFAULT '0' NOT NULL, 
-                `last_ip_address` VARCHAR(15) DEFAULT NULL, 
-                `last_timestamp` DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', 
-                `last_fail_ip_address` VARCHAR(15) DEFAULT NULL, 
-                `last_fail_timestamp` DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', 
-                `fail_count` SMALLINT DEFAULT 0 NOT NULL,
-                UNIQUE INDEX `person` (`person`), 
-                UNIQUE INDEX `username` (`username`)
-                PRIMARY KEY(`id`)
-            ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;",
-            "CREATE TABLE `__prefix__SecurityUserRole` (
-                    `security_user` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    `security_role` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    INDEX `security_user` (`security_user`), 
-                    INDEX `security_role` (`security_role`), 
-                    PRIMARY KEY(`security_user`, `security_role`)
-                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
+                  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:guid)',
+                  `person` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                  `password` varchar(191) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                  `can_login` tinyint(1) NOT NULL,
+                  `password_force_reset` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Force user to reset password on next login.',
+                  `last_ip_address` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                  `last_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+                  `last_fail_ip_address` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                  `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+                  `fail_count` smallint(6) NOT NULL DEFAULT '0',
+                  `google_api_refresh_token` varchar(191) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                  `security_roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `username` (`username`),
+                  UNIQUE KEY `person` (`person`)
+              ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
     }
 
     /**
@@ -494,10 +464,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__SecurityUser` 
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);
-                ALTER TABLE `__prefix__SecurityUserRole`
-                    ADD CONSTRAINT FOREIGN KEY (`security_user`) REFERENCES `__prefix__SecurityUser` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`security_role`) REFERENCES `__prefix__SecurityRole` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
     /**
@@ -579,7 +546,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getRoles()
     {
-        return $this->getSecurityRolesAsStrings();
+        return $this->getSecurityRoles();
     }
 
     /**

@@ -116,7 +116,7 @@ class TTDayDate extends AbstractEntity
 
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__TTDayDate` (
+        return ["CREATE TABLE `__prefix__TTDayDate` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `date` date NOT NULL,
                     `timetable_day` CHAR(36) DEFAULT NULL,

@@ -95,7 +95,7 @@ class ActionProvider extends AbstractProvider
         $answer = [];
         foreach($result as $action)
         {
-            if (SecurityHelper::isGranted($action->getSecurityRolesAsStrings())) {
+            if (SecurityHelper::isGranted($action->getSecurityRoles())) {
                 $act = [];
                 $act['id'] = 'Act-' . $action->getName() . '/' . $action->getEntryRoute();
                 $name = explode('_', $action->getName());
@@ -128,7 +128,7 @@ class ActionProvider extends AbstractProvider
         $precedence = [];
         foreach($result as $action)
         {
-            if ($action->isEntrySidebar() && (SecurityHelper::isGranted($action->getSecurityRolesAsStrings()) || [] === $action->getSecurityRoles())) {
+            if ($action->isEntrySidebar() && (SecurityHelper::isGranted($action->getSecurityRoles()) || [] === $action->getSecurityRoles())) {
                 if ((key_exists($action->getDisplayName(), $precedence)
                         && $action->getPrecedence() > $precedence[$action->getDisplayName()])
                         || !key_exists($action->getDisplayName(), $precedence)) {

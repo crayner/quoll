@@ -371,7 +371,7 @@ class Behaviour extends AbstractEntity
      */
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__Behaviour` (
+        return ["CREATE TABLE `__prefix__Behaviour` (
                     `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `academic_year` char(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `person` char(36) NOT NULL COMMENT '(DC2Type:guid)',

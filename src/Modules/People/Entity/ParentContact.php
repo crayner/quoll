@@ -178,18 +178,46 @@ class ParentContact extends AbstractEntity
         // TODO: Implement toArray() method.
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 4/07/2020 09:51
+     */
     public function create(): array
     {
-        // TODO: Implement create() method.
+        return [
+            "CREATE TABLE `__prefix__ParentContact` (
+                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `locale` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `vehicle_registration` varchar(20) DEFAULT NULL,
+                `receive_notification_emails` varchar(1) NOT NULL DEFAULT '1',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `person` (`person`),
+                KEY `locale` (`locale`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+        ];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 4/07/2020 09:51
+     */
     public function foreignConstraints(): string
     {
-        // TODO: Implement foreignConstraints() method.
+        return "ALTER TABLE `__prefix__ParentContact`
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`locale`) REFERENCES `__prefix__I18n` (`id`);";
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 4/07/2020 09:52
+     */
     public static function getVersion(): string
     {
-        // TODO: Implement getVersion() method.
+        return static::VERSION;
     }
 }

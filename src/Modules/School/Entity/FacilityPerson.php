@@ -156,7 +156,7 @@ class FacilityPerson extends AbstractEntity
      */
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__FacilityPerson` (
+        return ["CREATE TABLE `__prefix__FacilityPerson` (
                     `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `facility` char(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `person` char(36) NOT NULL COMMENT '(DC2Type:guid)',

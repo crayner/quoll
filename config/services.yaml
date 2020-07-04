@@ -68,6 +68,8 @@ services:
 
     App\Modules\Security\Manager\RoleHierarchy:
         decorates: 'security.role_hierarchy'
+        arguments:
+            $hierarchy: "%security.hierarchy.roles%"
 
     App\Listeners\ImageListener:
         tags:
@@ -107,9 +109,9 @@ services:
         calls:
             - ['setStack', ['@request_stack']]
 
-#    App\Modules\Security\Voter\RouteVoter:
-#        arguments:
-#            $logger: '@monolog.logger.security'
+    App\Modules\Security\Voter\RouteVoter:
+        arguments:
+            $logger: '@monolog.logger.security'
 
     App\Modules\Security\Util\SecurityHelper:
         calls:
@@ -125,5 +127,9 @@ services:
             - name: 'kernel.event_listener'
               event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
               dispatcher: security.event_dispatcher.main
+        arguments:
+            $logger: '@monolog.logger.security'
+
+    App\Modules\Security\Manager\GoogleAuthenticator:
         arguments:
             $logger: '@monolog.logger.security'

@@ -300,7 +300,7 @@ class SecurityHelper
                 //Check module ready
                 if ($module instanceof Module && $action instanceof Action) {
                     //Check current user has access rights to this action.
-                    return self::isGranted($action->getSecurityRolesAsStrings());
+                    return self::isGranted($action->getSecurityRoles());
                 } else {
                     self::$logger->warning(sprintf('No module or action was linked to the route "%s"', $route));
                 }
@@ -427,7 +427,7 @@ class SecurityHelper
         }
 
         if (self::isGr === null) {
-            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRolesAsStrings());
+            return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRoles());
         }
 
         return self::$allCurrentUserRoles;

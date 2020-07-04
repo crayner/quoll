@@ -605,18 +605,59 @@ class PersonalDocumentation extends AbstractEntity
         // TODO: Implement toArray() method.
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 4/07/2020 09:48
+     */
     public function create(): array
     {
-        // TODO: Implement create() method.
+        return [
+            "CREATE TABLE `__prefix__PersonalDocumentation` (
+                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                `language_first` varchar(5) DEFAULT NULL,
+                `language_second` varchar(5) DEFAULT NULL,
+                `language_third` varchar(5) DEFAULT NULL,
+                `country_of_birth` varchar(3) DEFAULT NULL,
+                `birth_certificate_scan` varchar(191) DEFAULT NULL,
+                `ethnicity` varchar(191) DEFAULT NULL,
+                `citizenship1` varchar(3) DEFAULT NULL,
+                `citizenship1_passport` varchar(30) DEFAULT NULL,
+                `citizenship1_passport_scan` varchar(191) DEFAULT NULL,
+                `citizenship2` varchar(3) DEFAULT NULL,
+                `citizenship2_passport` varchar(30) DEFAULT NULL,
+                `religion` varchar(30) DEFAULT NULL,
+                `national_card_number` varchar(30) DEFAULT NULL,
+                `national_card_scan` varchar(191) DEFAULT NULL,
+                `residency_status` varchar(191) DEFAULT NULL,
+                `visa_expiry_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
+                `image_240` varchar(191) DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `person` (`person`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+        ];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 4/07/2020 09:48
+     */
     public function foreignConstraints(): string
     {
-        // TODO: Implement foreignConstraints() method.
+        return "ALTER TABLE `__prefix__PersonalDocumentation`
+                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 4/07/2020 09:49
+     */
     public static function getVersion(): string
     {
-        // TODO: Implement getVersion() method.
+        return static::VERSION;
     }
 }

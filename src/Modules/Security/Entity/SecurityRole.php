@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: __prefix__
+ * Build: Quoll
  *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  *
  * Project: Kookaburra
- * Build: __prefix__
+ * Build: Quoll
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -112,12 +112,8 @@ class Action extends AbstractEntity
     private $menuShow = 'Y';
 
     /**
-     * @var SecurityRole[]|Collection
-     * @ORM\ManyToMany(targetEntity="App\Modules\Security\Entity\SecurityRole")
-     * @ORM\JoinTable(name="ActionSecurityRole",
-     *      joinColumns={@ORM\JoinColumn(name="action",referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="security_role",referencedColumnName="id")}
-     *  )
+     * @var array|null
+     * @ORM\Column(type="simple_array")
      */
     private $securityRoles;
 
@@ -383,42 +379,22 @@ class Action extends AbstractEntity
     }
 
     /**
-     * getSecurityRoles
-     * @return Collection
-     * 30/06/2020 10:17
+     * @return array|null
      */
-    public function getSecurityRoles(): Collection
+    public function getSecurityRoles(): ?array
     {
-        if ($this->securityRoles === null) {
-            $this->securityRoles = new ArrayCollection();
-        }
-
-        if ($this->securityRoles instanceof PersistentCollection) {
-            $this->securityRoles->initialize();
+        if (null === $this->securityRoles) {
+            $this->securityRoles = [];
         }
 
         return $this->securityRoles;
     }
 
     /**
-     * getSecurityRolesAsStrings
-     * @return array
-     * 30/06/2020 11:10
-     */
-    public function getSecurityRolesAsStrings(): array
-    {
-        $result = [];
-        foreach($this->getSecurityRoles() as $role) {
-            $result[] = $role->getRole();
-        }
-        return $result;
-    }
-
-    /**
-     * @param SecurityRole[]|Collection $securityRoles
+     * @param array|null $securityRoles
      * @return Action
      */
-    public function setSecurityRoles(?Collection $securityRoles): Action
+    public function setSecurityRoles(?array $securityRoles): Action
     {
         $this->securityRoles = $securityRoles;
         return $this;
@@ -426,17 +402,17 @@ class Action extends AbstractEntity
 
     /**
      * addSecurityRole
-     * @param SecurityRole|null $role
-     * @return $this
-     * 30/06/2020 10:17
+     * @param string|null $role
+     * @return $this|SecurityRole
+     * 4/07/2020 09:13
      */
-    public function addSecurityRole(?SecurityRole $role): Action
+    public function addSecurityRole(?string $role): Action
     {
-        if ($role !== null && $this->getSecurityRoles()->contains($role)) {
+        if (null === $role || in_array($role, $this->getSecurityRoles())) {
             return $this;
         }
 
-        $this->securityRoles->add($role);
+        $this->securityRoles[] = $role;
 
         return $this;
     }
@@ -462,7 +438,7 @@ class Action extends AbstractEntity
             ];
         }
         if ($name === 'actionPermissions') {
-            $roles = implode(', ', $this->getSecurityRolesAsStrings());
+            $roles = implode(', ', $this->getSecurityRoles());
             return [
                 'id' => $this->getId(),
                 'name' => $this->getName(),
@@ -516,30 +492,24 @@ class Action extends AbstractEntity
      */
     public function create(): array
     {
-        return ["CREATE TABLE IF NOT EXISTS `__prefix__Action` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` VARCHAR(50) NOT NULL COMMENT 'The action name and restriction should be unique to the module that it is related to',
-                    `restriction` VARCHAR(50) DEFAULT NULL,
-                    `precedence` smallint DEFAULT NULL,
-                    `category` VARCHAR(20) NOT NULL,
-                    `description` VARCHAR(191) NOT NULL,
-                    `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `entry_route` VARCHAR(191) NOT NULL,
-                    `entry_sidebar` VARCHAR(1) NOT NULL DEFAULT 'Y',
-                    `menu_show` VARCHAR(1) NOT NULL DEFAULT 'Y',
-                    `module` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`),
-                    UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`),
-                    KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-                "CREATE TABLE __prefix__ActionSecurityRole (
-                    `action` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    `security_role` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    INDEX `action` (`action`), 
-                    INDEX `security_role` (`security_role`), 
-                    PRIMARY KEY(`action`, `security_role`)
-                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
+        return ["CREATE TABLE `__prefix__Action` (
+                      `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                      `name` varchar(50) NOT NULL COMMENT 'The action name and restriction should be unique to the module that it is related to',
+                      `restriction` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+                      `precedence` smallint(6) DEFAULT NULL,
+                      `category` varchar(20) NOT NULL,
+                      `description` varchar(191) NOT NULL,
+                      `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
+                      `entry_route` varchar(191) NOT NULL,
+                      `entry_sidebar` varchar(1) NOT NULL DEFAULT 'Y',
+                      `menu_show` varchar(1) NOT NULL DEFAULT 'Y',
+                      `module` char(36) NOT NULL COMMENT '(DC2Type:guid)',
+                      `security_roles` longtext CHARACTER SET utf8mb4 NOT NULL COMMENT '(DC2Type:simple_array)',
+                      PRIMARY KEY (`id`),
+                      UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`) USING BTREE,
+                      UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`) USING BTREE,
+                      KEY `module` (`module`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
     /**
@@ -549,10 +519,7 @@ class Action extends AbstractEntity
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Action`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);
-                ALTER TABLE `__prefix__ActionSecurityRole` 
-                    ADD CONSTRAINT FOREIGN KEY (`action`) REFERENCES `__prefix__Action` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`security_role`) REFERENCES `__prefix__SecurityRole` (`id`);";
+                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
     }
 
     /**
