@@ -124,6 +124,11 @@ class Contact extends AbstractEntity
      */
     private $jobTitle;
 
+    public function __construct(?Person $person = null)
+    {
+        $this->setPerson($person);
+    }
+
     /**
      * @return string|null
      */
@@ -161,7 +166,7 @@ class Contact extends AbstractEntity
     {
         $this->person = $person;
         if ($reflect && $person instanceof Person) {
-            $person->setPerson($this, false);
+            $person->setContact($this, false);
         }
         return $this;
     }

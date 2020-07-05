@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-  * Project: Kookaburra
+ * Project: Kookaburra
  * Build: Quoll
  *
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
@@ -385,7 +385,7 @@ class SystemSettings
      * @param string|null $organisationAbbreviation
      * @return SystemSettings
      */
-    public function setOrganisationNameShort(?string $organisationAbbreviation): SystemSettings
+    public function setOrganisationAbbreviation(?string $organisationAbbreviation): SystemSettings
     {
         $this->organisationAbbreviation = $organisationAbbreviation;
         return $this;

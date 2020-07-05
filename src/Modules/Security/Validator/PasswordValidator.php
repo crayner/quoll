@@ -14,19 +14,18 @@
  * Date: 25/07/2019
  * Time: 14:00
  */
-
 namespace App\Modules\Security\Validator;
 
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Class PasswordValidator
  * @package App\Modules\Security\Validator
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class PasswordValidator extends ConstraintValidator
 {
@@ -39,10 +38,10 @@ class PasswordValidator extends ConstraintValidator
     {
         $settingProvider = SettingFactory::getSettingManager();
 
-        $alpha = $settingProvider->getSettingByScopeAsboolean('System', 'passwordPolicyAlpha');
-        $numeric = $settingProvider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric');
-        $punctuation = $settingProvider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric');
-        $minLength = $settingProvider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength');
+        $alpha = $settingProvider->getSetting('System', 'passwordPolicyAlpha');
+        $numeric = $settingProvider->getSetting('System', 'passwordPolicyNumeric');
+        $punctuation = $settingProvider->getSetting('System', 'passwordPolicyNonAlphaNumeric');
+        $minLength = $settingProvider->getSetting('System', 'passwordPolicyMinLength');
 
         if ($alpha && ! preg_match('/.*(?=.*[a-z])(?=.*[A-Z]).*/', $value))
             $this->context->buildViolation('The password must contain both lower and uppercase characters.')
@@ -66,7 +65,7 @@ class PasswordValidator extends ConstraintValidator
                 ->addViolation();
 
         if ($constraint->assumeCurrentUser) {
-            $user = UserHelper::getCurrentSecurityUser();
+            $user = SecurityHelper::getCurrentUser();
             if ($user instanceof SecurityUser) {
                 if ($user->isPasswordValid($value)) {
                     $this->context->buildViolation('Your request failed because your new password is the same as your current password.')

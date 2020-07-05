@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-  * Project: Kookaburra
+ * Project: Kookaburra
  * Build: Quoll
  *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
@@ -76,7 +76,7 @@ class HomeController extends AbstractPageController
         $login->setToken($this->get('security.csrf.token_manager')->getToken('authenticate'));
         $sidebar->addContent($login);
 
-        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
+        if (SettingFactory::getSettingManager()->getSetting('People', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
         try {

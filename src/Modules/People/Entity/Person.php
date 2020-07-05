@@ -157,42 +157,42 @@ class Person extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="student",nullable=true)
      */
     private $student;
 
     /**
      * @var ParentContact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="parent",referencedColumnName="id")
      */
     private $parent;
 
     /**
      * @var Contact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="contact",referencedColumnName="id")
      */
     private $contact;
 
     /**
      * @var PersonalDocumentation|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="personal_documentation",referencedColumnName="id")
      */
     private $personalDocumentation;
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="staff",referencedColumnName="id")
      */
     private $staff;
 
     /**
      * @var SecurityUser|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser", mappedBy="person")
+     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",mappedBy="person",cascade={"persist"},orphanRemoval=true)
      * @ORM\JoinColumn(name="security_user",referencedColumnName="id")
      */
     private $securityUser;

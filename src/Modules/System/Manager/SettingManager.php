@@ -15,15 +15,11 @@
 namespace App\Modules\System\Manager;
 
 use App\Modules\System\Exception\SettingNotFoundException;
-use App\Modules\System\Form\SettingsType;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Exception\DriverException;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class SettingProvider
@@ -36,6 +32,11 @@ class SettingManager
      * @var ArrayCollection
      */
     private $settings;
+
+    /**
+     * @var bool
+     */
+    private $settingsChanged = false;
 
     /**
      * SettingProvider constructor.
@@ -111,6 +112,7 @@ class SettingManager
      * @param int $default
      * @return int
      * @throws \Exception
+     * @deprecated Use getSetting
      */
     public function getSettingByScopeAsInteger(string $scope, string $name, int $default = 0): int
     {
@@ -127,6 +129,7 @@ class SettingManager
      * @param array $default
      * @return array
      * @throws \Exception
+     * @deprecated Use getSetting
      */
     public function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
     {
@@ -151,6 +154,7 @@ class SettingManager
      * Assumes a single ID filed for the entity
      * @param string $scope
      * @param string $name
+     * @deprecated Use getSetting
      * @param string $entityName
      * @return EntityInterface|null
      * 1/06/2020 09:16
@@ -175,6 +179,7 @@ class SettingManager
      * @param string $name
      * @param array $default
      * @return array
+     * @deprecated Use getSetting
      * @throws \Exception
      */
     public function getSettingByScopeAsDate(string $scope, string $name, ?\DateTime $default = null)
@@ -191,6 +196,7 @@ class SettingManager
      * @param string $name
      * @param bool|null $default
      * @return bool|null
+     * @deprecated Use getSetting
      * @throws \Exception
      */
     public function getSettingByScopeAsBoolean(string $scope, string $name, ?bool $default = false)
@@ -207,6 +213,7 @@ class SettingManager
      * @param string $name
      * @param string|null $default
      * @return string|null
+     * @deprecated Use getSetting
      * @throws \Exception
      */
     public function getSettingByScopeAsString(string $scope, string $name, ?string $default = null)
@@ -223,30 +230,57 @@ class SettingManager
      * @param string $name
      * @param string $value
      * @throws SettingNotFoundException
+     * @deprecated Use setSetting
      */
     public function setSettingByScope(string $scope, string $name, $value): self
     {
-        $setting = $this->getSettingByScope($scope, $name, true);
-        if (false === $setting)
+        return $this->setSetting($scope,$name,$value);
+    }
+
+    /**
+     * setSettingByScope
+     * @param string $scope
+     * @param string $name
+     * @param string $value
+     * @throws SettingNotFoundException
+     * @throws \Exception
+     */
+    public function setSetting(string $scope, string $name, $value): self
+    {
+        if (!$this->hasSetting($scope,$name)) {
             throw new SettingNotFoundException($scope, $name);
-
-
-        $setting = $this->getRepository()->findOneBy(['scope' => $setting->getScope(), 'name' => $setting->getName()]);
-        $this->setEntity($setting);
-
-        if (is_array($value)) {
-            $value = implode(',', $value);
-        } else if ($value instanceof \DateTimeImmutable) {
-            $value = $value->format('c');
-        } else if ($value instanceof EntityInterface) {
-            $value = $value->getId();
         }
 
+        $setting = $this->getSettings()->get($scope)->get($name);
 
-        $setting->setValue($value);
-        $this->saveEntity();
-        $this->addSetting($setting);
-        $this->writeSettingInSession($setting);
+        switch ($setting['type']) {
+            case 'App\Modules\People\Entity\Person':
+                $value = $value ? $value->getId() : null;
+                if ($setting['value'] !== $value) {
+                    $setting['value'] = $value;
+                    $this->setSettingsChanged();
+                }
+                break;
+            case 'string':
+                if (is_null($value) || is_string($value))
+                    if ($setting['value'] !== $value) {
+                        $setting['value'] = $value;
+                        $this->setSettingsChanged();
+                    }
+                break;
+            case 'integer':
+                if (is_null($value) || is_int($value))
+                    if ($setting['value'] !== $value) {
+                        $setting['value'] = $value;
+                        $this->setSettingsChanged();
+                    }
+                break;
+            default:
+                throw new \Exception(sprintf('How do I save a %s', $setting['type']));
+        }
+
+        $this->getSettings()->get($scope)->set($name, $setting);
+
         return $this;
     }
 
@@ -255,9 +289,6 @@ class SettingManager
      */
     public function getSettings(): ArrayCollection
     {
-        if (null === $this->settings) {
-            $this->settings = new ArrayCollection();
-        }
         return $this->settings;
     }
 
@@ -290,6 +321,18 @@ class SettingManager
     }
 
     /**
+     * hasSetting
+     * @param string $scope
+     * @param string $name
+     * @return bool
+     * 5/07/2020 17:46
+     */
+    public function hasSetting(string $scope, string $name): bool
+    {
+        return $this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name);
+    }
+
+    /**
      * getSetting
      * @param $scope
      * @param $name
@@ -297,14 +340,11 @@ class SettingManager
      */
     public function getSetting($scope, $name)
     {
-        if (!$this->getSettings()->containsKey($scope)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist in the Settings', $scope));
+        if (!$this->hasSetting($scope, $name)) {
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not have a setting named "%s".', $scope, $name));
         }
 
-        if (!$this->settings->get($scope)->containskey($name)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not does not contain a setting "%s"', $scope, $name));
-        }
-        $setting = $this->settings->get($scope)->get($name);
+        $setting = $this->getSettings()->get($scope)->get($name);
         $value = null;
         switch ($setting['type']) {
             case 'string':
@@ -314,33 +354,31 @@ class SettingManager
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid string.', $scope,$name));
                 }
                 break;
+            case 'boolean':
+                if (is_bool($setting['value'])) {
+                    $value = $setting['value'];
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not boolean.', $scope,$name));
+                }
+                break;
+            case 'integer':
+                if (is_null($setting['value']) || is_integer($setting['value'])) {
+                    $value = $setting['value'];
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid integer.', $scope,$name));
+                }
+                break;
+            case 'array':
+                if (is_null($setting['value']) || is_array($setting['value'])) {
+                    $value = $setting['value'];
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid array.', $scope,$name));
+                }
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Please write code to handle %s', $setting['type']));
         }
         return $value;
-    }
-
-    /**
-     * hasSettingByScope
-     * @param string $scope
-     * @param string $name
-     * @param bool $testForEmpty
-     * @return bool
-     * @throws \Exception
-     */
-    public function hasSetting(string $scope, string $name, bool $testForEmpty = true): bool
-    {
-        $setting = $this->getSettingByScope($scope, $name, true);
-        if (!$setting instanceof Setting)
-            return false;
-
-        if (! $testForEmpty)
-            return true;
-
-        if (null === $setting->getValue() || '' === $setting->getValue())
-            return false;
-
-        return true;
     }
 
     /**
@@ -415,140 +453,6 @@ class SettingManager
     }
 
     /**
-     * saveSettings
-     *
-     * Recursive
-     * @param FormInterface $form
-     * @param array $content
-     */
-    private function saveSettings(FormInterface $form, array $content)
-    {
-        foreach($form->all() as $child)
-        {
-            if (get_class($child->getConfig()->getType()->getInnerType()) === SettingsType::class)
-            {
-                foreach($child->getConfig()->getOption('settings') as $setting) {
-                    $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
-                    $settingForm = $child->get($name);
-                    $data = $settingForm->getData();
-
-                    if ($data instanceof EntityInterface) {
-                        $data = $data->getId();
-                    }
-
-                    if ($data instanceof File) {
-                        $data = str_replace(realpath(__DIR__ . '/../../public'), '', $data->getRealPath());
-                    }
-
-                    if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime) {
-                        $data = $data->format('c');
-                    }
-
-                    if ($data instanceof Collection) {
-                        $data = json_encode($data->toArray());
-                    }
-
-                    if (is_object($data)) {
-                        dump(get_class($data), $data);
-                        throw new \InvalidArgumentException('Work out how to handle an object!');
-                    }
-
-                    if (is_array($data)) {
-                        $data = implode(',', $data);
-                    }
-
-                    $this->setSettingByScope($setting['scope'], $setting['name'], $data);
-                }
-            }
-            $this->saveSettings($child, $content);
-        }
-    }
-
-    /**
-     * getSession
-     * @return SessionInterface
-     */
-    public function getSession(): ?SessionInterface
-    {
-        if ($this->getStack()->getCurrentRequest() && $this->getStack()->getCurrentRequest()->getSession())
-            return $this->getStack()->getCurrentRequest()->getSession();
-        return null;
-    }
-
-    /**
-     * @var array
-     */
-    private $sessionSettings = [
-    ];
-
-    /**
-     * writeSettingInSession
-     * @param Setting $setting
-     */
-    private function writeSettingInSession(Setting $setting): void
-    {
-        if (null === $this->getSession())
-            return;
-
-        $this->getSession()->set('settings', $this->getSettings());
-        if (isset($this->sessionSettings[$setting->getScope()][$setting->getName()]))
-            $this->getSession()->set($this->sessionSettings[$setting->getScope()][$setting->getName()], $setting->getValue());
-
-        if ($setting->getScope() === 'System')
-            $this->getSession()->set($setting->getName(), $setting->getValue());
-
-    }
-
-    /**
-     * getSettingByName
-     * @param string $name
-     * @return Setting|null
-     * @throws \Exception
-     */
-    public function getSettingByName(string $name): ?Setting
-    {
-        $result = $this->getRepository()->findBy(['name' => $name]);
-
-        if (count($result) === 1)
-        {
-            $this->addSetting($result[0]);
-
-            return $result[0];
-        }
-        return null;
-    }
-
-    /**
-     * getSettingByNameAsString
-     * @param string $name
-     * @return string|null
-     * @throws \Exception
-     */
-    public function getSettingByNameAsString(string $name): ?string
-    {
-        $result = $this->getSettingByName($name);
-        return $result !== null ? $result->getValue() : null;
-    }
-
-    /**
-     * getSettingByScopeAsObject
-     *
-     * Assumes that the Setting value is the identifier of the class provided.
-     * @param string $scope
-     * @param string $name
-     * @param string $class
-     * @return EntityInterface|null
-     * @throws \Exception
-     */
-    public function getSettingByScopeAsObject(string $scope, string $name, string $class): ?EntityInterface
-    {
-        $result = $this->getSettingByScopeAsInteger($scope, $name);
-        if ($result === null)
-            return null;
-        return $this->getRepository($class)->find($result);
-    }
-
-    /**
      * getStatus
      * @return string
      */
@@ -564,5 +468,41 @@ class SettingManager
             $status = 'warning';
         }
         return $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSettingsChanged(): bool
+    {
+        return $this->settingsChanged;
+    }
+
+    /**
+     * @param bool $settingsChanged
+     * @return SettingManager
+     */
+    public function setSettingsChanged(bool $settingsChanged = true): SettingManager
+    {
+        $this->settingsChanged = $settingsChanged;
+        return $this;
+    }
+
+    /**
+     * writeSettings
+     * 6/07/2020 07:52
+     */
+    public function writeSettings()
+    {
+        if ($this->isSettingsChanged() && $this->getSettings()->count() > 0) {
+            $settings = [];
+            foreach($this->getSettings() as $q=>$w) {
+                foreach($w as $a=>$b) {
+                    $settings[$q][$a] = $b;
+                }
+            }
+
+            file_put_contents(__DIR__ . '/../../../../config/packages/settings.yaml', Yaml::dump(['parameters' => ['settings' => $settings]], 8));
+        }
     }
 }

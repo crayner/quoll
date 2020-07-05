@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-  * Project: Kookaburra
+ * Project: Kookaburra
  * Build: Quoll
  *
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
@@ -16,11 +16,11 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Scale;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
-use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -343,39 +343,39 @@ class InstallationManager
      */
     public function setAdministrator(FormInterface $form)
     {
-        $person = ProviderFactory::getRepository(Person::class)->loadUserByUsernameOrEmail($form->get('username')->getData()) ?: new Person();
-        $person->setTitle($form->get('title')->getData());
-        $person->setSurname($form->get('surname')->getData());
-        $person->setFirstName($form->get('firstName')->getData());
-        $person->setPreferredName($form->get('firstName')->getData());
-        $person->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
-        $person->setusername($form->get('username')->getData());
+        $user = ProviderFactory::getRepository(SecurityUser::class)->loadUserByUsernameOrEmail($form->get('username')->getData()) ?: new SecurityUser();
+        $person = $user->getPerson() ?? new Person();
+        $person->setTitle($form->get('title')->getData())
+            ->setSurname($form->get('surname')->getData())
+            ->setFirstName($form->get('firstName')->getData())
+            ->setPreferredName($form->get('firstName')->getData())
+            ->setStatus('Full')
+            ->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
         $encoder = new NativePasswordEncoder();
 
         $password = $encoder->encodePassword($form->get('password')->getData(), null);
-        $person->setPassword($password);
-        $person->setStatus('Full');
-        $person->setCanLogin('Y');
-        $person->setSecurityRoles(['ROLE_SYSTEM_ADMIN']);
-        $person->setEmail($form->get('email')->getData());
-        $person->setViewCalendarSchool('Y');
-        $person->setViewCalendarSpaceBooking('Y');
+        $user->setPerson($person)
+            ->setUsername($form->get('username')->getData())
+            ->setPassword($password)
+            ->setCanLogin(true)
+            ->setPasswordForceReset(false)
+            ->setSecurityRoles(['ROLE_SYSTEM_ADMIN']);
+        $contact = $person->getContact() ?? new Contact($person);
+        $contact->setEmail($form->get('email')->getData());
+        $staff = $person->getStaff() ?? new Staff($person);
+        $staff->setViewCalendarSchool(true)
+            ->setViewCalendarSpaceBooking(true)
+            ->setType('Support')
+            ->setJobTitle('System Administrator');
         $em = ProviderFactory::getEntityManager();
         $em->persist($person);
         $em->flush();
-
-        $staff = new Staff();
-        $staff->setType('Support')
-            ->setJobTitle('System Administrator')
-            ->setPerson($person);
-        $em->persist($staff);
-        $em->flush();
         $settings = SettingFactory::getSettingManager();
-        $settings->setSettingByScope('System','organisationAdministrator', $person);
-        $settings->setSettingByScope('System','organisationDBA', $person);
-        $settings->setSettingByScope('System','organisationAdmissions', $person);
-        $settings->setSettingByScope('System','organisationHR', $person);
-        new SecurityUser($person);
+        $settings->setSetting('System','organisationAdministrator', $person);
+        $settings->setSetting('System','organisationDBA', $person);
+        $settings->setSetting('System','organisationAdmissions', $person);
+        $settings->setSetting('System','organisationHR', $person);
+
     }
 
     /**
@@ -386,18 +386,18 @@ class InstallationManager
     {
         $settingProvider = SettingFactory::getSettingManager();
 
-        $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
-        $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());
-        $settingProvider->setSettingByScope('System', 'organisationName', $form->get('organisationName')->getData());
-        $settingProvider->setSettingByScope('System', 'organisationAbbreviation', $form->get('organisationAbbreviation')->getData());
-        $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData());
+        $settingProvider->setSetting('System', 'systemName', $form->get('systemName')->getData());
+        $settingProvider->setSetting('System', 'installType', $form->get('installType')->getData());
+        $settingProvider->setSetting('System', 'organisationName', $form->get('organisationName')->getData());
+        $settingProvider->setSetting('System', 'organisationAbbreviation', $form->get('organisationAbbreviation')->getData());
+        $settingProvider->setSetting('System', 'currency', $form->get('currency')->getData());
+        $settingProvider->setSetting('System', 'country', $form->get('country')->getData());
+        $settingProvider->setSetting('System', 'timezone', $form->get('timezone')->getData());
 
-        $scale = ProviderFactory::getRepository(Scale::class)->findOneBy(['abbraviation' => 'FLG']);
-        $settingProvider->settSettingByScope('System', 'defaultAssessmentScale', $scale);
+        $scale = ProviderFactory::getRepository(Scale::class)->findOneBy(['abbreviation' => 'FLG']);
+        $settingProvider->setSetting('System', 'defaultAssessmentScale', $scale);
 
         $config = $this->readParameterFile();
-        $config['parameters']['timezone'] = $form->get('timezone')->getData();
-        $config['parameters']['country'] = $form->get('country')->getData();
         $config['parameters']['installed'] = true;
         $config['parameters']['install_date'] = date('Y-m-d');
         unset($config['parameters']['installation']);

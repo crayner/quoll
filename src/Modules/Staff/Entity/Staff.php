@@ -257,7 +257,7 @@ class Staff extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $this->person = $person;
+        $this->setPerson($person);
     }
 
     /**

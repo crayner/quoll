@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-  * Project: Kookaburra
+ * Project: Kookaburra
  * Build: Quoll
  * 
  * (c) 2020 Craig Rayner <craig@craigrayner.com>
@@ -26,6 +26,7 @@ use App\Util\TranslationHelper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -79,6 +80,7 @@ class PageListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onRequest', 0],
+            KernelEvents::TERMINATE => ['saveSettings', 0],
         ];
     }
 
@@ -162,5 +164,11 @@ class PageListener implements EventSubscriberInterface
     {
         $this->parameterBag = $parameterBag;
         return $this;
+    }
+
+    public function saveSettings(TerminateEvent $event)
+    {
+        $manager = SettingFactory::getSettingManager();
+        $manager->writeSettings();
     }
 }
