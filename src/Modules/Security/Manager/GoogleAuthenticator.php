@@ -19,8 +19,8 @@ namespace App\Modules\Security\Manager;
 use App\Manager\MessageManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Provider\SecurityUserProvider;
-use App\Modules\System\Entity\Setting;
-use App\Modules\System\Provider\SettingProvider;
+use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Manager\SettingManager;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,7 +63,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
 	private $messageManager;
 
 	/**
-	 * @var SettingProvider
+	 * @var SettingManager
 	 */
 	private $settingManager;
 
@@ -104,8 +104,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
         RequestStack $request,
         ProviderFactory $factory
     ) {
-        $this->settingManager = ProviderFactory::create(Setting::class);
-		$this->em = $this->settingManager->getEntityManager();
+        $this->settingManager = SettingFactory::getSettingManager();
+		$this->em = ProviderFactory::getEntityManager();
 		$this->router = $router;
 		$this->messageManager = $messageManager;
         $this->logger = $logger;
@@ -354,9 +354,9 @@ class GoogleAuthenticator implements AuthenticatorInterface
     }
 
     /**
-     * @return SettingProvider
+     * @return SettingManager
      */
-    public function getSettingManager(): SettingProvider
+    public function getSettingManager(): SettingManager
     {
         return $this->settingManager;
     }

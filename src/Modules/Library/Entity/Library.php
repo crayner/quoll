@@ -402,7 +402,7 @@ class Library extends AbstractEntity
      */
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `__prefix__Library` ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`)
+        return "ALTER TABLE `__prefix__Library` ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`);";
     }
 

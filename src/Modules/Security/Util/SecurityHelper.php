@@ -17,7 +17,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
@@ -374,7 +374,7 @@ class SecurityHelper
             return self::$passwordPolicy;
 
         $output = [];
-        $provider = ProviderFactory::create(Setting::class);
+        $provider = SettingFactory::getSettingManager();
         $alpha = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha');
         $numeric = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric');
         $punctuation = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric');
@@ -514,7 +514,7 @@ class SecurityHelper
     /**
      * @param Module|null $module
      */
-    public static function setModule(Module $module): void
+    public static function setModule(?Module $module): void
     {
         self::$module = $module;
     }
@@ -522,7 +522,7 @@ class SecurityHelper
     /**
      * @param Action|null $action
      */
-    public static function setAction(Action $action): void
+    public static function setAction(?Action $action): void
     {
         self::$action = $action;
     }
@@ -565,6 +565,6 @@ class SecurityHelper
      */
     public static function useEmailAsUsername(): bool
     {
-        return ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
+        return SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
     }
 }

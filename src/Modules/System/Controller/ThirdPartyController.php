@@ -22,7 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Messenger\SendEmailNowMessage;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Twig\DefaultContextEmail;
 use App\Util\ErrorMessageHelper;
@@ -76,7 +76,7 @@ class ThirdPartyController extends AbstractPageController
         TranslationHelper::setDomain('System');
         $manager->setTranslationDomain('System');
 
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $container = new Container();
         $container->setSelectedPanel($tabName);
 
@@ -186,7 +186,7 @@ class ThirdPartyController extends AbstractPageController
                 $this->addFlash('warning', TranslationHelper::translate('The email setting where not tested as you do not have an email address recorded in your personal record.', [], 'System'));
             } else {
                 $email = (new DefaultContextEmail())
-                    ->from(new Address(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationEMail', 'quoll@localhost.org.au'),ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName', 'Quoll')))
+                    ->from(new Address(SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationEMail', 'quoll@localhost.org.au'),SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationName', 'Quoll')))
                     ->to(new Address($this->getUser()->getPerson()->getEmail(),$this->getUser()->getPerson()->formatName([])))
                     ->subject(TranslationHelper::translate('Test EMail Settings on {address}', ['{address}' => ParameterBagHelper::get('absoluteURL')], 'System'))
                     ->htmlTemplate('email/security/email_settings_test_message.html.twig')

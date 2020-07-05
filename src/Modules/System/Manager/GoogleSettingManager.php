@@ -18,8 +18,8 @@
 namespace App\Modules\System\Manager;
 
 use App\Manager\ParameterFileManager;
-use App\Modules\System\Entity\Setting;
-use App\Modules\System\Provider\SettingProvider;
+use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Provider\SettingManager;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -33,7 +33,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class GoogleSettingManager
 {
     /**
-     * @var SettingProvider
+     * @var SettingManager
      */
     private $provider;
 
@@ -42,7 +42,7 @@ class GoogleSettingManager
      */
     public function __construct()
     {
-        $this->provider = ProviderFactory::create(Setting::class);
+        $this->provider = SettingFactory::getSettingManager();
     }
 
     /**

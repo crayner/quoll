@@ -22,7 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\MarkBook\Form\MarkBookSettingType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -51,7 +51,7 @@ class MarkBookController extends AbstractPageController
     {
         $request = $this->getRequest();
 
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('Mark Book');
         $container = new Container($tabName);
 

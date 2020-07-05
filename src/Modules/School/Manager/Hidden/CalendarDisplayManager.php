@@ -20,7 +20,7 @@ namespace App\Modules\School\Manager\Hidden;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\DaysOfWeek;
 use App\Modules\System\Entity\I18n;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,7 +61,7 @@ class CalendarDisplayManager
     {
         $this->getDaysOfWeek();
         $this->locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($locale) ?: ProviderFactory::getRepository(I18n::class)->findOneByCode('en_GB');
-        $this->firstDayofWeek = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'firstDayOfTheWeek', 'Monday') == 'Sunday' ? 7 : 1;
+        $this->firstDayofWeek = SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'firstDayOfTheWeek', 'Monday') == 'Sunday' ? 7 : 1;
         if ($this->firstDayofWeek === 7)
         {
             $this->lastDayofWeek  = 6;

@@ -24,7 +24,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\Staff\Entity\StaffAbsenceType;
 use App\Modules\Staff\Form\StaffSettingsType;
 use App\Modules\Staff\Pagination\StaffAbsenceTypePagination;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -53,7 +53,7 @@ class SettingController extends AbstractPageController
     {
         // System Settings
         $form = $this->createForm(StaffSettingsType::class, null, ['action' => $this->generateUrl('staff_settings')]);
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
 
         if ($this->getRequest()->getContent() !== '') {
             $data = [];

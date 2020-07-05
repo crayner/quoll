@@ -25,7 +25,7 @@ use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Form\PasswordGeneratorType;
 use App\Modules\Security\Validator\Password;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -46,7 +46,7 @@ class ChangePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $provider = ProviderFactory::create(Setting::class);
+        $provider = SettingFactory::getSettingManager();
         $builder
             ->add('resetPassword', HeaderType::class,
                 [

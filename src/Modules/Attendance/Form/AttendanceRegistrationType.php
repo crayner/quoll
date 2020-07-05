@@ -22,7 +22,7 @@ use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
@@ -39,7 +39,7 @@ class AttendanceRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $ip = $options['ip'];
-        $registeredIPList = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('Attendance', 'studentSelfRegistrationIPAddresses');
+        $registeredIPList = SettingFactory::getSettingManager()->getSettingByScopeAsArray('Attendance', 'studentSelfRegistrationIPAddresses');
         $warning = 'Your current IP address ({ip}) is included in the saved list.';
         $class = 'success';
         if (!in_array($ip, $registeredIPList))

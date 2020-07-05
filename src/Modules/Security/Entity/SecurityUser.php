@@ -139,7 +139,6 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function __construct(?Person $person = null)
     {
         $this->setPerson($person);
-        $this->setSecurityRoles(new ArrayCollection());
     }
 
     /**
@@ -169,10 +168,13 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * @param Person $person
-     * @return SecurityUser
+     * setPerson
+     * @param Person|null $person
+     * @param bool $reflect
+     * @return $this
+     * 4/07/2020 11:24
      */
-    public function setPerson(Person $person, bool $reflect = true): SecurityUser
+    public function setPerson(?Person $person, bool $reflect = true): SecurityUser
     {
         $this->person = $person;
         if ($reflect && $person instanceof Person) {

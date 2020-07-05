@@ -405,9 +405,9 @@ class NotificationEvent extends AbstractEntity
      * @return array
      * 23/06/2020 10:57
      */
-    public function getCoreData(): array
+    public function coreData(): array
     {
-        Yaml::parse(file_get_contents('NotificationEventCoreData.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/NotificationEventCoreData.yaml'));
     }
 
     /**
@@ -417,7 +417,7 @@ class NotificationEvent extends AbstractEntity
      */
     public function coreDataLinks()
     {
-        return Yaml::parse(file_get_contents('NotificationEventCoreLinks.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/NotificationEventCoreLinks.yaml'));
     }
 
     /**

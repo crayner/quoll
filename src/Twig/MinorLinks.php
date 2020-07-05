@@ -20,7 +20,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\I18n;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
@@ -57,10 +57,10 @@ class MinorLinks implements ContentInterface
         $person = $this->getPerson();
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
-            if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
+            if (SettingFactory::getSettingManager()->hasSetting('System', 'webLink')) {
                 $links[] = [
-                    'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink'),
-                    'text' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationAbbreviation', 'Quoll'),
+                    'url' => SettingFactory::getSettingManager()->getSetting('System', 'webLink'),
+                    'text' => SettingFactory::getSettingManager()->getSetting('System', 'organisationAbbreviation', 'Quoll'),
                     'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
@@ -88,7 +88,7 @@ class MinorLinks implements ContentInterface
                 ];
             }
             $links[] = $name;
-            $provider = ProviderFactory::create(Setting::class);
+            $provider = SettingFactory::getSettingManager();
 
             if (SecurityHelper::isGranted('IS_IMPERSONATOR')) {
                 $links[] = [

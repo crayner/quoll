@@ -22,7 +22,7 @@ use App\Modules\School\Entity\Facility;
 use App\Modules\School\Form\FacilitySettingsType;
 use App\Modules\School\Form\FacilityType;
 use App\Modules\School\Pagination\FacilityPagination;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -154,7 +154,7 @@ class FacilityController extends AbstractPageController
             $data = [];
             $data['status'] = 'success';
             try {
-                $data['errors'] = ProviderFactory::create(Setting::class)->handleSettingsForm($form, $request);
+                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
                 if ($data['status'] === 'success')
                     $form = $this->createForm(FacilitySettingsType::class, null, ['action' => $this->generateUrl('facility_settings',)]);
             } catch (\Exception $e) {

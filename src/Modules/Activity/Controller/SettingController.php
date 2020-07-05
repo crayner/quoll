@@ -19,7 +19,7 @@ namespace App\Modules\Activity\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\Activity\Form\ActivitySettingsType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -46,7 +46,7 @@ class SettingController extends AbstractPageController
     {
         $request = $this->getRequest();
 
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('Activities');
 
         $form = $this->createForm(ActivitySettingsType::class, null, ['action' => $this->generateUrl('activity_settings')]);

@@ -1,0 +1,755 @@
+System:
+    emailLink:
+        name: 'Link To Email'
+        description: 'The link that points to the school''s email system'
+    webLink:
+        name: 'Link To Web'
+        description: 'The link that points to the school''s website'
+    defaultAssessmentScale:
+        name: 'Default Assessment Scale'
+        description: 'This is the scale used as a default where assessment scales need to be selected.'
+    sessionDuration:
+        name: 'Session Duration'
+        description: 'Time, in seconds, before system logs a user out. Should be less than PHP''s session.gc_maxlifetime option.'
+    organisationLogo:
+        name: Logo
+        description: 'Relative path to site logo (400 x 100px)'
+    calendarFeed:
+        name: 'School Google Calendar ID'
+        description: 'Google Calendar ID for your school calendar. Only enables timetable integration when logging in via Google.'
+    organisationAdministrator:
+        name: 'System Administrator'
+        description: 'The staff member who receives notifications for system events.'
+    organisationDBA:
+        name: 'Database Administrator'
+        description: 'The staff member who receives notifications for data events.'
+    organisationAdmissions:
+        name: 'Admissions Administrator'
+        description: 'The staff member who receives notifications for admissions events.'
+    firstDayOfTheWeek:
+        name: 'First Day Of The Week'
+        description: 'On which day should the week begin?'
+    organisationHR:
+        name: 'Human Resources Administrator'
+        description: 'The staff member who receives notifications for staffing events.'
+    organisationName:
+        name: 'Organisation Name'
+        description: ''
+    mainMenuCategoryOrder:
+        name: 'Main Menu Category Order'
+        description: 'A list of module categories in display order.'
+    nameFormatStaffFormal:
+        name: 'Formal Name Format'
+        description: ''
+    nameFormatStaffFormalReversed:
+        name: 'Formal Name Reversed'
+        description: ''
+    nameFormatStaffInformal:
+        name: 'Informal Name Format'
+        description: ''
+    nameFormatStaffInformalReversed:
+        name: 'Informal Name Reversed'
+        description: ''
+    organisationBackground:
+        name: Background
+        description: 'Relative path to background image. Overrides theme background.'
+    organisationAbbreviation:
+        name: 'Organisation Name Abbreviation'
+        description: ''
+    version:
+        name: Version
+        description: 'The version of the Gibbon database'
+    organisationEmail:
+        name: 'Organisation Email'
+        description: 'General email address for the school'
+    installType:
+        name: 'Install Type'
+        description: 'The purpose of this installation of Kookaburra'
+    statsCollection:
+        name: 'Statistics Collection'
+        description: 'To track Gibbon uptake, the system tracks basic data (current URL, install type, organisation name) on each install. Do you want to help?'
+    pagination:
+        name: 'Pagination Count'
+        description: 'Must be numeric. Number of records shown per page.'
+    passwordPolicyAlpha:
+        name: 'Password - Alpha Requirement'
+        description: 'Require both upper and lower case alpha characters?'
+    passwordPolicyNumeric:
+        name: 'Password - Numeric Requirement'
+        description: 'Require at least one numeric character?'
+    passwordPolicyNonAlphaNumeric:
+        name: 'Password - Non-Alphanumeric Requirement'
+        description: 'Require at least one non-alphanumeric character (e.g. punctuation mark or space)?'
+    systemName:
+        name: 'System Name'
+        description: ''
+    country:
+        name: Country
+        description: The country the school is in.
+    timezone:
+        name: Timezone
+        description: Timezone the school operates in.
+    passwordPolicyMinLength:
+        name: 'Password - Minimum Length'
+        description: 'Minimum acceptable password length.'
+    allowableHTML:
+        name: 'Allowable HTML'
+        description: 'TinyMCE-style list of acceptable HTML tags and options.'
+    indexText:
+        name: 'Index Page Text'
+        description: 'Text displayed in system''s welcome page.'
+    currency:
+        name: Currency
+        description: 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
+    enablePayments:
+        name: 'Enable Payments'
+        description: 'Should payments be enabled across the system?'
+    paypalAPIUsername:
+        name: 'PayPal API Username'
+        description: 'API Username provided by PayPal.'
+    paypalAPIPassword:
+        name: 'PayPal API Password'
+        description: 'API Password provided by PayPal.'
+    paypalAPISignature:
+        name: 'PayPal API Signature'
+        description: 'API Signature provided by PayPal.'
+    analytics:
+        name: Analytics
+        description: 'Javascript code to integrate statistics, such as Google Analytics'
+'Application Form':
+    notificationStudentMessage:
+        name: 'Student Notification Message'
+        description: 'A custom message to add to the standard email to students on acceptance.'
+    studentDefaultEmail:
+        name: 'Student Default Email'
+        description: 'Set default email for students on acceptance, using [username] to insert username.'
+    studentDefaultWebsite:
+        name: 'Student Default Website'
+        description: 'Set default website for students on acceptance, using [username] to insert username.'
+    autoHouseAssign:
+        name: 'Auto House Assign'
+        description: 'Attempt to automatically place student in a house?'
+    usernameFormat:
+        name: 'Username Format'
+        description: 'How should usernames be formatted? Choose from [preferredName], [preferredNameInitial], [surname].'
+    introduction:
+        name: Introduction
+        description: 'Information to display before the form'
+    internalDocuments:
+        name: 'Internal Documents'
+        description: 'A list of documents for internal upload and use.'
+    postscript:
+        name: Postscript
+        description: 'Information to display at the end of the form'
+    scholarshipOptionsActive:
+        name: 'Scholarship Options Active'
+        description: 'Should the Scholarship Options section be turned on?'
+    paymentOptionsActive:
+        name: 'Payment Options Active'
+        description: 'Should the Payment section be turned on?'
+    senOptionsActive:
+        name: 'Special Education Needs Active'
+        description: 'Should the Special Education Needs section be turned on?'
+    scholarships:
+        name: Scholarships
+        description: 'Information to display before the scholarship options'
+    availableYearsOfEntry:
+        name: 'Available Years of Entry'
+        description: 'Which school years should be available to apply to?'
+    enableLimitedYearsOfEntry:
+        name: 'Enable Limited Years of Entry'
+        description: 'If yes, applicants choices for Year of Entry can be limited to specific school years.'
+    agreement:
+        name: Agreement
+        description: 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything'
+    publicApplications:
+        name: 'Public Applications?'
+        description: 'If yes, members of the public can submit applications'
+    milestones:
+        name: Milestones
+        description: 'A list of the major steps in the application process. Applicants can be tracked through the various stages.'
+    howDidYouHear:
+        name: 'How Did Your Hear?'
+        description: 'A list'
+    applicationFee:
+        name: 'Application Fee'
+        description: 'The cost of applying to the school.'
+    requiredDocuments:
+        name: 'Required Documents'
+        description: 'A list of documents which must be submitted electronically with the application form.'
+    requiredDocumentsCompulsory:
+        name: 'Required Documents Compulsory?'
+        description: 'Are the required documents compulsory?'
+    requiredDocumentsText:
+        name: 'Required Documents Text'
+        description: 'Explanatory text to appear with the required documents?'
+    notificationStudentDefault:
+        name: 'Student Notification Default'
+        description: 'Should student acceptance email be turned on or off by default.'
+    languageOptionsActive:
+        name: 'Language Options Active'
+        description: 'Should the Language Options section be turned on?'
+    languageOptionsBlurb:
+        name: 'Language Options Blurb'
+        description: 'Introductory text if Language Options section is turned on.'
+    languageOptionsLanguageList:
+        name: 'Language Options Language List'
+        description: 'A list of available language selections if Language Options section is turned on.'
+    notificationParentsDefault:
+        name: 'Parents Notification Default'
+        description: 'Should parent acceptance email be turned on or off by default.'
+    notificationParentsMessage:
+        name: 'Parents Notification Message'
+        description: 'A custom message to add to the standard email to parents on acceptance.'
+Finance:
+    invoiceNumber:
+        name: 'Invoice Number Style'
+        description: 'How should invoice numbers be constructed?'
+    financeOnlinePaymentEnabled:
+        name: 'Enable Online Payment'
+        description: 'Should invoices be payable online, via an encrypted link in the invoice? Requires correctly configured payment gateway in System Settings.'
+    financeOnlinePaymentThreshold:
+        name: 'Online Payment Threshold'
+        description: 'If invoices are payable online, what is the maximum payment allowed? Useful for controlling payment fees. No value means unlimited.'
+    budgetCategories:
+        name: 'Budget Categories'
+        description: 'A list of budget categories.'
+    expenseApprovalType:
+        name: 'Expense Approval Type'
+        description: 'How should expense approval be dealt with?'
+    budgetLevelExpenseApproval:
+        name: 'Budget Level Expense Approval'
+        description: 'Should approval from a budget member with Full access be required?'
+    expenseRequestTemplate:
+        name: 'Expense Request Template'
+        description: 'An HTML template to be used in the description field of expense requests.'
+    purchasingOfficer:
+        name: 'Purchasing Officer'
+        description: 'User responsible for purchasing for the school.'
+    reimbursementOfficer:
+        name: 'Reimbursement Officer'
+        description: 'User responsible for reimbursing expenses.'
+    allowExpenseAdd:
+        name: 'Allow Expense Add'
+        description: 'Allows privileged users to add expenses without going through request process.'
+    hideItemisation:
+        name: 'Hide Itemisation'
+        description: 'Hide fee and payment details in receipts?'
+    invoiceeNameStyle:
+        name: 'Invoicee Name Style'
+        description: 'Determines how invoicee name appears on invoices and receipts.'
+    invoiceText:
+        name: 'Invoice Text'
+        description: 'Text to appear in invoice, above invoice details and fees.'
+    invoiceNotes:
+        name: 'Invoice Notes'
+        description: 'Text to appear in invoice, below invoice details and fees.'
+    receiptText:
+        name: 'Receipt Text'
+        description: 'Text to appear in receipt, above receipt details and fees.'
+    receiptNotes:
+        name: 'Receipt Notes'
+        description: 'Text to appear in receipt, below receipt details and fees.'
+    reminder1Text:
+        name: 'Reminder 1 Text'
+        description: 'Text to appear in first level reminder level, above invoice details and fees.'
+    reminder2Text:
+        name: 'Reminder 2 Text'
+        description: 'Text to appear in second level reminder level, above invoice details and fees.'
+    reminder3Text:
+        name: 'Reminder 3 Text'
+        description: 'Text to appear in third level reminder level, above invoice details and fees.'
+    email:
+        name: Email
+        description: 'Email address to send finance emails from.'
+People:
+    departureReasons:
+        name: 'Departure Reasons'
+        description: 'A list of reasons for departure from school. If blank, user can enter any text.'
+    enablePublicRegistration:
+        name: 'Enable Public Registration'
+        description: 'Allows members of the public to register to use the system.'
+    publicRegistrationMinimumAge:
+        name: 'Public Registration Minimum Age'
+        description: 'The minimum age, in years, permitted to register.'
+    publicRegistrationDefaultStatus:
+        name: 'Public Registration Default Status'
+        description: 'Should new users be ''Full'' or ''Pending Approval''?'
+    publicRegistrationDefaultRole:
+        name: 'Public Registration Default Role'
+        description: 'System role to be assigned to registering members of the public.'
+    publicRegistrationIntro:
+        name: 'Public Registration Introductory Text'
+        description: 'HTML text that will appear above the public registration form.'
+    publicRegistrationPrivacyStatement:
+        name: 'Public Registration Privacy Statement'
+        description: 'HTML text that will appear above the Submit button, explaining privacy policy.'
+    publicRegistrationAgreement:
+        name: 'Public Registration Agreement'
+        description: 'Agreement that user must confirm before joining. Blank for no agreement.'
+    publicRegistrationPostscript:
+        name: 'Public Registration Postscript'
+        description: 'HTML text that will appear underneath the public registration form.'
+    religions:
+        name: Religions
+        description: 'A list of religions available in system'
+    uniqueEmailAddress:
+        name: 'Unique Email Address'
+        description: 'Are primary email addresses required to be unique?'
+    ethnicity:
+        name: Ethnicity
+        description: 'A list of ethnicities available in system'
+    nationality:
+        name: Nationality
+        description: 'A list of nationalities available in system. If blank, system will default to list of countries'
+    residencyStatus:
+        name: 'Residency Status'
+        description: 'A list of residency status available in system. If blank, system will allow text input'
+    personalDataUpdaterRequiredFields:
+        name: 'Personal Data Updater Required Fields'
+        description: 'Serialized array listed personal fields in data updater, and whether or not they are required.'
+    personalBackground:
+        name: 'Personal Background'
+        description: 'Should users be allowed to set their own personal backgrounds?'
+    dayTypeOptions:
+        name: 'Day-Type Options'
+        description: 'A list of options to make available (e.g. half-day, full-day). If blank, this field will not show up in the application form.'
+    dayTypeText:
+        name: 'Day-Type Text'
+        description: 'Explanatory text to include with Day-Type Options.'
+    privacy:
+        name: Privacy
+        description: 'Should privacy options be turned on across the system?'
+    privacyBlurb:
+        name: 'Privacy Blurb'
+        description: 'Descriptive text to accompany image privacy option when shown to users.'
+    privacyOptions:
+        name: 'Privacy Options'
+        description: 'A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.'
+'Mark Book':
+    personalisedWarnings:
+        name: 'Personalised Warnings'
+        description: 'Should mark book warnings be based on personal targets, if they are available?'
+    attainmentAlternativeName:
+        name: 'Attainment Alternative Name'
+        description: 'A name to use instead of ''Attainment'' in the first grade column of the mark book.'
+    effortAlternativeName:
+        name: 'Effort Alternative Name'
+        description: 'A name to use instead of ''Effort'' in the second grade column of the mark book.'
+    attainmentAlternativeNameAbrev:
+        name: 'Attainment Alternative Name Abbreviation'
+        description: 'A short name to use instead of ''Attainment'' in the first grade column of the mark book.'
+    effortAlternativeNameAbrev:
+        name: 'Effort Alternative Name Abbreviation'
+        description: 'A short name to use instead of ''Effort'' in the second grade column of the mark book.'
+    enableColumnWeighting:
+        name: 'Enable Column Weighting'
+        description: 'Should column weighting and total scores be enabled in the Mark book?'
+    enableRawAttainment:
+        name: 'Enable Raw Attainment Marks'
+        description: 'Should recording of raw marks be enabled in the Mark book?'
+    enableGroupByTerm:
+        name: 'Group Columns by Term'
+        description: 'Should columns and total scores be grouped by term?'
+    enableEffort:
+        name: 'Enable Effort'
+        description: 'Should columns have the Effort section enabled?'
+    enableRubrics:
+        name: 'Enable Rubrics'
+        description: 'Should columns have Rubrics section enabled?'
+    enableDisplayCumulativeMarks:
+        name: 'Enable Display Cumulative Marks'
+        description: 'Should cumulative marks be displayed on the View Mark book page for Students and Parents and in Student Profiles?'
+    enableModifiedAssessment:
+        name: 'Enable Modified Assessment'
+        description: 'Allows teachers to specify ''Modified Assessment'' for students with individual needs.'
+    markBookType:
+        name: 'Mark Book Type'
+        description: 'A list of types to make available in the Mark book.'
+    showStudentAttainmentWarning:
+        name: 'Show Student Attainment Warning'
+        description: 'Show low attainment grade visual warning to students?'
+    showStudentEffortWarning:
+        name: 'Show Student Effort Warning'
+        description: 'Show low effort grade visual warning to students?'
+    showParentAttainmentWarning:
+        name: 'Show Parent Attainment Warning'
+        description: 'Show low attainment grade visual warning to parents?'
+    showParentEffortWarning:
+        name: 'Show Parent Effort Warning'
+        description: 'Show low effort grade visual warning to parents?'
+Activities:
+    disableExternalProviderSignup:
+        name: 'Disable External Provider Sign up'
+        description: 'Should we turn off the option to sign up for activities provided by an outside agency?'
+    hideExternalProviderCost:
+        name: 'Hide External Provider Cost'
+        description: 'Should we hide the cost of activities provided by an outside agency from the Activities View?'
+    access:
+        name: Access
+        description: 'System-wide access control'
+    payment:
+        name: Payment
+        description: 'Payment system'
+    enrolmentType:
+        name: 'Enrolment Type'
+        description: 'Enrolment process type'
+    backupChoice:
+        name: 'Backup Choice'
+        description: 'Allow students to choose a backup, in case enrolled activity is full.'
+    activityTypes:
+        name: 'Activity Types'
+        description: 'A list of the different activity types available in school. Leave blank to disable this feature.'
+    dateType:
+        name: 'Date Type'
+        description: 'Should activities be organised around dates (flexible) or terms (easy)?'
+    maxPerTerm:
+        name: 'Maximum Activities per Term'
+        description: 'The most a student can sign up for in one term. Set to 0 for unlimited.'
+'School Admin':
+    studentAgreementOptions:
+        name: 'Student Agreement Options'
+        description: 'A list of agreements that students might be asked to sign in school (e.g. ICT Policy).'
+    facilityTypes:
+        name: FacilityTypes
+        description: 'A list of types for facilities.'
+    staffDashboardDefaultTab:
+        name: 'Staff Dashboard Default Tab'
+        description: 'The default landing tab for the staff dashboard.'
+    studentDashboardDefaultTab:
+        name: 'Student Dashboard Default Tab'
+        description: 'The default landing tab for the student dashboard.'
+    parentDashboardDefaultTab:
+        name: 'Parent Dashboard Default Tab'
+        description: 'The default landing tab for the parent dashboard.'
+    primaryExternalAssessmentByYearGroup:
+        name: 'Primary External Assessment By Year Group'
+        description: 'Serialized array connected gibbonExternalAssessmentID to gibbonYearGroupID, and specify which field set to use.'
+Planner:
+    parentWeeklyEmailSummaryIncludeBehaviour:
+        name: 'Parent Weekly Email Summary Include Behaviour'
+        description: 'Should behaviour information be included in the weekly planner email summary that goes out to parents?'
+    makeUnitsPublic:
+        name: 'Make Units Public'
+        description: 'Enables a public listing of units, with teachers able to opt in to share units.'
+    shareUnitOutline:
+        name: 'Share Unit Outline'
+        description: 'Allow users who do not have access to the unit planner to see Unit Outlines via the lesson planner?'
+    parentWeeklyEmailSummaryIncludeMarkBook:
+        name: 'Parent Weekly Email Summary Include Mark book'
+        description: 'Should Mark book information be included in the weekly planner email summary that goes out to parents?'
+    lessonDetailsTemplate:
+        name: 'Lesson Details Template'
+        description: 'Template to be inserted into Lesson Details field'
+    teachersNotesTemplate:
+        name: 'Teacher''s Notes Template'
+        description: 'Template to be inserted into Teacher''s Notes field'
+    smartBlockTemplate:
+        name: 'Smart Block Template'
+        description: 'Template to be inserted into new block in Smart Unit'
+    unitOutlineTemplate:
+        name: 'Unit Outline Template'
+        description: 'Template to be inserted into Unit Outline section of planner'
+    allowOutcomeEditing:
+        name: 'Allow Outcome Editing'
+        description: 'Should the text within outcomes be editable when planning lessons and units?'
+    sharingDefaultParents:
+        name: 'Sharing Default: Parents'
+        description: 'When adding lessons and deploying units, should sharing default for parents be Y or N?'
+    sharingDefaultStudents:
+        name: 'Sharing Default: Students'
+        description: 'When adding lessons and deploying units, should sharing default for students be Y or N?'
+Departments:
+    makeDepartmentsPublic:
+        name: 'Make Departments Public'
+        description: 'Should department information be made available to the public, via the Gibbon homepage?'
+Messenger:
+    messageBubbleWidthType:
+        name: 'Message Bubble Width Type'
+        description: 'Should the message bubble be regular or wide?'
+    messageBubbleBGColor:
+        name: 'Message Bubble Background Color'
+        description: 'Message bubble background color in RGBA (e.g. 100,100,100,0.50). If blank, theme default will be used.'
+    messageBubbleAutoHide:
+        name: 'Message Bubble Auto Hide'
+        description: 'Should message bubble fade out automatically?'
+    enableHomeScreenWidget:
+        name: 'Enable Home Screen Widget'
+        description: 'Adds a Message Wall widget to the home page, hihglighting current messages.'
+    messageBcc:
+        name: 'Message Bcc'
+        description: 'A list of recipients to bcc all messenger emails to.'
+    smsGateway:
+        name: 'SMS Gateway'
+        description: ''
+    smsSenderID:
+        name: 'SMS Sender ID'
+        description: 'The sender name or phone number. Depends on the gateway used.'
+    smsUsername:
+        name: 'SMS Username'
+        description: 'SMS gateway username.'
+    smsPassword:
+        name: 'SMS Password'
+        description: 'SMS gateway password.'
+    smsURL:
+        name: 'SMS URL'
+        description: 'SMS gateway URL for send requests.'
+    smsURLCredit:
+        name: 'SMS URL Credit'
+        description: 'SMS gateway URL for checking credit.'
+Students:
+    enableStudentNotes:
+        name: 'Enable Student Notes'
+        description: 'Should student notes be turned on?'
+    applicationFormSENText:
+        name: 'Application Form SEN Text'
+        description: 'Text to appear with the Special Educational Needs section of the student application form.'
+    applicationFormRefereeLink:
+        name: 'Application Form Referee Link'
+        description: 'Link to an external form that will be emailed to a referee of the applicant''s choosing.'
+    medicalIllnessSymptoms:
+        name: 'Predefined Illness Symptoms'
+        description: 'A list of illness symptoms.'
+    noteCreationNotification:
+        name: 'Note Creation Notification'
+        description: 'Determines who to notify when a new student note is created.'
+    academicAlertLowThreshold:
+        name: 'Low Academic Alert Threshold'
+        description: 'The number of Mark book concerns needed in the past 60 days to raise a low level academic alert on a student.'
+    academicAlertMediumThreshold:
+        name: 'Medium Academic Alert Threshold'
+        description: 'The number of Mark book concerns needed in the past 60 days to raise a medium level academic alert on a student.'
+    academicAlertHighThreshold:
+        name: 'High Academic Alert Threshold'
+        description: 'The number of Mark book concerns needed in the past 60 days to raise a high level academic alert on a student.'
+    behaviourAlertLowThreshold:
+        name: 'Low Behaviour Alert Threshold'
+        description: 'The number of Behaviour concerns needed in the past 60 days to raise a low level alert on a student.'
+    behaviourAlertMediumThreshold:
+        name: 'Medium Behaviour Alert Threshold'
+        description: 'The number of Behaviour concerns needed in the past 60 days to raise a medium level alert on a student.'
+    behaviourAlertHighThreshold:
+        name: 'High Behaviour Alert Threshold'
+        description: 'The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.'
+    extendedBriefProfile:
+        name: 'Extended Brief Profile'
+        description: 'The extended version of the brief student profile includes contact information of parents.'
+Behaviour:
+    enableDescriptors:
+        name: 'Enable Descriptors'
+        description: 'Setting to No reduces complexity of behaviour tracking.'
+    enableLevels:
+        name: 'Enable Levels'
+        description: 'Setting to No reduces complexity of behaviour tracking.'
+    enableBehaviourLetters:
+        name: 'Enable Behaviour Letters'
+        description: 'Should automated behaviour letter functionality be enabled?'
+    behaviourLettersLetter1Count:
+        name: 'Letter 1 Count'
+        description: 'After how many negative records should letter 1 be sent?'
+    behaviourLettersLetter1Text:
+        name: 'Letter 1 Text'
+        description: 'The contents of letter 1, as HTML.'
+    behaviourLettersLetter2Count:
+        name: 'Letter 2 Count'
+        description: 'After how many negative records should letter 2 be sent?'
+    behaviourLettersLetter2Text:
+        name: 'Letter 2 Text'
+        description: 'The contents of letter 2, as HTML.'
+    behaviourLettersLetter3Count:
+        name: 'Letter 3 Count'
+        description: 'After how many negative records should letter 3 be sent?'
+    behaviourLettersLetter3Text:
+        name: 'Letter 3 Text'
+        description: 'The contents of letter 3, as HTML.'
+    positiveDescriptors:
+        name: 'Positive Descriptors'
+        description: 'Allowable choices for positive behaviour'
+    negativeDescriptors:
+        name: 'Negative Descriptors'
+        description: 'Allowable choices for negative behaviour'
+    levels:
+        name: Levels
+        description: 'Allowable choices for severity level (from lowest to highest)'
+    policyLink:
+        name: 'Policy Link'
+        description: 'A link to the school behaviour policy.'
+'Formal Assessment':
+    internalAssessmentTypes:
+        name: 'Internal Assessment Types'
+        description: 'A list of types to make available in Internal Assessments.'
+'System Admin':
+    customAlarmSound:
+        name: 'Custom Alarm Sound'
+        description: 'A custom alarm sound file.'
+    exportDefaultFileType:
+        name: 'Default Export File Type'
+        description: ''
+Tracking:
+    externalAssessmentDataPoints:
+        name: 'External Assessment Data Points'
+        description: 'Stores the external assessment choices for data points output in tracking.'
+    internalAssessmentDataPoints:
+        name: 'Internal Assessment Data Points'
+        description: 'Stores the internal assessment choices for data points output in tracking.'
+Staff:
+    jobOpeningDescriptionTemplate:
+        name: 'Job Opening Description Template'
+        description: 'Default HTML contents for the Job Opening Description field.'
+    staffApplicationFormIntroduction:
+        name: Introduction
+        description: 'Information to display before the form'
+    staffApplicationFormPostscript:
+        name: Postscript
+        description: 'Information to display at the end of the form'
+    staffApplicationFormAgreement:
+        name: Agreement
+        description: 'Without this text, which is displayed above the agreement, users will not be asked to agree to anything'
+    staffApplicationFormMilestones:
+        name: Milestones
+        description: 'A list of the major steps in the application process. Applicants can be tracked through the various stages.'
+    staffApplicationFormRequiredDocuments:
+        name: 'Required Documents'
+        description: 'A list of documents which must be submitted electronically with the application form.'
+    staffApplicationFormRequiredDocumentsCompulsory:
+        name: 'Required Documents Compulsory?'
+        description: 'Are the required documents compulsory?'
+    staffApplicationFormRequiredDocumentsText:
+        name: 'Required Documents Text'
+        description: 'Explanatory text to appear with the required documents?'
+    staffApplicationFormNotificationDefault:
+        name: 'Notification Default'
+        description: 'Should acceptance email be turned on or off by default.'
+    staffApplicationFormNotificationMessage:
+        name: 'Notification Message'
+        description: 'A custom message to add to the standard email on acceptance.'
+    staffApplicationFormDefaultEmail:
+        name: 'Default Email'
+        description: 'Set default email on acceptance, using [username] to insert username.'
+    staffApplicationFormDefaultWebsite:
+        name: 'Default Website'
+        description: 'Set default website on acceptance, using [username] to insert username.'
+    staffApplicationFormUsernameFormat:
+        name: 'Username Format'
+        description: 'How should usernames be formated? Choose from [preferredName], [preferredNameInitial], [surname].'
+    staffApplicationFormQuestions:
+        name: 'Application Questions'
+        description: 'HTML text that will appear as questions for the applicant to answer.'
+    salaryScalePositions:
+        name: 'Salary Scale Positions'
+        description: 'A list of salary scale positions, from lowest to highest.'
+    responsibilityPosts:
+        name: 'Responsibility Posts'
+        description: 'A list of posts carrying extra responsibilities.'
+    applicationFormRefereeLink:
+        name: 'Application Form Referee Link'
+        description: 'Link to an external form that will be emailed to a referee of the applicant''s choosing.'
+    substituteTypes:
+        name: 'Substitute Types'
+        description: 'A list of Substitution Types used at your school.'
+    urgencyThreshold:
+        name: 'Urgency Threshold'
+        description: 'Notifications in this time-span are sent immediately, day or night.'
+    urgentNotifications:
+        name: 'Urgent Notifications'
+        description: 'If enabled, urgent notifications will be sent by SMS as well as email.'
+    absenceApprovers:
+        name: 'Absence Approvers'
+        description: 'Users who can approve staff absences. Leave this blank if approval is not used.'
+    absenceFullDayThreshold:
+        name: 'Full Day Absence'
+        description: 'The minumum number of hours for an absence to count as a full day (1.0)'
+    absenceHalfDayThreshold:
+        name: 'Half Day Absence'
+        description: 'The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0'
+    absenceNotificationGroups:
+        name: 'Notification Groups'
+        description: 'Which messenger groups can staff members send absence notifications to?'
+Attendance:
+    attendanceReasons:
+        name: 'Attendance Reasons'
+        description: 'A list of reasons which are available when taking attendance.'
+    attendanceMedicalReasons:
+        name: 'Medical Reasons'
+        description: 'A list of allowable medical reasons.'
+    attendanceEnableMedicalTracking:
+        name: 'Enable Symptom Tracking'
+        description: 'Attach a symptom report to attendance logs with a medical reason.'
+    attendanceCLINotifyByRollGroup:
+        name: 'Enable Notifications by Roll Group'
+        description: null
+    attendanceCLINotifyByClass:
+        name: 'Enable Notifications by Class'
+        description: null
+    attendanceCLIAdditionalUsers:
+        name: 'Additional Users to Notify'
+        description: 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.'
+    studentSelfRegistrationIPAddresses:
+        name: 'Student Self Registration IP Addresses'
+        description: 'A list of IP addresses within which students can self register.'
+    countClassAsSchool:
+        name: 'Count Class Attendance as School Attendance'
+        description: 'Should attendance from the class context be used to prefill and inform school attendance?'
+    defaultRollGroupAttendanceType:
+        name: 'Default Roll Group Attendance Type'
+        description: 'The default selection for attendance type when taking Roll Group attendance'
+    defaultClassAttendanceType:
+        name: 'Default Class Attendance Type'
+        description: 'The default selection for attendance type when taking Class attendance'
+    selfRegistrationRedirect:
+        name: 'Self Registration Redirect'
+        description: 'Should self registration redirect to Message Wall?'
+    crossFillClasses:
+        name: 'Cross-Fill Classes'
+        description: 'Should classes prefill with data from other classes?'
+'Staff Application Form':
+    staffApplicationFormPublicApplications:
+        name: 'Public Applications?'
+        description: 'If yes, members of the public can submit staff applications'
+'Individual Needs':
+    targetsTemplate:
+        name: 'Targets Template'
+        description: 'An HTML template to be used in the targets field.'
+    teachingStrategiesTemplate:
+        name: 'Teaching Strategies Template'
+        description: 'An HTML template to be used in the teaching strategies field.'
+    notesReviewTemplate:
+        name: 'Notes & Review Template'
+        description: 'An HTML template to be used in the notes and review field.'
+'Timetable Admin':
+    autoEnrolCourses:
+        name: 'Auto-Enrol Courses Default'
+        description: 'Should auto-enrolment of new students into courses be turned on or off by default?'
+'Data Updater':
+    cutoffDate:
+        name: 'Cutoff Date'
+        description: 'Earliest acceptable date when checking if data updates are required.'
+    redirectByRoleCategory:
+        name: 'Data Updater Redirect'
+        description: 'Which types of users should be redirected to the Data Updater if updates are required.'
+    requiredUpdates:
+        name: 'Required Updates?'
+        description: 'Should the data updater highlight updates that are required?'
+    requiredUpdatesByType:
+        name: 'Required Update Types'
+        description: 'Which type of data updates should be required.'
+Resources:
+    categories:
+        name: Categories
+        description: 'Allowable choices for category'
+    purposesGeneral:
+        name: 'Purposes (General)'
+        description: 'Allowable choices for purpose when creating a resource'
+    purposesRestricted:
+        name: 'Purposes (Restricted)'
+        description: 'Additional allowable choices for purpose when creating a resource, for those with ''Manage All Resources'' rights'
+Library:
+    defaultLoanLength:
+        name: 'Default Loan Length'
+        description: 'The standard loan length for a library item, in days'
+    browseBGColor:
+        name: 'Browse Library BG Color'
+        description: 'RGB Hex value, without leading #. Background color used behind library browsing screen.'
+    browseBGImage:
+        name: 'Browse Library BG Image'
+        description: 'URL to background image used behind library browsing screen.'

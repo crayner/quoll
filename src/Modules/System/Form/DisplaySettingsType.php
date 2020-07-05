@@ -21,7 +21,7 @@ use App\Form\Type\FilePathType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Validator\ReactImage;
 use Symfony\Component\Form\AbstractType;
@@ -63,7 +63,7 @@ class DisplaySettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
-                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationLogo'),
                                 'constraints' => [
                                     new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
                                 ],
@@ -77,7 +77,7 @@ class DisplaySettingsType extends AbstractType
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
                                 'required' => false,
-                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationBackground'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationBackground'),
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],

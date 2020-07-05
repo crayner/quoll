@@ -322,65 +322,14 @@ class DaysOfWeek extends AbstractEntity
     {
         return DaysOfWeek::VERSION;
     }
-    
+
+    /**
+     * coreData
+     * @return array
+     * 4/07/2020 12:39
+     */
     public function coreData(): array 
     {
-        return Yaml::parse("
--
-  name: 'Monday'
-  abbreviation: 'Mon'
-  sequenceNumber: 1
-  schoolDay: 'Y'
-  schoolOpen: '07:45:00'
-  schoolStart: '08:30:00'
-  schoolEnd: '15:30:00'
-  schoolClose: '17:00:00'
--
-  name: 'Tuesday'
-  abbreviation: 'Tue'
-  sequenceNumber: 2
-  schoolDay: 'Y'
-  schoolOpen: '07:45:00'
-  schoolStart: '08:30:00'
-  schoolEnd: '15:30:00'
-  schoolClose: '17:00:00'
--
-  name: 'Wednesday'
-  abbreviation: 'Wed'
-  sequenceNumber: 3
-  schoolDay: 'Y'
-  schoolOpen: '07:45:00'
-  schoolStart: '08:30:00'
-  schoolEnd: '15:30:00'
-  schoolClose: '17:00:00'
--
-  name: 'Thursday'
-  abbreviation: 'Thu'
-  sequenceNumber: 4
-  schoolDay: 'Y'
-  schoolOpen: '07:45:00'
-  schoolStart: '08:30:00'
-  schoolEnd: '15:30:00'
-  schoolClose: '17:00:00'
--
-  name: 'Friday'
-  abbreviation: 'Fri'
-  sequenceNumber: 5
-  schoolDay: 'Y'
-  schoolOpen: '07:45:00'
-  schoolStart: '08:30:00'
-  schoolEnd: '15:30:00'
-  schoolClose: '17:00:00'
--
-  name: 'Saturday'
-  abbreviation: 'Sat'
-  sequenceNumber: 6
-  schoolDay: 'N'
--
-  name: 'Sunday'
-  abbreviation: 'Sun'
-  sequenceNumber: 7
-  schoolDay: 'N'
-");
+        return Yaml::parse(file_get_contents(__DIR__ . '/DaysOfWeekCoreData.yaml'));
     }
 }

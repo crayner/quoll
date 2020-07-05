@@ -24,7 +24,7 @@ use App\Modules\School\Entity\House;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
@@ -63,8 +63,8 @@ class PersonProvider extends AbstractProvider
         $raw = $form->get('passwordNew')->getData();
         $user = new SecurityUser($person);
         SecurityHelper::encodeAndSetPassword($user, $raw);
-        $person->setStatus(ProviderFactory::create(Setting::class)->getSettingByScope('People', 'publicRegistrationDefaultStatus'));
-        $role = ProviderFactory::create(Setting::class)->getSettingByScope('People', 'publicRegistrationDefaultRole');
+        $person->setStatus(SettingFactory::getSettingManager()->getSettingByScope('People', 'publicRegistrationDefaultStatus'));
+        $role = SettingFactory::getSettingManager()->getSettingByScope('People', 'publicRegistrationDefaultRole');
         $person->setSecurityRoles([$role]);
 
         foreach($form->get('fields')->getData() as $key=>$value)

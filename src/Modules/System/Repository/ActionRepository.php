@@ -19,10 +19,10 @@ use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Modules\People\Util\UserHelper;
 
 /**
  * Class ActionRepository
@@ -288,7 +288,7 @@ class ActionRepository extends ServiceEntityRepository
                 ->setParameter('route', '%' . $route . '%')
                 ->getQuery()
                 ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
+        } catch (NonUniqueResultException | DriverException $e) {
             return null;
         }
     }

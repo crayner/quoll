@@ -55,6 +55,7 @@ class MySQLType extends AbstractType
                 ->add('proceed', SubmitType::class,
                     [
                         'label' => 'Proceed',
+                        'label_class' => '',
                     ]
                 )
                 ->add('proceedFlag', HiddenType::class,

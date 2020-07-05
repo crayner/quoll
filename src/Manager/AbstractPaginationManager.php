@@ -17,7 +17,7 @@
 namespace App\Manager;
 
 use App\Manager\Hidden\PaginationRow;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;
 use App\Util\TranslationHelper;
@@ -129,7 +129,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function getPageMax(): int
     {
         if (null === $this->pageMax)
-            $this->pageMax = ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'pagination', 50);
+            $this->pageMax = SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'pagination', 50);
         return $this->pageMax;
     }
 

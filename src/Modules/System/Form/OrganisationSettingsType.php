@@ -22,7 +22,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Validator\ReactImage;
 use Doctrine\ORM\EntityRepository;
@@ -84,7 +84,7 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
-                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationLogo'),
                                 'constraints' => [
                                     new ReactImage(['minWidth' => 400, 'maxWidth' => 800, 'minHeight' => 100, 'maxHeight' => 200, 'maxRatio' => '0.5', 'minRatio' => '0.5', 'maxSize' => '750k']),
                                 ],
@@ -96,7 +96,7 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
-                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationBackground'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationBackground'),
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],

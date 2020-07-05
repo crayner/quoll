@@ -18,8 +18,8 @@
 namespace App\Util;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\System\Entity\Setting;
+use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -228,14 +228,14 @@ class ImageHelper
         if ($session->has('backgroundImage'))
             return $session->get('backgroundImage');
 
-        $user = UserHelper::getCurrentUser();
+        $user = SecurityHelper::getCurrentUser();
         if ($user instanceof Person && self::isFileInPublic($user->getPersonalBackground())) {
             $file = self::getAbsoluteImageURL('File',$user->getPersonalBackground());
             $session->set('backGroundImage', $file);
             return $file;
         }
 
-        $background = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationBackground');
+        $background = SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationBackground');
         if (self::isFileInPublic($background)) {
             $background = self::getAbsoluteImageURL('File',$background);
             $session->set('backgroundImage', $background);

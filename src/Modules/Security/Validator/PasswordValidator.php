@@ -19,7 +19,7 @@ namespace App\Modules\Security\Validator;
 
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,7 +37,7 @@ class PasswordValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
 
         $alpha = $settingProvider->getSettingByScopeAsboolean('System', 'passwordPolicyAlpha');
         $numeric = $settingProvider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric');

@@ -18,7 +18,7 @@
 namespace App\Twig\Extension;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -50,7 +50,7 @@ class SettingExtension extends AbstractExtension
      */
     public function getSettingByScope(string $scope, string $name, bool $returnRow = false)
     {
-        return ProviderFactory::create(Setting::class)->getSettingByScope($scope, $name, $returnRow);
+        return SettingFactory::getSettingManager()->getSettingByScope($scope, $name, $returnRow);
     }
 
     /**
@@ -61,7 +61,7 @@ class SettingExtension extends AbstractExtension
      */
     public function hasSettingByScope(string $scope, string $name): bool
     {
-        return ProviderFactory::create(Setting::class)->hasSettingByScope($scope, $name);
+        return SettingFactory::getSettingManager()->hasSettingByScope($scope, $name);
     }
 
     /**
@@ -72,7 +72,7 @@ class SettingExtension extends AbstractExtension
      */
     public function getPersonFromSetting(string $scope, string $name, ?string $method = null)
     {
-        $person = ProviderFactory::getRepository(Person::class)->find(ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger($scope, $name));
+        $person = ProviderFactory::getRepository(Person::class)->find(SettingFactory::getSettingManager()->getSettingByScopeAsInteger($scope, $name));
         if (!$person instanceof Person || null === $method || !method_exists($person, $method))
             return $person;
 

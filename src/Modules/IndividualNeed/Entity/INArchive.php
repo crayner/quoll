@@ -271,9 +271,9 @@ class INArchive extends AbstractEntity
                 "CREATE TABLE `__prefix__INArchiveDescriptors` (
                     `in_archive` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
                     `in_descriptor` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    INDEX `in_archive` ('in_archive'), 
-                    INDEX `in_descriptor` (`in_descriptor`), 
-                    PRIMARY KEY(`in_archive`, `in_descriptor`)
+                    PRIMARY KEY(`in_archive`, `in_descriptor`),
+                    KEY `in_archive` (`in_archive`), 
+                    KEY `in_descriptor` (`in_descriptor`)
                 ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
     }
 

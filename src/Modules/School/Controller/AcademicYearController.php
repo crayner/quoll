@@ -22,7 +22,7 @@ use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Form\AcademicYearType;
 use App\Modules\School\Manager\Hidden\CalendarDisplayManager;
 use App\Modules\School\Pagination\AcademicYearPagination;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -77,7 +77,7 @@ class AcademicYearController extends AbstractPageController
         $this->getPageManager()->addPageStyle('css/core');
         return $this->render('school/calendar.html.twig', [
             'calendar' => $calendar,
-            'organisationName' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName', 'Kookaburra'),
+            'organisationName' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationName', 'Kookaburra'),
             'page' => $this->getPageManager(),
         ]);
     }

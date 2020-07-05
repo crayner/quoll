@@ -267,28 +267,6 @@ class AlertLevel extends AbstractEntity
      */
     public function coreData(): array
     {
-        return Yaml::parse("
--
-  name: 'High'
-  nameShort: 'H'
-  colour: '#8b0000'
-  colour_bg: '#FFB6C1'
-  description: 'Highest level of severity, requiring intense and immediate readiness, action, individual support or differentiation.'
-  sortOrder: 3
--
-  name: 'Medium'
-  nameShort: 'M'
-  colour: '#e69500'
-  colour_bg: '#FFDB99'
-  description: 'Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.'
-  sortOrder: 2
--
-  name: 'Low'
-  nameShort: 'L'
-  colour: '#d0d000'
-  colour_bg: '#ffffad'
-  description: 'Low severity, requiring little to no readiness, action, individual support or differentiation.'
-  sortOrder: 1
-");
+        return Yaml::parse(file_get_contents(__DIR__ . '/AlertLevelCoreData.yaml'));
     }
 }

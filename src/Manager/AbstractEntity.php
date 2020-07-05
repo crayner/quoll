@@ -16,7 +16,7 @@
  */
 namespace App\Manager;
 
-use App\Modules\School\Entity\Scale;
+use App\Modules\System\Entity\Action;
 use App\Provider\ProviderFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -64,11 +64,14 @@ abstract class AbstractEntity implements EntityInterface
     {
         foreach($data as $name=>$value) {
             if (is_array($value)) {
-                if (method_exists($this, 'isArrayField') && $this->isArrayField($name)) {
+                if ((method_exists($this, 'isArrayField') && $this->isArrayField($name))) {
                     $method = 'set' . ucfirst($name);
                     $this->$method($value);
-                } else if ($name === 'convertDate') {
-                    $this->convertDate($value);
+                } else if (array_key_first($value) === 'convertDate') {
+                    $this->convertDate($name, $value);
+                } else if (array_key_first($value) === 'arrayField') {
+                    $method = 'set' . ucfirst($name);
+                    $this->$method($value['arrayField']);
                 } else {
                     $resolver = new OptionsResolver();
                     $resolver->setRequired(
@@ -82,7 +85,6 @@ abstract class AbstractEntity implements EntityInterface
                     $table = $value['table'];
                     $entity = ProviderFactory::create($table)->findOneByAndStore($value['reference'], $value['value']);
                     $method = 'set' . ucfirst($name);
-                    if (!$entity instanceof Scale) dd($entity, ProviderFactory::create($table));
                     $this->$method($entity);
                 }
             } else {
@@ -95,14 +97,16 @@ abstract class AbstractEntity implements EntityInterface
 
     /**
      * convertDate
+     * @param string $name
      * @param array $field
      * @return mixed
      * @throws \Exception
+     * 4/07/2020 12:45
      */
-    public function convertDate(array $field)
+    public function convertDate(string $name, array $field)
     {
-        $method = 'set' . ucfirst(array_key_first($field));
-        $value = reset($field);
+        $method = 'set' . ucfirst($name);
+        $value = $field['convertDate'];
         return $this->$method(new \DateTimeImmutable($value));
     }
 }

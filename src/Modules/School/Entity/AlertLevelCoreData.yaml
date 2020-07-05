@@ -1,0 +1,21 @@
+-
+    name: 'High'
+    abbreviation: 'H'
+    colour: '#8b0000'
+    colourBG: '#FFB6C1'
+    description: 'Highest level of severity, requiring intense and immediate readiness, action, individual support or differentiation.'
+    priority: 3
+-
+    name: 'Medium'
+    abbreviation: 'M'
+    colour: '#e69500'
+    colourBG: '#FFDB99'
+    description: 'Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.'
+    priority: 2
+-
+    name: 'Low'
+    abbreviation: 'L'
+    colour: '#d0d000'
+    colourBG: '#ffffad'
+    description: 'Low severity, requiring little to no readiness, action, individual support or differentiation.'
+    priority: 1

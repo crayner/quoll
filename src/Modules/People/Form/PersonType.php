@@ -31,7 +31,7 @@ use App\Modules\People\Manager\AddressManager;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\House;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -207,7 +207,7 @@ class PersonType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $emailConstraint = [];
-        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('People','uniqueEmailAddress'))
+        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People','uniqueEmailAddress'))
             $emailConstraint = [
                 new UniqueEntity(['fields' => ['email'], 'ignoreNull' => true]),
             ];

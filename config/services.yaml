@@ -133,3 +133,7 @@ services:
     App\Modules\Security\Manager\GoogleAuthenticator:
         arguments:
             $logger: '@monolog.logger.security'
+
+    App\Modules\System\Manager\SettingManager:
+        arguments:
+            $settings: "%settings%"

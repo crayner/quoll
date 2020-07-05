@@ -315,6 +315,11 @@ class FinanceBillingSchedule extends AbstractEntity
         return [];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 4/07/2020 11:08
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__FinanceBillingSchedule` (
@@ -336,6 +341,11 @@ class FinanceBillingSchedule extends AbstractEntity
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 4/07/2020 11:08
+     */
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__FinancebillingSchedule`
@@ -344,8 +354,13 @@ class FinanceBillingSchedule extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`creator`) REFERENCES `__prefix__Person` (`id`);";
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 4/07/2020 11:08
+     */
     public static function getVersion(): string
     {
-        // TODO: Implement getVersion() method.
+        return static::VERSION;
     }
 }

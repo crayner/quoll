@@ -17,7 +17,7 @@
 
 namespace App\Modules\Security\Form;
 
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
@@ -47,7 +47,7 @@ class PasswordGeneratorType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $provider = ProviderFactory::create(Setting::class);
+        $provider = SettingFactory::getSettingManager();
         $resolver->setDefault('generateButton', [
             'title' => TranslationHelper::translate('Generate', [], 'Security'),
             'class' => 'button generatePassword -ml-px button-right',

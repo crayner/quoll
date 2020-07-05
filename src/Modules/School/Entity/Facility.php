@@ -15,7 +15,7 @@ namespace App\Modules\School\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -493,7 +493,7 @@ class Facility extends AbstractEntity
      */
     public static function getTypeList(): array
     {
-        $x = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('School Admin', 'facilityTypes');
+        $x = SettingFactory::getSettingManager()->getSettingByScopeAsArray('School Admin', 'facilityTypes');
         asort($x);
         $result = [];
         foreach($x as $name) {

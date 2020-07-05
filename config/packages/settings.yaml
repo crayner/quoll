@@ -1,0 +1,1081 @@
+parameters:
+    settings:
+        System:
+            emailLink:
+                value: null
+                type: string
+            webLink:
+                value: null
+                type: string
+            defaultAssessmentScale:
+                value: 7
+                type: integer
+            country:
+                value: ~
+                type: string
+            sessionDuration:
+                value: 900
+                type: integer
+            organisationLogo:
+                value: null
+                type: image
+            calendarFeed:
+                value: craig@craigrayner.com
+                type: string
+            organisationAdministrator:
+                value: null
+                type: App\Modules\People\Entity\Person
+            organisationDBA:
+                value: null
+                type: App\Modules\People\Entity\Person
+            organisationAdmissions:
+                value: null
+                type: App\Modules\People\Entity\Person
+            firstDayOfTheWeek:
+                value: Sunday
+                type: string
+            organisationHR:
+                value: null
+                type: App\Modules\People\Entity\Person
+            organisationName:
+                value: null
+                type: string
+            mainMenuCategoryOrder:
+                value:
+                    - Admin
+                    - Assess
+                    - Learn
+                    - People
+                    - Other
+                type: array
+            nameFormatStaffFormal:
+                value: '[title] [preferredName:1]. [surname]'
+                type: string
+            nameFormatStaffFormalReversed:
+                value: '[title] [surname], [preferredName:1].'
+                type: string
+            nameFormatStaffInformal:
+                value: '[preferredName] [surname]'
+                type: string
+            nameFormatStaffInformalReversed:
+                value: '[surname], [preferredName]'
+                type: string
+            organisationBackground:
+                value: null
+                type: image
+            organisationAbbreviation:
+                value: HRS
+                type: string
+            version:
+                value: 0.0.00
+                type: string
+            organisationEmail:
+                value: null
+                type: string
+            installType:
+                value: Development
+                type: string
+            statsCollection:
+                value: true
+                type: boolean
+            pagination:
+                value: 25
+                type: integer
+            passwordPolicyAlpha:
+                value: true
+                type: boolean
+            passwordPolicyNumeric:
+                value: true
+                type: boolean
+            passwordPolicyNonAlphaNumeric:
+                value: false
+                type: boolean
+            systemName:
+                value: Quoll
+                type: string
+            passwordPolicyMinLength:
+                value: 8
+                type: integer
+            allowableHTML:
+                value:
+                    - 'br[style]'
+                    - 'strong[style]'
+                    - 'em[style]'
+                    - 'span[style]'
+                    - 'p[style]'
+                    - 'address[style]'
+                    - 'pre[style]'
+                    - 'h1[style]'
+                    - 'h2[style]'
+                    - 'h3[style]'
+                    - 'h4[style]'
+                    - 'h5[style]'
+                    - 'h6[style]'
+                    - 'table[style]'
+                    - 'thead[style]'
+                    - 'tbody[style]'
+                    - 'tfoot[style]'
+                    - 'tr[style]'
+                    - 'td[style|colspan|rowspan]'
+                    - 'ol[style]'
+                    - 'ul[style]'
+                    - 'li[style]'
+                    - 'blockquote[style]'
+                    - 'a[style|target|href]'
+                    - 'img[style|class|src|width|height]'
+                    - 'video[style]'
+                    - 'source[style]'
+                    - 'hr[style]'
+                    - 'iframe[style|width|height|src|frameborder|allowfullscreen]'
+                    - 'embed[style]'
+                    - 'div[style]'
+                    - 'sup[style]'
+                    - 'sub[style]'
+                type: array
+            indexText:
+                value: 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'
+                type: string
+            currency:
+                value: null
+                type: string
+            enablePayments:
+                value: false
+                type: boolean
+            paypalAPIUsername:
+                value: null
+                type: string
+            paypalAPIPassword:
+                value: null
+                type: string
+            paypalAPISignature:
+                value: null
+                type: string
+            analytics:
+                value: null
+                type: string
+        'Application Form':
+            notificationStudentMessage:
+                value: null
+                type: string
+            studentDefaultEmail:
+                value: null
+                type: string
+            studentDefaultWebsite:
+                value: null
+                type: string
+            autoHouseAssign:
+                value: false
+                type: boolean
+            usernameFormat:
+                value: '[preferredNameInitial][surname]'
+                type: string
+            introduction:
+                value: null
+                type: string
+            internalDocuments:
+                value: null
+                type: string
+            postscript:
+                value: null
+                type: string
+            scholarshipOptionsActive:
+                value: true
+                type: boolean
+            paymentOptionsActive:
+                value: true
+                type: boolean
+            senOptionsActive:
+                value: true
+                type: boolean
+            scholarships:
+                value: null
+                type: string
+            availableYearsOfEntry:
+                value: null
+                type: string
+            enableLimitedYearsOfEntry:
+                value: false
+                type: boolean
+            agreement:
+                value: null
+                type: string
+            publicApplications:
+                value: false
+                type: boolean
+            milestones:
+                value: null
+                type: string
+            howDidYouHear:
+                value:
+                    - Advertisement
+                    - 'Personal Recommendation'
+                    - 'World Wide Web'
+                    - Others
+                type: array
+            applicationFee:
+                value: !!float 0
+                type: float
+            requiredDocuments:
+                value: null
+                type: array
+            requiredDocumentsCompulsory:
+                value: false
+                type: boolean
+            requiredDocumentsText:
+                value: null
+                type: string
+            notificationStudentDefault:
+                value: true
+                type: boolean
+            languageOptionsActive:
+                value: false
+                type: boolean
+            languageOptionsBlurb:
+                value: null
+                type: string
+            languageOptionsLanguageList:
+                value: null
+                type: array
+            notificationParentsDefault:
+                value: true
+                type: boolean
+            notificationParentsMessage:
+                value: null
+                type: string
+        Finance:
+            invoiceNumber:
+                value: 'Invoice ID'
+                type: string
+            financeOnlinePaymentEnabled:
+                value: false
+                type: boolean
+            financeOnlinePaymentThreshold:
+                value: null
+                type: string
+            budgetCategories:
+                value:
+                    - Academic
+                    - Administration
+                    - Capital
+                type: array
+            expenseApprovalType:
+                value: 'One Of'
+                type: string
+            budgetLevelExpenseApproval:
+                value: true
+                type: boolean
+            expenseRequestTemplate:
+                value: null
+                type: string
+            purchasingOfficer:
+                value: null
+                type: string
+            reimbursementOfficer:
+                value: null
+                type: string
+            allowExpenseAdd:
+                value: true
+                type: string
+            hideItemisation:
+                value: false
+                type: boolean
+            invoiceeNameStyle:
+                value: 'Surname, Preferred Name'
+                type: string
+            invoiceText:
+                value: null
+                type: string
+            invoiceNotes:
+                value: null
+                type: string
+            receiptText:
+                value: null
+                type: string
+            receiptNotes:
+                value: null
+                type: string
+            reminder1Text:
+                value: null
+                type: string
+            reminder2Text:
+                value: null
+                type: string
+            reminder3Text:
+                value: null
+                type: string
+            email:
+                value: craig@craigrayner.com
+                type: string
+        People:
+            departureReasons:
+                value: null
+                type: string
+            enablePublicRegistration:
+                value: true
+                type: boolean
+            publicRegistrationMinimumAge:
+                value: 13
+                type: integer
+            publicRegistrationDefaultStatus:
+                value: 'Pending Approval'
+                type: string
+            publicRegistrationDefaultRole:
+                value: ROLE_STUDENT
+                type: string
+            publicRegistrationIntro:
+                value: null
+                type: string
+            publicRegistrationPrivacyStatement:
+                value: 'By registering for this site you are giving permission for your personal data to be used and shared within this organisation and its websites. We will not share your personal data outside our organisation.'
+                type: string
+            publicRegistrationAgreement:
+                value: 'In joining this site, and checking the box below, I agree to act lawfully, ethically and with respect for others. I agree to use this site for learning purposes only, and understand that access may be withdrawn at any time, at the discretion of the site''s administrators.'
+                type: string
+            publicRegistrationPostscript:
+                value: null
+                type: string
+            religions:
+                value:
+                    - ''''
+                    - Nonreligious/Agnostic/Atheist
+                    - Buddhism
+                    - Christianity
+                    - Hinduism
+                    - Islam
+                    - Judaism
+                    - Other
+                type: array
+            uniqueEmailAddress:
+                value: true
+                type: boolean
+            ethnicity:
+                value: null
+                type: string
+            nationality:
+                value: null
+                type: string
+            residencyStatus:
+                value: null
+                type: string
+            personalDataUpdaterRequiredFields:
+                value:
+                    Staff: 
+                        title: required
+                        surname: required
+                        firstName: ~
+                        preferredName: required
+                        officialName: required
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration:
+                    Student:
+                        title: required
+                        surname: required
+                        firstName: ~
+                        preferredName: required
+                        officialName: required
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration:
+                    Parent:
+                        title: required
+                        surname: required
+                        firstName: ~
+                        preferredName: required
+                        officialName: required
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration: ~
+                    Other: 
+                        title: required
+                        surname: required
+                        firstName: ~
+                        preferredName: required
+                        officialName: required
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration: ~
+                type: array
+            personalBackground:
+                value: true
+                type: boolean
+            dayTypeOptions:
+                value: null
+                type: string
+            dayTypeText:
+                value: null
+                type: string
+            privacy:
+                value: false
+                type: boolean
+            privacyBlurb:
+                value: null
+                type: string
+            privacyOptions:
+                value: null
+                type: string
+        'Mark Book':
+            personalisedWarnings:
+                value: true
+                type: boolean
+            attainmentAlternativeName:
+                value: null
+                type: string
+            effortAlternativeName:
+                value: null
+                type: string
+            attainmentAlternativeNameAbrev:
+                value: null
+                type: string
+            effortAlternativeNameAbrev:
+                value: null
+                type: string
+            enableColumnWeighting:
+                value: false
+                type: boolean
+            enableRawAttainment:
+                value: false
+                type: boolean
+            enableGroupByTerm:
+                value: false
+                type: boolean
+            enableEffort:
+                value: true
+                type: boolean
+            enableRubrics:
+                value: true
+                type: boolean
+            enableDisplayCumulativeMarks:
+                value: false
+                type: boolean
+            enableModifiedAssessment:
+                value: false
+                type: boolean
+            markBookType:
+                value:
+                    - Essay
+                    - Exam
+                    - Homework
+                    - Reflection
+                    - Test
+                    - Unit
+                    - 'End of Year'
+                    - Other
+                type: array
+            showStudentAttainmentWarning:
+                value: true
+                type: boolean
+            showStudentEffortWarning:
+                value: true
+                type: string
+            showParentAttainmentWarning:
+                value: true
+                type: string
+            showParentEffortWarning:
+                value: true
+                type: boolean
+        Activities:
+            disableExternalProviderSignup:
+                value: false
+                type: boolean
+            hideExternalProviderCost:
+                value: false
+                type: boolean
+            access:
+                value: Register
+                type: string
+            payment:
+                value: 'Per Activity'
+                type: string
+            enrolmentType:
+                value: Competitive
+                type: string
+            backupChoice:
+                value: true
+                type: boolean
+            activityTypes:
+                value:
+                    - Creativity
+                    - Action
+                    - Service
+                type: array
+            dateType:
+                value: Term
+                type: string
+            maxPerTerm:
+                value: 0
+                type: integer
+        'School Admin':
+            studentAgreementOptions:
+                value: null
+                type: string
+            facilityTypes:
+                value:
+                    - Classroom
+                    - Hall
+                    - Laboratory
+                    - Library
+                    - Office
+                    - Outdoor
+                    - Performance
+                    - Staffroom
+                    - Storage
+                    - Study
+                    - Undercover
+                    - Other
+                type: array
+            staffDashboardDefaultTab:
+                value: null
+                type: string
+            studentDashboardDefaultTab:
+                value: null
+                type: string
+            parentDashboardDefaultTab:
+                value: Timetable
+                type: string
+            primaryExternalAssessmentByYearGroup:
+                value:
+                    - '1-2_KS3 Target Grades'
+                    - '1-3_GCSE Target Grades'
+                    - '1-1_Scores'
+                type: array
+        Planner:
+            parentWeeklyEmailSummaryIncludeBehaviour:
+                value: true
+                type: boolean
+            makeUnitsPublic:
+                value: true
+                type: boolean
+            shareUnitOutline:
+                value: false
+                type: boolean
+            parentWeeklyEmailSummaryIncludeMarkBook:
+                value: false
+                type: boolean
+            lessonDetailsTemplate:
+                value: null
+                type: string
+            teachersNotesTemplate:
+                value: null
+                type: string
+            smartBlockTemplate:
+                value: null
+                type: string
+            unitOutlineTemplate:
+                value: null
+                type: string
+            allowOutcomeEditing:
+                value: true
+                type: boolean
+            sharingDefaultParents:
+                value: true
+                type: boolean
+            sharingDefaultStudents:
+                value: true
+                type: boolean
+        Departments:
+            makeDepartmentsPublic:
+                value: false
+                type: boolean
+        Messenger:
+            messageBubbleWidthType:
+                value: Regular
+                type: string
+            messageBubbleBGColor:
+                value: null
+                type: string
+            messageBubbleAutoHide:
+                value: true
+                type: boolean
+            enableHomeScreenWidget:
+                value: false
+                type: boolean
+            messageBcc:
+                value: null
+                type: string
+            smsGateway:
+                value: null
+                type: string
+            smsSenderID:
+                value: null
+                type: string
+            smsUsername:
+                value: null
+                type: string
+            smsPassword:
+                value: null
+                type: string
+            smsURL:
+                value: null
+                type: string
+            smsURLCredit:
+                value: null
+                type: string
+        Students:
+            enableStudentNotes:
+                value: true
+                type: boolean
+            applicationFormSENText:
+                value: 'Please indicate whether or not your child has any known, or suspected, special educational needs, or whether they have been assessed for any such needs in the past. Provide any comments or information concerning your child''s development that may be relevant to your child''s performance in the classroom or elsewhere? Incorrect or withheld information may affect continued enrolment.'
+                type: string
+            applicationFormRefereeLink:
+                value: null
+                type: string
+            medicalIllnessSymptoms:
+                value:
+                    - Fever
+                    - Cough
+                    - Cold
+                    - Vomiting
+                    - Diarrhea
+                type: array
+            noteCreationNotification:
+                value: Tutors
+                type: string
+            academicAlertLowThreshold:
+                value: 3
+                type: integer
+            academicAlertMediumThreshold:
+                value: 6
+                type: integer
+            academicAlertHighThreshold:
+                value: 9
+                type: integer
+            behaviourAlertLowThreshold:
+                value: 3
+                type: integer
+            behaviourAlertMediumThreshold:
+                value: 6
+                type: integer
+            behaviourAlertHighThreshold:
+                value: 9
+                type: integer
+            extendedBriefProfile:
+                value: false
+                type: boolean
+        Behaviour:
+            enableDescriptors:
+                value: true
+                type: boolean
+            enableLevels:
+                value: true
+                type: boolean
+            enableBehaviourLetters:
+                value: false
+                type: boolean
+            behaviourLettersLetter1Count:
+                value: 3
+                type: integer
+            behaviourLettersLetter1Text:
+                value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the first communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+                type: string
+            behaviourLettersLetter2Count:
+                value: 6
+                type: integer
+            behaviourLettersLetter2Text:
+                value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the second communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+                type: string
+            behaviourLettersLetter3Count:
+                value: 9
+                type: integer
+            behaviourLettersLetter3Text:
+                value: 'Dear Parent/Guardian,<br/><br/>This letter has been automatically generated to alert you to the fact that your child, [studentName], has reached [behaviourCount] negative behaviour incidents. Please see the list below for the details of these incidents:<br/><br/>[behaviourRecord]<br/><br/>This letter represents the final communication in a sequence of 3 potential alerts, each of which is more critical than the last.<br/><br/>If you would like more information on this matter, please contact your child''s tutor.'
+                type: string
+            positiveDescriptors:
+                value:
+                    - 'Attitude to learning'
+                    - Collaboration
+                    - 'Community spirit'
+                    - Creativity
+                    - Effort
+                    - Leadership
+                    - Participation
+                    - Persistence
+                    - 'Problem solving'
+                    - 'Quality of work'
+                    - Values
+                type: array
+            negativeDescriptors:
+                value:
+                    - 'Classwork - Late'
+                    - 'Classwork - Incomplete'
+                    - 'Classwork - Unacceptable'
+                    - Disrespectful
+                    - Disruptive
+                    - 'Homework - Late'
+                    - 'Homework - Incomplete'
+                    - 'Homework - Unacceptable'
+                    - 'ICT Misuse'
+                    - Truancy
+                    - Other
+                type: array
+            levels:
+                value:
+                    - ''
+                    - 'Stage 1'
+                    - 'Stage 1 (Actioned)'
+                    - 'Stage 2'
+                    - 'Stage 2 (Actioned)'
+                    - 'Stage 3'
+                    - 'Stage 3 (Actioned)'
+                    - Actioned
+                type: array
+            policyLink:
+                value: null
+                type: string
+        'Formal Assessment':
+            internalAssessmentTypes:
+                value:
+                    - 'Expected Grade'
+                    - 'Predicted Grade'
+                    - 'Target Grade'
+                type: array
+        'System Admin':
+            customAlarmSound:
+                value: null
+                type: string
+            exportDefaultFileType:
+                value: Excel2007
+                type: string
+        Tracking:
+            externalAssessmentDataPoints:
+                value: null
+                type: array
+            internalAssessmentDataPoints:
+                value: null
+                type: array
+        Staff:
+            jobOpeningDescriptionTemplate:
+                value: '<table style=''''width: 100%''''> <tr> <td colspan=2 style=''''vertical-align: top''''> <span style=''''text-decoration: underline; font-weight: bold''''>Job Description</span><br/> <br/> </td> </tr> <tr> <td style=''''width: 50%; vertical-align: top''''> <span style=''''text-decoration: underline; font-weight: bold''''>Responsibilities</span><br/> <ul style=''''margin-top:0px''''> <li></li> <li></li> </ul> </td> <td style=''''width: 50%; vertical-align: top''''> <span style=''''text-decoration: underline; font-weight: bold''''>Required Skills/Characteristics</span><br/> <ul style=''''margin-top:0px''''> <li></li> <li></li> </ul> </td> </tr> <tr> <td style=''''width: 50%; vertical-align: top''''> <span style=''''text-decoration: underline; font-weight: bold''''>Remuneration</span><br/> <ul style=''''margin-top:0px''''> <li></li> <li></li> </ul> </td> <td style=''''width: 50%; vertical-align: top''''> <span style=''''text-decoration: underline; font-weight: bold''''>Other Details </span><br/> <ul style=''''margin-top: 0px''''> <li></li> <li></li> </ul> </td> </tr> </table>'
+                type: string
+            staffApplicationFormIntroduction:
+                value: null
+                type: string
+            staffApplicationFormPostscript:
+                value: null
+                type: string
+            staffApplicationFormAgreement:
+                value: 'In submitting this form, I confirm that all information provided above is accurate and complete to the best of my knowledge.'
+                type: string
+            staffApplicationFormMilestones:
+                value:
+                    - 'Short List'
+                    - 'First Interview'
+                    - 'Second Interview'
+                    - 'Offer Made'
+                    - 'Offer Accepted'
+                    - 'Contract Issued'
+                    - 'Contract Signed'
+                type: array
+            staffApplicationFormRequiredDocuments:
+                value: 'Curriculum Vitae'
+                type: string
+            staffApplicationFormRequiredDocumentsCompulsory:
+                value: true
+                type: boolean
+            staffApplicationFormRequiredDocumentsText:
+                value: 'Please submit the following document(s) to ensure your application can be processed without delay.'
+                type: string
+            staffApplicationFormNotificationDefault:
+                value: true
+                type: boolean
+            staffApplicationFormNotificationMessage:
+                value: null
+                type: string
+            staffApplicationFormDefaultEmail:
+                value: null
+                type: string
+            staffApplicationFormDefaultWebsite:
+                value: null
+                type: string
+            staffApplicationFormUsernameFormat:
+                value: '[preferredNameInitial].[surname]'
+                type: string
+            staffApplicationFormQuestions:
+                value: '<span style=''text-decoration: underline; font-weight: bold''>Why are you applying for this role?</span><br/><p></p>'
+                type: string
+            salaryScalePositions:
+                value:
+                    - '1'
+                    - '2'
+                    - '3'
+                    - '4'
+                    - '5'
+                    - '6'
+                    - '7'
+                    - '8'
+                    - '9'
+                    - '10'
+                type: array
+            responsibilityPosts:
+                value: null
+                type: string
+            applicationFormRefereeLink:
+                value: null
+                type: string
+            substituteTypes:
+                value:
+                    - 'Internal Substitute'
+                    - 'External Substitute'
+                type: array
+            urgencyThreshold:
+                value: 3
+                type: integer
+            urgentNotifications:
+                value: false
+                type: boolean
+            absenceApprovers:
+                value: null
+                type: string
+            absenceFullDayThreshold:
+                value: 6
+                type: integer
+            absenceHalfDayThreshold:
+                value: 2
+                type: integer
+            absenceNotificationGroups:
+                value: null
+                type: string
+        Attendance:
+            attendanceReasons:
+                value:
+                    - Pending
+                    - Education
+                    - Family
+                    - Medical
+                    - Other
+                type: array
+            attendanceMedicalReasons:
+                value: Medical
+                type: string
+            attendanceEnableMedicalTracking:
+                value: false
+                type: boolean
+            attendanceCLINotifyByRollGroup:
+                value: true
+                type: boolean
+            attendanceCLINotifyByClass:
+                value: true
+                type: boolean
+            attendanceCLIAdditionalUsers:
+                value: null
+                type: string
+            studentSelfRegistrationIPAddresses:
+                value: null
+                type: string
+            countClassAsSchool:
+                value: false
+                type: boolean
+            defaultRollGroupAttendanceType:
+                value: Present
+                type: string
+            defaultClassAttendanceType:
+                value: Present
+                type: string
+            selfRegistrationRedirect:
+                value: false
+                type: boolean
+            crossFillClasses:
+                value: false
+                type: boolean
+        'Staff Application Form':
+            staffApplicationFormPublicApplications:
+                value: false
+                type: boolean
+        'Individual Needs':
+            targetsTemplate:
+                value: null
+                type: string
+            teachingStrategiesTemplate:
+                value: null
+                type: string
+            notesReviewTemplate:
+                value: null
+                type: string
+        'Timetable Admin':
+            autoEnrolCourses:
+                value: false
+                type: boolean
+        'Data Updater':
+            cutoffDate:
+                value: null
+                type: string
+            redirectByRoleCategory:
+                value: Parent
+                type: string
+            requiredUpdates:
+                value: false
+                type: boolean
+            requiredUpdatesByType:
+                value:
+                    - Personal
+                    - Family
+                type: array
+        Resources:
+            categories:
+                value:
+                    - Article
+                    - Book
+                    - Document
+                    - Graphic
+                    - Idea
+                    - Music
+                    - Object
+                    - Painting
+                    - Person
+                    - Photo
+                    - Place
+                    - Poetry
+                    - Prose
+                    - Rubric
+                    - Text
+                    - Video
+                    - Website
+                    - 'Work Sample'
+                    - Other
+                type: array
+            purposesGeneral:
+                value:
+                    - 'Assessment Aid'
+                    - Concept
+                    - Inspiration
+                    - 'Learner Profile'
+                    - 'Mass Mailer Attachment'
+                    - Provocation
+                    - Skill
+                    - 'Teaching and Learning Strategy'
+                    - Other
+                type: array
+            purposesRestricted:
+                value: null
+                type: array
+        Library:
+            defaultLoanLength:
+                value: 7
+                type: integer
+            browseBGColor:
+                value: null
+                type: string
+            browseBGImage:
+                value: null
+                type: image

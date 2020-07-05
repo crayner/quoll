@@ -22,7 +22,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\DisplaySettingsType;
 use App\Modules\System\Form\LocalisationSettingsType;
 use App\Modules\System\Form\MiscellaneousSettingsType;
@@ -58,7 +58,7 @@ class SettingController extends AbstractPageController
         $pageManager = $this->getPageManager();
         $request = $pageManager->getRequest();
 
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('System');
         $container = new Container();
         $manager->setTranslationDomain('System');
@@ -205,7 +205,7 @@ class SettingController extends AbstractPageController
     {
         $request = $this->getPageManager()->getRequest();
 
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
 
         // System Settings
         $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('display_settings')]);

@@ -17,7 +17,7 @@
 namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -81,7 +81,7 @@ class RequiredUpdates implements SpecialInterface {
      */
     public function __construct()
     {
-        $this->settings = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray( 'People', 'personalDataUpdaterRequiredFields');
+        $this->settings = SettingFactory::getSettingManager()->getSettingByScopeAsArray( 'People', 'personalDataUpdaterRequiredFields');
     }
 
 
@@ -187,7 +187,7 @@ class RequiredUpdates implements SpecialInterface {
         }
 
         $this->setSettings($updaterData);
-        ProviderFactory::create(Setting::class)->setSettingByScope('People', 'personalDataUpdaterRequiredFields', serialize($this->getSettings()));
+        SettingFactory::getSettingManager()->setSettingByScope('People', 'personalDataUpdaterRequiredFields', serialize($this->getSettings()));
         return $data;
     }
 

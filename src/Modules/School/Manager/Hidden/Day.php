@@ -2,7 +2,7 @@
 namespace App\Modules\School\Manager\Hidden;
 
 use App\Modules\School\Entity\DaysOfWeek;
-use App\Modules\System\Provider\SettingProvider;
+use App\Modules\System\Provider\SettingManager;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -28,7 +28,7 @@ class Day
 	protected $parameters;
 
 	/**
-	 * @var SettingProvider
+	 * @var SettingManager
 	 */
 	protected $settingProvider;
 
@@ -100,7 +100,7 @@ class Day
      */
 	public function __construct(?\DateTimeImmutable $date = null, ?int $weeks = null, CalendarDisplayManager $manager = null)
 	{
-		$this->settingProvider = ProviderFactory::create(Setting::class);
+		$this->settingProvider = SettingFactory::getSettingManager();
 		$this->parameters     = [];
 		$this->manager = $manager;
 		if ($date instanceof \DateTimeImmutable) {
@@ -354,9 +354,9 @@ class Day
     }
 
     /**
-     * @return SettingProvider
+     * @return SettingManager
      */
-    public function getSettingProvider(): SettingProvider
+    public function getSettingProvider(): SettingManager
     {
         return $this->settingProvider;
     }

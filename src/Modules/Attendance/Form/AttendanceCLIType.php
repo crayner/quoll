@@ -20,7 +20,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
@@ -39,7 +39,7 @@ class AttendanceCLIType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $people = [];
-        foreach(ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('Attendance', 'attendanceCLIAdditionalUsers') as $personID) {
+        foreach(SettingFactory::getSettingManager()->getSettingByScopeAsArray('Attendance', 'attendanceCLIAdditionalUsers') as $personID) {
             $people[] = ProviderFactory::getRepository(Person::class)->find($personID);
         }
         if ($people === []) {

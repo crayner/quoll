@@ -20,7 +20,7 @@ namespace App\Modules\System\Manager;
 use App\Manager\ParameterFileManager;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;

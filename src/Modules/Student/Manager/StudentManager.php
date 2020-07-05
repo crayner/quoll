@@ -24,7 +24,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AlertLevel;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Voter\StudentProfileVoter;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -71,7 +71,7 @@ class StudentManager
 
             $results = ProviderFactory::getRepository(MarkBookEntry::class)->findAttainmentOrEffortConcerns($student, AcademicYearHelper::getCurrentAcademicYear());
 
-            $settingProvider = ProviderFactory::create(Setting::class);
+            $settingProvider = SettingFactory::getSettingManager();
             $academicAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertLowThreshold');
             $academicAlertMediumThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertMediumThreshold');
             $academicAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertHighThreshold');

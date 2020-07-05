@@ -22,7 +22,7 @@ use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
@@ -80,7 +80,7 @@ class MarkBookSettingType extends AbstractType
                 ]
             )
         ;
-        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'defaultAssessmentScale')) {
+        if (SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'defaultAssessmentScale')) {
             $builder
                 ->add('enableColumnWeightingDescription', ParagraphType::class,
                     [

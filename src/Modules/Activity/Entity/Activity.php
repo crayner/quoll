@@ -18,7 +18,7 @@ use App\Manager\Traits\BooleanList;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\AcademicYearTerm;
 use App\Modules\School\Entity\YearGroup;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -408,7 +408,7 @@ class Activity extends AbstractEntity
      */
     public static function getActivityTypeList(): array
     {
-        return ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('Activities', 'activityTypes');
+        return SettingFactory::getSettingManager()->getSettingByScopeAsArray('Activities', 'activityTypes');
     }
 
     /**
@@ -771,7 +771,7 @@ class Activity extends AbstractEntity
      */
     public function getTranslatedProvider(): string
     {
-        return $this->getProvider() === 'External' ? TranslationHelper::translate('External', [], 'Activities') : ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationAbbreviation');
+        return $this->getProvider() === 'External' ? TranslationHelper::translate('External', [], 'Activities') : SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationAbbreviation');
     }
 
     /**
@@ -780,7 +780,7 @@ class Activity extends AbstractEntity
      */
     public function getAccess(): bool
     {
-        return in_array(ProviderFactory::create(Setting::class)->getSettingByScopeAsString('Activities', 'access'), ['View', 'Register']);
+        return in_array(SettingFactory::getSettingManager()->getSettingByScopeAsString('Activities', 'access'), ['View', 'Register']);
     }
 
     /**

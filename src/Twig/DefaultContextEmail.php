@@ -16,7 +16,7 @@
  */
 namespace App\Twig;
 
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Header\Headers;
@@ -54,8 +54,8 @@ class DefaultContextEmail
     public function context(array $context): DefaultContextEmail
     {
         $constants = [
-            'system_name' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'systemName'),
-            'organisation_name' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName'),
+            'system_name' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'systemName'),
+            'organisation_name' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationName'),
             'title' => 'Kookaburra',
         ];
         $this->getEmail()->context(array_merge($constants, $context));

@@ -374,7 +374,7 @@ class SystemSettings
     /**
      * @return string|null
      */
-    public function getOrganisationNameShort(): ?string
+    public function getOrganisationAbbreviation(): ?string
     {
         return $this->organisationAbbreviation;
     }

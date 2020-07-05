@@ -153,7 +153,7 @@ class INPersonDescriptor extends AbstractEntity
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
                     `person` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)', 
                     `in_descriptor` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)', 
-                    'alert_level' CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)', 
+                    `alert_level` CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)', 
                     INDEX `person` (`person`), 
                     INDEX `in_descriptor` (`in_descriptor`), 
                     INDEX `alert_level` (`alert_level`), 

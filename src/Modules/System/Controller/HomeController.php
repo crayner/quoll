@@ -20,7 +20,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Hook;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
@@ -76,7 +76,7 @@ class HomeController extends AbstractPageController
         $login->setToken($this->get('security.csrf.token_manager')->getToken('authenticate'));
         $sidebar->addContent($login);
 
-        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
+        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
         try {

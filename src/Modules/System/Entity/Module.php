@@ -536,7 +536,7 @@ class Module extends AbstractEntity
                     `name` VARCHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
                     `description` longtext NOT NULL,
                     `entry_route` VARCHAR(191) NOT NULL,
-                    `security_roles` LONGTEXT NOT NULL COMMENT '(DC2Type:simple_array)',
+                    `security_roles` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                     `type` VARCHAR(12) NOT NULL DEFAULT 'Core',
                     `active` VARCHAR(1) NOT NULL DEFAULT 'Y',
                     `category` VARCHAR(10) NOT NULL,
@@ -546,7 +546,7 @@ class Module extends AbstractEntity
                     PRIMARY KEY (`id`),
                     UNIQUE KEY `name` (`name`),
                     KEY `category` (`category`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+                ) ENGINE=InnoDB DEFAULT CHARSET=`utf8mb4` COLLATE=`utf8mb4_general_ci`;"];
     }
 
     public function foreignConstraints(): string
@@ -561,7 +561,7 @@ class Module extends AbstractEntity
      */
     public function coreData(): array
     {
-        return Yaml::parse(file_get_contents('ModuleCoreData.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/ModuleCoreData.yaml'));
     }
 
     /**

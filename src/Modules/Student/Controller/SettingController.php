@@ -24,7 +24,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\Student\Entity\StudentNoteCategory;
 use App\Modules\Student\Form\StudentSettingsType;
 use App\Modules\Student\Pagination\StudentNoteCategoryPagination;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -51,7 +51,7 @@ class SettingController extends AbstractPageController
      */
     public function studentSettings(ContainerManager $manager, StudentNoteCategoryPagination $pagination, string $tabName = 'Categories')
     {
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $request = $this->getRequest();
         $container = new Container($tabName);
 

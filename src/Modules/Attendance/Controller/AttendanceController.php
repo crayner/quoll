@@ -30,7 +30,7 @@ use App\Modules\Attendance\Form\AttendanceReasonType;
 use App\Modules\Attendance\Form\AttendanceRegistrationType;
 use App\Modules\Attendance\Pagination\AttendanceCodePagination;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -59,7 +59,7 @@ class AttendanceController extends AbstractPageController
      */
     public function list(ContainerManager $manager, AttendanceCodePagination $pagination, string $tabName = 'Code')
     {
-        ProviderFactory::create(Setting::class)->getSettingsByScope('Attendance');
+        SettingFactory::getSettingManager()->getSettingsByScope('Attendance');
 
         if ($this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '') {
             return $this->saveSettings($tabName, $manager);
@@ -110,9 +110,9 @@ class AttendanceController extends AbstractPageController
     {
         $form = $this->getForm($tabName);
 
-        ProviderFactory::create(Setting::class)->handleSettingsForm($form,$this->getRequest());
-        $data['status'] = ProviderFactory::create(Setting::class)->getStatus();
-        $data['errors'] = ProviderFactory::create(Setting::class)->getErrors();
+        SettingFactory::getSettingManager()->handleSettingsForm($form,$this->getRequest());
+        $data['status'] = SettingFactory::getSettingManager()->getStatus();
+        $data['errors'] = SettingFactory::getSettingManager()->getErrors();
         if ($data['status'] === 'success') {
             $form = $this->getForm($tabName);
         }

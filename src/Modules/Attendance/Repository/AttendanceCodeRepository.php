@@ -15,6 +15,7 @@ namespace App\Modules\Attendance\Repository;
 
 use App\Modules\Attendance\Entity\AttendanceCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -94,7 +95,7 @@ class AttendanceCodeRepository extends ServiceEntityRepository
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleScalarResult()) + 1;
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException | TableNotFoundException $e) {
             return 1;
         }
     }

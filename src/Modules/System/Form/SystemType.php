@@ -22,7 +22,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Validator\Password;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\Entity\SystemSettings;
 use App\Provider\ProviderFactory;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -98,14 +98,13 @@ class SystemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $provider = ProviderFactory::create(Setting::class);
-        $systemName = $provider->getSettingByScope('System', 'systemName', true);
-        $installType = $provider->getSettingByScope('System', 'installType', true);
-        $orgName = $provider->getSettingByScope('System', 'organisationName', true);
-        $orgNameShort = $provider->getSettingByScope('System', 'organisationAbbreviation', true);
-        $country = $provider->getSettingByScope('System', 'country', true);
-
-        $currency = $provider->getSettingByScope('System', 'currency', true);
+        $provider = SettingFactory::getSettingManager();
+        $systemName = $provider->getSetting('System', 'systemName');
+        $installType = $provider->getSetting('System', 'installType');
+        $orgName = $provider->getSetting('System', 'organisationName');
+        $orgNameShort = $provider->getSetting('System', 'organisationAbbreviation');
+        $country = $provider->getSetting('System', 'country');
+        $currency = $provider->getSetting('System', 'currency');
 
         $builder
             ->add('userAccountHeader', HeaderType::class,
@@ -240,8 +239,8 @@ class SystemType extends AbstractType
             )
             ->add('systemName', TextType::class,
                 [
-                    'label' => $systemName ? $systemName->getNameDisplay() : 'System Name',
-                    'help' => $systemName ? $systemName->getDescription() : '',
+                    'label' => 'System.systemName.name',
+                    'help' => 'System.systemName.description',
                     'panel' => 'Settings',
                     'attr' => [
                         'class' => 'w-full',
@@ -254,8 +253,8 @@ class SystemType extends AbstractType
             )
             ->add('installType', EnumType::class,
                 [
-                    'label' => $installType ? $installType->getNameDisplay() : 'Install Type',
-                    'help' => $installType ? $installType->getDescription() : 'The purpose of this installation of Kookaburra',
+                    'label' => 'System.installType.name',
+                    'help' => 'System.installType.description',
                     'panel' => 'Settings',
                     'attr' => [
                         'class' => 'w-full',
@@ -269,8 +268,8 @@ class SystemType extends AbstractType
             )
             ->add('country', CountryType::class,
                 [
-                    'label' => $country ? $country->getNameDisplay() : 'Country',
-                    'help' => $country ? $country->getDescription() : 'The country the school is located in',
+                    'label' => 'System.country.name',
+                    'help' => 'System.country.description',
                     'panel' => 'Settings',
                     'alpha3' => true,
                     'placeholder' => ' ',
@@ -284,8 +283,8 @@ class SystemType extends AbstractType
             )
             ->add('currency', CurrencyType::class,
                 [
-                    'label' => $currency ? $currency->getNameDisplay() : 'Currency',
-                    'help' => $currency ? $currency->getDescription() : 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.',
+                    'label' => 'System.currency.name',
+                    'help' => 'System.currency.description',
                     'placeholder' => ' ',
                     'panel' => 'Settings',
                     'attr' => [
@@ -298,8 +297,8 @@ class SystemType extends AbstractType
             )
             ->add('timezone', TimezoneType::class,
                 [
-                    'label' => 'Timezone',
-                    'help' => 'The timezone where the school is located',
+                    'label' => 'System.timezone.name',
+                    'help' => 'System.timezone.description',
                     'placeholder' => ' ',
                     'panel' => 'Settings',
                     'attr' => [
@@ -324,8 +323,8 @@ class SystemType extends AbstractType
             )
             ->add('organisationName', TextType::class,
                 [
-                    'label' => $orgName ? $orgName->getNameDisplay() : 'Organisation Name',
-                    'help' => $orgName ? $orgName->getDescription() : '',
+                    'label' => 'System.organisationName.name',
+                    'help' => 'System.organisationName.description',
                     'panel' => 'Organisation',
                     'attr' => [
                         'class' => 'w-full',
@@ -338,8 +337,8 @@ class SystemType extends AbstractType
             )
             ->add('organisationAbbreviation', TextType::class,
                 [
-                    'label' => $orgNameShort ? $orgNameShort->getNameDisplay() : 'Organisation Initials',
-                    'help' => $orgNameShort ? $orgNameShort->getDescription() : '',
+                    'label' => 'System.organisationAbbreviation.name',
+                    'help' => 'System.organisationAbbreviation.description',
                     'panel' => 'Organisation',
                     'attr' => [
                         'class' => 'w-full',
@@ -367,7 +366,7 @@ class SystemType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'System',
+                'translation_domain' => 'Setting',
                 'data_class' => SystemSettings::class,
             ]
         );

@@ -18,6 +18,7 @@ namespace App\Listeners;
 
 use App\Manager\PageManager;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\ParameterBagHelper;
@@ -51,6 +52,7 @@ class PageListener implements EventSubscriberInterface
      * @param TranslationHelper $helper
      * @param CacheHelper $cache
      * @param SecurityHelper $securityHelper
+     * @param SettingFactory $settingFactory
      * @param ParameterBagInterface $parameterBag
      * @param ParameterBagHelper $parameterBagHelper
      */
@@ -60,6 +62,7 @@ class PageListener implements EventSubscriberInterface
         TranslationHelper $helper,
         CacheHelper $cache,
         SecurityHelper $securityHelper,
+        SettingFactory $settingFactory,
         ParameterBagInterface $parameterBag,
         ParameterBagHelper $parameterBagHelper
     ) {

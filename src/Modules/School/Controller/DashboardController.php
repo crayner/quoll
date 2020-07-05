@@ -19,7 +19,7 @@ namespace App\Modules\School\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Form\DashboardSettingsType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -51,7 +51,7 @@ class DashboardController extends AbstractPageController
             $data = [];
             $data['status'] = 'success';
             try {
-                $data['errors'] = ProviderFactory::create(Setting::class)->handleSettingsForm($form, $request);
+                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
                 if ($data['status'] === 'success')
                     $form = $this->createForm(DashboardSettingsType::class, null, ['action' => $this->generateUrl('dashboard_settings')]);
             } catch (\Exception $e) {

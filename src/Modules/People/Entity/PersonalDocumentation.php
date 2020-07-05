@@ -17,7 +17,7 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Validator as AssertLocal;
 use Doctrine\ORM\Mapping as ORM;
@@ -347,7 +347,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public static function getEthnicityList(): array
     {
-        if (($x = ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('User Admin', 'ethnicity')) !== []) {
+        if (($x = SettingFactory::getSettingManager()->getSettingByScopeAsArray('User Admin', 'ethnicity')) !== []) {
             return $x;
         }
         return self::$ethnicityList;
@@ -487,7 +487,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public static function getReligionList(): array
     {
-        return ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('User Admin', 'religions');
+        return SettingFactory::getSettingManager()->getSettingByScopeAsArray('User Admin', 'religions');
     }
 
     /**

@@ -21,7 +21,7 @@ use App\Modules\People\Form\Subscriber\PreferenceStaffSubscriber;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Entity\Theme;
 use Doctrine\ORM\EntityRepository;
 use App\Modules\People\Entity\Person;
@@ -70,7 +70,7 @@ class PreferenceSettingsType extends AbstractType
                 ]
             )
         ;
-        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('People', 'personalBackground')) {
+        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People', 'personalBackground')) {
             $builder
                 ->add('personalBackground', ReactFileType::class,
                     [

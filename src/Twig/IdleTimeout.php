@@ -17,7 +17,7 @@
 
 namespace App\Twig;
 
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
@@ -43,7 +43,7 @@ class IdleTimeout implements ContentInterface
     public function execute(): void
     {
         $this->addAttribute('route', UrlGeneratorHelper::getUrl('logout', ['timeout' => 'true'], true));
-        $this->addAttribute('duration',ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'sessionDuration', 1200));
+        $this->addAttribute('duration',SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'sessionDuration', 1200));
         $this->addAttribute('trans_sessionExpire',$this->translate('Your session is about to expire: you will be logged out shortly.'));
         $this->addAttribute('trans_stayConnected', $this->translate('Stay Connected'));
     }

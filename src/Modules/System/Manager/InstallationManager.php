@@ -20,7 +20,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\Scale;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -370,7 +370,7 @@ class InstallationManager
             ->setPerson($person);
         $em->persist($staff);
         $em->flush();
-        $settings = ProviderFactory::create(Setting::class);
+        $settings = SettingFactory::getSettingManager();
         $settings->setSettingByScope('System','organisationAdministrator', $person);
         $settings->setSettingByScope('System','organisationDBA', $person);
         $settings->setSettingByScope('System','organisationAdmissions', $person);
@@ -384,7 +384,7 @@ class InstallationManager
      */
     public function setSystemSettings(FormInterface $form)
     {
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
 
         $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
         $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());

@@ -20,6 +20,7 @@ namespace App\Modules\System\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Form\Type\SubmitOnlyType;
 use App\Manager\Hidden\Language;
@@ -44,6 +45,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class InstallationController
@@ -85,10 +87,10 @@ class InstallationController extends AbstractPageController
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('installation_mysql', [], UrlGeneratorInterface::ABSOLUTE_URL);
                 $fs = new Filesystem();
-                $fs->remove(__DIR__. '/../../../../var/cache/*');
+                $fs->remove(__DIR__ . '/../../../../var/cache/*');
                 return new JsonResponse($data);
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
                 $containerManager->singlePanel($form->createView());
                 $data['form'] = $containerManager->getFormFromContainer();
                 return new JsonResponse($data);
@@ -114,7 +116,7 @@ class InstallationController extends AbstractPageController
      */
     public function installationMySQLSettings(InstallationManager $manager, ContainerManager $containerManager, string $proceed = '0')
     {
-        $mysql = new MySQLSettings();
+        $mysql = new MySQLSettings($proceed);
         $manager->readCurrentMySQLSettings($mysql);
         $data = null;
 
@@ -136,18 +138,20 @@ class InstallationController extends AbstractPageController
                 }
             } else {
                 $containerManager->singlePanel($form->createView());
-                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
                 $data['form'] = $containerManager->getFormFromContainer();
             }
             return new JsonResponse($data);
         }
 
         $containerManager->singlePanel($form->createView());
+
         return $this->getPageManager()->render(
             [
                 'content' => $this->renderView('installation/mysql_settings.html.twig',
                     [
                         'message' => $data ? $data['errors'][0] : null,
+                        'proceed' => $proceed,
                     ]
                 ),
                 'containers' => $containerManager->getBuiltContainers(),
@@ -295,6 +299,8 @@ class InstallationController extends AbstractPageController
      * @Route("/installation/system/settings/{tabName}",name="installation_system_settings")
      * @param InstallationManager $installationManager
      * @param ContainerManager $manager
+     * @param string $tabName
+     * @return JsonResponse
      */
     public function systemSettings(InstallationManager $installationManager, ContainerManager $manager, string $tabName = 'System User')
     {
@@ -305,7 +311,7 @@ class InstallationController extends AbstractPageController
         $form = $this->createForm(SystemType::class, $settings, ['action' => $this->generateUrl('installation_system_settings', ['tabName' => $tabName])]);
 
         if ($this->getRequest()->getContent() !== '') {
-            $content = json_decode($this->getRequest()->getContent(),true);
+            $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isSubmitted()) {
                 if ($form->isValid()) {
@@ -319,15 +325,14 @@ class InstallationController extends AbstractPageController
         }
 
         $manager->singlePanel($form->createView());
-        $container = new Container();
+        $container = new Container($tabName);
         $container->addForm('single', $form->createView());
-        $panel = new Panel('System User', 'People');
+        $panel = new Panel('System User', 'People', new Section('form', 'single'));
         $container->addPanel($panel);
-        $panel = new Panel('Settings', 'System');
+        $panel = new Panel('Settings', 'System', new Section('form', 'single'));
         $container->addPanel($panel);
-        $panel = new Panel('Organisation', 'System');
+        $panel = new Panel('Organisation', 'System', new Section('form', 'single'));
         $container->addPanel($panel);
-        $container->setSelectedPanel($tabName);
         $manager->addContainer($container);
 
         return $this->getPageManager()->render(

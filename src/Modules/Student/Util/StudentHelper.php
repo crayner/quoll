@@ -18,7 +18,6 @@
 namespace App\Modules\Student\Util;
 
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 
@@ -55,7 +54,7 @@ class StudentHelper
         if (!$person instanceof Person)
             return '';
 
-        if (!UserHelper::isStudent($person))
+        if (!$person::isStudent())
             return '';
 
         $se = null;

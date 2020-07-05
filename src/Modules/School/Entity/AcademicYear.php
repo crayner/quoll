@@ -359,8 +359,8 @@ class AcademicYear extends AbstractEntity
                     `first_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     `last_day` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
                     PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+                    UNIQUE KEY `name` (`name`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=`utf8mb4_general_ci`;"];
     }
 
     /**

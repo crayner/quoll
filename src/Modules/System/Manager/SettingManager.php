@@ -12,13 +12,10 @@
  * Date: 1/07/2019
  * Time: 10:27
  */
-namespace App\Modules\System\Provider;
+namespace App\Modules\System\Manager;
 
-use App\Manager\EntityInterface;
-use App\Modules\System\Entity\Setting;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
-use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -33,69 +30,68 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @package App\Modules\System\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class SettingProvider extends AbstractProvider
+class SettingManager
 {
-
-    /**
-     * @var string
-     */
-    protected $entityName = Setting::class;
-
     /**
      * @var ArrayCollection
      */
     private $settings;
 
     /**
+     * SettingProvider constructor.
+     * @param array $settings
+     */
+    public function __construct(?array $settings)
+    {
+        if ($settings === null) {
+            return;
+        }
+        $this->settings = $this->convertRawSettings($settings);
+    }
+
+    /**
+     * convertRawSettings
+     * @param array $settings
+     * @return ArrayCollection
+     * 5/07/2020 12:34
+     */
+    private function convertRawSettings(array $settings): ArrayCollection
+    {
+        $result = new ArrayCollection();
+        foreach($settings as $scope=>$items){
+            $scopeItems = new ArrayCollection();
+            foreach($items as $name=>$valueType) {
+                $scopeItems->set($name, $valueType);
+            }
+            $result->set($scope, $scopeItems);
+        }
+        return $result;
+    }
+
+    /**
      * getSettingByScope
      * @param string $scope
      * @param string $name
      * @param bool $returnRow
-     * @return EntityInterface|bool
      * @throws \Exception
+     * @deprecated Move this to parameters only.  Lots of work to do here...
      * 10/06/2020 10:47
      */
     public function getSettingByScope(string $scope, string $name, $returnRow = false)
     {
-        // Legacy Trap @TODO Remove this trap.
-        if (in_array($name, ['absoluteURL'])) {
-            throw new \InvalidArgumentException(sprintf('The %s setting is now a parameter. Use Parameter call.', $name));
-        }
-
-        try {
-            $setting = $this->getSetting($scope, $name) ?: $this->findOneBy(['scope' => $scope, 'name' => $name]);
-        } catch (DriverException $e) {
-            $setting = null;
-        }
-
-        if (null === $setting) {
-            return false;
-        }
-
-        $this->addSetting($setting);
-
-        if ($returnRow) {
-            return $setting;
-        }
-
-        return $setting->getValue();
+        return $this->getSetting($scope, $name);
     }
 
 
     /**
      * getSettingsByScope
      * @param string $scope
-     * @return SettingProvider
-     * @throws \Exception
+     * @return ArrayCollection|null
+     * 5/07/2020 12:01
      */
-    public function getSettingsByScope(string $scope): SettingProvider
+    public function getSettingsByScope(string $scope): ?ArrayCollection
     {
-        $settings = $this->getRepository()->findByScope($scope);
-
-        foreach($settings as $setting)
-            $this->addSetting($setting);
-
-        return $this;
+        return $this->getSettings()->containsKey($scope) ? $this->getSettings()->get($scope) : null;
     }
 
     /**
@@ -260,14 +256,7 @@ class SettingProvider extends AbstractProvider
     public function getSettings(): ArrayCollection
     {
         if (null === $this->settings) {
-            if (null === $this->getSession())
-                $this->settings = new ArrayCollection();
-            else {
-                if ($this->getSession()->has('settings'))
-                    $this->settings = $this->getSession()->get('settings');
-                if (!$this->settings instanceof ArrayCollection)
-                    $this->settings = new ArrayCollection();
-            }
+            $this->settings = new ArrayCollection();
         }
         return $this->settings;
     }
@@ -276,9 +265,9 @@ class SettingProvider extends AbstractProvider
      * Settings.
      *
      * @param ArrayCollection $settings
-     * @return SettingProvider
+     * @return SettingManager
      */
-    public function setSettings(ArrayCollection $settings): SettingProvider
+    public function setSettings(ArrayCollection $settings): SettingManager
     {
         $this->settings = $settings;
         return $this;
@@ -287,9 +276,9 @@ class SettingProvider extends AbstractProvider
     /**
      * addSetting
      * @param Setting $setting
-     * @return SettingProvider
+     * @return SettingManager
      */
-    private function addSetting(Setting $setting): SettingProvider
+    private function addSetting(Setting $setting): SettingManager
     {
         $scope = $setting->getScope();
         $name = $setting->getName();
@@ -304,14 +293,31 @@ class SettingProvider extends AbstractProvider
      * getSetting
      * @param $scope
      * @param $name
-     * @return |null
+     * @return mixed
      */
-    private function getSetting($scope, $name)
+    public function getSetting($scope, $name)
     {
-        if (!$this->getSettings()->containsKey($scope))
-            $this->settings->set($scope, new ArrayCollection());
+        if (!$this->getSettings()->containsKey($scope)) {
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist in the Settings', $scope));
+        }
 
-        return $this->settings->get($scope)->containskey($name) ? $this->settings->get($scope)->get($name) : null;
+        if (!$this->settings->get($scope)->containskey($name)) {
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not does not contain a setting "%s"', $scope, $name));
+        }
+        $setting = $this->settings->get($scope)->get($name);
+        $value = null;
+        switch ($setting['type']) {
+            case 'string':
+                if (is_null($setting['value']) || is_string($setting['value'])) {
+                    $value = $setting['value'];
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid string.', $scope,$name));
+                }
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Please write code to handle %s', $setting['type']));
+        }
+        return $value;
     }
 
     /**
@@ -322,7 +328,7 @@ class SettingProvider extends AbstractProvider
      * @return bool
      * @throws \Exception
      */
-    public function hasSettingByScope(string $scope, string $name, bool $testForEmpty = true): bool
+    public function hasSetting(string $scope, string $name, bool $testForEmpty = true): bool
     {
         $setting = $this->getSettingByScope($scope, $name, true);
         if (!$setting instanceof Setting)
@@ -354,9 +360,9 @@ class SettingProvider extends AbstractProvider
      * Errors.
      *
      * @param array $error
-     * @return SettingProvider
+     * @return SettingManager
      */
-    public function addError(array $error): SettingProvider
+    public function addError(array $error): SettingManager
     {
         $this->getErrors();
         $this->errors[] = $error;

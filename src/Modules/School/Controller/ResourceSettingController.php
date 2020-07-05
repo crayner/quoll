@@ -22,7 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Form\ResourceSettingsType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -47,7 +47,7 @@ class ResourceSettingController extends AbstractPageController
      */
     public function settings(ContainerManager $manager, ?string $tabName = 'Category')
     {
-        $settingProvider = ProviderFactory::create(Setting::class);
+        $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('Resources');
 
         $form = $this->createForm(ResourceSettingsType::class, null, ['action' => $this->generateUrl('resource_settings', ['tabName' => $tabName])]);

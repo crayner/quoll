@@ -12,14 +12,11 @@
  * Date: 28/06/2019
  * Time: 15:01
  */
-
 namespace App\Provider;
 
-use App\Exception\MissingClassException;
 use App\Manager\MessageManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +25,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * Class ProviderFactory
+ * @package App\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class ProviderFactory
 {
     /**

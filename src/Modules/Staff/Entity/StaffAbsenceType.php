@@ -279,10 +279,10 @@ class StaffAbsenceType extends AbstractEntity
         return [
         "CREATE TABLE `__prefix__StaffAbsenceType` (
             `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-            `name` char(60) NOT NULL,
-            `abbreviation` char(10) NOT NULL,
-            `active` char(1) CNOT NULL DEFAULT 'Y',
-            `requires_approval` char(1) NOT NULL DEFAULT 'N',
+            `name` varchar(60) NOT NULL,
+            `abbreviation` varchar(10) NOT NULL,
+            `active` varchar(1) NOT NULL DEFAULT 'Y',
+            `requires_approval` varchar(1) NOT NULL DEFAULT 'N',
             `reasons` longtext COMMENT '(DC2Type:simple_array)',
             `sequence_number` smallint NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
@@ -337,7 +337,7 @@ class StaffAbsenceType extends AbstractEntity
   abbreviation: 'SR'
   active: 'Y'
   requiresApproval: 'N'
-  reasons: ['PD','Sports Trip','Offsite Event','Other']
+  reasons: { arrayField: ['PD','Sports Trip','Offsite Event','Other']}
   sequenceNumber: 4
 ");
         

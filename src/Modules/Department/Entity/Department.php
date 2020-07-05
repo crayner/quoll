@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Department
@@ -353,6 +354,11 @@ class Department extends AbstractEntity
         return implode("\n<br/>", $result);
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 5/07/2020 10:15
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__Department` (
@@ -369,11 +375,21 @@ class Department extends AbstractEntity
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 5/07/2020 10:13
+     */
     public function foreignConstraints(): string
     {
         return '';
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 5/07/2020 10:13
+     */
     public static function getVersion(): string
     {
         return self::VERSION;

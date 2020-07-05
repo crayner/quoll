@@ -17,7 +17,7 @@
 
 namespace App\Modules\System\Form;
 
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -88,7 +88,7 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('entry_options', 'array');
         $resolver->setAllowedTypes('setting', ['boolean', Setting::class]);
 
-        $setting['setting'] = ProviderFactory::create(Setting::class)->getSettingByScope($setting['scope'], $setting['name'], true);
+        $setting['setting'] = SettingFactory::getSettingManager()->getSettingByScope($setting['scope'], $setting['name'], true);
         $setting = $resolver->resolve($setting);
         if (false === $setting['setting'])
             throw new InvalidOptionsException(sprintf('The setting %s - %s was not found in the database.',$setting['scope'], $setting['name']));

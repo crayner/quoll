@@ -29,7 +29,7 @@ use App\Modules\Department\Pagination\DepartmentPagination;
 use App\Modules\Department\Pagination\DepartmentStaffPagination;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Department\Entity\DepartmentStaff;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
@@ -76,7 +76,7 @@ class ManageController extends AbstractPageController
             $data = [];
             $data['status'] = 'success';
             try {
-                $data['errors'] = ProviderFactory::create(Setting::class)->handleSettingsForm($form, $this->getRequest());
+                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
             } catch (\Exception $e) {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
             }

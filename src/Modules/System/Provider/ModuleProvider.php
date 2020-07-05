@@ -17,7 +17,7 @@ namespace App\Modules\System\Provider;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
@@ -49,7 +49,7 @@ class ModuleProvider extends AbstractProvider
     {
         $sorted = [];
         if (SecurityHelper::getCurrentUser() instanceof SecurityUser) {
-            $settingProvider = ProviderFactory::create(Setting::class);
+            $settingProvider = SettingFactory::getSettingManager();
             $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
 
             $result = $this->buildMainMenu(SecurityHelper::getCurrentUser());

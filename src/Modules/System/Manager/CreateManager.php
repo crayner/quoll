@@ -97,7 +97,7 @@ class CreateManager
             $this->getEm()->beginTransaction();
             foreach ($bundles as $bundle) {
                 $finder = new Finder();
-                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0);
+                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();
@@ -186,44 +186,73 @@ class CreateManager
         $count = 0;
         try {
             foreach ($bundles as $bundle) {
+                ini_set('max_execution_time', 60);
                 $finder = new Finder();
-                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0);
+                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
                     $this->getEm()->beginTransaction();
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();
                     $itemCount = 0;
-                    foreach ($table->coreData() as $data) {
-                        $table = new $name();
-                        $table->loadData($data);
-                        $this->em->persist($table);
-                        $itemCount++;
-                        if ($itemCount % 100 === 0) {
-                            $this->em->flush();
+                    if (count($table->coreData()) > 0) {
+                        $this->getLogger()->notice(TranslationHelper::translate('Core data started for {table}.', ['{table}' => $name]));
+                        foreach ($table->coreData() as $data) {
+                            $table = new $name();
+                            $table->loadData($data);
+                            $this->em->persist($table);
+                            $itemCount++;
+                            if ($itemCount % 100 === 0) {
+                                $this->getEm()->flush();
+                            }
                         }
-                    }
 
-                    if ($itemCount > 0) {
-                        $report = new ModuleUpgrade();
-                        $report->setTableName($name)->setTableVersion($name::getVersion())->setTableSection('Core Data');
-                        $this->getEm()->persist($report);
-                        $this->em->flush();
-                        $this->getLogger()->notice(TranslationHelper::translate('Core data was added to {table}. {count} items were added.', ['{table}' => $name, '{count}' => $itemCount]));
-                        $count++;
+                        if ($itemCount > 0) {
+                            $report = new ModuleUpgrade();
+                            $report->setTableName($name)->setTableVersion($name::getVersion())->setTableSection('Core Data');
+                            $this->getEm()->persist($report);
+                            $this->getEm()->flush();
+                            $this->getLogger()->notice(TranslationHelper::translate('Core data was added to {table}. {count} items were added.', ['{table}' => $name, '{count}' => $itemCount]));
+                            $count++;
+                        }
+                        $this->getEm()->commit();
                     }
-                    $this->getEm()->commit();
                 }
+            }
+        } catch (TableExistsException | PDOException | \PDOException $e) {
+            $this->em->rollback();
+            $this->getLogger()->error($e->getMessage());
+        }
+        $this->getLogger()->notice(TranslationHelper::translate('Core Data has been added to the database. {count} tables had data added.', ['{count}' => $count]));
+        $this->coreDataLinks();
+        return $count;
+    }
+
+    /**
+     * coreDataLinks
+     * 4/07/2020 16:31
+     */
+    public function coreDataLinks()
+    {
+        $finder = new Finder();
+        $bundles = $finder->directories()->in(__DIR__ . '/../../')->depth(0);
+        $moduleDir = realpath(__DIR__ . '/../../');
+        try {
+            foreach ($bundles as $bundle) {
+                $finder = new Finder();
+                ini_set('max_execution_time', 60);
+                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
                     $this->getEm()->beginTransaction();
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();
                     if (method_exists($table,'coreDataLinks')) {
+                        $this->getLogger()->notice(TranslationHelper::translate('Link data started for {table}.', ['{table}' => $name]));
                         $linkCount = 0;
                         foreach($table->coreDataLinks() as $data) {
-                            $this->loadDataLinks($name,$data);
-                            $linkCount++;
-                            if ($linkCount % 100 === 0) {
-                                $this->em->flush();
+                            if ($this->loadDataLinks($name,$data)) {
+                                if (++$linkCount % 100 === 0) {
+                                    $this->em->flush();
+                                }
                             }
                         }
                         $report = new ModuleUpgrade();
@@ -240,8 +269,6 @@ class CreateManager
             $this->em->rollback();
             $this->getLogger()->error($e->getMessage());
         }
-        $this->getLogger()->notice(TranslationHelper::translate('Core Data has been added to the database. {count} tables had data added.', ['{count}' => $count]));
-        return $count;
     }
 
     /**
@@ -249,7 +276,7 @@ class CreateManager
      * @param string $target
      * @param array $data
      */
-    private function loadDataLinks(string $target, array $data)
+    private function loadDataLinks(string $target, array $data): bool
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(
@@ -269,15 +296,26 @@ class CreateManager
         $sourceCriteria = $data['source']['findBy'];
 
         $targetEntity = ProviderFactory::getRepository($target)->findOneBy($targetCriteria);
+
+        if ($targetEntity === null) {
+            $this->getLogger()->error(TranslationHelper::translate('The link target was not found for "{target}" for value "{value}."', ['{target}' => $target, '{value}' => json_encode($targetCriteria)]));
+            return false;
+        }
         foreach($sourceCriteria as $name=>$value) {
             if ($value === 'use_target_entity') {
                 $sourceCriteria[$name] = $targetEntity;
             }
         }
+
         $sourceEntity = ProviderFactory::getRepository($data['source']['table'])->findOneBy($sourceCriteria);
+        if ($sourceEntity === null) {
+            $this->getLogger()->error(TranslationHelper::translate('The link source was not found for "{source}" for value "{value}."', ['{source}' => $data['source']['table'], '{value}' => json_encode($sourceCriteria)]));
+            return false;
+        }
         $method = 'set' . ucfirst($data['target']);
         $targetEntity->$method($sourceEntity);
         $this->getEm()->persist($targetEntity);
+        return true;
     }
 
     /**
@@ -304,7 +342,7 @@ class CreateManager
             $this->getEm()->beginTransaction();
             foreach ($bundles as $bundle) {
                 $finder = new Finder();
-                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0);
+                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();

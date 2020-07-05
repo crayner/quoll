@@ -19,7 +19,7 @@ namespace App\Modules\IndividualNeed\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\IndividualNeed\Form\INTemplatesType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,13 +42,13 @@ class SettingController extends AbstractPageController
      */
     public function settings(ContainerManager $manager)
     {
-        ProviderFactory::create(Setting::class)->getSettingsByScope('Individual Needs');
+        SettingFactory::getSettingManager()->getSettingsByScope('Individual Needs');
 
         $form = $this->createForm(INTemplatesType::class, null, ['action' => $this->generateUrl('individual_need_settings')]);
 
         if ($this->getRequest()->getContent() !== '') {
-            ProviderFactory::create(Setting::class)->handleSettingsForm($form, $this->getRequest());
-            $data = ProviderFactory::create(Setting::class)->getMessageManager()->pushToJsonData();
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            $data = SettingFactory::getSettingManager()->getMessageManager()->pushToJsonData();
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
             return new JsonResponse($data);

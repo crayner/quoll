@@ -22,7 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Behaviour\Form\BehaviourSettingsType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -48,7 +48,7 @@ class SettingController extends AbstractPageController
      */
     public function settings(ContainerManager $manager, string $tabName = 'Descriptors')
     {
-        ProviderFactory::create(Setting::class)->getSettingsByScope('Behaviour');
+        SettingFactory::getSettingManager()->getSettingsByScope('Behaviour');
 
         $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
 
@@ -56,7 +56,7 @@ class SettingController extends AbstractPageController
             $data = [];
             $data['status'] = 'success';
             try {
-                $data['errors'] = ProviderFactory::create(Setting::class)->handleSettingsForm($form, $this->getRequest());
+                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
                 $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
             } catch (\Exception $e) {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);

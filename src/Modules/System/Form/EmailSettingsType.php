@@ -21,7 +21,7 @@ use App\Form\Transform\NoOnEmptyTransformer;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Manager\MailerSettingsManager;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;

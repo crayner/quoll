@@ -351,94 +351,14 @@ class Scale extends AbstractEntity
                     ADD CONSTRAINT FOREIGN KEY (`lowest_acceptable`) REFERENCES `__prefix__ScaleGrade` (`id`);';
     }
 
+    /**
+     * coreData
+     * @return array
+     * 5/07/2020 08:48
+     */
     public function coreData(): array
     {
-        return Yaml::parse("
--
-  name: 'International Baccalaureate'
-  abbreviation: 'IB'
-  usageInfo: '7 (highest) to 1 (lowest)'
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'International Baccalaureate EE'
-  abbreviation: 'IBEE'
-  usageInfo: 'A (highest) to E (lowest)'
-  active: 'Y'
-  numericOnly: 'N'
--
-  name: 'United Kingdom GCSE/iGCSE'
-  abbreviation: 'GCSE'
-  usageInfo: 'A* (highest) to U (lowest)'
-  active: 'Y'
-  numericOnly: 'N'
--
-  name: 'Percentage'
-  abbreviation: '%'
-  usageInfo: '100 (highest) to  (lowest)'
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'Full Letter Grade'
-  abbreviation: 'FLG'
-  usageInfo: 'A+ (highest) to F (lowest)'
-  active: 'N'
-  numericOnly: 'N'
--
-  name: 'Simple Letter Grade'
-  abbreviation: 'SLG'
-  usageInfo: 'A (highest) to F (lowest)'
-  active: 'N'
-  numericOnly: 'N'
--
-  name: 'International College HK'
-  abbreviation: 'ICHK'
-  usageInfo: '7 (highest) to 1 (lowest)'
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'Completion'
-  abbreviation: 'Comp'
-  usageInfo: 'Has task has been completed?'
-  active: 'Y'
-  numericOnly: 'N'
--
-  name: 'Cognitive Abilities Test'
-  abbreviation: 'CAT'
-  usageInfo: '140 (highest) to 60 (lowest)'
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'UK National Curriculum KS3'
-  abbreviation: 'KS3'
-  usageInfo: '8A (highest) to B3 (lowest)'
-  active: 'Y'
-  numericOnly: 'N'
--
-  name: 'United Kingdom GCSE/iGCSE Predicted'
-  abbreviation: 'GPrd'
-  usageInfo: '8A (highest) to B3 (lowest)'
-  active: 'Y'
-  numericOnly: 'N'
--
-  name: 'IB Diploma (Subject)'
-  abbreviation: 'IBDS'
-  usageInfo: '7 (highest) to 1 (lowest)'
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'IB Diploma (Total)'
-  abbreviation: 'IBDT'
-  usageInfo: '45 (highest) to '
-  active: 'Y'
-  numericOnly: 'Y'
--
-  name: 'UK National Curriculum KS3 Simplified'
-  abbreviation: 'KS3S'
-  usageInfo: 'Level 8 (highest) to Level 3 (lowest)'
-  active: 'Y'
-  numericOnly: 'N'
-");
+        return Yaml::parse(file_get_contents(__DIR__ . '/ScaleCoreData.yaml'));
     }
 
     public static function getVersion(): string
@@ -452,91 +372,6 @@ class Scale extends AbstractEntity
      */
     public function coreDataLinks()
     {
-        return Yaml::parse("
--
-    findBy: 
-        abbreviation: 'IBEE'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: E }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: '%'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: '50%' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'FLG'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 'E-' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'SLG'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 'D' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'ICHK'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 4 }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'Comp'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 'Complete' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'CAT'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 101 }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: 'KS3'
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: '4C' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: GPrd
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 'F' }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: IBDS
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 3 }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: IBDT
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 23 }
-    target: lowestAcceptable
--
-    findBy: 
-        abbreviation: KS3S
-    source: 
-        table: App\Modules\School\Entity\ScaleGrade
-        findBy: { scale: use_target_entity, value: 4 }
-    target: lowestAcceptable
-");
+        return Yaml::parse(file_get_contents(__DIR__ . '/ScaleCoreLinks.yaml'));
     }
 }

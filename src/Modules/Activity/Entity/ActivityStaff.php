@@ -13,6 +13,7 @@
  */
 namespace App\Modules\Activity\Entity;
 
+use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          @ORM\Index(name="person", columns={"person"})
  *     })
  */
-class ActivityStaff implements EntityInterface
+class ActivityStaff extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -186,16 +187,6 @@ class ActivityStaff implements EntityInterface
         return "ALTER TABLE `__prefix__ActivityStaff`
                     ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`activity`) REFERENCES `__prefix__Activity` (`id`);";
-    }
-
-    /**
-     * coreData
-     * @return array
-     * 4/06/2020 09:43
-     */
-    public function coreData(): array
-    {
-        return '';
     }
 
     /**

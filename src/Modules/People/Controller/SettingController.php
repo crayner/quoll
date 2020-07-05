@@ -24,7 +24,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Form\PeopleSettingsType;
 use App\Modules\People\Form\UpdaterSettingsType;
 use App\Modules\People\Manager\RequiredUpdates;
-use App\Modules\System\Entity\Setting;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -48,7 +48,7 @@ class SettingController extends AbstractPageController
      */
     public function peopleSettings(ContainerManager $manager, ?string $tabName = 'Field Values')
     {
-        $provider = ProviderFactory::create(Setting::class);
+        $provider = SettingFactory::getSettingManager();
         $request = $this->getRequest();
 
         // System Settings
@@ -100,7 +100,7 @@ class SettingController extends AbstractPageController
         $required = new RequiredUpdates();
 
         if ($request->getContent() !== '') {
-            $settingProvider = ProviderFactory::create(Setting::class);
+            $settingProvider = SettingFactory::getSettingManager();
             $data = [];
             try {
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request);

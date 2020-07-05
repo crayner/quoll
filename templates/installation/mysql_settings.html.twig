@@ -1,7 +1,9 @@
 {% trans_default_domain 'System' %}
 
 <h2>{{ 'Installation - Step {step}'|trans({'{step}': '2'}) }}</h2>
-<p class="warning">{{ 'database_build_warning'|trans }}</p>
+{% if proceed is not same as('proceed') %}
+    <p class="warning">{{ 'database_build_warning'|trans }}</p>
+{% endif %}
 {% if message is defined and message is iterable %}
     <div class="{{ message.class }}">{{ message.message|trans }}</div>
 {% endif %}

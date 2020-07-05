@@ -23,6 +23,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -53,7 +54,8 @@ class Action extends AbstractEntity
     /**
      * @var Module|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="actions")
-     * @ORM\JoinColumn(name="module",referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="module",referencedColumnName="id",nullable=true)
+     * @Assert\NotBlank()
      */
     private $module;
 
@@ -113,7 +115,7 @@ class Action extends AbstractEntity
 
     /**
      * @var array|null
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array",nullable=true)
      */
     private $securityRoles;
 
@@ -503,8 +505,8 @@ class Action extends AbstractEntity
                       `entry_route` varchar(191) NOT NULL,
                       `entry_sidebar` varchar(1) NOT NULL DEFAULT 'Y',
                       `menu_show` varchar(1) NOT NULL DEFAULT 'Y',
-                      `module` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                      `security_roles` longtext CHARACTER SET utf8mb4 NOT NULL COMMENT '(DC2Type:simple_array)',
+                      `module` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
+                      `security_roles` longtext DEFAULT NULL COMMENT '(DC2Type:simple_array)',
                       PRIMARY KEY (`id`),
                       UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`) USING BTREE,
                       UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`) USING BTREE,
@@ -529,7 +531,7 @@ class Action extends AbstractEntity
      */
     public function coreData(): array
     {
-        return Yaml::parse(file_get_contents('ActionCoreData.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/ActionCoreData.yaml'));
     }
 
     /**
@@ -548,7 +550,7 @@ class Action extends AbstractEntity
      */
     public function isArrayField(string $name): bool
     {
-         return in_array($name, ['securityRoles','routeList']);
+         return in_array($name, ['routeList']);
     }
 
     /**
@@ -558,6 +560,6 @@ class Action extends AbstractEntity
      */
     public function coreDataLinks()
     {
-        return Yaml::parse(file_get_contents('ActionCoreLinks.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/ActionCoreLinks.yaml'));
     }
 }
