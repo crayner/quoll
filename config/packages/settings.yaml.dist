@@ -2,10 +2,10 @@ parameters:
     settings:
         System:
             country:
-                value: AUS
+                value: null
                 type: string
             timezone:
-                value: Australia/Sydney
+                value: null
                 type: string
             emailLink:
                 value: null
@@ -14,7 +14,7 @@ parameters:
                 value: null
                 type: string
             defaultAssessmentScale:
-                value: null
+                value: 7
                 type: integer
             sessionDuration:
                 value: 900
@@ -26,22 +26,22 @@ parameters:
                 value: craig@craigrayner.com
                 type: string
             organisationAdministrator:
-                value: cf5c1bd0-bf08-11ea-a9e6-74d435a91d85
+                value: null
                 type: App\Modules\People\Entity\Person
             organisationDBA:
-                value: cf5c1bd0-bf08-11ea-a9e6-74d435a91d85
+                value: null
                 type: App\Modules\People\Entity\Person
             organisationAdmissions:
-                value: cf5c1bd0-bf08-11ea-a9e6-74d435a91d85
+                value: null
                 type: App\Modules\People\Entity\Person
             firstDayOfTheWeek:
                 value: Sunday
                 type: string
             organisationHR:
-                value: cf5c1bd0-bf08-11ea-a9e6-74d435a91d85
+                value: null
                 type: App\Modules\People\Entity\Person
             organisationName:
-                value: 'Hill Range Services'
+                value: null
                 type: string
             mainMenuCategoryOrder:
                 value:
@@ -94,7 +94,7 @@ parameters:
                 value: false
                 type: boolean
             systemName:
-                value: Kookaburra
+                value: Quoll
                 type: string
             passwordPolicyMinLength:
                 value: 8
@@ -139,7 +139,7 @@ parameters:
                 value: 'Welcome to Kookaburra, the free, open, flexible school platform. Designed by teachers for learning, Kookaburra gives you the school tools you need. Kookaburra is a fork of Gibbon.'
                 type: string
             currency:
-                value: AUD
+                value: null
                 type: string
             enablePayments:
                 value: false
@@ -362,162 +362,162 @@ parameters:
                 type: string
             personalDataUpdaterRequiredFields:
                 value:
-                    Staff:
+                    Staff: 
                         title: required
                         surname: required
-                        firstName: null
+                        firstName: ~
                         preferredName: required
                         officialName: required
-                        nameInCharacters: null
-                        dob: null
-                        email: null
-                        emailAlternate: null
-                        phone1: null
-                        phone2: null
-                        phone3: null
-                        phone4: null
-                        languageFirst: null
-                        languageSecond: null
-                        languageThird: null
-                        countryOfBirth: null
-                        ethnicity: null
-                        religion: null
-                        citizenship1: null
-                        citizenship1Passport: null
-                        citizenship2: null
-                        citizenship2Passport: null
-                        nationalIDCardNumber: null
-                        residencyStatus: null
-                        visaExpiryDate: null
-                        profession: null
-                        employer: null
-                        jobTitle: null
-                        emergency1Name: null
-                        emergency1Number1: null
-                        emergency1Number2: null
-                        emergency1Relationship: null
-                        emergency2Name: null
-                        emergency2Number1: null
-                        emergency2Number2: null
-                        emergency2Relationship: null
-                        vehicleRegistration: null
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration:
                     Student:
                         title: required
                         surname: required
-                        firstName: null
+                        firstName: ~
                         preferredName: required
                         officialName: required
-                        nameInCharacters: null
-                        dob: null
-                        email: null
-                        emailAlternate: null
-                        phone1: null
-                        phone2: null
-                        phone3: null
-                        phone4: null
-                        languageFirst: null
-                        languageSecond: null
-                        languageThird: null
-                        countryOfBirth: null
-                        ethnicity: null
-                        religion: null
-                        citizenship1: null
-                        citizenship1Passport: null
-                        citizenship2: null
-                        citizenship2Passport: null
-                        nationalIDCardNumber: null
-                        residencyStatus: null
-                        visaExpiryDate: null
-                        profession: null
-                        employer: null
-                        jobTitle: null
-                        emergency1Name: null
-                        emergency1Number1: null
-                        emergency1Number2: null
-                        emergency1Relationship: null
-                        emergency2Name: null
-                        emergency2Number1: null
-                        emergency2Number2: null
-                        emergency2Relationship: null
-                        vehicleRegistration: null
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration:
                     Parent:
                         title: required
                         surname: required
-                        firstName: null
+                        firstName: ~
                         preferredName: required
                         officialName: required
-                        nameInCharacters: null
-                        dob: null
-                        email: null
-                        emailAlternate: null
-                        phone1: null
-                        phone2: null
-                        phone3: null
-                        phone4: null
-                        languageFirst: null
-                        languageSecond: null
-                        languageThird: null
-                        countryOfBirth: null
-                        ethnicity: null
-                        religion: null
-                        citizenship1: null
-                        citizenship1Passport: null
-                        citizenship2: null
-                        citizenship2Passport: null
-                        nationalIDCardNumber: null
-                        residencyStatus: null
-                        visaExpiryDate: null
-                        profession: null
-                        employer: null
-                        jobTitle: null
-                        emergency1Name: null
-                        emergency1Number1: null
-                        emergency1Number2: null
-                        emergency1Relationship: null
-                        emergency2Name: null
-                        emergency2Number1: null
-                        emergency2Number2: null
-                        emergency2Relationship: null
-                        vehicleRegistration: null
-                    Other:
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration: ~
+                    Other: 
                         title: required
                         surname: required
-                        firstName: null
+                        firstName: ~
                         preferredName: required
                         officialName: required
-                        nameInCharacters: null
-                        dob: null
-                        email: null
-                        emailAlternate: null
-                        phone1: null
-                        phone2: null
-                        phone3: null
-                        phone4: null
-                        languageFirst: null
-                        languageSecond: null
-                        languageThird: null
-                        countryOfBirth: null
-                        ethnicity: null
-                        religion: null
-                        citizenship1: null
-                        citizenship1Passport: null
-                        citizenship2: null
-                        citizenship2Passport: null
-                        nationalIDCardNumber: null
-                        residencyStatus: null
-                        visaExpiryDate: null
-                        profession: null
-                        employer: null
-                        jobTitle: null
-                        emergency1Name: null
-                        emergency1Number1: null
-                        emergency1Number2: null
-                        emergency1Relationship: null
-                        emergency2Name: null
-                        emergency2Number1: null
-                        emergency2Number2: null
-                        emergency2Relationship: null
-                        vehicleRegistration: null
+                        nameInCharacters: ~
+                        dob: ~
+                        email: ~
+                        emailAlternate: ~
+                        phone1: ~
+                        phone2: ~
+                        phone3: ~
+                        phone4: ~
+                        languageFirst: ~
+                        languageSecond: ~
+                        languageThird: ~
+                        countryOfBirth: ~
+                        ethnicity: ~
+                        religion: ~
+                        citizenship1: ~
+                        citizenship1Passport: ~
+                        citizenship2: ~
+                        citizenship2Passport: ~
+                        nationalIDCardNumber: ~
+                        residencyStatus: ~
+                        visaExpiryDate: ~
+                        profession: ~
+                        employer: ~
+                        jobTitle: ~
+                        emergency1Name: ~
+                        emergency1Number1: ~
+                        emergency1Number2: ~
+                        emergency1Relationship: ~
+                        emergency2Name: ~
+                        emergency2Number1: ~
+                        emergency2Number2: ~
+                        emergency2Relationship: ~
+                        vehicleRegistration: ~
                 type: array
             personalBackground:
                 value: true
@@ -660,7 +660,7 @@ parameters:
                 value:
                     - '1-2_KS3 Target Grades'
                     - '1-3_GCSE Target Grades'
-                    - 1-1_Scores
+                    - '1-1_Scores'
                 type: array
         Planner:
             parentWeeklyEmailSummaryIncludeBehaviour:

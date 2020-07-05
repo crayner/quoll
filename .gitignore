@@ -25,5 +25,6 @@ yarn-error.log
 /public/uploads/
 /public/*.yaml
 /config/packages/quoll.yaml
+/config/packages/settings.yaml
 /config/packages/quoll_*.yaml
 /config/packages/*quoll.yaml
