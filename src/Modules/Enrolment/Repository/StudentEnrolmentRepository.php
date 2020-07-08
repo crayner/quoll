@@ -93,8 +93,8 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
     {
         try {
             return intval($this->createQueryBuilder('se')
-                ->select('COUNT(p.id)')
-                ->join('se.person', 'p')
+                ->select('COUNT(s.id)')
+                ->join('se.student', 's')
                 ->join('se.rollGroup', 'rg')
                 ->join('rg.academicYear', 'ay')
                 ->where('ay.id = :ay_id')

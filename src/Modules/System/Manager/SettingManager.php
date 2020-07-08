@@ -330,12 +330,27 @@ class SettingManager
      * hasSetting
      * @param string $scope
      * @param string $name
+     * @param bool $isEmpty
      * @return bool
      * 5/07/2020 17:46
+     * @throws \Exception
      */
-    public function hasSetting(string $scope, string $name): bool
+    public function hasSetting(string $scope, string $name, bool $isEmpty = false): bool
     {
-        return $this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name);
+        if ($isEmpty) {
+            if ($this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name)) {
+                $w = $this->getSettings()->get($scope)->get($name);
+                switch ($w['type']) {
+                    case 'string':
+                        return !in_array($w['value'], [null, '']);
+                        break;
+                    default:
+                        throw new \Exception('Missing Setting Type work for '.$w['type']);
+                }
+            }
+        } else {
+            return $this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name);
+        }
     }
 
     /**

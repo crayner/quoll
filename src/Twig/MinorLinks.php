@@ -57,7 +57,7 @@ class MinorLinks implements ContentInterface
         $person = $this->getPerson();
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
-            if (SettingFactory::getSettingManager()->hasSetting('System', 'webLink')) {
+            if (SettingFactory::getSettingManager()->hasSetting('System', 'webLink', true)) {
                 $links[] = [
                     'url' => SettingFactory::getSettingManager()->getSetting('System', 'webLink'),
                     'text' => SettingFactory::getSettingManager()->getSetting('System', 'organisationAbbreviation', 'Quoll'),
@@ -111,19 +111,19 @@ class MinorLinks implements ContentInterface
                 'url' => UrlGeneratorHelper::getUrl('preferences'),
                 'translation_domain' => 'People',
             ];
-            if ($provider->hasSettingByScope('System','emailLink')) {
+            if ($provider->hasSetting('System','emailLink', true)) {
                 $links[] = [
                     'class' => 'link-white',
                     'text' => TranslationHelper::translate('Email', [], 'People'),
-                    'url' => $provider->getSettingByScopeAsString('System','emailLink'),
+                    'url' => $provider->getSetting('System','emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
                 ];
             }
-            if ($provider->hasSettingByScope('System','webLink')) {
+            if ($provider->hasSetting('System','webLink', true)) {
                 $links[] = [
-                    'url' => $provider->getSettingByScopeAsString('System','webLink'),
-                    'text' => $provider->getSettingByScopeAsString('System', 'organisationAbbreviation'),
+                    'url' => $provider->getSetting('System','webLink'),
+                    'text' => $provider->getSetting('System', 'organisationAbbreviation'),
                     'translation_domain' => 'School',
                     'target' => '_blank',
                     'class' => 'link-white',

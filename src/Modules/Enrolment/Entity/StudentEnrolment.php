@@ -56,7 +56,7 @@ class StudentEnrolment extends AbstractEntity
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      *
      */
@@ -65,14 +65,14 @@ class StudentEnrolment extends AbstractEntity
     /**
      * @var YearGroup|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\YearGroup")
-     * @ORM\JoinColumn(name="year_group",referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="year_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private $yearGroup;
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup", inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup",inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -214,7 +214,7 @@ class StudentEnrolment extends AbstractEntity
         return ["CREATE TABLE `__prefix__StudentEnrolment` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `roll_order` smallint DEFAULT NULL,
-                    `person` CHAR(36) DEFAULT NULL,
+                    `student` CHAR(36) DEFAULT NULL,
                     `academic_year` CHAR(36) DEFAULT NULL,
                     `year_group` CHAR(36) DEFAULT NULL,
                     `roll_group` CHAR(36) DEFAULT NULL,
