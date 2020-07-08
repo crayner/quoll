@@ -53,6 +53,11 @@ class CreateManager
     private $manager;
 
     /**
+     * @var int
+     */
+    private $totalItemCount = 0;
+
+    /**
      * CreateManager constructor.
      * @param EntityManagerInterface $em
      * @param InstallationManager $manager
@@ -178,19 +183,24 @@ class CreateManager
         return $this;
     }
 
+    /**
+     * coreData
+     * @return int
+     * 9/07/2020 07:49
+     */
     public function coreData()
     {
         $finder = new Finder();
         $bundles = $finder->directories()->in(__DIR__ . '/../../')->depth(0);
         $moduleDir = realpath(__DIR__ . '/../../');
         $count = 0;
+        $totalItemCount = 0;
         try {
             foreach ($bundles as $bundle) {
                 ini_set('max_execution_time', 60);
                 $finder = new Finder();
                 $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
-                    $this->getEm()->beginTransaction();
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();
                     $itemCount = 0;
@@ -213,8 +223,8 @@ class CreateManager
                             $this->getEm()->flush();
                             $this->getLogger()->notice(TranslationHelper::translate('Core data was added to {table}. {count} items were added.', ['{table}' => $name, '{count}' => $itemCount]));
                             $count++;
+                            $totalItemCount += $itemCount + 1;
                         }
-                        $this->getEm()->commit();
                     }
                 }
             }
@@ -224,6 +234,7 @@ class CreateManager
         }
         $this->getLogger()->notice(TranslationHelper::translate('Core Data has been added to the database. {count} tables had data added.', ['{count}' => $count]));
         $this->coreDataLinks();
+        $this->totalItemCount = $totalItemCount;
         return $count;
     }
 
@@ -242,7 +253,6 @@ class CreateManager
                 ini_set('max_execution_time', 60);
                 $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
                 foreach ($tables as $table) {
-                    $this->getEm()->beginTransaction();
                     $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
                     $table = new $name();
                     if (method_exists($table,'coreDataLinks')) {
@@ -255,14 +265,17 @@ class CreateManager
                                 }
                             }
                         }
-                        $report = new ModuleUpgrade();
-                        $report->setTableName($name)->setTableVersion($name::getVersion())->setTableSection('Link Data');
-                        $this->getEm()->persist($report);
-                        $this->getEm()->flush();
-                        $this->getLogger()->notice(TranslationHelper::translate('Link data was added for {table}.  {linkCount} links were added.', ['{table}' => $name, '{linkCount}' => $linkCount]));
+                        if ($linkCount > 0) {
+                            $report = new ModuleUpgrade();
+                            $report->setTableName($name)
+                                ->setTableVersion($name::getVersion())
+                                ->setTableSection('Link Data');
+                            $this->getEm()->persist($report);
+                            $this->getEm()->flush();
+                            $this->getLogger()->notice(TranslationHelper::translate('Link data was added for {table}.  {linkCount} links were added.', ['{table}' => $name, '{linkCount}' => $linkCount]));
+                            $this->totalItemCount++;
+                        }
                     }
-
-                    $this->getEm()->commit();
                 }
             }
         } catch (TableExistsException | PDOException | \PDOException $e) {
@@ -366,5 +379,23 @@ class CreateManager
         }
         $this->getLogger()->notice(TranslationHelper::translate('Foreign Constraints added to {count} tables.', ['{count}' => $count]));
         return $count;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalItemCount(): int
+    {
+        return $this->totalItemCount;
+    }
+
+    /**
+     * @param int $totalItemCount
+     * @return CreateManager
+     */
+    public function setTotalItemCount(int $totalItemCount): CreateManager
+    {
+        $this->totalItemCount = $totalItemCount;
+        return $this;
     }
 }

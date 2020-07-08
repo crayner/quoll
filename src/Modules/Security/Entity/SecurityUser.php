@@ -160,9 +160,9 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * @return Person
+     * @return Person|null
      */
-    public function getPerson(): Person
+    public function getPerson(): ?Person
     {
         return $this->person;
     }

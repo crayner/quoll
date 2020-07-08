@@ -17,6 +17,7 @@ namespace App\Modules\System\Manager;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
@@ -45,7 +46,12 @@ class SettingManager
     public function __construct(?array $settings)
     {
         if ($settings === null) {
-            return;
+            $fileSystem = new Filesystem();
+            if (!$fileSystem->exists(__DIR__ . '/../../../../config/packages/settings.yaml')) {
+                $fileSystem->copy(__DIR__ . '/../../../../config/packages/settings.yaml.dist',__DIR__ . '/../../../../config/packages/settings.yaml');
+                $settings = Yaml::parse(__DIR__ . '/../../../../config/packages/settings.yaml');
+                $settings = $settings['parameters']['settings'];
+            }
         }
         $this->settings = $this->convertRawSettings($settings);
     }
@@ -338,7 +344,7 @@ class SettingManager
      * @param $name
      * @return mixed
      */
-    public function getSetting($scope, $name)
+    public function getSetting($scope, $name, $default = null)
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new \InvalidArgumentException(sprintf('The scope "%s" does not have a setting named "%s".', $scope, $name));
@@ -349,28 +355,28 @@ class SettingManager
         switch ($setting['type']) {
             case 'string':
                 if (is_null($setting['value']) || is_string($setting['value'])) {
-                    $value = $setting['value'];
+                    $value = $setting['value'] ?? $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid string.', $scope,$name));
                 }
                 break;
             case 'boolean':
                 if (is_bool($setting['value'])) {
-                    $value = $setting['value'];
+                    $value = $setting['value'] ?? $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not boolean.', $scope,$name));
                 }
                 break;
             case 'integer':
                 if (is_null($setting['value']) || is_integer($setting['value'])) {
-                    $value = $setting['value'];
+                    $value = $setting['value'] ?? $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid integer.', $scope,$name));
                 }
                 break;
             case 'array':
                 if (is_null($setting['value']) || is_array($setting['value'])) {
-                    $value = $setting['value'];
+                    $value = $setting['value'] ?? ($default ?? []);
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid array.', $scope,$name));
                 }

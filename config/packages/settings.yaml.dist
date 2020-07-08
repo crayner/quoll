@@ -5,7 +5,7 @@ parameters:
                 value: null
                 type: string
             timezone:
-                value: null
+                value: UTC
                 type: string
             emailLink:
                 value: null

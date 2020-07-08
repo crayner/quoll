@@ -162,7 +162,7 @@ class Contact extends AbstractEntity
      * @return $this
      * 2/07/2020 09:10
      */
-    public function setPerson(Person $person, bool $reflect = true): Contact
+    public function setPerson(?Person $person, bool $reflect = true): Contact
     {
         $this->person = $person;
         if ($reflect && $person instanceof Person) {

@@ -17,8 +17,6 @@
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
-use App\Modules\Security\Entity\SecurityUser;
-use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Hook;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;

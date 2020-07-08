@@ -50,10 +50,10 @@ class ModuleProvider extends AbstractProvider
         $sorted = [];
         if (SecurityHelper::getCurrentUser() instanceof SecurityUser) {
             $settingProvider = SettingFactory::getSettingManager();
-            $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
+            $mainMenuCategoryOrder = $settingProvider->getSetting('System', 'mainMenuCategoryOrder');
 
             $result = $this->buildMainMenu(SecurityHelper::getCurrentUser());
-            foreach (explode(',', $mainMenuCategoryOrder) as $category) {
+            foreach ($mainMenuCategoryOrder as $category) {
                 if ($byCategory && !isset($sorted[$category])) {
                     $sorted[$category] = [];
                 }

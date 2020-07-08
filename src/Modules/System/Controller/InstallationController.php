@@ -236,12 +236,14 @@ class InstallationController extends AbstractPageController
 
         $manager->singlePanel($form->createView());
         $createManager->getLogger()->notice(TranslationHelper::translate('Core Data will be added to tables.'));
+        $count = $createManager->coreData();
         $createManager->setInstallationStatus('Core Data');
         return $this->getPageManager()->render(
             [
                 'content' => $this->renderView('installation/core_data_complete.html.twig',
                     [
-                        'tableCount' => $createManager->coreData(),
+                        'tableCount' => $count,
+                        'itemCount' => $createManager->getTotalItemCount(),
                     ]
                 ),
                 'containers' => $manager->getBuiltContainers(),
