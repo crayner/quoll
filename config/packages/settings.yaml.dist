@@ -14,8 +14,9 @@ parameters:
                 value: null
                 type: string
             defaultAssessmentScale:
-                value: 7
-                type: integer
+                value: null
+                type: entity
+                class: App\Modules\School\Entity\Scale
             sessionDuration:
                 value: 900
                 type: integer
@@ -27,19 +28,23 @@ parameters:
                 type: string
             organisationAdministrator:
                 value: null
-                type: App\Modules\People\Entity\Person
+                type: entity
+                class: App\Modules\People\Entity\Person
             organisationDBA:
                 value: null
-                type: App\Modules\People\Entity\Person
+                type: entity
+                class: App\Modules\People\Entity\Person
             organisationAdmissions:
                 value: null
-                type: App\Modules\People\Entity\Person
+                type: entity
+                class: App\Modules\People\Entity\Person
             firstDayOfTheWeek:
                 value: Sunday
                 type: string
             organisationHR:
                 value: null
-                type: App\Modules\People\Entity\Person
+                type: entity
+                class: App\Modules\People\Entity\Person
             organisationName:
                 value: null
                 type: string

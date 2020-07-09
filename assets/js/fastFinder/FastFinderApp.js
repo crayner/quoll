@@ -125,6 +125,7 @@ export default class FastFinderApp extends Component {
                                         value: this.state.value,
                                         placeholder: this.props.trans_placeholder,
                                         onChange: this.onChange,
+                                        className: 'w-full',
                                     }}
                                 />
                             </div>

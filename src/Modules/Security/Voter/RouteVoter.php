@@ -78,7 +78,7 @@ class RouteVoter extends RoleHierarchyVoter
                 return VoterInterface::ACCESS_DENIED;
             }
 
-            if ($action->getSecurityRoles()->count() === 0) {
+            if (count($action->getSecurityRoles()) === 0) {
                 $this->logger->debug('The Action has no restrictions.');
                 return VoterInterface::ACCESS_GRANTED;
             }

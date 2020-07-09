@@ -96,7 +96,7 @@ class OrganisationSettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
-                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationBackground'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSetting('System','organisationBackground'),
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],

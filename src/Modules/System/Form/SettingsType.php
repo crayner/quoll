@@ -17,6 +17,7 @@
 
 namespace App\Modules\System\Form;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -57,6 +58,7 @@ class SettingsType extends AbstractType
                 'data_class' => null,
                 'settings' => [],
                 'panel' => false,
+                'translation_domain' => 'Setting'
             ]
         );
     }
@@ -73,7 +75,8 @@ class SettingsType extends AbstractType
             [
                 'scope',
                 'name',
-                'setting',
+                'value',
+                'setting_type',
             ]
         );
         $resolver->setDefaults(
@@ -86,13 +89,16 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('entry_type', 'string');
         $resolver->setAllowedTypes('entry_options', 'array');
-        $resolver->setAllowedTypes('setting', ['boolean', Setting::class]);
+        $resolver->setAllowedTypes('setting_type', 'string');
 
-        $setting['setting'] = SettingFactory::getSettingManager()->getSettingByScope($setting['scope'], $setting['name'], true);
-        $setting = $resolver->resolve($setting);
-        if (false === $setting['setting'])
-            throw new InvalidOptionsException(sprintf('The setting %s - %s was not found in the database.',$setting['scope'], $setting['name']));
-        return $setting;
+
+        $manager = SettingFactory::getSettingManager();
+        if (!$manager->hasSetting($setting['scope'], $setting['name'])) {
+            throw new InvalidOptionsException(sprintf('The setting %s - %s has not been defined.',$setting['scope'], $setting['name']));
+        }
+        $setting['value'] = $manager->getSetting($setting['scope'], $setting['name']);
+        $setting['setting_type'] = $manager->getSettingType($setting['scope'], $setting['name']);
+        return $resolver->resolve($setting);
     }
 
     /**
@@ -108,27 +114,17 @@ class SettingsType extends AbstractType
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
-            $data = $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue();
+            $data = $setting['value'];
 
-            if ($setting['entry_type'] === 'App\Modules\System\Form\SettingCollectionType' && empty($setting['setting']->getValue()))
-                $data = [];
-            if ($setting['entry_type'] === 'App\Form\Type\SimpleArrayType') {
-                if (empty($setting['setting']->getValue()))
-                    $data = [];
-                else
-                    $data = explode(',', $setting['setting']->getValue());
-            }
-
-            if ($setting['entry_type'] === EntityType::class) {
-                $entityName = $setting['entry_options']['class'];
-                $data = $setting['setting']->getValue() ? ProviderFactory::getRepository($entityName)->find($setting['setting']->getValue()) : null;
+            if ($setting['setting_type'] === Person::class) {
+                $data = $setting['value'] ? ProviderFactory::getRepository(Person::class)->find($setting['value']) : null;
             }
 
             $builder->add($name, $setting['entry_type'], array_merge(
                 [
                     'data' => $data,
-                    'help' => $setting['setting']->getDescription(),
-                    'label' => $setting['setting']->getNameDisplay(),
+                    'label' => $setting['scope'].'.'.$setting['name'].'.name',
+                    'help' => $setting['scope'].'.'.$setting['name'].'.description',
                     'required' => false,
                     'setting_form' => true,
                 ],

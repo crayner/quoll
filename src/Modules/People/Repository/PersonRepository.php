@@ -532,33 +532,20 @@ class PersonRepository extends ServiceEntityRepository
     public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
     {
         $today = new \DateTimeImmutable(date('Y-m-d'));
-        $this->getStaffSearch()
+        $this
             ->addParam('status', $status)
             ->addParam('today', $today);
 
         return $this->createQueryBuilder('p')
             ->where('p.status = :status')
-            ->leftJoin('p.securityRoles', 'r')
-            ->andWhere($this->getWhere())
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameter('today', $today)
+            ->leftJoin('p.staff', 's')
+            ->andWhere('p.staff IS NOT NULL')
+            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
+            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
             ->setParameters($this->getParams())
             ->orderBy('p.surname')
             ->addOrderBy('p.firstName')
         ;
-    }
-
-    /**
-     * getStaffSearch
-     * @return PersonRepository
-     * 17/06/2020 10:42
-     */
-    public function getStaffSearch(): PersonRepository
-    {
-        $this->setWhere('r.category = :staff');
-        $this->addParam('staff', 'Staff');
-        return $this;
     }
 
     /**

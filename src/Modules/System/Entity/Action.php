@@ -381,9 +381,9 @@ class Action extends AbstractEntity
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function getSecurityRoles(): ?array
+    public function getSecurityRoles(): array
     {
         if (null === $this->securityRoles) {
             $this->securityRoles = [];

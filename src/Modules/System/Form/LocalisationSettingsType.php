@@ -70,22 +70,24 @@ class LocalisationSettingsType extends AbstractType
                                 'placeholder' => ' ',
                             ],
                         ],
+                        [
+                            'scope' => 'System',
+                            'name' => 'country',
+                            'entry_type' => CountryType::class,
+                            'entry_options' => [
+                                'placeholder' => ' ',
+                                'alpha3' => true,
+                            ],
+                        ],
+                        [
+                            'scope' => 'System',
+                            'name' => 'timezone',
+                            'entry_type' => TimezoneType::class,
+                            'entry_options' => [
+                                'placeholder' => ' ',
+                            ],
+                        ],
                     ],
-                ]
-            )
-            ->add('country', CountryType::class,
-                [
-                    'label' => 'Country of Location',
-                    'placeholder' => ' ',
-                    'alpha3' => true,
-                    'data' => $options['country'],
-                ]
-            )
-            ->add('timezone', TimezoneType::class,
-                [
-                    'label' => 'Time Zone of the School',
-                    'placeholder' => ' ',
-                    'data' => $options['timezone'],
                 ]
             )
             ->add('submit', SubmitType::class);
@@ -101,12 +103,6 @@ class LocalisationSettingsType extends AbstractType
             [
                 'translation_domain' => 'System',
                 'data_class' => null,
-            ]
-        );
-        $resolver->setRequired(
-            [
-                'country',
-                'timezone',
             ]
         );
     }

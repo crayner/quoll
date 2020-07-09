@@ -14,7 +14,9 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Modules\People\Entity\Person;
 use App\Modules\System\Exception\SettingNotFoundException;
+use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Filesystem\Filesystem;
@@ -81,7 +83,7 @@ class SettingManager
      * @param string $name
      * @param bool $returnRow
      * @throws \Exception
-     * @deprecated Move this to parameters only.  Lots of work to do here...
+     * @deprecated Move this to getSetting.  Lots of work to do here...
      * 10/06/2020 10:47
      */
     public function getSettingByScope(string $scope, string $name, $returnRow = false)
@@ -357,7 +359,10 @@ class SettingManager
      * getSetting
      * @param $scope
      * @param $name
-     * @return mixed
+     * @param null $default
+     * @return array|bool|int|string|null
+     * @throws \Exception
+     * 9/07/2020 10:35
      */
     public function getSetting($scope, $name, $default = null)
     {
@@ -396,10 +401,68 @@ class SettingManager
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid array.', $scope,$name));
                 }
                 break;
+            case 'image':
+                if (is_null($setting['value']) || is_string($setting['value'])) {
+                    $value = $setting['value'] ?? $default;
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid image.', $scope,$name));
+                }
+                if ($value !== null && $value !== '') {
+                    if (!is_file(__DIR__ . '/../../../../public/' . ltrim($setting['value'], '/'))) {
+                        $value = $default;
+                    }
+                }
+                break;
+            case 'entity':
+                if (is_null($setting['value']) || is_string($setting['value'])) {
+                    $value = $setting['value'] ?? $default;
+                } else {
+                    throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid person.', $scope,$name));
+                }
+                if (is_string($value)) {
+                    $value = ProviderFactory::getRepository($setting['class'])->find($value);
+                }
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Please write code to handle %s', $setting['type']));
         }
         return $value;
+    }
+
+    /**
+     * getSettingType
+     * @param $scope
+     * @param $name
+     * @return mixed
+     * @throws \Exception
+     * 9/07/2020 10:35
+     */
+    public function getSettingType($scope, $name)
+    {
+        if (!$this->hasSetting($scope, $name)) {
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not have a setting named "%s".', $scope, $name));
+        }
+
+        $setting = $this->getSettings()->get($scope)->get($name);
+        return $setting['type'];
+    }
+
+    /**
+     * getSettingClass
+     * @param $scope
+     * @param $name
+     * @return mixed
+     * @throws \Exception
+     * 9/07/2020 13:03
+     */
+    public function getSettingClass($scope, $name)
+    {
+        if (!$this->hasSetting($scope, $name)) {
+            throw new \InvalidArgumentException(sprintf('The scope "%s" does not have a setting named "%s".', $scope, $name));
+        }
+
+        $setting = $this->getSettings()->get($scope)->get($name);
+        return $setting['class'];
     }
 
     /**
