@@ -22,6 +22,7 @@ use App\Modules\Security\Provider\SecurityUserProvider;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Manager\SettingManager;
 use App\Provider\ProviderFactory;
+use App\Util\ParameterBagHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -378,12 +379,13 @@ class GoogleAuthenticator implements AuthenticatorInterface
         $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/config/packages/quoll.yaml'));
         $clientSecrets = [];
         $clientSecrets['web']['client_id'] = $config['parameters']['google_client_id'];
-        $clientSecrets['web']['project_id'] = $config['parameters']['google_api_key'];
+        $clientSecrets['web']['project_id'] = $config['parameters']['google_project_id'];
         $clientSecrets['web']['auth_uri'] = 'https://accounts.google.com/o/oauth2/auth';
         $clientSecrets['web']['token_uri'] = 'https://www.googleapis.com/oauth2/v3/token';
+        $clientSecrets['web']['developerKey'] = $config['parameters']['google_api_key'];
         $clientSecrets['web']['auth_provider_x509_cert_url'] = 'https://www.googleapis.com/oauth2/v1/certs';
         $clientSecrets['web']['client_secret'] = $config['parameters']['google_client_secret'];;
-        $clientSecrets['web']['redirect_uris'] = [$this->getSettingManager()->getSettingByScopeAsString('System', 'googleRedirectUri')];
+        $clientSecrets['web']['redirect_uris'] = $config['parameters']['google_redirect_uris'];
         return $this->clientSecrets = $clientSecrets;
     }
 
@@ -394,10 +396,10 @@ class GoogleAuthenticator implements AuthenticatorInterface
      */
     public function getConfig(): array {
         return [
-            'application_name' => $this->getSettingManager()->getSettingByScopeAsString('System', 'googleClientName'),
+            'application_name' => ParameterBagHelper::get('google_project_id'),
             'access_type' => 'offline',
             'include_granted_scopes' => true,
-            'developer_key' => $this->getSettingManager()->getSettingByScopeAsString('System', 'googleDeveloperKey'),
+            'developer_key' => ParameterBagHelper::get('google_api_key'),
         ];
     }
 

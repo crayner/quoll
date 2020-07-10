@@ -220,13 +220,14 @@ class PersonRepository extends ServiceEntityRepository
     {
         $today = new \DateTimeImmutable(date('Y-m-d'));
         $this->getRoleSearch($roles)
-            ->addParam('status', $status)
-            ->addParam('today', $today);
+            ->addParam('status', $status);
+//            ->addParam('today', $today);
         return $this->createQueryBuilder('p')
+            ->join('p.securityUser', 'u')
             ->where('p.status = :status')
             ->andWhere($this->getWhere())
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+//            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
+//            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', "ASC")
             ->setParameters($this->getParams())
@@ -241,22 +242,6 @@ class PersonRepository extends ServiceEntityRepository
     public function findCurrentStudents(): array
     {
         return $this->findAllStudents('Full');
-        $academicYear = AcademicYearHelper::getCurrentAcademicYear();
-        $today = new \DateTimeImmutable(date('Y-m-d'));
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.studentEnrolments','se')
-            ->where('se.academicYear = :academicYear')
-            ->setParameter('academicYear', $academicYear)
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameter('today', $today)
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->getQuery()
-            ->getResult();
-        ;
     }
 
     /**
@@ -532,7 +517,7 @@ class PersonRepository extends ServiceEntityRepository
     public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
     {
         $today = new \DateTimeImmutable(date('Y-m-d'));
-        $this
+        $this->setParams([])
             ->addParam('status', $status)
             ->addParam('today', $today);
 
@@ -558,9 +543,8 @@ class PersonRepository extends ServiceEntityRepository
     {
         $this->setWhere('(');
         $this->setParams([]);
-        dump($roles);
         foreach($roles as $q=>$role) {
-            $this->where .= 'r.role LIKE :role' . $q . ' OR ';
+            $this->where .= 'u.securityRoles LIKE :role' . $q . ' OR ';
             $this->addParam('role' . $q, '%' . $role . '%');
         }
         $this->where = rtrim($this->where, ' OR') . ')';
@@ -585,17 +569,17 @@ class PersonRepository extends ServiceEntityRepository
      * findAllStudentsQuery
      * @param string $status
      * @return QueryBuilder
-     * 28/06/2020 12:05
+     * 10/07/2020 09:41
      */
     public function findAllStudentsQuery(string $status = 'Full'): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->leftJoin('p.securityRoles', 'r')
-            ->where('r.role = :role')
+            ->join('p.student', 's')
+            ->where('p.student IS NOT NULL')
             ->andWhere('p.status LIKE :status')
-            ->andWhere('(p.dateStart <= :today OR p.dateStart IS NULL)')
-            ->andWhere('(p.dateEnd >= :today OR p.dateEnd IS NULL)')
-            ->setParameters(['role' => 'ROLE_STUDENT', 'status' => '%'.$status.'%', 'today' => new \DateTimeImmutable('now')])
+            ->andWhere('(s.dateStart <= :today OR s.dateStart IS NULL)')
+            ->andWhere('(s.dateEnd >= :today OR s.dateEnd IS NULL)')
+            ->setParameters(['status' => '%'.$status.'%', 'today' => new \DateTimeImmutable('now')])
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }

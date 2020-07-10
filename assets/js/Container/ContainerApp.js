@@ -29,6 +29,7 @@ import {
     setChainedSelect
 } from "./ContainerFunctions"
 import {isEmpty} from "../component/isEmpty"
+import uuid from "react-uuid"
 
 export default class ContainerApp extends Component {
     constructor (props) {
@@ -406,8 +407,7 @@ export default class ContainerApp extends Component {
     }
 
     addElement(form) {
-        const uuidv4 = require('uuidv4')
-        let id = uuidv4()
+        let id = uuid()
         let forms = {...this.state.forms}
         let element = {...replaceName({...form.prototype}, id)}
         let parentForm = {...getParentForm(forms,form)}

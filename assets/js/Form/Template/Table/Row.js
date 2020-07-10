@@ -19,6 +19,7 @@ export default function Row(props) {
 
     if (form.visible_values.length > 0 && Object.keys(visibleKeys).length > 0) {
         let visible = false
+        console.log(form)
         form.visible_values.map(name => {
             let key = form.visible_parent + '_' + name
             if (typeof visibleKeys[key] === 'undefined') {
@@ -31,7 +32,13 @@ export default function Row(props) {
                         value = visibleKeys[key]
                     }
                     if (value === true) {
+                        console.log(name)
                         visible = true
+                        if (Object.keys(form.visible_labels).length > 0) {
+                            form.label = form.visible_labels[name].label
+                            form.help = form.visible_labels[name].help
+                        }
+                        console.log(form)
                     }
                 }
             }

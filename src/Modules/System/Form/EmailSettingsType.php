@@ -14,29 +14,24 @@
  * Date: 7/09/2019
  * Time: 11:57
  */
-
 namespace App\Modules\System\Form;
 
-use App\Form\Transform\NoOnEmptyTransformer;
+
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Manager\MailerSettingsManager;
-use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class SMSSettingsType
+ * Class EmailSettingsType
  * @package App\Modules\System\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class EmailSettingsType extends AbstractType
 {
@@ -81,7 +76,6 @@ class EmailSettingsType extends AbstractType
                                     'help' => TranslationHelper::translate('Username to use for SMTP authentication. Leave blank for no authentication.'),
                                 ],
                         ],
-                    'required' => false,
                 ]
             )
             ->add('mailerSMTPPassword', TextType::class,
@@ -93,7 +87,7 @@ class EmailSettingsType extends AbstractType
                             'gmail' =>
                                 [
                                     'label' => TranslationHelper::translate('GMail Password'),
-                                    'help' => 'You may need to create an application password on your GMail account. See <a href="https://support.google.com/accounts/answer/185833?hl=en" target="_blank">https://support.google.com/accounts/answer/185833?hl=en</a> for details.',
+                                    'help' => 'You may need to create an application password on your GMail account. See <a href="https://support.google.com/accounts/answer/185833" target="_blank">https://support.google.com/accounts/answer/185833</a> for details.',
                                 ],
                             'smtp' =>
                                 [

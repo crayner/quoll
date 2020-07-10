@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import PanelApp from "../Panel/PanelApp"
 import {fetchJson} from "../component/fetchJson"
 import {createPassword} from "../component/createPassword"
+import uuid from "react-uuid"
 import {
     setPanelErrors,
     trans,
@@ -307,8 +308,7 @@ export default class QuickLoanApp extends Component {
     }
 
     addElement(form) {
-        const uuidv4 = require('uuid/v4')
-        let id = uuidv4()
+        let id = uuid()
         let element = {...replaceName({...form.prototype}, id)}
         let parentForm = {...getParentForm(this.state.forms,form)}
         let parentFormName = getParentFormName(this.formNames,form)

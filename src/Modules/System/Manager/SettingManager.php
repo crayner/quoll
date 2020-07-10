@@ -14,13 +14,17 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Manager\EntityInterface;
 use App\Modules\People\Entity\Person;
 use App\Modules\System\Exception\SettingNotFoundException;
+use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
@@ -347,7 +351,7 @@ class SettingManager
                         return !in_array($w['value'], [null, '']);
                         break;
                     default:
-                        throw new \Exception('Missing Setting Type work for '.$w['type']);
+                        throw new \Exception('Missing Setting type work for '.$w['type']);
                 }
             }
         } else {
@@ -367,7 +371,7 @@ class SettingManager
     public function getSetting($scope, $name, $default = null)
     {
         if (!$this->hasSetting($scope, $name)) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not have a setting named "%s".', $scope, $name));
+            throw new SettingNotFoundException($scope, $name);
         }
 
         $setting = $this->getSettings()->get($scope)->get($name);
@@ -589,4 +593,51 @@ class SettingManager
             file_put_contents(__DIR__ . '/../../../../config/packages/settings.yaml', Yaml::dump(['parameters' => ['settings' => $settings]], 8));
         }
     }
+
+    /**
+     * saveSettings
+     *
+     * Recursive
+     * @param FormInterface $form
+     * @param array $content
+     */
+    private function saveSettings(FormInterface $form, array $content)
+    {
+        foreach($form->all() as $child)
+        {
+            if (get_class($child->getConfig()->getType()->getInnerType()) === SettingsType::class)
+            {
+                foreach($child->getConfig()->getOption('settings') as $setting) {
+                    $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
+                    $settingForm = $child->get($name);
+                    $data = $settingForm->getData();
+
+                    if ($data instanceof EntityInterface) {
+                        $data = $data->getId();
+                    }
+
+                    if ($data instanceof File) {
+                        $data = str_replace(realpath(__DIR__ . '/../../public'), '', $data->getRealPath());
+                    }
+
+                    if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime) {
+                        $data = $data->format('c');
+                    }
+
+                    if ($data instanceof Collection) {
+                        $data = $data->toArray();
+                    }
+
+                    if (is_object($data)) {
+                        dump(get_class($data), $data);
+                        throw new \InvalidArgumentException('Work out how to handle an object!');
+                    }
+
+                    $this->setSetting($setting['scope'], $setting['name'], $data);
+                }
+            }
+            $this->saveSettings($child, $content);
+        }
+    }
+
 }

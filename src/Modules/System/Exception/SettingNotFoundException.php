@@ -17,6 +17,9 @@
 
 namespace App\Modules\System\Exception;
 
+use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Manager\SettingManager;
+
 /**
  * Class SettingNotFoundException
  * @package App\Modules\System\Exception
@@ -33,6 +36,8 @@ class SettingNotFoundException extends \RuntimeException
     {
         if ('' === $message)
             $message = sprintf('The Setting defined by "%s:%s" was not found.', $scope, $name);
+        $sm = SettingFactory::getSettingManager();
+        dump($sm->getSettings());
 
         parent::__construct($message);
     }

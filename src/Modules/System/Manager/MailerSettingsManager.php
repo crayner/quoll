@@ -14,28 +14,18 @@
  * Date: 8/09/2019
  * Time: 16:29
  */
-
 namespace App\Modules\System\Manager;
 
 use App\Manager\ParameterFileManager;
-use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use App\Util\ParameterBagHelper;
-use App\Util\TranslationHelper;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Modules\Security\Entity\SecurityUser;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\Dsn;
-use Symfony\Component\Mime\Address;
 
 /**
  * Class MailerSettingsManager
  * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class MailerSettingsManager
 {
@@ -106,6 +96,7 @@ class MailerSettingsManager
                     $result = 'gmail://' . $content['mailerSMTPUsername'] . ':' . $content['mailerSMTPPassword'] . '@default';
                     break;
                 case 'No':
+                    $result = null;
                     break;
                 default:
                     $result = 'smtp://' . $content['mailerSMTPUsername'] . ':' . $content['mailerSMTPPassword'] . '@' . $content['mailerSMTPHost'] . ':' . $content['mailerSMTPPort'] . '?encryption=' . $content['mailerSMTPSecure'];

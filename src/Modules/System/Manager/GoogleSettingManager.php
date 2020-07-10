@@ -14,22 +14,22 @@
  * Date: 7/09/2019
  * Time: 14:35
  */
-
 namespace App\Modules\System\Manager;
 
 use App\Manager\ParameterFileManager;
-use App\Modules\System\Manager\SettingFactory;
-use App\Modules\System\Provider\SettingManager;
-use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Class GoogleSettingManager
+ * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class GoogleSettingManager
 {
     /**
@@ -49,7 +49,6 @@ class GoogleSettingManager
      * handleGoogleSecretsFile
      * @param FormInterface $form
      * @param Request $request
-     * @param TranslatorInterface $translator
      * @return array
      */
     public function handleGoogleSecretsFile(FormInterface $form, Request $request)
@@ -65,8 +64,7 @@ class GoogleSettingManager
                 return ['class' => 'error', 'message' => ErrorMessageHelper::onlyFileTransferMessage(true)];
             }
             unlink($file->getRealPath());
-            $fileSystem = new Filesystem();
-            $fileSystem->remove(__DIR__ . '/../../../../var/cache');
+            $this->clearCache();
             if($content['googleOAuth'] !== 'Y') {
                 return $this->turnGoogleIntegrationOff();
             }
@@ -77,14 +75,15 @@ class GoogleSettingManager
             $config['parameters']['google_api_key'] = $content['developerKey'];
             $config['parameters']['google_client_id'] = $secret['web']['client_id'];
             $config['parameters']['google_client_secret'] = $secret['web']['client_secret'];
+            $config['parameters']['google_project_id'] = $secret['web']['project_id'];
+            $config['parameters']['google_redirect_uris'] = $secret['web']['redirect_uris'];
 
             ParameterFileManager::writeParameterFile($config);
 
             return ['class' => 'info', 'message' => TranslationHelper::translate('Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'System')];
         } else {
             $content = json_decode($request->getContent(), true);
-            $fileSystem = new Filesystem();
-            $fileSystem->remove(__DIR__ . '/../../../../var/cache');
+            $this->clearCache();
             if($content['googleOAuth'] !== 'Y') {
                 return $this->turnGoogleIntegrationOff();
             }
@@ -100,6 +99,11 @@ class GoogleSettingManager
         }
     }
 
+    /**
+     * turnGoogleIntegrationOff
+     * @return array
+     * 10/07/2020 09:17
+     */
     private function turnGoogleIntegrationOff()
     {
         $config = ParameterFileManager::readParameterFile();
@@ -107,8 +111,20 @@ class GoogleSettingManager
         $config['parameters']['google_api_key'] = null;
         $config['parameters']['google_client_id'] = null;
         $config['parameters']['google_client_secret'] = null;
+        $config['parameters']['google_project_id'] = null;
+        $config['parameters']['google_redirect_uris'] = [];
 
         ParameterFileManager::writeParameterFile($config);
         return ['class' => 'info', 'message' => TranslationHelper::translate('Google integration has been turned off.', [], 'System')];
+    }
+
+    /**
+     * clearCache
+     * 10/07/2020 09:18
+     */
+    public function clearCache()
+    {
+        $fileSystem = new Filesystem();
+        $fileSystem->remove(__DIR__ . '/../../../../var/cache');
     }
 }

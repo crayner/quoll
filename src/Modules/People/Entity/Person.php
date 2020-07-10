@@ -676,7 +676,7 @@ class Person extends AbstractEntity
                 $this->getPreferredName(),
                 $this->getFirstName(),
                 $this->getEmail(),
-                $this->getUsername(),
+                $this->getSecurityUser() ? $this->getSecurityUser()->getUsername() : null,
             ];
         }
         return [
@@ -1077,4 +1077,18 @@ class Person extends AbstractEntity
         }
         return $this;
     }
+
+    /**
+     * getEmail
+     * @return string|null
+     * 3/07/2020 11:15
+     */
+    public function getEmail(): ?string
+    {
+        if($this->getContact()) {
+            return $this->getContact()->getEmail();
+        }
+        return null;
+    }
+
 }

@@ -17,6 +17,8 @@ parameters:
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~
+    google_project_id: ~
+    google_redirect_uris: []
     messenger_transport_dsn: 'doctrine://default'
     preferred_countries: []
     preferred_languages: []

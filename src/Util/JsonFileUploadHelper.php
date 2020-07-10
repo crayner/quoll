@@ -18,6 +18,7 @@
 namespace App\Util;
 
 use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Util\SecurityHelper;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -43,7 +44,7 @@ class JsonFileUploadHelper
             file_put_contents($targetPath . $target, base64_decode($value[1]));
 
             $file = new File($targetPath . $target, true);
-            $user = UserHelper::getCurrentUser() ?  '_' . UserHelper::getCurrentUser()->getId() : '';
+            $user = SecurityHelper::getCurrentUser() ?  '_' . SecurityHelper::getCurrentUser()->getId() : '';
             $fileName = substr(trim($filePrefix, '_') . $user . '_' . uniqid(), 0, 32) . '.' . $file->guessExtension();
             $file->move($targetPath, $fileName);
             $file = new File($targetPath . DIRECTORY_SEPARATOR . $fileName, true);

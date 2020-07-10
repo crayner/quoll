@@ -48,6 +48,7 @@ class NotificationEventHandler
     public function handleRequest(Request $request, Form $form, NotificationEvent $event): array
     {
         $content = json_decode($request->getContent(), true);
+        $content['listeners'] = $content['listeners'] ?? [];
         $em = ProviderFactory::getEntityManager();
 
         foreach ($content['listeners'] as $q => $w) {
