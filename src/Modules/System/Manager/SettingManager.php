@@ -273,19 +273,31 @@ class SettingManager
                     $this->setSettingsChanged();
                 }
                 break;
+            case 'image':
             case 'string':
-                if (is_null($value) || is_string($value))
+                if (is_null($value) || is_string($value)) {
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
                     }
+                }
                 break;
             case 'integer':
-                if (is_null($value) || is_int($value))
+                if (is_null($value) || is_int($value)) {
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
                     }
+                }
+                break;
+            case 'array':
+                if (is_null($value) || is_array($value)) {
+                    $value = $value ?? [];
+                    if ($setting['value'] !== $value) {
+                        $setting['value'] = $value;
+                        $this->setSettingsChanged();
+                    }
+                }
                 break;
             default:
                 throw new \Exception(sprintf('How do I save a %s', $setting['type']));

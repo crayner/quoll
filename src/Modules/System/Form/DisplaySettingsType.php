@@ -14,19 +14,15 @@
  * Date: 3/09/2019
  * Time: 14:33
  */
-
 namespace App\Modules\System\Form;
 
-use App\Form\Type\FilePathType;
-use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\SimpleArrayType;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Validator\ReactImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,12 +46,7 @@ class DisplaySettingsType extends AbstractType
                         [
                             'scope' => 'System',
                             'name' => 'mainMenuCategoryOrder',
-                            'entry_type' => TextareaType::class,
-                            'entry_options' => [
-                                'attr' => [
-                                    'rows' => 6,
-                                ],
-                            ],
+                            'entry_type' => SimpleArrayType::class,
                         ],
                         [
                             'scope' => 'System',
@@ -63,7 +54,7 @@ class DisplaySettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
-                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationLogo'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSetting('System','organisationLogo', '/build/static/DefaultLogo.png'),
                                 'constraints' => [
                                     new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
                                 ],
@@ -77,7 +68,7 @@ class DisplaySettingsType extends AbstractType
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
                                 'required' => false,
-                                'empty_data' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationBackground'),
+                                'empty_data' => SettingFactory::getSettingManager()->getSetting('System','organisationBackground', '/build/static/backgroundPage.jpg'),
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],

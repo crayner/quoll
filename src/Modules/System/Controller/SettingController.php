@@ -213,13 +213,14 @@ class SettingController extends AbstractPageController
             try {
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
             } catch (\Exception $e) {
+                dump($e);
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+            $data['form'] = $manager->getFormFromContainer();
 
-            return new JsonResponse($data, 200);
+            return new JsonResponse($data);
         }
 
         $manager->singlePanel($form->createView());
