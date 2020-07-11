@@ -142,6 +142,12 @@ class Student extends AbstractEntity
     private $viewCalendarSchool;
 
     /**
+     * @var boolean|null
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $viewCalendarPersonal = true;
+
+    /**
      * @var ApplicationForm|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ApplicationForm")
      * @ORM\JoinColumn(name="application_form", referencedColumnName="id", nullable=true)
@@ -475,9 +481,9 @@ class Student extends AbstractEntity
     /**
      * @return bool|null
      */
-    public function getViewCalendarSchool(): ?bool
+    public function getViewCalendarSchool(): bool
     {
-        return $this->viewCalendarSchool;
+        return (bool)$this->viewCalendarSchool;
     }
 
     /**
@@ -486,7 +492,25 @@ class Student extends AbstractEntity
      */
     public function setViewCalendarSchool(?bool $viewCalendarSchool): Student
     {
-        $this->viewCalendarSchool = $viewCalendarSchool;
+        $this->viewCalendarSchool = (bool)$viewCalendarSchool;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isViewCalendarPersonal(): ?bool
+    {
+        return (bool)$this->viewCalendarPersonal;
+    }
+
+    /**
+     * @param bool|null $viewCalendarPersonal
+     * @return Student
+     */
+    public function setViewCalendarPersonal(?bool $viewCalendarPersonal): Student
+    {
+        $this->viewCalendarPersonal = (bool)$viewCalendarPersonal;
         return $this;
     }
 

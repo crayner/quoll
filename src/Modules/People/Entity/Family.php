@@ -276,7 +276,7 @@ class Family extends AbstractEntity
             $count = 0;
             $name = '';
             foreach($this->getAdults() as $adult) {
-                $name .= $adult->getPerson()->formatName(['style' => 'formal']) . ' & ';
+                $name .= $adult->getParent()->getPerson()->getFullName() . ' & ';
                 if (++$count > 1) {
                     break;
                 }

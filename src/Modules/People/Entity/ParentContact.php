@@ -78,6 +78,12 @@ class ParentContact extends AbstractEntity
     private $receiveNotificationEmails = true;
 
     /**
+     * @var boolean|null
+     * @ORM\Column(length=1, options={"default": 1})
+     */
+    private $viewCalendarSchool = true;
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
@@ -170,6 +176,24 @@ class ParentContact extends AbstractEntity
     public function setReceiveNotificationEmails(?bool $receiveNotificationEmails): ParentContact
     {
         $this->receiveNotificationEmails = (bool)$receiveNotificationEmails;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isViewCalendarSchool(): bool
+    {
+        return (bool)$this->viewCalendarSchool;
+    }
+
+    /**
+     * @param bool|null $viewCalendarSchool
+     * @return ParentContact
+     */
+    public function setViewCalendarSchool(?bool $viewCalendarSchool): ParentContact
+    {
+        $this->viewCalendarSchool = (bool)$viewCalendarSchool;
         return $this;
     }
 

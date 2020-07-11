@@ -29,47 +29,34 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FamilyMemberAdult extends FamilyMember
 {
     /**
-     * @var ParentContact|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\ParentContact")
-     * @ORM\JoinColumn(name="parent",referencedColumnName="id",nullable=true)
-     * @Assert\NotBlank()
+     * @var boolean|null
+     * @ORM\Column(type="boolean")
      */
-    private $parent;
+    private $childDataAccess = false;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice({"Y","N"})
+     * @var boolean|null
+     * @ORM\Column(type="boolean")
      */
-    private $childDataAccess = 'N';
+    private $contactCall = false;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean|null
+     * @ORM\Column(type="boolean", name="contact_SMS")
      */
-    private $contactCall = 'N';
+    private $contactSMS = false;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, name="contact_SMS")
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean|null
+     * @ORM\Column(type="boolean")
      */
-    private $contactSMS = 'N';
+    private $contactEmail = false;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean|null
+     * @ORM\Column(type="boolean")
      */
-    private $contactEmail = 'N';
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
-     */
-    private $contactMail = 'N';
+    private $contactMail = false;
 
     /**
      * @var Collection|FamilyRelationship[]
@@ -78,156 +65,102 @@ class FamilyMemberAdult extends FamilyMember
     private $relationships;
 
     /**
-     * @return ParentContact|null
+     * FamilyMemberAdult constructor.
+     * @param Family|null $family
      */
-    public function getParent(): ?ParentContact
+    public function __construct(?Family $family = null)
     {
-        return $this->parent;
+         $this->setRelationships(new ArrayCollection());
+         parent::__construct($family);
     }
 
     /**
-     * @param ParentContact|null $parent
-     * @return FamilyMemberAdult
-     */
-    public function setParent(?ParentContact $parent): FamilyMemberAdult
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
-     * isChildDataAccess
      * @return bool
      */
-    public function isChildDataAccess(): bool
+    public function getChildDataAccess(): bool
     {
-        return $this->getChildDataAccess() === 'Y';
+        return (bool)$this->childDataAccess;
     }
 
     /**
-     * @return string|null
-     */
-    public function getChildDataAccess(): ?string
-    {
-        return self::checkBoolean($this->childDataAccess);
-    }
-
-    /**
-     * @param string|null $childDataAccess
+     * @param bool|null $childDataAccess
      * @return FamilyMemberAdult
      */
-    public function setChildDataAccess(?string $childDataAccess): FamilyMemberAdult
+    public function setChildDataAccess(?bool $childDataAccess): FamilyMemberAdult
     {
-        $this->childDataAccess = $childDataAccess;
+        $this->childDataAccess = (bool)$childDataAccess;
         return $this;
     }
 
     /**
-     * isContactCall
      * @return bool
      */
-    public function isContactCall(): bool
+    public function getContactCall(): bool
     {
-        return $this->getContactCall() === 'Y';
+        return (bool)$this->contactCall;
     }
 
     /**
-     * getContactCall
-     * @return string
-     */
-    public function getContactCall(): string
-    {
-        return self::checkBoolean($this->contactCall);
-    }
-
-    /**
-     * @param string|null $contactCall
+     * @param bool|null $contactCall
      * @return FamilyMemberAdult
      */
-    public function setContactCall(?string $contactCall): FamilyMemberAdult
+    public function setContactCall(?bool $contactCall): FamilyMemberAdult
     {
-        $this->contactCall = $contactCall;
+        $this->contactCall = (bool)$contactCall;
         return $this;
     }
 
     /**
-     * isContactSMS
      * @return bool
      */
     public function isContactSMS(): bool
     {
-        return $this->getContactSMS() === 'Y';
+        return (bool)$this->contactSMS;
     }
 
     /**
-     * @return string
-     */
-    public function getContactSMS(): string
-    {
-        return self::checkBoolean($this->contactSMS);
-    }
-
-    /**
-     * @param string|null $contactSMS
+     * @param bool|null $contactSMS
      * @return FamilyMemberAdult
      */
-    public function setContactSMS(?string $contactSMS): FamilyMemberAdult
+    public function setContactSMS(?bool $contactSMS): FamilyMemberAdult
     {
-        $this->contactSMS = $contactSMS;
+        $this->contactSMS = (bool)$contactSMS;
         return $this;
     }
 
     /**
-     * isContactEmail
      * @return bool
      */
     public function isContactEmail(): bool
     {
-        return $this->getContactEmail() === 'Y';
+        return (bool)$this->contactEmail;
     }
 
     /**
-     * @return string
-     */
-    public function getContactEmail(): string
-    {
-        return self::checkBoolean($this->contactEmail);
-    }
-
-    /**
-     * @param string|null $contactEmail
+     * @param bool|null $contactEmail
      * @return FamilyMemberAdult
      */
-    public function setContactEmail(?string $contactEmail): FamilyMemberAdult
+    public function setContactEmail(?bool $contactEmail): FamilyMemberAdult
     {
-        $this->contactEmail = $contactEmail;
+        $this->contactEmail = (bool)$contactEmail;
         return $this;
     }
 
     /**
-     * isContactMail
      * @return bool
      */
     public function isContactMail(): bool
     {
-        return $this->getContactMail() === 'Y';
+        return (bool)$this->contactMail;
     }
 
     /**
-     * @return string
-     */
-    public function getContactMail(): string
-    {
-        return self::checkBoolean($this->contactMail);
-    }
-
-    /**
-     * @param string|null $contactMail
+     * @param bool|null $contactMail
      * @return FamilyMemberAdult
      */
-    public function setContactMail(?string $contactMail): FamilyMemberAdult
+    public function setContactMail(?bool $contactMail): FamilyMemberAdult
     {
-        $this->contactMail = $contactMail;
+        $this->contactMail = (bool)$contactMail;
         return $this;
     }
 

@@ -1,12 +1,20 @@
 empty_count: 1
 associated:
-    house:
-        entityName: 'App\Modules\School\Entity\House'
-        findBy: abbreviation
-    securityRoles:
-        entityName: 'App\Modules\Security\Entity\SecurityRole'
-        findBy: role
-        useCollection: true
+    securityUser:
+        entityName: 'App\Modules\Security\Entity\SecurityUser'
+        create: true
+    contact:
+        entityName: 'App\Modules\People\Entity\Contact'
+        create: true
+    parent:
+        entityName: 'App\Modules\People\Entity\ParentContact'
+        create: true
+    student:
+        entityName: 'App\Modules\Student\Entity\Student'
+        create: true
+    staff:
+        entityName: 'App\Modules\Staff\Entity\Staff'
+        create: true
 properties:
     dob: 'DateTimeImmutable'
     visaExpiryDate: 'DateTimeImmutable'

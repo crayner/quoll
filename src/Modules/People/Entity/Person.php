@@ -44,11 +44,11 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *      @ORM\UniqueConstraint(name="parent",columns={"parent"})}
  *     )
  * @UniqueEntity("student")
- * @UniqueEntity("security_user")
+ * @UniqueEntity("securityUser")
  * @UniqueEntity("staff")
  * @UniqueEntity("contact")
- * @UniqueEntity("personal_documentation")
- * @UniqueEntity("staff")
+ * @UniqueEntity("personalDocumentation")
+ * @UniqueEntity("parent")
  * @ORM\HasLifecycleCallbacks()
  */
 class Person extends AbstractEntity
@@ -920,7 +920,7 @@ class Person extends AbstractEntity
     public function setContact(?Contact $contact, bool $reflect = true): Person
     {
         $this->contact = $contact;
-        if ($reflect) {
+        if ($reflect && $contact !== null) {
             $contact->setPerson($this, false);
         }
         return $this;

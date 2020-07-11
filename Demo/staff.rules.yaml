@@ -1,7 +1,0 @@
-empty_count: 1
-associated:
-    person:
-        entityName: 'App\Modules\People\Entity\Person'
-        findBy: username
-constants:
-    biographicalGroupingPriority: 0

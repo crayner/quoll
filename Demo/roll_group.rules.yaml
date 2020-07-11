@@ -6,9 +6,11 @@ associated:
         entityName: 'App\Modules\School\Entity\AcademicYear'
         findBy: status
     tutor:
-        entityName: 'App\Modules\People\Entity\Person'
+        entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
+        method: getPerson
     tutor2:
-        entityName: 'App\Modules\People\Entity\Person'
+        entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
+        method: getPerson
 

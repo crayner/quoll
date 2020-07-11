@@ -76,7 +76,6 @@ class DemoDataManager
         'family' => Family::class,
         'family_adult' => FamilyMemberAdult::class,
         'family_child' => FamilyMemberStudent::class,
-        'staff' => Staff::class,
         'facility' => Facility::class,
         'roll_group' => RollGroup::class,
         'student_enrolment' => StudentEnrolment::class,
@@ -171,7 +170,7 @@ class DemoDataManager
                     try {
                         $entity->$method($value);
                     } catch (\TypeError | \Exception $e) {
-                        $this->getLogger()->warning($e->getMessage());
+                        $this->getLogger()->warning($e->getMessage(), is_array($value) ? $value : ['value' => $value]);
                     }
                 } else
                     $this->getLogger()->warning(sprintf('A setter was not found for %s in %s', $propertyName, $entityName));
@@ -268,6 +267,7 @@ class DemoDataManager
                 [
                     'findBy' => 'id',
                     'useCollection' => false,
+                    'method' => null,
                 ]
             );
 
@@ -275,11 +275,18 @@ class DemoDataManager
 
             $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy([$associateRules['findBy'] => $value]);
 
+            if ($this->associatedEntities[$propertyName][$key] !== null
+                && $associateRules['method'] !== null
+                && method_exists($this->associatedEntities[$propertyName][$key], $associateRules['method'])) {
+                $method = $associateRules['method'];
+                $this->associatedEntities[$propertyName][$key] = $this->associatedEntities[$propertyName][$key]->$method();
+            }
+
             if (null === $this->associatedEntities[$propertyName][$key]) {
                 $this->getLogger()->notice(sprintf('The entity %s does not have a row defined by %s => %s', $associateRules['entityName'], $associateRules['findBy'], (string)$value));
             }
 
-            return     $this->associatedEntities[$propertyName][$key];
+            return $this->associatedEntities[$propertyName][$key];
 
         } else {
             $resolver = new OptionsResolver();
@@ -292,10 +299,17 @@ class DemoDataManager
                 [
                     'findBy' => [],
                     'useCollection' => false,
+                    'create' => false,
+                    'associated' => [],
+                    'getMethod' => null,
                 ]
             );
 
             $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
+
+            if ($associateRules['create']) {
+                return $this->createSubEntity($associateRules, $value);
+            }
 
             if ($associateRules['useCollection']) {
                 $result = new ArrayCollection();
@@ -334,6 +348,9 @@ class DemoDataManager
             if (is_string($rules['associated'][$propertyName]))
                 $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
 
+            if ($associateRules['method']) {
+                return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value)->$associateRules['method']();
+            }
             return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value);
         }
     }
@@ -430,5 +447,76 @@ class DemoDataManager
             }
         }
         return $entity;
+    }
+
+    /**
+     * createSubEntity
+     * @param array $associatedRules
+     * @param array $data
+     * @return mixed
+     */
+    private function createSubEntity(array $associatedRules, array $data)
+    {
+        $entity = new $associatedRules['entityName']();
+        foreach($data as $name=>$value) {
+            $method = 'set' . ucfirst($name);
+
+            if (is_array($value) && isset($value['entityName'])) {
+                $value = $this->getAssociatedEntity($name, $value);
+            }
+
+            if (method_exists($entity, $method)) {
+                try {
+                    $entity->$method($value);
+                } catch (\InvalidArgumentException $e) {
+                    dump($entity,$name,$value);
+                    throw $e;
+                }
+            } else {
+                $this->getLogger()->warning(sprintf('A setter was not found for %s in %s', $name, get_class($entity)));
+            }
+        }
+
+        return $entity;
+    }
+
+    /**
+     * getAssociatedEntity
+     * @param string $propertyName
+     * @param array $value
+     * @return EntityInterface
+     * 10/07/2020 13:56
+     */
+    private function getAssociatedEntity(string $propertyName, array $value): EntityInterface
+    {
+        $key = strval($value['value']);
+
+        if (key_exists($propertyName, $this->associatedEntities))
+            if (key_exists($key, $this->associatedEntities[$propertyName]))
+                return $this->associatedEntities[$propertyName][$key];
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(
+            [
+                'entityName',
+                'value',
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'findBy' => 'id',
+                'useCollection' => false,
+
+            ]
+        );
+
+        $value = $resolver->resolve($value);
+
+        $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($value['entityName'])->findOneBy([$value['findBy'] => $value['value']]);
+
+        if (null === $this->associatedEntities[$propertyName][$key]) {
+            $this->getLogger()->notice(sprintf('The entity %s does not have a row defined by %s => %s', $value['entityName'], $value['findBy'], (string)$value));
+        }
+
+        return $this->associatedEntities[$propertyName][$key];
     }
 }

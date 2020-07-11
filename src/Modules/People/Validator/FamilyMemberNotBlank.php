@@ -11,29 +11,32 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 18/05/2020
- * Time: 15:36
+ * Date: 11/07/2020
+ * Time: 12:55
  */
 namespace App\Modules\People\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class CustomFieldOptions
+ * Class FamilyMemberNotBlank
  * @package App\Modules\People\Validator
+ * @author Craig Rayner <craig@craigrayner.com>
  * @Annotations()
  */
-class CustomFieldOptions extends Constraint
+class FamilyMemberNotBlank extends Constraint
 {
-    const INVALID_OPTIONS_ERROR = 'ddcbb942-acca-4ebc-970b-8e615a349d9b';
+    const PARENT_AND_STUDENT_ERROR = '0d5d5ab4-922c-4b66-bbc2-d0ca06bbaf4c';
 
     protected static $errorNames = [
-        self::INVALID_OPTIONS_ERROR => 'INVALID_OPTIONS_ERROR',
+        self::PARENT_AND_STUDENT_ERROR => 'PARENT_AND_STUDENT_ERROR',
     ];
 
-    public $message = 'The option {value} is not valid for {type}.';
+    public $message = 'This value must not be blank';
 
-    public $transDomain = 'People';
+    public $transDomain = 'validators';
+
+    public $atPath = 'family';  // family, parent or student
 
     /**
      * getTargets

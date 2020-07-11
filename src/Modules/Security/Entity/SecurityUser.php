@@ -18,8 +18,11 @@ namespace App\Modules\Security\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Contact;
+use App\Modules\People\Entity\ParentContact;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Staff\Entity\Staff;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -599,5 +602,35 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
             $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getParent()->getLocale()->getCode() : null;
         }
         return $locale ?: ParameterBagHelper::get('locale');
+    }
+
+    /**
+     * getParent
+     * @return ParentContact|null
+     * 11/07/2020 12:43
+     */
+    public function getParent(): ?ParentContact
+    {
+        return $this->getPerson() ? $this->getPerson()->getParent() : null ;
+    }
+
+    /**
+     * getStudent
+     * @return Student|null
+     * 11/07/2020 12:44
+     */
+    public function getStudent(): ?Student
+    {
+        return $this->getPerson() ? $this->getPerson()->getStudent() : null ;
+    }
+
+    /**
+     * getStaff
+     * @return Staff|null
+     * 11/07/2020 13:41
+     */
+    public function getStaff(): ?Staff
+    {
+        return $this->getPerson() ? $this->getPerson()->getStaff() : null ;
     }
 }

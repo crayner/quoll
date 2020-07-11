@@ -18,10 +18,11 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\People\Validator\FamilyMemberNotBlank;
+use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Util\StudentHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,18 +42,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="family",columns={"family"}),
  *     @ORM\Index(name="member_type",columns={"member_type"})}
  * )
- * @UniqueEntity({"student","family"})
- * @UniqueEntity({"parent","family"})
+ * @UniqueEntity({"student","family"},ignoreNull=true)
+ * @UniqueEntity({"parent","family"},ignoreNull=true)
+ * @UniqueEntity({"contactPriority","family"},ignoreNull=true)
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
  * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
+ * @FamilyMemberNotBlank()
  */
 class FamilyMember extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-
-    use BooleanList;
 
     /**
      * @var string|null
@@ -61,6 +62,19 @@ class FamilyMember extends AbstractEntity
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
+    /**
+     * @var ParentContact|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\ParentContact")
+     * @ORM\JoinColumn(name="parent",referencedColumnName="id",nullable=true)
+     */
+    private $parent;
+
+    /**
+     * @var Student|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="students")
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
+     */
+    private $student;
 
     /**
      * @var Family|null
@@ -79,7 +93,6 @@ class FamilyMember extends AbstractEntity
     /**
      * @var int|null
      * @ORM\Column(type="smallint",nullable=true)
-     * @Assert\NotBlank()
      * @Assert\Range(min=1,max=99)
      */
     private $contactPriority;
@@ -132,6 +145,42 @@ class FamilyMember extends AbstractEntity
     }
 
     /**
+     * @return ParentContact|null
+     */
+    public function getParent(): ?ParentContact
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ParentContact|null $parent
+     * @return FamilyMember
+     */
+    public function setParent(?ParentContact $parent): FamilyMember
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return Student|null
+     */
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student|null $student
+     * @return FamilyMember
+     */
+    public function setStudent(?Student $student): FamilyMember
+    {
+        $this->student = $student;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getComment(): ?string
@@ -173,13 +222,17 @@ class FamilyMember extends AbstractEntity
      */
     public function __toString(): string
     {
-        if ($this->getFamily() && $this->getPerson())
-            return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+        if ($this->getFamily() && $this->getParent())
+            return $this->getFamily()->getName() . ': ' . $this->getParent()->getPerson()->getFullName();
+        if ($this->getFamily() && $this->getStudent())
+            return $this->getFamily()->getName() . ': ' . $this->getStudent()->getPerson()->getFullName();
         if ($this->getFamily())
             return $this->getFamily()->getName() . ': UunKnown ' . $this->getId();
-        if ($this->getPerson())
-            return 'Unknown : ' . $this->getPerson()->formatName() . ' ' . $this->getId();
-        return 'No Idea';
+        if ($this->getParent())
+            return 'Unknown : ' . $this->getParent()->getPerson()->getFullName() . ' ' . $this->getId();
+        if ($this->getStudent())
+            return 'Unknown : ' . $this->getStudent()->getPerson()->getFullName() . ' ' . $this->getId();
+        return 'No Idea, so ' . $this->getId();
     }
 
     /**
@@ -235,6 +288,11 @@ class FamilyMember extends AbstractEntity
         ];
     }
 
+    /**
+     * create
+     * @return array|string[]
+     * 11/07/2020 13:18
+     */
     public function create(): array
     {
         return ["CREATE TABLE `__prefix__FamilyMember` (
@@ -242,43 +300,58 @@ class FamilyMember extends AbstractEntity
                     `family` CHAR(36) NOT NULL,
                     `person` CHAR(36) NOT NULL,
                     `comment` longtext,
-                    `member_type` CHAR(191) NOT NULL,
-                    `child_data_access` CHAR(1) DEFAULT NULL,
-                    `contact_priority` smallint DEFAULT NULL,
-                    `contact_call` CHAR(1) DEFAULT NULL,
-                    `contact_SMS` CHAR(1) DEFAULT NULL,
-                    `contact_email` CHAR(1) DEFAULT NULL,
-                    `contact_mail` CHAR(1) DEFAULT NULL,
+                    `member_type` VARCHAR(191) NOT NULL,
+                    `contact_priority` smallint(6) DEFAULT NULL,
+                    `child_data_access` tinyint(1) DEFAULT NULL,
+                    `contact_priority` smallint(6) DEFAULT NULL,
+                    `contact_call` tinyint(1) DEFAULT NULL,
+                    `contact_SMS` tinyint(1) DEFAULT NULL,
+                    `contact_email` tinyint(1) DEFAULT NULL,
+                    `contact_mail` tinyint(1) DEFAULT NULL,
                     PRIMARY KEY (`id`),
+                    UNIQUE KEY `family_contact_priority` (`family`,`contact_priority`),
                     UNIQUE KEY `family_member` (`family`,`person`),
                     UNIQUE KEY `family_contact` (`family`,`contact_priority`),
-                    KEY `person` (`person`),
+                    KEY `parent` (`parent`),
+                    KEY `student` (`student`),
                     KEY `family` (`family`),
                     KEY `member_type` (`member_type`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
     }
 
+    /**
+     * foreignConstraints
+     * @return string
+     * 11/07/2020 13:18
+     */
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__FamilyMember` 
                     ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
-                    ADD CONSTRAINT FOREIGN KEY (person) REFERENCES __prefix__Person (id);";
-    }/**
+                    ADD CONSTRAINT FOREIGN KEY (student) REFERENCES __prefix__Student (id),
+                    ADD CONSTRAINT FOREIGN KEY (parent) REFERENCES __prefix__ParentContact (id);";
+    }
+
+    /**
      * isEqualTo
      * @param FamilyMember $member
      * @return bool
      */
     public function isEqualTo(FamilyMember $member): bool
     {
-        if($this->getPerson() === null || $member->getPerson() === null || $this->getFamily() === null || $member->getFamily() === null)
-            return false;
-        if (!$member->getPerson()->isEqualTo($this->getPerson()))
-            return false;
-        if (!$member->getFamily()->isEqualTo($this->getFamily()))
-            return false;
-        return true;
+        if ($member->getStudent() !== null) {
+            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getParent()->getPerson()->isEqualTo($member->getParent()->getPerson());
+        } else if ($member->getParent() !== null) {
+            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getStudent()->getPerson()->isEqualTo($member->getStudent()->getPerson());
+        }
+        return false;
     }
 
+    /**
+     * getVersion
+     * @return string
+     * 11/07/2020 13:22
+     */
     public static function getVersion(): string
     {
         return self::VERSION;

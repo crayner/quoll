@@ -11,7 +11,6 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-
 namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
@@ -185,6 +184,12 @@ class Staff extends AbstractEntity
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $viewCalendarSpaceBooking = false;
+
+    /**
+     * @var boolean|null
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $viewCalendarPersonal = true;
 
     /**
      * @var ApplicationForm|null
@@ -362,42 +367,34 @@ class Staff extends AbstractEntity
      */
     public function isSmartWorkflowHelp(): bool
     {
-        return $this->getSmartWorkflowHelp() === 'Y';
+        return (bool)$this->smartWorkflowHelp;
     }
 
     /**
-     * @return string|null
-     */
-    public function getSmartWorkflowHelp(): ?string
-    {
-        return $this->smartWorkflowHelp = self::checkBoolean($this->smartWorkflowHelp, 'Y');
-    }
-
-    /**
-     * @param string|null $smartWorkflowHelp
+     * @param bool|null $smartWorkflowHelp
      * @return Staff
      */
-    public function setSmartWorkflowHelp(?string $smartWorkflowHelp): Staff
+    public function setSmartWorkflowHelp(?bool $smartWorkflowHelp): Staff
     {
-        $this->smartWorkflowHelp = self::checkBoolean($smartWorkflowHelp);
+        $this->smartWorkflowHelp = (bool)$smartWorkflowHelp;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getFirstAidQualified(): ?string
+    public function getFirstAidQualified(): bool
     {
-        return $this->firstAidQualified = self::checkBoolean($this->firstAidQualified, 'N');
+        return (bool)$this->firstAidQualified;
     }
 
     /**
-     * @param string|null $firstAidQualified
+     * @param bool|null $firstAidQualified
      * @return Staff
      */
-    public function setFirstAidQualified(?string $firstAidQualified): Staff
+    public function setFirstAidQualified(?bool $firstAidQualified): Staff
     {
-        $this->firstAidQualified = self::checkBoolean($firstAidQualified, 'N');
+        $this->firstAidQualified = (bool)$firstAidQualified;
         return $this;
     }
 
@@ -661,6 +658,24 @@ class Staff extends AbstractEntity
     public function setViewCalendarSpaceBooking(?bool $viewCalendarSpaceBooking): Staff
     {
         $this->viewCalendarSpaceBooking = (bool)$viewCalendarSpaceBooking;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isViewCalendarPersonal(): bool
+    {
+        return (bool)$this->viewCalendarPersonal;
+    }
+
+    /**
+     * @param bool|null $viewCalendarPersonal
+     * @return Staff
+     */
+    public function setViewCalendarPersonal(?bool $viewCalendarPersonal): Staff
+    {
+        $this->viewCalendarPersonal = (bool)$viewCalendarPersonal;
         return $this;
     }
 

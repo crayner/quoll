@@ -145,20 +145,7 @@ class SettingManager
      */
     public function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
     {
-        $result = $this->getSettingByScope($scope, $name);
-        if (empty($result))
-            return $default;
-
-        $x = @unserialize($result);
-        if (is_array($x))
-            $ok = true;
-        else
-            $ok = false;
-
-        if ($ok)
-            return $x;
-
-        return explode(',', $result);
+        return $this->getSetting($scope, $name, $default);
     }
 
     /**

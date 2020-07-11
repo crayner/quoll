@@ -2,6 +2,7 @@ associated:
     family:
         entityName: 'App\Modules\People\Entity\Family'
         findBy: familySync
-    person:
-        entityName: 'App\Modules\People\Entity\Person'
+    student:
+        entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
+        method: getStudent
