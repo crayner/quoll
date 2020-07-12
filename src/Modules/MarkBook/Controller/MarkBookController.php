@@ -64,7 +64,10 @@ class MarkBookController extends AbstractPageController
                 $data['errors'] = $settingProvider->handleSettingsForm($form,$request);
                 $form = $this->createForm(MarkbookSettingType::class, null, ['action' => $this->generateUrl('mark_book_settings')]);
             } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                if ($_ENV['APP_ENV'] === 'dev') {
+                    throw $e;
+                }
+                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
             }
 
             $manager->singlePanel($form->createView());

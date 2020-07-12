@@ -59,7 +59,6 @@ class MarkBookSettingType extends AbstractType
                             'scope' => 'Mark Book',
                             'name' => 'enableEffort',
                             'entry_type' => ToggleType::class,
-
                         ],
                         [
                             'scope' => 'Mark Book',
@@ -80,7 +79,7 @@ class MarkBookSettingType extends AbstractType
                 ]
             )
         ;
-        if (SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'defaultAssessmentScale')) {
+        if (SettingFactory::getSettingManager()->hasSetting('System', 'defaultAssessmentScale', true) ) {
             $builder
                 ->add('enableColumnWeightingDescription', ParagraphType::class,
                     [

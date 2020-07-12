@@ -115,20 +115,19 @@ class SettingsType extends AbstractType
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
             $data = $setting['value'];
-
-            if ($setting['setting_type'] === Person::class) {
-                $data = $setting['value'] ? ProviderFactory::getRepository(Person::class)->find($setting['value']) : null;
+            if ($setting['setting_type'] === 'boolean') {
+                $data = $data ? '1' : '0';
             }
 
             $builder->add($name, $setting['entry_type'], array_merge(
-                [
-                    'data' => $data,
-                    'label' => $setting['scope'].'.'.$setting['name'].'.name',
-                    'help' => $setting['scope'].'.'.$setting['name'].'.description',
-                    'required' => false,
-                    'setting_form' => true,
-                ],
-                $setting['entry_options'])
+                    [
+                        'data' => $data,
+                        'label' => $setting['scope'] . '.' . $setting['name'] . '.name',
+                        'help' => $setting['scope'] . '.' . $setting['name'] . '.description',
+                        'required' => false,
+                        'setting_form' => true,
+                    ],
+                    $setting['entry_options'])
             );
         }
     }
