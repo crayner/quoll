@@ -69,7 +69,6 @@ PayPal API Signature: PayPal API Signature
 PayPal API Username: PayPal API Username
 PayPal Payment Gateway: PayPal Payment Gateway
 PayPal: PayPal
-Please Select...: Please Select...
 Production: Production
 Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}: Provide a copy of the .json file downloaded from the {anchor}Google Development Console{anchorClose}.
 Provide a copy of the API Key from the {anchor}Google Development Console.{anchorClose}: Provide a copy of the API Key from the {anchor}Google Development Console{anchorClose}.
@@ -306,3 +305,5 @@ student: Student
 year_group: Year Group
 Login - Failed: Login - Failed
 People: People
+'Core data started for {table}.': 'Core data started for {table}.'
+'Link data started for {table}.': 'Link data started for {table}.'

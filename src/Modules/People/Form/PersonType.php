@@ -283,7 +283,7 @@ class PersonType extends AbstractType
                     'label' => 'Status',
                     'help' => "This determines visibility within the system.",
                     'panel' => 'System',
-                    'placeholder' => 'Please Select...',
+                    'placeholder' => 'Please select...',
                     'choice_list_prefix' => 'person.status'
                 ]
             )

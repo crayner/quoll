@@ -753,3 +753,26 @@ Library:
     browseBGImage:
         name: 'Browse Library BG Image'
         description: 'URL to background image used behind library browsing screen.'
+Base Path: Base Path
+Base URL: Base URL
+Confirm Password: Confirm Password
+Development: Development
+Email: Email
+Family name as shown in ID documents.: Family name as shown in ID documents.
+First Name: First Name
+First name as shown in ID documents.: First name as shown in ID documents.
+Must be unique. System login name. Cannot be changed.: Must be unique. System login name. Cannot be changed.
+No SMS Settings: No SMS Settings
+Organisation Settings: Organisation Settings
+Password: Password
+Please select...: Please select...
+Production: Production
+Submit: Submit
+Surname: Surname
+System Settings: System Settings
+System User Account: System User Account
+Testing: Testing
+The local file system path to the system: The local file system path to the system
+The url at which the whole system resides.: The url at which the whole system resides.
+Title: Title
+Username: Username

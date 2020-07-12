@@ -61,7 +61,7 @@ class GoogleSettingManager
             try {
                 $secret = json_decode(file_get_contents($file->getRealPath()), true);
             } catch (\Exception $e) {
-                return ['class' => 'error', 'message' => ErrorMessageHelper::onlyFileTransferMessage(true)];
+                return ['class' => 'error', 'message' => ErrorMessageHelper::onlyFileTransferMessage()];
             }
             unlink($file->getRealPath());
             $this->clearCache();
@@ -80,7 +80,7 @@ class GoogleSettingManager
 
             ParameterFileManager::writeParameterFile($config);
 
-            return ['class' => 'info', 'message' => TranslationHelper::translate('Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'System')];
+            return ['class' => 'info', 'message' => ['Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'System']];
         } else {
             $content = json_decode($request->getContent(), true);
             $this->clearCache();
@@ -95,7 +95,7 @@ class GoogleSettingManager
 
             ParameterFileManager::writeParameterFile($config);
 
-            return ['class' => 'info', 'message' => TranslationHelper::translate('Your requested did not included a valid Google Secret File. All other Google changes where saved.', [], 'System')];
+            return ['class' => 'info', 'message' => ['Your requested did not included a valid Google Secret File. All other Google changes where saved.', [], 'System']];
         }
     }
 

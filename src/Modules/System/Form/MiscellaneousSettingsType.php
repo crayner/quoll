@@ -94,7 +94,7 @@ class MiscellaneousSettingsType extends AbstractType
                             'entry_options' => [
                                 'class' => Scale::class,
                                 'choice_label' => 'name',
-                                'placeholder' => 'Please Select...',
+                                'placeholder' => 'Please select...',
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('s')
                                         ->where('s.active = :yes')

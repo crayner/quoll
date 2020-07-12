@@ -51,7 +51,7 @@ class LanguageType extends AbstractType
                 [
                     'choices' => I18n::getLanguages(),
                     'choice_translation_domain' => false,
-                    'placeholder' => 'Please Select...',
+                    'placeholder' => 'Please select...',
                     'label' => 'System Language',
                     'required' => true,
                 ]

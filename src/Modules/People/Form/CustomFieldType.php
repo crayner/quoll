@@ -66,7 +66,7 @@ class CustomFieldType extends AbstractType
             ->add('fieldType', EnumType::class,
                 [
                     'label' => 'Field Type',
-                    'placeholder' => 'Please Select...',
+                    'placeholder' => 'Please select...',
                 ]
             );
         if ($options['data']->getFieldType() === 'text') {

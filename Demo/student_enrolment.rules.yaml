@@ -1,7 +1,7 @@
 associated:
     student:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
-        findBy: userName
+        findBy: username
         method: getStudent
     academicYear:
         entityName: 'App\Modules\School\Entity\AcademicYear'

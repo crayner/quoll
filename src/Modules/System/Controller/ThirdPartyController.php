@@ -92,7 +92,7 @@ class ThirdPartyController extends AbstractPageController
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('third_party_settings', ['tabName' => 'Google']);
                 foreach($data['errors'] as $message) {
-                    $this->addFlash($message['class'], $message['message']);
+                    $this->addFlash($message['class'], [$message['message'], [], 'System']);
                 }
             } catch (\Exception $e) {
                 $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
