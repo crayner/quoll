@@ -196,7 +196,7 @@ class InstallationController extends AbstractPageController
             [
                 'content' => $this->renderView('installation/table_complete.html.twig',
                     [
-                        'tableCount' => $manager->createTables(),
+                        'tableCount' => $manager->createTables($this->getDoctrine()->getManager()),
                     ]
                 ),
                 'containers' => $containerManager->getBuiltContainers(),
@@ -227,7 +227,7 @@ class InstallationController extends AbstractPageController
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
-                $data['redirect'] = $this->generateUrl('installation_foreign_constraints');
+                $data['redirect'] = $this->generateUrl('installation_system_settings');
                 $data['status'] = 'redirect';
 
                 return new JsonResponse($data);
@@ -244,51 +244,6 @@ class InstallationController extends AbstractPageController
                     [
                         'tableCount' => $count,
                         'itemCount' => $createManager->getTotalItemCount(),
-                    ]
-                ),
-                'containers' => $manager->getBuiltContainers(),
-            ]
-        );
-    }
-
-    /**
-     * demoData
-     * @param CreateManager $createManager
-     * @param ContainerManager $manager
-     * @return JsonResponse
-     * @Route("/installation/foreign/constraints/",name="installation_foreign_constraints")
-     */
-    public function foreignConstraints(CreateManager $createManager, ContainerManager $manager)
-    {
-        TranslationHelper::setDomain('System');
-
-        $form = $this->createForm(SubmitOnlyType::class, null,
-            [
-                'action' => $this->generateUrl('installation_foreign_constraints'),
-                'translation_domain' => 'System',
-                'submitLabel' => 'Proceed',
-            ]
-        );
-
-        if ($this->getRequest()->getContent() !== '') {
-            $content = json_decode($this->getRequest()->getContent(), true);
-            $form->submit($content);
-            if ($form->isValid()) {
-                $data['redirect'] = $this->generateUrl('installation_system_settings');
-                $data['status'] = 'redirect';
-
-                return new JsonResponse($data);
-            }
-        }
-
-        $manager->singlePanel($form->createView());
-        $createManager->setInstallationStatus('Foreign Constraints');
-        $createManager->getLogger()->notice(TranslationHelper::translate('Foreign Constraints will be added to tables.'));
-        return $this->getPageManager()->render(
-            [
-                'content' => $this->renderView('installation/foreign_constraint_complete.html.twig',
-                    [
-                        'tableCount' => $createManager->foreignConstraints(),
                     ]
                 ),
                 'containers' => $manager->getBuiltContainers(),

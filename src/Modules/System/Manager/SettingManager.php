@@ -15,7 +15,6 @@
 namespace App\Modules\System\Manager;
 
 use App\Manager\EntityInterface;
-use App\Modules\People\Entity\Person;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
@@ -55,11 +54,11 @@ class SettingManager
             $fileSystem = new Filesystem();
             if (!$fileSystem->exists(__DIR__ . '/../../../../config/packages/settings.yaml')) {
                 $fileSystem->copy(__DIR__ . '/../../../../config/packages/settings.yaml.dist',__DIR__ . '/../../../../config/packages/settings.yaml');
-                $settings = Yaml::parse(__DIR__ . '/../../../../config/packages/settings.yaml');
+                $settings = Yaml::parse(file_get_contents(__DIR__ . '/../../../../config/packages/settings.yaml'));
                 $settings = $settings['parameters']['settings'];
             }
         }
-        $this->settings = $this->convertRawSettings($settings);
+        $this->settings = $this->convertRawSettings($settings ?? []);
     }
 
     /**
@@ -253,7 +252,7 @@ class SettingManager
         $setting = $this->getSettings()->get($scope)->get($name);
 
         switch ($setting['type']) {
-            case 'App\Modules\People\Entity\Person':
+            case 'entity':
                 $value = $value ? $value->getId() : null;
                 if ($setting['value'] !== $value) {
                     $setting['value'] = $value;
@@ -280,6 +279,15 @@ class SettingManager
             case 'array':
                 if (is_null($value) || is_array($value)) {
                     $value = $value ?? [];
+                    if ($setting['value'] !== $value) {
+                        $setting['value'] = $value;
+                        $this->setSettingsChanged();
+                    }
+                }
+                break;
+            case 'boolean':
+                if ((is_string($value) && in_array($value, ['1', '', '0'])) || is_bool($value) || is_null($value)) {
+                    $value = (bool)$value;
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
@@ -346,11 +354,12 @@ class SettingManager
             if ($this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name)) {
                 $w = $this->getSettings()->get($scope)->get($name);
                 switch ($w['type']) {
+                    case 'entity':
                     case 'string':
                         return !in_array($w['value'], [null, '']);
                         break;
                     default:
-                        throw new \Exception('Missing Setting type work for '.$w['type']);
+                        throw new \Exception('Missing hasSetting type work for '.$w['type']);
                 }
             }
         } else {

@@ -32,18 +32,6 @@ interface EntityInterface
     public function toArray(?string $name = null): array;
 
     /**
-     * create
-     * @return array
-     */
-    public function create(): array;
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string;
-
-    /**
      * coreData
      * @return string
      */

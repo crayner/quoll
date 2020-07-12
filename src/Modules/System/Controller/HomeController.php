@@ -25,6 +25,7 @@ use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\ORM\Tools\SchemaTool;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

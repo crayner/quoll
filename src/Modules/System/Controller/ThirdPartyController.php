@@ -89,6 +89,11 @@ class ThirdPartyController extends AbstractPageController
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
                 $gm = new GoogleSettingManager();
                 $data['errors'][] = $gm->handleGoogleSecretsFile($form, $request);
+                $data['status'] = 'redirect';
+                $data['redirect'] = $this->generateUrl('third_party_settings', ['tabName' => 'Google']);
+                foreach($data['errors'] as $message) {
+                    $this->addFlash($message['class'], $message['message']);
+                }
             } catch (\Exception $e) {
                 $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
             }

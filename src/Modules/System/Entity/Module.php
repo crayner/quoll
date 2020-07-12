@@ -71,7 +71,7 @@ class Module extends AbstractEntity
 
     /**
      * @var array|null
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array",nullable=true)
      */
     private $securityRoles;
 
@@ -522,36 +522,7 @@ class Module extends AbstractEntity
      */
     public function __toSting(): ?string
     {
-        return $this->getName();
-    }
-
-    /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Module` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` VARCHAR(30) NOT NULL COMMENT 'This name should be globally unique preferably, but certainly locally unique',
-                    `description` longtext NOT NULL,
-                    `entry_route` VARCHAR(191) NOT NULL,
-                    `security_roles` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
-                    `type` VARCHAR(12) NOT NULL DEFAULT 'Core',
-                    `active` VARCHAR(1) NOT NULL DEFAULT 'Y',
-                    `category` VARCHAR(10) NOT NULL,
-                    `version_date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
-                    `author` CHAR(40) NOT NULL,
-                    `url` CHAR(255) NOT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    KEY `category` (`category`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=`utf8mb4` COLLATE=`utf8mb4_general_ci`;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
+        return $this->getName() ?? $this->getId();
     }
 
     /**

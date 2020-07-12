@@ -22,6 +22,7 @@ use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\TableExistsException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CreateManager
  * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class CreateManager
 {
@@ -90,48 +92,26 @@ class CreateManager
 
     /**
      * createTables
+     * @param EntityManagerInterface $em
+     * @return int
      */
-    public function createTables()
+    public function createTables(EntityManagerInterface $em)
     {
-        $finder = new Finder();
-        $bundles = $finder->directories()->in(__DIR__ . '/../../')->depth(0);
-        $moduleDir = realpath(__DIR__ . '/../../');
-        $reportLog = [];
-        $count = 0;
-        try {
-            $this->getEm()->beginTransaction();
-            foreach ($bundles as $bundle) {
-                $finder = new Finder();
-                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
-                foreach ($tables as $table) {
-                    $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
-                    $table = new $name();
-                    foreach ($table->create() as $sql) {
-                        $sql = str_replace(['__prefix__', ' IF NOT EXISTS'], [$this->getPrefix(), ''], $sql);
-                        $this->em->getConnection()->exec($sql);
-                        $this->getLogger()->notice(TranslationHelper::translate('The {table} was written to the database.', ['{table}' => $name]));
-                        $count++;
-                        $report = new ModuleUpgrade();
-                        $report->setTableName($name)->setTableVersion($name::getVersion())->setTableSection('Create');
-                        $reportLog[] = $report;
-                    }
+        ini_set('max_execution_time', 240);
+        $schemaTool = new SchemaTool($em);
 
-                }
-            }
-            $this->getEm()->commit();
-        } catch (TableExistsException | PDOException | \PDOException $e) {
-            $this->em->rollback();
-            $this->getLogger()->error($e->getMessage());
-        }
-        $this->getLogger()->notice(TranslationHelper::translate('The creation of tables for the database is completed. {count} tables where added.', ['{count}' => $count]));
-        $x = 0;
-        foreach($reportLog as $report) {
-            $this->getEm()->persist($report);
-            if ($x++ % 100 === 0) {
-                $this->getEm()->flush();
+        $metadata = $em->getMetadataFactory()->getAllMetadata();
+
+        $sql = $schemaTool->getUpdateSchemaSql($metadata);
+
+        $schemaTool->updateSchema($metadata);
+
+        $count = 0;
+        foreach($sql as $w) {
+            if (str_contains($w, 'CREATE TABLE')) {
+                $count++;
             }
         }
-        $this->getEm()->flush();
         return $count;
     }
 
@@ -338,47 +318,6 @@ class CreateManager
     public function setInstallationStatus(string $status)
     {
         $this->getManager()->setInstallationStatus($status);
-    }
-
-    /**
-     * foreignConstraints
-     * @return int
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function foreignConstraints()
-    {
-        $finder = new Finder();
-        $bundles = $finder->directories()->in(__DIR__ . '/../../')->depth(0);
-        $moduleDir = realpath(__DIR__ . '/../../');
-        $count = 0;
-        try {
-            $this->getEm()->beginTransaction();
-            foreach ($bundles as $bundle) {
-                $finder = new Finder();
-                $tables = $finder->files()->in($bundle->getLinkTarget() . '/Entity')->depth(0)->name('*.php');
-                foreach ($tables as $table) {
-                    $name = str_replace(['.php', $moduleDir], ['', 'App\Modules'], $table->getRealPath());
-                    $table = new $name();
-                    $sql = $table->foreignConstraints();
-                    $sql = str_replace(['__prefix__', ], [$this->getPrefix()], $sql);
-                    if ('' !== $sql) {
-                        $this->em->getConnection()->exec($sql);
-                        $this->getLogger()->notice(TranslationHelper::translate('Foreign Constraints were added to {table}.', ['{table}' => $name]));
-                        $count++;
-                        $report = new ModuleUpgrade();
-                        $report->setTableName($name)->setTableVersion($name::getVersion())->setTableSection('Foreign Constraints');
-                        $this->getEm()->persist($report);
-                        $this->getEm()->flush();
-                    }
-                }
-            }
-            $this->getEm()->commit();
-        } catch (TableExistsException | PDOException | \PDOException $e) {
-            $this->em->rollback();
-            $this->getLogger()->error($e->getMessage());
-        }
-        $this->getLogger()->notice(TranslationHelper::translate('Foreign Constraints added to {count} tables.', ['{count}' => $count]));
-        return $count;
     }
 
     /**

@@ -60,7 +60,7 @@ class ToggleType extends AbstractType
                'wrapper_class' => 'text-right',
                'label_class' => 'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs',
                'required' => false,
-               'use_boolean_values' => false,
+               'use_boolean_values' => true,
            ]
        );
         $resolver->setAllowedTypes('visible_by_choice', ['boolean', 'string']);

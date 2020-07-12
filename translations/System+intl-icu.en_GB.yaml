@@ -224,13 +224,13 @@ Proceed: Proceed
 database_build_ready: 'The database setting are now working correctly. Use the Proceed button to begin building the database.'
 Quoll: 'Quoll'
 The creation of tables for the database has commenced.: 'The creation of tables for the database has commenced.'
-installation_table_complete: 'count tables have been added to the database.  Please ensure that the database has count tables.  You can also check the log at /var/log/installation-{date}.log for further details.  Once you are satisfied with the tables, please proceed to add core data to your tables. If you are not satisfied with the table build, then change any settings in the /config/packages/quoll.yaml file, delete all of the tables, and then your can refresh this page.'
+installation_table_complete: 'count tables have been added to the database.  Please ensure that the database has count tables.  You can also check the log at /var/log/doctrine.{env}-{date}.log for further details.  Once you are satisfied with the tables, please proceed to add core data to your tables. If you are not satisfied with the table build, then change any settings in the /config/packages/quoll.yaml file, delete all of the tables, and then your can refresh this page.'
 The creation of tables for the database is completed. {count} tables where added.: 'The creation of tables for the database is completed. {count} tables where added.'
 The {table} was written to the database.: 'The {table} was written to the database.'
 Tables: Tables
 The parameter file needs to be created: The parameter file needs to be created
 The parameter file has been created.: The parameter file has been created.
-installation_core_data_complete: 'Core data has now been added to the database, injected into count tables. You can also check the log at /var/log/installation-{date}.log for further details. Once you are satisfied with the data, please proceed to add foreign constraints, which will enforce validation of data added to the database.  Rows added: {items}'
+installation_core_data_complete: 'Core data has now been added to the database, injected into count tables. You can also check the log at /var/log/installation-{date}.log  and /var/log/doctrine.{env}-{date}.log for further details. Once you are satisfied with the data, please proceed to add foreign constraints, which will enforce validation of data added to the database.  Rows added: {items}'
 installation_constraints_complete: With the completion of foreign constaints to the database, the creation of the database is complete.  You can now add demonstration data, or if you are ready, move towards using the system for your school.
 Core Data has been added to the database. {count} tables had data added.: Core Data has been added to the database. {count} tables had core data added.
 Core Data will be added to tables.: Core Data will be added to tables.
