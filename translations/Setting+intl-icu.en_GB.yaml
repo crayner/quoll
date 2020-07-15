@@ -677,10 +677,10 @@ Attendance:
         description: 'Attach a symptom report to attendance logs with a medical reason.'
     attendanceCLINotifyByRollGroup:
         name: 'Enable Notifications by Roll Group'
-        description: null
+        description: ''
     attendanceCLINotifyByClass:
         name: 'Enable Notifications by Class'
-        description: null
+        description: ''
     attendanceCLIAdditionalUsers:
         name: 'Additional Users to Notify'
         description: 'Send the school-wide daily attendance report to additional users. Restricted to roles with permission to access Roll Groups Not Registered or Classes Not Registered.'
@@ -702,7 +702,6 @@ Attendance:
     crossFillClasses:
         name: 'Cross-Fill Classes'
         description: 'Should classes prefill with data from other classes?'
-'Staff Application Form':
     staffApplicationFormPublicApplications:
         name: 'Public Applications?'
         description: 'If yes, members of the public can submit staff applications'

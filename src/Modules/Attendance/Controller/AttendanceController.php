@@ -200,12 +200,16 @@ class AttendanceController extends AbstractPageController
 
             return new JsonResponse($data, 200);
         }
+
         $manager->setReturnRoute($this->generateUrl('attendance_code_list', ['tabName' => 'Code']))
-            ->setAddElementRoute($this->generateUrl('attendance_code_add'))
             ->singlePanel($form->createView());
 
+        if ($code->getId()) {
+            $manager->setAddElementRoute($this->generateUrl('attendance_code_add'));
+        }
+
         return $this->getPageManager()
-            ->createBreadcrumbs($code->getId() > 0 ? 'Edit Attendance Code' : 'Add Attendance Code', [['uri' => 'attendance_code_list', 'name' => 'Attendance  Code Settings']])
+            ->createBreadcrumbs($code->getId() !== null ? 'Edit Attendance Code' : 'Add Attendance Code', [['uri' => 'attendance_code_list', 'name' => 'Attendance  Code Settings']])
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 

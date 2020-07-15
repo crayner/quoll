@@ -62,7 +62,7 @@ class AlertLevelController extends AbstractPageController
         $manager->addContainer($container)->buildContainers();
 
         return $this->getPageManager()
-            ->createBreadcrumbs('Attendance Settings')
+            ->createBreadcrumbs('Alert Levels')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 

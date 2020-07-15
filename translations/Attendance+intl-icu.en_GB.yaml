@@ -68,3 +68,4 @@ attendancecode:
         onsite: Onsite
 role_multiple_select: Controls who can use this code.<br/>Use Control, Command and/or Shift to select multiple.
 Your current IP address ({ip}) is included in the saved list.: Your current IP address ({ip}) is included in the saved list.
+Edit Attendance Code: Edit Attendance Code
