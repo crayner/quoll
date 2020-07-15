@@ -1,0 +1,4 @@
+empty_count: 1
+properties:
+    firstDay: 'DateTimeImmutable'
+    lastDay: 'DateTimeImmutable'

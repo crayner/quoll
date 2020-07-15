@@ -1,0 +1,192 @@
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'New Year'
+    description: 'Public Holiday'
+    date: '2020-01-01'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Australia Day'
+    description: 'Public Holiday'
+    date: '2020-01-27'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Good Friday'
+    description: 'Public Holiday'
+    date: '2020-04-10'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Easter'
+    description: 'Public Holiday'
+    date: '2020-04-12'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Easter Monday'
+    description: 'Public Holiday'
+    date: '2020-04-13'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Anzac Day'
+    description: 'Public Holiday'
+    date: '2020-04-25'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: "Queen's Birthday"
+    description: 'Public Holiday'
+    date: '2020-06-08'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Labour Day'
+    description: 'Public Holiday'
+    date: '2020-10-05'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Christmas Day'
+    description: 'Public Holiday'
+    date: '2020-12-25'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Boxing Day'
+    description: 'Public Holiday'
+    date: '2020-12-28'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-01-28'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-04-27'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-04-28'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-07-20'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-12-17'
+-
+    academicYear: 2020
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2020-12-18'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'New Year'
+    description: 'Public Holiday'
+    date: '2021-01-01'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Australia Day'
+    description: 'Public Holiday'
+    date: '2021-01-26'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Good Friday'
+    description: 'Public Holiday'
+    date: '2021-04-02'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Easter'
+    description: 'Public Holiday'
+    date: '2021-04-04'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Easter Monday'
+    description: 'Public Holiday'
+    date: '2021-04-05'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Anzac Day'
+    description: 'Public Holiday'
+    date: '2021-04-26'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: "Queen's Birthday"
+    description: 'Public Holiday'
+    date: '2021-06-14'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Labour Day'
+    description: 'Public Holiday'
+    date: '2021-10-04'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Christmas Day'
+    description: 'Public Holiday'
+    date: '2021-12-27'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Boxing Day'
+    description: 'Public Holiday'
+    date: '2021-12-28'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    date: '2021-01-27'
+    description: 'Staff Development Day'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2021-04-19'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2021-04-20'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2021-07-12'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2021-12-16'
+-
+    academicYear: 2021
+    type: 'School Closure'
+    name: 'Public Free Day'
+    description: 'Staff Development Day'
+    date: '2021-12-17'

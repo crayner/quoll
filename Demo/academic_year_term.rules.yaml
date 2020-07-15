@@ -1,0 +1,7 @@
+properties:
+    firstDay: DateTimeImmutable
+    lastDay: DateTimeImmutable
+associated:
+    academicYear:
+        entityName: 'App\Modules\School\Entity\AcademicYear'
+        findBy: name

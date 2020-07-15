@@ -34,6 +34,11 @@ use App\Util\TranslationHelper;
  */
 class SpecialDayPagination extends AbstractPaginationManager
 {
+    /**
+     * execute
+     * @return $this|PaginationInterface
+     * 16/07/2020 08:59
+     */
     public function execute(): PaginationInterface
     {
         TranslationHelper::setDomain('School');
@@ -56,6 +61,7 @@ class SpecialDayPagination extends AbstractPaginationManager
 
         $column = new PaginationColumn();
         $column->setLabel('Name')
+            ->setHelp('Description')
             ->setContentKey(['name','description'])
             ->setSort(true)
             ->setSearch()

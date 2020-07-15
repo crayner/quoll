@@ -25,6 +25,9 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Entity\AcademicYearSpecialDay;
+use App\Modules\School\Entity\AcademicYearTerm;
 use App\Modules\School\Entity\Facility;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\Staff\Entity\Staff;
@@ -80,6 +83,9 @@ class DemoDataManager
         'roll_group' => RollGroup::class,
         'student_enrolment' => StudentEnrolment::class,
         'indescriptor' => INDescriptor::class,
+        'academic_year' => AcademicYear::class,
+        'academic_year_term' => AcademicYearTerm::class,
+        'academic_year_special_day' => AcademicYearSpecialDay::class,
     ];
 
     /**
@@ -180,7 +186,7 @@ class DemoDataManager
             if ($validatorList->count() === 0) {
                 $data = ProviderFactory::create($entityName)->persistFlush($entity, [], false);
                 if ($data['status'] !== 'success')
-                    $this->getLogger('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
+                    $this->getLogger->error('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
                 $valid++;
             } else {
                 $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$w, $entity, $validatorList->__toString()]);
@@ -365,6 +371,7 @@ class DemoDataManager
     {
         switch ($type) {
             case 'DateTimeImmutable':
+                dump($value);
                 if (empty($value))
                     return null;
                 try {

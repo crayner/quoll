@@ -1,0 +1,48 @@
+-
+    academicYear: 2020
+    name: Term 1
+    abbreviation: T1
+    firstDay: '2020-01-28'
+    lastDay: '2020-04-09'
+-
+    academicYear: 2020
+    name: Term 2
+    abbreviation: T2
+    firstDay: '2020-04-27'
+    lastDay: '2020-07-03'
+-
+    academicYear: 2020
+    name: Term 3
+    abbreviation: T3
+    firstDay: '2020-07-20'
+    lastDay: '2020-09-25'
+-
+    academicYear: 2020
+    name: Term 4
+    abbreviation: T4
+    firstDay: '2020-10-12'
+    lastDay: '2020-12-18'
+-
+    academicYear: 2021
+    name: Term 1
+    abbreviation: T1
+    firstDay: '2021-01-27'
+    lastDay: '2021-04-01'
+-
+    academicYear: 2021
+    name: Term 2
+    abbreviation: T2
+    firstDay: '2021-04-19'
+    lastDay: '2021-06-25'
+-
+    academicYear: 2021
+    name: Term 3
+    abbreviation: T3
+    firstDay: '2021-07-12'
+    lastDay: '2021-09-17'
+-
+    academicYear: 2021
+    name: Term 4
+    abbreviation: T4
+    firstDay: '2021-10-05'
+    lastDay: '2021-12-17'

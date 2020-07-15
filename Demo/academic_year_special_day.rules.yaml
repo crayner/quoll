@@ -1,0 +1,10 @@
+properties:
+    schoolOpen: DateTimeImmutable
+    schoolStart: DateTimeImmutable
+    schoolEnd: DateTimeImmutable
+    schoolClose: DateTimeImmutable
+    date: DateTimeImmutable
+associated:
+    academicYear:
+        entityName: 'App\Modules\School\Entity\AcademicYear'
+        findBy: name
