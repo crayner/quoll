@@ -14,8 +14,11 @@
 namespace App\Modules\Staff\Repository;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\House;
 use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,5 +45,25 @@ class StaffRepository extends ServiceEntityRepository
     public function findOneByPersonOrCreate(Person $person): Staff
     {
         return $this->findOneByPerson($person) ?: new Staff($person);
+    }
+
+    /**
+     * countInHouse
+     * @param House $house
+     * @return int
+     * 16/07/2020 10:25
+     */
+    public function countInHouse(House $house): int
+    {
+        try {
+            return $this->createQueryBuilder('s')
+                ->select('COUNT(s.id)')
+                ->where('s.house = :house')
+                ->setParameter('house', $house)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 }

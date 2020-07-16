@@ -191,16 +191,6 @@ class PersonProvider extends AbstractProvider
     }
 
     /**
-     * isHouseInUse
-     * @param House $house
-     * @return bool
-     */
-    public function isHouseInUse(House $house): bool
-    {
-        return $this->getRepository()->countPeopleInHouse($house) > 0;
-    }
-
-    /**
      * findByRoles
      * @param array $roles
      * @return array

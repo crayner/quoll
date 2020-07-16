@@ -141,7 +141,7 @@ class House extends AbstractEntity
      */
     public function getLogo(): string
     {
-        return $this->isFileInPublic($this->logo) ? $this->logo : '';
+        return $this->isFileInPublic($this->logo) ? $this->logo : '/build/static/BlankImageSquare.png';
     }
 
     /**
@@ -172,13 +172,12 @@ class House extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
-        $result = [
+        return [
             'name' => $this->getName(),
             'logo' => $this->getLogo(),
             'short' => $this->getAbbreviation(),
             'canDelete' => $this->canDelete(),
         ];
-        return $result;
     }
 
     /**
@@ -187,33 +186,7 @@ class House extends AbstractEntity
      */
     public function canDelete(): bool
     {
-        return ! ProviderFactory::create(Person::class)->isHouseInUse($this);
-    }
-
-    /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__House` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(30) NOT NULL,
-                    `abbreviation` CHAR(10) NOT NULL,
-                    `logo` CHAR(191) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `abbreviation` (`abbreviation`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return '';
+        return ProviderFactory::create(House::class)->canDelete($this);
     }
 
     /**

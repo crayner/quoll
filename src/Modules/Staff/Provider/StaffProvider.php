@@ -21,10 +21,10 @@ use App\Provider\AbstractProvider;
 /**
  * Class StaffProvider
  * @package App\Modules\Staff\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class StaffProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */

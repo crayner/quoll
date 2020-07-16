@@ -410,25 +410,6 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * countPeopleInHouse
-     * @param House $house
-     * @return int
-     */
-    public function countPeopleInHouse(House $house): int
-    {
-        try {
-            return $this->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->where('p.house = :house')
-                ->setParameter('house', $house)
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
      * countAddressUsa
      * @param Address $address
      * @return int
