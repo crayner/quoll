@@ -434,45 +434,6 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 1/07/2020 10:46
-     */
-    public function create(): array
-    {
-        return [
-            "CREATE TABLE `__prefix__SecurityUser` (
-                  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:guid)',
-                  `person` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-                  `password` varchar(191) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                  `can_login` tinyint(1) NOT NULL,
-                  `password_force_reset` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Force user to reset password on next login.',
-                  `last_ip_address` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                  `last_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                  `last_fail_ip_address` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                  `last_fail_timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                  `fail_count` smallint(6) NOT NULL DEFAULT '0',
-                  `google_api_refresh_token` varchar(191) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                  `security_roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-                  PRIMARY KEY (`id`),
-                  UNIQUE KEY `username` (`username`),
-                  UNIQUE KEY `person` (`person`)
-              ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 1/07/2020 10:46
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__SecurityUser` 
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    /**
      * getVersion
      * @return string
      * 1/07/2020 10:46
@@ -632,5 +593,16 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function getStaff(): ?Staff
     {
         return $this->getPerson() ? $this->getPerson()->getStaff() : null ;
+    }
+
+    /**
+     * hasRole
+     * @param string $role
+     * @return bool
+     * 16/07/2020 09:44
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getSecurityRoles());
     }
 }

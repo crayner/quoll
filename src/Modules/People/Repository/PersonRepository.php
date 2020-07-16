@@ -22,6 +22,8 @@ use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Phone;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
@@ -177,37 +179,11 @@ class PersonRepository extends ServiceEntityRepository
      * @param RollGroup $rollGroup
      * @param string $sortBy
      * @return mixed
+     * @deprecated Use Student findByRollGroup
      */
     public function findStudentsByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
     {
-        $query = $this->createQueryBuilder('p')
-            ->select(['p','se'])
-            ->join('p.studentEnrolments', 'se')
-            ->where('se.rollGroup = :rollGroup')
-            ->andWhere('p.securityRoles LIKE :role')
-            ->setParameter('rollGroup', $rollGroup)
-            ->setParameter('role', '%ROLE_STUDENT%')
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full');
-
-        switch (substr($sortBy, 0, 4)) {
-            case 'roll':
-                $query->orderBy('se.rollOrder', 'ASC')
-                    ->addOrderBy('p.surname', 'ASC')
-                    ->addOrderBy('p.preferredName', 'ASC');
-                break;
-            case 'surn':
-                $query->orderBy('p.surname', 'ASC')
-                    ->addOrderBy('p.preferredName', 'ASC');
-                break;
-            case 'pref':
-                $query->orderBy('p.preferredName', 'ASC')
-                    ->addOrderBy('p.surname', 'ASC');
-                break;
-        }
-
-        return $query->getQuery()
-            ->getResult();
+        return ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy);
     }
 
     /**

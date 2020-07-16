@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Student\Repository;
 
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\Student\Entity\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,5 +35,45 @@ class StudentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Student::class);
+    }
+
+    /**
+     * findByRollGroup
+     * @param RollGroup $rollGroup
+     * @param string $sortBy
+     * @return int|mixed|string
+     * 16/07/2020 10:00
+     */
+    public function findByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select(['s', 'p','se'])
+            ->leftJoin('s.person', 'p')
+            ->join('s.studentEnrolments', 'se')
+            ->where('se.rollGroup = :rollGroup')
+            ->andWhere('p.student IS NOT NULL')
+            ->setParameter('rollGroup', $rollGroup)
+            ->andWhere('p.status = :full')
+            ->setParameter('full', 'Full');
+
+        switch (substr($sortBy, 0, 4)) {
+            case 'roll':
+                $query->orderBy('se.rollOrder', 'ASC')
+                    ->addOrderBy('p.surname', 'ASC')
+                    ->addOrderBy('p.preferredName', 'ASC');
+                break;
+            case 'surn':
+                $query->orderBy('p.surname', 'ASC')
+                    ->addOrderBy('p.preferredName', 'ASC');
+                break;
+            case 'pref':
+                $query->orderBy('p.preferredName', 'ASC')
+                    ->addOrderBy('p.surname', 'ASC');
+                break;
+        }
+
+        return $query->getQuery()
+            ->getResult();
+
     }
 }

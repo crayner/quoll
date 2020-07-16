@@ -16,13 +16,12 @@
  */
 namespace App\Modules\RollGroup\Pagination;
 
+use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Util\TranslationHelper;
 
 /**

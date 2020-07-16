@@ -194,7 +194,7 @@ class Photo implements SidebarContentInterface
     {
         if (is_null($this->fileExists)) {
             $method = $this->getMethod();
-            $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->$method());
+            $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->getPersonalDocumentation() ? $this->getEntity()->getPersonalDocumentation()->$method() : null);
             if (null === $fileName || '' === $fileName)
                 return $this->fileExists = false;
             if (is_file($fileName) || $this->url_exists($fileName)) {
@@ -276,7 +276,7 @@ class Photo implements SidebarContentInterface
             'width' => $this->getWidth(),
             'className' => $this->getClass(),
             'title' => $this->getTransDomain() === false ? $this->getTitle() : TranslationHelper::translate($this->getTitle(), [], $this->getTransDomain()),
-            'url' => ImageHelper::getAbsoluteImageURL('File',$this->getEntity()->$method()),
+            'url' => ImageHelper::getAbsoluteImageURL('File', $this->getEntity()->getPersonalDocumentation() ? $this->getEntity()->getPersonalDocumentation()->$method() : ''),
             'exists' => $this->fileExists(),
         ];
     }

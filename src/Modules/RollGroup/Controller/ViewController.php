@@ -16,21 +16,20 @@
  */
 namespace App\Modules\RollGroup\Controller;
 
+use App\Container\Container;
 use App\Container\ContainerManager;
+use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\RollGroup\Form\DetailStudentSortType;
-use App\Modules\RollGroup\Pagination\RollGroupListPagination;
-use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
-use App\Twig\PageHeader;
-use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
-use App\Util\TranslationHelper;
+use App\Twig\Sidebar\Photo;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -52,7 +51,7 @@ class ViewController extends AbstractPageController
      * @todo This method is not finished.
      * 17/06/2020 12:39
      */
-    public function detail(RollGroup $rollGroup,SidebarContent $sidebar, ContainerManager $manager)
+    public function detail(RollGroup $rollGroup, SidebarContent $sidebar, ContainerManager $manager)
     {
         if ($rollGroup->getTutor()) {
             $image = new Photo($rollGroup->getTutor(), 'getImage240', 200, 'max200 user');
@@ -73,8 +72,7 @@ class ViewController extends AbstractPageController
         );
         $form->handleRequest($this->getRequest());
 
-        $manager
-            ->setContent($this->renderView('roll_group/details.html.twig',
+        $section = new Section('html', $this->renderView('roll_group/details.html.twig',
                 [
                     'rollGroup' => $rollGroup,
                     'staffView' => SecurityHelper::isActionAccessible('staff_view_details'),
@@ -82,10 +80,15 @@ class ViewController extends AbstractPageController
                     'form' => $form->createView(),
                     'canPrint' => $canPrint,
                     'canViewStudents' => $canViewStudents,
-                    'students' => ProviderFactory::getRepository(Person::class)->findStudentsByRollGroup($rollGroup, $sortBy),
+                    'students' => ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy),
                 ]
             )
         );
+
+        $panel = new Panel('Roll Group', 'RollGroup', $section);
+
+        $container = new Container('Roll Group');
+        $container->addPanel($panel);
 
         if ($canViewStudents) {
             $manager->singlePanel($form->createView());

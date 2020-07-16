@@ -48,9 +48,9 @@ class RollGroupVoter extends RouteVoter
                 // Roll Group are available to Principals and System Admin and the tutors of the RollGroup.
                 if ($token->getUser()->getPerson()->isPrincipal() ||
                     $token->getUser()->getPerson()->isRegistrar() ||
-                    $token->getUser()->getPerson()->equalTo($subject->getTutor()) ||
-                    $token->getUser()->getPerson()->equalTo($subject->getTutor2()) ||
-                    $token->getUser()->getPerson()->equalTo($subject->getTutor3())) {
+                    $token->getUser()->getPerson()->isEqualTo($subject->getTutor()) ||
+                    $token->getUser()->getPerson()->isEqualTo($subject->getTutor2()) ||
+                    $token->getUser()->getPerson()->isEqualTo($subject->getTutor3())) {
                     return $vote;
                 }
 

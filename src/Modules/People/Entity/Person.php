@@ -707,8 +707,11 @@ class Person extends AbstractEntity
      */
     public function hasRole(string $role): bool
     {
-        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($this->getSecurityRoles());
-        return in_array($role, $roles);
+        if ($this->getSecurityUser()) {
+            return $this->getSecurityUser()->hasRole($role);
+        }
+
+        return false;
     }
 
     /**
@@ -719,32 +722,32 @@ class Person extends AbstractEntity
     {
         if ($this->getStatus() === 'Full')
             return false;
-        if ($this->getStudentEnrolments()->count() > 0)
+        if ($this->getStudent())
             return false;
-        if ($this->getChildren()->count() > 0)
+        if ($this->getStaff())
             return false;
-        if ($this->getAdults()->count() > 0)
+        if ($this->getParent())
             return false;
         return true;
     }
 
     /**
      * isEqualTo
-     * @param Person $person
+     * @param Person|null $person
      * @return bool
+     * 16/07/2020 09:49
      */
-    public function isEqualTo(Person $person): bool
+    public function isEqualTo(?Person $person): bool
     {
-        if ($person->getId() !== $this->getId())
+        if (is_null($person)) {
             return false;
-        if ($person->getUsername() !== $this->getUsername())
+        }
+        if ($person->getId() !== $this->getId()) {
             return false;
-        if ($person->getEmail() !== $this->getEmail())
+        }
+        if ($person->getFullName() !== $this->getFullName()) {
             return false;
-        if ($person->getPassword() !== $this->getPassword())
-            return false;
-        if ($person->getStudentIdentifier() !== $this->getStudentIdentifier())
-            return false;
+        }
         return true;
     }
 
@@ -1090,5 +1093,4 @@ class Person extends AbstractEntity
         }
         return null;
     }
-
 }
