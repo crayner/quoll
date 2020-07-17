@@ -145,6 +145,7 @@ export default function FormAutoSuggest(props) {
                                 placeholder: form.placeholder,
                                 autoComplete: 'stop_all_stuff',
                                 onChange: onChange,
+                                className: 'w-full',
                             }}
                         />
                         <div className={'button-right'}>

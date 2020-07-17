@@ -49,8 +49,8 @@ class Department extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(length=16, options={"default": "Learning Area"})
-     * @Assert\Choice({"Learning Area","Administration"})
+     * @ORM\Column(length=16,options={"default": "Learning Area"})
+     * @Assert\Choice(callback="getTypeList")
      */
     private $type = "Learning Area";
 
@@ -134,9 +134,9 @@ class Department extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -273,7 +273,7 @@ class Department extends AbstractEntity
 
         $iterator->uasort(
             function ($a, $b) {
-                return $a->getPerson()->formatName(['style' => 'long', 'reverse' => true]) < $b->getPerson()->formatName(['style' => 'long', 'reverse' => true]) ? -1 : 1 ;
+                return $a->getStaff()->getPerson()->getFullNameReversed() < $b->getStaff()->getPerson()->getFullNameReversed() ? -1 : 1 ;
             }
         );
 
@@ -329,6 +329,12 @@ class Department extends AbstractEntity
         return $this->getName() . ' (' . $this->getAbbreviation() . ')';
     }
 
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     * 17/07/2020 09:58
+     */
     public function toArray(?string $name = null): array
     {
         return [
@@ -348,50 +354,9 @@ class Department extends AbstractEntity
     {
         $result = [];
         foreach($this->getStaff() as $staff)
-            $result[] = $staff->getPerson()->formatName(['style' => 'long', 'reverse' => true]);
+            $result[] = $staff->getStaff()->getPerson()->getFullNameReversed();
         if (empty($result))
             $result[] = TranslationHelper::translate('None', [], 'Department');
         return implode("\n<br/>", $result);
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 5/07/2020 10:15
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Department` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `type` CHAR(16) NOT NULL DEFAULT 'Learning Area',
-                    `name` CHAR(40) NOT NULL,
-                    `abbreviation` CHAR(4) NOT NULL,
-                    `subject_listing` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:simple_array)',
-                    `blurb` longtext DEFAULT NULL,
-                    `logo` CHAR(191) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `abbreviation` (`abbreviation`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 5/07/2020 10:13
-     */
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 5/07/2020 10:13
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

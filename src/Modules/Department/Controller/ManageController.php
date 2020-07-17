@@ -37,7 +37,6 @@ use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -67,7 +66,7 @@ class ManageController extends AbstractPageController
         DepartmentPagination $pagination,
         SidebarContent $sidebar,
         array $messages = [],
-        string $tabName = 'Settings')
+        string $tabName = 'List')
     {
         $form = $this->createForm(DepartmentSettingType::class, null, ['action' => $this->generateUrl('department_list')]);
         ProviderFactory::create(CourseClass::class)->getMyClasses($this->getUser(), $sidebar);
@@ -178,14 +177,14 @@ class ManageController extends AbstractPageController
             $pagination->setContent($content)
                 ->setPreContent($this->renderView('department/current_staff_header.html.twig'))
                 ->setRefreshRoute($this->generateUrl('department_edit', ['tabName' => 'Staff', 'department' => $department->getId()]),'Refresh Department Staff')
-                ->setAddElementRoute(['url' => $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]), 'target' => 'Department_Staff', 'options' => 'width=600,height=350'], 'Add Department Staff');
+                ->setAddElementRoute(['url' => $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]), 'target' => 'Department_Staff', 'options' => 'width=650,height=350'], 'Add Department Staff');
             $panel = new Panel('Staff', 'Department', new Section('pagination', $pagination));
             $container->addPanel($panel);
         }
 
         $manager->addContainer($container)
             ->setReturnRoute($this->generateUrl('department_list', ['tabName' => 'List']), 'Return to Departments');
-        $pageHeader = new PageHeader(TranslationHelper::translate($department->getId() === null ? 'Add Department' : 'Edit Department'));
+        $pageHeader = new PageHeader($department->getId() === null ? TranslationHelper::translate('Add Department') : TranslationHelper::translate('Edit Department: {name}', ['{name}' => $department->getName()]));
         if ($department->getId() !== null) {
             $manager->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
         }
@@ -193,7 +192,7 @@ class ManageController extends AbstractPageController
         return $this->getPageManager()
             ->setMessages(isset($data['errors']) ? $data['errors'] : [])
             ->setPageHeader($pageHeader)
-            ->createBreadcrumbs($department->getId() === null ? 'Add Department' : 'Edit Department')
+            ->createBreadcrumbs($department->getId() === null ? 'Add Department' : ['Edit Department: {name}', ['{name}' => $department->getName()]])
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 
@@ -241,7 +240,7 @@ class ManageController extends AbstractPageController
     }
 
     /**
-     * addDepartmentStaff
+     * editDepartmentStaff
      * @param ContainerManager $manager
      * @param Department $department
      * @param DepartmentStaff|null $staff
@@ -249,12 +248,13 @@ class ManageController extends AbstractPageController
      * @Route("/department/{department}/staff/{staff}/edit/",name="department_staff_edit_popup")
      * @Route("/department/{department}/staff/add/",name="department_staff_add_popup")
      * @IsGranted("ROLE_ROUTE")
-     * 6/06/2020 08:12
+     * 17/07/2020 10:39
      */
-    public function addDepartmentStaff(ContainerManager $manager, Department $department, ?DepartmentStaff $staff = null)
+    public function editDepartmentStaff(ContainerManager $manager, Department $department, ?DepartmentStaff $staff = null)
     {
         if (null === $staff || $this->getRequest()->get('_route') === 'department_staff_add_popup') {
             $staff = new DepartmentStaff();
+            $staff->setDepartment($department);
             $action = $this->generateUrl('department_staff_add_popup', ['department' => $department->getId()]);
         } else {
             $action = $this->generateUrl('department_staff_edit_popup', ['department' => $department->getId(), 'staff' => $staff->getId()]);
@@ -264,10 +264,15 @@ class ManageController extends AbstractPageController
 
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(),true);
-            if ($this->isCsrfTokenValid($form->getName(), $content['_token'])) {
-                $data = ProviderFactory::create(DepartmentStaff::class)->writeDepartmentStaff($department, $content['person'], $content['role'], [], $form);
+            $form->submit($content);
+            if ($form->isValid()) {
+                $id = $staff->getId();
+                $data = ProviderFactory::create(DepartmentStaff::class)->persistFlush($staff, []);
+                if ($data['status'] === 'success' && $id !== $staff->getId()) {
+                    $form = $this->createForm(DepartmentStaffType::class, $staff, ['action' => $this->generateUrl('department_staff_edit_popup', ['department' => $department->getId(), 'staff' => $staff->getId()])]);
+                }
             } else {
-                $data = ErrorMessageHelper::getInvalidTokenMessage([],true);
+                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
             }
 
             $manager->singlePanel($form->createView());
@@ -278,6 +283,10 @@ class ManageController extends AbstractPageController
         $manager->singlePanel($form->createView());
 
         return $this->getPageManager()
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $manager->getBuiltContainers()
+                ]
+            );
     }
 }

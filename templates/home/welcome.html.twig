@@ -6,7 +6,7 @@
 <h2>{{ 'Welcome'|trans }}</h2>
 <p>{{ getSettingByScope('System', 'indexText')| raw }}</p>
 
-{% if getSettingByScope('Application Form', 'publicApplications') is same as('Y') %}
+{% if getSettingByScope('Application Form', 'publicApplications') is same as(true) %}
     <h3>{{ 'Student Applications'|trans }}</h3>
     <p>
         {% set url = path('legacy', {q: '/modules/Students/applicationForm.php'}) %}
@@ -14,7 +14,7 @@
     </p>
 {% endif %}
 
-{% if getSettingByScope('Staff Application Form', 'staffApplicationFormPublicApplications') is same as('Y') %}
+{% if getSettingByScope('Staff Application Form', 'staffApplicationFormPublicApplications') is same as(true) %}
     <h3>{{ 'Staff Applications'|trans }}</h3>
     <p>
         {% set url = path('legacy', {q: '/modules/Staff/applicationForm_jobOpenings_view.php'}) %}
@@ -22,7 +22,7 @@
     </p>
 {% endif %}
 
-{% if getSettingByScope('Departments', 'makeDepartmentsPublic') is same as('Y') %}
+{% if getSettingByScope('Departments', 'makeDepartmentsPublic') is same as(true) %}
     <h3>{{ 'Departments'|trans }}</h3>
     <p>
         {% set url = path('department_view') %}
@@ -30,7 +30,7 @@
     </p>
 {% endif %}
 
-{% if getSettingByScope('Planner', 'makeUnitsPublic') is same as('Y') %}
+{% if getSettingByScope('Planner', 'makeUnitsPublic') is same as(true) %}
     <h3>{{ 'Learn With Us'|trans }}</h3>
     <p>
         {% set url = absoluteURL ~ "/?q=/modules/Planner/units_public.php&sidebar=false" %}

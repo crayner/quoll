@@ -19,7 +19,7 @@ namespace App\Manager;
 use App\Exception\MissingModuleException;
 use App\Manager\Traits\IPTrait;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\I18n;

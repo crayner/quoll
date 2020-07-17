@@ -41,7 +41,7 @@ class Register implements SidebarContentInterface
     public function render(array $options): string
     {
         try {
-            return $this->getTwig()->render('default/sidebar/register.html.twig');
+            return $this->getTwig()->render('home/register.html.twig');
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
             return '';
         }

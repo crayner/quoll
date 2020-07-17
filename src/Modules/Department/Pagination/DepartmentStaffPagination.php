@@ -61,7 +61,7 @@ class DepartmentStaffPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute(['url' => 'department_staff_edit_popup', 'target' => 'Department_Staff', 'options' => 'width=600,height=350'])
+            ->setRoute(['url' => 'department_staff_edit_popup', 'target' => 'Department_Staff', 'options' => 'width=650,height=350'])
             ->setRouteParams(['staff' => 'id', 'department' => 'departmentId']);
         $row->addAction($action);
 

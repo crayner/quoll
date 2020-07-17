@@ -1,0 +1,8 @@
+associated:
+    department:
+        entityName: 'App\Modules\Department\Entity\Department'
+        findBy: name
+    staff:
+        entityName: 'App\Modules\Security\Entity\SecurityUser'
+        findBy: username
+        method: getStaff

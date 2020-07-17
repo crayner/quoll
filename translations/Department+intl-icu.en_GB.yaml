@@ -13,10 +13,11 @@ List: List
 Make Departments Public: Make Departments Public
 Manage Departments: Manage Departments
 Name: Name
+StafF: Staff
 New Staff: New Staff
 Settings: Settings
 Should department information be made available to the public, via the Gibbon homepage?: Should department information be made available to the public, via the Gibbon homepage?
-Staff: Staff
+Staff Name: Staff Name
 Subject Listing: Subject Listing
 Submit: Submit
 Type: Type
@@ -33,13 +34,15 @@ Use Control, Command and/or Shift to select multiple.: Use Control, Command and/
 departmentstaff:
     role:
         administrator: Administrator
-        assistant coordinator: Assistant Coordinator
+        'assistant coordinator': 'Assistant Coordinator'
         coordinator: Coordinator
         director: Director
         manager: Manager
         other: Other
         'teacher (curriculum)': 'Teacher (Curriculum)'
         teacher: Teacher
+        'learning area': 'Learning Area'
+        administration: Administration
 Add Department Staff: Add Department Staff
 Add Staff to Department: Add Staff to Department
 Change Role: Change Role

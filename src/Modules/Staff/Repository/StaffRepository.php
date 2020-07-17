@@ -19,6 +19,7 @@ use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -66,4 +67,30 @@ class StaffRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * getStaffQueryBuilder
+     * @param string $status
+     * @return QueryBuilder
+     * 17/07/2020 10:10
+     */
+    public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
+    {
+        try {
+            $today = new \DateTimeImmutable(date('Y-m-d'));
+        } catch (\Exception $e) {
+            $today = null;
+        }
+
+        return $this->createQueryBuilder('s')
+            ->where('p.status = :status')
+            ->leftJoin('s.person', 'p')
+            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
+            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
+            ->setParameters(['status' => $status, 'today' => $today])
+            ->orderBy('p.surname')
+            ->addOrderBy('p.firstName')
+            ;
+    }
+
 }

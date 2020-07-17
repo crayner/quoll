@@ -16,16 +16,26 @@
  */
 namespace App\Manager;
 
-use App\Modules\System\Entity\Action;
 use App\Provider\ProviderFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractEntity
  * @package App\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 abstract class AbstractEntity implements EntityInterface
 {
+    /**
+     * getVersion
+     * @return string
+     * 17/07/2020 08:38
+     */
+    public static function getVersion(): string
+    {
+        return static::VERSION;
+    }
+
     /**
      * getUpdates
      * @return array

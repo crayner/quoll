@@ -852,78 +852,22 @@ class Staff extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 4/07/2020 09:58
+     * getFullNameReversed
+     * @return string
+     * 17/07/2020 10:14
      */
-    public function create(): array
+    public function getFullNameReversed(): string
     {
-        return ["CREATE TABLE `__prefix__Staff` (
-                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `type` varchar(20) NOT NULL,
-                    `initials` varchar(4) DEFAULT NULL,
-                    `job_title` varchar(100) DEFAULT NULL,
-                    `smart_workflow_help` tinyint(1) NOT NULL DEFAULT '1',
-                    `first_aid_qualified` tinyint(1) NOT NULL DEFAULT '0',
-                    `first_aid_expiry` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `country_of_origin` varchar(3) DEFAULT NULL,
-                    `qualifications` varchar(191) DEFAULT NULL,
-                    `biography` longtext,
-                    `biographical_grouping` varchar(100) DEFAULT NULL COMMENT 'Used for group staff when creating a staff directory.',
-                    `biographical_grouping_priority` smallint(6) DEFAULT NULL,
-                    `person` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `emergency_contact1` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `emergency_contact2` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `calendar_feed_personal` varchar(191) DEFAULT NULL,
-                    `view_calendar_school` tinyint(1) NOT NULL DEFAULT '1',
-                    `view_calendar_space_booking` tinyint(1) NOT NULL DEFAULT '0',
-                    `application_form` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `theme` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `locale` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `house` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `locker_number` varchar(20) DEFAULT NULL,
-                    `vehicle_registration` varchar(20) DEFAULT NULL,
-                    `personal_background` varchar(191) DEFAULT NULL,
-                    `messenger_last_bubble` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `receive_notification_emails` varchar(1) NOT NULL DEFAULT '1',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `person` (`person`) USING BTREE,
-                    UNIQUE KEY `initials` (`initials`),
-                    KEY `emergency_contact1` (`emergency_contact1`),
-                    KEY `emergency_contact2` (`emergency_contact2`),
-                    KEY `application_form` (`application_form`),
-                    KEY `theme` (`theme`),
-                    KEY `locale` (`locale`),
-                    KEY `house` (`house`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+        return $this->getPerson()->getFullNameReversed();
     }
 
     /**
-     * foreignConstraints
+     * getFullName
      * @return string
-     * 4/07/2020 09:57
+     * 17/07/2020 10:14
      */
-    public function foreignConstraints(): string
+    public function getFullName(): string
     {
-        return "ALTER TABLE `__prefix__Staff`
-                    ADD CONSTRAINT FOREIGN KEY (`locale`) REFERENCES `__prefix__I18n` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__House` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact1`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`theme`) REFERENCES `__prefix__Theme` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`emergency_contact2`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 4/07/2020 09:57
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
+        return $this->getPerson()->getFullName();
     }
 }

@@ -26,6 +26,7 @@ use App\Modules\Department\Entity\Department;
 use App\Modules\People\Entity\Person;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\People\Repository\PersonRepository;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -48,11 +49,23 @@ class DepartmentStaffType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $personRepository = ProviderFactory::getRepository(Person::class);
         $builder
             ->add('staffTitle', HeaderType::class,
                 [
                     'label' => $options['data']->getId() === null ? 'Add Staff to Department' : 'Edit Department Staff Role',
+                ]
+            )
+            ->add('departmentDisplay', DisplayType::class,
+                [
+                    'label' => 'Department',
+                    'help' => 'Value locked.',
+                    'mapped' => false,
+                    'data' => $options['data']->getDepartment()->getName(),
+                ]
+            )
+            ->add('department', HiddenEntityType::class,
+                [
+                    'class' => Department::class,
                 ]
             )
         ;
@@ -60,28 +73,28 @@ class DepartmentStaffType extends AbstractType
             $builder
                 ->add('personDisplay', DisplayType::class,
                     [
-                        'label' => 'Staff',
+                        'label' => 'Staff Name',
                         'help' => 'Value locked.',
                         'mapped' => false,
-                        'data' => $options['data']->getPerson()->getFullNameReversed(),
+                        'data' => $options['data']->getStaff()->getPerson()->getFullNameReversed(),
                     ]
                 )
-                ->add('person', HiddenEntityType::class,
+                ->add('staff', HiddenEntityType::class,
                     [
-                        'class' => Person::class,
+                        'class' => Staff::class,
                     ]
                 )
             ;
         } else {
             $builder
-                ->add('person', AutoSuggestEntityType::class,
+                ->add('staff', AutoSuggestEntityType::class,
                     [
-                        'label' => 'Staff',
-                        'class' => Person::class,
+                        'label' => 'Staff Name',
+                        'class' => Staff::class,
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Type a name...',
-                        'data' => $options['data']->getPerson() ?? null,
-                        'query_builder' => $personRepository->getStaffQueryBuilder(),
+                        'data' => $options['data']->getStaff() ?? null,
+                        'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQueryBuilder(),
                     ]
                 )
             ;

@@ -14,7 +14,7 @@
 namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,10 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\Department\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Department\Repository\DepartmentStaffRepository")
  * @ORM\Table(name="DepartmentStaff",
- *     indexes={@ORM\Index(name="person",columns={"person"}),
+ *     indexes={@ORM\Index(name="staff",columns={"staff"}),
  *     @ORM\Index(name="department",columns={"department"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="department_person",columns={"department","person"})})
- * @UniqueEntity({"department","person"})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="department_staff",columns={"staff","department"})})
+ * @UniqueEntity({"staff","department"},message="This staff member is already used in this department.")
  */
 class DepartmentStaff extends AbstractEntity
 {
@@ -44,18 +44,23 @@ class DepartmentStaff extends AbstractEntity
     /**
      * @var Department|null
      * @ORM\ManyToOne(targetEntity="Department", inversedBy="staff")
-     * @ORM\JoinColumn(name="department",referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="department",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private $department;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=false)
+     * @var Department|null
+     */
+    private static $dept;
+
+    /**
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
+     * @ORM\JoinColumn(name="staff",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $person;
+    private $staff;
 
     /**
      * @var string|null
@@ -68,7 +73,7 @@ class DepartmentStaff extends AbstractEntity
     /**
      * @var array
      */
-    private static $roleList = ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator','Other'];
+    private static $roleList = ['Learning Area' => ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher', 'Other'], 'Administration' => ['Director','Manager','Administrator','Other']];
 
     /**
      * @return string|null
@@ -105,24 +110,25 @@ class DepartmentStaff extends AbstractEntity
     public function setDepartment(?Department $department): DepartmentStaff
     {
         $this->department = $department;
+        self::$dept = $department;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getPerson(): ?Person
+    public function getStaff(): ?Staff
     {
-        return $this->person;
+        return $this->staff;
     }
 
     /**
-     * @param Person|null $person
+     * @param Staff|null $staff
      * @return DepartmentStaff
      */
-    public function setPerson(?Person $person): DepartmentStaff
+    public function setStaff(?Staff $staff): DepartmentStaff
     {
-        $this->person = $person;
+        $this->staff = $staff;
         return $this;
     }
 
@@ -149,7 +155,7 @@ class DepartmentStaff extends AbstractEntity
      */
     public static function getRoleList(): array
     {
-        return self::$roleList;
+        return static::$dept->getType() === 'Administration' ? self::$roleList['Administration'] : self::$roleList['Learning Area'];
     }
 
     /**
@@ -158,17 +164,7 @@ class DepartmentStaff extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getDepartment()->__toString() . ': ' . $this->getPerson()->formatName();
-    }
-
-    /**
-     * getDepartmentId
-     * @return string|null
-     * 6/06/2020 11:45
-     */
-    public function getDepartmentId(): ?string
-    {
-        return $this->getDepartment()->getId() ?? null;
+        return $this->getDepartment()->__toString() . ': ' . ($this->getStaff() !== null ? $this->getStaff()->getPerson()->getFullName() : '');
     }
 
     /**
@@ -179,7 +175,7 @@ class DepartmentStaff extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [
-            'name' => $this->getPerson()->getFullNameReversed(),
+            'name' => $this->getStaff()->getPerson()->getFullNameReversed(),
             'role' => $this->getRole(),
             'id' => $this->getId(),
             'departmentId' => $this->getDepartment()->getId(),
@@ -187,34 +183,8 @@ class DepartmentStaff extends AbstractEntity
         ];
     }
 
-    /**
-     * create
-     * @return array|string[]
-     * 6/06/2020 10:10
-     */
-    public function create(): array
+    public function getPerson()
     {
-        return ["CREATE TABLE `__prefix__DepartmentStaff` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `role` CHAR(24) NOT NULL,
-                    `department` CHAR(36) DEFAULT NULL,
-                    `person` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `department_person` (`department`,`person`),
-                    KEY `department` (`department`),
-                    KEY `person` (`person`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__DepartmentStaff`
-                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
+        throw new \Exception('Stopping here as this should call getStaff()');
     }
 }

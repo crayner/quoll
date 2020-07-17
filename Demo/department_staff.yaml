@@ -1,0 +1,396 @@
+-
+    department: 'Physical Education'
+    staff: 119
+    role: 'Coordinator'
+-
+    department: Languages
+    staff: 198
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 140
+    role: 'Teacher (Curriculum)'
+-
+    department: The Arts
+    staff: 374
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 144
+    role: 'Coordinator'
+-
+    department: English
+    staff: 151
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Physical Education'
+    staff: 373
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 770
+    role: 'Teacher (Curriculum)'
+-
+    department: 'IT Services'
+    staff: craigray
+    role: 'Director'
+-
+    department: Humanities
+    staff: 1110
+    role: 'Teacher (Curriculum)'
+-
+    department: Mathematics
+    staff: 866
+    role: 'Teacher (Curriculum)'
+-
+    department: Mathematics
+    staff: 1104
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 151
+    role: 'Teacher (Curriculum)'
+-
+    department: The Arts
+    staff: 770
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 1123
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 867
+    role: 'Coordinator'
+-
+    department: Humanities
+    staff: 1121
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 1119
+    role: 'Teacher (Curriculum)'
+-
+    department: Mathematics
+    staff: 1117
+    role: 'Teacher (Curriculum)'
+-
+    department: Science
+    staff: 1121
+    role: 'Teacher (Curriculum)'
+-
+    department: Science
+    staff: 1117
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 589
+    role: 'Teacher (Curriculum)'
+-
+    department: The Arts
+    staff: 375
+    role: 'Coordinator'
+-
+    department: Pastoral
+    staff: 869
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1121
+    role: 'Coordinator'
+-
+    department: Pastoral
+    staff: 1123
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 124
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 375
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 866
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1104
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1117
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 870
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 120
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 867
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 140
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 151
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 198
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1119
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 373
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 1502
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 1778
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 1776
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 1776
+    role: 'Teacher (Curriculum)'
+-
+    department: The Arts
+    staff: 1776
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1777
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 1777
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1506
+    role: 'Teacher (Curriculum)'
+-
+    department: The Arts
+    staff: 1506
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1119
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1110
+    role: 'Teacher (Curriculum)'
+-
+    department: Mathematics
+    staff: 120
+    role: 'Coordinator'
+-
+    department: 'Human Technologies'
+    staff: 2027
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 2028
+    role: 'Teacher (Curriculum)'
+-
+    department: Science
+    staff: 2026
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 124
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1502
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 2028
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 144
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 373
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 119
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2096
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 374
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1506
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2027
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1776
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1110
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 589
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1502
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1778
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 770
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: craigray
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 1777
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2026
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2028
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Physical Education'
+    staff: 1104
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Physical Education'
+    staff: 1776
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Physical Education'
+    staff: 2134
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Individual Needs'
+    staff: 1110
+    role: 'Coordinator'
+-
+    department: 'Individual Needs'
+    staff: 2096
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1778
+    role: 'Coordinator'
+-
+    department: 'Human Technologies'
+    staff: craigray
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 2134
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1123
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 1104
+    role: 'Teacher (Curriculum)'
+-
+    department: 'Human Technologies'
+    staff: 119
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 124
+    role: 'Teacher (Curriculum)'
+-
+    department: Humanities
+    staff: 2027
+    role: 'Coordinator'
+-
+    department: Science
+    staff: 589
+    role: 'Teacher (Curriculum)'
+-
+    department: Science
+    staff: 870
+    role: 'Coordinator'
+-
+    department: 'The Arts'
+    staff: craigray
+    role: 'Teacher (Curriculum)'
+-
+    department: Science
+    staff: 2326
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2326
+    role: 'Teacher (Curriculum)'
+-
+    department: Pastoral
+    staff: 2134
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 2347
+    role: 'Teacher (Curriculum)'
+-
+    department: 'The Arts'
+    staff: 2363
+    role: 'Teacher (Curriculum)'
+-
+    department: Languages
+    staff: 869
+    role: 'Assistant Coordinator'
+-
+    department: Science
+    staff: 2134
+    role: 'Teacher (Curriculum)'
+-
+    department: Mathematics
+    staff: 1601
+    role: 'Teacher (Curriculum)'
+-
+    department: English
+    staff: 2562
+    role: 'Teacher (Curriculum)'
