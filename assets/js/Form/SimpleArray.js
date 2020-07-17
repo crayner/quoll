@@ -30,6 +30,8 @@ export default function SimpleArray(props) {
         return (<div key={key}>
             <input {...widget_attr} value={child.value} />
             <div className={'button-right'}>
+                <button type={'button'} title={functions.translate('Up')} className={'button'} onClick={() => functions.moveSimpleArrayChild(child,form,'up')}><span className={'fa-fw fas fa-angle-up'}></span></button>
+                <button type={'button'} title={functions.translate('Down')} className={'button'} onClick={() => functions.moveSimpleArrayChild(child,form,'down')}><span className={'fa-fw fas fa-angle-down'}></span></button>
                 <button type={'button'} title={functions.translate('Delete')} className={'button'} onClick={() => functions.removeSimpleArrayValue(child,form)}><span className={'fa-fw far fa-trash-alt'}></span></button>
             </div>
         </div>)

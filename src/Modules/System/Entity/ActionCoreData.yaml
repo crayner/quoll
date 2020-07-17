@@ -6,8 +6,8 @@
         - alert_level_change
         - alert_level_list
     entryRoute: alert_level_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -20,8 +20,8 @@
     routeList:
         - attendance_code_configure
     entryRoute: attendance_code_configure
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -34,8 +34,8 @@
     routeList:
         - dashboard_settings
     entryRoute: dashboard_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -53,8 +53,8 @@
         - special_day_duplicate
         - special_day_filter_store
     entryRoute: special_day_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -74,8 +74,8 @@
         - scale_grade_delete
         - scale_grade_sort
     entryRoute: scale_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -88,8 +88,8 @@
     routeList:
         - individual_need_config
     entryRoute: individual_need_config
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -105,8 +105,8 @@
         - security_role_edit
         - security_role_delete
     entryRoute: security_role_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -119,8 +119,8 @@
     routeList:
         - activity_settings
     entryRoute: activity_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -136,8 +136,8 @@
         - facility_add
         - facility_delete
     entryRoute: facility_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -150,8 +150,8 @@
     routeList:
         - staff_settings_people
     entryRoute: staff_settings_people
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -165,8 +165,8 @@
         - action_permission_list
         - action_permission_edit
     entryRoute: action_permission_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -186,8 +186,8 @@
         - department_staff_add_popup
         - department_staff_edit_popup
     entryRoute: department_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -200,8 +200,8 @@
     routeList:
         - behaviour_configure
     entryRoute: behaviour_configure
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -214,8 +214,8 @@
     routeList:
         - activity_configuration
     entryRoute: activity_configuration
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -230,8 +230,8 @@
         - library_edit
         - library_add
     entryRoute: library_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -247,8 +247,8 @@
         - attendance_code_add
         - attendance_code_sort
     entryRoute: attendance_code_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -261,8 +261,8 @@
     routeList:
         - planner_configure
     entryRoute: planner_configure
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -277,8 +277,8 @@
         - preferences
         - person_reset_password
     entryRoute: preferences
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
 -
@@ -288,8 +288,8 @@
     routeList:
         - system_settings
     entryRoute: system_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -306,8 +306,8 @@
         - person_edit
         - person_delete.people_list_filter
     entryRoute: people_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -321,8 +321,8 @@
         - third_party_settings
         - test_email
     entryRoute: third_party_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -335,8 +335,8 @@
     routeList:
         - system_check
     entryRoute: system_check
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -352,8 +352,8 @@
         - string_add
         - string_delete
     entryRoute: string_manage
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -368,8 +368,8 @@
         - notification_event_edit
         - notification_listener_delete
     entryRoute: notification_events
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -382,8 +382,8 @@
     routeList:
         - display_settings
     entryRoute: display_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -398,8 +398,8 @@
         - personal_photo_upload_api
         - personal_photo_remove_api
     entryRoute: personal_photo_import
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -423,8 +423,8 @@
         - family_student_add
         - family_student_remove
     entryRoute: family_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -440,8 +440,8 @@
         - student_note_category_add
         - student_note_category_delete
     entryRoute: student_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -454,8 +454,8 @@
     routeList:
         - student_view
     entryRoute: student_view
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: 3
     restriction: null
     securityRoles:
@@ -468,8 +468,8 @@
     routeList:
         - staff_view
     entryRoute: staff_view
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: 2
     restriction: full
     securityRoles:
@@ -482,8 +482,8 @@
     routeList:
         - updater_settings
     entryRoute: updater_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -501,8 +501,8 @@
         - address_delete
         - address_list_refresh
     entryRoute: address_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -520,8 +520,8 @@
         - phone_delete
         - phone_refresh
     entryRoute: phone_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -539,8 +539,8 @@
         - locality_delete
         - locality_list_refresh
     entryRoute: locality_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -557,8 +557,8 @@
         - custom_field_delete
         - custom_field_filter_save
     entryRoute: custom_field_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -571,8 +571,8 @@
     routeList:
         - behaviour_settings
     entryRoute: behaviour_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -588,8 +588,8 @@
         - academic_year_term_delete
         - academic_year_term_add
     entryRoute: academic_year_term_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -602,8 +602,8 @@
     routeList:
         - department_manage
     entryRoute: department_manage
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -616,8 +616,8 @@
     routeList:
         - student_settings_people
     entryRoute: student_settings_people
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -630,8 +630,8 @@
     routeList:
         - planner_settings
     entryRoute: planner_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -644,8 +644,8 @@
     routeList:
         - mark_book_view
     entryRoute: mark_book_view
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: 4
     restriction: allClassesAllData
     securityRoles:
@@ -658,8 +658,8 @@
     routeList:
         - people_settings
     entryRoute: people_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -672,13 +672,12 @@
     routeList:
         - demonstration_load
     entryRoute: demonstration_load
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
         arrayField:
-            - ROLE_SYSTEM_ADMIN
             - ROLE_SYSTEM_ADMIN
 -
     name: 'Login - Failure'
@@ -687,8 +686,8 @@
     routeList:
         - login
     entryRoute: login
-    entrySidebar: 'N'
-    menuShow: 'N'
+    entrySidebar: false
+    menuShow: false
     precedence: null
     restriction: null
 -
@@ -698,8 +697,8 @@
     routeList:
         - roll_group_catalogue
     entryRoute: roll_group_catalogue
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -715,8 +714,8 @@
         - house_add
         - house_edit
     entryRoute: house_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -729,13 +728,12 @@
     routeList:
         - mark_book_settings
     entryRoute: mark_book_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
         arrayField:
-            - ROLE_PRINCIPAL
             - ROLE_PRINCIPAL
 -
     name: Home
@@ -746,8 +744,8 @@
         - unauthenticated
         - personal_page
     entryRoute: home
-    entrySidebar: 'N'
-    menuShow: 'N'
+    entrySidebar: false
+    menuShow: false
     precedence: null
     restriction: null
 -
@@ -761,8 +759,8 @@
         - staff_absence_type_delete
         - staff_absence_type_sort
     entryRoute: staff_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -775,8 +773,8 @@
     routeList:
         - resource_settings
     entryRoute: resource_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -789,8 +787,8 @@
     routeList:
         - mark_book_configure
     entryRoute: mark_book_configure
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -807,8 +805,8 @@
         - academic_year_add
         - academic_year_display_popup_raw
     entryRoute: academic_year_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -821,8 +819,8 @@
     routeList:
         - individual_need_settings
     entryRoute: individual_need_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -839,8 +837,8 @@
         - year_group_delete
         - year_group_sort
     entryRoute: year_group_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -857,8 +855,8 @@
         - individual_need_delete
         - individual_need_descriptor_sort
     entryRoute: individual_need_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -871,8 +869,8 @@
     routeList:
         - days_of_the_week
     entryRoute: days_of_the_week
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -889,8 +887,8 @@
         - roll_group_edit
         - roll_group_delete
     entryRoute: roll_group_list
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:
@@ -903,8 +901,8 @@
     routeList:
         - facility_settings
     entryRoute: facility_settings
-    entrySidebar: 'Y'
-    menuShow: 'Y'
+    entrySidebar: true
+    menuShow: true
     precedence: null
     restriction: null
     securityRoles:

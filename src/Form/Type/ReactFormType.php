@@ -116,6 +116,8 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Close Message', [], 'messages');
          $this->addTranslation('There are no records to display.', [], 'messages');
          $this->addTranslation('Refresh List', [], 'messages');
+         $this->addTranslation('Up', [], 'messages');
+         $this->addTranslation('Down', [], 'messages');
          $this->addTranslation('Add Element to List', [], 'messages');
          $this->addTranslation('The list has been refreshed.', [], 'messages');
          $this->addTranslation('All / None', [], 'messages');

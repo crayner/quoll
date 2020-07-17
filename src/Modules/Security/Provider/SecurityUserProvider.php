@@ -47,7 +47,7 @@ class SecurityUserProvider extends AbstractProvider implements UserProviderInter
      */
     public function loadUserByUsername($username): ?UserInterface
     {
-        if ($this->getSession()->has('person') && ($user = $this->getSession()->get('person')) instanceof SecurityUser) {
+        if ($this->getSession()->has('security_user') && ($user = $this->getSession()->get('security_user')) instanceof SecurityUser) {
             if ($user->hasUsername($username)) {
                 $this->setEntity($this->getRepository()->loadUserByUsernameOrEmail($username));
             } else {
@@ -56,6 +56,7 @@ class SecurityUserProvider extends AbstractProvider implements UserProviderInter
         } else {
             $this->setEntity($this->getRepository()->loadUserByUsernameOrEmail($username));
         }
+        $this->getSession()->set('security_user', $this->getEntity());
         return $this->getEntity();
     }
 

@@ -57,6 +57,7 @@ export default class ContainerApp extends Component {
             refreshChoiceList: this.refreshChoiceList.bind(this),
             addElementToChoice: this.addElementToChoice.bind(this),
             removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
+            moveSimpleArrayChild: this.moveSimpleArrayChild.bind(this),
             addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
             toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this),
             handleAddClick: props.functions.handleAddClick,
@@ -487,6 +488,79 @@ export default class ContainerApp extends Component {
         let parentForm = {...getParentForm(this.state.forms,parent)}
         const parentName = getParentFormName(this.formNames,parent)
         this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,parent,parent.value)),this.singleForm))
+    }
+
+
+    moveSimpleArrayChild(form,parent,direction)
+    {
+        let found = false
+        let list = parent.children
+        let item = list.pop()
+        if (item.value !== '') {
+            list.push(item)
+        }
+        let before = list.filter(item => {
+            if (item.value === form.value) {
+                found = true
+            }
+            if (found === false) {
+                return item
+            }
+        })
+        found = false
+        let after = list.filter(item => {
+            if (item.value === form.value) {
+                found = true
+            }
+            if (found === true) {
+                return item
+            }
+        })
+
+        item = after.shift()
+        if (direction === 'down' && after.length === 0) {
+            return
+        }
+        if (direction === 'up' && before.length === 0) {
+            return
+        }
+
+        if (direction === 'up') {
+            let swap = before.pop()
+            list = before
+            list.push(item)
+            list.push(swap)
+            after.map(item => {
+                list.push(item)
+            })
+        }
+        if (direction === 'down') {
+            let swap = after.shift()
+            list = before
+            list.push(swap)
+            list.push(item)
+            after.map(item => {
+                list.push(item)
+            })
+        }
+
+        let values = []
+        let children = []
+        list.map((child,key) => {
+            child.id = form.id + '_' + key
+            child.name = key
+            child.full_name = form.full_name + '[' + key + ']'
+            values.push(child.value)
+            children.push(child)
+        })
+        parent.value = values
+        parent.children = children
+
+        console.log(parent)
+        let parentForm = {...getParentForm(this.state.forms,parent)}
+        const parentName = getParentFormName(this.formNames,parent)
+        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,parent,parent.value)),this.singleForm))
+        this.addSimpleArrayValue(parent)
     }
 
     addSimpleArrayValue(form)

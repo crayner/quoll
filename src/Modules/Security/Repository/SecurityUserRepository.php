@@ -30,6 +30,11 @@ use Doctrine\Persistence\ManagerRegistry;
 class SecurityUserRepository extends ServiceEntityRepository
 {
     /**
+     * @var array
+     */
+    private $users = [];
+
+    /**
      * SecurityUserRepository constructor.
      * @param ManagerRegistry $registry
      */
@@ -49,9 +54,12 @@ class SecurityUserRepository extends ServiceEntityRepository
      */
     public function loadUserByUsernameOrEmail(string $username): ?SecurityUser
     {
+        if (key_exists($username, $this->users)) {
+            return $this->users[$username];
+        }
         if (SecurityHelper::useEmailAsUsername()) {
             try {
-                return $this->createQueryBuilder('u')
+                $user = $this->createQueryBuilder('u')
                     ->select(['u', 'p', 'c'])
                     ->join('u.person', 'p')
                     ->leftJoin('p.contact', 'c')
@@ -64,7 +72,7 @@ class SecurityUserRepository extends ServiceEntityRepository
             }
         } else {
             try {
-                return $this->createQueryBuilder('u')
+                $user = $this->createQueryBuilder('u')
                     ->select(['u', 'p'])
                     ->join('u.person', 'p')
                     ->where('u.username = :username')
@@ -75,6 +83,31 @@ class SecurityUserRepository extends ServiceEntityRepository
                 return null;
             }
         }
+
+        $this->users[$user->getId()] = $user;
+
+        return $this->users[$username] = $user;
     }
 
+    /**
+     * find
+     * @param mixed $id
+     * @param null $lockMode
+     * @param null $lockVersion
+     * @return mixed|object|null
+     * 17/07/2020 13:22
+     */
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        if (key_exists($id, $this->users)) {
+            return $this->users[$id];
+        }
+        $this->users[$id] = parent::find($id, $lockMode, $lockVersion);
+        if (null === $this->users[$id]) {
+            unset($this->users[$id]);
+            return null;
+        }
+        return $this->users[$id];
+    }
 }
+

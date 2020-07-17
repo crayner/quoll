@@ -41,8 +41,6 @@ class Action extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
@@ -102,16 +100,16 @@ class Action extends AbstractEntity
     private $entryRoute;
 
     /**
-     * @var string
-     * @ORM\Column(length=1,options={"default": "Y"})
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": "1"})
      */
-    private $entrySidebar = 'Y';
+    private $entrySidebar = true;
 
     /**
-     * @var string
-     * @ORM\Column(length=1,options={"default": "Y"})
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": "1"})
      */
-    private $menuShow = 'Y';
+    private $menuShow = true;
 
     /**
      * @var array|null
@@ -305,7 +303,7 @@ class Action extends AbstractEntity
     /**
      * @return string|null
      */
-    public function getentryRoute(): ?string
+    public function getEntryRoute(): ?string
     {
         return $this->entryRoute;
     }
@@ -315,68 +313,45 @@ class Action extends AbstractEntity
      * @param string|null $entryRoute
      * @return Action
      */
-    public function setentryRoute(?string $entryRoute): Action
+    public function setEntryRoute(?string $entryRoute): Action
     {
         $this->entryRoute = mb_substr($entryRoute, 0, 255);
         return $this;
     }
 
     /**
-     * isEntrySidebar
      * @return bool
      */
     public function isEntrySidebar(): bool
     {
-        return $this->getEntrySidebar() === 'Y';
+        return (bool)$this->entrySidebar;
     }
 
     /**
-     * @return string
-     */
-    public function getEntrySidebar(): string
-    {
-        return self::checkBoolean($this->entrySidebar);
-    }
-
-    /**
-     * @param string $entrySidebar
+     * @param bool|null $entrySidebar
      * @return Action
      */
-    public function setEntrySidebar(string $entrySidebar): Action
+    public function setEntrySidebar(?bool $entrySidebar): Action
     {
-        $this->entrySidebar = self::checkBoolean($entrySidebar);
+        $this->entrySidebar = (bool)$entrySidebar;
         return $this;
     }
 
     /**
-     * isMenuShow
      * @return bool
-     * 21/06/2020 10:34
      */
     public function isMenuShow(): bool
     {
-        return $this->getMenuShow() === 'Y';
+        return (bool)$this->menuShow;
     }
 
     /**
-     * getMenuShow
-     * @return string
-     * 21/06/2020 10:34
+     * @param bool|null $menuShow
+     * @return Action
      */
-    public function getMenuShow(): string
+    public function setMenuShow(?bool $menuShow): Action
     {
-        return self::checkBoolean($this->menuShow);
-    }
-
-    /**
-     * setMenuShow
-     * @param string $menuShow
-     * @return $this
-     * 21/06/2020 10:34
-     */
-    public function setMenuShow(string $menuShow): Action
-    {
-        $this->menuShow = self::checkBoolean($menuShow);
+        $this->menuShow = (bool)$menuShow;
         return $this;
     }
 

@@ -40,8 +40,6 @@ class Module extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
@@ -87,10 +85,10 @@ class Module extends AbstractEntity
     private static $typeList = ['Core','Additional'];
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
+     * @var boolean|null
+     * @ORM\Column(type="boolean", options={"default": "1"})
      */
-    private $active = 'Y';
+    private $active = true;
 
     /**
      * @var string|null
@@ -260,20 +258,20 @@ class Module extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getActive(): ?string
+    public function isActive(): bool
     {
-        return $this->active;
+        return (bool)$this->active;
     }
 
     /**
-     * @param string|null $active
+     * @param bool|null $active
      * @return Module
      */
-    public function setActive(?string $active): Module
+    public function setActive(?bool $active): Module
     {
-        $this->active = self::checkBoolean($active);
+        $this->active = (bool)$active;
         return $this;
     }
 
