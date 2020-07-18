@@ -172,8 +172,7 @@ abstract class AbstractProvider implements EntityProviderInterface
         } else
             $entity = $this->find($id);
         if (empty($entity)) {
-            $this->getMessageManager()->add('warning', 'return.error.0', [], 'messages');
-            return $entity;
+            return null;
         }
 
         if (method_exists($this, 'canDelete')) {
