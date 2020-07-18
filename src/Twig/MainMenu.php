@@ -19,6 +19,7 @@ namespace App\Twig;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Module;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\TranslationHelper;
@@ -56,22 +57,18 @@ class MainMenu implements ContentInterface
                 foreach ($menuMainItems as $q => $module)
                     $items[] = $module->toArray('mainMenu');
 
-                $category = '';
-                $group = [];
                 $menuMainItems = [];
-                foreach($items as $w) {
-                    if ($w['category'] !== $category) {
-                        if ($category !== '') {
-                            $menuMainItems[TranslationHelper::translate($category)] = $group;
-                            $group = [];
+                foreach(SettingFactory::getSettingManager()->getSetting('System', 'mainMenuCategoryOrder') as $category) {
+                    foreach ($items as $w) {
+                        if ($w['category'] === $category) {
+                            $catTran = TranslationHelper::translate($category);
+                            if (!key_exists($catTran, $menuMainItems)) {
+                                $menuMainItems[$catTran] = [];
+                            }
+                            $menuMainItems[$catTran][] = $w;
                         }
-                        $category = $w['category'];
                     }
-                    $group[] = $w;
                 }
-                if (count($group) > 0)
-                    $menuMainItems[TranslationHelper::translate($category)] = $group;
-
                 CacheHelper::setCacheValue('menuMainItems', $menuMainItems);
             } else {
                 $menuMainItems = CacheHelper::getCacheValue('mainMenuItems');
