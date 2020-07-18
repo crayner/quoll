@@ -17,6 +17,7 @@
 
 namespace App\Twig\Sidebar;
 
+use App\Manager\EntityInterface;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;
@@ -26,8 +27,8 @@ class Photo implements SidebarContentInterface
 {
     use SidebarContentTrait;
 
-    /*
-     * @var object
+    /**
+     * @var EntityInterface|null
      */
     private $entity;
 
@@ -72,18 +73,24 @@ class Photo implements SidebarContentInterface
     private $title = '';
 
     /**
+     * @var string|null
+     */
+    private $default;
+
+    /**
      * Photo constructor.
-     * @param $entity
+     * @param EntityInterface|null $entity
      * @param string $method
      * @param string $size
      * @param string $class
      */
-    public function __construct($entity, string $method, string $size = '75', string $class = '')
+    public function __construct(?EntityInterface $entity, string $method, string $size = '75', string $class = '', ?string $default = null)
     {
         $this->entity = $entity;
         $this->method = $method;
         $this->size = $size;
         $this->class = $class;
+        $this->default = $default;
     }
 
     /**
@@ -105,9 +112,9 @@ class Photo implements SidebarContentInterface
     }
 
     /**
-     * @return object
+     * @return EntityInterface|null
      */
-    public function getEntity(): object
+    public function getEntity(): ?EntityInterface
     {
         return $this->entity;
     }
@@ -192,6 +199,9 @@ class Photo implements SidebarContentInterface
      */
     public function fileExists(): bool
     {
+        if (null === $this->getEntity()) {
+            return $this->fileExists = false;
+        }
         if (is_null($this->fileExists)) {
             $method = $this->getMethod();
             $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->$method());
@@ -276,8 +286,27 @@ class Photo implements SidebarContentInterface
             'width' => $this->getWidth(),
             'className' => $this->getClass(),
             'title' => $this->getTransDomain() === false ? $this->getTitle() : TranslationHelper::translate($this->getTitle(), [], $this->getTransDomain()),
-            'url' => ImageHelper::getAbsoluteImageURL('File', $this->getEntity()->$method()),
+            'url' => $this->fileExists() ? ImageHelper::getAbsoluteImageURL('File', $this->getEntity()->$method()) : ($this->getDefault() ?: ''),
             'exists' => $this->fileExists(),
         ];
     }
+
+    /**
+     * @return string|null
+     */
+    public function getDefault(): ?string
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param string|null $default
+     * @return Photo
+     */
+    public function setDefault(?string $default): Photo
+    {
+        $this->default = $default;
+        return $this;
+    }
+
 }

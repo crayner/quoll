@@ -28,6 +28,7 @@ use App\Modules\People\Pagination\PeoplePagination;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Staff\Form\StaffType;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
@@ -106,7 +107,7 @@ class PeopleController extends AbstractPageController
             $action = $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]);
         }
 
-        $photo = new Photo($person, 'getImage240', '200', 'user max200');
+        $photo = new Photo($person->getPersonalDocumentation(), 'getImage240', '200', 'user max200', '/build/static/DefaultPerson.png');
         $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
         $sidebar->addContent($photo);
 
@@ -119,7 +120,7 @@ class PeopleController extends AbstractPageController
         $form = $this->createForm(PersonType::class, $person,
             [
                 'action' => $action,
-                'user_roles' => $this->getUser()->getAllRoles(),
+                'user_roles' => $this->getUser()->getRoles(),
             ]
         );
 
@@ -157,30 +158,6 @@ class PeopleController extends AbstractPageController
             $panel = new Panel('System', 'People', $section);
             $container->addPanel($panel);
 
-            if ($person->getId() !== null) {
-                $panel = new Panel('Contact', 'People', $section);
-                $container->addPanel($panel);
-
-                $panel = new Panel('School', 'People', $section);
-                $container->addPanel($panel);
-
-                $panel = new Panel('Background', 'People', $section);
-                $container->addPanel($panel);
-
-                if (UserHelper::isParent($person)) {
-                    $panel = new Panel('Employment', 'People', $section);
-                    $container->addPanel($panel);
-                }
-
-                if (UserHelper::isStaff($person)) {
-                    $panel = new Panel('Emergency', 'People', $section);
-                    $container->addPanel($panel);
-                }
-
-                $panel = new Panel('Miscellaneous', 'People', $section);
-                $container->addPanel($panel);
-            }
-
             $manager->addContainer($container)->buildContainers();
 
             return new JsonResponse(
@@ -193,41 +170,22 @@ class PeopleController extends AbstractPageController
                 200);
         }
 
-        $panel = new Panel('Basic', 'People', $section);
+        $panel = new Panel('Basic', 'People', new Section('form', 'Basic'));
 
-        $container->addForm('single', $form->createView())->addPanel($panel);
+        $container->addForm('Basic', $form->createView())->addPanel($panel);
 
-        $panel = new Panel('System', 'People', $section);
-        $container->addPanel($panel);
+        if ($person->isStaff()) {
+            $staffForm = $this->createForm(StaffType::class, $person->getStaff(), ['action' => $action]);
+            $panel = new Panel('Staff', 'Staff', new Section('form', 'Staff'));
+            $container->addForm('Staff', $staffForm->createView())->addPanel($panel);
 
-        if ($person->getId() !== null) {
-            $panel = new Panel('Contact', 'People', $section);
-            $container->addPanel($panel);
-
-            $panel = new Panel('School', 'People', $section);
-            $container->addPanel($panel);
-
-            $panel = new Panel('Background', 'People', $section);
-            $container->addPanel($panel);
-
-            if (UserHelper::isParent($person)) {
-                $panel = new Panel('Employment', 'People', $section);
-                $container->addPanel($panel);
-            }
-
-            if (UserHelper::isStaff($person)) {
-                $panel = new Panel('Emergency', 'People', $section);
-                $container->addPanel($panel);
-            }
-
-            $panel = new Panel('Miscellaneous', 'People', $section);
-            $container->addPanel($panel);
         }
+
 
         $manager->setReturnRoute($this->generateUrl('people_list'));
         $manager->addContainer($container)->buildContainers();
 
-        return $this->getPageManager()->createBreadcrumbs($person->getId() !== null ? 'Edit Person' : 'Add Person')
+        return $this->getPageManager()->createBreadcrumbs([$person->getId() !== null ? 'Edit Person: {name}' : 'Add Person', ['{name}' => $person->getFullName()]])
             ->render(
                 [
                     'containers' => $manager->getBuiltContainers(),

@@ -50,3 +50,5 @@ Edit Department Staff Role: Edit Department Staff Role
 Return to Departments: Return to Departments
 Type a name...: Type a name...
 Value locked.: Value locked.
+'Edit Department: {name}': 'Edit Department: {name}'
+Staff: Staff

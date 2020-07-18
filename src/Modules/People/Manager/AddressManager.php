@@ -18,6 +18,7 @@ namespace App\Modules\People\Manager;
 
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
+use App\Modules\System\Manager\SettingFactory;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,7 +52,7 @@ class AddressManager
     public function __construct(ParameterBagInterface $bag)
     {
         $this->bag = $bag;
-        $this->country = $bag->get('country');
+        $this->country = SettingFactory::getSettingManager()->getSetting('System', 'country');
     }
 
     /**

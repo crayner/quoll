@@ -30,8 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
  * @ORM\Table(name="staff",
  *  uniqueConstraints={
- *      @ORM\UniqueConstraint(name="person", columns={"person"}),
- *      @ORM\UniqueConstraint(name="initials", columns={"initials"})
+ *      @ORM\UniqueConstraint(name="person", columns={"person"})
  *  },
  *  indexes={
  *      @ORM\Index(name="emergency_contact1",columns={"emergency_contact1"}),
@@ -43,7 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  }
  * )
  * @UniqueEntity({"person"})
- * @UniqueEntity({"initials"})
  */
 class Staff extends AbstractEntity
 {
@@ -79,11 +77,6 @@ class Staff extends AbstractEntity
         'Support',
         'Other',
     ];
-    /**
-     * @var string|null
-     * @ORM\Column(length=4,nullable=true)
-     */
-    private $initials;
 
     /**
      * @var string|null
@@ -100,7 +93,6 @@ class Staff extends AbstractEntity
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean",options={"default": 0})
-     * @Assert\Choice(callback="getBooleanList")
      */
     private $firstAidQualified = false;
 
@@ -245,7 +237,7 @@ class Staff extends AbstractEntity
 
     /**
      * @var boolean|null
-     * @ORM\Column(length=1, options={"default": 1})
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
     private $receiveNotificationEmails = true;
 
@@ -323,24 +315,6 @@ class Staff extends AbstractEntity
     public function setType(?string $type): Staff
     {
         $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getInitials(): ?string
-    {
-        return $this->initials;
-    }
-
-    /**
-     * @param string|null $initials
-     * @return Staff
-     */
-    public function setInitials(?string $initials): Staff
-    {
-        $this->initials = $initials;
         return $this;
     }
 

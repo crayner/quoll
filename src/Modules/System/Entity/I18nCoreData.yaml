@@ -1,0 +1,410 @@
+-
+    code: 'en_GB'
+    name: 'English - United Kingdom'
+    active: true
+    installed: true
+    systemDefault: true
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'en_US'
+    name: 'English - United States'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'mm/dd/yyyy'
+    dateFormatRegEx: '/([1-9]|1[012])[- /.]([1-9]|[12][0-9]|3[01])[- /.](19|20\\d\\d)/'
+    dateFormatPHP: 'm/d/Y'
+    rtl: false
+-
+    code: 'es_ES'
+    name: 'Español'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'zh_CN'
+    name: '汉语 - 中国'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'yyyy-mm-dd'
+    dateFormatRegEx: '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/'
+    dateFormatPHP: 'Y-m-d'
+    rtl: false
+-
+    code: 'zh_HK'
+    name: '體字 - 香港'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'pl_PL'
+    name: 'Język polski - Polska'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\\\d\\\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'it_IT'
+    name: 'Italiano - Italia'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'id_ID'
+    name: 'Bahasa Indonesia - Indonesia'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'ar_SA'
+    name: 'العربية - المملكة العربية السعودية'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: true
+-
+    code: 'fr_FR'
+    name: 'Français - France'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'ur_PK'
+    name: 'پاکستان - اُردُو'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: true
+-
+    code: 'sw_KE'
+    name: 'Swahili'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'pt_PT'
+    name: 'Português'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'ro_RO'
+    name: 'Română'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd.mm.yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd.m.Y'
+    rtl: false
+-
+    code: 'ja_JP'
+    name: '日本語'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'yyyy-mm-dd'
+    dateFormatRegEx: '/^[0-9]{4}-([1-9]|1[0-2])-([1-9]|[1-2][0-9]|3[0-1])$/'
+    dateFormatPHP: 'Y-m-d'
+    rtl: false
+-
+    code: 'ru_RU'
+    name: 'ру́сский язы́к'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd.mm.yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd.m.Y'
+    rtl: false
+-
+    code: 'uk_UA'
+    name: 'українська мова'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd.mm.yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd.m.Y'
+    rtl: false
+-
+    code: 'bn_BD'
+    name: 'বাংলা'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'da_DK'
+    name: 'Dansk - Danmark'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'fa_IR'
+    name: 'فارسی'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: true
+-
+    code: 'pt_BR'
+    name: 'Português - Brasil'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'ka_GE'
+    name: 'ქართული ენა'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'nl_NL'
+    name: 'Dutch - Netherlands'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'hu_HU'
+    name: 'Magyar - Magyarország'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'bg_BG'
+    name: 'български език'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'ko_KP'
+    name: '한국어 - 대한민국'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'fi_FI'
+    name: 'Suomen Kieli - Suomi'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'de_DE'
+    name: 'Deutsch - Deutschland'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'in_OR'
+    name: 'ଓଡ଼ିଆ - इंडिया'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'no_NO'
+    name: 'Norsk - Norge'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'vi_VN'
+    name: 'Tiếng Việt - Việt Nam'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'sq_AL'
+    name: 'Shqip - Shqipëri'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'th_TH'
+    name: 'ภาษาไทย - ราชอาณาจักรไทย'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'el_GR'
+    name: 'ελληνικά - Ελλάδα'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[-]([1-9]|1[012])[-](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false
+-
+    code: 'am_ET'
+    name: 'አማርኛ - ኢትዮጵያ'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'om_ET'
+    name: 'Afaan Oromo - Ethiopia'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'hr_HR'
+    name: 'Hrvatski - Hrvatska'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'et_EE'
+    name: 'Eesti Keel - Eesti'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd/mm/yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd/m/Y'
+    rtl: false
+-
+    code: 'he_IL'
+    name: 'עברית - ישראל'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd.mm.yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd.m.Y'
+    rtl: true
+-
+    code: 'tr_TR'
+    name: 'Türkçe - Türkiye'
+    active: true
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd.mm.yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd.m.Y'
+    rtl: false
+-
+    code: 'my_MM'
+    name: 'မြန်မာ - မြန်မာ'
+    active: false
+    installed: false
+    systemDefault: false
+    dateFormat: 'dd-mm-yyyy'
+    dateFormatRegEx: '/^([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)\\d\\d$/i'
+    dateFormatPHP: 'd-m-Y'
+    rtl: false

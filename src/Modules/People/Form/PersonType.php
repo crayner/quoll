@@ -145,59 +145,8 @@ class PersonType extends AbstractType
                     'panel' => 'Basic',
                 ]
             )
-            ->add('gender', EnumType::class,
-                [
-                    'label' => 'Gender',
-                    'panel' => 'Basic',
-                    'placeholder' => 'person.gender.unspecified',
-                ]
-            )
-            ->add('dob', ReactDateType::class,
-                [
-                    'label' => 'Date of Birth',
-                    'panel' => 'Basic',
-                    'widget' => 'single_text',
-                    'input' => 'datetime_immutable',
-                    'years' => range(intval(date('Y'))- 120, intval(date('Y')))
-                ]
-            )
+            ->add('submitBasic', SubmitType::class)
         ;
-        if ($options['data']->getId() !== null)
-            $builder
-                ->add('image240', ReactFileType::class,
-                    [
-                        'label' => 'Personal Photo',
-                        'help' => 'person.image.help',
-                        'panel' => 'Basic',
-                        'file_prefix' => 'personal_',
-                        'data' => $options['data']->getImage240(false),
-                        'show_thumbnail' => true,
-                        'entity' => $options['data'],
-                        'image_method' => 'getImage240',
-                    ]
-                )
-            ;
-        $builder
-            ->add('submitBasic', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'translation_domain' => 'messages',
-                    'panel' => 'Basic',
-                ]
-            )
-        ;
-
-        $this->buildSystem($builder, $options);
-        if ($options['data']->getId() !== null) {
-            $this->buildContact($builder, $options);
-            $this->buildSchool($builder, $options);
-            $this->buildBackground($builder, $options);
-            if (UserHelper::isParent($options['data']))
-                $this->buildEmployment($builder, $options);
-            if (UserHelper::isStaff($options['data']))
-                $this->buildEmergency($builder, $options);
-            $this->buildMiscellaneous($builder, $options);
-        }
     }
 
     /**

@@ -42,3 +42,26 @@ Users who can approve staff absences. Leave this blank if approval is not used.:
 Which messenger groups can staff members send absence notifications to?: Which messenger groups can staff members send absence notifications to?
 Enable Smart Workflow Help?: Enable Smart Workflow Help?
 List: List
+Biography Details: Biography Details
+Biography: Biography
+Country of Birth: Country of Birth
+'Emergency Contact #1': 'Emergency Contact #1'
+'Emergency Contact #2': 'Emergency Contact #2'
+Emergency Contact Details: Emergency Contact Details
+Emergency contacts must be added as person within the database. You can then attach them here as an emergency contact for this person.: Emergency contacts must be added as person within the database. You can then attach them here as an emergency contact for this person.
+First Aid Details: First Aid Details
+First Aid Qualification Expiry: First Aid Qualification Expiry
+First Aid Qualified?: First Aid Qualified?
+Grouping Priority: Grouping Priority
+Grouping: Grouping
+Higher numbers move teachers up the order within their grouping.: Higher numbers move teachers up the order within their grouping.
+Job Title: Job Title
+Qualification: Qualification
+Staff Details: Staff Details
+Staff Type: Staff Type
+Used to group staff when creating a staff directory.: Used to group staff when creating a staff directory.
+staff:
+    type:
+        other: Other
+        support: Support
+        teaching: Teaching
