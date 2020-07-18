@@ -36,7 +36,7 @@ class FamilyMemberStudent extends FamilyMember
     private $relationships;
 
     /**
-     * FamilyMemberAdult constructor.
+     * FamilyMemberStudent constructor.
      * @param Family|null $family
      */
     public function __construct(?Family $family = null)

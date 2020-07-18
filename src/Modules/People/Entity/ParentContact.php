@@ -17,9 +17,12 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\People\Provider\FamilyMemberAdultProvider;
 use App\Modules\System\Entity\I18n;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -82,6 +85,12 @@ class ParentContact extends AbstractEntity
      * @ORM\Column(length=1, options={"default": 1})
      */
     private $viewCalendarSchool = true;
+
+    /**
+     * @var Collection|FamilyMemberAdult[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberAdult",mappedBy="parent")
+     */
+    private $memberOfFamilies;
 
     /**
      * @return string|null
@@ -197,51 +206,55 @@ class ParentContact extends AbstractEntity
         return $this;
     }
 
+    /**
+     * getMemberOfFamilies
+     * @return Collection
+     * 18/07/2020 10:42
+     */
+    public function getMemberOfFamilies(): Collection
+    {
+        if ($this->memberOfFamilies === null) {
+            $this->memberOfFamilies = new ArrayCollection();
+        }
+
+        if ($this->memberOfFamilies instanceof PersistentCollection) {
+            $this->memberOfFamilies->initialize();
+        }
+
+        return $this->memberOfFamilies;
+    }
+
+    /**
+     * setMemberOfFamilies
+     * @param Collection|null $memberOfFamilies
+     * @return $this
+     * 18/07/2020 10:43
+     */
+    public function setMemberOfFamilies(?Collection $memberOfFamilies)
+    {
+        $this->memberOfFamilies = $memberOfFamilies;
+        return $this;
+    }
+
+    /**
+     * addMemberOfFamily
+     * @param FamilyMemberAdult|null $parent
+     * @return $this
+     * 18/07/2020 10:40
+     */
+    public function addMemberOfFamily(?FamilyMemberAdult $parent): ParentContact
+    {
+        if (null === $parent || $this->getMemberOfFamilies()->contains($parent)) {
+            return $this;
+        }
+
+        $this->memberOfFamilies->add($parent);
+
+        return $this;
+    }
+
     public function toArray(?string $name = null): array
     {
         // TODO: Implement toArray() method.
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 4/07/2020 09:51
-     */
-    public function create(): array
-    {
-        return [
-            "CREATE TABLE `__prefix__ParentContact` (
-                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `locale` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `vehicle_registration` varchar(20) DEFAULT NULL,
-                `receive_notification_emails` varchar(1) NOT NULL DEFAULT '1',
-                PRIMARY KEY (`id`),
-                UNIQUE KEY `person` (`person`),
-                KEY `locale` (`locale`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
-        ];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 4/07/2020 09:51
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__ParentContact`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`locale`) REFERENCES `__prefix__I18n` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 4/07/2020 09:52
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
     }
 }

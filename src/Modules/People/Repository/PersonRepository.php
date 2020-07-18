@@ -303,16 +303,15 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findAllStudentContactsQuery
+     * findAllParentQuery
      * @return QueryBuilder
-     * 28/06/2020 12:22
+     * 18/07/2020 10:52
      */
-    public function findAllStudentContactsQuery(): QueryBuilder
+    public function findAllParentQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->leftJoin('p.members', 'fm')
-            ->where('fm.id IS NOT NULL')
-            ->andWhere('fm.contactPriority IS NOT NULL')
+            ->leftJoin('p.parent', 'pa')
+            ->where('p.parent IS NOT NULL')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC');
     }
@@ -368,35 +367,31 @@ class PersonRepository extends ServiceEntityRepository
     public function getPaginationContent(): array
     {
         $students = $this->findAllStudentsQuery()
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','p.username', "'Student' AS role", 'p.canLogin'])
-            ->leftJoin('p.members', 'fm')
+            ->select(["COALESCE(d.image_240, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','u.username', "'Student' AS role", 'u.canLogin'])
+            ->leftJoin('s.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
+            ->leftJoin('p.personalDocumentation', 'd')
+            ->leftJoin('p.securityUser', 'u')
             ->getQuery()
             ->getResult();
-        $parents = $this->findAllStudentContactsQuery()
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','p.username', "'Parent' AS role", 'p.canLogin'])
+        $parents = $this->findAllParentQuery()
+            ->select(["COALESCE(d.image_240, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','u.username', "'Parent' AS role", 'u.canLogin'])
+            ->leftJoin('pa.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
+            ->leftJoin('p.securityUser', 'u')
+            ->leftJoin('p.personalDocumentation', 'd')
             ->getQuery()
             ->getResult();
-        $staff = $this->getStaffQueryBuilder()
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", 'p.username', "'Staff' AS role", 'p.canLogin'])
+        $staff = $this->getAllStaffQueryBuilder()
+            ->select(["COALESCE(d.image_240, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", 'u.username', "'Staff' AS role", 'u.canLogin'])
+            ->leftJoin('p.personalDocumentation', 'd')
+            ->leftJoin('p.securityUser', 'u')
             ->getQuery()
             ->getResult();
 
-        $all = [];
-        foreach($students as $person) {
-            $all[] = $person['id'];
-        }
-        foreach($staff as $person) {
-            $all[] = $person['id'];
-        }
-        foreach($parents as $person) {
-            $all[] = $person['id'];
-        }
-        $others = $this->createQueryBuilder('p')
-            ->where('p.id NOT IN (:list)')
-            ->setParameter('list', $all, Connection::PARAM_STR_ARRAY)
-            ->select(['p.image_240 AS photo', "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' As family_id", 'p.username', "'Other' AS role", "'N' AS canLogin"])
+        $others = $this->getAllContactsOnly()
+            ->select(["COALESCE(d.image_240, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' As family_id", "'' AS username", "'Other' AS role", "0 AS canLogin"])
+            ->leftJoin('p.personalDocumentation', 'd')
             ->getQuery()
             ->getResult();
 
@@ -478,16 +473,27 @@ class PersonRepository extends ServiceEntityRepository
             ->addParam('status', $status)
             ->addParam('today', $today);
 
-        return $this->createQueryBuilder('p')
-            ->where('p.status = :status')
-            ->leftJoin('p.staff', 's')
-            ->andWhere('p.staff IS NOT NULL')
+        return $this->getAllStaffQueryBuilder()
+            ->andWhere('p.status = :status')
             ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
             ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
             ->setParameters($this->getParams())
+            ;
+    }
+
+    /**
+     * getAllStaffQueryBuilder
+     * @return QueryBuilder
+     * 18/07/2020 10:57
+     */
+    public function getAllStaffQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.staff', 's')
+            ->where('p.staff IS NOT NULL')
             ->orderBy('p.surname')
             ->addOrderBy('p.firstName')
-        ;
+            ;
     }
 
     /**
@@ -524,20 +530,31 @@ class PersonRepository extends ServiceEntityRepository
 
     /**
      * findAllStudentsQuery
-     * @param string $status
      * @return QueryBuilder
-     * 10/07/2020 09:41
+     * 18/07/2020 11:01
      */
-    public function findAllStudentsQuery(string $status = 'Full'): QueryBuilder
+    public function findAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->join('p.student', 's')
             ->where('p.student IS NOT NULL')
-            ->andWhere('p.status LIKE :status')
-            ->andWhere('(s.dateStart <= :today OR s.dateStart IS NULL)')
-            ->andWhere('(s.dateEnd >= :today OR s.dateEnd IS NULL)')
-            ->setParameters(['status' => '%'.$status.'%', 'today' => new \DateTimeImmutable('now')])
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
+    }
+
+    /**
+     * getAllContactsOnly
+     * @return QueryBuilder
+     * 18/07/2020 11:01
+     */
+    public function getAllContactsOnly(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.student IS NULL')
+            ->andWhere('p.parent IS NULL')
+            ->andWhere('p.staff IS NULL')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', 'ASC');
+
     }
 }

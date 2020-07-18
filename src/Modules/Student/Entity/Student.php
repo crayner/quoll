@@ -229,7 +229,7 @@ class Student extends AbstractEntity
      * @var Collection|FamilyMemberStudent[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberStudent",mappedBy="student")
      */
-    private $students;
+    private $memberOfFamilies;
 
     /**
      * @return string|null
@@ -715,26 +715,26 @@ class Student extends AbstractEntity
     /**
      * @return FamilyMemberStudent[]|Collection|null
      */
-    public function getStudents(): Collection
+    public function getMemberOfFamilies(): Collection
     {
-        if (null === $this->students) {
-            $this->students = new ArrayCollection();
+        if (null === $this->memberOfFamilies) {
+            $this->memberOfFamilies = new ArrayCollection();
         }
 
-        if ($this->students instanceof PersistentCollection) {
-            $this->students->initialize();
+        if ($this->memberOfFamilies instanceof PersistentCollection) {
+            $this->memberOfFamilies->initialize();
         }
 
-        return $this->students;
+        return $this->memberOfFamilies;
     }
 
     /**
-     * @param FamilyMemberStudent[]|Collection|null $students
+     * @param FamilyMemberStudent[]|Collection|null $memberOfFamilies
      * @return Student
      */
-    public function setStudents($students): Student
+    public function setMemberOfFamilies($memberOfFamilies): Student
     {
-        $this->students = $students;
+        $this->memberOfFamilies = $memberOfFamilies;
         return $this;
     }
 
@@ -744,13 +744,13 @@ class Student extends AbstractEntity
      * @return $this
      * 3/07/2020 14:14
      */
-    public function addStudent(?FamilyMemberStudent $student): Student
+    public function addMemberOfFamily(?FamilyMemberStudent $student): Student
     {
-        if (null === $student || $this->getStudents()->contains($student)) {
+        if (null === $student || $this->getMemberOfFamilies()->contains($student)) {
             return $this;
         }
 
-        $this->students->add($student);
+        $this->memberOfFamilies->add($student);
 
         return $this;
     }
@@ -758,74 +758,5 @@ class Student extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         // TODO: Implement toArray() method.
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 4/07/2020 10:02
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Student` (
-                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `student_identifier` varchar(20) DEFAULT NULL,
-                    `student_agreements` longtext COMMENT '(DC2Type:simple_array)',
-                    `date_start` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `date_end` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `last_school` varchar(100) DEFAULT NULL,
-                    `next_school` varchar(100) DEFAULT NULL,
-                    `departure_reason` varchar(50) DEFAULT NULL,
-                    `transport` varchar(191) DEFAULT NULL,
-                    `transport_notes` longtext,
-                    `calendar_feed_personal` varchar(191) DEFAULT NULL,
-                    `view_calendar_school` tinyint(1) NOT NULL DEFAULT '1',
-                    `application_form` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `theme` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `graduation_year` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `locale` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `house` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `locker_number` varchar(20) DEFAULT NULL,
-                    `personal_background` varchar(191) DEFAULT NULL,
-                    `messenger_last_bubble` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                    `privacy` longtext,
-                    `day_type` varchar(191) DEFAULT NULL COMMENT 'Student day type, as specified in the application form.',
-                    `receive_notification_emails` varchar(1) NOT NULL DEFAULT '1',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `student_identifier` (`student_identifier`),
-                    UNIQUE KEY `person` (`person`),
-                    KEY `application_form` (`application_form`),
-                    KEY `theme` (`theme`),
-                    KEY `graduation_year` (`graduation_year`),
-                    KEY `locale` (`locale`),
-                    KEY `house` (`house`)
-                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 4/07/2020 10:02
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__Student`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`locale`) REFERENCES `__prefix__I18n` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`graduation_year`) REFERENCES `__prefix__AcademicYear` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`house`) REFERENCES `__prefix__House` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`theme`) REFERENCES `__prefix__Theme` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`application_form`) REFERENCES `__prefix__ApplicationForm` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 4/07/2020 10:02
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
     }
 }

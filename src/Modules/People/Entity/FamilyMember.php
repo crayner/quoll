@@ -64,14 +64,14 @@ class FamilyMember extends AbstractEntity
     private $id;
     /**
      * @var ParentContact|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\ParentContact")
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\ParentContact", inversedBy="memberOfFamilies")
      * @ORM\JoinColumn(name="parent",referencedColumnName="id",nullable=true)
      */
     private $parent;
 
     /**
      * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="students")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="memberOfFamilies")
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
      */
     private $student;
