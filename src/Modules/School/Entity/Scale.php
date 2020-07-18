@@ -15,8 +15,8 @@ namespace App\Modules\School\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Provider\ProviderFactory;
+use App\Util\StringHelper;
 use App\Util\TranslationHelper;
-use App\Manager\Traits\BooleanList;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,8 +40,6 @@ use Symfony\Component\Yaml\Yaml;
 class Scale extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-
-    use BooleanList;
 
     /**
      * @var string|null
@@ -82,18 +80,16 @@ class Scale extends AbstractEntity
     private $lowestAcceptable;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean|null
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $active = 'Y';
+    private $active = true;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool|null
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $numericOnly = 'N';
+    private $numericOnly = false;
 
     /**
      * @var Collection|ScaleGrade[]|null
@@ -204,58 +200,38 @@ class Scale extends AbstractEntity
     }
 
     /**
-     * isActive
      * @return bool
      */
     public function isActive(): bool
     {
-        return$this->getActive() === 'Y';
+        return (bool)$this->active;
     }
 
     /**
-     * getActive
-     * @return string
-     */
-    public function getActive(): string
-    {
-        return self::checkBoolean($this->active);
-    }
-
-    /**
-     * @param string|null $active
+     * @param bool|null $active
      * @return Scale
      */
-    public function setActive(?string $active): Scale
+    public function setActive(?bool $active): Scale
     {
-        $this->active = self::checkBoolean($active);
+        $this->active = (bool)$active;
         return $this;
     }
 
     /**
-     * isNumericOnly
-     * @return bool
+     * @return bool|null
      */
     public function isNumericOnly(): bool
     {
-        return $this->getNumericOnly() === 'Y';
+        return (bool)$this->numericOnly;
     }
 
     /**
-     * getNumericOnly
-     * @return string
-     */
-    public function getNumericOnly(): string
-    {
-        return self::checkBoolean($this->numericOnly);
-    }
-
-    /**
-     * @param string|null $numericOnly
+     * @param bool|null $numericOnly
      * @return Scale
      */
-    public function setNumericOnly(?string $numericOnly): Scale
+    public function setNumericOnly(?bool $numericOnly): Scale
     {
-        $this->numericOnly = self::checkBoolean($numericOnly, 'N');
+        $this->numericOnly = (bool)$numericOnly;
         return $this;
     }
 
@@ -317,38 +293,10 @@ class Scale extends AbstractEntity
             'usage' => $this->getUsageInfo(),
             'abbr' => $this->getAbbreviation(),
             'isActive' => $this->isActive(),
-            'active' => $this->isActive() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
-            'numeric' => $this->isNumericOnly() ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages'),
+            'active' => StringHelper::getYesNo($this->isActive()),
+            'numeric' => StringHelper::getYesNo($this->isNumericOnly()),
             'canDelete' => ProviderFactory::create(Scale::class)->canDelete($this),
         ];
-    }
-
-    public function getScaleId(): ?int
-    {
-        return $this->getId();
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Scale` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(40) NOT NULL,
-                    `abbreviation` CHAR(5) NOT NULL,
-                    `usage_info` CHAR(50) NOT NULL,
-                    `lowest_acceptable` CHAR(36) DEFAULT NULL,
-                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `numeric_only` CHAR(1) NOT NULL DEFAULT 'N',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `abbreviation` (`abbreviation`),
-                    KEY `lowestAcceptable` (`lowest_acceptable`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__Scale`
-                    ADD CONSTRAINT FOREIGN KEY (`lowest_acceptable`) REFERENCES `__prefix__ScaleGrade` (`id`);';
     }
 
     /**
@@ -359,19 +307,5 @@ class Scale extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/ScaleCoreData.yaml'));
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
-    }
-
-    /**
-     * coreDataLinks
-     * @return mixed
-     */
-    public function coreDataLinks()
-    {
-        return Yaml::parse(file_get_contents(__DIR__ . '/ScaleCoreLinks.yaml'));
     }
 }

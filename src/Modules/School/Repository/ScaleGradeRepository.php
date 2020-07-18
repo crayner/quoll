@@ -53,4 +53,30 @@ class ScaleGradeRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * nextSequenceNumber
+     * @param Scale|null $scale
+     * @return int
+     * 18/07/2020 09:20
+     */
+    public function nextSequenceNumber(?Scale $scale): int
+    {
+        if (is_null($scale)) {
+            return 0;
+        }
+
+        try {
+            return intval($this->createQueryBuilder('g')
+                ->select('g.sequenceNumber')
+                ->where('g.scale = :scale')
+                ->setParameter('scale', $scale)
+                ->orderBy('g.sequenceNumber', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult()) + 1;
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

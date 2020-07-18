@@ -19,6 +19,7 @@ namespace App\Modules\School\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\School\Entity\Scale;
 use App\Modules\School\Entity\ScaleGrade;
@@ -121,14 +122,13 @@ class ScaleController extends AbstractPageController
         $container = new Container();
         $container->setSelectedPanel($tabName);
 
-        $panel = new Panel('Details', 'School');
+        $panel = new Panel('Details', 'School', new Section('form', 'Details'));
         $container->addForm('Details', $form->createView())->addPanel($panel);
         if ($scale->getId() !== null) {
-            $panel = new Panel('Grades', 'School');
             $content = ProviderFactory::getRepository(ScaleGrade::class)->findBy(['scale' => $scale], ['sequenceNumber' => 'ASC']);
             $pagination->setContent($content)->setAddElementRoute($this->generateUrl('scale_grade_add', ['scale' => $scale->getId()]));
 
-            $panel->setPagination($pagination);
+            $panel = new Panel('Grades', 'School', new Section('pagination', $pagination));
             $container->addPanel($panel);
         }
 

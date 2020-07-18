@@ -165,6 +165,14 @@ class ScaleGradeController extends AbstractPageController
             $provider->delete($scale);
             $data = $provider->getMessageManager()->pushToJsonData();
         }
+        $manager = new EntitySortManager();
+        $manager->setSortField('sequenceNumber')
+            ->setFindBy(['scale' => $scale->getId()])
+            ->setSource($grade)
+            ->setIndexColumns(['sequenceNumber','scale'])
+            ->setIndexName('scale_sequence')
+            ->refreshSequences();
+
         return $this->list($pagination, $scale, $data);
     }
 

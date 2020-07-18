@@ -16,7 +16,7 @@ namespace App\Modules\School\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
-use App\Util\TranslationHelper;
+use App\Util\StringHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,8 +37,6 @@ use Symfony\Component\Yaml\Yaml;
 class ScaleGrade extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-
-    use BooleanList;
 
     /**
      * @var string|null
@@ -74,15 +72,15 @@ class ScaleGrade extends AbstractEntity
     /**
      * @var integer|null
      * @ORM\Column(type="smallint")
-     * @Assert\Range(min=0, max=99999)
+     * @Assert\Range(min=1, max=99999)
      */
     private $sequenceNumber;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1,options={"default": "N"})
+     * @var bool|null
+     * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $defaultGrade = 'N';
+    private $defaultGrade = false;
 
     /**
      * @return string|null
@@ -173,6 +171,9 @@ class ScaleGrade extends AbstractEntity
      */
     public function getSequenceNumber(): ?int
     {
+        if (intval($this->sequenceNumber) === 0) {
+            return ProviderFactory::getRepository(ScaleGrade::class)->nextSequenceNumber($this->getScale());
+        }
         return $this->sequenceNumber;
     }
 
@@ -187,29 +188,20 @@ class ScaleGrade extends AbstractEntity
     }
 
     /**
-     * defaultGrade
-     * @return string|null
+     * @return bool|null
      */
-    public function isDefaultGrade(): ?string
+    public function isDefaultGrade(): bool
     {
-        return $this->getDefaultGrade() === 'Y';
+        return (bool)$this->defaultGrade;
     }
 
     /**
-     * @return string|null
-     */
-    public function getDefaultGrade(): ?string
-    {
-        return $this->defaultGrade = self::checkBoolean($this->defaultGrade, 'N');
-    }
-
-    /**
-     * @param string|null $defaultGrade
+     * @param bool|null $defaultGrade
      * @return ScaleGrade
      */
-    public function setDefaultGrade(?string $defaultGrade): ScaleGrade
+    public function setDefaultGrade(?bool $defaultGrade): ScaleGrade
     {
-        $this->defaultGrade = self::checkBoolean($defaultGrade, 'N');
+        $this->defaultGrade = (bool)$defaultGrade;
         return $this;
     }
 
@@ -235,37 +227,9 @@ class ScaleGrade extends AbstractEntity
             'sequence' => $this->getSequenceNumber(),
             'id' => $this->getId(),
             'scaleId' => $this->getScaleId(),
-            'default' => self::getYesNo($this->isDefaultGrade()),
-            'canDelete' => ProviderFactory::create(ScaleGrade::class)->canDelete($this),
+            'default' => StringHelper::getYesNo($this->isDefaultGrade()),
+            'canDelete' => $this->canDelete(),
         ];
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 2/06/2020 09:20
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__ScaleGrade` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `value` CHAR(10) NOT NULL,
-                    `descriptor` CHAR(50) NOT NULL,
-                    `sequence_number` smallint DEFAULT NULL,
-                    `default_grade` CHAR(1) NOT NULL DEFAULT 'N',
-                    `scale` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `id` (`id`,`value`),
-                    UNIQUE KEY `scale_value` (`value`,`scale`),
-                    UNIQUE KEY `scale_sequence` (`sequence_number`,`scale`),
-                    KEY `scale` (`scale`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__ScaleGrade`
-                    ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`);';
     }
 
     /**
@@ -278,8 +242,13 @@ class ScaleGrade extends AbstractEntity
         return Yaml::parse(file_get_contents(__DIR__ . '/ScaleGradeCoreData.yaml'));
     }
 
-    public static function getVersion(): string
+    /**
+     * canDelete
+     * @return bool
+     * 18/07/2020 09:41
+     */
+    public function canDelete(): bool
     {
-        return self::VERSION;
+        return ProviderFactory::create(ScaleGrade::class)->canDelete($this);
     }
 }

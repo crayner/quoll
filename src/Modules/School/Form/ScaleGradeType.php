@@ -79,6 +79,7 @@ class ScaleGradeType extends AbstractType
                     'help' => 'Preselects this option when using this scale in appropriate contexts.',
                 ]
             )
+            ->add('sequenceNumber', HiddenType::class)
             ->add('submit', SubmitType::class)
         ;
     }
