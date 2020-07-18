@@ -16,8 +16,9 @@ namespace App\Manager\Traits;
 use App\Util\TranslationHelper;
 
 /**
- * Traits BooleanList
+ * Trait BooleanList
  * @package App\Manager\Traits
+ * @deprecated Change all Y/N Booleans to true boolean type
  */
 trait BooleanList
 {
