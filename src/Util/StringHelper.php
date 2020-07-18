@@ -41,4 +41,18 @@ class StringHelper
     {
         return  str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $value)));
     }
+
+    /**
+     * getYesNo
+     * @param bool $w
+     * @param bool $translate
+     * @return string
+     */
+    public static function getYesNo(bool $w, bool $translate = true): string
+    {
+        if ($translate) {
+            return TranslationHelper::translate($w ? 'Yes' : 'No', [], 'messages');
+        }
+        return $w ? 'Yes' : 'No';
+    }
 }
