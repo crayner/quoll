@@ -11,7 +11,7 @@ export default function FormSelect(props) {
         errors,
         functions,
     } = props
-console.log(form)
+
     var options = []
     if (typeof form.placeholder !== 'undefined' && form.placeholder !== false){
         options.push(<option key={'placeholder'} value='' className={'text-gray-500'}>{form.placeholder}</option>)

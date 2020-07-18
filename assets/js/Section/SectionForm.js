@@ -12,6 +12,13 @@ export default function SectionForm(props) {
     } = props
 
     let form = forms[section.content]
+    if (typeof form === 'undefined') {
+        const names = Object.keys(forms).filter(name => {
+            return name
+        })
+        console.error('I looked for "' + section.content + '" form in the forms. Available forms are "' + names.toString() + '".')
+        return []
+    }
     if (singlePanel) {
         return (<form
             action={form.action}
