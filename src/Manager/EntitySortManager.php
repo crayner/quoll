@@ -187,9 +187,9 @@ class EntitySortManager
                 $index = new Index($this->getIndexName(), $this->getIndexColumns(), true);
             }
 
-            foreach ($result as $adult)
-                $provider->getEntityManager()->persist($adult);
-            $provider->getEntityManager()->flush();
+            foreach ($result as $item)
+                $data = $provider->persistFlush($item, $data, false);
+            $provider->flush();
 
             $sm->createIndex($index, $table);
             $data = ErrorMessageHelper::getSuccessMessage($data, true);
@@ -338,4 +338,25 @@ class EntitySortManager
         $this->pagination = $pagination;
         return $this;
     }
+
+    /**
+     * refreshSequences
+     * 18/07/2020 09:31
+     */
+    public function refreshSequences()
+    {
+        $provider = ProviderFactory::create(get_class($this->getSource()));
+
+        $content = $provider->getRepository()->findBy($this->getFindBy(),[$this->getSortField() => 'ASC']);
+
+        $method = 'set' . ucfirst($this->getSortField());
+        $key = 1;
+        foreach ($content as $item) {
+            $item->$method($key++);
+        }
+
+        $this->setDetails($this->saveSort($provider, $content, [], basename(get_class($this->getSource()))));
+        $this->setContent($content);
+    }
 }
+
