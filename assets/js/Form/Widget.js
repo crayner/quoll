@@ -67,6 +67,9 @@ export default function Widget(props) {
         widget_attr.type = 'button'
         widget_attr.style = {float: 'right'}
         widget_attr.className = 'btn-gibbon'
+        if (typeof form.on_click === 'object' && typeof form.on_click.function === 'string' && typeof form.on_click.route === 'string') {
+            widget_attr.onClick = () => functions[form.on_click.function](form)
+        }
         return (
             <div {...wrapper_attr}>
                 <button {...widget_attr}>{Parser(form.label)}</button>
@@ -139,9 +142,6 @@ export default function Widget(props) {
     if (form.type === 'file') {
         widget_attr.type = 'file'
         let button_attr = {}
-        if (isEmpty(form.value)) {
-            button_attr.disabled = true
-        }
         if (typeof form.photo === 'object' && form.photo.exists) {
             let item = form.photo
 
@@ -152,7 +152,7 @@ export default function Widget(props) {
                         <div className={'w-2/3 float-right pt-5'}>
                             <input {...widget_attr} />
                             <div className={'button-right'}>
-                                <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>
+                                <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.openUrl(form.photo.url)}><span className={'fa-fw fas fa-file-download'}></span></button>
                                 <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
                             </div>
                             {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
@@ -166,10 +166,6 @@ export default function Widget(props) {
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} />
-                <div className={'button-right'}>
-                    <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>
-                    <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
-                </div>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

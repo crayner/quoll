@@ -152,3 +152,4 @@ class StaffController extends AbstractPageController
         return new JsonResponse($manager->getDetails());
     }
 }
+

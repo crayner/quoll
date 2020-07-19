@@ -42,26 +42,44 @@ Users who can approve staff absences. Leave this blank if approval is not used.:
 Which messenger groups can staff members send absence notifications to?: Which messenger groups can staff members send absence notifications to?
 Enable Smart Workflow Help?: Enable Smart Workflow Help?
 List: List
+staff:
+    type:
+        other: Other
+        support: Support
+        teaching: Teaching
 Biography Details: Biography Details
 Biography: Biography
 Country of Birth: Country of Birth
 'Emergency Contact #1': 'Emergency Contact #1'
 'Emergency Contact #2': 'Emergency Contact #2'
 Emergency Contact Details: Emergency Contact Details
-Emergency contacts must be added as person within the database. You can then attach them here as an emergency contact for this person.: Emergency contacts must be added as person within the database. You can then attach them here as an emergency contact for this person.
+Emergency contacts must be added as people within the database. You can then attach them here as an emergency contact for this person.: Emergency contacts must be added as people within the database. You can then attach them here as an emergency contact for this person.
+End Date: End Date
 First Aid Details: First Aid Details
 First Aid Qualification Expiry: First Aid Qualification Expiry
 First Aid Qualified?: First Aid Qualified?
+First date at this school.: First date at this school.
 Grouping Priority: Grouping Priority
 Grouping: Grouping
 Higher numbers move teachers up the order within their grouping.: Higher numbers move teachers up the order within their grouping.
+House: House
 Job Title: Job Title
+Last Messenger Bubble Date: Last Messenger Bubble Date
+Last date at this school.: Last date at this school.
+Locker Number: Locker Number
+Max size of 1.5MB with a landscape ratio between 16:9 and 5:4: Max size of 1.5MB with a landscape ratio between 16:9 and 5:4
+Personal Background Image: Personal Background Image
+Personal Calendar Feed: Personal Calendar Feed
+Personal Locale Override!: Personal Locale Override!
+Please select...: Please select...
 Qualification: Qualification
+School Details: School Details
 Staff Details: Staff Details
 Staff Type: Staff Type
+Start Date: Start Date
+The system default is "{name}" and is not available to select.: The system default is "{name}" and it is not available to select.
+Use as a Google Calendar feed merge into your personal school calendar.: Use as a Google Calendar feed merge into your personal school calendar.
 Used to group staff when creating a staff directory.: Used to group staff when creating a staff directory.
-staff:
-    type:
-        other: Other
-        support: Support
-        teaching: Teaching
+Vehicle Registration: Vehicle Registration
+View Facility Booking Details: View Facility Booking Details
+View School Calendar Details: View School Calendar Details

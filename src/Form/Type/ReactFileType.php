@@ -79,8 +79,8 @@ class ReactFileType extends AbstractType
                 'compound' => false,
                 'multiple' => false,
                 'type' => 'file',
-                'delete_security' => false,
-                'show_thumbnail' => false,
+                'delete_route' => false,
+                'show_thumbnail' => true,
                 'image_method' => null,
                 'entity' => null,
             ]
@@ -92,7 +92,7 @@ class ReactFileType extends AbstractType
             ]
         );
 
-        $resolver->setAllowedTypes('delete_security', ['boolean', 'string']);
+        $resolver->setAllowedTypes('delete_route', ['boolean', 'string']);
     }
 
     /**
@@ -105,7 +105,7 @@ class ReactFileType extends AbstractType
     {
         $view->vars['public_dir'] = realpath(__DIR__ . '/../../../public');
         $view->vars['value'] = $options['data'] ?? null;
-        $view->vars['delete_security'] = $options['delete_security'];
+        $view->vars['delete_route'] = $options['delete_route'];
         $view->vars['photo'] = $this->buildPhoto($options, $view);
     }
 

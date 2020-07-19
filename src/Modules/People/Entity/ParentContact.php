@@ -17,7 +17,6 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\People\Provider\FamilyMemberAdultProvider;
 use App\Modules\System\Entity\I18n;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -76,7 +75,7 @@ class ParentContact extends AbstractEntity
 
     /**
      * @var boolean|null
-     * @ORM\Column(length=1, options={"default": 1})
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
     private $receiveNotificationEmails = true;
 

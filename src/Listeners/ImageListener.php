@@ -19,6 +19,7 @@ namespace App\Listeners;
 use App\Modules\Library\Entity\Library;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
+use App\Modules\Staff\Entity\Staff;
 use App\Util\ImageHelper;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -115,14 +116,14 @@ class ImageListener implements EventSubscriber
             }
 
             if ($this->isRemove()) {
-                ImageHelper::deleteImage($person->getBGImage());
+                ImageHelper::deleteImage($entity->getBGImage());
             }
         }
         if (($entity = $args->getObject()) instanceof House)
         {
             $em = $args->getEntityManager();
             $uow = $em->getUnitOfWork();
-            $uow->computechangeSets(); 
+            $uow->computechangeSets();
             $changeSet = $uow->getEntitychangeSet($entity);
 
             if (key_exists('logo', $changeSet)) {
@@ -130,9 +131,25 @@ class ImageListener implements EventSubscriber
             }
 
             if ($this->isRemove()) {
-                ImageHelper::deleteImage($person->getLogo());
+                ImageHelper::deleteImage($entity->getLogo());
             }
         }
+        if (($entity = $args->getObject()) instanceof Staff)
+        {
+            $em = $args->getEntityManager();
+            $uow = $em->getUnitOfWork();
+            $uow->computechangeSets();
+            $changeSet = $uow->getEntitychangeSet($entity);
+
+            if (key_exists('personalBackground', $changeSet)) {
+                ImageHelper::deleteImage($changeSet['personalBackground'][0]);
+            }
+
+            if ($this->isRemove()) {
+                ImageHelper::deleteImage($entity->getPersonalBackground());
+            }
+        }
+
     }
 
     /**

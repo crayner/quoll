@@ -63,7 +63,8 @@ export default class ContainerApp extends Component {
             handleAddClick: props.functions.handleAddClick,
             replaceSpecialContent: this.replaceSpecialContent.bind(this),
             mergeSubForm: this.mergeSubForm.bind(this),
-            getContent: props.functions.getContent
+            getContent: props.functions.getContent,
+            callRoute: this.callRoute.bind(this)
         }
 
         this.contentManager = this.contentManager.bind(this)
@@ -162,9 +163,8 @@ export default class ContainerApp extends Component {
     }
 
     deleteFile(form) {
-        let route = '/resource/' + btoa(form.value) + '/' + this.actionRoute + '/delete/'
-        if (typeof form.delete_security !== 'undefined' && form.delete_security !== false)
-            route = '/resource/' + btoa(form.value) + '/' + form.delete_security + '/delete/'
+        if (typeof form.delete_route === 'undefined' || form.delete_route === false) return
+        let route = form.delete_route
         let parentForm = getParentForm(this.state.forms,form)
         fetchJson(
             route,
@@ -175,6 +175,8 @@ export default class ContainerApp extends Component {
                     let errors = parentForm.errors
                     errors = errors.concat(data.errors)
                     parentForm.errors = errors
+                    form.photo.exists = false
+                    form.photo.url = ''
                     this.setMyState(
                         buildState(mergeParentForm(this.state.forms,getParentFormName(this.formNames,form), changeFormValue(parentForm,form,'')), this.singleForm)
                     )
@@ -614,6 +616,32 @@ export default class ContainerApp extends Component {
             })
         }
         return parent
+    }
+
+    callRoute(form) {
+        let parentForm = {...getParentForm(this.state.forms,form)}
+        const parentName = getParentFormName(this.formNames,form)
+        fetchJson(
+            form.on_click.route,
+            {},
+            false)
+            .then(data => {
+                if (data.status === 'success') {
+                    let errors = parentForm.errors
+                    errors = errors.concat(data.errors)
+                    parentForm.errors = errors
+                    this.setMyState(
+                        buildState(mergeParentForm(this.state.forms,getParentFormName(this.formNames,form), changeFormValue(parentForm,form,'')), this.singleForm)
+                    )
+                } else if (data.status === 'redirect') {
+                    window.open(data.redirect,'_self')
+                }
+            }).catch(error => {
+                parentForm.errors.push({'class': 'error', 'message': error})
+                this.submit[parentName] = false
+                this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
+            }
+        )
     }
 
     render() {

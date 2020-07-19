@@ -44,6 +44,16 @@ class RoleHierarchy implements RoleHierarchyInterface
     private $hierarchy;
 
     /**
+     * @var string[]
+     */
+    private static $categoryList = [
+        'Staff',
+        'Student',
+        'Parent',
+        'Other',
+    ];
+
+    /**
      * RoleHierarchy constructor.
      * @param RoleHierarchyInterface $roleHierarchy
      * @param array $hierarchy
@@ -127,5 +137,13 @@ class RoleHierarchy implements RoleHierarchyInterface
         }
 
         return $role ? $role->getCategory() : 'Other';
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getCategoryList(): array
+    {
+        return self::$categoryList;
     }
 }

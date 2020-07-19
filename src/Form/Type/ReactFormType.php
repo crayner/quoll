@@ -275,7 +275,7 @@ class ReactFormType extends AbstractType
             $vars['value'] = null;
         }
         if (in_array($vars['type'], ['file'])) {
-            $vars['delete_security'] = isset($view->vars['delete_security']) ? $view->vars['delete_security'] : false;
+            $vars['delete_route'] = key_exists('delete_route', $view->vars) ? $view->vars['delete_route'] : false;
             if (key_exists('photo', $view->vars))
                 $vars['photo'] = $view->vars['photo'];
         }

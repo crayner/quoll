@@ -39,6 +39,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -95,6 +96,7 @@ class PersonType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $person = $options['data'];
         $builder
             ->add('basicHeader', HeaderType::class,
                 [
@@ -147,6 +149,20 @@ class PersonType extends AbstractType
             )
             ->add('submitBasic', SubmitType::class)
         ;
+
+        if ($person->canBeStaff()) {
+            $builder
+                ->add('addStaff', ButtonType::class,
+                    [
+                        'label' => 'Add to Staff',
+                        'on_click' => [
+                            'route' => '/staff/' . $person->getId() . '/add/',
+                            'function' => 'callRoute',
+                        ],
+                    ]
+                )
+            ;
+        }
     }
 
     /**

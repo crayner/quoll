@@ -185,7 +185,7 @@ class Person extends AbstractEntity
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"persist","remove"},orphanRemoval=true)
      * @ORM\JoinColumn(name="staff",referencedColumnName="id")
      */
     private $staff;
@@ -1092,5 +1092,41 @@ class Person extends AbstractEntity
             return $this->getContact()->getEmail();
         }
         return null;
+    }
+
+    /**
+     * canByStaff
+     * @return bool
+     * 19/07/2020 12:31
+     */
+    public function canBeStaff()
+    {
+        if ($this->getId() === null) return false;
+        if ($this->isStaff() || $this->isStudent()) return false;
+        return true;
+    }
+
+    /**
+     * canBeStudent
+     * @return bool
+     * 19/07/2020 12:31
+     */
+    public function canBeStudent()
+    {
+        if ($this->getId() === null) return false;
+        if ($this->isStaff() || $this->isStudent() || $this->isParent()) return false;
+        return true;
+    }
+
+    /**
+     * canBeParent
+     * @return bool
+     * 19/07/2020 12:34
+     */
+    public function canBeParent()
+    {
+        if ($this->getId() === null) return false;
+        if ($this->isStudent() || $this->isParent()) return false;
+        return true;
     }
 }

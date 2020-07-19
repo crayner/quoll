@@ -20,12 +20,11 @@ use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Entity\SchoolCommonFields;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
-use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
-use App\Validator\ReactImage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,6 +51,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Student extends AbstractEntity
 {
+    use SchoolCommonFields;
+
     CONST VERSION = '1.0.00';
 
     /**
@@ -88,18 +89,6 @@ class Student extends AbstractEntity
     private $studentEnrolments;
 
     /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateStart;
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateEnd;
-
-    /**
      * @var string|null
      * @ORM\Column(length=100,nullable=true)
      */
@@ -130,54 +119,11 @@ class Student extends AbstractEntity
     private $transportNotes;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $calendarFeedPersonal;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
-    private $viewCalendarSchool;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
-    private $viewCalendarPersonal = true;
-
-    /**
      * @var ApplicationForm|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ApplicationForm")
      * @ORM\JoinColumn(name="application_form", referencedColumnName="id", nullable=true)
      */
     private $applicationForm;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20,nullable=true)
-     */
-    private $lockerNumber;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     * @ReactImage(
-     *     mimeTypes = {"image/jpg","image/jpeg","image/png","image/gif"},
-     *     maxSize = "1536k",
-     *     maxRatio = 1.777,
-     *     minRatio = 1.25,
-     * )
-     * 16/9, 800/640
-     */
-    private $personalBackground;
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $messengerLastBubble;
 
     /**
      * @var string|null
@@ -211,19 +157,6 @@ class Student extends AbstractEntity
      * @ORM\JoinColumn(name="locale",referencedColumnName="id",nullable=true)
      */
     private $locale;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(length=1, options={"default": 1})
-     */
-    private $receiveNotificationEmails = true;
-
-    /**
-     * @var House|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\House")
-     * @ORM\JoinColumn(nullable=true, name="house", referencedColumnName="id")
-     */
-    private $house;
 
     /**
      * @var Collection|FamilyMemberStudent[]|null
@@ -331,46 +264,6 @@ class Student extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateStart(): ?\DateTimeImmutable
-    {
-        return $this->dateStart;
-    }
-
-    /**
-     * setDateStart
-     * @param \DateTimeImmutable|null $dateStart
-     * @return $this
-     * 2/07/2020 12:22
-     */
-    public function setDateStart(?\DateTimeImmutable $dateStart): Student
-    {
-        $this->dateStart = $dateStart;
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateEnd(): ?\DateTimeImmutable
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * setDateEnd
-     * @param \DateTimeImmutable|null $dateEnd
-     * @return $this
-     * 2/07/2020 12:22
-     */
-    public function setDateEnd(?\DateTimeImmutable $dateEnd): Student
-    {
-        $this->dateEnd = $dateEnd;
-        return $this;
-    }
-
-    /**
      * @return null|string
      */
     public function getLastSchool(): ?string
@@ -457,60 +350,6 @@ class Student extends AbstractEntity
     public function setTransportNotes(?string $transportNotes): Student
     {
         $this->transportNotes = $transportNotes;
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getCalendarFeedPersonal(): ?string
-    {
-        return $this->calendarFeedPersonal;
-    }
-
-    /**
-     * @param null|string $calendarFeedPersonal
-     * @return Person
-     */
-    public function setCalendarFeedPersonal(?string $calendarFeedPersonal): Student
-    {
-        $this->calendarFeedPersonal = $calendarFeedPersonal;
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getViewCalendarSchool(): bool
-    {
-        return (bool)$this->viewCalendarSchool;
-    }
-
-    /**
-     * @param bool|null $viewCalendarSchool
-     * @return Student
-     */
-    public function setViewCalendarSchool(?bool $viewCalendarSchool): Student
-    {
-        $this->viewCalendarSchool = (bool)$viewCalendarSchool;
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function isViewCalendarPersonal(): ?bool
-    {
-        return (bool)$this->viewCalendarPersonal;
-    }
-
-    /**
-     * @param bool|null $viewCalendarPersonal
-     * @return Student
-     */
-    public function setViewCalendarPersonal(?bool $viewCalendarPersonal): Student
-    {
-        $this->viewCalendarPersonal = (bool)$viewCalendarPersonal;
         return $this;
     }
 
@@ -673,42 +512,6 @@ class Student extends AbstractEntity
     public function setLocale(?I18n $locale): Student
     {
         $this->locale = $locale;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReceiveNotificationEmails(): bool
-    {
-        return (bool)$this->receiveNotificationEmails;
-    }
-
-    /**
-     * @param bool|null $receiveNotificationEmails
-     * @return Student
-     */
-    public function setReceiveNotificationEmails(?bool $receiveNotificationEmails): Student
-    {
-        $this->receiveNotificationEmails = (bool)$receiveNotificationEmails;
-        return $this;
-    }
-
-    /**
-     * @return House|null
-     */
-    public function getHouse(): ?House
-    {
-        return $this->house;
-    }
-
-    /**
-     * @param House|null $house
-     * @return Student
-     */
-    public function setHouse(?House $house): Student
-    {
-        $this->house = $house;
         return $this;
     }
 

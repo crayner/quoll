@@ -24,10 +24,12 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\ChangePasswordType;
 use App\Modules\People\Form\PersonType;
+use App\Modules\People\Form\SchoolStaffType;
 use App\Modules\People\Pagination\PeoplePagination;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\Staff\Form\StaffType;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
@@ -173,14 +175,25 @@ class PeopleController extends AbstractPageController
         $panel = new Panel('Basic', 'People', new Section('form', 'Basic'));
 
         $container->addForm('Basic', $form->createView())->addPanel($panel);
-
-        if ($person->isStaff()) {
-            $staffForm = $this->createForm(StaffType::class, $person->getStaff(), ['action' => $action]);
-            $panel = new Panel('Staff', 'Staff', new Section('form', 'Staff'));
-            $container->addForm('Staff', $staffForm->createView())->addPanel($panel);
-
+        if ($person->getId() !== null) {
+            if ($person->isStaff()) {
+                $staffForm = $this->createForm(StaffType::class, $person->getStaff(),
+                    [
+                        'action' => $this->generateUrl('staff_edit', ['person' => $person->getId()]),
+                    ]
+                );
+                $panel = new Panel('Staff', 'Staff', new Section('form', 'Staff'));
+                $container->addForm('Staff', $staffForm->createView())->addPanel($panel);
+                $schoolStaffForm = $this->createForm(SchoolStaffType::class, $person->getStaff(),
+                    [
+                        'action' => $this->generateUrl('staff_school_edit', ['person' => $person->getId()]),
+                        'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['person' => $person->getId()])
+                    ]
+                );
+                $panel = new Panel('School', 'People', new Section('form', 'School'));
+                $container->addForm('School', $schoolStaffForm->createView())->addPanel($panel);
+            }
         }
-
 
         $manager->setReturnRoute($this->generateUrl('people_list'));
         $manager->addContainer($container)->buildContainers();
@@ -262,7 +275,7 @@ class PeopleController extends AbstractPageController
         $request = $this->getPageManager()->getRequest();
 
         if ($this->getUser()->getPerson()->isEqualto($person)) {
-            $this->addFlash('info', TranslationHelper::translate('Use the {anchor}references{endAnchor} details to change your own password.', ['{endAnchor}' => '</a>', '{anchor}' => '<a href="'.$this->generateUrl('preferences', ['tabName' => 'Reset Password']).'">'], 'People'));
+            $this->addFlash('info', TranslationHelper::translate('Use the {anchor}references{endAnchor} details to change your own password.', ['{endAnchor}' => '</a>', '{anchor}' => '<a href="' . $this->generateUrl('preferences', ['tabName' => 'Reset Password']) . '">'], 'People'));
             return $this->redirectToRoute('people_list');
         }
 
@@ -273,8 +286,7 @@ class PeopleController extends AbstractPageController
             ]
         );
 
-        if ($request->getContent() !== '')
-        {
+        if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
             $form->submit($content);
             $data = [];
@@ -291,7 +303,7 @@ class PeopleController extends AbstractPageController
                 return new JsonResponse($data, 200);
             } else {
                 $manager->singlePanel($form->createView());
-                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);
             }

@@ -35,7 +35,6 @@ export function getControlButtons(returnRoute, addRoute, functions) {
 
 export function trans(translations,id){
     if (isEmpty(translations[id])) {
-        console.log(translations)
         console.error('Unable to translate: ' + id)
         return id
     }

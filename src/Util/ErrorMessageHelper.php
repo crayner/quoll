@@ -197,6 +197,31 @@ class ErrorMessageHelper
         return $data;
     }
 
+    /**
+     * onlyNothingToDoMessage
+     * @param bool $translate
+     * @return array|string|null
+     * 19/07/2020 12:24
+     */
+    public static function onlyNothingToDoMessage(bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.warning.4', [], 'messages') : ['return.warning.4', [], 'messages'];
+    }
+
+    /**
+     * getNothingToDoMessage
+     * @param array $data
+     * @param bool $translate
+     * @return array
+     * 19/07/2020 12:24
+     */
+    public static function getNothingToDoMessage(array $data = [], bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'warning', 'message' => self::onlyNothingToDoMessage($translate)];
+        $data['status'] = 'warning';
+        return $data;
+    }
+
 
     /**
      *
@@ -213,6 +238,8 @@ class ErrorMessageHelper
     $returns['warning0'] = __('Your optional extra data failed to save.'); return.warning.0
     $returns['warning1'] = __('Your request was successful, but some data was not properly saved.'); return.warning.1
     $returns['warning2'] = __('Your request was successful, but some data was not properly deleted.'); return.warning.2
+    $returns['warning3'] = __('The record "{id}" is locked and will not be deleted from class "{class}".'); return.warning.3
+    $returns['warning4'] = __('Your request did not require any action.'); return.warning.4
 
      */
 }

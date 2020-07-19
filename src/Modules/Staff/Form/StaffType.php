@@ -69,7 +69,8 @@ class StaffType extends AbstractType
             )
             ->add('type', EnumType::class,
                 [
-                    'label' => 'Staff Type'
+                    'label' => 'Staff Type',
+                    'placeholder' => 'Please select...',
                 ]
             )
             ->add('jobTitle', TextType::class,
@@ -137,7 +138,7 @@ class StaffType extends AbstractType
             ->add('emergencyHeader', HeaderType::class,
                 [
                     'label' => 'Emergency Contact Details',
-                    'help' => 'Emergency contacts must be added as person within the database. You can then attach them here as an emergency contact for this person.'
+                    'help' => 'Emergency contacts must be added as people within the database. You can then attach them here as an emergency contact for this person.'
                 ]
             )
             ->add('emergencyContact1', EntityType::class,
@@ -178,42 +179,7 @@ class StaffType extends AbstractType
             )
             ->add('schoolHeader', HeaderType::class,
                 [
-                    'label' => 'School Details',
-                ]
-            )
-            ->add('dateStart', DateType::class,
-                [
-                    'label' => 'Start Date',
-                    'help' => 'First date at this school.',
-                    'input' => 'datetime_immutable'
-                ]
-            )
-            ->add('dateEnd', DateType::class,
-                [
-                    'label' => 'End Date',
-                    'help' => 'Last date at this school.',
-                    'input' => 'datetime_immutable'
-                ]
-            )
-            ->add('viewCalendarPersonal', ToggleType::class,
-                [
-                    'label' => 'View School Calendar Details',
-                    'visible_by_choice' => 'personal_calendar'
-                ]
-            )
-            ->add('calendarFeedPersonal', TextType::class,
-                [
-                    'label' => 'Personal Calendar Feed',
-                    'help' => 'Use as a Google Calendar feed merge into your personal school calendar.',
-                    'visible_parent' => 'staff_viewCalendarPersonal',
-                    'visible_values' => ['personal_calendar'],
-                ]
-            )
-            ->add('viewCalendarSchool', ToggleType::class,
-                [
-                    'label' => 'View School Calendar Details',
-                    'visible_parent' => 'staff_viewCalendarPersonal',
-                    'visible_values' => ['personal_calendar'],
+                    'label' => 'Staff School Details',
                 ]
             )
             ->add('viewCalendarSpaceBooking', ToggleType::class,
@@ -223,37 +189,9 @@ class StaffType extends AbstractType
                     'visible_values' => ['personal_calendar'],
                 ]
             )
-            ->add('lockerNumber', TextType::class,
-                [
-                    'label' => 'Locker Number',
-                ]
-            )
             ->add('vehicleRegistration', TextType::class,
                 [
                     'label' => 'Vehicle Registration',
-                ]
-            )
-            ->add('house', EntityType::class,
-                [
-                    'label' => 'House',
-                    'class' => House::class,
-                    'placeholder' => 'Please select...',
-                ]
-            )
-            ->add('personalBackground', ReactFileType::class,
-                [
-                    'label' => 'Personal Background Image',
-                    'help' => 'Max size of 1.5MB with a landscape ratio between 16:9 and 5:4',
-                    'file_prefix' => 'Background_' . str_replace([' ', ',','`',"'"], '_',$person->getSurname()),
-                    'show_thumbnail' => true,
-                    'image_method' => 'getPersonalBackground',
-                    'entity' => $options['data'],
-                ]
-            )
-            ->add('messengerLastBubble', DateType::class,
-                [
-                    'label' => 'Last Messenger Bubble Date',
-                    'input' => 'datetime_immutable'
                 ]
             )
             ->add('locale', EntityType::class,
@@ -281,7 +219,7 @@ class StaffType extends AbstractType
     /**
      * configureOptions
      * @param OptionsResolver $resolver
-     * 18/07/2020 11:46
+     * 19/07/2020 10:49
      */
     public function configureOptions(OptionsResolver $resolver)
     {

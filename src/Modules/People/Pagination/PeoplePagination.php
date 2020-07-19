@@ -24,6 +24,7 @@ use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Manager\AbstractPaginationManager;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Manager\RoleHierarchy;
 use App\Util\TranslationHelper;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
@@ -41,6 +42,9 @@ class PeoplePagination extends AbstractPaginationManager
             TranslationHelper::setTranslation($name, $name, [], 'People');
         }
         foreach($this->getHierarchy()->getReachableRoleNames(['ROLE_SYSTEM_ADMIN']) as $name) {
+            TranslationHelper::setTranslation($name, $name, [], 'Security');
+        }
+        foreach(RoleHierarchy::getCategoryList() as $name) {
             TranslationHelper::setTranslation($name, $name, [], 'Security');
         }
         $row = new PaginationRow();

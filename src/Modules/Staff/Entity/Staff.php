@@ -15,11 +15,10 @@ namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Entity\SchoolCommonFields;
 use App\Modules\School\Entity\ApplicationForm;
-use App\Modules\School\Entity\House;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
-use App\Validator\ReactImage;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,6 +44,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Staff extends AbstractEntity
 {
+    use SchoolCommonFields;
+
     CONST VERSION = '1.0.00';
 
     /**
@@ -105,7 +106,7 @@ class Staff extends AbstractEntity
     /**
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
-     * @Assert\Country()
+     * @Assert\Country(alpha3=true)
      */
     private $countryOfOrigin;
 
@@ -148,40 +149,10 @@ class Staff extends AbstractEntity
     public $emergencyContact2;
 
     /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateStart;
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $dateEnd;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     */
-    private $calendarFeedPersonal;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
-    private $viewCalendarSchool = true;
-
-    /**
      * @var boolean|null
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $viewCalendarSpaceBooking = false;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
-    private $viewCalendarPersonal = true;
 
     /**
      * @var ApplicationForm|null
@@ -189,12 +160,6 @@ class Staff extends AbstractEntity
      * @ORM\JoinColumn(name="application_form",referencedColumnName="id",nullable=true)
      */
     private $applicationForm;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=20,nullable=true)
-     */
-    private $lockerNumber;
 
     /**
      * @var string|null
@@ -210,43 +175,11 @@ class Staff extends AbstractEntity
     private $theme;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=191,nullable=true)
-     * @ReactImage(
-     *     mimeTypes = {"image/jpg","image/jpeg","image/png","image/gif"},
-     *     maxSize = "1536k",
-     *     maxRatio = 1.777,
-     *     minRatio = 1.25,
-     * )
-     * 16/9, 800/640
-     */
-    private $personalBackground;
-
-    /**
-     * @var \DateTimeImmutable|null
-     * @ORM\Column(type="date_immutable",nullable=true)
-     */
-    private $messengerLastBubble;
-
-    /**
      * @var I18n|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
      * @ORM\JoinColumn(name="locale",referencedColumnName="id",nullable=true)
      */
     private $locale;
-
-    /**
-     * @var boolean|null
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
-    private $receiveNotificationEmails = true;
-
-    /**
-     * @var House|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\House")
-     * @ORM\JoinColumn(nullable=true, name="house", referencedColumnName="id")
-     */
-    private $house;
 
     /**
      * Staff constructor.
@@ -255,6 +188,7 @@ class Staff extends AbstractEntity
     public function __construct(?Person $person = null)
     {
         $this->setPerson($person);
+        $this->setType('Other');
     }
 
     /**
@@ -542,82 +476,6 @@ class Staff extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateStart(): ?\DateTimeImmutable
-    {
-        return $this->dateStart;
-    }
-
-    /**
-     * setDateStart
-     * @param \DateTimeImmutable|null $dateStart
-     * @return $this
-     * 2/07/2020 12:22
-     */
-    public function setDateStart(?\DateTimeImmutable $dateStart): Staff
-    {
-        $this->dateStart = $dateStart;
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateEnd(): ?\DateTimeImmutable
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * setDateEnd
-     * @param \DateTimeImmutable|null $dateEnd
-     * @return $this
-     * 2/07/2020 12:22
-     */
-    public function setDateEnd(?\DateTimeImmutable $dateEnd): Staff
-    {
-        $this->dateEnd = $dateEnd;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCalendarFeedPersonal(): ?string
-    {
-        return $this->calendarFeedPersonal;
-    }
-
-    /**
-     * @param string|null $calendarFeedPersonal
-     * @return Staff
-     */
-    public function setCalendarFeedPersonal(?string $calendarFeedPersonal): Staff
-    {
-        $this->calendarFeedPersonal = $calendarFeedPersonal;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isViewCalendarSchool(): bool
-    {
-        return (bool)$this->viewCalendarSchool;
-    }
-
-    /**
-     * @param bool|null $viewCalendarSchool
-     * @return Staff
-     */
-    public function setViewCalendarSchool(?bool $viewCalendarSchool): Staff
-    {
-        $this->viewCalendarSchool = (bool)$viewCalendarSchool;
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function isViewCalendarSpaceBooking(): bool
@@ -632,24 +490,6 @@ class Staff extends AbstractEntity
     public function setViewCalendarSpaceBooking(?bool $viewCalendarSpaceBooking): Staff
     {
         $this->viewCalendarSpaceBooking = (bool)$viewCalendarSpaceBooking;
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function isViewCalendarPersonal(): bool
-    {
-        return (bool)$this->viewCalendarPersonal;
-    }
-
-    /**
-     * @param bool|null $viewCalendarPersonal
-     * @return Staff
-     */
-    public function setViewCalendarPersonal(?bool $viewCalendarPersonal): Staff
-    {
-        $this->viewCalendarPersonal = (bool)$viewCalendarPersonal;
         return $this;
     }
 
@@ -708,42 +548,6 @@ class Staff extends AbstractEntity
     }
 
     /**
-     * @return string|null
-     */
-    public function getPersonalBackground(): ?string
-    {
-        return $this->personalBackground;
-    }
-
-    /**
-     * @param string|null $personalBackground
-     * @return Staff
-     */
-    public function setPersonalBackground(?string $personalBackground): Staff
-    {
-        $this->personalBackground = $personalBackground;
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getMessengerLastBubble(): ?\DateTimeImmutable
-    {
-        return $this->messengerLastBubble;
-    }
-
-    /**
-     * @param \DateTimeImmutable|null $messengerLastBubble
-     * @return Staff
-     */
-    public function setMessengerLastBubble(?\DateTimeImmutable $messengerLastBubble): Staff
-    {
-        $this->messengerLastBubble = $messengerLastBubble;
-        return $this;
-    }
-
-    /**
      * @return Theme|null
      */
     public function getTheme(): ?Theme
@@ -776,42 +580,6 @@ class Staff extends AbstractEntity
     public function setLocale(?I18n $locale): Staff
     {
         $this->locale = $locale;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReceiveNotificationEmails(): bool
-    {
-        return (bool)$this->receiveNotificationEmails;
-    }
-
-    /**
-     * @param bool|null $receiveNotificationEmails
-     * @return Staff
-     */
-    public function setReceiveNotificationEmails(?bool $receiveNotificationEmails): Staff
-    {
-        $this->receiveNotificationEmails = (bool)$receiveNotificationEmails;
-        return $this;
-    }
-
-    /**
-     * @return House|null
-     */
-    public function getHouse(): ?House
-    {
-        return $this->house;
-    }
-
-    /**
-     * @param House|null $house
-     * @return Staff
-     */
-    public function setHouse(?House $house): Staff
-    {
-        $this->house = $house;
         return $this;
     }
 
