@@ -85,14 +85,14 @@ class SchoolCommonType extends AbstractType
                 [
                     'label' => 'Personal Calendar Feed',
                     'help' => 'Use as a Google Calendar feed merge into your personal school calendar.',
-                    'visible_parent' => 'staff_viewCalendarPersonal',
+                    'visible_parent' => 'school_' . $options['person_type'] . '_viewCalendarPersonal',
                     'visible_values' => ['personal_calendar'],
                 ]
             )
             ->add('viewCalendarSchool', ToggleType::class,
                 [
                     'label' => 'View School Calendar Details',
-                    'visible_parent' => 'staff_viewCalendarPersonal',
+                    'visible_parent' => 'school_' . $options['person_type'] . '_viewCalendarPersonal',
                     'visible_values' => ['personal_calendar'],
                 ]
             )

@@ -36,7 +36,8 @@ class SchoolStaffType extends SchoolCommonType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => Staff::class
+                'data_class' => Staff::class,
+                'person_type' => 'staff',
             ]
         );
         $resolver->setRequired(

@@ -19,11 +19,9 @@ namespace App\Modules\Staff\Form;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
-use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\House;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\I18n;
 use App\Provider\ProviderFactory;
@@ -80,7 +78,7 @@ class StaffType extends AbstractType
             )
             ->add('smartWorkflowHelp', ToggleType::class,
                 [
-                    'label' => 'Enable Smart Workflow Help?'
+                    'label' => 'Enable Smart Workflow Help?',
                 ]
             )
             ->add('firstAidQualified', ToggleType::class,

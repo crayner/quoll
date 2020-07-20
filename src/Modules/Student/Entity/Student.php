@@ -148,6 +148,7 @@ class Student extends AbstractEntity
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
      * @ORM\JoinColumn(nullable=true,name="graduation_year",referencedColumnName="id")
+     * @ORM\OrderBy({"firstDay" = "ASC"})
      */
     private $graduationYear;
 
@@ -163,6 +164,15 @@ class Student extends AbstractEntity
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberStudent",mappedBy="student")
      */
     private $memberOfFamilies;
+
+    /**
+     * Student constructor.
+     * @param Person|null $person
+     */
+    public function __construct(?Person $person = null)
+    {
+        $this->setPerson($person);
+    }
 
     /**
      * @return string|null
@@ -242,11 +252,9 @@ class Student extends AbstractEntity
      */
     public function getStudentEnrolments(): ?Collection
     {
-        if (null === $this->studentEnrolments)
-            $this->studentEnrolments = new ArrayCollection();
+        if (null === $this->studentEnrolments) $this->studentEnrolments = new ArrayCollection();
 
-        if ($this->studentEnrolments instanceof PersistentCollection)
-            $this->studentEnrolments->initialize();
+        if ($this->studentEnrolments instanceof PersistentCollection) $this->studentEnrolments->initialize();
 
         return $this->studentEnrolments;
     }

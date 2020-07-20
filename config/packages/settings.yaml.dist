@@ -529,7 +529,7 @@ parameters:
                 type: boolean
             dayTypeOptions:
                 value: null
-                type: string
+                type: array
             dayTypeText:
                 value: null
                 type: string
@@ -636,7 +636,7 @@ parameters:
         'School Admin':
             studentAgreementOptions:
                 value: null
-                type: string
+                type: array
             facilityTypes:
                 value:
                     - Classroom

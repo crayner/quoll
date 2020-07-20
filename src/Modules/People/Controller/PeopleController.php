@@ -25,12 +25,14 @@ use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\ChangePasswordType;
 use App\Modules\People\Form\PersonType;
 use App\Modules\People\Form\SchoolStaffType;
+use App\Modules\People\Form\SchoolStudentType;
 use App\Modules\People\Pagination\PeoplePagination;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Staff\Form\StaffType;
+use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
@@ -192,6 +194,23 @@ class PeopleController extends AbstractPageController
                 );
                 $panel = new Panel('School', 'People', new Section('form', 'School'));
                 $container->addForm('School', $schoolStaffForm->createView())->addPanel($panel);
+            }
+            if ($person->isStudent()) {
+                $studentForm = $this->createForm(StudentType::class, $person->getStudent(),
+                    [
+                        'action' => $this->generateUrl('student_edit', ['person' => $person->getId()]),
+                    ]
+                );
+                $panel = new Panel('Student', 'Student', new Section('form', 'Student'));
+                $container->addForm('Student', $studentForm->createView())->addPanel($panel);
+                $schoolStudentForm = $this->createForm(SchoolStudentType::class, $person->getStudent(),
+                    [
+                        'action' => $this->generateUrl('student_school_edit', ['person' => $person->getId()]),
+                        'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['person' => $person->getId()])
+                    ]
+                );
+                $panel = new Panel('School', 'People', new Section('form', 'School'));
+                $container->addForm('School', $schoolStudentForm->createView())->addPanel($panel);
             }
         }
 

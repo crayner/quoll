@@ -368,15 +368,29 @@ class SettingManager
     }
 
     /**
-     * getSetting
-     * @param $scope
-     * @param $name
-     * @param null $default
+     * get
+     * @param string $scope
+     * @param string $name
+     * @param mixed $default
      * @return array|bool|int|string|null
-     * @throws \Exception
+     * @throws \InvalidArgumentException
+     * 20/07/2020 09:38
+     */
+    public function get(string $scope, string $name, $default = null)
+    {
+        return $this->getSetting($scope,$name,$default);
+    }
+
+    /**
+     * getSetting
+     * @param string $scope
+     * @param string $name
+     * @param mixed $default
+     * @return array|bool|int|string|null
+     * @throws \InvalidArgumentException
      * 9/07/2020 10:35
      */
-    public function getSetting($scope, $name, $default = null)
+    public function getSetting(string $scope, string $name, $default = null)
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);

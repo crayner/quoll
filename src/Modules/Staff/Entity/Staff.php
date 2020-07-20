@@ -86,7 +86,7 @@ class Staff extends AbstractEntity
     private $jobTitle;
 
     /**
-     * @var boolean|null
+     * @var bool|null
      * @ORM\Column(type="boolean",options={"default": 1})
      */
     private $smartWorkflowHelp = true;

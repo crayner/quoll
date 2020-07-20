@@ -11,16 +11,16 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 19/07/2020
- * Time: 09:21
+ * Date: 20/07/2020
+ * Time: 08:49
  */
 namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Form\SchoolStaffType;
-use App\Modules\Staff\Entity\Staff;
-use App\Modules\Staff\Form\StaffType;
+use App\Modules\People\Form\SchoolStudentType;
+use App\Modules\Student\Entity\Student;
+use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -30,33 +30,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class StaffController
+ * Class StudentController
  * @package App\Modules\People\Controller
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class StaffController extends PeopleController
+class StudentController extends PeopleController
 {
     /**
      * edit
      * @param ContainerManager $manager
      * @param Person $person
      * @return Response
-     * @Route("/staff/{person}/edit/",name="staff_edit",methods={"POST"})
+     * @Route("/student/{person}/edit/",name="student_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editStaff(ContainerManager $manager, Person $person)
+    public function editStudent(ContainerManager $manager, Person $person)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $staff = $person->getStaff() ?: new Staff();
-            $staff->setPerson($person);
+            $student = $person->getStudent() ?: new Student();
+            $student->setPerson($person);
 
-            $form = $this->createStaffForm($person);
+            $form = $this->createStudentForm($person);
 
-            return $this->saveContent($form, $manager, $staff, 'Staff');
+            return $this->saveContent($form, $manager, $student, 'Student');
         } else {
-            $form = $this->createStaffForm($person);
+            $form = $this->createStudentForm($person);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -69,23 +69,23 @@ class StaffController extends PeopleController
      * @param ContainerManager $manager
      * @param Person $person
      * @return Response
-     * @Route("/staff/{person}/school/edit/",name="staff_school_edit",methods={"POST"})
+     * @Route("/student/{person}/school/edit/",name="student_school_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editSchoolStaff(ContainerManager $manager, Person $person)
+    public function editSchoolStudent(ContainerManager $manager, Person $person)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $staff = $person->getStaff() ?: new Staff();
-            $staff->setPerson($person);
+            $student = $person->getStudent() ?: new Student();
+            $student->setPerson($person);
 
-            $form = $this->createSchoolStaffForm($person);
+            $form = $this->createSchoolStudentForm($person);
 
-            return $this->saveContent($form, $manager, $staff, 'School');
+            return $this->saveContent($form, $manager, $student, 'School');
         } else {
-            $staff = $person->getStaff() ?: new Staff($person);
-            $form = $this->createSchoolStaffForm($person);
+            $student = $person->getStudent() ?: new Student($person);
+            $form = $this->createSchoolStudentForm($person);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -94,44 +94,44 @@ class StaffController extends PeopleController
     }
 
     /**
-     * staffDeletePersonalBackground
+     * studentDeletePersonalBackground
      * @param Person $person
      * @return JsonResponse
-     * @Route("/staff/{person}/personal/background/remove/",name="staff_personal_background_remove")
+     * @Route("/student/{person}/personal/background/remove/",name="student_personal_background_remove")
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 10:23
      */
-    public function staffDeletePersonalBackground(Person $person)
+    public function studentDeletePersonalBackground(Person $person)
     {
-        $staff = $person->getStaff();
+        $student = $person->getStudent();
 
-        $staff->removePersonalBackground();
+        $student->removePersonalBackground();
 
-        $data = ProviderFactory::create(Staff::class)->persistFlush($staff, []);
+        $data = ProviderFactory::create(Student::class)->persistFlush($student, []);
 
         return new JsonResponse($data);
     }
 
     /**
-     * addToStaff
+     * addToStudent
      * @param Person $person
-     * @Route("/staff/{person}/add/",name="staff_add")
+     * @Route("/student/{person}/add/",name="student_add")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      * 19/07/2020 12:13
      */
-    public function addToStaff(Person $person)
+    public function addToStudent(Person $person)
     {
-        if (null === $person->getStaff()) {
-            $staff = new Staff($person);
-            $data = ProviderFactory::create(Staff::class)->persistFlush($person, []);
+        if (null === $person->getStudent()) {
+            $student = new Student($person);
+            $data = ProviderFactory::create(Student::class)->persistFlush($person, []);
             if ($data['status'] === 'success') {
                 $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']);
+                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
             }
         } else {
             $data['status'] = 'redirect';
-            $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']);
+            $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
             $this->addFlash('warning', ErrorMessageHelper::onlyNothingToDoMessage());
         }
         return new JsonResponse($data);
@@ -141,18 +141,18 @@ class StaffController extends PeopleController
      * saveContent
      * @param FormInterface $form
      * @param ContainerManager $manager
-     * @param Staff $staff
+     * @param Student $student
      * @return JsonResponse
      * 19/07/2020 16:29
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, Staff $staff, string $tabName)
+    private function saveContent(FormInterface $form, ContainerManager $manager, Student $student, string $tabName)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
         $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(Staff::class)->persistFlush($staff, $data);
+            $data = ProviderFactory::create(Student::class)->persistFlush($student,$data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());
@@ -160,9 +160,9 @@ class StaffController extends PeopleController
                 return new JsonResponse($data);
             } else {
                 if ($tabName === 'School') {
-                    $form = $this->createSchoolStaffForm($staff->getPerson());
+                    $form = $this->createSchoolStudentForm($student->getPerson());
                 } else {
-                    $form = $this->createStaffForm($staff->getPerson());
+                    $form = $this->createStudentForm($student->getPerson());
                 }
             }
             $manager->singlePanel($form->createView());
@@ -176,32 +176,32 @@ class StaffController extends PeopleController
     }
 
     /**
-     * createSchoolStaffForm
+     * createStudentForm
      * @param Person $person
      * @return FormInterface
-     * 20/07/2020 10:57
+     * 20/07/2020 11:03
      */
-    private function createSchoolStaffForm(Person $person): FormInterface
+    private function createStudentForm(Person $person): FormInterface
     {
-        return $this->createForm(SchoolStaffType::class, $person->getStaff(),
+        return $this->createForm(StudentType::class, $person->getStudent(),
             [
-                'action' => $this->generateUrl('staff_school_edit', ['person' => $person->getId()]),
-                'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('student_edit', ['person' => $person->getId()]),
             ]
         );
     }
 
     /**
-     * createSchoolStaffForm
+     * createSchoolStudentForm
      * @param Person $person
      * @return FormInterface
-     * 20/07/2020 10:57
+     * 20/07/2020 11:04
      */
-    private function createStaffForm(Person $person): FormInterface
+    private function createSchoolStudentForm(Person $person): FormInterface
     {
-        return $this->createForm(StaffType::class, $person->getStaff(),
+        return $this->createForm(SchoolStudentType::class, $person->getStudent(),
             [
-                'action' => $this->generateUrl('staff_edit', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('student_school_edit', ['person' => $person->getId()]),
+                'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['person' => $person->getId()]),
             ]
         );
     }

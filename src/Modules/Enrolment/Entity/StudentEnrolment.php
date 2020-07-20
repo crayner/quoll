@@ -196,6 +196,16 @@ class StudentEnrolment extends AbstractEntity
     }
 
     /**
+     * getName
+     * @return string
+     * 20/07/2020 09:23
+     */
+    public function getName(): string
+    {
+        return $this->getRollGroup() ? $this->getRollGroup()->getName() : '';
+    }
+
+    /**
      * toArray
      * @param string|null $name
      * @return array

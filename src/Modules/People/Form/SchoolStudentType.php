@@ -36,7 +36,8 @@ class SchoolStudentType extends SchoolCommonType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => Student::class
+                'data_class' => Student::class,
+                'person_type' => 'student'
             ]
         );
         $resolver->setRequired(

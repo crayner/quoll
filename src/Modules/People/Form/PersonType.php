@@ -101,14 +101,12 @@ class PersonType extends AbstractType
             ->add('basicHeader', HeaderType::class,
                 [
                     'label' => 'Basic Information',
-                    'panel' => 'Basic',
                 ]
             )
             ->add('title', EnumType::class,
                 [
                     'label' => 'Title',
                     'required' => true,
-                    'panel' => 'Basic',
                     'placeholder' => ' ',
                 ]
             )
@@ -116,35 +114,35 @@ class PersonType extends AbstractType
                 [
                     'label' => 'Surname',
                     'help' => 'Family name as shown in ID documents.',
-                    'panel' => 'Basic',
                 ]
             )
             ->add('firstName', TextType::class,
                 [
                     'label' => 'Given Names',
                     'help' => 'Given names as shown in ID documents.',
-                    'panel' => 'Basic',
                 ]
             )
             ->add('preferredName', TextType::class,
                 [
                     'label' => 'Preferred Name',
                     'help' => 'Most common name, alias, nickname, etc.',
-                    'panel' => 'Basic',
                 ]
             )
             ->add('officialName', TextType::class,
                 [
                     'label' => 'Official Name',
                     'help' => 'Full name as shown in ID documents.',
-                    'panel' => 'Basic',
                 ]
             )
             ->add('nameInCharacters', TextType::class,
                 [
                     'label' => 'Name In Characters',
                     'help' => 'Chinese or other character-based name.',
-                    'panel' => 'Basic',
+                ]
+            )
+            ->add('gender', EnumType::class,
+                [
+                    'label' => 'Gender',
                 ]
             )
             ->add('submitBasic', SubmitType::class)
@@ -157,6 +155,19 @@ class PersonType extends AbstractType
                         'label' => 'Add to Staff',
                         'on_click' => [
                             'route' => '/staff/' . $person->getId() . '/add/',
+                            'function' => 'callRoute',
+                        ],
+                    ]
+                )
+            ;
+        }
+        if ($person->canBeStudent()) {
+            $builder
+                ->add('addStudent', ButtonType::class,
+                    [
+                        'label' => 'Add to Student',
+                        'on_click' => [
+                            'route' => '/student/' . $person->getId() . '/add/',
                             'function' => 'callRoute',
                         ],
                     ]
