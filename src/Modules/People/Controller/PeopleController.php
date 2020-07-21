@@ -23,6 +23,9 @@ use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\ChangePasswordType;
+use App\Modules\People\Form\ContactType;
+use App\Modules\People\Form\ParentType;
+use App\Modules\People\Form\PersonalDocumentationType;
 use App\Modules\People\Form\PersonType;
 use App\Modules\People\Form\SchoolStaffType;
 use App\Modules\People\Form\SchoolStudentType;
@@ -111,7 +114,7 @@ class PeopleController extends AbstractPageController
             $action = $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]);
         }
 
-        $photo = new Photo($person->getPersonalDocumentation(), 'getImage240', '200', 'user max200', '/build/static/DefaultPerson.png');
+        $photo = new Photo($person->getPersonalDocumentation(), 'getPersonalImage', '200', 'user max200', '/build/static/DefaultPerson.png');
         $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
         $sidebar->addContent($photo);
 
@@ -212,7 +215,36 @@ class PeopleController extends AbstractPageController
                 $panel = new Panel('School', 'People', new Section('form', 'School'));
                 $container->addForm('School', $schoolStudentForm->createView())->addPanel($panel);
             }
+            if ($person->isParent()) {
+                $parentForm = $this->createForm(ParentType::class, $person->getStudent(),
+                    [
+                        'action' => $this->generateUrl('parent_edit', ['person' => $person->getId()]),
+                    ]
+                );
+                $panel = new Panel('Care Giver', 'People', new Section('form', 'Care Giver'));
+                $container->addForm('Care Giver', $parentForm->createView())->addPanel($panel);
+            }
+
+            $documentationForm = $this->createForm(PersonalDocumentationType::class, $person->getPersonalDocumentation(),
+                [
+                    'action' => $this->generateUrl('personal_documentation_edit', ['person' => $person->getId()]),
+                    'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['person' => $person->getId()]),
+                    'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['person' => $person->getId()]),
+                    'remove_personal_image' => $this->generateUrl('remove_personal_image', ['person' => $person->getId()]),
+                ]
+            );
+            $panel = new Panel('Documentation', 'People', new Section('form', 'Documentation'));
+            $container->addForm('Documentation', $documentationForm->createView())->addPanel($panel);
+
+            $contactForm = $this->createForm(ContactType::class, $person->getContact(),
+                [
+                    'action' => $this->generateUrl('contact_edit', ['person' => $person->getId()]),
+                ]
+            );
+            $panel = new Panel('Contact', 'People', new Section('form', 'Contact'));
+            $container->addForm('Contact', $contactForm->createView())->addPanel($panel);
         }
+
 
         $manager->setReturnRoute($this->generateUrl('people_list'));
         $manager->addContainer($container)->buildContainers();

@@ -105,13 +105,6 @@ class Staff extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=3,nullable=true)
-     * @Assert\Country(alpha3=true)
-     */
-    private $countryOfOrigin;
-
-    /**
-     * @var string|null
      * @ORM\Column(nullable=true,length=191)
      */
     private $qualifications;
@@ -323,24 +316,6 @@ class Staff extends AbstractEntity
     public function setFirstAidExpiry(?\DateTimeImmutable $firstAidExpiry): Staff
     {
         $this->firstAidExpiry = $firstAidExpiry;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCountryOfOrigin(): ?string
-    {
-        return $this->countryOfOrigin;
-    }
-
-    /**
-     * @param string|null $countryOfOrigin
-     * @return Staff
-     */
-    public function setCountryOfOrigin(?string $countryOfOrigin): Staff
-    {
-        $this->countryOfOrigin = $countryOfOrigin;
         return $this;
     }
 

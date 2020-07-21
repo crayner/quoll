@@ -432,6 +432,8 @@ export default class PaginationApp extends Component {
                 }
                 if (filterDetail.value === value[filterDetail.contentKey])
                     return value
+                if (filterDetail['softMatch'] && value[filterDetail.contentKey].includes(filterDetail.value))
+                    return value
             })
             content = filtered
         })

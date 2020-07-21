@@ -44,8 +44,7 @@ class JsonFileUploadHelper
             file_put_contents($targetPath . $target, base64_decode($value[1]));
 
             $file = new File($targetPath . $target, true);
-            $user = SecurityHelper::getCurrentUser() ?  '_' . SecurityHelper::getCurrentUser()->getId() : '';
-            $fileName = substr(trim($filePrefix, '_') . $user . '_' . uniqid(), 0, 32) . '.' . $file->guessExtension();
+            $fileName = substr(uniqid(trim($filePrefix, '_').'_'), 0, 32) . '.' . $file->guessExtension();
             $file->move($targetPath, $fileName);
             $file = new File($targetPath . DIRECTORY_SEPARATOR . $fileName, true);
             return $file;

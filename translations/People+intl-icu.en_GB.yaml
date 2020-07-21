@@ -530,3 +530,63 @@ Action Permissions: Action Permissions
 Edit Action Permission: Edit Action Permission
 Security: Security
 'Edit Person: {name}': 'Edit Person: {name}'
+Add to Staff: Add to Staff
+Documentation: Documentation
+First date at this school.: First date at this school.
+Last Messenger Bubble Date: Last Messenger Bubble Date
+Last date at this school.: Last date at this school.
+Max size of 1.5MB with a landscape ratio between 16:9 and 5:4: Max size of 1.5MB with a landscape ratio between 16:9 and 5:4
+Personal Background Image: Personal Background Image
+Personal Calendar Feed: Personal Calendar Feed
+Personal Documentation: Personal Documentation
+Receive Notification EMails: Receive Notification EMails
+School Details: School Details
+The scan can be an image or a pdf, up to 2MB in size.: The scan can be an image or a pdf, up to 2MB in size.
+Use as a Google Calendar feed merge into your personal school calendar.: Use as a Google Calendar feed merge into your personal school calendar.
+View School Calendar Details: View School Calendar Details
+personaldocumentation:
+    ethnicity:
+        arab: Arab
+        australian peoples: Australian Peoples
+        british: British
+        caribbean islander: Caribbean Islander
+        central american: Central American
+        central and west african: Central and West African
+        central asian: Central Asian
+        chinese asian: Chinese Asian
+        eastern european: Eastern European
+        irish: Irish
+        jewish: Jewish
+        mainland south-east asian: Mainland South-East Asian
+        maritime south-east asian: Maritime South-East Asian
+        melanesian and papuan: Melanesian and Papuan
+        micronesian: Micronesian
+        new zealand peoples: New Zealand Peoples
+        north african and middle eastern: North African and Middle Eastern
+        north american: North American
+        north-east asian: North-East Asian
+        north-west european: North-West European
+        northern european: Northern European
+        oceanian: Oceanian
+        other north african and middle eastern: Other North African and Middle Eastern
+        other north-east asian: Other North-East Asian
+        peoples of the americas: Peoples of the Americas
+        peoples of the sudan: Peoples of the Sudan
+        polynesian: Polynesian
+        south american: South American
+        south eastern european: South Eastern European
+        south-east asian: South-East Asian
+        southern and central asian: Southern and Central Asian
+        southern and east african: Southern and East African
+        southern and eastern european: Southern and Eastern European
+        southern asian: Southern Asian
+        southern european: Southern European
+        sub-saharan african: Sub-Saharan African
+        western european: Western European
+Add to Care Giver: Add to Care Giver
+Add to Student: Add to Student
+Care Giver Details: 'Care Giver Details'
+Care Giver: Care Giver
+Contact Details: Contact Details
+'Maximum size of 750kB. Width 240-720px, Height 320-960px, Ratio 0.7/1 - 0.84/1 (Portrait)': 'Maximum size of 750kB. Width 240-720px, Height 320-960px, Ratio 0.7/1 - 0.84/1 (Portrait)'
+Personal Image: 'Personal Image'

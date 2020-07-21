@@ -54,7 +54,7 @@ class ParentContact extends AbstractEntity
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="parent")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="parent", cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -81,7 +81,7 @@ class ParentContact extends AbstractEntity
 
     /**
      * @var boolean|null
-     * @ORM\Column(length=1, options={"default": 1})
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
     private $viewCalendarSchool = true;
 
@@ -90,6 +90,15 @@ class ParentContact extends AbstractEntity
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberAdult",mappedBy="parent")
      */
     private $memberOfFamilies;
+
+    /**
+     * ParentContact constructor.
+     * @param Person $person
+     */
+    public function __construct(?Person $person = null)
+    {
+        $this->setPerson($person);
+    }
 
     /**
      * @return string|null
@@ -119,12 +128,12 @@ class ParentContact extends AbstractEntity
 
     /**
      * setPerson
-     * @param Person $person
+     * @param Person|null $person
      * @param bool $reflect
      * @return $this
      * 2/07/2020 09:11
      */
-    public function setPerson(Person $person, bool $reflect = true): ParentContact
+    public function setPerson(?Person $person, bool $reflect = true): ParentContact
     {
         $this->person = $person;
         if ($person && $person instanceof Person) {

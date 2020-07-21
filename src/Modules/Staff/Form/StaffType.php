@@ -100,14 +100,6 @@ class StaffType extends AbstractType
                     'label' => 'Biography Details',
                 ]
             )
-            ->add('countryOfOrigin', CountryType::class,
-                [
-                    'label' => 'Country of Birth',
-                    'placeholder' => ' ',
-                    'preferred_choices' => ParameterBagHelper::get('preferred_countries'),
-                    'alpha3' => true,
-                ]
-            )
             ->add('qualifications', TextType::class,
                 [
                     'label' => 'Qualification',

@@ -47,6 +47,7 @@ class PeoplePagination extends AbstractPaginationManager
         foreach(RoleHierarchy::getCategoryList() as $name) {
             TranslationHelper::setTranslation($name, $name, [], 'Security');
         }
+        TranslationHelper::setTranslation('Parent, Staff', 'Parent, Staff', [], 'Security');
         $row = new PaginationRow();
 
         $column = new PaginationColumn();

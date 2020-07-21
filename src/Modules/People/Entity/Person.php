@@ -22,6 +22,7 @@ use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\Collection;
@@ -157,42 +158,42 @@ class Person extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="student",nullable=true)
      */
     private $student;
 
     /**
      * @var ParentContact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="parent",referencedColumnName="id")
      */
     private $parent;
 
     /**
      * @var Contact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="contact",referencedColumnName="id")
      */
     private $contact;
 
     /**
      * @var PersonalDocumentation|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="personal_documentation",referencedColumnName="id")
      */
     private $personalDocumentation;
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"persist","remove"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="staff",referencedColumnName="id")
      */
     private $staff;
 
     /**
      * @var SecurityUser|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",mappedBy="person",cascade={"persist"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="security_user",referencedColumnName="id")
      */
     private $securityUser;
@@ -637,16 +638,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * getLanguageList
-     * @return array|string[]
-     */
-    public static function getLanguageList()
-    {
-        $languages = Languages::getNames();
-        return array_flip($languages);
-    }
-
-    /**
      * uniqueIdentifier
      * @return string
      */
@@ -930,11 +921,11 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @return PersonalDocumentation|null
+     * @return PersonalDocumentation
      */
-    public function getPersonalDocumentation(): ?PersonalDocumentation
+    public function getPersonalDocumentation(): PersonalDocumentation
     {
-        return $this->personalDocumentation;
+        return $this->personalDocumentation = $this->personalDocumentation ?? new PersonalDocumentation($this);
     }
 
     /**
@@ -946,7 +937,7 @@ class Person extends AbstractEntity
      */
     public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation, bool $reflect = true): Person
     {
-        $this->personalDocumentation = $personalDocumentation;
+        $this->personalDocumentation = $personalDocumentation ?? new PersonalDocumentation($this);
         if ($reflect) {
             $personalDocumentation->setPerson($this, false);
         }
@@ -1128,5 +1119,24 @@ class Person extends AbstractEntity
         if ($this->getId() === null) return false;
         if ($this->isStudent() || $this->isParent()) return false;
         return true;
+    }
+
+    /**
+     * createContact
+     * 21/07/2020 08:53
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @todo Remove PreUpdate
+     */
+    public function createContactDocumentation()
+    {
+        if ($this->getContact() === null) {
+            $contact = new Contact($this);
+            ProviderFactory::getEntityManager()->persist($contact);
+        }
+        if ($this->getPersonalDocumentation() === null) {
+            $documentation = new PersonalDocumentation($this);
+            ProviderFactory::getEntityManager()->persist($documentation);
+        }
     }
 }

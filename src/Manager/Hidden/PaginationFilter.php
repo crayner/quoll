@@ -55,6 +55,11 @@ class PaginationFilter
     private $defaultFilter = false;
 
     /**
+     * @var bool
+     */
+    private $softMatch = true;
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -190,5 +195,33 @@ class PaginationFilter
     {
         $this->defaultFilter = $defaultFilter;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSoftMatch(): bool
+    {
+        return $this->softMatch;
+    }
+
+    /**
+     * @param bool $softMatch
+     * @return PaginationFilter
+     */
+    public function setSoftMatch(bool $softMatch = true): PaginationFilter
+    {
+        $this->softMatch = $softMatch;
+        return $this;
+    }
+
+    /**
+     * setExactMatch
+     * @return PaginationFilter
+     * 21/07/2020 09:48
+     */
+    public function setExactMatch(): PaginationFilter
+    {
+        return $this->setSoftMatch(false);
     }
 }

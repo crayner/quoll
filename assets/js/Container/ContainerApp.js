@@ -163,7 +163,10 @@ export default class ContainerApp extends Component {
     }
 
     deleteFile(form) {
-        if (typeof form.delete_route === 'undefined' || form.delete_route === false) return
+        if (typeof form.delete_route === 'undefined' || form.delete_route === false) {
+            console.info('You need to set the form delete_route for ' + form.full_name + ' for deletion of this file.' )
+            return
+        }
         let route = form.delete_route
         let parentForm = getParentForm(this.state.forms,form)
         fetchJson(

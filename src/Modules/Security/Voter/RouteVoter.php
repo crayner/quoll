@@ -72,7 +72,7 @@ class RouteVoter extends RoleHierarchyVoter
 
             if (!$action instanceof Action) {
                 $this->logger->warning(sprintf('The user "%s" attempted to access the route "%s" and was denied as the ACTION was not set correctly.',
-                    $token->getUser()->formatName(['title' => false]),
+                    $token->getUser()->getPerson()->getFullNameReversed(),
                     $route)
                 );
                 return VoterInterface::ACCESS_DENIED;
@@ -86,11 +86,11 @@ class RouteVoter extends RoleHierarchyVoter
             $result = parent::vote($token, $subject, $action->getSecurityRoles());
 
             if ($result === VoterInterface::ACCESS_ABSTAIN)
-                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->formatName(), $route, implode(',',$action->getSecurityRoles())), $action);
+                $this->logger->error(sprintf('The user "%s" attempted to access the route "%s" but the ACTION role "%s" was not found.', $token->getUser()->getPerson()->getFullNameReversed(), $route, implode(',',$action->getSecurityRoles())), $action);
 
             if ($result === VoterInterface::ACCESS_DENIED) {
                 if ($token->getUser() instanceof SecurityUser)
-                    $this->logger->warning(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $route), [$action]);
+                    $this->logger->warning(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->getPerson()->getFullNameReversed(), $route), [$action]);
                 else
                     $this->logger->error(sprintf('The user is not valid and attempted to access the route "%s" and was denied.', $route), [$action]);
             }

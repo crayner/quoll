@@ -358,7 +358,7 @@ parameters:
                 type: boolean
             ethnicity:
                 value: null
-                type: string
+                type: array
             nationality:
                 value: null
                 type: string

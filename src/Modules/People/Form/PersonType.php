@@ -174,6 +174,19 @@ class PersonType extends AbstractType
                 )
             ;
         }
+        if ($person->canBeParent()) {
+            $builder
+                ->add('addParent', ButtonType::class,
+                    [
+                        'label' => 'Add to Care Giver',
+                        'on_click' => [
+                            'route' => '/parent/' . $person->getId() . '/add/',
+                            'function' => 'callRoute',
+                        ],
+                    ]
+                )
+            ;
+        }
     }
 
     /**

@@ -20,7 +20,6 @@ namespace App\Util;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -235,7 +234,7 @@ class ImageHelper
             return $file;
         }
 
-        $background = SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationBackground');
+        $background = SettingFactory::getSettingManager()->get('System', 'organisationBackground');
         if (self::isFileInPublic($background)) {
             $background = self::getAbsoluteImageURL('File',$background);
             $session->set('backgroundImage', $background);

@@ -18,9 +18,9 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Validator as AssertLocal;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -48,7 +48,7 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="personalDocumentation")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="personalDocumentation", cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -115,40 +115,58 @@ class PersonalDocumentation extends AbstractEntity
      *     maxHeight = 960
      * )
      */
-    private $image_240;
+    private $personalImage;
 
     /**
      * @var array
      */
     private static $ethnicityList = [
-        'Australian Peoples',
-        'New Zealand Peoples',
-        'Melanesian and Papuan',
-        'Micronesian',
-        'Polynesian',
-        'British',
-        'Irish',
-        'Western European',
-        'Northern European',
-        'Southern European',
-        'South Eastern European',
-        'Eastern European',
-        'Arab',
-        'Jewish',
-        'Peoples of the Sudan',
-        'Other North African and Middle Eastern',
-        'Mainland South-East Asian',
-        'Maritime South-East Asian',
-        'Chinese Asian',
-        'Other North-East Asian',
-        'Southern Asian',
-        'Central Asian',
-        'North American',
-        'South American',
-        'Central American',
-        'Caribbean Islander',
-        'Central and West African',
-        'Southern and East African'
+        'OCEANIAN' => [
+	        'Australian Peoples',
+            'New Zealand Peoples',
+            'Melanesian and Papuan',
+            'Micronesian',
+            'Polynesian'
+        ],
+        'NORTH-WEST EUROPEAN' => [
+            'British',
+            'Irish',
+            'Western European',
+            'Northern European',
+        ],
+        'SOUTHERN AND EASTERN EUROPEAN' => [
+            'Southern European',
+            'South Eastern European',
+            'Eastern European',
+        ],
+        'NORTH AFRICAN AND MIDDLE EASTERN' => [
+            'Arab',
+            'Jewish',
+            'Peoples of the Sudan',
+            'Other North African and Middle Eastern',
+        ],
+        'SOUTH-EAST ASIAN' => [
+            'Mainland South-East Asian',
+            'Maritime South-East Asian'
+        ],
+        'NORTH-EAST ASIAN' => [
+            'Chinese Asian',
+            'Other North-East Asian',
+        ],
+        'SOUTHERN AND CENTRAL ASIAN' => [
+            'Southern Asian',
+            'Central Asian',
+        ],
+        'PEOPLES OF THE AMERICAS' => [
+            'North American',
+            'South American',
+            'Central American',
+            'Caribbean Islander',
+        ],
+        'SUB-SAHARAN AFRICAN' => [
+            'Central and West African',
+            'Southern and East African',
+        ]
     ];
 
     /**
@@ -216,6 +234,15 @@ class PersonalDocumentation extends AbstractEntity
     private $visaExpiryDate;
 
     /**
+     * PersonalDocumentation constructor.
+     * @param Person $person
+     */
+    public function __construct(?Person $person = null)
+    {
+        $this->setPerson($person);
+    }
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
@@ -234,18 +261,20 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
-     * @return AbstractEntity
+     * getPerson
+     * @return Person
+     * 20/07/2020 12:49
      */
-    public function getPerson(): AbstractEntity
+    public function getPerson(): Person
     {
         return $this->person;
     }
 
     /**
-     * @param Person $person
+     * @param Person|null $person
      * @return PersonalDocumentation
      */
-    public function setPerson(Person $person): PersonalDocumentation
+    public function setPerson(?Person $person): PersonalDocumentation
     {
         $this->person = $person;
         return $this;
@@ -261,9 +290,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $languageFirst
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setLanguageFirst(?string $languageFirst): AbstractEntity
+    public function setLanguageFirst(?string $languageFirst): PersonalDocumentation
     {
         $this->languageFirst = mb_substr($languageFirst, 0, 30);
         return $this;
@@ -279,9 +308,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $languageSecond
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setLanguageSecond(?string $languageSecond): AbstractEntity
+    public function setLanguageSecond(?string $languageSecond): PersonalDocumentation
     {
         $this->languageSecond = mb_substr($languageSecond, 0, 30);
         return $this;
@@ -297,9 +326,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $languageThird
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setLanguageThird(?string $languageThird): AbstractEntity
+    public function setLanguageThird(?string $languageThird): PersonalDocumentation
     {
         $this->languageThird = mb_substr($languageThird, 0, 30);
         return $this;
@@ -315,9 +344,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $countryOfBirth
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCountryOfBirth(?string $countryOfBirth): AbstractEntity
+    public function setCountryOfBirth(?string $countryOfBirth): PersonalDocumentation
     {
         $this->countryOfBirth = mb_substr($countryOfBirth, 0, 30);
         return $this;
@@ -333,11 +362,24 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $birthCertificateScan
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setBirthCertificateScan(?string $birthCertificateScan): AbstractEntity
+    public function setBirthCertificateScan(?string $birthCertificateScan): PersonalDocumentation
     {
-        $this->birthCertificateScan = mb_substr($birthCertificateScan, 0, 191);
+        if ($birthCertificateScan === null && $this->birthCertificateScan !== null) return $this;
+        $this->birthCertificateScan = $birthCertificateScan;
+        return $this;
+    }
+
+    /**
+     * removeBirthCertificateScan
+     * @return $this
+     * 20/07/2020 12:25
+     */
+    public function removeBirthCertificateScan(): PersonalDocumentation
+    {
+        $this->birthCertificateScan = null;
+        
         return $this;
     }
 
@@ -347,7 +389,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public static function getEthnicityList(): array
     {
-        if (($x = SettingFactory::getSettingManager()->getSettingByScopeAsArray('User Admin', 'ethnicity')) !== []) {
+        if (count($x = SettingFactory::getSettingManager()->get('People', 'ethnicity')) > 0) {
             return $x;
         }
         return self::$ethnicityList;
@@ -363,9 +405,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $ethnicity
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setEthnicity(?string $ethnicity): AbstractEntity
+    public function setEthnicity(?string $ethnicity): PersonalDocumentation
     {
         $this->ethnicity = mb_substr($ethnicity, 0, 191);
         return $this;
@@ -381,9 +423,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $citizenship1
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCitizenship1(?string $citizenship1): AbstractEntity
+    public function setCitizenship1(?string $citizenship1): PersonalDocumentation
     {
         $this->citizenship1 = mb_substr($citizenship1, 0, 191);
         return $this;
@@ -401,9 +443,9 @@ class PersonalDocumentation extends AbstractEntity
     /**
      * setCitizenship1Passport
      * @param string|null $citizenship1Passport
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCitizenship1Passport(?string $citizenship1Passport): AbstractEntity
+    public function setCitizenship1Passport(?string $citizenship1Passport): PersonalDocumentation
     {
         $this->citizenship1Passport = mb_substr($citizenship1Passport, 0, 30);
         return $this;
@@ -419,11 +461,24 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $citizenship1PassportScan
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCitizenship1PassportScan(?string $citizenship1PassportScan): AbstractEntity
+    public function setCitizenship1PassportScan(?string $citizenship1PassportScan): PersonalDocumentation
     {
-        $this->citizenship1PassportScan = mb_substr($citizenship1PassportScan, 0, 191);
+        if (null === $this->citizenship1PassportScan) return $this;
+
+        $this->citizenship1PassportScan = $citizenship1PassportScan;
+        return $this;
+    }
+
+    /**
+     * removeCitizenship1PassportScan
+     * @return $this
+     * 20/07/2020 13:42
+     */
+    public function removeCitizenship1PassportScan(): PersonalDocumentation
+    {
+        $this->citizenship1PassportScan = null;
         return $this;
     }
 
@@ -437,9 +492,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $citizenship2
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCitizenship2(?string $citizenship2): AbstractEntity
+    public function setCitizenship2(?string $citizenship2): PersonalDocumentation
     {
         $this->citizenship2 = mb_substr($citizenship2, 0, 191);
         return $this;
@@ -455,9 +510,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $citizenship2Passport
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setCitizenship2Passport(?string $citizenship2Passport): AbstractEntity
+    public function setCitizenship2Passport(?string $citizenship2Passport): PersonalDocumentation
     {
         $this->citizenship2Passport = mb_substr($citizenship2Passport, 0, 30);
         return $this;
@@ -473,9 +528,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $religion
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setReligion(?string $religion): AbstractEntity
+    public function setReligion(?string $religion): PersonalDocumentation
     {
         $this->religion = mb_substr($religion, 0, 30);
         return $this;
@@ -500,9 +555,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $nationalIDCardNumber
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setNationalIDCardNumber(?string $nationalIDCardNumber): AbstractEntity
+    public function setNationalIDCardNumber(?string $nationalIDCardNumber): PersonalDocumentation
     {
         $this->nationalIDCardNumber = mb_substr($nationalIDCardNumber, 0, 30);
         return $this;
@@ -518,9 +573,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $nationalIDCardScan
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setNationalIDCardScan(?string $nationalIDCardScan): AbstractEntity
+    public function setNationalIDCardScan(?string $nationalIDCardScan): PersonalDocumentation
     {
         $this->nationalIDCardScan = mb_substr($nationalIDCardScan, 0, 191);
         return $this;
@@ -536,9 +591,9 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @param null|string $residencyStatus
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setResidencyStatus(?string $residencyStatus): AbstractEntity
+    public function setResidencyStatus(?string $residencyStatus): PersonalDocumentation
     {
         $this->residencyStatus = mb_substr($residencyStatus, 0, 191);
         return $this;
@@ -556,9 +611,9 @@ class PersonalDocumentation extends AbstractEntity
      * VisaExpiryDate.
      *
      * @param \DateTimeImmutable|null $visaExpiryDate
-     * @return AbstractEntity
+     * @return PersonalDocumentation
      */
-    public function setVisaExpiryDate(?\DateTimeImmutable $visaExpiryDate): AbstractEntity
+    public function setVisaExpiryDate(?\DateTimeImmutable $visaExpiryDate): PersonalDocumentation
     {
         $this->visaExpiryDate = $visaExpiryDate;
         return $this;
@@ -585,18 +640,30 @@ class PersonalDocumentation extends AbstractEntity
     /**
      * @return string|null
      */
-    public function getImage240(): ?string
+    public function getPersonalImage(): ?string
     {
-        return $this->image_240;
+        return $this->personalImage;
     }
 
     /**
-     * @param string|null $image_240
+     * @param string|null $personalImage
      * @return PersonalDocumentation
      */
-    public function setImage240(?string $image_240): PersonalDocumentation
+    public function setPersonalImage(?string $personalImage): PersonalDocumentation
     {
-        $this->image_240 = $image_240;
+        if ($personalImage === null) return $this;
+        $this->personalImage = $personalImage;
+        return $this;
+    }
+
+    /**
+     * removePersonalImage
+     * @return $this
+     * 20/07/2020 13:39
+     */
+    public function removePersonalImage(): PersonalDocumentation
+    {
+        $this->personalImage = null;
         return $this;
     }
 
@@ -606,58 +673,13 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 4/07/2020 09:48
+     * getLanguageList
+     * @return array
+     * 20/07/2020 11:42
      */
-    public function create(): array
+    public static function getLanguageList(): array
     {
-        return [
-            "CREATE TABLE `__prefix__PersonalDocumentation` (
-                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `language_first` varchar(5) DEFAULT NULL,
-                `language_second` varchar(5) DEFAULT NULL,
-                `language_third` varchar(5) DEFAULT NULL,
-                `country_of_birth` varchar(3) DEFAULT NULL,
-                `birth_certificate_scan` varchar(191) DEFAULT NULL,
-                `ethnicity` varchar(191) DEFAULT NULL,
-                `citizenship1` varchar(3) DEFAULT NULL,
-                `citizenship1_passport` varchar(30) DEFAULT NULL,
-                `citizenship1_passport_scan` varchar(191) DEFAULT NULL,
-                `citizenship2` varchar(3) DEFAULT NULL,
-                `citizenship2_passport` varchar(30) DEFAULT NULL,
-                `religion` varchar(30) DEFAULT NULL,
-                `national_card_number` varchar(30) DEFAULT NULL,
-                `national_card_scan` varchar(191) DEFAULT NULL,
-                `residency_status` varchar(191) DEFAULT NULL,
-                `visa_expiry_date` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                `dob` date DEFAULT NULL COMMENT '(DC2Type:date_immutable)',
-                `image_240` varchar(191) DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                UNIQUE KEY `person` (`person`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
-        ];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 4/07/2020 09:48
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__PersonalDocumentation`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 4/07/2020 09:49
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
+        $languages = Languages::getNames();
+        return array_flip($languages);
     }
 }
