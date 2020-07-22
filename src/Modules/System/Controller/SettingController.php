@@ -266,12 +266,19 @@ class SettingController extends AbstractPageController
     public function removeSettingImage(string $scope, string $name, string $route, string $url)
     {
         $actions = ProviderFactory::create(Action::class)->findLike(['routeList' => $route]);
-        dump($actions,$route);
-        $roles = [];
+        $doIt = false;
+
         foreach($actions as $action) {
-            $roles = array_merge($roles, $action->getSecurityRoles());
+            if ($doIt) break;
+            foreach($action->getSecurityRoles() as $role) {
+                if ($this->isGranted($role)) {
+                    $doIt = true;
+                    break;
+                }
+            }
         }
-        if ($this->isGranted($roles)) {
+
+        if ($doIt) {
             $sm = SettingFactory::getSettingManager();
             $imageFile = $sm->get($scope, $name);
             if (!empty($imageFile) && strpos($imageFile, 'build') === false && strpos($imageFile, 'static') === false) {
