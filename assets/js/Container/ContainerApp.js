@@ -174,7 +174,9 @@ export default class ContainerApp extends Component {
             {},
             false)
             .then(data => {
-                if (data.status === 'success') {
+                if (data.status === 'redirect') {
+                    window.open(data.redirect,'_self')
+                } else if (data.status === 'success') {
                     let errors = parentForm.errors
                     errors = errors.concat(data.errors)
                     parentForm.errors = errors

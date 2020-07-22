@@ -6,12 +6,12 @@
     officialName: 'Mays, Paki'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2067
         canLogin: true
         passwordForceReset: false
@@ -25,12 +25,12 @@
     officialName: 'Merritt, Liberty'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2068
         canLogin: true
         passwordForceReset: false
@@ -64,12 +64,12 @@
     officialName: 'Hensley, Chase'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2077
         canLogin: true
         passwordForceReset: false
@@ -83,12 +83,12 @@
     officialName: 'Farley, Lara'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2078
         canLogin: true
         passwordForceReset: false
@@ -123,12 +123,12 @@
     officialName: 'Anderson, Gloria'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2080
         canLogin: true
         passwordForceReset: false
@@ -163,12 +163,12 @@
     officialName: 'Barker, Timothy'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2082
         canLogin: true
         passwordForceReset: false
@@ -182,12 +182,12 @@
     officialName: 'Schultz, Ramona'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2083
         canLogin: true
         passwordForceReset: false
@@ -222,12 +222,12 @@
     officialName: 'Stout, Jordan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2085
         canLogin: true
         passwordForceReset: false
@@ -241,12 +241,12 @@
     officialName: 'Mendoza, Ashton'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2086
         canLogin: true
         passwordForceReset: false
@@ -280,12 +280,12 @@
     officialName: 'Blackwell, Uma'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2088
         canLogin: true
         passwordForceReset: false
@@ -299,12 +299,12 @@
     officialName: 'Dennis, Isaiah'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2089
         canLogin: true
         passwordForceReset: false
@@ -339,12 +339,12 @@
     officialName: 'Graves, Willow'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2091
         canLogin: true
         passwordForceReset: false
@@ -358,12 +358,12 @@
     officialName: 'Moore, Micah'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2092
         canLogin: true
         passwordForceReset: false
@@ -398,12 +398,12 @@
     officialName: 'Schultz, Britanney'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2094
         canLogin: true
         passwordForceReset: false
@@ -417,12 +417,12 @@
     officialName: 'Curtis, Kitra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2095
         canLogin: true
         passwordForceReset: false
@@ -480,12 +480,12 @@
     officialName: 'Parks, Riley'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2098
         canLogin: true
         passwordForceReset: false
@@ -499,12 +499,12 @@
     officialName: 'Washington, Timothy'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2099
         canLogin: true
         passwordForceReset: false
@@ -539,12 +539,12 @@
     officialName: 'Pickett, Quail'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2101
         canLogin: true
         passwordForceReset: false
@@ -558,12 +558,12 @@
     officialName: 'Schultz, Elvis'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2102
         canLogin: true
         passwordForceReset: false
@@ -597,12 +597,12 @@
     officialName: 'Solis, May'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2104
         canLogin: true
         passwordForceReset: false
@@ -616,12 +616,12 @@
     officialName: 'Herrera, Arsenio'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2105
         canLogin: true
         passwordForceReset: false
@@ -655,12 +655,12 @@
     officialName: 'Zimmerman, Dolan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2107
         canLogin: true
         passwordForceReset: false
@@ -674,12 +674,12 @@
     officialName: 'Anderson, Dorothy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2108
         canLogin: true
         passwordForceReset: false
@@ -734,12 +734,12 @@
     officialName: 'Bolton, Isabella'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2114
         canLogin: true
         passwordForceReset: false
@@ -753,12 +753,12 @@
     officialName: 'Barker, Macon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2115
         canLogin: true
         passwordForceReset: false
@@ -793,12 +793,12 @@
     officialName: 'Richmond, Samantha'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2117
         canLogin: true
         passwordForceReset: false
@@ -812,12 +812,12 @@
     officialName: 'Curtis, Edan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2118
         canLogin: true
         passwordForceReset: false
@@ -852,12 +852,12 @@
     officialName: 'Blackwell, Wanda'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2121
         canLogin: true
         passwordForceReset: false
@@ -871,12 +871,12 @@
     officialName: 'Blackwell, Sean'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2122
         canLogin: true
         passwordForceReset: false
@@ -910,12 +910,12 @@
     officialName: 'Bowen, Meredith'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2124
         canLogin: true
         passwordForceReset: false
@@ -929,12 +929,12 @@
     officialName: 'Blackwell, Nehru'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2125
         canLogin: true
         passwordForceReset: false
@@ -969,12 +969,12 @@
     officialName: 'Miles, Constance'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2130
         canLogin: true
         passwordForceReset: false
@@ -988,12 +988,12 @@
     officialName: 'Miles, Carson'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2131
         canLogin: true
         passwordForceReset: false
@@ -1052,12 +1052,12 @@
     officialName: 'Bryan, Sean'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2136
         canLogin: true
         passwordForceReset: false
@@ -1071,12 +1071,12 @@
     officialName: 'Hensley, Phoebe'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2137
         canLogin: true
         passwordForceReset: false
@@ -1110,12 +1110,12 @@
     officialName: 'Camacho, Valentine'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2139
         canLogin: true
         passwordForceReset: false
@@ -1129,12 +1129,12 @@
     officialName: 'Potts, Shellie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2140
         canLogin: true
         passwordForceReset: false
@@ -1168,12 +1168,12 @@
     officialName: 'Parks, Herrod'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2142
         canLogin: true
         passwordForceReset: false
@@ -1187,12 +1187,12 @@
     officialName: 'Chavez, Leila'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2143
         canLogin: true
         passwordForceReset: false
@@ -1227,12 +1227,12 @@
     officialName: 'Brock, Mari'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2146
         canLogin: true
         passwordForceReset: false
@@ -1246,12 +1246,12 @@
     officialName: 'Brock, Talon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2147
         canLogin: true
         passwordForceReset: false
@@ -1307,12 +1307,12 @@
     officialName: 'Lucas, Grady'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2157
         canLogin: true
         passwordForceReset: false
@@ -1326,12 +1326,12 @@
     officialName: 'Harrison, Xyla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2158
         canLogin: true
         passwordForceReset: false
@@ -1386,12 +1386,12 @@
     officialName: 'Miranda, Clinton'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2161
         canLogin: true
         passwordForceReset: false
@@ -1405,12 +1405,12 @@
     officialName: 'Bolton, Robin'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2162
         canLogin: true
         passwordForceReset: false
@@ -1444,12 +1444,12 @@
     officialName: 'Anderson, Deanna'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2164
         canLogin: true
         passwordForceReset: false
@@ -1463,12 +1463,12 @@
     officialName: 'Gregory, Justin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2165
         canLogin: true
         passwordForceReset: false
@@ -1502,12 +1502,12 @@
     officialName: 'Bolton, Aimee'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2167
         canLogin: true
         passwordForceReset: false
@@ -1521,12 +1521,12 @@
     officialName: 'Moore, Scott'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2168
         canLogin: true
         passwordForceReset: false
@@ -1561,12 +1561,12 @@
     officialName: 'Perez, Cyrus'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2170
         canLogin: true
         passwordForceReset: false
@@ -1580,12 +1580,12 @@
     officialName: 'Perez, Rebecca'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2171
         canLogin: true
         passwordForceReset: false
@@ -1619,12 +1619,12 @@
     officialName: 'Blackwell, Bianca'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2173
         canLogin: true
         passwordForceReset: false
@@ -1638,12 +1638,12 @@
     officialName: 'Schultz, Donna'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2174
         canLogin: true
         passwordForceReset: false
@@ -1677,12 +1677,12 @@
     officialName: 'Ballard, Lydia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2176
         canLogin: true
         passwordForceReset: false
@@ -1696,12 +1696,12 @@
     officialName: 'Dennis, Phillip'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2177
         canLogin: true
         passwordForceReset: false
@@ -1735,12 +1735,12 @@
     officialName: 'Freeman, Hasad'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2179
         canLogin: true
         passwordForceReset: false
@@ -1754,12 +1754,12 @@
     officialName: 'Payne, Rowan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2180
         canLogin: true
         passwordForceReset: false
@@ -1794,12 +1794,12 @@
     officialName: 'Guerra, Melodie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2185
         canLogin: true
         passwordForceReset: false
@@ -1813,12 +1813,12 @@
     officialName: 'Riddle, Kennan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2186
         canLogin: true
         passwordForceReset: false
@@ -1852,12 +1852,12 @@
     officialName: 'Moore, Susan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2188
         canLogin: true
         passwordForceReset: false
@@ -1871,12 +1871,12 @@
     officialName: 'Nolan, Hiram'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2189
         canLogin: true
         passwordForceReset: false
@@ -1910,12 +1910,12 @@
     officialName: 'Vincent, Keane'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2191
         canLogin: true
         passwordForceReset: false
@@ -1929,12 +1929,12 @@
     officialName: 'Vincent, Lani'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2192
         canLogin: true
         passwordForceReset: false
@@ -1989,12 +1989,12 @@
     officialName: 'Zimmerman, Honorato'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2195
         canLogin: true
         passwordForceReset: false
@@ -2008,12 +2008,12 @@
     officialName: 'Kennedy, Pamela'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2196
         canLogin: true
         passwordForceReset: false
@@ -2047,12 +2047,12 @@
     officialName: 'Lane, Francesca'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2201
         canLogin: true
         passwordForceReset: false
@@ -2066,12 +2066,12 @@
     officialName: 'Stout, Quinn'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2202
         canLogin: true
         passwordForceReset: false
@@ -2105,12 +2105,12 @@
     officialName: 'Moore, Ivor'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2204
         canLogin: true
         passwordForceReset: false
@@ -2124,12 +2124,12 @@
     officialName: 'Sharpe, Sonya'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2205
         canLogin: true
         passwordForceReset: false
@@ -2163,12 +2163,12 @@
     officialName: 'Parks, Arsenio'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2207
         canLogin: true
         passwordForceReset: false
@@ -2182,12 +2182,12 @@
     officialName: 'Merritt, Vanna'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2208
         canLogin: true
         passwordForceReset: false
@@ -2221,12 +2221,12 @@
     officialName: 'England, Kennan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2213
         canLogin: true
         passwordForceReset: false
@@ -2240,12 +2240,12 @@
     officialName: 'England, Ingrid'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2214
         canLogin: true
         passwordForceReset: false
@@ -2299,12 +2299,12 @@
     officialName: 'Andrews, Germaine'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2217
         canLogin: true
         passwordForceReset: false
@@ -2318,12 +2318,12 @@
     officialName: 'Blair, Amanda'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2218
         canLogin: true
         passwordForceReset: false
@@ -2356,12 +2356,12 @@
     officialName: 'Moore, Minerva'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2226
         canLogin: true
         passwordForceReset: false
@@ -2375,12 +2375,12 @@
     officialName: 'Garner, Stuart'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2227
         canLogin: true
         passwordForceReset: false
@@ -2456,12 +2456,12 @@
     officialName: 'Holt, Solomon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2234
         canLogin: true
         passwordForceReset: false
@@ -2475,12 +2475,12 @@
     officialName: 'Anderson, Whilemina'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2235
         canLogin: true
         passwordForceReset: false
@@ -2514,12 +2514,12 @@
     officialName: 'Moore, Cassandra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2237
         canLogin: true
         passwordForceReset: false
@@ -2533,12 +2533,12 @@
     officialName: 'Blackwell, Maite'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2238
         canLogin: true
         passwordForceReset: false
@@ -2633,12 +2633,12 @@
     officialName: 'Schultz, Claire'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2251
         canLogin: true
         passwordForceReset: false
@@ -2652,12 +2652,12 @@
     officialName: 'Madden, Owen'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2252
         canLogin: true
         passwordForceReset: false
@@ -2691,12 +2691,12 @@
     officialName: 'Rosa, Lysandra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2254
         canLogin: true
         passwordForceReset: false
@@ -2710,12 +2710,12 @@
     officialName: 'Curtis, Trevor'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2255
         canLogin: true
         passwordForceReset: false
@@ -2750,12 +2750,12 @@
     officialName: 'Stout, Isabella'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2263
         canLogin: true
         passwordForceReset: false
@@ -2769,12 +2769,12 @@
     officialName: 'Cortez, Alexis'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2264
         canLogin: true
         passwordForceReset: false
@@ -2828,12 +2828,12 @@
     officialName: 'Ferrell, Dennis'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2269
         canLogin: true
         passwordForceReset: false
@@ -2847,12 +2847,12 @@
     officialName: 'Ferrell, Vielka'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2270
         canLogin: true
         passwordForceReset: false
@@ -2886,12 +2886,12 @@
     officialName: 'Schultz, Beatrice'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2272
         canLogin: true
         passwordForceReset: false
@@ -2905,12 +2905,12 @@
     officialName: 'Gregory, Galvin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2273
         canLogin: true
         passwordForceReset: false
@@ -2943,12 +2943,12 @@
     officialName: 'Maxwell, Guinevere'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2275
         canLogin: true
         passwordForceReset: false
@@ -2962,12 +2962,12 @@
     officialName: 'Pickett, Sierra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2276
         canLogin: true
         passwordForceReset: false
@@ -3001,12 +3001,12 @@
     officialName: 'Woodard, Patrick'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2278
         canLogin: true
         passwordForceReset: false
@@ -3020,12 +3020,12 @@
     officialName: 'Harrison, Anne'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2279
         canLogin: true
         passwordForceReset: false
@@ -3059,12 +3059,12 @@
     officialName: 'Day, Nadine'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2281
         canLogin: true
         passwordForceReset: false
@@ -3078,12 +3078,12 @@
     officialName: 'Trevino, Colorado'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2282
         canLogin: true
         passwordForceReset: false
@@ -3118,12 +3118,12 @@
     officialName: 'Zimmerman, Macaulay'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2284
         canLogin: true
         passwordForceReset: false
@@ -3137,12 +3137,12 @@
     officialName: 'Gregory, Shaeleigh'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2285
         canLogin: true
         passwordForceReset: false
@@ -3176,12 +3176,12 @@
     officialName: 'Schultz, Yen'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2287
         canLogin: true
         passwordForceReset: false
@@ -3195,12 +3195,12 @@
     officialName: 'Johnson, Channing'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2288
         canLogin: true
         passwordForceReset: false
@@ -3258,12 +3258,12 @@
     officialName: 'Lara, Reece'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2294
         canLogin: true
         passwordForceReset: false
@@ -3277,12 +3277,12 @@
     officialName: 'Gillespie, Dora'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2295
         canLogin: true
         passwordForceReset: false
@@ -3316,12 +3316,12 @@
     officialName: 'Bryan, Kylan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2297
         canLogin: true
         passwordForceReset: false
@@ -3335,12 +3335,12 @@
     officialName: 'Hensley, Hakeem'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2298
         canLogin: true
         passwordForceReset: false
@@ -3374,12 +3374,12 @@
     officialName: 'Mack, Brendan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2300
         canLogin: true
         passwordForceReset: false
@@ -3393,12 +3393,12 @@
     officialName: 'Mack, Eugenia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2301
         canLogin: true
         passwordForceReset: false
@@ -3433,12 +3433,12 @@
     officialName: 'Collier, Cameran'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2303
         canLogin: true
         passwordForceReset: false
@@ -3452,12 +3452,12 @@
     officialName: 'Moore, Oprah'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2304
         canLogin: true
         passwordForceReset: false
@@ -3491,12 +3491,12 @@
     officialName: 'Trevino, Carly'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2307
         canLogin: true
         passwordForceReset: false
@@ -3510,12 +3510,12 @@
     officialName: 'Collier, Amir'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2308
         canLogin: true
         passwordForceReset: false
@@ -3550,12 +3550,12 @@
     officialName: 'Schultz, Camilla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2310
         canLogin: true
         passwordForceReset: false
@@ -3569,12 +3569,12 @@
     officialName: 'Benjamin, Dustin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2311
         canLogin: true
         passwordForceReset: false
@@ -3608,12 +3608,12 @@
     officialName: 'Kirkland, Haley'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2317
         canLogin: true
         passwordForceReset: false
@@ -3627,12 +3627,12 @@
     officialName: 'Kirkland, Eaton'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2318
         canLogin: true
         passwordForceReset: false
@@ -3666,12 +3666,12 @@
     officialName: 'Lara, Lunea'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2320
         canLogin: true
         passwordForceReset: false
@@ -3685,12 +3685,12 @@
     officialName: 'Bolton, Tobias'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2321
         canLogin: true
         passwordForceReset: false
@@ -3724,12 +3724,12 @@
     officialName: 'Gray, Cedric'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2324
         canLogin: true
         passwordForceReset: false
@@ -3743,12 +3743,12 @@
     officialName: 'Fernandez, Piper'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2325
         canLogin: true
         passwordForceReset: false
@@ -3806,12 +3806,12 @@
     officialName: 'Schultz, Evangeline'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2328
         canLogin: true
         passwordForceReset: false
@@ -3825,12 +3825,12 @@
     officialName: 'Cantrell, Harding'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2329
         canLogin: true
         passwordForceReset: false
@@ -3865,12 +3865,12 @@
     officialName: 'Dillon, Quinn'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2331
         canLogin: true
         passwordForceReset: false
@@ -3884,12 +3884,12 @@
     officialName: 'Bolton, Casey'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2332
         canLogin: true
         passwordForceReset: false
@@ -3943,12 +3943,12 @@
     officialName: 'Schultz, Kadeem'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2336
         canLogin: true
         passwordForceReset: false
@@ -3982,12 +3982,12 @@
     officialName: 'Merritt, Phoebe'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2341
         canLogin: true
         passwordForceReset: false
@@ -4001,12 +4001,12 @@
     officialName: 'Swanson, Tad'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2342
         canLogin: true
         passwordForceReset: false
@@ -4085,12 +4085,12 @@
     officialName: 'Armstrong, Amber'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2358
         canLogin: true
         passwordForceReset: false
@@ -4104,12 +4104,12 @@
     officialName: 'Ayers, Chaney'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2359
         canLogin: true
         passwordForceReset: false
@@ -4144,12 +4144,12 @@
     officialName: 'Dickerson, Gloria'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2361
         canLogin: true
         passwordForceReset: false
@@ -4163,12 +4163,12 @@
     officialName: 'Bryan, Igor'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2362
         canLogin: true
         passwordForceReset: false
@@ -4227,12 +4227,12 @@
     officialName: 'Blackwell, Coby'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2365
         canLogin: true
         passwordForceReset: false
@@ -4246,12 +4246,12 @@
     officialName: 'Dennis, Lillian'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2366
         canLogin: true
         passwordForceReset: false
@@ -4286,12 +4286,12 @@
     officialName: 'Weeks, Cameron'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2372
         canLogin: true
         passwordForceReset: false
@@ -4305,12 +4305,12 @@
     officialName: 'Cabrera, Perry'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2373
         canLogin: true
         passwordForceReset: false
@@ -4344,12 +4344,12 @@
     officialName: 'Wolf, Aileen'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2375
         canLogin: true
         passwordForceReset: false
@@ -4363,12 +4363,12 @@
     officialName: 'Parks, Jasper'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2376
         canLogin: true
         passwordForceReset: false
@@ -4402,12 +4402,12 @@
     officialName: 'Schultz, Calvin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2381
         canLogin: true
         passwordForceReset: false
@@ -4421,12 +4421,12 @@
     officialName: 'Nolan, Joy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2382
         canLogin: true
         passwordForceReset: false
@@ -4460,12 +4460,12 @@
     officialName: 'Collier, Reuben'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2384
         canLogin: true
         passwordForceReset: false
@@ -4479,12 +4479,12 @@
     officialName: 'Reese, Nicole'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2385
         canLogin: true
         passwordForceReset: false
@@ -4518,12 +4518,12 @@
     officialName: 'Lara, Tallulah'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2387
         canLogin: true
         passwordForceReset: false
@@ -4537,12 +4537,12 @@
     officialName: 'Barker, Wylie'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2388
         canLogin: true
         passwordForceReset: false
@@ -4576,12 +4576,12 @@
     officialName: 'Dillon, Sacha'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2390
         canLogin: true
         passwordForceReset: false
@@ -4595,12 +4595,12 @@
     officialName: 'Curtis, Jaquelyn'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2391
         canLogin: true
         passwordForceReset: false
@@ -4634,12 +4634,12 @@
     officialName: 'Zimmerman, Chase'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2393
         canLogin: true
         passwordForceReset: false
@@ -4653,12 +4653,12 @@
     officialName: 'Nolan, Nichole'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2394
         canLogin: true
         passwordForceReset: false
@@ -4692,12 +4692,12 @@
     officialName: 'Leonard, Charlotte'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2396
         canLogin: true
         passwordForceReset: false
@@ -4711,12 +4711,12 @@
     officialName: 'Leonard, Sawyer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2397
         canLogin: true
         passwordForceReset: false
@@ -4751,12 +4751,12 @@
     officialName: 'Schultz, Miriam'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2399
         canLogin: true
         passwordForceReset: false
@@ -4770,12 +4770,12 @@
     officialName: 'Gilmore, Quentin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2400
         canLogin: true
         passwordForceReset: false
@@ -4809,12 +4809,12 @@
     officialName: 'Aguilar, Lucy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2402
         canLogin: true
         passwordForceReset: false
@@ -4828,12 +4828,12 @@
     officialName: 'Watkins, Akeem'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2403
         canLogin: true
         passwordForceReset: false
@@ -4868,12 +4868,12 @@
     officialName: 'Anderson, Derek'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2405
         canLogin: true
         passwordForceReset: false
@@ -4887,12 +4887,12 @@
     officialName: 'Schultz, Denise'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2406
         canLogin: true
         passwordForceReset: false
@@ -4926,12 +4926,12 @@
     officialName: 'Hardy, Jonas'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2408
         canLogin: true
         passwordForceReset: false
@@ -4945,12 +4945,12 @@
     officialName: 'Charles, Leonard'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2409
         canLogin: true
         passwordForceReset: false
@@ -4984,12 +4984,12 @@
     officialName: 'Curtis, Brynne'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2412
         canLogin: true
         passwordForceReset: false
@@ -5003,12 +5003,12 @@
     officialName: 'Evans, Lester'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2413
         canLogin: true
         passwordForceReset: false
@@ -5042,12 +5042,12 @@
     officialName: 'Carr, Amber'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2422
         canLogin: true
         passwordForceReset: false
@@ -5061,12 +5061,12 @@
     officialName: 'Bates, Leroy'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2423
         canLogin: true
         passwordForceReset: false
@@ -5163,12 +5163,12 @@
     officialName: 'Schultz, Hiroko'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2428
         canLogin: true
         passwordForceReset: false
@@ -5182,12 +5182,12 @@
     officialName: 'Anderson, Echo'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2429
         canLogin: true
         passwordForceReset: false
@@ -5221,12 +5221,12 @@
     officialName: 'Workman, Candice'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2431
         canLogin: true
         passwordForceReset: false
@@ -5240,12 +5240,12 @@
     officialName: 'Workman, George'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2432
         canLogin: true
         passwordForceReset: false
@@ -5279,12 +5279,12 @@
     officialName: 'Downs, Gabriel'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2434
         canLogin: true
         passwordForceReset: false
@@ -5298,12 +5298,12 @@
     officialName: 'Schultz, Justina'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2435
         canLogin: true
         passwordForceReset: false
@@ -5337,12 +5337,12 @@
     officialName: 'Schultz, Gray'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2437
         canLogin: true
         passwordForceReset: false
@@ -5356,12 +5356,12 @@
     officialName: 'Nolan, Kitra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2438
         canLogin: true
         passwordForceReset: false
@@ -5419,12 +5419,12 @@
     officialName: 'Dennis, Yuri'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2442
         canLogin: true
         passwordForceReset: false
@@ -5438,12 +5438,12 @@
     officialName: 'Mcknight, Harrison'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2443
         canLogin: true
         passwordForceReset: false
@@ -5477,12 +5477,12 @@
     officialName: 'Potts, Hillary'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2445
         canLogin: true
         passwordForceReset: false
@@ -5496,12 +5496,12 @@
     officialName: 'Gregory, Nigel'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2446
         canLogin: true
         passwordForceReset: false
@@ -5535,12 +5535,12 @@
     officialName: 'Nolan, Honorato'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2448
         canLogin: true
         passwordForceReset: false
@@ -5554,12 +5554,12 @@
     officialName: 'Moore, Carly'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2449
         canLogin: true
         passwordForceReset: false
@@ -5593,12 +5593,12 @@
     officialName: 'Dillon, Blossom'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2451
         canLogin: true
         passwordForceReset: false
@@ -5612,12 +5612,12 @@
     officialName: 'Schultz, Kevin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2452
         canLogin: true
         passwordForceReset: false
@@ -5651,12 +5651,12 @@
     officialName: 'Trevino, Joy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2454
         canLogin: true
         passwordForceReset: false
@@ -5670,12 +5670,12 @@
     officialName: 'Zimmerman, Kieran'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2455
         canLogin: true
         passwordForceReset: false
@@ -5708,12 +5708,12 @@
     officialName: 'Schultz, Salvador'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2457
         canLogin: true
         passwordForceReset: false
@@ -5727,12 +5727,12 @@
     officialName: 'Dillon, Rama'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2458
         canLogin: true
         passwordForceReset: false
@@ -5786,12 +5786,12 @@
     officialName: 'Fowler, Phelan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2461
         canLogin: true
         passwordForceReset: false
@@ -5825,12 +5825,12 @@
     officialName: 'Bates, Travis'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2464
         canLogin: true
         passwordForceReset: false
@@ -5844,12 +5844,12 @@
     officialName: 'Ramsey, Virginia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2465
         canLogin: true
         passwordForceReset: false
@@ -5883,12 +5883,12 @@
     officialName: 'Parks, Laith'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2467
         canLogin: true
         passwordForceReset: false
@@ -5902,12 +5902,12 @@
     officialName: 'Parks, Phyllis'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2468
         canLogin: true
         passwordForceReset: false
@@ -5941,12 +5941,12 @@
     officialName: 'Alvarez, Kirby'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2470
         canLogin: true
         passwordForceReset: false
@@ -5960,12 +5960,12 @@
     officialName: 'Moore, Hamilton'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2471
         canLogin: true
         passwordForceReset: false
@@ -6019,12 +6019,12 @@
     officialName: 'Gomez, Vanna'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2474
         canLogin: true
         passwordForceReset: false
@@ -6038,12 +6038,12 @@
     officialName: 'Moore, Cain'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2475
         canLogin: true
         passwordForceReset: false
@@ -6077,12 +6077,12 @@
     officialName: 'Blackwell, Kyra'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2477
         canLogin: true
         passwordForceReset: false
@@ -6096,12 +6096,12 @@
     officialName: 'Clay, Vernon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2478
         canLogin: true
         passwordForceReset: false
@@ -6135,12 +6135,12 @@
     officialName: 'Schultz, Jacob'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2480
         canLogin: true
         passwordForceReset: false
@@ -6154,12 +6154,12 @@
     officialName: 'Lucas, Maia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2481
         canLogin: true
         passwordForceReset: false
@@ -6193,12 +6193,12 @@
     officialName: 'Guerra, Silas'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2483
         canLogin: true
         passwordForceReset: false
@@ -6212,12 +6212,12 @@
     officialName: 'Blackwell, Stephanie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2484
         canLogin: true
         passwordForceReset: false
@@ -6271,12 +6271,12 @@
     officialName: 'White, Marvin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2489
         canLogin: true
         passwordForceReset: false
@@ -6330,12 +6330,12 @@
     officialName: 'Tran, Darryl'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2492
         canLogin: true
         passwordForceReset: false
@@ -6349,12 +6349,12 @@
     officialName: 'Patel, Bethany'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2493
         canLogin: true
         passwordForceReset: false
@@ -6388,12 +6388,12 @@
     officialName: 'Freeman, Beck'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2496
         canLogin: true
         passwordForceReset: false
@@ -6407,12 +6407,12 @@
     officialName: 'Zimmerman, Gemma'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2497
         canLogin: true
         passwordForceReset: false
@@ -6446,12 +6446,12 @@
     officialName: 'Soto, Travis'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2499
         canLogin: true
         passwordForceReset: false
@@ -6465,12 +6465,12 @@
     officialName: 'Soto, Kathleen'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2500
         canLogin: true
         passwordForceReset: false
@@ -6505,12 +6505,12 @@
     officialName: 'Nolan, Jennifer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2502
         canLogin: true
         passwordForceReset: false
@@ -6524,12 +6524,12 @@
     officialName: 'Bates, Sydnee'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2503
         canLogin: true
         passwordForceReset: false
@@ -6584,12 +6584,12 @@
     officialName: 'Curtis, Aphrodite'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2506
         canLogin: true
         passwordForceReset: false
@@ -6603,12 +6603,12 @@
     officialName: 'Schultz, Kibo'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2507
         canLogin: true
         passwordForceReset: false
@@ -6642,12 +6642,12 @@
     officialName: 'Moore, Claudia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2509
         canLogin: true
         passwordForceReset: false
@@ -6661,12 +6661,12 @@
     officialName: 'Vang, Gil'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2510
         canLogin: true
         passwordForceReset: false
@@ -6701,12 +6701,12 @@
     officialName: 'Schultz, Lillith'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2512
         canLogin: true
         passwordForceReset: false
@@ -6720,12 +6720,12 @@
     officialName: 'Horton, Jerome'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2513
         canLogin: true
         passwordForceReset: false
@@ -6759,12 +6759,12 @@
     officialName: 'Moore, Amaya'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2515
         canLogin: true
         passwordForceReset: false
@@ -6778,12 +6778,12 @@
     officialName: 'Collier, Odysseus'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2516
         canLogin: true
         passwordForceReset: false
@@ -6817,12 +6817,12 @@
     officialName: 'Battle, Maia'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2518
         canLogin: true
         passwordForceReset: false
@@ -6836,12 +6836,12 @@
     officialName: 'Swanson, Cyrus'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2519
         canLogin: true
         passwordForceReset: false
@@ -6875,12 +6875,12 @@
     officialName: 'Lara, Gillian'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2521
         canLogin: true
         passwordForceReset: false
@@ -6894,12 +6894,12 @@
     officialName: 'Madden, Nigel'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2522
         canLogin: true
         passwordForceReset: false
@@ -6933,12 +6933,12 @@
     officialName: 'Blackwell, Tamekah'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2524
         canLogin: true
         passwordForceReset: false
@@ -6952,12 +6952,12 @@
     officialName: 'Schultz, Tobias'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2525
         canLogin: true
         passwordForceReset: false
@@ -6991,12 +6991,12 @@
     officialName: 'Moore, Gannon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2527
         canLogin: true
         passwordForceReset: false
@@ -7010,12 +7010,12 @@
     officialName: 'Schultz, Priscilla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2528
         canLogin: true
         passwordForceReset: false
@@ -7049,12 +7049,12 @@
     officialName: 'Stout, Raymond'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2530
         canLogin: true
         passwordForceReset: false
@@ -7068,12 +7068,12 @@
     officialName: 'Swanson, Mikayla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2531
         canLogin: true
         passwordForceReset: false
@@ -7107,12 +7107,12 @@
     officialName: 'Schultz, Rajah'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2533
         canLogin: true
         passwordForceReset: false
@@ -7126,12 +7126,12 @@
     officialName: 'Madden, Cailin'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2534
         canLogin: true
         passwordForceReset: false
@@ -7166,12 +7166,12 @@
     officialName: 'Patel, Victoria'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2536
         canLogin: true
         passwordForceReset: false
@@ -7205,12 +7205,12 @@
     officialName: 'Shields, Erasmus'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2539
         canLogin: true
         passwordForceReset: false
@@ -7244,12 +7244,12 @@
     officialName: 'Britt, Vernon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2542
         canLogin: true
         passwordForceReset: false
@@ -7263,12 +7263,12 @@
     officialName: 'Britt, Violet'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2543
         canLogin: true
         passwordForceReset: false
@@ -7302,12 +7302,12 @@
     officialName: 'Gregory, Iliana'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2546
         canLogin: true
         passwordForceReset: false
@@ -7321,12 +7321,12 @@
     officialName: 'Gregory, Porter'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2547
         canLogin: true
         passwordForceReset: false
@@ -7361,12 +7361,12 @@
     officialName: 'Goodwin, Mara'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2549
         canLogin: true
         passwordForceReset: false
@@ -7380,12 +7380,12 @@
     officialName: 'Dean, Fuller'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2550
         canLogin: true
         passwordForceReset: false
@@ -7419,12 +7419,12 @@
     officialName: 'Hardy, Tara'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2556
         canLogin: true
         passwordForceReset: false
@@ -7438,12 +7438,12 @@
     officialName: 'Moore, Dexter'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2557
         canLogin: true
         passwordForceReset: false
@@ -7457,12 +7457,12 @@
     officialName: 'Vasquez, Karyn'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2559
         canLogin: true
         passwordForceReset: false
@@ -7476,12 +7476,12 @@
     officialName: 'Love, Dillon'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2560
         canLogin: true
         passwordForceReset: false
@@ -7539,12 +7539,12 @@
     officialName: 'Schultz, Ivory'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2564
         canLogin: true
         passwordForceReset: false
@@ -7558,12 +7558,12 @@
     officialName: 'Blackwell, Basil'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2565
         canLogin: true
         passwordForceReset: false
@@ -7616,12 +7616,12 @@
     officialName: 'Dickerson, Lucy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2568
         canLogin: true
         passwordForceReset: false
@@ -7635,12 +7635,12 @@
     officialName: 'Schultz, Dustin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2569
         canLogin: true
         passwordForceReset: false
@@ -7674,12 +7674,12 @@
     officialName: 'Dennis, Haley'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2571
         canLogin: true
         passwordForceReset: false
@@ -7693,12 +7693,12 @@
     officialName: 'Parks, Alec'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2572
         canLogin: true
         passwordForceReset: false
@@ -7732,12 +7732,12 @@
     officialName: 'Hardy, Dustin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2574
         canLogin: true
         passwordForceReset: false
@@ -7751,12 +7751,12 @@
     officialName: 'Vasquez, Nora'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2575
         canLogin: true
         passwordForceReset: false
@@ -7809,12 +7809,12 @@
     officialName: 'Lane, Tasha'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2578
         canLogin: true
         passwordForceReset: false
@@ -7828,12 +7828,12 @@
     officialName: 'Cherry, Arsenio'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2579
         canLogin: true
         passwordForceReset: false
@@ -7867,12 +7867,12 @@
     officialName: 'Collier, Aline'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2581
         canLogin: true
         passwordForceReset: false
@@ -7886,12 +7886,12 @@
     officialName: 'Blackwell, Beau'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2582
         canLogin: true
         passwordForceReset: false
@@ -7925,12 +7925,12 @@
     officialName: 'Zimmerman, Bianca'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2584
         canLogin: true
         passwordForceReset: false
@@ -7944,12 +7944,12 @@
     officialName: 'Moore, Cadman'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2585
         canLogin: true
         passwordForceReset: false
@@ -7983,12 +7983,12 @@
     officialName: 'Swanson, Orla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2587
         canLogin: true
         passwordForceReset: false
@@ -8002,12 +8002,12 @@
     officialName: 'Dennis, Damian'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2588
         canLogin: true
         passwordForceReset: false
@@ -8041,12 +8041,12 @@
     officialName: 'Solomon, Kaye'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2590
         canLogin: true
         passwordForceReset: false
@@ -8060,12 +8060,12 @@
     officialName: 'Solomon, Stewart'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2591
         canLogin: true
         passwordForceReset: false
@@ -8099,12 +8099,12 @@
     officialName: 'Parks, Merrill'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2593
         canLogin: true
         passwordForceReset: false
@@ -8118,12 +8118,12 @@
     officialName: 'Hubbard, Renee'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2594
         canLogin: true
         passwordForceReset: false
@@ -8157,12 +8157,12 @@
     officialName: 'Lee, Isabella'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2596
         canLogin: true
         passwordForceReset: false
@@ -8176,12 +8176,12 @@
     officialName: 'Schultz, Carol'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2597
         canLogin: true
         passwordForceReset: false
@@ -8215,12 +8215,12 @@
     officialName: 'Joyce, Nathan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2599
         canLogin: true
         passwordForceReset: false
@@ -8234,12 +8234,12 @@
     officialName: 'Parks, Mollie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2600
         canLogin: true
         passwordForceReset: false
@@ -8273,12 +8273,12 @@
     officialName: 'Farley, Quinlan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2602
         canLogin: true
         passwordForceReset: false
@@ -8292,12 +8292,12 @@
     officialName: 'Anderson, Rachel'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2603
         canLogin: true
         passwordForceReset: false
@@ -8331,12 +8331,12 @@
     officialName: 'Blackwell, Cedric'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2605
         canLogin: true
         passwordForceReset: false
@@ -8350,12 +8350,12 @@
     officialName: 'Schultz, Roary'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2606
         canLogin: true
         passwordForceReset: false
@@ -8389,12 +8389,12 @@
     officialName: 'Mcknight, Isaac'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2608
         canLogin: true
         passwordForceReset: false
@@ -8408,12 +8408,12 @@
     officialName: 'Schultz, Beatrice'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2609
         canLogin: true
         passwordForceReset: false
@@ -8467,12 +8467,12 @@
     officialName: 'Schultz, Hector'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2612
         canLogin: true
         passwordForceReset: false
@@ -8486,12 +8486,12 @@
     officialName: 'Dale, Kirsten'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2613
         canLogin: true
         passwordForceReset: false
@@ -8546,12 +8546,12 @@
     officialName: 'Patel, Karleigh'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2616
         canLogin: true
         passwordForceReset: false
@@ -8565,12 +8565,12 @@
     officialName: 'Patel, Neville'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2617
         canLogin: true
         passwordForceReset: false
@@ -8604,12 +8604,12 @@
     officialName: 'Vang, Fay'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2619
         canLogin: true
         passwordForceReset: false
@@ -8623,12 +8623,12 @@
     officialName: 'Patton, Sawyer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2620
         canLogin: true
         passwordForceReset: false
@@ -8662,12 +8662,12 @@
     officialName: 'Alvarez, Sawyer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2622
         canLogin: true
         passwordForceReset: false
@@ -8681,12 +8681,12 @@
     officialName: 'Dennis, Miriam'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2623
         canLogin: true
         passwordForceReset: false
@@ -8720,12 +8720,12 @@
     officialName: 'Schultz, Camilla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2625
         canLogin: true
         passwordForceReset: false
@@ -8739,12 +8739,12 @@
     officialName: 'Patel, Dexter'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2626
         canLogin: true
         passwordForceReset: false
@@ -8778,12 +8778,12 @@
     officialName: 'Rosa, Ishmael'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2628
         canLogin: true
         passwordForceReset: false
@@ -8797,12 +8797,12 @@
     officialName: 'Padilla, Yvette'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2629
         canLogin: true
         passwordForceReset: false
@@ -8836,12 +8836,12 @@
     officialName: 'Rosa, Baker'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2631
         canLogin: true
         passwordForceReset: false
@@ -8855,12 +8855,12 @@
     officialName: 'Collier, Claire'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2632
         canLogin: true
         passwordForceReset: false
@@ -8894,12 +8894,12 @@
     officialName: 'Battle, Micah'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2634
         canLogin: true
         passwordForceReset: false
@@ -8913,12 +8913,12 @@
     officialName: 'Bolton, Renee'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2635
         canLogin: true
         passwordForceReset: false
@@ -8952,12 +8952,12 @@
     officialName: 'Ramos, Theodore'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2637
         canLogin: true
         passwordForceReset: false
@@ -8971,12 +8971,12 @@
     officialName: 'Bryan, Nicole'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2638
         canLogin: true
         passwordForceReset: false
@@ -9010,12 +9010,12 @@
     officialName: 'Nolan, Slade'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2640
         canLogin: true
         passwordForceReset: false
@@ -9029,12 +9029,12 @@
     officialName: 'Schultz, Colt'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2641
         canLogin: true
         passwordForceReset: false
@@ -9068,12 +9068,12 @@
     officialName: 'Washington, Sawyer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2643
         canLogin: true
         passwordForceReset: false
@@ -9087,12 +9087,12 @@
     officialName: 'Crosby, Stephanie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2644
         canLogin: true
         passwordForceReset: false
@@ -9126,12 +9126,12 @@
     officialName: 'Schultz, Adrian'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2646
         canLogin: true
         passwordForceReset: false
@@ -9145,12 +9145,12 @@
     officialName: 'Parks, Rhoda'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2647
         canLogin: true
         passwordForceReset: false
@@ -9184,12 +9184,12 @@
     officialName: 'Schultz, Ima'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2649
         canLogin: true
         passwordForceReset: false
@@ -9203,12 +9203,12 @@
     officialName: 'Zimmerman, Hoyt'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2650
         canLogin: true
         passwordForceReset: false
@@ -9262,12 +9262,12 @@
     officialName: 'Vang, Maggy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2653
         canLogin: true
         passwordForceReset: false
@@ -9301,12 +9301,12 @@
     officialName: 'Moore, Hayfa'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2655
         canLogin: true
         passwordForceReset: false
@@ -9320,12 +9320,12 @@
     officialName: 'Stout, Austin'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2656
         canLogin: true
         passwordForceReset: false
@@ -9359,12 +9359,12 @@
     officialName: 'Madden, Kelsie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2658
         canLogin: true
         passwordForceReset: false
@@ -9378,12 +9378,12 @@
     officialName: 'Swanson, Silas'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2659
         canLogin: true
         passwordForceReset: false
@@ -9417,12 +9417,12 @@
     officialName: 'Parks, Kylynn'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2661
         canLogin: true
         passwordForceReset: false
@@ -9436,12 +9436,12 @@
     officialName: 'Madden, Maite'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2662
         canLogin: true
         passwordForceReset: false
@@ -9475,12 +9475,12 @@
     officialName: 'Bolton, Beverly'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2664
         canLogin: true
         passwordForceReset: false
@@ -9494,12 +9494,12 @@
     officialName: 'Swanson, Christopher'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2665
         canLogin: true
         passwordForceReset: false
@@ -9552,12 +9552,12 @@
     officialName: 'Camacho, Danielle'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2668
         canLogin: true
         passwordForceReset: false
@@ -9571,12 +9571,12 @@
     officialName: 'Schultz, Dorian'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2669
         canLogin: true
         passwordForceReset: false
@@ -9610,12 +9610,12 @@
     officialName: 'Doyle, Marny'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2671
         canLogin: true
         passwordForceReset: false
@@ -9629,12 +9629,12 @@
     officialName: 'Bowers, Elvis'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2672
         canLogin: true
         passwordForceReset: false
@@ -9669,12 +9669,12 @@
     officialName: 'Gregory, Colorado'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2674
         canLogin: true
         passwordForceReset: false
@@ -9688,12 +9688,12 @@
     officialName: 'Wolf, Freya'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2675
         canLogin: true
         passwordForceReset: false
@@ -9727,12 +9727,12 @@
     officialName: 'Schultz, Jemima'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2677
         canLogin: true
         passwordForceReset: false
@@ -9746,12 +9746,12 @@
     officialName: 'Wolf, Amir'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2678
         canLogin: true
         passwordForceReset: false
@@ -9805,12 +9805,12 @@
     officialName: 'Payne, Elliott'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2681
         canLogin: true
         passwordForceReset: false
@@ -9824,12 +9824,12 @@
     officialName: 'Curtis, Amela'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2682
         canLogin: true
         passwordForceReset: false
@@ -9863,12 +9863,12 @@
     officialName: 'Lane, Mikayla'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2684
         canLogin: true
         passwordForceReset: false
@@ -9882,12 +9882,12 @@
     officialName: 'Schroeder, Raja'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2685
         canLogin: true
         passwordForceReset: false
@@ -9921,12 +9921,12 @@
     officialName: 'Charles, Buffy'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2687
         canLogin: true
         passwordForceReset: false
@@ -9940,12 +9940,12 @@
     officialName: 'Bolton, Cullen'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2688
         canLogin: true
         passwordForceReset: false
@@ -9979,12 +9979,12 @@
     officialName: 'Schultz, Rooney'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2690
         canLogin: true
         passwordForceReset: false
@@ -9998,12 +9998,12 @@
     officialName: 'Ball, Gail'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2691
         canLogin: true
         passwordForceReset: false
@@ -10037,12 +10037,12 @@
     officialName: 'Maldonado, Leslie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2693
         canLogin: true
         passwordForceReset: false
@@ -10056,12 +10056,12 @@
     officialName: 'Maldonado, Colorado'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2694
         canLogin: true
         passwordForceReset: false
@@ -10115,12 +10115,12 @@
     officialName: 'Parks, Camden'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2697
         canLogin: true
         passwordForceReset: false
@@ -10134,12 +10134,12 @@
     officialName: 'Schultz, Karyn'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2698
         canLogin: true
         passwordForceReset: false
@@ -10193,12 +10193,12 @@
     officialName: 'Vang, Lesley'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2701
         canLogin: true
         passwordForceReset: false
@@ -10232,12 +10232,12 @@
     officialName: 'Moore, Ifeoma'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2703
         canLogin: true
         passwordForceReset: false
@@ -10251,12 +10251,12 @@
     officialName: 'Moore, Quinn'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2704
         canLogin: true
         passwordForceReset: false
@@ -10290,12 +10290,12 @@
     officialName: 'Schultz, Allen'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2706
         canLogin: true
         passwordForceReset: false
@@ -10309,12 +10309,12 @@
     officialName: 'Bolton, Skyler'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2707
         canLogin: true
         passwordForceReset: false
@@ -10348,12 +10348,12 @@
     officialName: 'Conrad, Rowan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2709
         canLogin: true
         passwordForceReset: false
@@ -10367,12 +10367,12 @@
     officialName: 'Conrad, Emery'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2710
         canLogin: true
         passwordForceReset: false
@@ -10406,12 +10406,12 @@
     officialName: 'Schultz, Tamekah'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2712
         canLogin: true
         passwordForceReset: false
@@ -10425,12 +10425,12 @@
     officialName: 'Charles, Dalton'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2713
         canLogin: true
         passwordForceReset: false
@@ -10485,12 +10485,12 @@
     officialName: 'Price, Genevieve'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2716
         canLogin: true
         passwordForceReset: false
@@ -10504,12 +10504,12 @@
     officialName: 'Curtis, Scott'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2717
         canLogin: true
         passwordForceReset: false
@@ -10543,12 +10543,12 @@
     officialName: 'Schultz, Hillary'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2720
         canLogin: true
         passwordForceReset: false
@@ -10562,12 +10562,12 @@
     officialName: 'Madden, Channing'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2721
         canLogin: true
         passwordForceReset: false
@@ -10625,12 +10625,12 @@
     officialName: 'Moore, Stephanie'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2724
         canLogin: true
         passwordForceReset: false
@@ -10644,12 +10644,12 @@
     officialName: 'Moore, Ezra'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2725
         canLogin: true
         passwordForceReset: false
@@ -10683,12 +10683,12 @@
     officialName: 'Schultz, Oliver'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2727
         canLogin: true
         passwordForceReset: false
@@ -10702,12 +10702,12 @@
     officialName: 'Blackwell, Zena'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2728
         canLogin: true
         passwordForceReset: false
@@ -10741,12 +10741,12 @@
     officialName: 'Moore, Martha'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2730
         canLogin: true
         passwordForceReset: false
@@ -10760,12 +10760,12 @@
     officialName: 'Mcknight, Daquan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2731
         canLogin: true
         passwordForceReset: false
@@ -10847,12 +10847,12 @@
     officialName: 'Schultz, Ivory'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2738
         canLogin: true
         passwordForceReset: false
@@ -10866,12 +10866,12 @@
     officialName: 'Schultz, Kellie'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2739
         canLogin: true
         passwordForceReset: false
@@ -10904,12 +10904,12 @@
     officialName: 'Farley, Kim'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2741
         canLogin: true
         passwordForceReset: false
@@ -10923,12 +10923,12 @@
     officialName: 'Schultz, Daquan'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2742
         canLogin: true
         passwordForceReset: false
@@ -10962,12 +10962,12 @@
     officialName: 'May, Reed'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2744
         canLogin: true
         passwordForceReset: false
@@ -10981,12 +10981,12 @@
     officialName: 'Hoover, Cathleen'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2745
         canLogin: true
         passwordForceReset: false
@@ -11020,12 +11020,12 @@
     officialName: 'Abbott, Leonard'
     gender: M
     status: Left
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2747
         canLogin: true
         passwordForceReset: false
@@ -11039,12 +11039,12 @@
     officialName: 'Britt, Alfreda'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2748
         canLogin: true
         passwordForceReset: false
@@ -11078,12 +11078,12 @@
     officialName: 'Pickett, Lyle'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2750
         canLogin: true
         passwordForceReset: false
@@ -11097,12 +11097,12 @@
     officialName: 'Roberson, Maite'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2751
         canLogin: true
         passwordForceReset: false
@@ -11135,12 +11135,12 @@
     officialName: 'Anderson, Noelle'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2753
         canLogin: true
         passwordForceReset: false
@@ -11174,12 +11174,12 @@
     officialName: 'Dalton, Palmer'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2755
         canLogin: true
         passwordForceReset: false
@@ -11193,12 +11193,12 @@
     officialName: 'Gomez, Harriet'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2756
         canLogin: true
         passwordForceReset: false
@@ -11231,12 +11231,12 @@
     officialName: 'Dennis, Lucius'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2758
         canLogin: true
         passwordForceReset: false
@@ -11250,12 +11250,12 @@
     officialName: 'Dennis, Keely'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2759
         canLogin: true
         passwordForceReset: false
@@ -11309,12 +11309,12 @@
     officialName: 'Martinez, Katelyn'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2762
         canLogin: true
         passwordForceReset: false
@@ -11328,12 +11328,12 @@
     officialName: 'Moore, Berk'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2763
         canLogin: true
         passwordForceReset: false
@@ -11366,12 +11366,12 @@
     officialName: 'Higgins, Amanda'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2765
         canLogin: true
         passwordForceReset: false
@@ -11385,12 +11385,12 @@
     officialName: 'Higgins, Lane'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2766
         canLogin: true
         passwordForceReset: false
@@ -11423,12 +11423,12 @@
     officialName: 'Martinez, Kylan'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2768
         canLogin: true
         passwordForceReset: false
@@ -11442,12 +11442,12 @@
     officialName: 'Swanson, Thane'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2769
         canLogin: true
         passwordForceReset: false
@@ -11480,12 +11480,12 @@
     officialName: 'Battle, Rajah'
     gender: M
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2771
         canLogin: true
         passwordForceReset: false
@@ -11499,12 +11499,12 @@
     officialName: 'Armstrong, Darrel'
     gender: F
     status: Full
-    parent:
+    careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
     securityUser:
         securityRoles:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
         username: 2772
         canLogin: true
         passwordForceReset: false

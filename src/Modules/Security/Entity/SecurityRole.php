@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class SecurityRoles
@@ -351,52 +352,23 @@ class SecurityRole extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 29/06/2020 10:06
+     * coreData
+     * @return array
+     * 22/07/2020 08:43
      */
-    public function create(): array
+    public function coreData(): array
     {
-        return ["CREATE TABLE `__prefix__SecurityRole` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                    `role` VARCHAR(63) NOT NULL, 
-                    `label` VARCHAR(63) NOT NULL,
-                    `category` VARCHAR(63) NOT NULL, 
-                    `allow_login` TINYINT(1) NOT NULL, 
-                    `allow_future_years` TINYINT(1) NOT NULL, 
-                    `allow_past_years` TINYINT(1) NOT NULL, 
-                    PRIMARY KEY(`id`),
-                    UNIQUE KEY `role` (`role`)
-                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;",
-                "CREATE TABLE `__prefix__SecurityRoleChildren` (
-                     `parent` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                     `child` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', 
-                     INDEX `parent` (`parent`), 
-                     INDEX `child` (`child`), 
-                     PRIMARY KEY(`parent`, `child`)
-                ) DEFAULT CHARACTER SET `utf8mb4` COLLATE `utf8mb4_general_ci` ENGINE = InnoDB;"];
+        return Yaml::parse(file_get_contents(__DIR__ . '/SecurityRoleCoreData.yaml'));
     }
 
     /**
-     * foreignConstraints
-     * @return string
-     * 29/06/2020 10:07
+     * coreData
+     * @return array
+     * 22/07/2020 08:43
      */
-    public function foreignConstraints(): string
+    public function coreDataLinks(): array
     {
-        return "ALTER TABLE `__prefix__SecurityRoleChildren`
-                    ADD CONSTRAINT FOREIGN KEY (`parent`) REFERENCES `__prefix__SecurityRole` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__SecurityRole` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 29/06/2020 10:07
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
+        return Yaml::parse(file_get_contents(__DIR__ . '/SecurityRoleCoreLinks.yaml'));
     }
 
     /**

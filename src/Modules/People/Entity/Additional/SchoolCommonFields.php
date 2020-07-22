@@ -14,7 +14,7 @@
  * Date: 19/07/2020
  * Time: 15:20
  */
-namespace App\Modules\People\Entity;
+namespace App\Modules\People\Entity\Additional;
 
 use App\Manager\EntityInterface;
 use App\Modules\School\Entity\House;

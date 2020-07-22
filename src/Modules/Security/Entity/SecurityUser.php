@@ -17,18 +17,15 @@
 namespace App\Modules\Security\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Contact;
-use App\Modules\People\Entity\ParentContact;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -83,15 +80,15 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $canLogin;
+    private $canLogin = true;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean",options={"default": 0, "comment": "Force user to reset password on next login."})
      */
-    private $passwordForceReset;
+    private $passwordForceReset = false;
 
     /**
      * @var string|null
@@ -119,7 +116,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint", options={"default": "0"})
+     * @ORM\Column(type="smallint", options={"default": 0})
      */
     private $failCount = 0;
 
@@ -200,6 +197,11 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function setUsername(?string $username): SecurityUser
     {
+        if (empty($username)) {
+            if ($this->getPerson() && $this->getPerson()->getContact() && ($email = $this->getPerson()->getContact()->getEmail())) {
+                $username = $email;
+            }
+        }
         $this->username = $username;
         return $this;
     }
@@ -559,7 +561,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
             $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStaff()->getLocale()->getCode() : null;
         } elseif ($this->getPerson() && $this->getPerson()->isStudent()) {
             $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStudent()->getLocale()->getCode() : null;
-        } elseif ($this->getPerson() && $this->getPerson()->isParent()) {
+        } elseif ($this->getPerson() && $this->getPerson()->isCareGiver()) {
             $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getParent()->getLocale()->getCode() : null;
         }
         return $locale ?: ParameterBagHelper::get('locale');
@@ -567,10 +569,10 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * getParent
-     * @return ParentContact|null
+     * @return CareGiver|null
      * 11/07/2020 12:43
      */
-    public function getParent(): ?ParentContact
+    public function getParent(): ?CareGiver
     {
         return $this->getPerson() ? $this->getPerson()->getParent() : null ;
     }

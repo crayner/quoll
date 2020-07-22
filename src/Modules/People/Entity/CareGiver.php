@@ -26,11 +26,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class ParentContact
+ * Class CareGiver
  * @package App\Modules\People\Entity
  * @author Craig Rayner <craig@craigrayner.com>
- * @ORM\Entity(repositoryClass="App\Modules\People\Repository\ParentContactRepository")
- * @ORM\Table(name="ParentContact",
+ * @ORM\Entity(repositoryClass="App\Modules\People\Repository\CareGiverRepository")
+ * @ORM\Table(name="CareGiver",
  *  uniqueConstraints={
  *      @ORM\UniqueConstraint(name="person",columns={"person"})
  *  },
@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @UniqueEntity("person")
  */
-class ParentContact extends AbstractEntity
+class CareGiver extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -54,7 +54,7 @@ class ParentContact extends AbstractEntity
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="parent", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="careGiver", cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -110,9 +110,9 @@ class ParentContact extends AbstractEntity
 
     /**
      * @param string|null $id
-     * @return ParentContact
+     * @return CareGiver
      */
-    public function setId(?string $id): ParentContact
+    public function setId(?string $id): CareGiver
     {
         $this->id = $id;
         return $this;
@@ -133,11 +133,11 @@ class ParentContact extends AbstractEntity
      * @return $this
      * 2/07/2020 09:11
      */
-    public function setPerson(?Person $person, bool $reflect = true): ParentContact
+    public function setPerson(?Person $person, bool $reflect = true): CareGiver
     {
         $this->person = $person;
         if ($person && $person instanceof Person) {
-            $person->setParent($this, false);
+            $person->setCareGiver($this, false);
         }
         return $this;
     }
@@ -152,9 +152,9 @@ class ParentContact extends AbstractEntity
 
     /**
      * @param string|null $vehicleRegistration
-     * @return ParentContact
+     * @return CareGiver
      */
-    public function setVehicleRegistration(?string $vehicleRegistration): ParentContact
+    public function setVehicleRegistration(?string $vehicleRegistration): CareGiver
     {
         $this->vehicleRegistration = $vehicleRegistration;
         return $this;
@@ -170,9 +170,9 @@ class ParentContact extends AbstractEntity
 
     /**
      * @param I18n|null $locale
-     * @return ParentContact
+     * @return CareGiver
      */
-    public function setLocale(?I18n $locale): ParentContact
+    public function setLocale(?I18n $locale): CareGiver
     {
         $this->locale = $locale;
         return $this;
@@ -188,9 +188,9 @@ class ParentContact extends AbstractEntity
 
     /**
      * @param bool|null $receiveNotificationEmails
-     * @return ParentContact
+     * @return CareGiver
      */
-    public function setReceiveNotificationEmails(?bool $receiveNotificationEmails): ParentContact
+    public function setReceiveNotificationEmails(?bool $receiveNotificationEmails): CareGiver
     {
         $this->receiveNotificationEmails = (bool)$receiveNotificationEmails;
         return $this;
@@ -206,9 +206,9 @@ class ParentContact extends AbstractEntity
 
     /**
      * @param bool|null $viewCalendarSchool
-     * @return ParentContact
+     * @return CareGiver
      */
-    public function setViewCalendarSchool(?bool $viewCalendarSchool): ParentContact
+    public function setViewCalendarSchool(?bool $viewCalendarSchool): CareGiver
     {
         $this->viewCalendarSchool = (bool)$viewCalendarSchool;
         return $this;
@@ -250,7 +250,7 @@ class ParentContact extends AbstractEntity
      * @return $this
      * 18/07/2020 10:40
      */
-    public function addMemberOfFamily(?FamilyMemberAdult $parent): ParentContact
+    public function addMemberOfFamily(?FamilyMemberAdult $parent): CareGiver
     {
         if (null === $parent || $this->getMemberOfFamilies()->contains($parent)) {
             return $this;

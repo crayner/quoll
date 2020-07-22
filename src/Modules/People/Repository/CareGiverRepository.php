@@ -16,7 +16,7 @@
  */
 namespace App\Modules\People\Repository;
 
-use App\Modules\People\Entity\ParentContact;
+use App\Modules\People\Entity\CareGiver;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,7 +25,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @package App\Modules\People\Repository
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class ParentContactRepository extends ServiceEntityRepository
+class CareGiverRepository extends ServiceEntityRepository
 {
     /**
      * ParentContactRepository constructor.
@@ -33,6 +33,6 @@ class ParentContactRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ParentContact::class);
+        parent::__construct($registry, CareGiver::class);
     }
 }

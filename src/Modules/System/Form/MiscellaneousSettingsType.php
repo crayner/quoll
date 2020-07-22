@@ -98,7 +98,7 @@ class MiscellaneousSettingsType extends AbstractType
                                 'query_builder' => function(EntityRepository $er){
                                     return $er->createQueryBuilder('s')
                                         ->where('s.active = :yes')
-                                        ->setParameter('yes', 'Y')
+                                        ->setParameter('yes', true)
                                         ->orderBy('s.name')
                                     ;
                                 },

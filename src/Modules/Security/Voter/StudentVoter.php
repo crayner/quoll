@@ -158,7 +158,7 @@ class StudentVoter extends RoleHierarchyVoter
             if (self::getPerson()->isStudent()) {
                 self::$studentProfileAccess = 'My';
             }
-            if (self::getPerson()->isParent()) {
+            if (self::getPerson()->isCareGiver()) {
                 self::$studentProfileAccess = 'Parent';
             }
             if (self::getPerson()->isTeacher() || self::getPerson()->isSupport()) {

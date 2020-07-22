@@ -22,6 +22,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Modules\System\Entity\Action;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\DisplaySettingsType;
 use App\Modules\System\Form\LocalisationSettingsType;
@@ -32,6 +33,7 @@ use App\Modules\System\Form\SystemSettingsType;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
 use App\Util\ErrorMessageHelper;
+use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,6 +92,22 @@ class SettingController extends AbstractPageController
                 'attr' => [
                     'encType' => 'multipart/form-data',
                 ],
+                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationBackground',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
+                    ]
+                ),
+                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationLogo',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
+                    ]
+                ),
             ]
         );
 
@@ -232,5 +250,42 @@ class SettingController extends AbstractPageController
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs('Display Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);
+    }
+
+    /**
+     * removeSettingImage
+     * 22/07/2020 10:13
+     * @param string $scope
+     * @param string $name
+     * @param string $route
+     * @param string $url
+     * @Route("/setting/{scope}/image/{name}/{route}/{url}/removal/",name="setting_image_removal")
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function removeSettingImage(string $scope, string $name, string $route, string $url)
+    {
+        $actions = ProviderFactory::create(Action::class)->findLike(['routeList' => $route]);
+        dump($actions,$route);
+        $roles = [];
+        foreach($actions as $action) {
+            $roles = array_merge($roles, $action->getSecurityRoles());
+        }
+        if ($this->isGranted($roles)) {
+            $sm = SettingFactory::getSettingManager();
+            $imageFile = $sm->get($scope, $name);
+            if (!empty($imageFile) && strpos($imageFile, 'build') === false && strpos($imageFile, 'static') === false) {
+                ImageHelper::deleteImage($imageFile);
+                $sm->set($scope,$name,null);
+                $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+            } else {
+                $this->addFlash('info', ErrorMessageHelper::onlyNothingToDoMessage());
+            }
+        } else {
+            $this->addFlash('error', ErrorMessageHelper::onlyNoAccessMessage());
+        }
+        $data['status'] = 'redirect';
+        $data['redirect'] = urldecode($url);
+        return new JsonResponse($data);
     }
 }

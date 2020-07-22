@@ -16,7 +16,7 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Modules\People\Entity\ParentContact;
+use App\Modules\People\Entity\CareGiver;
 use App\Provider\AbstractProvider;
 
 /**
@@ -24,10 +24,10 @@ use App\Provider\AbstractProvider;
  * @package App\Modules\People\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class ParentContactProvider extends AbstractProvider
+class CareGiverProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected $entityName = ParentContact::class;
+    protected $entityName = CareGiver::class;
 }

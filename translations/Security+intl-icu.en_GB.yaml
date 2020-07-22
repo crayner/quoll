@@ -38,7 +38,7 @@ ROLE_SYSTEM_ADMIN: System Administrator
 ROLE_REGISTRAR: Registrar
 ROLE_SUPPORT: Support Staff
 ROLE_HEAD_TEACHER: Head Teacher
-ROLE_PARENT: Parent
+ROLE_CARE_GIVER: Parent
 ROLE_PRINCIPAL: Principal
 ROLE_LIBRARIAN: Librarian
 ROLE_FINANCE: Financial Staff
@@ -106,4 +106,4 @@ Full Access: Full Access
 Other: Other
 Parent: Parent
 Staff: Staff
-Parent, Staff: Parent, Staff
+Care Giver, Staff: Care Giver, Staff

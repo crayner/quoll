@@ -20,7 +20,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Entity\SchoolCommonFields;
+use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\I18n;

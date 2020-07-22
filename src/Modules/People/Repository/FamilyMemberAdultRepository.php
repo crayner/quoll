@@ -139,7 +139,7 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
             ->andWhere('p.securityRoles LIKE :role')
             ->andWhere('p.status = :full')
             ->setParameter('full', 'Full')
-            ->setParameter('role', '%ROLE_PARENT%')
+            ->setParameter('role', '%ROLE_CARE_GIVER%')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()

@@ -3,8 +3,7 @@
         entryRoute: alert_level_list
     source:
         table: App\Modules\System\Entity\Module
-        findBy:
-            name: School
+        findBy: { name: School }
     target: module
 -
     findBy:
@@ -396,14 +395,12 @@
         entryRoute: roll_group_list
     source:
         table: App\Modules\System\Entity\Module
-        findBy:
-            name: 'Roll Group'
+        findBy: { name: 'Roll Group' }
     target: module
 -
     findBy:
         entryRoute: facility_settings
     source:
         table: App\Modules\System\Entity\Module
-        findBy:
-            name: School
+        findBy: { name: School }
     target: module

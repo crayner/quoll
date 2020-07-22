@@ -15,7 +15,7 @@ namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Entity\SchoolCommonFields;
+use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;

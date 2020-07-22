@@ -104,7 +104,7 @@ class FamilyAdultType extends AbstractType
                 )
             ;
         } else {
-            $parentRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(['ROLE_PARENT']);
+            $parentRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(['ROLE_CARE_GIVER']);
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [

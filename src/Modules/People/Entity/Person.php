@@ -28,7 +28,6 @@ use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as ASSERT;
 
 /**
@@ -42,14 +41,14 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  *      @ORM\UniqueConstraint(name="staff",columns={"staff"}),
  *      @ORM\UniqueConstraint(name="contact",columns={"contact"}),
  *      @ORM\UniqueConstraint(name="personal_documentation",columns={"personal_documentation"}),
- *      @ORM\UniqueConstraint(name="parent",columns={"parent"})}
+ *      @ORM\UniqueConstraint(name="care_giver",columns={"care_giver"})}
  *     )
  * @UniqueEntity("student")
  * @UniqueEntity("securityUser")
  * @UniqueEntity("staff")
  * @UniqueEntity("contact")
  * @UniqueEntity("personalDocumentation")
- * @UniqueEntity("parent")
+ * @UniqueEntity("careGiver")
  * @ORM\HasLifecycleCallbacks()
  */
 class Person extends AbstractEntity
@@ -164,11 +163,11 @@ class Person extends AbstractEntity
     private $student;
 
     /**
-     * @var ParentContact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\ParentContact", mappedBy="person",cascade={"all"},orphanRemoval=true)
-     * @ORM\JoinColumn(name="parent",referencedColumnName="id")
+     * @var CareGiver|null
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\CareGiver",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id")
      */
-    private $parent;
+    private $careGiver;
 
     /**
      * @var Contact|null
@@ -618,7 +617,7 @@ class Person extends AbstractEntity
     public static function getEmergencyRelationshipList():array
     {
         return [
-            'Parent',
+            'CareGiver',
             'Spouse',
             'Offspring',
             'Friend',
@@ -717,7 +716,7 @@ class Person extends AbstractEntity
             return false;
         if ($this->getStaff())
             return false;
-        if ($this->getParent())
+        if ($this->getCareGiver())
             return false;
         return true;
     }
@@ -759,7 +758,7 @@ class Person extends AbstractEntity
                     `gender` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Unspecified',
                     `status` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Full',
                     `student` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `parent` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
+                    `careGiver` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `contact` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `staff` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
                     `security_user` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
@@ -769,7 +768,7 @@ class Person extends AbstractEntity
                     UNIQUE KEY `security_user` (`security_user`),
                     UNIQUE KEY `staff` (`staff`),
                     UNIQUE KEY `contact` (`contact`),
-                    UNIQUE KEY `parent` (`parent`),
+                    UNIQUE KEY `careGiver` (`careGiver`),
                     UNIQUE KEY `personal_documentation` (`personal_documentation`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
                 "CREATE TABLE `__prefix__PersonalPhone` (
@@ -788,7 +787,7 @@ class Person extends AbstractEntity
     public function foreignConstraints(): string
     {
         return "ALTER TABLE `__prefix__Person`
-                    ADD CONSTRAINT FOREIGN KEY (`parent`) REFERENCES `__prefix__ParentContact` (`id`),
+                    ADD CONSTRAINT FOREIGN KEY (`careGiver`) REFERENCES `__prefix__CareGiver` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`staff`) REFERENCES `__prefix__Staff` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`contact`) REFERENCES `__prefix__Contact` (`id`),
                     ADD CONSTRAINT FOREIGN KEY (`security_user`) REFERENCES `__prefix__SecurityUser` (`id`),
@@ -809,8 +808,8 @@ class Person extends AbstractEntity
         if ($this->isStudent()) {
             return 'Student';
         }
-        if ($this->isParent()) {
-            return 'Parent';
+        if ($this->isCareGiver()) {
+            return 'CareGiver';
         }
         if ($this->isStaff()) {
             return 'Staff';
@@ -853,35 +852,35 @@ class Person extends AbstractEntity
     }
 
     /**
-     * isParent
+     * isCareGiver
      * @return bool
      * 10/06/2020 11:59
      */
-    public function isParent(): bool
+    public function isCareGiver(): bool
     {
-        return $this->getParent() instanceof ParentContact;
+        return $this->getCareGiver() instanceof CareGiver;
     }
 
     /**
-     * @return ParentContact|null
+     * @return CareGiver|null
      */
-    public function getParent(): ?ParentContact
+    public function getCareGiver(): ?CareGiver
     {
-        return $this->parent;
+        return $this->careGiver;
     }
 
     /**
-     * setParent
-     * @param ParentContact|null $parent
+     * setCareGiver
+     * @param CareGiver|null $careGiver
      * @param bool $reflect
      * @return $this
      * 2/07/2020 09:13
      */
-    public function setParent(?ParentContact $parent, bool $reflect = true): Person
+    public function setCareGiver(?CareGiver $careGiver, bool $reflect = true): Person
     {
-        $this->parent = $parent;
-        if ($reflect && $parent instanceof ParentContact) {
-            $parent->setPerson($this, false);
+        $this->careGiver = $careGiver;
+        if ($reflect && $careGiver instanceof CareGiver) {
+            $careGiver->setPerson($this, false);
         }
         return $this;
     }
@@ -1105,28 +1104,27 @@ class Person extends AbstractEntity
     public function canBeStudent()
     {
         if ($this->getId() === null) return false;
-        if ($this->isStaff() || $this->isStudent() || $this->isParent()) return false;
+        if ($this->isStaff() || $this->isStudent() || $this->isCareGiver()) return false;
         return true;
     }
 
     /**
-     * canBeParent
+     * canBeCareGiver
      * @return bool
      * 19/07/2020 12:34
      */
-    public function canBeParent()
+    public function canBeCareGiver()
     {
         if ($this->getId() === null) return false;
-        if ($this->isStudent() || $this->isParent()) return false;
+        if ($this->isStudent() || $this->isCareGiver()) return false;
         return true;
     }
 
     /**
      * createContact
      * 21/07/2020 08:53
+     * @ORM\PostLoad()
      * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     * @todo Remove PreUpdate
      */
     public function createContactDocumentation()
     {
@@ -1137,6 +1135,11 @@ class Person extends AbstractEntity
         if ($this->getPersonalDocumentation() === null) {
             $documentation = new PersonalDocumentation($this);
             ProviderFactory::getEntityManager()->persist($documentation);
+        }
+        if ($this->getSecurityUser() === null) {
+            $user = new SecurityUser($this);
+            $user->setCanLogin(false);
+            ProviderFactory::getEntityManager()->persist($user);
         }
     }
 }

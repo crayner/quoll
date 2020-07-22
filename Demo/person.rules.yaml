@@ -6,8 +6,8 @@ associated:
     contact:
         entityName: 'App\Modules\People\Entity\Contact'
         create: true
-    parent:
-        entityName: 'App\Modules\People\Entity\ParentContact'
+    careGiver:
+        entityName: 'App\Modules\People\Entity\CareGiver'
         create: true
     student:
         entityName: 'App\Modules\Student\Entity\Student'

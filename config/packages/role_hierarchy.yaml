@@ -17,14 +17,14 @@ parameters:
             - ROLE_STAFF
         ROLE_REGISTRAR:
             - ROLE_SUPPORT
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
             - ROLE_ALLOWED_TO_SWITCH
         ROLE_USER: ~
         ROLE_CONTACT:
             - ROLE_USER
         ROLE_FINANCE:
             - ROLE_STAFF
-        ROLE_PARENT:
+        ROLE_CARE_GIVER:
             - ROLE_CONTACT
         ROLE_MEDICAL:
             - ROLE_STAFF

@@ -305,7 +305,9 @@ class CreateManager
             $this->getLogger()->error(TranslationHelper::translate('The link source was not found for "{source}" for value "{value}."', ['{source}' => $data['source']['table'], '{value}' => json_encode($sourceCriteria)]));
             return false;
         }
-        $method = 'set' . ucfirst($data['target']);
+
+        $method = 'add' . ucfirst($data['target']);
+        if (!method_exists($targetEntity, $method)) $method = 'set' . ucfirst($data['target']);
         $targetEntity->$method($sourceEntity);
         $this->getEm()->persist($targetEntity);
         return true;

@@ -18,10 +18,10 @@ namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
 use App\Modules\People\Entity\Contact;
-use App\Modules\People\Entity\ParentContact;
+use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\PersonalDocumentation;
-use App\Modules\People\Form\ParentType;
+use App\Modules\People\Form\CareGiverType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Driver\PDOException;
@@ -38,25 +38,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class CareGiverController extends PeopleController
 {
     /**
-     * editParent
+     * editCareGiver
      * @param ContainerManager $manager
      * @param Person $person
      * @return JsonResponse
      * 20/07/2020 11:27
-     * @Route("/parent/{person}/edit/",name="parent_edit")
+     * @Route("/care/giver/{person}/edit/",name="care_giver_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editParent(ContainerManager $manager, Person $person)
+    public function editCareGiver(ContainerManager $manager, Person $person)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $parent = $person->getParent() ?: new ParentContact($person);
+            $careGiver = $person->getCareGiver() ?: new CareGiver($person);
 
-            $form = $this->createParentForm($person);
+            $form = $this->createCareGiverForm($person);
 
-            return $this->saveContent($form, $manager, $parent);
+            return $this->saveContent($form, $manager, $careGiver);
         } else {
-            $form = $this->createParentForm($person);
+            $form = $this->createCareGiverForm($person);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -65,16 +65,16 @@ class CareGiverController extends PeopleController
     }
 
     /**
-     * createParentForm
+     * createCareGiverForm
      * @param Person $person
      * @return FormInterface
      * 20/07/2020 11:29
      */
-    private function createParentForm(Person $person): FormInterface
+    private function createCareGiverForm(Person $person): FormInterface
     {
-        return $this->createForm(ParentType::class, $person->getParent(),
+        return $this->createForm(CareGiverType::class, $person->getCareGiver(),
             [
-                'action' => $this->generateUrl('parent_edit', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('care_giver_edit', ['person' => $person->getId()]),
             ]
         );
     }
@@ -83,26 +83,26 @@ class CareGiverController extends PeopleController
      * saveContent
      * @param FormInterface $form
      * @param ContainerManager $manager
-     * @param ParentContact $parent
+     * @param CareGiver $careGiver
      * @return JsonResponse
      * 20/07/2020 11:31
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, ParentContact $parent)
+    private function saveContent(FormInterface $form, ContainerManager $manager, CareGiver $careGiver)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
         $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(ParentContact::class)->persistFlush($parent, $data, false);
-            $data = ProviderFactory::create(Person::class)->persistFlush($parent->getPerson(), $data);
+            $data = ProviderFactory::create(CareGiver::class)->persistFlush($careGiver, $data, false);
+            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data);
             } else {
-                $form = $this->createParentForm($parent->getPerson());
+                $form = $this->createCareGiverForm($careGiver->getPerson());
             }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -115,17 +115,17 @@ class CareGiverController extends PeopleController
     }
 
     /**
-     * addToParent
+     * addToCareGiver
      * @param Person $person
-     * @Route("/parent/{person}/add/",name="parent_add")
+     * @Route("/care/giver/{person}/add/",name="care_giver_add")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      * 21/07/2020 10:47
      */
-    public function addToParent(Person $person)
+    public function addToCareGiver(Person $person)
     {
-        if (null === $person->getParent()) {
-            new ParentContact($person);
+        if (null === $person->getCareGiver()) {
+            new CareGiver($person);
             if ($person->getPersonalDocumentation() === null) {
                 new PersonalDocumentation($person);
             }

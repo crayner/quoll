@@ -89,7 +89,7 @@ class Action extends AbstractEntity
 
     /**
      * @var array|null
-     * @ORM\Column(type="simple_array", name="route_List")
+     * @ORM\Column(type="simple_array", name="route_list")
      */
     private $routeList;
 

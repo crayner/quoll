@@ -25,7 +25,9 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\QueryBuilder;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -387,25 +389,24 @@ abstract class AbstractProvider implements EntityProviderInterface
     /**
      * findOneBy
      * @param array $criteria
+     * @param array|null $orderBy
      * @return EntityInterface|null
-     * @throws \Exception
      */
-    public function findOneBy(array $criteria): ?EntityInterface
+    public function findOneBy(array $criteria, ?array $orderBy = null): ?EntityInterface
     {
         $this->entity = null;
         if ($this->getRepository() !== null)
-            $this->entity = $this->getRepository()->findOneBy($criteria);
+            $this->entity = $this->getRepository()->findOneBy($criteria, $orderBy);
         return $this->entity;
     }
 
     /**
      * findBy
      * @param array $criteria
-     * @param array $orderBy
-     * @return EntityInterface|object|null
-     * @throws \Exception
+     * @param array|null $orderBy
+     * @return array
      */
-    public function findBy(array $criteria, array $orderBy = []): array
+    public function findBy(array $criteria, ?array $orderBy = null): array
     {
         if ($this->getRepository() !== null)
             $results = $this->getRepository()->findBy($criteria, $orderBy);
@@ -594,5 +595,64 @@ abstract class AbstractProvider implements EntityProviderInterface
     public function getParameterBag(): ParameterBagInterface
     {
         return $this->parameterBag;
+    }
+
+    /**
+     * findOneLike
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return mixed
+     * 22/07/2020 10:31
+     * @throws NonUniqueResultException
+     */
+    public function findOneLike(array $criteria, ?array $orderBy = null)
+    {
+        return $this->createLikeQueryBuilder($criteria, $orderBy)->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * findOneLike
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return mixed
+     * 22/07/2020 10:31
+     */
+    public function findLike(array $criteria, ?array $orderBy = null)
+    {
+        return $this->createLikeQueryBuilder($criteria, $orderBy)->getQuery()->getResult();
+    }
+
+    /**
+     * createLikeQueryBuilder
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return QueryBuilder
+     * 22/07/2020 10:44
+     */
+    private function createLikeQueryBuilder(array $criteria, ?array $orderBy = null): QueryBuilder
+    {
+        $query = $this->getRepository()->createQueryBuilder('x');
+        $count = 0;
+        foreach($criteria as $name => $value) {
+            if ($count === 0) {
+                $query->where('x.' . $name . ' LIKE :value'.$count);
+            } else {
+                $query->addWhere('x.' . $name . ' LIKE :value'.$count);
+            }
+            $query->setParameter('value'.$count, '%' . $value . '%');
+            $count++;
+        }
+        if (is_array($orderBy)) {
+            $count = 0;
+            foreach($orderBy as $name=>$order) {
+                if ($count === 0) {
+                    $query->orderBy('x.' . $name, $order);
+                } else {
+                    $query->addOrderBy('x.' . $name, $order);
+                }
+                $count++;
+            }
+        }
+        return $query;
     }
 }

@@ -162,16 +162,16 @@ class PersonProvider extends AbstractProvider
     }
 
     /**
-     * isParent
+     * isCareGiver
      * @param Person|null $person
      * @return bool
      */
-    public function isParent(?Person $person = null): bool
+    public function isCareGiver(?Person $person = null): bool
     {
         if (null === $person)
             $person = $this->getEntity();
 
-        return $person->isParent();
+        return $person->isCareGiver();
     }
 
     /**

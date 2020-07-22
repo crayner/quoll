@@ -116,6 +116,7 @@ class BreadCrumbs
     /**
      * add
      * @param array $module
+     * @param Action $action
      * @return BreadCrumbItem[]|ArrayCollection
      */
     public function create(array $module, Action $action)

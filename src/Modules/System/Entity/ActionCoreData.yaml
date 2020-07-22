@@ -300,11 +300,22 @@
     category: 'People Management'
     description: 'Allows management of all people database records.'
     routeList:
-        - people_list
         - people_content_loader
         - person_add
         - person_edit
         - person_delete.people_list_filter
+        - staff_edit
+        - staff_school_edit
+        - staff_personal_background_remove
+        - staff_add
+        - student_edit
+        - student_school_edit
+        - student_personal_background_remove
+        - student_add
+        - care_giver_edit
+        - care_giver_add
+        - contact_edit
+        - security_user_edit
     entryRoute: people_list
     entrySidebar: true
     menuShow: true
@@ -703,7 +714,7 @@
     restriction: null
     securityRoles:
         arrayField:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
 -
     name: Houses
     category: Groupings
@@ -893,7 +904,7 @@
     restriction: null
     securityRoles:
         arrayField:
-            - ROLE_PARENT
+            - ROLE_CARE_GIVER
 -
     name: 'Facility Settings'
     category: Configure

@@ -17,29 +17,19 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Address;
-use App\Modules\People\Entity\FamilyMemberAdult;
 use App\Modules\People\Entity\Locality;
-use App\Modules\People\Entity\Phone;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Student\Entity\Student;
-use App\Provider\ProviderFactory;
-use App\Util\ImageHelper;
-use App\Util\TranslationHelper;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
-use App\Modules\RollGroup\Entity\RollGroup;
-use App\Modules\School\Entity\House;
-use App\Modules\Security\Entity\District;
 use App\Modules\People\Entity\Person;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class PersonRepository
@@ -285,10 +275,10 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findCurrentParents
+     * findCurrentCareGivers
      * @return array
      */
-    public function findCurrentParents(): array
+    public function findCurrentCareGivers(): array
     {
         return $this->createQueryBuilder('p')
             ->select(['p','fa'])
@@ -303,15 +293,15 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findAllParentQuery
+     * findAllCareGiverQuery
      * @return QueryBuilder
      * 18/07/2020 10:52
      */
-    public function findAllParentQuery(): QueryBuilder
+    public function findAllCareGiverQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p', 'p.id')
-            ->leftJoin('p.parent', 'pa')
-            ->where('p.parent IS NOT NULL')
+            ->leftJoin('p.careGiver', 'cg')
+            ->where('p.careGiver IS NOT NULL')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC');
     }
@@ -344,8 +334,8 @@ class PersonRepository extends ServiceEntityRepository
     public function findOthers(): array
     {
         $this->getStaffSearch();
-        $where = trim($this->getWhere(), ')') . ' OR p.securityRoles LIKE :parent OR p.securityRoles LIKE :student)';
-        $this->addParam('parent', '%ROLE_PARENT%')
+        $where = trim($this->getWhere(), ')') . ' OR p.securityRoles LIKE :careGiver OR p.securityRoles LIKE :student)';
+        $this->addParam('careGiver', '%ROLE_CARE_GIVER%')
             ->addParam('student', '%ROLE_STUDENT%');
         return $this->createQueryBuilder('p')
             ->leftJoin('p.adults', 'fa')
@@ -367,23 +357,23 @@ class PersonRepository extends ServiceEntityRepository
     public function getPaginationContent(): array
     {
         $students = $this->findAllStudentsQuery()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','u.username', "'Student' AS role", 'u.canLogin'])
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Student' AS role", 'u.canLogin'])
             ->leftJoin('s.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.personalDocumentation', 'd')
             ->leftJoin('p.securityUser', 'u')
             ->getQuery()
             ->getResult();
-        $parents = $this->findAllParentQuery()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id','u.username', "'Parent' AS role", 'u.canLogin'])
-            ->leftJoin('pa.memberOfFamilies', 'fm')
+        $careGivers = $this->findAllCareGiverQuery()
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Care Giver' AS role", 'u.canLogin'])
+            ->leftJoin('cg.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.securityUser', 'u')
             ->leftJoin('p.personalDocumentation', 'd')
             ->getQuery()
             ->getResult();
         $staff = $this->getAllStaffQueryBuilder()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", 'u.username', "'Staff' AS role", 'u.canLogin'])
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", "COALESCE(u.username, '') AS username", "'Staff' AS role", 'u.canLogin'])
             ->leftJoin('p.personalDocumentation', 'd')
             ->leftJoin('p.securityUser', 'u')
             ->getQuery()
@@ -395,7 +385,7 @@ class PersonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        $all = array_merge($students,$parents,$others);
+        $all = array_merge($students,$careGivers,$others);
 
         foreach($staff as $id => $entity) {
             if (key_exists($id,$all)) {
@@ -408,7 +398,7 @@ class PersonRepository extends ServiceEntityRepository
         usort($all, function($a,$b) {
             return $a['fullName'] <= $b['fullName'] ? -1 : 1;
         });
-
+dump($all);
         return $all;
     }
 
@@ -529,9 +519,11 @@ class PersonRepository extends ServiceEntityRepository
      * @return array
      * 28/06/2020 12:05
      */
-    public function findAllStudents(string $status = 'Full'): array
+    public function findAllStudents(string $status = '%'): array
     {
-        return $this->findAllStudentsQuery($status)
+        return $this->findAllStudentsQuery()
+            ->andWhere('p.status LIKE :status')
+            ->setParameter('status', $status)
             ->getQuery()
             ->getResult();
     }
@@ -544,8 +536,8 @@ class PersonRepository extends ServiceEntityRepository
     public function findAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p', 'p.id')
-            ->join('p.student', 's')
-            ->where('p.student IS NOT NULL')
+            ->leftJoin('p.student', 's')
+            ->where('s.id IS NOT NULL')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }
@@ -559,7 +551,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p', 'p.id')
             ->where('p.student IS NULL')
-            ->andWhere('p.parent IS NULL')
+            ->andWhere('p.careGiver IS NULL')
             ->andWhere('p.staff IS NULL')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');

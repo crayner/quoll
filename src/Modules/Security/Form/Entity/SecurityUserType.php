@@ -12,32 +12,32 @@
  *
  * User: craig
  * Date: 21/07/2020
- * Time: 10:34
+ * Time: 14:12
  */
-namespace App\Modules\People\Form;
+namespace App\Modules\Security\Form\Entity;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
-use App\Modules\People\Entity\ParentContact;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Entity\SecurityUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ParentType
- * @package App\Modules\People\Form
+ * Class SecurityUserType
+ * @package App\Modules\Security\Form\Entity
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class ParentType extends AbstractType
+class SecurityUserType extends AbstractType
 {
     /**
      * buildForm
      * @param FormBuilderInterface $builder
      * @param array $options
-     * 21/07/2020 10:37
+     * 21/07/2020 14:19
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -47,9 +47,9 @@ class ParentType extends AbstractType
                     'class' => Person::class,
                 ]
             )
-            ->add('parentHeader', HeaderType::class,
+            ->add('userHeader', HeaderType::class,
                 [
-                    'label' => 'Care Giver Details',
+                    'label' => 'Security User Details',
                 ]
             )
             ->add('submit', SubmitType::class)
@@ -59,14 +59,14 @@ class ParentType extends AbstractType
     /**
      * configureOptions
      * @param OptionsResolver $resolver
-     * 21/07/2020 10:35
+     * 21/07/2020 14:14
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'People',
-                'data_class' => ParentContact::class,
+                'translation_domain' => 'Security',
+                'data_class' => SecurityUser::class,
             ]
         );
     }
@@ -74,7 +74,7 @@ class ParentType extends AbstractType
     /**
      * getParent
      * @return string|null
-     * 21/07/2020 10:34
+     * 21/07/2020 14:13
      */
     public function getParent()
     {

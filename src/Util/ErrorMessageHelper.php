@@ -222,6 +222,31 @@ class ErrorMessageHelper
         return $data;
     }
 
+    /**
+     * onlyNoAccessMessage
+     * @param bool $translate
+     * @return array|string|null
+     * 22/07/2020 11:53
+     */
+    public static function onlyNoAccessMessage(bool $translate = false)
+    {
+        return $translate ? TranslationHelper::translate('return.error.0', [], 'messages') : ['return.error.0', [], 'messages'];
+    }
+
+    /**
+     * getNoAccessMessage
+     * @param array $data
+     * @param bool $translate
+     * @return array
+     * 22/07/2020 11:53
+     */
+    public static function getNoAccessMessage(array $data = [], bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'error', 'message' => self::onlyNoAccessMessage($translate)];
+        $data['status'] = 'error';
+        return $data;
+    }
+
 
     /**
      *

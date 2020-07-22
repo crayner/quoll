@@ -24,13 +24,14 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\ChangePasswordType;
 use App\Modules\People\Form\ContactType;
-use App\Modules\People\Form\ParentType;
+use App\Modules\People\Form\CareGiverType;
 use App\Modules\People\Form\PersonalDocumentationType;
 use App\Modules\People\Form\PersonType;
 use App\Modules\People\Form\SchoolStaffType;
 use App\Modules\People\Form\SchoolStudentType;
 use App\Modules\People\Pagination\PeoplePagination;
 use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Form\Entity\SecurityUserType;
 use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
@@ -113,6 +114,8 @@ class PeopleController extends AbstractPageController
         } else {
             $action = $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]);
         }
+
+
 
         $photo = new Photo($person->getPersonalDocumentation(), 'getPersonalImage', '200', 'user max200', '/build/static/DefaultPerson.png');
         $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
@@ -215,10 +218,10 @@ class PeopleController extends AbstractPageController
                 $panel = new Panel('School', 'People', new Section('form', 'School'));
                 $container->addForm('School', $schoolStudentForm->createView())->addPanel($panel);
             }
-            if ($person->isParent()) {
-                $parentForm = $this->createForm(ParentType::class, $person->getStudent(),
+            if ($person->isCareGiver()) {
+                $parentForm = $this->createForm(CareGiverType::class, $person->getStudent(),
                     [
-                        'action' => $this->generateUrl('parent_edit', ['person' => $person->getId()]),
+                        'action' => $this->generateUrl('care_giver_edit', ['person' => $person->getId()]),
                     ]
                 );
                 $panel = new Panel('Care Giver', 'People', new Section('form', 'Care Giver'));
@@ -243,6 +246,14 @@ class PeopleController extends AbstractPageController
             );
             $panel = new Panel('Contact', 'People', new Section('form', 'Contact'));
             $container->addForm('Contact', $contactForm->createView())->addPanel($panel);
+
+            $securityUserForm = $this->createForm(SecurityUserType::class, $person->getSecurityUser(),
+                [
+                    'action' => $this->generateUrl('security_user_edit', ['person' => $person->getId()]),
+                ]
+            );
+            $panel = new Panel('Security', 'People', new Section('form', 'Security'));
+            $container->addForm('Security', $securityUserForm->createView())->addPanel($panel);
         }
 
 

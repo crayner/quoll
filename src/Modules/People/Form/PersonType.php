@@ -174,13 +174,13 @@ class PersonType extends AbstractType
                 )
             ;
         }
-        if ($person->canBeParent()) {
+        if ($person->canBeCareGiver()) {
             $builder
-                ->add('addParent', ButtonType::class,
+                ->add('addCareGiver', ButtonType::class,
                     [
                         'label' => 'Add to Care Giver',
                         'on_click' => [
-                            'route' => '/parent/' . $person->getId() . '/add/',
+                            'route' => '/care/giver/' . $person->getId() . '/add/',
                             'function' => 'callRoute',
                         ],
                     ]
@@ -831,7 +831,7 @@ class PersonType extends AbstractType
                             ->orderBy('p.surname', 'ASC')
                             ->addOrderBy('p.firstName', 'ASC')
                             ->where('p.securityRole LIKE :role')
-                            ->setParameter('role', '%ROLE_PARENT%')
+                            ->setParameter('role', '%ROLE_CARE_GIVER%')
                         ;
                     }
                 ]
@@ -850,7 +850,7 @@ class PersonType extends AbstractType
                             ->orderBy('p.surname', 'ASC')
                             ->addOrderBy('p.firstName', 'ASC')
                             ->where('p.securityRoles LIKE :role')
-                            ->setParameter('role', '%ROLE_PARENT%')
+                            ->setParameter('role', '%ROLE_CARE_GIVER%')
                         ;
                     }
                 ]

@@ -124,7 +124,7 @@ class ActionPermissionController extends AbstractPageController
                 $item = [];
                 $item['findBy']['role'] = $securityRole->getRole();
                 $item['source']['table'] = SecurityRole::class;
-                $item['source']['findBy']['name'] = $role->getRole();
+                $item['source']['findBy']['name'] = $role;
                 $item['target'] = 'childRole';
             }
             $links[] = $item;
@@ -143,16 +143,6 @@ class ActionPermissionController extends AbstractPageController
             $item['source']['table'] = Module::class;
             $item['source']['findBy']['name'] = $action->getModule()->getName();
             $item['target'] = 'module';
-            $links[] = $item;
-        }
-        foreach(ProviderFactory::getRepository(Action::class)->findAll() as $action) {
-            foreach($action->getSecurityRoles() as $role) {
-                $item = [];
-                $item['findBy']['entryRoute'] = $action->getentryRoute();
-                $item['source']['table'] = SecurityRole::class;
-                $item['source']['findBy']['role'] = $role->getRole();
-                $item['target'] = 'securityRole';
-            }
             $links[] = $item;
         }
 

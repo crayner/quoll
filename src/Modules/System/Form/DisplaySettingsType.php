@@ -20,6 +20,7 @@ use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
 use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Manager\SettingManager;
 use App\Validator\ReactImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -54,11 +55,12 @@ class DisplaySettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
-                                'empty_data' => SettingFactory::getSettingManager()->getSetting('System','organisationLogo', '/build/static/DefaultLogo.png'),
                                 'constraints' => [
-                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
+                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 800, 'minHeight' => 100, 'maxHeight' => 200, 'minRatio' => 0.25, 'maxRatio' => 0.25]),
                                 ],
                                 'required' => false,
+                                'image_method' => 'getOrganisationLogo',
+                                'entity' => SettingManager::class
                             ],
                         ],
                         [
@@ -68,10 +70,11 @@ class DisplaySettingsType extends AbstractType
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
                                 'required' => false,
-                                'empty_data' => SettingFactory::getSettingManager()->getSetting('System','organisationBackground', '/build/static/backgroundPage.jpg'),
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],
+                                'image_method' => 'getOrganisationBackground',
+                                'entity' => SettingManager::class
                             ],
                         ],
                     ],

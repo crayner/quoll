@@ -61,7 +61,7 @@ class SecurityUserRepository extends ServiceEntityRepository
             try {
                 $user = $this->createQueryBuilder('u')
                     ->select(['u', 'p', 'c'])
-                    ->join('u.person', 'p')
+                    ->leftJoin('u.person', 'p')
                     ->leftJoin('p.contact', 'c')
                     ->where('(c.email = :username OR u.username = :username)')
                     ->setParameter('username', $username)
@@ -74,7 +74,7 @@ class SecurityUserRepository extends ServiceEntityRepository
             try {
                 $user = $this->createQueryBuilder('u')
                     ->select(['u', 'p'])
-                    ->join('u.person', 'p')
+                    ->leftJoin('u.person', 'p')
                     ->where('u.username = :username')
                     ->setParameter('username', $username)
                     ->getQuery()
@@ -84,7 +84,7 @@ class SecurityUserRepository extends ServiceEntityRepository
             }
         }
 
-        $this->users[$user->getId()] = $user;
+        if ($user) $this->users[$user->getId()] = $user;
 
         return $this->users[$username] = $user;
     }

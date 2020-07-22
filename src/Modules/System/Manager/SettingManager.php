@@ -44,6 +44,8 @@ class SettingManager
      */
     private $settingsChanged = false;
 
+    private static $instance;
+
     /**
      * SettingProvider constructor.
      * @param array $settings
@@ -59,6 +61,7 @@ class SettingManager
             }
         }
         $this->settings = $this->convertRawSettings($settings ?? []);
+        self::$instance = $this;
     }
 
     /**
@@ -236,14 +239,30 @@ class SettingManager
     }
 
     /**
-     * setSettingByScope
+     * setSetting
      * @param string $scope
      * @param string $name
-     * @param string $value
-     * @throws SettingNotFoundException
+     * @param $value
+     * @return $this
      * @throws \Exception
+     * 22/07/2020 11:14
+     * @deprecated Use set(string $scope, string $name, $value)
      */
     public function setSetting(string $scope, string $name, $value): self
+    {
+        return $this->set($scope, $name, $value);
+    }
+
+    /**
+     * set
+     * @param string $scope
+     * @param string $name
+     * @param $value
+     * @return $this
+     * @throws \Exception
+     * 22/07/2020 11:14
+     */
+    public function set(string $scope, string $name, $value): self
     {
         if (!$this->hasSetting($scope,$name)) {
             throw new SettingNotFoundException($scope, $name);
@@ -253,7 +272,7 @@ class SettingManager
 
         switch ($setting['type']) {
             case 'entity':
-                $value = $value ? $value->getId() : null;
+                $value = $value instanceof EntityInterface ? $value->getId() : $value;
                 if ($setting['value'] !== $value) {
                     $setting['value'] = $value;
                     $this->setSettingsChanged();
@@ -368,29 +387,30 @@ class SettingManager
     }
 
     /**
-     * get
-     * @param string $scope
-     * @param string $name
-     * @param mixed $default
-     * @return array|bool|int|string|null
-     * @throws \InvalidArgumentException
-     * 20/07/2020 09:38
-     */
-    public function get(string $scope, string $name, $default = null)
-    {
-        return $this->getSetting($scope,$name,$default);
-    }
-
-    /**
      * getSetting
      * @param string $scope
      * @param string $name
-     * @param mixed $default
-     * @return array|bool|int|string|null
-     * @throws \InvalidArgumentException
-     * 9/07/2020 10:35
+     * @param null $default
+     * @return array|bool|int|object|string|null
+     * @throws \Exception
+     * 22/07/2020 11:15
+     * @deprecated Use get(string $scope, string $name, $default = null)
      */
     public function getSetting(string $scope, string $name, $default = null)
+    {
+        return $this->get($scope,$name,$default);
+    }
+
+    /**
+     * get
+     * @param string $scope
+     * @param string $name
+     * @param null $default
+     * @return array|bool|int|object|string|null
+     * @throws \Exception
+     * 22/07/2020 11:14
+     */
+    public function get(string $scope, string $name, $default = null)
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
@@ -661,5 +681,4 @@ class SettingManager
             $this->saveSettings($child, $content);
         }
     }
-
 }
