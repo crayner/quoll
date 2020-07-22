@@ -16,6 +16,7 @@
  */
 namespace App\Modules\People\Provider;
 
+use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
@@ -55,7 +56,7 @@ class PhoneProvider extends AbstractProvider
      */
     public function canDelete(Phone $phone): bool
     {
-        if (ProviderFactory::create(Person::class)->isPhoneInPeople($phone)) {
+        if (ProviderFactory::create(Contact::class)->isPhoneInContact($phone)) {
             return false;
         }
         if (ProviderFactory::create(Family::class)->isPhoneInFamily($phone)) {

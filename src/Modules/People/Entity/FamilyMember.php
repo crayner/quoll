@@ -33,22 +33,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
  * @ORM\Table(name="FamilyMember",
  *     uniqueConstraints={
- *     @ORM\UniqueConstraint(name="family_parent",columns={"family","parent"}),
+ *     @ORM\UniqueConstraint(name="family_careGiver",columns={"family","careGiver"}),
  *     @ORM\UniqueConstraint(name="family_student",columns={"family","student"}),
  *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})},
  *     indexes={
- *     @ORM\Index(name="parent",columns={"parent"}),
+ *     @ORM\Index(name="care_giver",columns={"care_giver"}),
  *     @ORM\Index(name="student",columns={"student"}),
  *     @ORM\Index(name="family",columns={"family"}),
  *     @ORM\Index(name="member_type",columns={"member_type"})}
  * )
  * @UniqueEntity({"student","family"},ignoreNull=true)
- * @UniqueEntity({"parent","family"},ignoreNull=true)
+ * @UniqueEntity({"careGiver","family"},ignoreNull=true)
  * @UniqueEntity({"contactPriority","family"},ignoreNull=true)
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
- * @ORM\DiscriminatorMap({"adult" = "FamilyMemberAdult", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
+ * @ORM\DiscriminatorMap({"adult" = "FamilyMemberCareGiver", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
  * @FamilyMemberNotBlank()
  */
 class FamilyMember extends AbstractEntity
@@ -64,10 +64,10 @@ class FamilyMember extends AbstractEntity
     private $id;
     /**
      * @var CareGiver|null
-     * @ORM\ManyToOne(targetEntity="CareGiver", inversedBy="memberOfFamilies")
-     * @ORM\JoinColumn(name="parent",referencedColumnName="id",nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver", inversedBy="memberOfFamilies")
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
      */
-    private $parent;
+    private $careGiver;
 
     /**
      * @var Student|null
@@ -147,18 +147,18 @@ class FamilyMember extends AbstractEntity
     /**
      * @return CareGiver|null
      */
-    public function getParent(): ?CareGiver
+    public function getCareGiver(): ?CareGiver
     {
-        return $this->parent;
+        return $this->careGiver;
     }
 
     /**
-     * @param CareGiver|null $parent
+     * @param CareGiver|null $careGiver
      * @return FamilyMember
      */
-    public function setParent(?CareGiver $parent): FamilyMember
+    public function setCareGiver(?CareGiver $careGiver): FamilyMember
     {
-        $this->parent = $parent;
+        $this->careGiver = $careGiver;
         return $this;
     }
 
@@ -208,9 +208,9 @@ class FamilyMember extends AbstractEntity
 
     /**
      * @param int|null $contactPriority
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setContactPriority(?int $contactPriority): FamilyMemberAdult
+    public function setContactPriority(?int $contactPriority): FamilyMemberCareGiver
     {
         $this->contactPriority = $contactPriority;
         return $this;
@@ -222,14 +222,14 @@ class FamilyMember extends AbstractEntity
      */
     public function __toString(): string
     {
-        if ($this->getFamily() && $this->getParent())
-            return $this->getFamily()->getName() . ': ' . $this->getParent()->getPerson()->getFullName();
+        if ($this->getFamily() && $this->getCareGiver())
+            return $this->getFamily()->getName() . ': ' . $this->getCareGiver()->getPerson()->getFullName();
         if ($this->getFamily() && $this->getStudent())
             return $this->getFamily()->getName() . ': ' . $this->getStudent()->getPerson()->getFullName();
         if ($this->getFamily())
-            return $this->getFamily()->getName() . ': UunKnown ' . $this->getId();
-        if ($this->getParent())
-            return 'Unknown : ' . $this->getParent()->getPerson()->getFullName() . ' ' . $this->getId();
+            return $this->getFamily()->getName() . ': UnKnown ' . $this->getId();
+        if ($this->getCareGiver())
+            return 'Unknown : ' . $this->getCareGiver()->getPerson()->getFullName() . ' ' . $this->getId();
         if ($this->getStudent())
             return 'Unknown : ' . $this->getStudent()->getPerson()->getFullName() . ' ' . $this->getId();
         return 'No Idea, so ' . $this->getId();
@@ -250,7 +250,7 @@ class FamilyMember extends AbstractEntity
                 'roll' => StudentHelper::getCurrentRollGroup($person),
                 'comment' => $this->getComment(),
                 'family_id' => $this->getFamily()->getId(),
-                'adult_id' => $this->getId(),
+                'care_giver_id' => $this->getId(),
                 'person_id' => $this->getPerson()->getId(),
                 'id' => $this->getId(),
                 'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),
@@ -312,7 +312,7 @@ class FamilyMember extends AbstractEntity
                     UNIQUE KEY `family_contact_priority` (`family`,`contact_priority`),
                     UNIQUE KEY `family_member` (`family`,`person`),
                     UNIQUE KEY `family_contact` (`family`,`contact_priority`),
-                    KEY `parent` (`parent`),
+                    KEY `careGiver` (`careGiver`),
                     KEY `student` (`student`),
                     KEY `family` (`family`),
                     KEY `member_type` (`member_type`)
@@ -329,7 +329,7 @@ class FamilyMember extends AbstractEntity
         return "ALTER TABLE `__prefix__FamilyMember` 
                     ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
                     ADD CONSTRAINT FOREIGN KEY (student) REFERENCES __prefix__Student (id),
-                    ADD CONSTRAINT FOREIGN KEY (parent) REFERENCES __prefix__ParentContact (id);";
+                    ADD CONSTRAINT FOREIGN KEY (careGiver) REFERENCES __prefix__CareGiverContact (id);";
     }
 
     /**
@@ -340,8 +340,8 @@ class FamilyMember extends AbstractEntity
     public function isEqualTo(FamilyMember $member): bool
     {
         if ($member->getStudent() !== null) {
-            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getParent()->getPerson()->isEqualTo($member->getParent()->getPerson());
-        } else if ($member->getParent() !== null) {
+            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getCareGiver()->getPerson()->isEqualTo($member->getCareGiver()->getPerson());
+        } else if ($member->getCareGiver() !== null) {
             return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getStudent()->getPerson()->isEqualTo($member->getStudent()->getPerson());
         }
         return false;

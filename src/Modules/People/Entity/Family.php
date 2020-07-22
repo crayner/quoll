@@ -272,11 +272,11 @@ class Family extends AbstractEntity
         if (empty($this->formalName)) {
             $this->setFormalName($this->getName());
         }
-        if ($this->getName() === $this->getFormalName() && $this->getAdults()->count() > 0) {
+        if ($this->getName() === $this->getFormalName() && $this->getCareGivers()->count() > 0) {
             $count = 0;
             $name = '';
-            foreach($this->getAdults() as $adult) {
-                $name .= $adult->getParent()->getPerson()->getFullName() . ' & ';
+            foreach($this->getCareGivers() as $careGiver) {
+                $name .= $careGiver->getCareGiver()->getPerson()->getFullName() . ' & ';
                 if (++$count > 1) {
                     break;
                 }
@@ -427,16 +427,16 @@ class Family extends AbstractEntity
     }
 
     /**
-     * @return FamilyMemberAdult[]|Collection|null
+     * @return FamilyMemberCareGiver[]|Collection|null
      */
-    public function getAdults(): Collection
+    public function getCareGivers(): Collection
     {
-        $adults = $this->getMembers()->filter(function (FamilyMember $member) {
-            if ($member instanceof FamilyMemberAdult)
+        $careGivers = $this->getMembers()->filter(function (FamilyMember $member) {
+            if ($member instanceof FamilyMemberCareGiver)
                 return $member;
         });
 
-        $iterator = $adults->getIterator();
+        $iterator = $careGivers->getIterator();
         $iterator->uasort(
             function ($a, $b) {
                 return $a->getContactPriority() < $b->getContactPriority() ? -1 : 1 ;
@@ -467,7 +467,7 @@ class Family extends AbstractEntity
         return [
             'name' => $this->getName(),
             'status' => $this->getStatus(),
-            'adults' => FamilyManager::getAdultNames($this),
+            'careGivers' => FamilyManager::getAdultNames($this),
             'students' => FamilyManager::getChildrenNames($this),
         ];
     }
@@ -483,47 +483,5 @@ class Family extends AbstractEntity
             return false;
 
         return true;
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Family` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(100) NOT NULL,
-                    `formal_name` CHAR(100) NOT NULL COMMENT 'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)',
-                    `physical_address` CHAR(36) DEFAULT NULL,
-                    `postal_address` CHAR(36) DEFAULT NULL,
-                    `status` CHAR(12) NOT NULL,
-                    `language_home_primary` CHAR(30) DEFAULT NULL,
-                    `language_home_secondary` CHAR(30) DEFAULT NULL,
-                    `family_sync` CHAR(50) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `family_sync` (`family_sync`),
-                    KEY `physical_address` (`physical_address`),
-                    KEY `postal_address` (`postal_address`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-                "CREATE TABLE `__prefix__FamilyPhone` (
-                    `family` CHAR(36) NOT NULL,
-                    `phone` CHAR(36) NOT NULL,
-                    PRIMARY KEY (`family`,`phone`),
-                    KEY `family` (`family`),
-                    KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__Family`
-                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`);
-                ALTER TABLE `__prefix__FamilyPhone`
-                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`);';
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

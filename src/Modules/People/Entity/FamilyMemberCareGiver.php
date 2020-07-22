@@ -18,15 +18,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMemberAdult
  * @package App\Modules\People\Entity
- * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberAdultRepository")
+ * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberCareGiverRepository")
  * @UniqueEntity({"contactPriority","family"})
  */
-class FamilyMemberAdult extends FamilyMember
+class FamilyMemberCareGiver extends FamilyMember
 {
     /**
      * @var boolean|null
@@ -84,9 +83,9 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @param bool|null $childDataAccess
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setChildDataAccess(?bool $childDataAccess): FamilyMemberAdult
+    public function setChildDataAccess(?bool $childDataAccess): FamilyMemberCareGiver
     {
         $this->childDataAccess = (bool)$childDataAccess;
         return $this;
@@ -102,9 +101,9 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @param bool|null $contactCall
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setContactCall(?bool $contactCall): FamilyMemberAdult
+    public function setContactCall(?bool $contactCall): FamilyMemberCareGiver
     {
         $this->contactCall = (bool)$contactCall;
         return $this;
@@ -120,9 +119,9 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @param bool|null $contactSMS
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setContactSMS(?bool $contactSMS): FamilyMemberAdult
+    public function setContactSMS(?bool $contactSMS): FamilyMemberCareGiver
     {
         $this->contactSMS = (bool)$contactSMS;
         return $this;
@@ -138,9 +137,9 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @param bool|null $contactEmail
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setContactEmail(?bool $contactEmail): FamilyMemberAdult
+    public function setContactEmail(?bool $contactEmail): FamilyMemberCareGiver
     {
         $this->contactEmail = (bool)$contactEmail;
         return $this;
@@ -156,9 +155,9 @@ class FamilyMemberAdult extends FamilyMember
 
     /**
      * @param bool|null $contactMail
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setContactMail(?bool $contactMail): FamilyMemberAdult
+    public function setContactMail(?bool $contactMail): FamilyMemberCareGiver
     {
         $this->contactMail = (bool)$contactMail;
         return $this;
@@ -182,9 +181,9 @@ class FamilyMemberAdult extends FamilyMember
      * Relationships.
      *
      * @param Collection|FamilyRelationship[] $relationships
-     * @return FamilyMemberAdult
+     * @return FamilyMemberCareGiver
      */
-    public function setRelationships(Collection $relationships): FamilyMemberAdult
+    public function setRelationships(Collection $relationships): FamilyMemberCareGiver
     {
         if ($relationships instanceof PersistentCollection)
             $relationships->initialize();

@@ -35,4 +35,20 @@ class ContactRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Contact::class);
     }
+
+    /**
+     * findPhoneList
+     * @return array
+     * 22/07/2020 15:39
+     */
+    public function findPhoneList(): array
+    {
+        return $this->createQueryBuilder('c', 'c.id')
+            ->where('c.personalPhone IS NOT NULL')
+            ->select(['ph.id'])
+            ->join('c.personalPhone', 'ph')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -17,7 +17,7 @@
 
 namespace App\Modules\People\Form\Subscriber;
 
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Provider\ProviderFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PreSubmitEvent;
@@ -47,7 +47,7 @@ class FamilyAdultSubscriber implements EventSubscriberInterface
     public function onPreSubmit(PreSubmitEvent $event)
     {
         $data = $event->getData();
-        $provider = ProviderFactory::create(FamilyMemberAdult::class);
+        $provider = ProviderFactory::create(FamilyMemberCareGiver::class);
         $adults = $provider->getRepository()->findByFamilyWithoutAdult($data['person'], $data['family']);
         if (!empty($adults)) {
             $priority = intval($data['contactPriority']);

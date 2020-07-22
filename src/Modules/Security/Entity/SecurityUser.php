@@ -562,19 +562,19 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         } elseif ($this->getPerson() && $this->getPerson()->isStudent()) {
             $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStudent()->getLocale()->getCode() : null;
         } elseif ($this->getPerson() && $this->getPerson()->isCareGiver()) {
-            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getParent()->getLocale()->getCode() : null;
+            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getCareGiver()->getLocale()->getCode() : null;
         }
         return $locale ?: ParameterBagHelper::get('locale');
     }
 
     /**
-     * getParent
+     * getCareGiver
      * @return CareGiver|null
-     * 11/07/2020 12:43
+     * 22/07/2020 13:55
      */
-    public function getParent(): ?CareGiver
+    public function getCareGiver(): ?CareGiver
     {
-        return $this->getPerson() ? $this->getPerson()->getParent() : null ;
+        return $this->getPerson() ? $this->getPerson()->getCareGiver() : null ;
     }
 
     /**

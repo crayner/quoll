@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Security\Voter;
 
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Security\Manager\SecurityUser;
@@ -182,7 +182,7 @@ class StudentVoter extends RoleHierarchyVoter
                 self::$studentList[] = self::getPerson();
             }
             if (self::getStudentProfileAccess() === 'Parent') {
-                self::$studentList = array_merge(self::$studentList, ProviderFactory::create(FamilyMemberAdult::class)->getStudentsOfParent(self::getPerson()));
+                self::$studentList = array_merge(self::$studentList, ProviderFactory::create(FamilyMemberCareGiver::class)->getStudentsOfParent(self::getPerson()));
             }
             if (self::getStudentProfileAccess() === 'Staff') {
                 self::$studentList = array_merge(self::$studentList, StudentManager::getStudentsOfStaff(self::$securityUser->getPerson()));

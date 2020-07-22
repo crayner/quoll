@@ -17,7 +17,7 @@
 namespace App\Modules\People\Manager\Hidden;
 
 use App\Manager\PaginationSortInterface;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Pagination\FamilyAdultsPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -29,12 +29,12 @@ use App\Util\ErrorMessageHelper;
 class FamilyAdultSort implements PaginationSortInterface
 {
     /**
-     * @var FamilyMemberAdult
+     * @var FamilyMemberCareGiver
      */
     private $source;
 
     /**
-     * @var FamilyMemberAdult
+     * @var FamilyMemberCareGiver
      */
     private $target;
 
@@ -56,11 +56,11 @@ class FamilyAdultSort implements PaginationSortInterface
     /**
      * ScaleGradeSort constructor.
      *
-     * @param FamilyMemberAdult $source
-     * @param FamilyMemberAdult $target
+     * @param FamilyMemberCareGiver $source
+     * @param FamilyMemberCareGiver $target
      * @param FamilyAdultsPagination $pagination
      */
-    public function __construct(FamilyMemberAdult $source, FamilyMemberAdult $target, FamilyAdultsPagination $pagination)
+    public function __construct(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyAdultsPagination $pagination)
     {
         $this->source = $source;
         $this->target = $target;
@@ -73,7 +73,7 @@ class FamilyAdultSort implements PaginationSortInterface
             return;
         }
 
-        $provider = ProviderFactory::create(FamilyMemberAdult::class);
+        $provider = ProviderFactory::create(FamilyMemberCareGiver::class);
 
         $content = $provider->getRepository()->findBy(['family' => $source->getFamily()->getId()], ['contactPriority' => 'ASC']);
 

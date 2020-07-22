@@ -17,21 +17,21 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class FamilyMemberAdultRepository
+ * Class FamilyMemberCareGiverRepository
  * @package App\Modules\People\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class FamilyMemberAdultRepository extends ServiceEntityRepository
+class FamilyMemberCareGiverRepository extends ServiceEntityRepository
 {
     /**
      * FamilyChildRepository constructor.
@@ -39,7 +39,7 @@ class FamilyMemberAdultRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FamilyMemberAdult::class);
+        parent::__construct($registry, FamilyMemberCareGiver::class);
     }
 
     /**

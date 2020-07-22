@@ -54,7 +54,7 @@ class CareGiver extends AbstractEntity
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="careGiver", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="careGiver",cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -86,8 +86,8 @@ class CareGiver extends AbstractEntity
     private $viewCalendarSchool = true;
 
     /**
-     * @var Collection|FamilyMemberAdult[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberAdult",mappedBy="parent")
+     * @var Collection|FamilyMemberCareGiver[]|null
+     * @ORM\OneToMany(targetEntity="FamilyMemberCareGiver",mappedBy="careGiver")
      */
     private $memberOfFamilies;
 
@@ -246,11 +246,11 @@ class CareGiver extends AbstractEntity
 
     /**
      * addMemberOfFamily
-     * @param FamilyMemberAdult|null $parent
+     * @param FamilyMemberCareGiver|null $parent
      * @return $this
      * 18/07/2020 10:40
      */
-    public function addMemberOfFamily(?FamilyMemberAdult $parent): CareGiver
+    public function addMemberOfFamily(?FamilyMemberCareGiver $parent): CareGiver
     {
         if (null === $parent || $this->getMemberOfFamilies()->contains($parent)) {
             return $this;

@@ -17,7 +17,7 @@ namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Phone;
 use App\Modules\School\Entity\House;
@@ -181,7 +181,7 @@ class PersonProvider extends AbstractProvider
     {
         $people = $this->getRepository(RollGroup::class)->findCurrentStudentsAsArray();
         $people = array_merge($this->getRepository()->findCurrentStaffAsArray(),$people);
-        $people = array_merge($this->getRepository(FamilyMemberAdult::class)->findCurrentParentsAsArray(),$people);
+        $people = array_merge($this->getRepository(FamilyMemberCareGiver::class)->findCurrentParentsAsArray(),$people);
 
         uasort($people, function($a, $b) {
             return $a['data'] < $b['data'] ? -1 : 1;
@@ -208,29 +208,5 @@ class PersonProvider extends AbstractProvider
     public function getPaginationContent(): array
     {
         return $this->getRepository()->getPaginationContent();
-    }
-
-    /**
-     * @var array
-     */
-    private $phoneList;
-
-    /**
-     * isPhoneInPeople
-     * @param Phone $phone
-     * @return bool
-     */
-    public function isPhoneInPeople(Phone $phone): bool
-    {
-        if (is_null($this->phoneList)) {
-            $this->phoneList = [];
-            foreach($this->getRepository()->findPhoneList() as $item) {
-                $this->phoneList[$item['id']] = $item['id'];
-            }
-        }
-        if (key_exists($phone->getId(), $this->phoneList)) {
-            return true;
-        }
-        return false;
     }
 }

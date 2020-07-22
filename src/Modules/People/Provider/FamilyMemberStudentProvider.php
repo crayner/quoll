@@ -17,7 +17,7 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
@@ -43,7 +43,7 @@ class FamilyMemberStudentProvider extends AbstractProvider
      */
     public function getStudentsOfParent(Person $parent): array
     {
-        $result = ProviderFactory::getRepository(FamilyMemberAdult::class)->findFamiliesOfParent($parent, true);
+        $result = ProviderFactory::getRepository(FamilyMemberCareGiver::class)->findFamiliesOfParent($parent, true);
         $families = [];
         foreach($result as $q=>$w) {
             if ($w->isChildDataAccess()) {

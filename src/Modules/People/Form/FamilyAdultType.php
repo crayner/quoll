@@ -24,7 +24,7 @@ use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\Subscriber\FamilyAdultSubscriber;
 use App\Modules\Security\Util\SecurityHelper;
@@ -54,7 +54,7 @@ class FamilyAdultType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
-                'data_class' => FamilyMemberAdult::class,
+                'data_class' => FamilyMemberCareGiver::class,
             ]
         );
     }

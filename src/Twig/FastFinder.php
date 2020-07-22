@@ -21,7 +21,7 @@ use App\Modules\Curriculum\Entity\CourseClass;
 use App\Modules\Curriculum\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyAdult;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\Role;
@@ -173,7 +173,7 @@ class FastFinder implements ContentInterface
             if ($studentIsAccessible) {
                 $highestActionStudent = SecurityHelper::getHighestGroupedAction('student_view') ? SecurityHelper::getHighestGroupedAction('student_view')->getRestriction() : null;
                 if ($highestActionStudent === 'myChildren') {
-                    $students = ProviderFactory::getRepository(FamilyMemberAdult::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
+                    $students = ProviderFactory::getRepository(FamilyMemberCareGiver::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
                 } elseif ($highestActionStudent == 'View Student Profile_my') {
                     $person = ProviderFactory::getRepository(Person::class)->find(2761);
                     $students = [];

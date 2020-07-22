@@ -2684,7 +2684,6 @@
     officialName: 'Petersen, Kaye'
     gender: F
     status: Full
-    house: {entityName: 'App\Modules\School\Entity\House', findBy: abbreviation, value: B }
     careGiver:
         viewCalendarSchool: true
         receiveNotificationEmails: true
@@ -2926,7 +2925,8 @@
     officialName: 'Morris, Brittany'
     gender: F
     status: Full
-    dob: '1989-06-06'
+    personalDocumentation:
+        dob: '1989-06-06'
     staff:
         type: Teaching
         viewCalendarSchool: true

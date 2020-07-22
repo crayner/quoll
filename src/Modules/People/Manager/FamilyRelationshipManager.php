@@ -19,7 +19,7 @@ namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Provider\ProviderFactory;
@@ -87,7 +87,7 @@ class FamilyRelationshipManager implements SpecialInterface
         {
             $fr = $provider->findOneRelationship($item);
             $fr->setFamily($family)
-                ->setAdult($provider->getRepository(FamilyMemberAdult::class)->find($item['adult']))
+                ->setAdult($provider->getRepository(FamilyMemberCareGiver::class)->find($item['adult']))
                 ->setChild($provider->getRepository(FamilyMemberStudent::class)->find($item['child']))
                 ->setRelationship($item['relationship'])
             ;

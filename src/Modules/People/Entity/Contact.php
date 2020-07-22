@@ -84,7 +84,7 @@ class Contact extends AbstractEntity
     /**
      * @var Phone|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Phone")
-     * @ORM\JoinColumn(name="personal_phone", referencedColumnName="id",nullable=true)
+     * @ORM\JoinColumn(name="personal_phone",referencedColumnName="id",nullable=true)
      */
     private $personalPhone;
 

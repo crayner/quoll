@@ -445,20 +445,6 @@ dump($all);
     }
 
     /**
-     * findPhoneList
-     * @return array
-     */
-    public function findPhoneList(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.personalPhone IS NOT NULL')
-            ->select(['p.id as person','ph.id'])
-            ->join('p.personalPhone', 'ph')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * getStaffQueryBuilder
      * @param string $status
      * @return QueryBuilder

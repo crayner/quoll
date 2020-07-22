@@ -16,7 +16,7 @@
  */
 namespace App\Modules\People\Provider;
 
-use App\Modules\People\Entity\FamilyMemberAdult;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
@@ -27,10 +27,10 @@ use Doctrine\DBAL\Schema\SchemaException;
  * Class FamilyMemberAdultProvider
  * @package App\Modules\People\Provider
  */
-class FamilyMemberAdultProvider extends AbstractProvider
+class FamilyMemberCareGiverProvider extends AbstractProvider
 {
 
-    protected $entityName = FamilyMemberAdult::class;
+    protected $entityName = FamilyMemberCareGiver::class;
 
     /**
      * saveAdults

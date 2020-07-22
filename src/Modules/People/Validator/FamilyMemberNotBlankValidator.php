@@ -39,7 +39,7 @@ class FamilyMemberNotBlankValidator extends ConstraintValidator
     {
         if (!$value instanceof FamilyMember) return;
 
-        if (!$value->getStudent() instanceof Student && !$value->getParent() instanceof CareGiver) {
+        if (!$value->getStudent() instanceof Student && !$value->getCareGiver() instanceof CareGiver) {
             $this->context->buildViolation($constraint->message)
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(FamilyMemberNotBlank::PARENT_AND_STUDENT_ERROR)

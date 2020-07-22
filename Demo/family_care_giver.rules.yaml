@@ -2,7 +2,7 @@ associated:
     family:
         entityName: 'App\Modules\People\Entity\Family'
         findBy: familySync
-    parent:
+    careGiver:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
-        method: getParent
+        method: getCareGiver
