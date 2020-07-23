@@ -16,6 +16,7 @@
  */
 namespace App\Modules\People\Provider;
 
+use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
@@ -41,7 +42,7 @@ class LocalityProvider extends AbstractProvider
      */
     public function countUsage(Locality $Locality): int
     {
-        $result = $this->getRepository(Person::class)->countLocalityUse($Locality);
+        $result = $this->getRepository(Contact::class)->countLocalityUse($Locality);
         $result += $this->getRepository(Family::class)->countLocalityUse($Locality);
         return $result;
     }

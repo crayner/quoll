@@ -18,6 +18,7 @@ namespace App\Modules\People\Form;
 
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\PersonalDocumentation;
@@ -84,7 +85,7 @@ class PersonalDocumentationType extends AbstractType
                     'preferred_choices' => ParameterBagHelper::get('preferred_languages'),
                 ]
             )
-            ->add('dob', DateType::class,
+            ->add('dob', ReactDateType::class,
                 [
                     'label' => 'Date of Birth',
                     'input' => 'datetime_immutable',

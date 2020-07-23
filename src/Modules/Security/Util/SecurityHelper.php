@@ -565,6 +565,16 @@ class SecurityHelper
      */
     public static function useEmailAsUsername(): bool
     {
-        return SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
+        return self::isEmailUnique();
+    }
+
+    /**
+     * isEmailUnique
+     * @return bool
+     * 23/07/2020 10:15
+     */
+    public static function isEmailUnique(): bool
+    {
+        return SettingFactory::getSettingManager()->get('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
     }
 }

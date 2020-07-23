@@ -130,8 +130,8 @@ class ActionPermissionController extends AbstractPageController
             $links[] = $item;
         }
 
-        file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreData.yaml', Yaml::dump($data, 3));
-        file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreLinks.yaml', Yaml::dump($links, 3));
+        file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreData.yaml', Yaml::dump($data, 5));
+        file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreLinks.yaml', Yaml::dump($links, 5));
 
         $links = [];
         $data = [];
@@ -146,9 +146,17 @@ class ActionPermissionController extends AbstractPageController
             $links[] = $item;
         }
 
-        file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreData.yaml', Yaml::dump($data, 3));
-        file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreLinks.yaml', Yaml::dump($links, 3));
+        file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreData.yaml', Yaml::dump($data, 5));
+        file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreLinks.yaml', Yaml::dump($links, 5));
 
-        return '<li>Action and Security Role Data and Links</li>';
+        $data = [];
+        foreach(ProviderFactory::getRepository(Module::class)->findAll() as $module) {
+            $entity = $module->toArray('buildContent');
+            $data[] = $entity;
+        }
+
+        file_put_contents(__DIR__ . '/../../System/Entity/ModuleCoreData.yaml', Yaml::dump($data, 5));
+
+        return '<li>Action, Modules and Security Role Data and Links</li>';
     }
 }

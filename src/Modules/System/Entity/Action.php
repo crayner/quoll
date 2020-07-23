@@ -427,15 +427,16 @@ class Action extends AbstractEntity
         }
         if ($name === 'buildContent') {
             return [
-                'name' => $this->name,
-                'category' => $this->category,
+                'name' => $this->getName(),
+                'category' => $this->getCategory(),
                 'description' => $this->getDescription(),
-                'routeList' => $this->routeList,
-                'entryRoute' => $this->entryRoute,
-                'entrySidebar' => $this->entrySidebar,
-                'menuShow' => $this->menuShow,
-                'precedence' => $this->precedence,
-                'restriction' => $this->restriction
+                'routeList' => ['arrayField' => $this->getRouteList()],
+                'entryRoute' => $this->getEntryRoute(),
+                'entrySidebar' => $this->isEntrySidebar(),
+                'menuShow' => $this->isMenuShow(),
+                'precedence' => $this->getPrecedence(),
+                'restriction' => $this->getRestriction(),
+                'securityRoles' => ['arrayField' => $this->getSecurityRoles()],
             ];
         }
         return [

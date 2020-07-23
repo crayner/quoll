@@ -374,6 +374,20 @@ class Module extends AbstractEntity
                 'url' => UrlGeneratorHelper::getUrl($this->getEntryRoute()),
             ];
         }
+        if ($name === 'buildContent') {
+            return [
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'entryRoute' => $this->getEntryRoute(),
+                'securityRoles' => [ 'arrayField' => $this->getSecurityRoles()],
+                'type' => $this->getType(),
+                'active' => $this->isActive(),
+                'category' => $this->getCategory(),
+                'versionDate' => [ 'convertDate' => $this->getVersionDate()->format('Y-m-d') ],
+                'author' => $this->getAuthor(),
+                'url' => $this->getUrl(),
+            ];
+        }
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -531,14 +545,5 @@ class Module extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/ModuleCoreData.yaml'));
-    }
-
-    /**
-     * getVersion
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

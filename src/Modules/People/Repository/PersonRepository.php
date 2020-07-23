@@ -423,28 +423,6 @@ dump($all);
     }
 
     /**
-     * countLocalityUse
-     * @param Locality $locality
-     * @return int
-     */
-    public function countLocalityUse(Locality $locality): int
-    {
-        try {
-            return $this->createQueryBuilder('p')
-                ->select('COUNT(p.id)')
-                ->leftJoin('p.physicalAddress', 'a')
-                ->leftJoin('p.postalAddress', 'pa')
-                ->where('a.locality = :locality')
-                ->orWhere('pa.locality = :locality')
-                ->setParameter('locality', $locality)
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
      * getStaffQueryBuilder
      * @param string $status
      * @return QueryBuilder

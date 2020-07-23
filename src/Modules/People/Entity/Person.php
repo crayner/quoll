@@ -171,7 +171,7 @@ class Person extends AbstractEntity
 
     /**
      * @var Contact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact", mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact",mappedBy="person",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="contact",referencedColumnName="id")
      */
     private $contact;
@@ -203,6 +203,9 @@ class Person extends AbstractEntity
     public function __construct()
     {
         $this->setStatus('Expected');
+        $this->setContact(new Contact($this));
+        $this->setSecurityUser(new SecurityUser($this));
+        $this->setPersonalDocumentation(new PersonalDocumentation($this));
     }
 
     /**
@@ -742,63 +745,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Person` (
-                    `id` char(36) COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:guid)',
-                    `title` varchar(5) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                    `surname` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
-                    `first_name` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
-                    `preferred_name` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
-                    `official_name` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                    `name_in_characters` varchar(60) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                    `gender` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Unspecified',
-                    `status` varchar(16) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Full',
-                    `student` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `careGiver` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `contact` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `staff` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `security_user` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    `personal_documentation` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '(DC2Type:guid)',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `student` (`student`),
-                    UNIQUE KEY `security_user` (`security_user`),
-                    UNIQUE KEY `staff` (`staff`),
-                    UNIQUE KEY `contact` (`contact`),
-                    UNIQUE KEY `careGiver` (`careGiver`),
-                    UNIQUE KEY `personal_documentation` (`personal_documentation`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-                "CREATE TABLE `__prefix__PersonalPhone` (
-                    `person` CHAR(36) NOT NULL,
-                    `phone` CHAR(36) NOT NULL,
-                    PRIMARY KEY (`person`,`phone`),
-                    KEY `person` (`person`),
-                    KEY `phone` (`phone`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__Person`
-                    ADD CONSTRAINT FOREIGN KEY (`careGiver`) REFERENCES `__prefix__CareGiver` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`staff`) REFERENCES `__prefix__Staff` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`contact`) REFERENCES `__prefix__Contact` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`security_user`) REFERENCES `__prefix__SecurityUser` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`student`) REFERENCES `__prefix__Student` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`personal_documentation`) REFERENCES `__prefix__PersonalDocumentation` (`id`);
-                ALTER TABLE `__prefix__PersonalPhone`
-                    ADD CONSTRAINT FOREIGN KEY (`phone`) REFERENCES `__prefix__Phone` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    /**
      * getHumanisedRole
      * @return string
      * 10/06/2020 11:57
@@ -809,7 +755,7 @@ class Person extends AbstractEntity
             return 'Student';
         }
         if ($this->isCareGiver()) {
-            return 'CareGiver';
+            return 'Care Giver';
         }
         if ($this->isStaff()) {
             return 'Staff';
@@ -886,36 +832,27 @@ class Person extends AbstractEntity
     }
 
     /**
-     * isContact
-     * @return Contact|null
-     * 3/07/2020 11:24
+     * @return Contact
      */
-    public function isContact(): ?Contact
+    public function getContact(): Contact
     {
-        return $this->getContact() instanceof Contact;
-    }
-
-    /**
-     * @return Contact|null
-     */
-    public function getContact(): ?Contact
-    {
+        if ($this->contact->getPerson() === null) {
+            $this->contact->setPerson($this);
+        }
         return $this->contact;
     }
 
     /**
-     * setContact
      * @param Contact|null $contact
      * @param bool $reflect
-     * @return $this
-     * 2/07/2020 09:10
+     * @return Person
      */
-    public function setContact(?Contact $contact, bool $reflect = true): Person
+    public function setContact(Contact $contact, bool $reflect = true): Person
     {
-        $this->contact = $contact;
-        if ($reflect && $contact !== null) {
-            $contact->setPerson($this, false);
+        if ($reflect) {
+            $contact = $contact->setPerson($this, false);
         }
+        $this->contact = $contact;
         return $this;
     }
 

@@ -57,7 +57,7 @@ class Contact extends AbstractEntity
     /**
      * @var Person
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="contact",cascade={"persist"})
-     * @ORM\JoinColumn(name="person",referencedColumnName="id")
+     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private $person;
@@ -80,6 +80,13 @@ class Contact extends AbstractEntity
      * @ORM\JoinColumn(name="physical_address",referencedColumnName="id",nullable=true)
      */
     private $physicalAddress;
+
+    /**
+     * @var Address|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
+     * @ORM\JoinColumn(name="postal_address",referencedColumnName="id",nullable=true)
+     */
+    private $postalAddress;
 
     /**
      * @var Phone|null
@@ -148,26 +155,24 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * @return Person
+     * @return Person|null
      */
-    public function getPerson(): Person
+    public function getPerson(): ?Person
     {
         return $this->person;
     }
 
     /**
-     * setPerson
      * @param Person $person
      * @param bool $reflect
-     * @return $this
-     * 2/07/2020 09:10
+     * @return Contact
      */
-    public function setPerson(?Person $person, bool $reflect = true): Contact
+    public function setPerson(Person $person, bool $reflect = true): Contact
     {
-        $this->person = $person;
-        if ($reflect && $person instanceof Person) {
+        if ($reflect) {
             $person->setContact($this, false);
         }
+        $this->person = $person;
         return $this;
     }
 
@@ -230,13 +235,6 @@ class Contact extends AbstractEntity
         $this->physicalAddress = $address;
         return $this;
     }
-
-    /**
-     * @var Address|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Address")
-     * @ORM\JoinColumn(name="postal_address",referencedColumnName="id",nullable=true)
-     */
-    private $postalAddress;
 
     /**
      * @return Address|null

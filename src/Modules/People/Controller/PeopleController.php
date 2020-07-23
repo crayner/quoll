@@ -244,6 +244,7 @@ class PeopleController extends AbstractPageController
                     'action' => $this->generateUrl('contact_edit', ['person' => $person->getId()]),
                 ]
             );
+
             $panel = new Panel('Contact', 'People', new Section('form', 'Contact'));
             $container->addForm('Contact', $contactForm->createView())->addPanel($panel);
 

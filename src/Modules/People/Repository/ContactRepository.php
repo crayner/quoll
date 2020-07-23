@@ -17,7 +17,10 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Contact;
+use App\Modules\People\Entity\Locality;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,4 +54,26 @@ class ContactRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * countLocalityUse
+     * @param Locality $locality
+     * @return int
+     * 22/07/2020 15:52
+     */
+    public function countLocalityUse(Locality $locality): int
+    {
+        try {
+            return $this->createQueryBuilder('c')
+                ->select('COUNT(c.id)')
+                ->leftJoin('c.physicalAddress', 'a')
+                ->leftJoin('c.postalAddress', 'pa')
+                ->where('a.locality = :locality')
+                ->orWhere('pa.locality = :locality')
+                ->setParameter('locality', $locality)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

@@ -1,155 +1,196 @@
 -
-    name: 'People'
+    name: People
     description: 'Manage people'
-    entryRoute: 'people_list'
-    securityRoles: { arrayField: ['ROLE_PRINCIPAL']}
-    type: 'Core'
+    entryRoute: people_list
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+    type: Core
     active: true
-    category: 'Admin'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Admin
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'System'
+    name: System
     description: 'Allows administrators to configure system settings.'
-    entryRoute: 'system_settings'
-    securityRoles: { arrayField: ['ROLE_SYSTEM_ADMIN']}
-    type: 'Core'
+    entryRoute: system_settings
+    securityRoles:
+        arrayField:
+            - ROLE_SYSTEM_ADMIN
+    type: Core
     active: true
-    category: 'Admin'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Admin
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Students'
+    name: Students
     description: 'Manage students'
-    entryRoute: 'student_view'
-    securityRoles: { arrayField: ['ROLE_TEACHER','ROLE_SUPPORT']}
-    type: 'Core'
+    entryRoute: student_view
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+            - ROLE_SUPPORT
+    type: Core
     active: true
-    category: 'People'
-    versionDate: { convertDate: '2020-04-01' }
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Staff'
+    name: Staff
     description: 'Manage Staff'
-    entryRoute: 'staff_view'
-    securityRoles: { arrayField: ['ROLE_SUPPORT']}
-    type: 'Core'
+    entryRoute: staff_view
+    securityRoles:
+        arrayField:
+            - ROLE_SUPPORT
+    type: Core
     active: true
-    category: 'People'
-    versionDate: { convertDate: '2020-04-01' }
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'School'
+    name: School
     description: 'Allows administrators to configure school settings.'
-    entryRoute: 'academic_year_list'
-    securityRoles: { arrayField: ['ROLE_PRINCIPAL']}
-    type: 'Core'
+    entryRoute: academic_year_list
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+    type: Core
     active: true
-    category: 'Admin'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Admin
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
     name: 'Mark Book'
     description: 'A module for keeping track of marks'
-    entryRoute: 'mark_book_view'
-    securityRoles: { arrayField: ['ROLE_PRINCIPAL']}
-    type: 'Core'
+    entryRoute: mark_book_view
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+    type: Core
     active: true
-    category: 'Assess'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Assess
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Activity'
+    name: Activity
     description: 'Manage an activity programme.'
-    entryRoute: 'activity_list'
-    securityRoles: { arrayField: ['ROLE_PRINCIPAL']}
-    type: 'Core'
+    entryRoute: activity_list
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+    type: Core
     active: true
-    category: 'Learn'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Department'
+    name: Department
     description: 'Manage Department details.'
-    entryRoute: 'department_view'
-    type: 'Core'
+    entryRoute: department_view
+    securityRoles:
+        arrayField: {  }
+    type: Core
     active: true
-    category: 'Learn'
-    versionDate: { convertDate: '2020-04-01' }
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Library'
+    name: Library
     description: 'Manage Libraries within the school.'
-    entryRoute: 'library_settings'
-    securityRoles: { arrayField: ['ROLE_LIBRARIAN']}
-    type: 'Core'
+    entryRoute: library_settings
+    securityRoles:
+        arrayField:
+            - ROLE_LIBRARIAN
+    type: Core
     active: true
-    category: 'Learn'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
     name: 'Individual Need'
     description: 'Manage student individual needs'
-    entryRoute: 'individual_need_list'
+    entryRoute: individual_need_list
     securityRoles:
         arrayField:
             - ROLE_TEACHER
-    type: 'Core'
+    type: Core
     active: true
-    category: 'Learn'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Planner'
+    name: Planner
     description: 'Supports lesson planning and information sharing for staff, student and parents.'
-    entryRoute: 'planner_view'
-    securityRoles: { arrayField: ['ROLE_TEACHER']}
-    type: 'Core'
+    entryRoute: planner_view
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+    type: Core
     active: true
-    category: 'Learn'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: 'Attendance'
+    name: Attendance
     description: 'School attendance taking'
-    entryRoute: 'attendance_code_list'
-    securityRoles: { arrayField: ['ROLE_SUPPORT']}
-    type: 'Core'
+    entryRoute: attendance_code_list
+    securityRoles:
+        arrayField:
+            - ROLE_SUPPORT
+    type: Core
     active: true
-    category: 'People'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'http://www.craigrayner.com'
 -
-    name: 'Behaviour'
+    name: Behaviour
     description: 'Tracking student behaviour'
-    entryRoute: 'behaviour_settings'
-    type: 'Core'
+    entryRoute: behaviour_settings
+    securityRoles:
+        arrayField:
+            - ROLE_SUPPORT
+    type: Core
     active: true
-    category: 'People'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
-    securityRoles: { arrayField: ['ROLE_SUPPORT']}
 -
     name: 'Roll Group'
     description: 'Allows management of roll groups'
-    entryRoute: 'roll_group_list'
-    type: 'Core'
+    entryRoute: roll_group_list
+    securityRoles:
+        arrayField:
+            - ROLE_SUPPORT
+    type: Core
     active: true
-    category: 'People'
-    versionDate: { convertDate:  '2020-04-01' }
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
-    securityRoles: { arrayField: ['ROLE_SUPPORT']}

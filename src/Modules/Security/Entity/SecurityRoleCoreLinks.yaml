@@ -3,103 +3,118 @@
         role: ROLE_LIBRARIAN
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_HEAD_TEACHER
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_TEACHER }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_PRINCIPAL
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_HEAD_TEACHER }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_TEACHER
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_STUDENT
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_USER }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_SUPPORT
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_REGISTRAR
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_ALLOWED_TO_SWITCH }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_REGISTRAR
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_ALLOWED_TO_SWITCH }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_CONTACT
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_USER }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_FINANCE
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_CARE_GIVER
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_CONTACT }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_MEDICAL
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_MEDICAL
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_STAFF }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_STAFF
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_USER }
+        findBy:
+            name: null
     target: childRole
 -
     findBy:
         role: ROLE_SYSTEM_ADMIN
     source:
         table: App\Modules\Security\Entity\SecurityRole
-        findBy: { role: ROLE_REGISTRAR }
+        findBy:
+            name: null
     target: childRole

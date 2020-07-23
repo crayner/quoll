@@ -289,50 +289,6 @@ class FamilyMember extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 11/07/2020 13:18
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__FamilyMember` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `family` CHAR(36) NOT NULL,
-                    `person` CHAR(36) NOT NULL,
-                    `comment` longtext,
-                    `member_type` VARCHAR(191) NOT NULL,
-                    `contact_priority` smallint(6) DEFAULT NULL,
-                    `child_data_access` tinyint(1) DEFAULT NULL,
-                    `contact_priority` smallint(6) DEFAULT NULL,
-                    `contact_call` tinyint(1) DEFAULT NULL,
-                    `contact_SMS` tinyint(1) DEFAULT NULL,
-                    `contact_email` tinyint(1) DEFAULT NULL,
-                    `contact_mail` tinyint(1) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `family_contact_priority` (`family`,`contact_priority`),
-                    UNIQUE KEY `family_member` (`family`,`person`),
-                    UNIQUE KEY `family_contact` (`family`,`contact_priority`),
-                    KEY `careGiver` (`careGiver`),
-                    KEY `student` (`student`),
-                    KEY `family` (`family`),
-                    KEY `member_type` (`member_type`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 11/07/2020 13:18
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__FamilyMember` 
-                    ADD CONSTRAINT FOREIGN KEY (family) REFERENCES __prefix__Family (id),
-                    ADD CONSTRAINT FOREIGN KEY (student) REFERENCES __prefix__Student (id),
-                    ADD CONSTRAINT FOREIGN KEY (careGiver) REFERENCES __prefix__CareGiverContact (id);";
-    }
-
-    /**
      * isEqualTo
      * @param FamilyMember $member
      * @return bool
@@ -345,15 +301,5 @@ class FamilyMember extends AbstractEntity
             return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getStudent()->getPerson()->isEqualTo($member->getStudent()->getPerson());
         }
         return false;
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 11/07/2020 13:22
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }
