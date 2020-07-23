@@ -20,7 +20,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\Security\Entity\SecurityUser;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Util\ErrorHelper;
@@ -48,10 +48,10 @@ trait AuthenticatorTrait
         $session = $request->getSession();
 
         if ($i18nID !== null && $i18nID !== $session->get('i18n')->getId())
-            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
+            ProviderFactory::create(Locale::class)->setLanguageSession($session,  ['id' => $i18nID], false);
 
         if (null !== $i18nID && ($i18nID !== $session->get('i18n')->getId()))
-            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
+            ProviderFactory::create(Locale::class)->setLanguageSession($session,  ['id' => $i18nID], false);
     }
 
     /**

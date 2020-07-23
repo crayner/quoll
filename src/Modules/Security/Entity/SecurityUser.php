@@ -23,8 +23,8 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
-use App\Util\ParameterBagHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -38,8 +38,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Craig Rayner <craig@craigrayner.com>
  * @ORM\Entity(repositoryClass="App\Modules\Security\Repository\SecurityUserRepository")
  * @ORM\Table(name="SecurityUser",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="person",columns={"person"}),
- *     @ORM\UniqueConstraint(name="username",columns={"username"})}
+ *     uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="person",columns={"person"}),
+ *      @ORM\UniqueConstraint(name="username",columns={"username"})
+ *     },
+ *     indexes={@ORM\Index(name="locale",columns={"locale"})}
  * )
  * @UniqueEntity("person")
  * @UniqueEntity("username")
@@ -58,7 +61,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="securityUser",fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="securityUser",cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -74,9 +77,15 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true)
-     * @Assert\NotBlank()
      */
     private $password;
+
+    /**
+     * @var Locale|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Locale")
+     * @ORM\JoinColumn(name="locale",nullable=true)
+     */
+    private $locale;
 
     /**
      * @var boolean
@@ -131,6 +140,12 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
      */
     private $googleAPIRefreshToken;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $superUser = false;
 
     /**
      * SecurityUser constructor.
@@ -550,21 +565,21 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * getLocale
-     * @return string
-     * 3/07/2020 11:20
+     * @return Locale|null
      */
-    public function getLocale(): string
+    public function getLocale(): ?Locale
     {
-        $locale = null;
-        if ($this->getPerson() && $this->getPerson()->isStaff()) {
-            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStaff()->getLocale()->getCode() : null;
-        } elseif ($this->getPerson() && $this->getPerson()->isStudent()) {
-            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getStudent()->getLocale()->getCode() : null;
-        } elseif ($this->getPerson() && $this->getPerson()->isCareGiver()) {
-            $locale = $this->getPerson()->getStaff()->getLocale() ? $this->getPerson()->getCareGiver()->getLocale()->getCode() : null;
-        }
-        return $locale ?: ParameterBagHelper::get('locale');
+        return $this->locale;
+    }
+
+    /**
+     * @param Locale|null $locale
+     * @return SecurityUser
+     */
+    public function setLocale(?Locale $locale): SecurityUser
+    {
+        $this->locale = $locale;
+        return $this;
     }
 
     /**
@@ -606,5 +621,23 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->getSecurityRoles());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperUser(): bool
+    {
+        return $this->superUser;
+    }
+
+    /**
+     * @param bool $superUser
+     * @return SecurityUser
+     */
+    public function setSuperUser(bool $superUser): SecurityUser
+    {
+        $this->superUser = $superUser;
+        return $this;
     }
 }

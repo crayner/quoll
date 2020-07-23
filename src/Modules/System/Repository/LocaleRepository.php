@@ -18,17 +18,18 @@ namespace App\Modules\System\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\DriverException;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Util\LocaleHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class I18nRepository
+ * Class LocaleRepository
  * @package App\Modules\System\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class I18nRepository extends ServiceEntityRepository
+class LocaleRepository extends ServiceEntityRepository
 {
     /**
      * @var string|null
@@ -46,7 +47,7 @@ class I18nRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, I18n::class);
+        parent::__construct($registry, Locale::class);
     }
 
     /**
@@ -100,9 +101,9 @@ class I18nRepository extends ServiceEntityRepository
      * findOneByCode
      * @param string $code
      * @param Request|null $request
-     * @return I18n|null
+     * @return Locale|null
      */
-    public function findOneByCode(string $code, ?Request $request = null): ?I18n
+    public function findOneByCode(string $code, ?Request $request = null): ?Locale
     {
         if ($this->getLocalesByCode()->containsKey($code)) {
             return $this->getLocalesByCode()->get($code);
@@ -134,9 +135,9 @@ class I18nRepository extends ServiceEntityRepository
 
     /**
      * @param ArrayCollection $localesByCode
-     * @return I18nRepository
+     * @return LocaleRepository
      */
-    public function setLocalesByCode(ArrayCollection $localesByCode): I18nRepository
+    public function setLocalesByCode(ArrayCollection $localesByCode): LocaleRepository
     {
         $this->localesByCode = $localesByCode ?: new ArrayCollection();
         return $this;
@@ -144,11 +145,11 @@ class I18nRepository extends ServiceEntityRepository
 
     /**
      * addLocaleByCode
-     * @param I18n|null $locale
+     * @param Locale|null $locale
      * @return $this
      * 11/06/2020 09:12
      */
-    public function addLocaleByCode(?I18n $locale): I18nRepository
+    public function addLocaleByCode(?Locale $locale): LocaleRepository
     {
         if ($locale !== null) {
             $this->getLocalesByCode()->set($locale->getCode(), $locale);

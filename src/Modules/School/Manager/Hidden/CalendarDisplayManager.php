@@ -19,7 +19,7 @@ namespace App\Modules\School\Manager\Hidden;
 
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\DaysOfWeek;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -34,7 +34,7 @@ use Doctrine\Common\Collections\Collection;
 class CalendarDisplayManager
 {
     /**
-     * @var I18n
+     * @var Locale
      */
     private $locale;
 
@@ -60,7 +60,7 @@ class CalendarDisplayManager
     public function __construct(string $locale)
     {
         $this->getDaysOfWeek();
-        $this->locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($locale) ?: ProviderFactory::getRepository(I18n::class)->findOneByCode('en_GB');
+        $this->locale = ProviderFactory::getRepository(Locale::class)->findOneByCode($locale) ?: ProviderFactory::getRepository(Locale::class)->findOneByCode('en_GB');
         $this->firstDayofWeek = SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'firstDayOfTheWeek', 'Monday') == 'Sunday' ? 7 : 1;
         if ($this->firstDayofWeek === 7)
         {
@@ -97,9 +97,9 @@ class CalendarDisplayManager
     }
 
     /**
-     * @return I18n
+     * @return Locale
      */
-    public function getLocale(): I18n
+    public function getLocale(): Locale
     {
         return $this->locale;
     }

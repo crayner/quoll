@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyMemberRepository")
  * @ORM\Table(name="FamilyMember",
  *     uniqueConstraints={
- *     @ORM\UniqueConstraint(name="family_careGiver",columns={"family","careGiver"}),
+ *     @ORM\UniqueConstraint(name="family_care_giver",columns={"family","care_giver"}),
  *     @ORM\UniqueConstraint(name="family_student",columns={"family","student"}),
  *     @ORM\UniqueConstraint(name="family_contact_priority",columns={"family","contact_priority"})},
  *     indexes={

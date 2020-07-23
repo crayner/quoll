@@ -18,7 +18,7 @@ namespace App\Twig\Sidebar;
 
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
@@ -61,7 +61,7 @@ class Login implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        $lang = ProviderFactory::getRepository(I18n::class)->findSystemDefaultCode();
+        $lang = ProviderFactory::getRepository(Locale::class)->findSystemDefaultCode();
 
         return [
             'googleOAuth' => $this->getGoogleOAuth(),
@@ -69,8 +69,8 @@ class Login implements SidebarContentInterface
                 'resetPasswordURL' => UrlGeneratorHelper::getUrl('password_reset'),
                 'academicYears' => ProviderFactory::create(AcademicYear::class)->getSelectList(),
                 'academicYear' => AcademicYearHelper::getCurrentAcademicYear()->getId(),
-                'languages' => ProviderFactory::create(I18n::class)->getSelectedLanguages(),
-                'language' => $lang ? ProviderFactory::getRepository(I18n::class)->findOneByCode($lang) : null,
+                'languages' => ProviderFactory::create(Locale::class)->getSelectedLanguages(),
+                'language' => $lang ? ProviderFactory::getRepository(Locale::class)->findOneByCode($lang) : null,
                 'token' => $this->getToken()->getValue(),
             ],
             'translations' => $this->getTranslations(),

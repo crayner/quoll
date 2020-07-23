@@ -23,7 +23,7 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -49,7 +49,7 @@ class SchoolCommonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $person = $options['data']->getPerson();
-        $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode(ParameterBagHelper::get('locale'));
+        $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode(ParameterBagHelper::get('locale'));
         $builder
             ->add('person', HiddenEntityType::class,
                 [

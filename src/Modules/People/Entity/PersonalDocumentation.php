@@ -17,6 +17,7 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Validator as AssertLocal;
 use Doctrine\ORM\Mapping as ORM;

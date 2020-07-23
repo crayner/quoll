@@ -19,7 +19,7 @@ namespace App\Twig;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\House;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -202,7 +202,7 @@ class MinorLinks implements ContentInterface
             $locale = $this->getSession()->get('i18n');
         }
         if (isset($locale) && $locale->getCode() !== $this->getRequest()->getDefaultLocale()) {
-            $defaultLocale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getRequest()->getDefaultLocale());
+            $defaultLocale = ProviderFactory::getRepository(Locale::class)->findOneByCode($this->getRequest()->getDefaultLocale());
             $links[] =
                 [
                     'url' => [

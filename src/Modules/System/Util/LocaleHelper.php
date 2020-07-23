@@ -17,7 +17,7 @@
 
 namespace App\Modules\System\Util;
 
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
@@ -49,7 +49,7 @@ class LocaleHelper
         if ($request->getLocale() !== null)
             self::$locale = $request->getLocale();
         try {
-            return ProviderFactory::create(I18n::class)->isValidLocaleCode(self::$locale) ? self::$locale : 'en_GB';
+            return ProviderFactory::create(Locale::class)->isValidLocaleCode(self::$locale) ? self::$locale : 'en_GB';
         } catch (\PDOException | PDOException | TableNotFoundException | DriverException $e) {
             return 'en_GB';
         }

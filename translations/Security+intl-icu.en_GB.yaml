@@ -38,7 +38,7 @@ ROLE_SYSTEM_ADMIN: System Administrator
 ROLE_REGISTRAR: Registrar
 ROLE_SUPPORT: Support Staff
 ROLE_HEAD_TEACHER: Head Teacher
-ROLE_CARE_GIVER: Parent
+ROLE_CARE_GIVER: Care Giver
 ROLE_PRINCIPAL: Principal
 ROLE_LIBRARIAN: Librarian
 ROLE_FINANCE: Financial Staff
@@ -53,6 +53,7 @@ ROLE_CONTACT: Contact
 ROLE_MEDICAL: Medical
 Force Reset Password?: Force Reset Password?
 Person: Person
+'The system default is "{name}" and is not available to select.': 'The system default is applied to each user unless an alternate is selected here. The current default is "{name}."'
 Reset the password for this person.: Reset the password for this person.
 The person will need to change their password at the next attempt to sign in.: The person will need to change their password at the next attempt to sign in.
 Your account has been successfully updated. You can now continue to use the system as per normal.: Your account has been successfully updated. You can now continue to use the system as per normal.
@@ -108,3 +109,13 @@ Parent: Parent
 Staff: Staff
 Care Giver, Staff: Care Giver, Staff
 Security User Details: Security User Details
+User will be prompted on next login.: 'This person will be required to change their password when they next login.'
+Force Reset Password: Force a Password Reset
+Can Login?: Can Login?
+User name: User Name
+Controls what a user can do and see.: Controls what a user can do and see.
+Over ride Locale...: Over ride Locale...
+Personal Locale Override!: Personal Locale Override!
+Primary Role: Primary Role
+Restore Self: Restore Self
+Super User: Super User

@@ -17,7 +17,6 @@ use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\ApplicationForm;
-use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -36,7 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\Index(name="emergency_contact2",columns={"emergency_contact2"}),
  *      @ORM\Index(name="theme",columns={"theme"}),
  *      @ORM\Index(name="application_form",columns={"application_form"}),
- *      @ORM\Index(name="locale",columns={"locale"}),
  *      @ORM\Index(name="house",columns={"house"})
  *  }
  * )
@@ -166,13 +164,6 @@ class Staff extends AbstractEntity
      * @ORM\JoinColumn(name="theme", referencedColumnName="id", nullable=true)
      */
     private $theme;
-
-    /**
-     * @var I18n|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
-     * @ORM\JoinColumn(name="locale",referencedColumnName="id",nullable=true)
-     */
-    private $locale;
 
     /**
      * Staff constructor.
@@ -537,24 +528,6 @@ class Staff extends AbstractEntity
     public function setTheme(?Theme $theme): Staff
     {
         $this->theme = $theme;
-        return $this;
-    }
-
-    /**
-     * @return I18n|null
-     */
-    public function getLocale(): ?I18n
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param I18n|null $locale
-     * @return Staff
-     */
-    public function setLocale(?I18n $locale): Staff
-    {
-        $this->locale = $locale;
         return $this;
     }
 

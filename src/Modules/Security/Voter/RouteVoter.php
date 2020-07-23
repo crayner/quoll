@@ -67,6 +67,8 @@ class RouteVoter extends RoleHierarchyVoter
     {
         if (in_array('ROLE_ROUTE', $attributes))
         {
+            if ($token->getUser()->isSuperUser()) return VoterInterface::ACCESS_GRANTED;
+
             $action = $this->getRequest()->attributes->get('action');
             $route = $this->getRequest()->attributes->get('_route');
 

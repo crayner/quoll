@@ -23,7 +23,7 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
 use App\Modules\Staff\Entity\Staff;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use Doctrine\ORM\EntityRepository;
@@ -53,7 +53,7 @@ class StaffType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $person = $options['data']->getPerson();
-        $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode(ParameterBagHelper::get('locale'));
+        $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode(ParameterBagHelper::get('locale'));
         $builder
             ->add('person', HiddenEntityType::class,
                 [
@@ -182,24 +182,6 @@ class StaffType extends AbstractType
             ->add('vehicleRegistration', TextType::class,
                 [
                     'label' => 'Vehicle Registration',
-                ]
-            )
-            ->add('locale', EntityType::class,
-                [
-                    'label' => 'Personal Locale Override!',
-                    'help' => 'The system default is "{name}" and is not available to select.',
-                    'help_translation_parameters' => ['{name}' => $locale->getName()],
-                    'class' => I18n::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'Please select...',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-                            ->orderBy('i.name','ASC')
-                            ->where('i.active = :true')
-                            ->andWhere('i.systemDefault = :false')
-                            ->setParameters(['true' => true, 'false' => false])
-                        ;
-                    },
                 ]
             )
             ->add('submit', SubmitType::class)

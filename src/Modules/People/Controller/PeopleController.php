@@ -251,6 +251,8 @@ class PeopleController extends AbstractPageController
             $securityUserForm = $this->createForm(SecurityUserType::class, $person->getSecurityUser(),
                 [
                     'action' => $this->generateUrl('security_user_edit', ['person' => $person->getId()]),
+                    'user_roles' => $this->getUser()->getRoles(),
+                    'user' => $this->getUser(),
                 ]
             );
             $panel = new Panel('Security', 'People', new Section('form', 'Security'));

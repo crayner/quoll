@@ -17,7 +17,7 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,9 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="CareGiver",
  *  uniqueConstraints={
  *      @ORM\UniqueConstraint(name="person",columns={"person"})
- *  },
- *  indexes={
- *      @ORM\Index(name="locale",columns={"locale"})
  *  }
  * )
  * @UniqueEntity("person")
@@ -65,13 +62,6 @@ class CareGiver extends AbstractEntity
      * @ORM\Column(length=20,nullable=true)
      */
     private $vehicleRegistration;
-
-    /**
-     * @var I18n|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
-     * @ORM\JoinColumn(name="locale",referencedColumnName="id",nullable=true)
-     */
-    private $locale;
 
     /**
      * @var boolean|null
@@ -157,24 +147,6 @@ class CareGiver extends AbstractEntity
     public function setVehicleRegistration(?string $vehicleRegistration): CareGiver
     {
         $this->vehicleRegistration = $vehicleRegistration;
-        return $this;
-    }
-
-    /**
-     * @return I18n|null
-     */
-    public function getLocale(): ?I18n
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param I18n|null $locale
-     * @return CareGiver
-     */
-    public function setLocale(?I18n $locale): CareGiver
-    {
-        $this->locale = $locale;
         return $this;
     }
 

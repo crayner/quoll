@@ -20,7 +20,7 @@ namespace App\Modules\System\Form;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Manager\Hidden\Language;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -49,7 +49,7 @@ class LanguageType extends AbstractType
             )
             ->add('code', ChoiceType::class,
                 [
-                    'choices' => I18n::getLanguages(),
+                    'choices' => Locale::getLanguages(),
                     'choice_translation_domain' => false,
                     'placeholder' => 'Please select...',
                     'label' => 'System Language',

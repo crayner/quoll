@@ -1,5 +1,4 @@
-<?php /** @noinspection ALL */
-
+<?php
 /**
  * Created by PhpStorm.
  *
@@ -24,12 +23,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class I18n
+ * Class Locale
  * @package App\Modules\System\Entity
- * @ORM\Entity(repositoryClass="App\Modules\System\Repository\I18nRepository")
- * @ORM\Table(name="i18n")
+ * @ORM\Entity(repositoryClass="App\Modules\System\Repository\LocaleRepository")
+ * @ORM\Table(name="Locale")
  */
-class I18n extends AbstractEntity
+class Locale extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -149,9 +148,9 @@ class I18n extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return I18n
+     * @return Locale
      */
-    public function setId(?string $id): I18n
+    public function setId(?string $id): Locale
     {
         $this->id = $id;
         return $this;
@@ -167,9 +166,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param string|null $code
-     * @return I18n
+     * @return Locale
      */
-    public function setCode(?string $code): I18n
+    public function setCode(?string $code): Locale
     {
         $this->code = $code;
         return $this;
@@ -185,9 +184,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return I18n
+     * @return Locale
      */
-    public function setName(?string $name): I18n
+    public function setName(?string $name): Locale
     {
         $this->name = $name;
         return $this;
@@ -205,9 +204,9 @@ class I18n extends AbstractEntity
      * VersionDate.
      *
      * @param \DateTimeImmutable|null $versionDate
-     * @return I18n
+     * @return Locale
      */
-    public function setVersionDate(?\DateTimeImmutable $versionDate): I18n
+    public function setVersionDate(?\DateTimeImmutable $versionDate): Locale
     {
         $this->versionDate = $versionDate;
         return $this;
@@ -223,9 +222,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param bool|null $active
-     * @return I18n
+     * @return Locale
      */
-    public function setActive(?bool $active): I18n
+    public function setActive(?bool $active): Locale
     {
         $this->active = (bool)$active;
         return $this;
@@ -242,9 +241,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param bool|null $installed
-     * @return I18n
+     * @return Locale
      */
-    public function setInstalled(?bool $installed): I18n
+    public function setInstalled(?bool $installed): Locale
     {
         $this->installed = (bool)$installed;
         return $this;
@@ -260,9 +259,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param bool|null $systemDefault
-     * @return I18n
+     * @return Locale
      */
-    public function setSystemDefault(?bool $systemDefault): I18n
+    public function setSystemDefault(?bool $systemDefault): Locale
     {
         $this->systemDefault = (bool)$systemDefault;
         return $this;
@@ -278,9 +277,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param string|null $dateFormat
-     * @return I18n
+     * @return Locale
      */
-    public function setDateFormat(?string $dateFormat): I18n
+    public function setDateFormat(?string $dateFormat): Locale
     {
         $this->dateFormat = $dateFormat;
         return $this;
@@ -296,9 +295,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param string|null $dateFormatRegEx
-     * @return I18n
+     * @return Locale
      */
-    public function setDateFormatRegEx(?string $dateFormatRegEx): I18n
+    public function setDateFormatRegEx(?string $dateFormatRegEx): Locale
     {
         $this->dateFormatRegEx = $dateFormatRegEx;
         return $this;
@@ -314,9 +313,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param string|null $dateFormatPHP
-     * @return I18n
+     * @return Locale
      */
-    public function setDateFormatPHP(?string $dateFormatPHP): I18n
+    public function setDateFormatPHP(?string $dateFormatPHP): Locale
     {
         $this->dateFormatPHP = $dateFormatPHP;
         return $this;
@@ -332,9 +331,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param bool|null $rtl
-     * @return I18n
+     * @return Locale
      */
-    public function setRtl(?bool $rtl): I18n
+    public function setRtl(?bool $rtl): Locale
     {
         $this->rtl = (bool)$rtl;
         return $this;
@@ -407,9 +406,9 @@ class I18n extends AbstractEntity
      * DefaultLanguage.
      *
      * @param bool $defaultLanguage
-     * @return I18n
+     * @return Locale
      */
-    public function setDefaultLanguage(bool $defaultLanguage): I18n
+    public function setDefaultLanguage(bool $defaultLanguage): Locale
     {
         $this->defaultLanguage = $defaultLanguage;
         return $this;
@@ -434,9 +433,9 @@ class I18n extends AbstractEntity
 
     /**
      * @param Person|null $person
-     * @return I18n
+     * @return Locale
      */
-    public function setPerson(?Person $person): I18n
+    public function setPerson(?Person $person): Locale
     {
         $this->person = $person;
         return $this;

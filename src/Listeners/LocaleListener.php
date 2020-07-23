@@ -50,8 +50,8 @@ class LocaleListener implements EventSubscriberInterface
 
         if ($request->hasSession()) {
             $person = $request->getSession()->get('person');
-            if ($person instanceof Person && $person->getI18nPersonal() !== null)
-                $request->setLocale($person->getI18nPersonal()->getCode());
+            if ($person instanceof Person && $person->getSecurityUser()->getLocale() !== null)
+                $request->setLocale($person->getSecurityUser()->getLocale()->getCode());
         }
     }
 }

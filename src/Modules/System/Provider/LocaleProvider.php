@@ -15,24 +15,21 @@
 
 namespace App\Modules\System\Provider;
 
-use App\Manager\AbstractEntity;
 use App\Provider\AbstractProvider;
-use App\Util\GlobalHelper;
-use App\Modules\System\Entity\I18n;
-use App\Modules\People\Util\UserHelper;
+use App\Modules\System\Entity\Locale;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Class I18nProvider
+ * Class LocaleProvider
  * @package App\Modules\System\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class I18nProvider extends AbstractProvider
+class LocaleProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
-    protected $entityName = I18n::class;
+    protected $entityName = Locale::class;
 
     /**
      * @var string|null
@@ -48,7 +45,7 @@ class I18nProvider extends AbstractProvider
     public function setLanguageSession(SessionInterface $session, array $criteria = ['systemDefault' => 'Y'], $defaultLanguage = true)
     {
         $result = $this->getRepository()->findOneBy($criteria);
-        if (!$result instanceof I18n)
+        if (!$result instanceof Locale)
             $result = $this->getRepository()->findOneBy(['systemDefault' => 'Y']);
 
         $result->setDefaultLanguage($defaultLanguage);
@@ -105,6 +102,6 @@ class I18nProvider extends AbstractProvider
      */
     public function isValidLocaleCode(string $locale): bool
     {
-        return $this->getRepository()->findOneBy(['code' => $locale]) instanceof I18n;
+        return $this->getRepository()->findOneBy(['code' => $locale]) instanceof Locale;
     }
 }

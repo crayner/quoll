@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityUserController extends PeopleController
 {
     /**
-     * editParent
+     * editUser
      * @param ContainerManager $manager
      * @param Person $person
      * @return JsonResponse
@@ -39,15 +39,15 @@ class SecurityUserController extends PeopleController
      * @Route("/security/user/{person}/edit/",name="security_user_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editParent(ContainerManager $manager, Person $person)
+    public function editSecurityUser(ContainerManager $manager, Person $person)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $parent = $person->getSecurityUser() ?: new SecurityUser($person);
+            $user = $person->getSecurityUser() ?: new SecurityUser($person);
 
             $form = $this->createSecurityUserForm($person);
 
-            return $this->saveContent($form, $manager, $parent);
+            return $this->saveSecurityUserContent($form, $manager, $user);
         } else {
             $form = $this->createSecurityUserForm($person);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
@@ -68,6 +68,8 @@ class SecurityUserController extends PeopleController
         return $this->createForm(SecurityUserType::class, $person->getSecurityUser(),
             [
                 'action' => $this->generateUrl('security_user_edit', ['person' => $person->getId()]),
+                'user_roles' => $this->getUser()->getRoles(),
+                'user' => $this->getUser(),
             ]
         );
     }
@@ -80,14 +82,14 @@ class SecurityUserController extends PeopleController
      * @return JsonResponse
      * 20/07/2020 11:31
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, SecurityUser $securityUser)
+    private function saveSecurityUserContent(FormInterface $form, ContainerManager $manager, SecurityUser $securityUser)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
-
         $form->submit($content);
+
         $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(SecurityUser::class)->persistFlush($securityUser, $data, false);
+            $data = ProviderFactory::create(SecurityUser::class)->persistFlush($securityUser, $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());

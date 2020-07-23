@@ -23,7 +23,6 @@ use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
-use App\Modules\System\Entity\I18n;
 use App\Modules\System\Entity\Theme;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,7 +42,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      @ORM\Index(name="application_form",columns={"application_form"}),
  *      @ORM\Index(name="theme",columns={"theme"}),
  *      @ORM\Index(name="graduation_year",columns={"graduation_year"}),
- *      @ORM\Index(name="locale",columns={"locale"}),
  *      @ORM\Index(name="house",columns={"house"})
  *  }
  * )
@@ -151,13 +149,6 @@ class Student extends AbstractEntity
      * @ORM\OrderBy({"firstDay" = "ASC"})
      */
     private $graduationYear;
-
-    /**
-     * @var I18n|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\I18n")
-     * @ORM\JoinColumn(name="locale",referencedColumnName="id",nullable=true)
-     */
-    private $locale;
 
     /**
      * @var Collection|FamilyMemberStudent[]|null
@@ -502,24 +493,6 @@ class Student extends AbstractEntity
     public function setGraduationYear(?AcademicYear $graduationYear): Student
     {
         $this->graduationYear = $graduationYear;
-        return $this;
-    }
-
-    /**
-     * @return I18n|null
-     */
-    public function getLocale(): ?I18n
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param I18n|null $locale
-     * @return Student
-     */
-    public function setLocale(?I18n $locale): Student
-    {
-        $this->locale = $locale;
         return $this;
     }
 

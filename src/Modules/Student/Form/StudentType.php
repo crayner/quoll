@@ -23,7 +23,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
@@ -54,7 +54,6 @@ class StudentType extends AbstractType
     {
         $person = $options['data']->getPerson();
         $academicYear = AcademicYearHelper::getCurrentAcademicYear();
-        $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode(ParameterBagHelper::get('locale'));
         $builder
             ->add('person', HiddenEntityType::class,
                 [
@@ -135,24 +134,6 @@ class StudentType extends AbstractType
                     'class' => AcademicYear::class,
                     'choice_label' => 'name',
                     'placeholder' => 'Please select...',
-                ]
-            )
-            ->add('locale', EntityType::class,
-                [
-                    'label' => 'Personal Locale Override!',
-                    'help' => 'The system default is "{name}" and is not available to select.',
-                    'help_translation_parameters' => ['{name}' => $locale->getName()],
-                    'class' => I18n::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'Please select...',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-                            ->orderBy('i.name','ASC')
-                            ->where('i.active = :true')
-                            ->andWhere('i.systemDefault = :false')
-                            ->setParameters(['true' => true, 'false' => false])
-                            ;
-                    },
                 ]
             )
             ->add('submit', SubmitType::class)

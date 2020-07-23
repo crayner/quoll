@@ -20,7 +20,7 @@ namespace App\Modules\People\Form;
 use App\Modules\People\Form\Subscriber\PreferenceStaffSubscriber;
 use App\Modules\People\Util\UserHelper;
 use App\Modules\Staff\Entity\Staff;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Entity\Theme;
 use Doctrine\ORM\EntityRepository;
@@ -107,7 +107,7 @@ class PreferenceSettingsType extends AbstractType
             ->add('i18nPersonal', EntityType::class,
                 [
                     'label' => 'Personal Language',
-                    'class' => I18n::class,
+                    'class' => Locale::class,
                     'help' => 'Override the system default language.',
                     'placeholder' => 'System Default',
                     'choice_label' => 'name',

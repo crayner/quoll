@@ -22,7 +22,7 @@ use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Entity\Module;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
@@ -301,12 +301,12 @@ class PageManager
         $this->addTranslation('Close');
         $locale = null;
         try {
-            $locale = ProviderFactory::getRepository(I18n::class)->findOneByCode($this->getLocale(), $this->request);
+            $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode($this->getLocale(), $this->request);
         } catch (\PDOException | PDOException | DriverException $e) {
             // Ignore errors.
         }
         if (null === $locale) {
-            $locale = new I18n();
+            $locale = new Locale();
             $locale->setCode('en_GB')->setRtl('N');
         }
         return [

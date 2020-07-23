@@ -25,7 +25,7 @@ use App\Controller\AbstractPageController;
 use App\Form\Type\SubmitOnlyType;
 use App\Manager\Hidden\Language;
 use App\Manager\PageManager;
-use App\Modules\System\Entity\I18n;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Modules\System\Form\Entity\SystemSettings;
 use App\Modules\System\Form\LanguageType;
@@ -77,7 +77,7 @@ class InstallationController extends AbstractPageController
 
             $list = $validator->validate($content['code'], [
                 new NotBlank(),
-                new Choice(['choices' => I18n::getLanguages()]),
+                new Choice(['choices' => Locale::getLanguages()]),
             ]);
 
             if ($list->count() === 0) {
