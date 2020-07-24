@@ -42,23 +42,22 @@ class ContactController extends PeopleController
     /**
      * editContact
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param Contact $contact
      * @return JsonResponse
      * 20/07/2020 11:27
-     * @Route("/contact/{person}/edit/",name="contact_edit")
+     * @Route("/contact/{contact}/edit/",name="contact_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editContact(ContainerManager $manager, Person $person)
+    public function editContact(ContainerManager $manager, Contact $contact)
     {
-        $contact = $person->getContact() ?: new Contact($person);
-        dump($this->getRequest(),$this->getRequest()->getContentType());
+        $contact->getPerson();
         if ($this->getRequest()->getContentType() === 'json') {
 
             $this->getDoctrine()->getManager()->refresh($contact);
 
             $form = $this->createContactForm($contact);
 
-            return $this->saveContactContent($form, $manager, $person);
+            return $this->saveContactContent($form, $manager, $contact);
         } else {
             $form = $this->createContactForm($contact);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
@@ -78,7 +77,7 @@ class ContactController extends PeopleController
     {
         return $this->createForm(ContactType::class, $contact,
             [
-                'action' => $this->generateUrl('contact_edit', ['person' => $contact->getPerson()->getId()]),
+                'action' => $this->generateUrl('contact_edit', ['contact' => $contact->getId()]),
             ]
         );
     }
@@ -87,17 +86,16 @@ class ContactController extends PeopleController
      * saveContactContent
      * @param FormInterface $form
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param Contact $contact
      * @return JsonResponse
      * 23/07/2020 10:59
      */
-    private function saveContactContent(FormInterface $form, ContainerManager $manager, Person $person)
+    private function saveContactContent(FormInterface $form, ContainerManager $manager, Contact $contact)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
-        $contact = $person->getContact();
 
         foreach($content as $name=>$value) {
-            dump($name,$value);
+
             $method = 'set' . ucfirst($name);
             if ($name === 'physicalAddress') {
                 $contact->setPhysicalAddress(ProviderFactory::getRepository(Address::class)->find($value));
@@ -111,6 +109,10 @@ class ContactController extends PeopleController
                 $contact->setPersonalPhone(ProviderFactory::getRepository(Phone::class)->find($value));
                 continue;
             }
+            if ($name === 'person') {
+                $contact->setPerson(ProviderFactory::getRepository(Person::class)->find($value));
+                continue;
+            }
             if (method_exists($contact, $method)) {
                 if ($value === '') $value = null;
                 $contact->$method($value ?? null);
@@ -122,8 +124,7 @@ class ContactController extends PeopleController
 
         $data = [];
         if ($errorList->count() === 0) {
-            $data = ProviderFactory::create(Contact::class)->persistFlush($contact, $data, false);
-            $data = ProviderFactory::create(Person::class)->persistFlush($person, $data);
+            $data = ProviderFactory::create(Contact::class)->persistFlush($contact, $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());

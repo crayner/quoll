@@ -39,24 +39,21 @@ class StudentController extends PeopleController
     /**
      * edit
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param Student $student
      * @return Response
-     * @Route("/student/{person}/edit/",name="student_edit",methods={"POST"})
+     * @Route("/student/{student}/edit/",name="student_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editStudent(ContainerManager $manager, Person $person)
+    public function editStudent(ContainerManager $manager, Student $student)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $student = $person->getStudent() ?: new Student();
-            $student->setPerson($person);
+            $form = $this->createStudentForm($student);
 
-            $form = $this->createStudentForm($person);
-
-            return $this->saveContent($form, $manager, $student, 'Student');
+            return $this->saveStudentContent($form, $manager, $student, 'Student');
         } else {
-            $form = $this->createStudentForm($person);
+            $form = $this->createStudentForm($student);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -69,23 +66,19 @@ class StudentController extends PeopleController
      * @param ContainerManager $manager
      * @param Person $person
      * @return Response
-     * @Route("/student/{person}/school/edit/",name="student_school_edit",methods={"POST"})
+     * @Route("/student/{student}/school/edit/",name="student_school_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editSchoolStudent(ContainerManager $manager, Person $person)
+    public function editSchoolStudent(ContainerManager $manager, Student $student)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $student = $person->getStudent() ?: new Student();
-            $student->setPerson($person);
+            $form = $this->createSchoolStudentForm($student);
 
-            $form = $this->createSchoolStudentForm($person);
-
-            return $this->saveContent($form, $manager, $student, 'School');
+            return $this->saveStudentContent($form, $manager, $student, 'School');
         } else {
-            $student = $person->getStudent() ?: new Student($person);
-            $form = $this->createSchoolStudentForm($person);
+            $form = $this->createSchoolStudentForm($student);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -95,16 +88,14 @@ class StudentController extends PeopleController
 
     /**
      * studentDeletePersonalBackground
-     * @param Person $person
+     * @param Student $student
      * @return JsonResponse
-     * @Route("/student/{person}/personal/background/remove/",name="student_personal_background_remove")
+     * @Route("/student/{student}/personal/background/remove/",name="student_personal_background_remove")
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 10:23
      */
-    public function studentDeletePersonalBackground(Person $person)
+    public function studentDeletePersonalBackground(Student $student)
     {
-        $student = $person->getStudent();
-
         $student->removePersonalBackground();
 
         $data = ProviderFactory::create(Student::class)->persistFlush($student, []);
@@ -138,14 +129,15 @@ class StudentController extends PeopleController
     }
 
     /**
-     * saveContent
+     * saveStudentContent
      * @param FormInterface $form
      * @param ContainerManager $manager
      * @param Student $student
+     * @param string $tabName
      * @return JsonResponse
      * 19/07/2020 16:29
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, Student $student, string $tabName)
+    private function saveStudentContent(FormInterface $form, ContainerManager $manager, Student $student, string $tabName)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
@@ -160,9 +152,9 @@ class StudentController extends PeopleController
                 return new JsonResponse($data);
             } else {
                 if ($tabName === 'School') {
-                    $form = $this->createSchoolStudentForm($student->getPerson());
+                    $form = $this->createSchoolStudentForm($student);
                 } else {
-                    $form = $this->createStudentForm($student->getPerson());
+                    $form = $this->createStudentForm($student);
                 }
             }
             $manager->singlePanel($form->createView());
@@ -177,31 +169,31 @@ class StudentController extends PeopleController
 
     /**
      * createStudentForm
-     * @param Person $person
+     * @param Student $student
      * @return FormInterface
      * 20/07/2020 11:03
      */
-    private function createStudentForm(Person $person): FormInterface
+    private function createStudentForm(Student $student): FormInterface
     {
-        return $this->createForm(StudentType::class, $person->getStudent(),
+        return $this->createForm(StudentType::class, $student,
             [
-                'action' => $this->generateUrl('student_edit', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('student_edit', ['student' => $student->getId()]),
             ]
         );
     }
 
     /**
      * createSchoolStudentForm
-     * @param Person $person
+     * @param Student $student
      * @return FormInterface
      * 20/07/2020 11:04
      */
-    private function createSchoolStudentForm(Person $person): FormInterface
+    private function createSchoolStudentForm(Student $student): FormInterface
     {
-        return $this->createForm(SchoolStudentType::class, $person->getStudent(),
+        return $this->createForm(SchoolStudentType::class, $student,
             [
-                'action' => $this->generateUrl('student_school_edit', ['person' => $person->getId()]),
-                'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('student_school_edit', ['student' => $student->getId()]),
+                'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['student' => $student->getId()]),
             ]
         );
     }

@@ -38,23 +38,21 @@ class PersonalDocumentationController extends PeopleController
     /**
      * editPersonalDocumentation
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param PersonalDocumentation $documentation
      * @return JsonResponse
      * 20/07/2020 11:27
-     * @Route("/personal/documentation/{person}/edit/",name="personal_documentation_edit")
+     * @Route("/personal/documentation/{documentation}/edit/",name="personal_documentation_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editPersonalDocumentation(ContainerManager $manager, Person $person)
+    public function editPersonalDocumentation(ContainerManager $manager, PersonalDocumentation $documentation)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $documentation = $person->getPersonalDocumentation() ?: new PersonalDocumentation($person);
-
-            $form = $this->createDocumentationForm($person);
+            $form = $this->createDocumentationForm($documentation);
 
             return $this->saveContent($form, $manager, $documentation);
         } else {
-            $form = $this->createDocumentationForm($person);
+            $form = $this->createDocumentationForm($documentation);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -64,18 +62,18 @@ class PersonalDocumentationController extends PeopleController
 
     /**
      * createDocumentationForm
-     * @param Person $person
+     * @param PersonalDocumentation $documentation
      * @return FormInterface
      * 20/07/2020 11:29
      */
-    private function createDocumentationForm(Person $person): FormInterface
+    private function createDocumentationForm(PersonalDocumentation $documentation): FormInterface
     {
-        return $this->createForm(PersonalDocumentationType::class, $person->getPersonalDocumentation(),
+        return $this->createForm(PersonalDocumentationType::class, $documentation,
             [
-                'action' => $this->generateUrl('personal_documentation_edit', ['person' => $person->getId()]),
-                'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['person' => $person->getId()]),
-                'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['person' => $person->getId()]),
-                'remove_personal_image' => $this->generateUrl('remove_personal_image', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('personal_documentation_edit', ['documentation' => $documentation->getId()]),
+                'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['documentation' => $documentation->getId()]),
+                'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['documentation' => $documentation->getId()]),
+                'remove_personal_image' => $this->generateUrl('remove_personal_image', ['documentation' => $documentation->getId()]),
             ]
         );
     }
@@ -95,15 +93,14 @@ class PersonalDocumentationController extends PeopleController
         $form->submit($content);
         $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, $data, false);
-            $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation->getPerson(), $data);
+            $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data);
             } else {
-                    $form = $this->createDocumentationForm($documentation->getPerson());
+                    $form = $this->createDocumentationForm($documentation);
             }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -117,16 +114,14 @@ class PersonalDocumentationController extends PeopleController
 
     /**
      * removeBirthCertificateScan
-     * @param Person $person
-     * @Route("/personal/documentation/{person}/birth/certicate/scan/remove/",name="remove_birth_certificate_scan")
-     * @IsGranted("ROLE_ROUTE")
+     * @param PersonalDocumentation $documentation
      * @return JsonResponse
      * 20/07/2020 13:37
+     * @Route("/personal/documentation/{documentation}/birth/certicate/scan/remove/",name="remove_birth_certificate_scan")
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function removeBirthCertificateScan(Person $person)
+    public function removeBirthCertificateScan(PersonalDocumentation $documentation)
     {
-        $documentation = $person->getPersonalDocumentation();
-
         $documentation->removeBirthCertificateScan();
 
         $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
@@ -136,16 +131,14 @@ class PersonalDocumentationController extends PeopleController
 
     /**
      * removeBirthCertificateScan
-     * @param Person $person
-     * @Route("/personal/documentation/{person}/personal/image/remove/",name="remove_personal_image")
-     * @IsGranted("ROLE_ROUTE")
+     * @param PersonalDocumentation $documentation
      * @return JsonResponse
      * 20/07/2020 13:37
+     * @Route("/personal/documentation/{documentation}/personal/image/remove/",name="remove_personal_image")
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function removePersonalImage(Person $person)
+    public function removePersonalImage(PersonalDocumentation $documentation)
     {
-        $documentation = $person->getPersonalDocumentation();
-
         $documentation->removePersonalImage();
 
         $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
@@ -155,16 +148,14 @@ class PersonalDocumentationController extends PeopleController
 
     /**
      * removePassportScan
-     * @param Person $person
-     * @Route("/personal/documentation/{person}/passport/scan/remove/",name="remove_passport_scan")
-     * @IsGranted("ROLE_ROUTE")
+     * @param PersonalDocumentation $documentation
      * @return JsonResponse
      * 20/07/2020 13:37
+     * @Route("/personal/documentation/{documentation}/passport/scan/remove/",name="remove_passport_scan")
+     * @IsGranted("ROLE_ROUTE")
      */
-    public function removePassportScan(Person $person)
+    public function removePassportScan(PersonalDocumentation $documentation)
     {
-        $documentation = $person->getPersonalDocumentation();
-
         $documentation->removeCitizenship1PassportScan();
 
         $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);

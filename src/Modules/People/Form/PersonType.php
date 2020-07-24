@@ -207,11 +207,6 @@ class PersonType extends AbstractType
                 'constraints' => $emailConstraint,
             ]
         );
-        $resolver->setRequired(
-            [
-                'user_roles',
-            ]
-        );
     }
 
     /**

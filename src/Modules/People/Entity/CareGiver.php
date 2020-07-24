@@ -82,12 +82,14 @@ class CareGiver extends AbstractEntity
     private $memberOfFamilies;
 
     /**
-     * ParentContact constructor.
-     * @param Person $person
+     * CareGiver constructor.
+     * @param Person|null $person
      */
     public function __construct(?Person $person = null)
     {
         $this->setPerson($person);
+        $this->setVehicleRegistration(true);
+        $this->setReceiveNotificationEmails(true);
     }
 
     /**
@@ -125,10 +127,10 @@ class CareGiver extends AbstractEntity
      */
     public function setPerson(?Person $person, bool $reflect = true): CareGiver
     {
-        $this->person = $person;
         if ($person && $person instanceof Person) {
             $person->setCareGiver($this, false);
         }
+        $this->person = $person;
         return $this;
     }
 

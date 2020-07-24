@@ -56,7 +56,7 @@ class Contact extends AbstractEntity
 
     /**
      * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="contact",cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="contact")
      * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */

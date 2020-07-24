@@ -66,7 +66,7 @@ class SecurityUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $hierarchy = [];
-        foreach($this->hierarchy->getAssignableRoleNames($options['user_roles']) as $role)
+        foreach($this->hierarchy->getAssignableRoleNames($options['user']->getRoles()) as $role)
         {
             $hierarchy[$role] = $role;
         }
@@ -175,7 +175,6 @@ class SecurityUserType extends AbstractType
     {
         $resolver->setRequired(
             [
-                'user_roles',
                 'user',
             ]
         );

@@ -130,7 +130,6 @@ class PeopleController extends AbstractPageController
         $form = $this->createForm(PersonType::class, $person,
             [
                 'action' => $action,
-                'user_roles' => $this->getUser()->getRoles(),
             ]
         );
 
@@ -187,15 +186,15 @@ class PeopleController extends AbstractPageController
             if ($person->isStaff()) {
                 $staffForm = $this->createForm(StaffType::class, $person->getStaff(),
                     [
-                        'action' => $this->generateUrl('staff_edit', ['person' => $person->getId()]),
+                        'action' => $this->generateUrl('staff_edit', ['staff' => $person->getStaff()->getId()]),
                     ]
                 );
                 $panel = new Panel('Staff', 'Staff', new Section('form', 'Staff'));
                 $container->addForm('Staff', $staffForm->createView())->addPanel($panel);
                 $schoolStaffForm = $this->createForm(SchoolStaffType::class, $person->getStaff(),
                     [
-                        'action' => $this->generateUrl('staff_school_edit', ['person' => $person->getId()]),
-                        'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['person' => $person->getId()])
+                        'action' => $this->generateUrl('staff_school_edit', ['staff' => $person->getStaff()->getId()]),
+                        'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['staff' => $person->getStaff()->getId()])
                     ]
                 );
                 $panel = new Panel('School', 'People', new Section('form', 'School'));
@@ -204,24 +203,24 @@ class PeopleController extends AbstractPageController
             if ($person->isStudent()) {
                 $studentForm = $this->createForm(StudentType::class, $person->getStudent(),
                     [
-                        'action' => $this->generateUrl('student_edit', ['person' => $person->getId()]),
+                        'action' => $this->generateUrl('student_edit', ['student' => $person->getStudent()->getId()]),
                     ]
                 );
                 $panel = new Panel('Student', 'Student', new Section('form', 'Student'));
                 $container->addForm('Student', $studentForm->createView())->addPanel($panel);
                 $schoolStudentForm = $this->createForm(SchoolStudentType::class, $person->getStudent(),
                     [
-                        'action' => $this->generateUrl('student_school_edit', ['person' => $person->getId()]),
-                        'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['person' => $person->getId()])
+                        'action' => $this->generateUrl('student_school_edit', ['student' => $person->getStudent()->getId()]),
+                        'remove_personal_background' => $this->generateUrl('student_personal_background_remove', ['student' => $person->getStudent()->getId()])
                     ]
                 );
                 $panel = new Panel('School', 'People', new Section('form', 'School'));
                 $container->addForm('School', $schoolStudentForm->createView())->addPanel($panel);
             }
             if ($person->isCareGiver()) {
-                $parentForm = $this->createForm(CareGiverType::class, $person->getStudent(),
+                $parentForm = $this->createForm(CareGiverType::class, $person->getCareGiver(),
                     [
-                        'action' => $this->generateUrl('care_giver_edit', ['person' => $person->getId()]),
+                        'action' => $this->generateUrl('care_giver_edit', ['careGiver' => $person->getCareGiver()->getId()]),
                     ]
                 );
                 $panel = new Panel('Care Giver', 'People', new Section('form', 'Care Giver'));
@@ -230,10 +229,10 @@ class PeopleController extends AbstractPageController
 
             $documentationForm = $this->createForm(PersonalDocumentationType::class, $person->getPersonalDocumentation(),
                 [
-                    'action' => $this->generateUrl('personal_documentation_edit', ['person' => $person->getId()]),
-                    'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['person' => $person->getId()]),
-                    'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['person' => $person->getId()]),
-                    'remove_personal_image' => $this->generateUrl('remove_personal_image', ['person' => $person->getId()]),
+                    'action' => $this->generateUrl('personal_documentation_edit', ['documentation' => $person->getPersonalDocumentation()->getId()]),
+                    'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['documentation' => $person->getPersonalDocumentation()->getId()]),
+                    'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['documentation' => $person->getPersonalDocumentation()->getId()]),
+                    'remove_personal_image' => $this->generateUrl('remove_personal_image', ['documentation' => $person->getPersonalDocumentation()->getId()]),
                 ]
             );
             $panel = new Panel('Documentation', 'People', new Section('form', 'Documentation'));
@@ -241,7 +240,7 @@ class PeopleController extends AbstractPageController
 
             $contactForm = $this->createForm(ContactType::class, $person->getContact(),
                 [
-                    'action' => $this->generateUrl('contact_edit', ['person' => $person->getId()]),
+                    'action' => $this->generateUrl('contact_edit', ['contact' => $person->getContact()->getId()]),
                 ]
             );
 
@@ -250,9 +249,8 @@ class PeopleController extends AbstractPageController
 
             $securityUserForm = $this->createForm(SecurityUserType::class, $person->getSecurityUser(),
                 [
-                    'action' => $this->generateUrl('security_user_edit', ['person' => $person->getId()]),
-                    'user_roles' => $this->getUser()->getRoles(),
-                    'user' => $this->getUser(),
+                    'action' => $this->generateUrl('security_user_edit', ['user' => $person->getSecurityUser()->getId()]),
+                    'user' => $this->getUser(), // Current User, not the user under edit.
                 ]
             );
             $panel = new Panel('Security', 'People', new Section('form', 'Security'));

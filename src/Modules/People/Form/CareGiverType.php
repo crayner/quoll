@@ -19,10 +19,12 @@ namespace App\Modules\People\Form;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,6 +52,24 @@ class CareGiverType extends AbstractType
             ->add('parentHeader', HeaderType::class,
                 [
                     'label' => 'Care Giver Details',
+                ]
+            )
+            ->add('receiveNotificationEmails', ToggleType::class,
+                [
+                    'label' => 'Receive Email Notifications?',
+
+                ]
+            )
+            ->add('viewCalendarSchool', ToggleType::class,
+                [
+                    'label' => 'View School Calendar Details',
+
+                ]
+            )
+            ->add('vehicleRegistration', TextType::class,
+                [
+                    'label' => 'Vehicle Registration',
+
                 ]
             )
             ->add('submit', SubmitType::class)

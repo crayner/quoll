@@ -188,8 +188,8 @@ class PeoplePagination extends AbstractPaginationManager
         $row->addFilter($filter);
 
         $filter = new PaginationFilter();
-        $filter->setName('Role: Parent')
-            ->setValue('Parent')
+        $filter->setName('Role: Care Giver')
+            ->setValue('Care Giver')
             ->setGroup('Role')
             ->setContentKey('role');
         $row->addFilter($filter);

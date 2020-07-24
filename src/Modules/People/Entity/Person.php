@@ -824,10 +824,10 @@ class Person extends AbstractEntity
      */
     public function setCareGiver(?CareGiver $careGiver, bool $reflect = true): Person
     {
-        $this->careGiver = $careGiver;
         if ($reflect && $careGiver instanceof CareGiver) {
             $careGiver->setPerson($this, false);
         }
+        $this->careGiver = $careGiver;
         return $this;
     }
 

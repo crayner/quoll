@@ -24,7 +24,6 @@ use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\People\Form\CareGiverType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
-use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,23 +39,21 @@ class CareGiverController extends PeopleController
     /**
      * editCareGiver
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param CareGiver $careGiver
      * @return JsonResponse
      * 20/07/2020 11:27
-     * @Route("/care/giver/{person}/edit/",name="care_giver_edit")
+     * @Route("/care/giver/{careGiver}/edit/",name="care_giver_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editCareGiver(ContainerManager $manager, Person $person)
+    public function editCareGiver(ContainerManager $manager, CareGiver $careGiver)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $careGiver = $person->getCareGiver() ?: new CareGiver($person);
+            $form = $this->createCareGiverForm($careGiver);
 
-            $form = $this->createCareGiverForm($person);
-
-            return $this->saveContent($form, $manager, $careGiver);
+            return $this->saveCareGiverContent($form, $manager, $careGiver);
         } else {
-            $form = $this->createCareGiverForm($person);
+            $form = $this->createCareGiverForm($careGiver);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -66,15 +63,15 @@ class CareGiverController extends PeopleController
 
     /**
      * createCareGiverForm
-     * @param Person $person
+     * @param CareGiver $careGiver
      * @return FormInterface
      * 20/07/2020 11:29
      */
-    private function createCareGiverForm(Person $person): FormInterface
+    private function createCareGiverForm(CareGiver $careGiver): FormInterface
     {
-        return $this->createForm(CareGiverType::class, $person->getCareGiver(),
+        return $this->createForm(CareGiverType::class, $careGiver,
             [
-                'action' => $this->generateUrl('care_giver_edit', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('care_giver_edit', ['careGiver' => $careGiver->getId()]),
             ]
         );
     }
@@ -87,22 +84,22 @@ class CareGiverController extends PeopleController
      * @return JsonResponse
      * 20/07/2020 11:31
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, CareGiver $careGiver)
+    private function saveCareGiverContent(FormInterface $form, ContainerManager $manager, CareGiver $careGiver)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
         $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(CareGiver::class)->persistFlush($careGiver, $data, false);
-            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
+            $data = ProviderFactory::create(CareGiver::class)->persistFlush($careGiver, $data);
+//            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data);
             } else {
-                $form = $this->createCareGiverForm($careGiver->getPerson());
+                $form = $this->createCareGiverForm($careGiver);
             }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();

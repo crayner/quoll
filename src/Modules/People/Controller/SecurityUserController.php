@@ -33,23 +33,21 @@ class SecurityUserController extends PeopleController
     /**
      * editUser
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param SecurityUser $user
      * @return JsonResponse
      * 20/07/2020 11:27
-     * @Route("/security/user/{person}/edit/",name="security_user_edit")
+     * @Route("/security/user/{user}/edit/",name="security_user_edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function editSecurityUser(ContainerManager $manager, Person $person)
+    public function editSecurityUser(ContainerManager $manager, SecurityUser $user)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $user = $person->getSecurityUser() ?: new SecurityUser($person);
-
-            $form = $this->createSecurityUserForm($person);
+            $form = $this->createSecurityUserForm($user);
 
             return $this->saveSecurityUserContent($form, $manager, $user);
         } else {
-            $form = $this->createSecurityUserForm($person);
+            $form = $this->createSecurityUserForm($user);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -59,17 +57,16 @@ class SecurityUserController extends PeopleController
 
     /**
      * createSecurityUserForm
-     * @param Person $person
+     * @param SecurityUser $user
      * @return FormInterface
      * 21/07/2020 14:24
      */
-    private function createSecurityUserForm(Person $person): FormInterface
+    private function createSecurityUserForm(SecurityUser $user): FormInterface
     {
-        return $this->createForm(SecurityUserType::class, $person->getSecurityUser(),
+        return $this->createForm(SecurityUserType::class, $user,
             [
-                'action' => $this->generateUrl('security_user_edit', ['person' => $person->getId()]),
-                'user_roles' => $this->getUser()->getRoles(),
-                'user' => $this->getUser(),
+                'action' => $this->generateUrl('security_user_edit', ['user' => $user->getId()]),
+                'user' => $this->getUser(), // The current user
             ]
         );
     }
@@ -96,7 +93,7 @@ class SecurityUserController extends PeopleController
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data);
             } else {
-                $form = $this->createSecurityUserForm($securityUser->getPerson());
+                $form = $this->createSecurityUserForm($securityUser);
             }
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();

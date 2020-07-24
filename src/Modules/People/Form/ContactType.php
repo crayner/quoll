@@ -52,11 +52,11 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-/*            ->add('person', HiddenEntityType::class,
+            ->add('person', HiddenEntityType::class,
                 [
                     'class' => Person::class,
                 ]
-            ) */
+            )
             ->add('contactHeader', HeaderType::class,
                 [
                     'label' => 'Contact Details',

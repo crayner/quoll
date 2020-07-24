@@ -39,24 +39,21 @@ class StaffController extends PeopleController
     /**
      * edit
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param Staff $staff
      * @return Response
-     * @Route("/staff/{person}/edit/",name="staff_edit",methods={"POST"})
+     * @Route("/staff/{staff}/edit/",name="staff_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editStaff(ContainerManager $manager, Person $person)
+    public function editStaff(ContainerManager $manager, Staff $staff)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $staff = $person->getStaff() ?: new Staff();
-            $staff->setPerson($person);
-
-            $form = $this->createStaffForm($person);
+            $form = $this->createStaffForm($staff);
 
             return $this->saveContent($form, $manager, $staff, 'Staff');
         } else {
-            $form = $this->createStaffForm($person);
+            $form = $this->createStaffForm($staff);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -67,25 +64,21 @@ class StaffController extends PeopleController
     /**
      * edit
      * @param ContainerManager $manager
-     * @param Person $person
+     * @param Staff $staff
      * @return Response
-     * @Route("/staff/{person}/school/edit/",name="staff_school_edit",methods={"POST"})
+     * @Route("/staff/{staff}/school/edit/",name="staff_school_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editSchoolStaff(ContainerManager $manager, Person $person)
+    public function editSchoolStaff(ContainerManager $manager, Staff $staff)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
-            $staff = $person->getStaff() ?: new Staff();
-            $staff->setPerson($person);
-
-            $form = $this->createSchoolStaffForm($person);
+            $form = $this->createSchoolStaffForm($staff);
 
             return $this->saveContent($form, $manager, $staff, 'School');
         } else {
-            $staff = $person->getStaff() ?: new Staff($person);
-            $form = $this->createSchoolStaffForm($person);
+            $form = $this->createSchoolStaffForm($staff);
             $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer();
@@ -95,16 +88,14 @@ class StaffController extends PeopleController
 
     /**
      * staffDeletePersonalBackground
-     * @param Person $person
+     * @param Staff $staff
      * @return JsonResponse
-     * @Route("/staff/{person}/personal/background/remove/",name="staff_personal_background_remove")
+     * @Route("/staff/{staff}/personal/background/remove/",name="staff_personal_background_remove")
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 10:23
      */
-    public function staffDeletePersonalBackground(Person $person)
+    public function staffDeletePersonalBackground(Staff $staff)
     {
-        $staff = $person->getStaff();
-
         $staff->removePersonalBackground();
 
         $data = ProviderFactory::create(Staff::class)->persistFlush($staff, []);
@@ -142,6 +133,7 @@ class StaffController extends PeopleController
      * @param FormInterface $form
      * @param ContainerManager $manager
      * @param Staff $staff
+     * @param string $tabName
      * @return JsonResponse
      * 19/07/2020 16:29
      */
@@ -160,9 +152,9 @@ class StaffController extends PeopleController
                 return new JsonResponse($data);
             } else {
                 if ($tabName === 'School') {
-                    $form = $this->createSchoolStaffForm($staff->getPerson());
+                    $form = $this->createSchoolStaffForm($staff);
                 } else {
-                    $form = $this->createStaffForm($staff->getPerson());
+                    $form = $this->createStaffForm($staff);
                 }
             }
             $manager->singlePanel($form->createView());
@@ -177,31 +169,31 @@ class StaffController extends PeopleController
 
     /**
      * createSchoolStaffForm
-     * @param Person $person
+     * @param Staff $staff
      * @return FormInterface
      * 20/07/2020 10:57
      */
-    private function createSchoolStaffForm(Person $person): FormInterface
+    private function createSchoolStaffForm(Staff $staff): FormInterface
     {
-        return $this->createForm(SchoolStaffType::class, $person->getStaff(),
+        return $this->createForm(SchoolStaffType::class, $staff,
             [
-                'action' => $this->generateUrl('staff_school_edit', ['person' => $person->getId()]),
-                'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('staff_school_edit', ['staff' => $staff->getId()]),
+                'remove_personal_background' => $this->generateUrl('staff_personal_background_remove', ['staff' => $staff->getId()]),
             ]
         );
     }
 
     /**
      * createSchoolStaffForm
-     * @param Person $person
+     * @param Staff $staff
      * @return FormInterface
      * 20/07/2020 10:57
      */
-    private function createStaffForm(Person $person): FormInterface
+    private function createStaffForm(Staff $staff): FormInterface
     {
-        return $this->createForm(StaffType::class, $person->getStaff(),
+        return $this->createForm(StaffType::class, $staff,
             [
-                'action' => $this->generateUrl('staff_edit', ['person' => $person->getId()]),
+                'action' => $this->generateUrl('staff_edit', ['staff' => $staff->getId()]),
             ]
         );
     }
