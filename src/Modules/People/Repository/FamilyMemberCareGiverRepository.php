@@ -46,17 +46,19 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
      * findByFamilyList
      * @param array $familyList
      * @return array
+     * 25/07/2020 07:57
      */
     public function findByFamilyList(array $familyList): array
     {
-        return $this->createQueryBuilder('a')
-            ->join('a.family', 'f')
+        return $this->createQueryBuilder('fmcg')
+            ->join('fmcg.family', 'f')
             ->where('f.id in (:family)')
-            ->setParameter('family', $familyList, Connection::PARAM_INT_ARRAY)
-            ->leftJoin('a.person', 'p')
+            ->setParameter('family', $familyList, Connection::PARAM_STR_ARRAY)
+            ->leftJoin('fmcg.careGiver', 'cg')
+            ->leftJoin('cg.person', 'p')
             ->orderBy('f.id', 'ASC')
-            ->addOrderBy('a.contactPriority', 'ASC')
-            ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS id'])
+            ->addOrderBy('fmcg.contactPriority', 'ASC')
+            ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', "CONCAT(p.title,' ',p.firstName,' ',p.surname) AS fullName", 'f.id AS id'])
             ->getQuery()
             ->getResult();
     }
@@ -69,18 +71,19 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
      */
     public function findByFamily(Family $family, bool $asArray = false): array
     {
-        $query = $this->createQueryBuilder('a')
-            ->join('a.family', 'f')
-            ->where('f.id = :family')
-            ->setParameter('family', $family instanceof Family ? $family->getId() : $family)
-            ->leftJoin('a.person', 'p')
-            ->orderBy('a.contactPriority', 'ASC');
+        $query = $this->createQueryBuilder('fmcg')
+            ->join('fmcg.family', 'f')
+            ->where('fmcg.family = :family')
+            ->setParameter('family', $family)
+            ->leftJoin('fmcg.careGiver', 'cg')
+            ->leftJoin('cg.person', 'p')
+            ->orderBy('fmcg.contactPriority', 'ASC');
 
         if ($asArray)
-            return $query->select(['a.comment','a.contactPriority','a.contactSMS AS sms','a.contactMail AS mail','a.contactEmail AS email','a.contactCall AS phone','a.id AS adult_id','a.childDataAccess', 'p.status', 'p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS family_id', 'p.id AS person', 'a.id'])
+            return $query->select(['fmcg.comment','fmcg.contactPriority','fmcg.contactSMS AS sms','fmcg.contactMail AS mail','fmcg.contactEmail AS email','fmcg.contactCall AS phone','fmcg.childDataAccess', 'p.status', 'p.title', 'f.id AS family_id', 'p.id AS person_id', 'fmcg.id AS care_giver_id',"CONCAT(p.surname,': ',p.firstName) AS fullName"])
                 ->getQuery()
                 ->getResult();
-        return $query->select(['a','p'])
+        return $query->select(['fmcg','f','cg','p'])
             ->getQuery()
             ->getResult();
     }

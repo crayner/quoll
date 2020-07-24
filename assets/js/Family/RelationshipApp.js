@@ -46,8 +46,9 @@ export default class RelationshipApp extends Component {
         Object.keys(this.form.children.relationships.children).map(key => {
             let item = this.form.children.relationships.children[key]
             let relationship = this.relationships[key]
-            let adult = item.children.adult
-            let child = item.children.child 
+            console.log(item,relationship)
+            let careGiver = item.children.careGiver
+            let student = item.children.student
             let family = item.children.family
             let relForm = item.children.relationship
             let error = ''
@@ -62,8 +63,8 @@ export default class RelationshipApp extends Component {
             relationships.push(
                 <tr key={key} className={'flex flex-col sm:flex-row justify-between content-center p-0'}>
                     <td className="px-2 border-b-0 sm:border-b border-t-0 w-2/5">
-                        <div className={'text-right pt-2'}>{relationship.parent}</div>
-                        <input type={'hidden'} id={adult.id} name={adult.full_name} value={adult.value} />
+                        <div className={'text-right pt-2'}>{relationship.care_giver}</div>
+                        <input type={'hidden'} id={careGiver.id} name={careGiver.full_name} value={careGiver.value} />
                     </td>
                     <td className={'px-2 border-b-0 sm:border-b border-t-0 w-1/5'}>
                         <div className={'relative w-full' + error}>
@@ -76,8 +77,8 @@ export default class RelationshipApp extends Component {
                         </div>
                     </td>
                     <td className="px-2 border-b-0 sm:border-b border-t-0 w-2/5" style={{float: 'left'}}>
-                        <div className={'text-left pt-2'}>{relationship.child}</div>
-                        <input type={'hidden'} id={child.id} name={child.full_name} value={child.value} />
+                        <div className={'text-left pt-2'}>{relationship.student}</div>
+                        <input type={'hidden'} id={student.id} name={student.full_name} value={student.value} />
                     </td>
                 </tr>)
 

@@ -24,11 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\FamilyRelationshipRepository")
  * @ORM\Table(name="FamilyRelationship",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="family_adult_child", columns={"family","adult","child"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="family_care_giver_student", columns={"family","care_giver","student"})},
  *     indexes={@ORM\Index(name="family",columns={"family"}),
- *     @ORM\Index(name="adult",columns={"adult"}),
- *     @ORM\Index(name="child",columns={"child"})})
- * @UniqueEntity({"family","adult","child"})
+ *     @ORM\Index(name="care_giver",columns={"care_giver"}),
+ *     @ORM\Index(name="student",columns={"student"})})
+ * @UniqueEntity({"family","careGiver","student"})
  */
 class FamilyRelationship extends AbstractEntity
 {
@@ -53,18 +53,18 @@ class FamilyRelationship extends AbstractEntity
     /**
      * @var FamilyMemberCareGiver|null
      * @ORM\ManyToOne(targetEntity="FamilyMemberCareGiver",inversedBy="relationships")
-     * @ORM\JoinColumn(name="adult",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $adult;
+    private $careGiver;
 
     /**
      * @var FamilyMemberStudent|null
      * @ORM\ManyToOne(targetEntity="FamilyMemberStudent",inversedBy="relationships")
-     * @ORM\JoinColumn(name="child",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $child;
+    private $student;
 
     /**
      * @var string|null
@@ -94,14 +94,14 @@ class FamilyRelationship extends AbstractEntity
     /**
      * FamilyRelationship constructor.
      * @param Family|null $family
-     * @param FamilyMember|null $adult
-     * @param FamilyMember|null $child
+     * @param FamilyMemberCareGiver|null $careGiver
+     * @param FamilyMemberStudent|null $student
      */
-    public function __construct(?Family $family = null, ?FamilyMember $adult = null, ?FamilyMember $child = null)
+    public function __construct(?Family $family = null, ?FamilyMemberCareGiver $careGiver = null, ?FamilyMemberStudent $student = null)
     {
         $this->family = $family;
-        $this->adult = $adult;
-        $this->child = $child;
+        $this->careGiver = $careGiver;
+        $this->student = $student;
     }
 
     /**
@@ -145,40 +145,36 @@ class FamilyRelationship extends AbstractEntity
     /**
      * @return FamilyMemberCareGiver|null
      */
-    public function getAdult(): ?FamilyMemberCareGiver
+    public function getCareGiver(): ?FamilyMemberCareGiver
     {
-        return $this->adult;
+        return $this->careGiver;
     }
 
     /**
-     * Adult.
-     *
-     * @param FamilyMemberCareGiver|null $adult
+     * @param FamilyMemberCareGiver|null $careGiver
      * @return FamilyRelationship
      */
-    public function setAdult(?FamilyMemberCareGiver $adult): FamilyRelationship
+    public function setCareGiver(?FamilyMemberCareGiver $careGiver): FamilyRelationship
     {
-        $this->adult = $adult;
+        $this->careGiver = $careGiver;
         return $this;
     }
 
     /**
      * @return FamilyMemberStudent|null
      */
-    public function getChild(): ?FamilyMemberStudent
+    public function getStudent(): ?FamilyMemberStudent
     {
-        return $this->child;
+        return $this->student;
     }
 
     /**
-     * Child.
-     *
-     * @param FamilyMemberStudent|null $child
+     * @param FamilyMemberStudent|null $student
      * @return FamilyRelationship
      */
-    public function setChild(?FamilyMemberStudent $child): FamilyRelationship
+    public function setStudent(?FamilyMemberStudent $student): FamilyRelationship
     {
-        $this->child = $child;
+        $this->student = $student;
         return $this;
     }
 
@@ -226,9 +222,9 @@ class FamilyRelationship extends AbstractEntity
     {
         if (!$relationship->getFamily()->isEqualTo($this->getFamily()))
             return false;
-        if (!$relationship->getAdult()->isEqualTo($this->getAdult()))
+        if (!$relationship->getCareGiver()->isEqualTo($this->getCareGiver()))
             return false;
-        if (!$relationship->getChild()->isEqualTo($this->getChild()))
+        if (!$relationship->getStudent()->isEqualTo($this->getStudent()))
             return false;
         return true;
     }
@@ -244,38 +240,10 @@ class FamilyRelationship extends AbstractEntity
         {
             TranslationHelper::setDomain('People');
             return [
-                'parent' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getAdult()->getPerson()->formatName(['style'=> 'formal'])]),
-                'child' => TranslationHelper::translate('of {name}', ['{name}' => $this->getChild()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),
+                'care_giver' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getCareGiver()->getPerson()->getFullName()]),
+                'student' => TranslationHelper::translate('of {name}', ['{name}' => $this->getStudent()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),
             ];
         }
         return [];
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__FamilyRelationship` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `relationship` CHAR(50) NOT NULL,
-                    `family` CHAR(36) DEFAULT NULL,
-                    `adult` CHAR(36) DEFAULT NULL,
-                    `child` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `family` (`family`),
-                    KEY `adult` (`adult`),
-                    KEY `student` (`child`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__FamilyRelationship`
-                    ADD CONSTRAINT FOREIGN KEY (`family`) REFERENCES `__prefix__Family` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`adult`) REFERENCES `__prefix__FamilyMember` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`child`) REFERENCES `__prefix__FamilyMember` (`id`);";
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

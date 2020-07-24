@@ -176,7 +176,6 @@ Please select...: Please select...
 'School Information: {name}': 'School Information: {name}'
 'System Access: {name}': 'System Access: {name}'
 Type, country code, number.: Type, country code, number.
-'Role: Parent': 'Role: Parent'
 Role: Role
 'Role: Staff': 'Role: Staff'
 'Role: Student': 'Role: Student'
@@ -594,3 +593,9 @@ Personal Image: 'Personal Image'
 'This email must be unique.{google}': 'This email must be unique.{google}'
 Additional Email: Additional Email
 Personal Website: Personal Website
+Care Giver's Name: Care Giver's Name
+Care Givers: Care Givers
+Edit Care Givers in Family: Edit Care Givers in Family
+Remove Care Giver from Family: Remove Care Giver from Family
+'Role: Care Giver': 'Role: Care Giver'
+

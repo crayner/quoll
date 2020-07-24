@@ -45,7 +45,7 @@ class FamilyRepository extends ServiceEntityRepository
      */
     public function getPaginationContent(): array
     {
-        return $this->createQueryBuilder('f')
+        return $this->createQueryBuilder('f','f.id')
             ->select(['f.id','f.name','f.status'])
             ->orderBy('f.name')
             ->getQuery()

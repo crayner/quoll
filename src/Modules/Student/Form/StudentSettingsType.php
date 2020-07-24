@@ -198,7 +198,7 @@ class StudentSettingsType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'Students',
+                'translation_domain' => 'Student',
                 'data_class' => null,
             ]
         );

@@ -15,7 +15,6 @@ namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Util\TranslationHelper;
 use Doctrine\DBAL\Connection;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
@@ -61,24 +60,31 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
 
     /**
      * findByFamily
-     * @param Family|integer $family
+     * @param Family|null $family
+     * @param bool $asArray
      * @return array
      */
-    public function findByFamily($family, bool $asArray = false): array
+    public function findByFamily(?Family $family, bool $asArray = false): array
     {
-        $query = $this->createQueryBuilder('c')
-            ->join('c.family', 'f')
-            ->where('f.id = :family')
-            ->setParameter('family', $family instanceof Family ? $family->getId() : $family)
-            ->leftJoin('c.person', 'p')
+        $query = $this->createQueryBuilder('m')
+            ->join('m.family', 'f')
+            ->where('m.family = :family')
+            ->setParameter('family', $family)
+            ->join('m.student', 's')
+            ->leftJoin('s.person', 'p')
+            ->leftJoin('p.personalDocumentation', 'd')
+            ->join('s.studentEnrolments', 'se')
+            ->leftJoin('se.rollGroup','rg')
+            ->andWhere('rg.academicYear = :academicYear')
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
 
         if ($asArray)
-            return $query->select(['p.title','p.surname','p.firstName AS first','p.preferredName AS preferred','p.image_240 AS photo','p.status','c.id AS child_id','c.comment','f.id AS family_id','p.id AS person','c.id'])
+            return $query->select(["CONCAT(p.firstName,' ',p.surname) AS fullName","COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo",'p.status','m.id AS student_id','m.comment','f.id AS family_id','p.id AS person_id','p.status', 'rg.name AS roll'])
                 ->getQuery()
                 ->getResult();
-        return $query->select(['p', 'c'])
+        return $query->select(['p','m','s','d'])
             ->getQuery()
             ->getResult();
     }
@@ -87,18 +93,20 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
      * findByFamilyList
      * @param array $familyList
      * @return array
+     * 25/07/2020 07:57
      */
     public function findByFamilyList(array $familyList): array
     {
-        return $this->createQueryBuilder('c')
-            ->join('c.family', 'f')
+        return $this->createQueryBuilder('fms')
+            ->join('fms.family', 'f')
             ->where('f.id in (:family)')
-            ->setParameter('family', $familyList, Connection::PARAM_INT_ARRAY)
-            ->leftJoin('c.person', 'p')
+            ->setParameter('family', $familyList, Connection::PARAM_STR_ARRAY)
+            ->leftJoin('fms.student', 's')
+            ->leftJoin('s.person','p')
             ->orderBy('f.id', 'ASC')
             ->addOrderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC')
-            ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', 'f.id AS id'])
+            ->select(['p.title','p.firstName AS first', 'p.preferredName AS preferred', 'p.surname', "CONCAT(p.firstName,' ',p.surname) AS fullName", 'f.id AS id'])
             ->getQuery()
             ->getResult();
     }

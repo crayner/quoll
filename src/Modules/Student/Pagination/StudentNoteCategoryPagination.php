@@ -36,7 +36,7 @@ class StudentNoteCategoryPagination extends AbstractPaginationManager
      */
     public function execute(): PaginationInterface
     {
-        TranslationHelper::setDomain('Students');
+        TranslationHelper::setDomain('Student');
         $row = new PaginationRow();
 
         $column = new PaginationColumn();

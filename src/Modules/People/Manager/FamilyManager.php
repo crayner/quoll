@@ -56,47 +56,49 @@ class FamilyManager
 
         foreach($result as $q=>$family)
         {
-            $family['adults'] = self::getAdultNames($family['id']);
-            $family['children'] = self::getChildrenNames($family['id']);
+            $family['careGivers'] = self::getCareGiverNames($family['id']);
+            $family['students'] = self::getStudentNames($family['id']);
             $result[$q] = $family;
         }
         return $result;
     }
 
     /**
-     * getAdultNames
-     * @param Family $family
+     * getCareGiverNames
+     * @param $family
      * @return string
+     * 25/07/2020 08:12
      */
-    public function getAdultNames($family): string
+    public function getCareGiverNames($family, string $join = "<br />\n"): string
     {
-        $result = '';
+        $result = [];
         if (is_array(self::$allAdults)) {
-            foreach(self::$allAdults as $adult) {
-                if ($adult['id'] < $family)
+            foreach(self::$allAdults as $careGiver) {
+                if ($careGiver['id'] < $family)
                     continue;
-                if ($adult['id'] > $family)
+                if ($careGiver['id'] > $family)
                     break;
-                $adult['personType'] = 'Parent';
-                $result .= PersonNameManager::formatName($adult, ['style' => 'formal']) . "\n<br />";
+                $careGiver['personType'] = 'Care Giver';
+                $result[] = $careGiver['fullName'];
             }
-            return $result;
+            return trim(implode($join, $result), $join);
         }
-        foreach (self::getAdults($family, true) as $adult) {
-            $adult['personType'] = 'Parent';
-            $result .= PersonNameManager::formatName($adult, ['style' => 'formal']) . "\n<br />";
+        foreach (self::getCareGivers($family, true) as $careGiver) {
+            $careGiver['personType'] = 'Care Giver';
+            $result[] = $careGiver['fullName'];
         }
-        return $result;
+        return trim(implode($join, $result), $join);
     }
 
     /**
-     * getChildrenNames
-     * @param Family $family
+     * getStudentsNames
+     * @param $family
      * @return string
+     * 24/07/2020 13:07
      */
-    public function getChildrenNames($family): string
+    public function getStudentNames($family, string $join = "<br />\n"): string
     {
-        $result = '';
+        $result = [];
         if (is_array(self::$allStudents)) {
             foreach(self::$allStudents as $student) {
                 if ($student['id'] < $family)
@@ -104,45 +106,39 @@ class FamilyManager
                 if ($student['id'] > $family)
                     break;
                 $student['personType'] = 'Student';
-                $result .= PersonNameManager::formatName($student, ['style' => 'formal']) . "\n<br />";
+                $result[] = $student['fullName'];
             }
-            return $result;
+            return trim(implode($join, $result), $join);
         }
-        foreach (self::getChildren($family, true) as $student) {
+        foreach (self::getStudents($family, true) as $student) {
             $student['personType'] = 'Student';
-            $result .= PersonNameManager::formatName($student, ['style' => 'formal']) . "\n<br />";
+            $result[] = $student['fullName'];
         }
-        return $result;
+        return trim(implode($join, $result), $join);
     }
 
     /**
-     * getAdults
+     * getCareGivers
      * @param Family $family
      * @param bool $asArray
      * @return array
+     * 24/07/2020 13:00
      */
-    public static function getAdults(Family $family, bool $asArray = true): array
+    public static function getCareGivers(Family $family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyMemberCareGiver::class)->findByFamily($family);
-        if ($asArray)
-            foreach($result as $q=>$adult)
-                $result[$q] = $adult->toArray();
-        return $result;
+        return ProviderFactory::getRepository(FamilyMemberCareGiver::class)->findByFamily($family, $asArray);
     }
 
     /**
-     * getAdults
+     * getStudents
      * @param Family $family
      * @param bool $asArray
      * @return array
+     * 24/07/2020 14:36
      */
-    public static function getChildren($family, bool $asArray = true): array
+    public static function getStudents(Family $family, bool $asArray = true): array
     {
-        $result = ProviderFactory::getRepository(FamilyMemberStudent::class)->findByFamily($family);
-        if ($asArray)
-            foreach($result as $q=>$child)
-                $result[$q] = $child->toArray();
-        return $result;
+        return ProviderFactory::getRepository(FamilyMemberStudent::class)->findByFamily($family, $asArray);
     }
 
     /**
@@ -152,8 +148,8 @@ class FamilyManager
      */
     public function deleteFamily(Family $family, FlashBagInterface $flashBag)
     {
-        $adults = self::getAdults($family);
-        $students = self::getChildren($family);
+        $adults = self::getCareGivers($family);
+        $students = self::getStudents($family);
         $data = [];
         $data['status'] = ['success'];
         $data['errors'] = [];

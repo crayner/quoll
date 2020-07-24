@@ -50,13 +50,13 @@ class FamilyRelationshipType extends AbstractType
                     'choice_list_prefix' => 'family.relationship',
                 ]
             )
-            ->add('adult', HiddenEntityType::class,
+            ->add('careGiver', HiddenEntityType::class,
                 [
                     'label' => false,
                     'class' => FamilyMemberCareGiver::class,
                 ]
             )
-            ->add('child', HiddenEntityType::class,
+            ->add('student', HiddenEntityType::class,
                 [
                     'label' => false,
                     'class' => FamilyMemberStudent::class,

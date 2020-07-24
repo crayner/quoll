@@ -26,27 +26,29 @@ use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMember;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
-use App\Modules\People\Form\FamilyAdultType;
-use App\Modules\People\Form\FamilyChildType;
+use App\Modules\People\Form\FamilyCareGiverType;
+use App\Modules\People\Form\FamilyStudentType;
 use App\Modules\People\Form\FamilyGeneralType;
 use App\Modules\People\Form\RelationshipsType;
 use App\Modules\People\Manager\FamilyManager;
 use App\Modules\People\Manager\FamilyRelationshipManager;
-use App\Modules\People\Manager\Hidden\FamilyAdultSort;
-use App\Modules\People\Pagination\FamilyAdultsPagination;
-use App\Modules\People\Pagination\FamilyChildrenPagination;
+use App\Modules\People\Manager\Hidden\Familycare_giverSort;
+use App\Modules\People\Pagination\FamilyCareGiversPagination;
+use App\Modules\People\Pagination\FamilyStudentsPagination;
 use App\Modules\People\Pagination\FamilyPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class FamilyController
  * @package App\Modules\People\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class FamilyController extends AbstractPageController
 {
@@ -90,8 +92,8 @@ class FamilyController extends AbstractPageController
 
     /**
      * familyEdit
-     * @param FamilyChildrenPagination $childrenPagination
-     * @param FamilyAdultsPagination $adultsPagination
+     * @param FamilyStudentsPagination $studentPagination
+     * @param FamilyCareGiversPagination $careGiversPagination
      * @param ContainerManager $manager
      * @param FamilyRelationshipManager $relationshipManager
      * @param Family|null $family
@@ -102,8 +104,8 @@ class FamilyController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      */
     public function familyEdit(
-        FamilyChildrenPagination $childrenPagination,
-        FamilyAdultsPagination $adultsPagination,
+        FamilyStudentsPagination $studentPagination,
+        FamilyCareGiversPagination $careGiversPagination,
         ContainerManager $manager,
         FamilyRelationshipManager $relationshipManager,
         ?Family $family = null,
@@ -148,25 +150,25 @@ class FamilyController extends AbstractPageController
         $panel = new Panel('General', 'People', new Section('form', 'General'));
         $container->addForm('General', $form->createView())->addPanel($panel);
 
-        $childrenPagination->setContent(FamilyManager::getChildren($family))->setPageMax(25)->setTargetElement('pagination');
-        $child = new FamilyMemberStudent($family);
-        $addChild = $this->createForm(FamilyChildType::class, $child, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ]), 'postFormContent' => $childrenPagination->toArray()]);
+        $student = new FamilyMemberStudent($family);
+        $addStudent = $this->createForm(FamilyStudentType::class, $student, ['action' => $this->generateUrl('family_student_add', ['family' => $family->getId() ])]);
 
         $panel = new Panel('Students', 'People', new Section('form', 'Students'));
+        $studentPagination->setContent(FamilyManager::getStudents($family, true));
+        $panel->addSection(new Section('pagination', $studentPagination));
         $container->addPanel($panel->setDisabled($family->getId() === null))
-            ->addForm('Students', $addChild->createView());
+            ->addForm('Students', $addStudent->createView());
 
-        $adultsPagination->setDraggableSort()
-            ->setDraggableRoute('family_adult_sort')
-            ->setContent(FamilyManager::getAdults($family, true))
-            ->setPageMax(25)
-            ->setTargetElement('pagination');
-        $adult = new FamilyMemberCareGiver($family);
-        $addAdult = $this->createForm(FamilyAdultType::class, $adult, ['action' => $this->generateUrl('family_adult_add', ['family' => $family->getId() ?: 0]), 'postFormContent' => $adultsPagination->toArray()]);
+        $careGiversPagination->setDraggableSort()
+            ->setDraggableRoute('family_care_giver_sort')
+            ->setContent(FamilyManager::getCareGivers($family, true));
+        $careGiver = new FamilyMemberCareGiver($family);
+        $addCareGiver = $this->createForm(FamilyCareGiverType::class, $careGiver, ['action' => $this->generateUrl('family_care_giver_add', ['family' => $family->getId() ?: 0])]);
 
-        $panel = new Panel('Adults', 'People', new Section('form', 'Adults'));
+        $panel = new Panel('Care Givers', 'People', new Section('form', 'Care Givers'));
+        $panel->addSection(new Section('pagination', $careGiversPagination));
         $container->addPanel($panel->setDisabled($family->getId() === null))
-            ->addForm('Adults', $addAdult->createView());
+            ->addForm('Care Givers', $addCareGiver->createView());
 
         $relationship = $this->createForm(RelationshipsType::class, $relationshipManager->getRelationships($family),
             ['action' => $this->generateUrl('family_relationships', ['family' => $family->getId() ?: 0])]
@@ -224,46 +226,48 @@ class FamilyController extends AbstractPageController
 
 
     /**
-     * familyAdultEdit
+     * familyCareGiverEdit
      * @param ContainerManager $manager
      * @param Family $family
-     * @return JsonResponse
-     * @Route("/family/{family}/adult/{adult}/edit/",name="family_adult_edit")
-     * @Route("/family/{family}/adult/add/",name="family_adult_add")
+     * @param FamilyMemberCareGiver|null $careGiver
+     * @Route("/family/{family}/care/giver/{careGiver}/edit/",name="family_care_giver_edit")
+     * @Route("/family/{family}/care/giver/add/",name="family_care_giver_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     * 24/07/2020 13:24
      */
-    public function familyAdultEdit(ContainerManager $manager, Family $family, ?FamilyMemberCareGiver $adult = null)
+    public function familyCareGiverEdit(ContainerManager $manager, Family $family, ?FamilyMemberCareGiver $careGiver = null)
     {
         $request = $this->getRequest();
 
-        if (is_null($adult) || $request->get('_route') === 'family_adult_add') {
-            $adult = new FamilyMemberCareGiver($family);
-            $action = $this->generateUrl('family_adult_add', ['family' => $family->getId()]);
+        if (is_null($careGiver) || $request->get('_route') === 'family_care_giver_add') {
+            $careGiver = new FamilyMemberCareGiver($family);
+            $action = $this->generateUrl('family_care_giver_add', ['family' => $family->getId()]);
         } else {
-            $action = $this->generateUrl('family_adult_edit', ['family' => $family->getId(), 'adult' => $adult->getId()]);
+            $action = $this->generateUrl('family_care_giver_edit', ['family' => $family->getId(), 'care_giver' => $careGiver->getId()]);
         }
 
-        $form = $this->createForm(FamilyAdultType::class, $adult, ['action' => $action]);
+        $form = $this->createForm(FamilyCareGiverType::class, $careGiver, ['action' => $action]);
 
         if ($request->getContent() !== '') {
             $data = [];
             $data['status'] = 'success';
             $data['errors'] = [];
             $content = json_decode($request->getContent(), true);
-            if ($content['contactPriority'] === '' || $adult->getId() === null)
+            if ($content['contactPriority'] === '' || $careGiver->getId() === null)
                 $content['contactPriority'] = ProviderFactory::getRepository(FamilyMemberCareGiver::class)->getNextContactPriority($family);
             if (key_exists('showHideForm', $content))
                 unset($content['showHideForm']);
             $form->submit($content);
             if ($form->isValid()) {
-                $adult->setFamily($family);
-                $data = ProviderFactory::create(FamilyMemberCareGiver::class)->persistFlush($adult, $data);
+                $careGiver->setFamily($family);
+                $data = ProviderFactory::create(FamilyMemberCareGiver::class)->persistFlush($careGiver, $data);
 
                 $manager->singlePanel($form->createView());
                 $data['form'] = $manager->getFormFromContainer();
                 if ($data['status'] === 'success') {
                     $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']);
+                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'care_givers']);
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
                 }
                 return new JsonResponse($data);
@@ -274,12 +278,12 @@ class FamilyController extends AbstractPageController
                 return new JsonResponse($data);
             }
         }
-        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']))->singlePanel($form->createView());
+        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'care_givers']))->singlePanel($form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs('Edit Adult',
+        return $this->getPageManager()->createBreadcrumbs('Edit care_giver',
             [
                 ['uri' => 'family_list', 'name' => 'Manage Families'],
-                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'Adults'] , 'name' => 'Edit Family']
+                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'care_givers'] , 'name' => 'Edit Family']
             ]
         )
             ->render(
@@ -290,46 +294,46 @@ class FamilyController extends AbstractPageController
     }
 
     /**
-     * familyAdultSort
+     * familycare_giverSort
      * @param FamilyMemberCareGiver $source
      * @param FamilyMemberCareGiver $target
-     * @param FamilyAdultsPagination $pagination
+     * @param FamilyCareGiversPagination $pagination
      * @param FamilyManager $familyManager
      * @return JsonResponse
-     * @Route("/family/adult/{source}/{target}/sort/", name="family_adult_sort")
+     * @Route("/family/care_giver/{source}/{target}/sort/", name="family_care_giver_sort")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function familyAdultSort(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyAdultsPagination $pagination, FamilyManager $familyManager)
+    public function familycare_giverSort(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyCareGiversPagination $pagination, FamilyManager $familyManager)
     {
-        $manager = new FamilyAdultSort($source, $target, $pagination);
-        $manager->setContent($familyManager::getAdults($source->getFamily(), true));
+        $manager = new Familycare_giverSort($source, $target, $pagination);
+        $manager->setContent($familyManager::getCareGivers($source->getFamily(), true));
 
         return new JsonResponse($manager->getDetails());
     }
 
     /**
-     * familyAdultRemove
-     * @Route("/family/{family}/remove/{adult}/adult/",name="family_adult_remove")
+     * familyCareGiverRemove
+     * @Route("/family/{family}/remove/{careGiver}/care/giver/",name="family_care_giver_remove")
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
-     * @param FamilyMember $adult
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param FamilyMember $careGiver
+     * @return RedirectResponse
      */
-    public function familyAdultRemove(Family $family, FamilyMember $adult)
+    public function familyCareGiverRemove(Family $family, FamilyMember $careGiver)
     {
         $request = $this->getPageManager();
-        if ($adult->getFamily()->isEqualTo($family)) {
+        if ($careGiver->getFamily()->isEqualTo($family)) {
 
-            $data = ProviderFactory::create(FamilyMemberCareGiver::class)->remove($adult, []);
+            $data = ProviderFactory::create(FamilyMemberCareGiver::class)->remove($careGiver, []);
 
             $messages = array_unique($data['errors'], SORT_REGULAR);
             foreach($messages as $message)
                 $request->getSession()->getBag('flashes')->add($message['class'], $message['message']);
             if ($data['status'] === 'success') {
                 $priority = 1;
-                foreach (FamilyManager::getAdults($family, false) as $q => $adult) {
-                    ProviderFactory::create(FamilyMemberCareGiver::class)->persistFlush($adult->setContactPriority($priority++), [], false);
-                    $result[$q] = $adult;
+                foreach (FamilyManager::getCareGivers($family, false) as $q => $careGiver) {
+                    ProviderFactory::create(FamilyMemberCareGiver::class)->persistFlush($careGiver->setContactPriority($priority++), [], false);
+                    $result[$q] = $careGiver;
                 }
                 ProviderFactory::create(FamilyMemberCareGiver::class)->flush();
             }
@@ -337,7 +341,7 @@ class FamilyController extends AbstractPageController
             $request->getSession()->getBag('flashes')->add('error', ErrorMessageHelper::onlyInvalidInputsMessage(true));
         }
 
-        return $this->redirectToRoute('family_edit', ['family' => $family->getId(), 'tabName' => 'Adults']);
+        return $this->redirectToRoute('family_edit', ['family' => $family->getId(), 'tabName' => 'Care Givers']);
     }
 
     /**
@@ -361,7 +365,7 @@ class FamilyController extends AbstractPageController
             $action = $this->generateUrl('family_student_edit', ['family' => $family->getId(), 'student' => $student->getId()]);
         }
 
-        $form = $this->createForm(FamilyChildType::class, $student, ['action' => $action]);
+        $form = $this->createForm(FamilyStudentType::class, $student, ['action' => $action]);
 
         if ($request->getContent() !== '')
         {
@@ -411,15 +415,15 @@ class FamilyController extends AbstractPageController
      * @Route("/family/{family}/remove/{student}/student/",name="family_student_remove")
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
-     * @param FamilyMember $student
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param FamilyMemberStudent $student
+     * @return RedirectResponse
      */
     public function familyStudentRemove(Family $family, FamilyMemberStudent $student)
     {
         $request = $this->getPageManager()->getRequest();
         if ($student->getFamily()->isEqualTo($family)) {
 
-            $data = ProviderFactory::create(FamilyMemberStudent::class)->remove($student, []);
+            $data = ProviderFactory::create(FamilyMemberStudent::class)->delete($student);
 
             $messages = array_unique($data['errors'], SORT_REGULAR);
             foreach($messages as $message)

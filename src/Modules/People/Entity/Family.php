@@ -467,8 +467,8 @@ class Family extends AbstractEntity
         return [
             'name' => $this->getName(),
             'status' => $this->getStatus(),
-            'careGivers' => FamilyManager::getAdultNames($this),
-            'students' => FamilyManager::getChildrenNames($this),
+            'careGivers' => FamilyManager::getCareGiverNames($this),
+            'students' => FamilyManager::getStudentNames($this),
         ];
     }
 

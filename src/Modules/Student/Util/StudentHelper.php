@@ -54,7 +54,7 @@ class StudentHelper
         if (!$person instanceof Person)
             return '';
 
-        if (!$person::isStudent())
+        if (!$person->isStudent())
             return '';
 
         $se = null;

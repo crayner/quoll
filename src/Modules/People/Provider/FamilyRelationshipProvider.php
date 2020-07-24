@@ -39,7 +39,7 @@ class FamilyRelationshipProvider extends AbstractProvider
      */
     public function findOneRelationship(array $item): FamilyRelationship
     {
-        $fr = $this->getRepository()->findOneByFamilyAdultChild($item);
+        $fr = $this->getRepository()->findOneByFamilyCareGiverStudent($item);
 
         return $fr ?: new FamilyRelationship();
     }

@@ -47,7 +47,6 @@ export default function PaginationContent(props) {
 
     let rows = Object.keys(content).map(rowKey => {
         const rowContent = content[rowKey]
-
         let columns = []
         Object.keys(row.columns).map(columnKey => {
             let columnDefinition = row.columns[columnKey]

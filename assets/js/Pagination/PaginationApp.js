@@ -301,11 +301,18 @@ export default class PaginationApp extends Component {
         if (pageMax === 0) {
             pageMax = this.state.pageMax
         }
-
         if (typeof content === 'object') {
-            return content.slice(offset, offset + pageMax)
+            let loop = -1;
+            let result = []
+            Object.keys(content).filter(key => {
+                loop++
+                if (loop >= offset && loop < offset + pageMax) {
+                    result.push(content[key])
+                }
+            })
+            return result
         } else {
-            console.error('The content MUST be an array!')
+            console.error('The content MUST be an array (object)!')
         }
     }
 

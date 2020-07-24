@@ -38,6 +38,7 @@ class FamilyPagination extends AbstractPaginationManager
     {
         TranslationHelper::setDomain('People');
         TranslationHelper::setTranslation('Search in', 'Name, Adults & Students');
+        TranslationHelper::setTranslation('Care Giver', 'Care Giver');
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
@@ -58,19 +59,19 @@ class FamilyPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Adults')
+        $column->setLabel('Care Givers')
             ->setSort(true)
             ->setSearch(true)
-            ->setContentKey('adults')
+            ->setContentKey('careGivers')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Children')
+        $column->setLabel('Students')
             ->setSort(true)
             ->setSearch(true)
-            ->setContentKey('children')
+            ->setContentKey('students')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);

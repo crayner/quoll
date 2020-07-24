@@ -87,8 +87,8 @@ class FamilyRelationshipManager implements SpecialInterface
         {
             $fr = $provider->findOneRelationship($item);
             $fr->setFamily($family)
-                ->setAdult($provider->getRepository(FamilyMemberCareGiver::class)->find($item['adult']))
-                ->setChild($provider->getRepository(FamilyMemberStudent::class)->find($item['child']))
+                ->setCareGiver($provider->getRepository(FamilyMemberCareGiver::class)->find($item['careGiver']))
+                ->setStudent($provider->getRepository(FamilyMemberStudent::class)->find($item['student']))
                 ->setRelationship($item['relationship'])
             ;
 
@@ -131,8 +131,8 @@ class FamilyRelationshipManager implements SpecialInterface
     {
         if (!$family)
             $family = $this->getFamily();
-        $adults = FamilyManager::getAdults($family, false);
-        $children = FamilyManager::getChildren($family, false);
+        $adults = FamilyManager::getCareGivers($family, false);
+        $children = FamilyManager::getStudents($family, false);
         $relationships = $this->getExistingRelationships($family);
         if (count($adults) * count($children) === $relationships->count())
             return $relationships;

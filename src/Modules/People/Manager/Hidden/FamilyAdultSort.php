@@ -18,7 +18,7 @@ namespace App\Modules\People\Manager\Hidden;
 
 use App\Manager\PaginationSortInterface;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
-use App\Modules\People\Pagination\FamilyAdultsPagination;
+use App\Modules\People\Pagination\FamilyCareGiversPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 
@@ -39,7 +39,7 @@ class FamilyAdultSort implements PaginationSortInterface
     private $target;
 
     /**
-     * @var FamilyAdultsPagination
+     * @var FamilyCareGiversPagination
      */
     private $pagination;
 
@@ -58,9 +58,9 @@ class FamilyAdultSort implements PaginationSortInterface
      *
      * @param FamilyMemberCareGiver $source
      * @param FamilyMemberCareGiver $target
-     * @param FamilyAdultsPagination $pagination
+     * @param FamilyCareGiversPagination $pagination
      */
-    public function __construct(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyAdultsPagination $pagination)
+    public function __construct(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyCareGiversPagination $pagination)
     {
         $this->source = $source;
         $this->target = $target;

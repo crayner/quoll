@@ -28,6 +28,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class FamilyMemberCareGiver extends FamilyMember
 {
     /**
+     * @var CareGiver|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver",inversedBy="memberOfFamilies")
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
+     */
+    private $careGiver;
+
+    /**
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
@@ -59,7 +66,7 @@ class FamilyMemberCareGiver extends FamilyMember
 
     /**
      * @var Collection|FamilyRelationship[]
-     * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="adult",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="careGiver",orphanRemoval=true)
      */
     private $relationships;
 
@@ -74,9 +81,29 @@ class FamilyMemberCareGiver extends FamilyMember
     }
 
     /**
+     * @return CareGiver|null
+     */
+    public function getCareGiver(): ?CareGiver
+    {
+        return $this->careGiver;
+    }
+
+    /**
+     * setCareGiver
+     * @param CareGiver|null $careGiver
+     * @return $this
+     * 24/07/2020 12:51
+     */
+    public function setCareGiver(?CareGiver $careGiver): FamilyMemberCareGiver
+    {
+        $this->careGiver = $careGiver;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
-    public function getChildDataAccess(): bool
+    public function isChildDataAccess(): bool
     {
         return (bool)$this->childDataAccess;
     }
@@ -94,7 +121,7 @@ class FamilyMemberCareGiver extends FamilyMember
     /**
      * @return bool
      */
-    public function getContactCall(): bool
+    public function isContactCall(): bool
     {
         return (bool)$this->contactCall;
     }
@@ -199,6 +226,6 @@ class FamilyMemberCareGiver extends FamilyMember
      */
     public function toArray(?string $name = null): array
     {
-        return parent::toArray('adult');
+        return parent::toArray('care_giver');
     }
 }

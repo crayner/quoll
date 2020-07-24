@@ -47,7 +47,7 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student", inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -213,45 +213,5 @@ class StudentEnrolment extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [];
-    }
-
-    /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__StudentEnrolment` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `roll_order` smallint DEFAULT NULL,
-                    `student` CHAR(36) DEFAULT NULL,
-                    `academic_year` CHAR(36) DEFAULT NULL,
-                    `year_group` CHAR(36) DEFAULT NULL,
-                    `roll_group` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `person` (`person`),
-                    KEY `academic_year` (`academic_year`),
-                    KEY `year_group` (`year_group`),
-                    KEY `roll_group` (`roll_group`),
-                    KEY `person_academic_year` (`person`,`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__StudentEnrolment`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`roll_group`) REFERENCES `__prefix__RollGroup` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`year_group`) REFERENCES `__prefix__YearGroup` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);";
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

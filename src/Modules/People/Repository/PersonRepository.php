@@ -356,7 +356,7 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getPaginationContent(): array
     {
-        $students = $this->findAllStudentsQuery()
+        $students = $this->getAllStudentsQuery()
             ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Student' AS role", 'u.canLogin'])
             ->leftJoin('s.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
@@ -485,7 +485,7 @@ dump($all);
      */
     public function findAllStudents(string $status = '%'): array
     {
-        return $this->findAllStudentsQuery()
+        return $this->getAllStudentsQuery()
             ->andWhere('p.status LIKE :status')
             ->setParameter('status', $status)
             ->getQuery()
@@ -493,11 +493,11 @@ dump($all);
     }
 
     /**
-     * findAllStudentsQuery
+     * getAllStudentsQuery
      * @return QueryBuilder
      * 18/07/2020 11:01
      */
-    public function findAllStudentsQuery(): QueryBuilder
+    public function getAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p', 'p.id')
             ->leftJoin('p.student', 's')
@@ -520,5 +520,19 @@ dump($all);
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
 
+    }
+
+    /**
+     * getCareGiverQuery
+     * @return QueryBuilder
+     * 24/07/2020 13:32
+     */
+    public function getAllCareGiversQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.careGiver IS NOT NULL')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', 'ASC')
+            ;
     }
 }

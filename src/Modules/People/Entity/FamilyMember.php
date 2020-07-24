@@ -62,19 +62,6 @@ class FamilyMember extends AbstractEntity
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
-    /**
-     * @var CareGiver|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver", inversedBy="memberOfFamilies")
-     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
-     */
-    private $careGiver;
-
-    /**
-     * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="memberOfFamilies")
-     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
-     */
-    private $student;
 
     /**
      * @var Family|null
@@ -145,42 +132,6 @@ class FamilyMember extends AbstractEntity
     }
 
     /**
-     * @return CareGiver|null
-     */
-    public function getCareGiver(): ?CareGiver
-    {
-        return $this->careGiver;
-    }
-
-    /**
-     * @param CareGiver|null $careGiver
-     * @return FamilyMember
-     */
-    public function setCareGiver(?CareGiver $careGiver): FamilyMember
-    {
-        $this->careGiver = $careGiver;
-        return $this;
-    }
-
-    /**
-     * @return Student|null
-     */
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    /**
-     * @param Student|null $student
-     * @return FamilyMember
-     */
-    public function setStudent(?Student $student): FamilyMember
-    {
-        $this->student = $student;
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getComment(): ?string
@@ -237,21 +188,22 @@ class FamilyMember extends AbstractEntity
 
     /**
      * toArray
+     * @param string|null $name
      * @return array
      */
     public function toArray(?string $name = null): array
     {
         $person = $this->getPerson();
-        if ($name === 'adult') {
+        if ($name === 'care_giver') {
             return [
-                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
+                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
                 'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
                 'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
                 'roll' => StudentHelper::getCurrentRollGroup($person),
                 'comment' => $this->getComment(),
                 'family_id' => $this->getFamily()->getId(),
                 'care_giver_id' => $this->getId(),
-                'person_id' => $this->getPerson()->getId(),
+                'person_id' => $person->getId(),
                 'id' => $this->getId(),
                 'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),
                 'contactPriority' => $this->getContactPriority(),
@@ -262,16 +214,16 @@ class FamilyMember extends AbstractEntity
             ];
 
         }
-        if ($name === 'child') {
+        if ($name === 'student') {
             return [
-                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
+                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
                 'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
                 'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
-                'roll' => StudentHelper::getCurrentRollGroup($person),
+                'roll' => StudentHelper::getCurrentRollGroup($this->getStudent()),
                 'comment' => $this->getComment(),
                 'family_id' => $this->getFamily()->getId(),
-                'child_id' => $this->getId(),
-                'person_id' => $this->getPerson()->getId(),
+                'student_id' => $this->getId(),
+                'person_id' => $person->getId(),
                 'id' => $this->getId(),
             ];
 
@@ -283,7 +235,7 @@ class FamilyMember extends AbstractEntity
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),
             'family_id' => $this->getFamily()->getId(),
-            'person_id' => $this->getPerson()->getId(),
+            'person_id' => $person->getId(),
             'id' => $this->getId(),
         ];
     }
@@ -292,14 +244,28 @@ class FamilyMember extends AbstractEntity
      * isEqualTo
      * @param FamilyMember $member
      * @return bool
+     * 24/07/2020 15:23
      */
     public function isEqualTo(FamilyMember $member): bool
     {
-        if ($member->getStudent() !== null) {
-            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getCareGiver()->getPerson()->isEqualTo($member->getCareGiver()->getPerson());
-        } else if ($member->getCareGiver() !== null) {
+        if (method_exists($member, 'getStudent') && method_exists($this, 'getStudent') && $member->getStudent() !== null) {
             return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getStudent()->getPerson()->isEqualTo($member->getStudent()->getPerson());
+        } else if (method_exists($member, 'getCareGiver') && method_exists($this, 'getCareGiver') && $member->getCareGiver() !== null) {
+            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getCareGiver()->getPerson()->isEqualTo($member->getCareGiver()->getPerson());
         }
         return false;
     }
+
+    /**
+     * getPerson
+     * @return Person|null
+     * 24/07/2020 12:56
+     */
+    public function getPerson(): ?Person
+    {
+        if (method_exists($this, 'getCaregiver') && $this->getCareGiver()) return $this->getCaregiver()->getPerson();
+        if (method_exists($this, 'getStudent') && $this->getStudent()) return $this->getStudent()->getPerson();
+        return null;
+    }
+
 }
