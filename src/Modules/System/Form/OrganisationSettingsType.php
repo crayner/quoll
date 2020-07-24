@@ -33,13 +33,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class OrganisationSettingsType
  * @package App\Modules\System\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class OrganisationSettingsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $orgSettings = new OrganisationSettings();
-        dump($options);
         $builder
             ->add('organisationSettingsHeader', HeaderType::class,
                 [

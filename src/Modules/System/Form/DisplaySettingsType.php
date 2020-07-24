@@ -19,6 +19,7 @@ namespace App\Modules\System\Form;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
+use App\Modules\System\Form\Entity\OrganisationSettings;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Manager\SettingManager;
 use App\Validator\ReactImage;
@@ -40,6 +41,8 @@ class DisplaySettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $orgSettings = new OrganisationSettings();
+
         $builder
             ->add('systemSettings', SettingsType::class,
                 [
@@ -53,14 +56,15 @@ class DisplaySettingsType extends AbstractType
                             'scope' => 'System',
                             'name' => 'organisationLogo',
                             'entry_type' => ReactFileType::class,
+
                             'entry_options' => [
                                 'file_prefix' => 'org_logo',
-                                'constraints' => [
-                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 800, 'minHeight' => 100, 'maxHeight' => 200, 'minRatio' => 0.25, 'maxRatio' => 0.25]),
-                                ],
-                                'required' => false,
                                 'image_method' => 'getOrganisationLogo',
-                                'entity' => SettingManager::class
+                                'entity' => $orgSettings,
+                                'delete_route' => $options['remove_organisation_logo'],
+                                'constraints' => [
+                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 800, 'minHeight' => 100, 'maxHeight' => 200, 'maxRatio' => 0.25, 'minRatio' => 0.25, 'maxSize' => '750k']),
+                                ],
                             ],
                         ],
                         [
@@ -69,12 +73,12 @@ class DisplaySettingsType extends AbstractType
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
                                 'file_prefix' => 'org_bg',
-                                'required' => false,
+                                'image_method' => 'getOrganisationBackground',
+                                'entity' => $orgSettings,
+                                'delete_route' => $options['remove_organisation_background'],
                                 'constraints' => [
                                     new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],
-                                'image_method' => 'getOrganisationBackground',
-                                'entity' => SettingManager::class
                             ],
                         ],
                     ],
@@ -89,6 +93,12 @@ class DisplaySettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired(
+            [
+                'remove_organisation_logo',
+                'remove_organisation_background',
+            ]
+        );
         $resolver->setDefaults(
             [
                 'translation_domain' => 'System',

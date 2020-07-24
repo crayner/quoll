@@ -88,6 +88,7 @@ class GoogleIntegrationType extends AbstractType
                         '{anchorClose}' => "</a>",
                     ],
                     'file_prefix' => 'temp',
+                    'show_thumbnail' => false,
                     'data' => '',
                     'visible_values' => ['System__googleOAuth'],
                     'visible_parent' => 'google_integration_googleOAuth',

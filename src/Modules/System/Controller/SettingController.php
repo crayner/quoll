@@ -224,7 +224,28 @@ class SettingController extends AbstractPageController
         $settingProvider = SettingFactory::getSettingManager();
 
         // System Settings
-        $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('display_settings')]);
+        $form = $this->createForm(DisplaySettingsType::class, null,
+            [
+                'action' => $this->generateUrl('display_settings'),
+                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationBackground',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('display_settings'))
+                    ]
+                ),
+                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationLogo',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('display_settings'))
+                    ]
+                ),
+
+            ]
+        );
 
         if ($request->getContent() !== '') {
             $data = [];
