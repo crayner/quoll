@@ -502,13 +502,13 @@ class RollGroup extends AbstractEntity
      * getFormatTutors
      * @return string
      */
-    public function getFormatTutors(array $parameters = ['style' => 'long']): string
+    public function getFormatTutors(string $style = null): string
     {
         $result = '';
-        $result = array_map(function (Person $person) use ($parameters) {
-            return $person->formatName($parameters);
+        $result = array_map(function (Person $person) use ($style) {
+            return $person->formatName($style);
         }, $this->getTutors());
-        return implode("\n<br/>", $result);
+        return implode("<br/>\n", $result);
     }
 
     /**

@@ -64,7 +64,7 @@ class ChangePasswordType extends AbstractType
                 [
                     'label' => 'Person',
                     'help' => 'Reset the password for this person.',
-                    'data' => $options['data']->formatName(['preferred' => true]),
+                    'data' => $options['data']->formatName('Preferred'),
                     'mapped' => false,
                 ]
             )

@@ -88,27 +88,6 @@ class Format
     }
 
     /**
-     * Formats a list of names from an array containing standard title, preferredName & surname fields.
-     *
-     * @param array $list
-     * @param string $roleCategory
-     * @param bool $reverse
-     * @param bool $informal
-     * @return string
-     */
-    public static function nameList(array $list, string $roleCategory = 'Staff', bool $reverse = false, bool $informal = false, ?string $separator = '<br/>')
-    {
-        $listFormatted = array_map(function ($person) use ($roleCategory, $reverse, $informal) {
-            return $person->formatName();
-            return static::formatName($person->getTitle(), $person->getPreferredName(), $person->getSurname(), $roleCategory, $reverse, $informal);
-        }, $list);
-
-        if (null === $separator)
-            return $listFormatted;
-        return implode($separator, $listFormatted);
-    }
-
-    /**
      * Formats a name based on the provided Role Category. Optionally reverses the name (surname first) or uses an informal format (no title).
      *
      * @param string $title
@@ -118,6 +97,7 @@ class Format
      * @param bool $reverse
      * @param bool $informal
      * @return string
+     * @deprecated 
      */
     public static function name($title, $preferredName, $surname, $roleCategory = 'Staff', $reverse = false, $informal = false)
     {

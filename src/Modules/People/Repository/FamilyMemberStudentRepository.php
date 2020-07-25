@@ -14,6 +14,7 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\FamilyMemberStudent;
+use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\DBAL\Connection;
 use App\Modules\People\Entity\Family;
@@ -68,22 +69,24 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('m')
             ->join('m.family', 'f')
-            ->where('m.family = :family')
-            ->setParameter('family', $family)
-            ->join('m.student', 's')
+            ->leftJoin('m.student', 's')
             ->leftJoin('s.person', 'p')
-            ->leftJoin('p.personalDocumentation', 'd')
-            ->join('s.studentEnrolments', 'se')
-            ->leftJoin('se.rollGroup','rg')
-            ->andWhere('rg.academicYear = :academicYear')
+            ->join('p.personalDocumentation', 'd')
+            ->leftJoin('s.studentEnrolments', 'se')
+            ->leftJoin('se.rollGroup', 'rg')
+            ->where('m.family = :family')
+            ->andWhere('(se.academicYear = :academicYear OR se.academicYear IS NULL)')
+            ->setParameter('family', $family)
             ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
 
-        if ($asArray)
-            return $query->select(["CONCAT(p.firstName,' ',p.surname) AS fullName","COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo",'p.status','m.id AS student_id','m.comment','f.id AS family_id','p.id AS person_id','p.status', 'rg.name AS roll'])
+        if ($asArray) {
+            $format = PersonNameManager::formatNameQuery('p', 'Student', 'Standard');
+            return $query->select(["CONCAT(".$format.") AS fullName", "COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", 'p.status', 'm.id AS student_id', 'm.comment', 'f.id AS family_id', 'p.id AS person_id', 'p.status', 'rg.name as roll'])
                 ->getQuery()
                 ->getResult();
+        }
         return $query->select(['p','m','s','d'])
             ->getQuery()
             ->getResult();

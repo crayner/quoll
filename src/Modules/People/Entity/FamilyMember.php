@@ -197,7 +197,7 @@ class FamilyMember extends AbstractEntity
         if ($name === 'care_giver') {
             return [
                 'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
-                'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
+                'fullName' => $person->formatName('Standard'),
                 'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
                 'roll' => StudentHelper::getCurrentRollGroup($person),
                 'comment' => $this->getComment(),
@@ -217,7 +217,7 @@ class FamilyMember extends AbstractEntity
         if ($name === 'student') {
             return [
                 'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
-                'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
+                'fullName' => $person->formatName('Standard'),
                 'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
                 'roll' => StudentHelper::getCurrentRollGroup($this->getStudent()),
                 'comment' => $this->getComment(),
@@ -230,7 +230,7 @@ class FamilyMember extends AbstractEntity
         }
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
-            'fullName' => $person->formatName(['title' => false, 'preferred' => false]),
+            'fullName' => $person->formatName('Standard'),
             'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
             'roll' => StudentHelper::getCurrentRollGroup($person),
             'comment' => $this->getComment(),

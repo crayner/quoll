@@ -482,29 +482,12 @@ class Person extends AbstractEntity
 
     /**
      * formatName
-     * @param bool|array $options
-     * @param bool $reverse
-     * @param bool $informal
-     * @param bool $initial
-     * @param bool $title
+     * @param string $style
      * @return string
      */
-    public function formatName($options = true, bool $reverse = false, bool $informal = false, bool $initial = false, bool $title = false): string
+    public function formatName(string $style = 'General'): string
     {
-        if (is_array($options)) {
-            return PersonNameManager::formatName($this, $options);
-        }
-
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        trigger_error(sprintf('Use of discrete settings for format name is deprecated since 1/Dec 2019.  Use the options configuration. Called from %s on line %s.',$trace[1]['file'], $trace[1]['line']), E_USER_DEPRECATED);
-        $format = [];
-        $format['preferred'] = $options;
-        $format['reverse'] = $reverse;
-        $format['informal'] = $informal;
-        $format['initial'] = $initial;
-        $format['title'] = $title;
-
-        return PersonNameManager::formatName($this, $format);
+        return PersonNameManager::formatName($this, str_replace(' ', '', $this->getHumanisedRole()), $style);
     }
 
     /**
@@ -513,7 +496,7 @@ class Person extends AbstractEntity
      */
     public function getFullName()
     {
-        return $this->getFirstName() . ' ' . $this->getSurname();
+        return $this->formatName('Standard');
     }
 
     /**
@@ -522,11 +505,14 @@ class Person extends AbstractEntity
      */
     public function getFullNameReversed()
     {
-        return $this->getSurname().': '.$this->getFirstName();
+        return $this->formatName('Reversed');
     }
 
     /**
-     * @return array
+     * getTitleList
+     * @param bool $forChoice
+     * @return array|string[]
+     * 25/07/2020 12:27
      */
     public static function getTitleList(bool $forChoice = false): array
     {
@@ -579,7 +565,7 @@ class Person extends AbstractEntity
         $result['class'] = $class;
         $result['asset'] = $path;
         $result['fileName'] = $path;
-        $result['title'] = $this->formatName(['informal' => true]);
+        $result['title'] = $this->formatName('Preferred');
         $result['fileExists'] = true;
         return $result;
     }
@@ -673,8 +659,8 @@ class Person extends AbstractEntity
             ];
         }
         return [
-            'fullName' => $this->formatName(['informal' => true, 'reverse' => true]),
-            'photo' => $this->getImage240(false) ? ImageHelper::getRelativeImageURL($this->getImage240(false)) : '/build/static/DefaultPerson.png',
+            'fullName' => $this->formatName('Reversed'),
+            'photo' => $this->getImage240(false) ? ImageHelper::getRelativeImageURL($this->getPersonalDocumentation()->getPersonalImage(false)) : '/build/static/DefaultPerson.png',
             'status' => TranslationHelper::translate($this->getStatus()),
             '_status' => $this->getStatus(),
             'family' => $this->getFamilyName(),
@@ -1078,5 +1064,15 @@ class Person extends AbstractEntity
             $user->setCanLogin(false);
             ProviderFactory::getEntityManager()->persist($user);
         }
+    }
+
+    /**
+     * getInitial
+     * @return string
+     * 25/07/2020 12:21
+     */
+    public function getInitial(): string
+    {
+        return $this->getFirstName() ? substr($this->getFirstName(), 0, 1) : '';
     }
 }

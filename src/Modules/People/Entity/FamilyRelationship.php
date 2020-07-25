@@ -210,7 +210,7 @@ class FamilyRelationship extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getFamily()->__toString() . ': ' . $this->getAdult()->getPerson()->formatName(['style' => 'formal']) . ' is ' . $this->getRelationship() . ' of ' . $this->getChild()->getPerson()->formatName(['style' => 'long']);
+        return $this->getFamily()->__toString() . ': ' . $this->getAdult()->getPerson()->formatName('Formal') . ' is ' . $this->getRelationship() . ' of ' . $this->getChild()->getPerson()->formatName(['style' => 'long']);
     }
 
     /**
@@ -240,8 +240,8 @@ class FamilyRelationship extends AbstractEntity
         {
             TranslationHelper::setDomain('People');
             return [
-                'care_giver' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getCareGiver()->getPerson()->getFullName()]),
-                'student' => TranslationHelper::translate('of {name}', ['{name}' => $this->getStudent()->getPerson()->formatName(['title' => false, 'preferredName' => false])]),
+                'care_giver' => TranslationHelper::translate('{name} is the', ['{name}' => $this->getCareGiver()->getPerson()->formatName('Formal')]),
+                'student' => TranslationHelper::translate('of {name}', ['{name}' => $this->getStudent()->getPerson()->formatName('Preferred')]),
             ];
         }
         return [];

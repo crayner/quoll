@@ -191,8 +191,8 @@ class ThirdPartyController extends AbstractPageController
                 $this->addFlash('warning', TranslationHelper::translate('The email setting where not tested as you do not have an email address recorded in your personal record.', [], 'System'));
             } else {
                 $email = (new DefaultContextEmail())
-                    ->from(new Address(SettingFactory::getSettingManager()->getSetting('System', 'organisationEMail', 'quoll@localhost.org.au'),SettingFactory::getSettingManager()->getSetting('System', 'organisationName', 'Quoll')))
-                    ->to(new Address($this->getUser()->getPerson()->getEmail(),$this->getUser()->getPerson()->formatName([])))
+                    ->from(new Address(SettingFactory::getSettingManager()->get('System', 'organisationEMail', 'quoll@localhost.org.au'),SettingFactory::getSettingManager()->getSetting('System', 'organisationName', 'Quoll')))
+                    ->to(new Address($this->getUser()->getPerson()->getEmail(),$this->getUser()->getPerson()->formatName('Standard')))
                     ->subject(TranslationHelper::translate('Test EMail Settings on {address}', ['{address}' => ParameterBagHelper::get('absoluteURL')], 'System'))
                     ->htmlTemplate('email/security/email_settings_test_message.html.twig')
                     ->getEmail()

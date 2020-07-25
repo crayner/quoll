@@ -81,7 +81,7 @@ class PhotoController extends AbstractPageController
             if (!is_dir($path))
                 $fs->mkdir($path, 0755);
 
-            $name = uniqid(StringHelper::toSnakeCase($person->formatName(['title' => false, 'preferred' => false, 'reverse' => true])). '_') . '.' . $file->guessExtension();
+            $name = uniqid(StringHelper::toSnakeCase($person->formatName('Reversed')). '_') . '.' . $file->guessExtension();
 
             $file->move($path, $name);
 

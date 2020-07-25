@@ -115,8 +115,6 @@ class PeopleController extends AbstractPageController
             $action = $this->generateUrl('person_edit', ['person' => $person->getID(), 'tabName' => $tabName]);
         }
 
-
-
         $photo = new Photo($person->getPersonalDocumentation(), 'getPersonalImage', '200', 'user max200', '/build/static/DefaultPerson.png');
         $photo->setTransDomain(false)->setTitle($person->formatName('Standard'));
         $sidebar->addContent($photo);
@@ -290,7 +288,7 @@ class PeopleController extends AbstractPageController
                 $this->getPageManager()->addMessage('error', ErrorMessageHelper::onlyDatabaseErrorMessage(true));
             }
         } else {
-            $this->getPageManager()->addMessage('warning', ErrorMessageHelper::onlyLockedRecordMessage($person->formatName(['informal' => true]), get_class($person), true));
+            $this->getPageManager()->addMessage('warning', ErrorMessageHelper::onlyLockedRecordMessage($person->formatName('Preferred'), get_class($person), true));
         }
 
         $pagination->setStack($this->getPageManager()->getStack())
