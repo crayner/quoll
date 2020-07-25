@@ -542,6 +542,66 @@ parameters:
             privacyOptions:
                 value: null
                 type: string
+            formatNameGeneralStandard:
+                value: '[firstName] [surname]'
+                type: string
+            formatNameGeneralFormal:
+                value: '[title] [firstName] [surname]'
+                type: string
+            formatNameGeneralReversed:
+                value: '[surname]: [firstName]'
+                type: string
+            formatNameGeneralPreferred:
+                value: '[preferredName] [surname]'
+                type: string
+            formatNameGeneralShort:
+                value: '[initial]. [surname]'
+                type: string
+            formatNameStudentStandard:
+                value: '[firstName] [surname]'
+                type: string
+            formatNameStudentFormal:
+                value: '[officialName]'
+                type: string
+            formatNameStudentReversed:
+                value: '[surname]: [preferredName]'
+                type: string
+            formatNameStudentPreferred:
+                value: '[preferredName] [surname]'
+                type: string
+            formatNameStudentShort:
+                value: '[initial]. [surname]'
+                type: string
+            formatNameStaffStandard:
+                value: '[firstName] [surname]'
+                type: string
+            formatNameStaffFormal:
+                value: '[title] [firstName] [surname]'
+                type: string
+            formatNameStaffReversed:
+                value: '[surname]: [firstName]'
+                type: string
+            formatNameStaffPreferred:
+                value: '[preferredName] [surname]'
+                type: string
+            formatNameStaffShort:
+                value: '[title] [initial]. [surname]'
+                type: string
+            formatNameCareGiverStandard:
+                value: '[firstName] [surname]'
+                type: string
+            formatNameCareGiverFormal:
+                value: '[title] [firstName] [surname]'
+                type: string
+            formatNameCareGiverReversed:
+                value: '[surname]: [firstName]'
+                type: string
+            formatNameCareGiverPreferred:
+                value: '[preferredName] [surname]'
+                type: string
+            formatNameCareGiverShort:
+                value: '[title] [initial]. [surname]'
+                type: string
         'Mark Book':
             personalisedWarnings:
                 value: true

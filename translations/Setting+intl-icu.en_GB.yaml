@@ -326,6 +326,66 @@ People:
     privacyOptions:
         name: 'Privacy Options'
         description: 'A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.'
+    formatNameGeneralStandard:
+        name: 'Format Name General Standard'
+        description: 'Standard format for a personal name applied to general people types. Example {name}'
+    formatNameGeneralFormal:
+        name: 'Format Name General Formal'
+        description: 'Formal format for a personal name applied to general people types. Example {name}'
+    formatNameGeneralReversed:
+        name: 'Format Name General Reversed'
+        description: 'Reversed format for a personal name applied to general people types. Example {name}'
+    formatNameGeneralPreferred:
+        name: 'Format Name General Preferred'
+        description: 'Preferred format for a personal name applied to general people types. Example {name}'
+    formatNameGeneralShort:
+        name: 'Format Name General Short'
+        description: 'Short format for a personal name applied to general people types. Example {name}'
+    formatNameStudentStandard:
+        name: 'Format Name Student Standard'
+        description: 'Standard format for a personal name applied to students. Example {name}'
+    formatNameStudentFormal:
+        name: 'Format Name Student Formal'
+        description: 'Formal format for a personal name applied to students. Example {name}'
+    formatNameStudentReversed:
+        name: 'Format Name Student Reversed'
+        description: 'Reversed format for a personal name applied to students. Example {name}'
+    formatNameStudentPreferred:
+        name: 'Format Name Student Preferred'
+        description: 'Preferred format for a personal name applied to students. Example {name}'
+    formatNameStudentShort:
+        name: 'Format Name Student Short'
+        description: 'Short format for a personal name applied to students. Example {name}'
+    formatNameStaffStandard:
+        name: 'Format Name Staff Standard'
+        description: 'Standard format for a personal name applied to staff. Example {name}'
+    formatNameStaffFormal:
+        name: 'Format Name Staff Formal'
+        description: 'Formal format for a personal name applied to staff. Example {name}'
+    formatNameStaffReversed:
+        name: 'Format Name Staff Reversed'
+        description: 'Reversed format for a personal name applied to staff. Example {name}'
+    formatNameStaffPreferred:
+        name: 'Format Name Staff Preferred'
+        description: 'Preferred format for a personal name applied to staff. Example {name}'
+    formatNameStaffShort:
+        name: 'Format Name Staff Short'
+        description: 'Short format for a personal name applied to staff. Example {name}'
+    formatNameCareGiverStandard:
+        name: 'Format Name Care Giver Standard'
+        description: 'Standard format for a personal name applied to care givers. Example {name}'
+    formatNameCareGiverFormal:
+        name: 'Format Name Care Giver Formal'
+        description: 'Formal format for a personal name applied to care givers. Example {name}'
+    formatNameCareGiverReversed:
+        name: 'Format Name Care Giver Reversed'
+        description: 'Reversed format for a personal name applied to care givers. Example {name}'
+    formatNameCareGiverPreferred:
+        name: 'Format Name Care Giver Preferred'
+        description: 'Preferred format for a personal name applied to care givers. Example {name}'
+    formatNameCareGiverShort:
+        name: 'Format Name Care Giver Short'
+        description: 'Short format for a personal name applied to care givers. Example {name}'
 'Mark Book':
     personalisedWarnings:
         name: 'Personalised Warnings'
