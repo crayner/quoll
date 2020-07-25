@@ -18,191 +18,138 @@
 namespace App\Modules\People\Manager;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\System\Manager\SettingFactory;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PersonNameManager
  * @package App\Modules\People\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class PersonNameManager
 {
     /**
-     * @var array
+     * @var string[]
      */
-    private static $formats;
-
+    private static $styleList = [
+        'Standard',
+        'Formal',
+        'Reversed',
+        'Preferred',
+        'Short',
+    ];
     /**
-     * @return array
+     * @var string[]
      */
-    public static function getFormats(): array
-    {
-        return self::$formats ?: [];
-    }
-
+    private static $personTypeList = [
+        'General',
+        'Student',
+        'Staff',
+        'CareGiver',
+    ];
     /**
-     * @param array $formats
+     * @var string[]
      */
-    public static function setFormats(array $formats = []): void
-    {
-        $resolver = new OptionsResolver();
-
-        $resolver->setDefaults(
-            [
-                'staff' => [],
-                'student' => [],
-                'parent' => [],
-                'other' => [],
-            ]
-        );
-
-        $formats = $resolver->resolve($formats);
-
-        foreach($formats as $q=>$w) {
-            $resolver->clear();
-            $resolver->setDefaults(
-                [
-                    'first' => [],
-                    'preferred' => [],
-                    'formal' => 'title first surname',
-                ]
-            );
-            $formats[$q] = $resolver->resolve($w);
-            foreach($formats[$q] as $e=>$r) {
-                if ($e === 'formal')
-                    continue;
-                $resolver->clear();
-                $resolver->setDefaults(
-                    [
-                        'short' => [],
-                        'long' => [],
-                    ]
-                );
-                $formats[$q][$e] = $resolver->resolve($r);
-                foreach($formats[$q][$e] as $t=>$y) {
-                    $resolver->clear();
-                    $resolver->setDefaults(
-                        [
-                            'reversed' => 'surname, given',
-                            'normal' => 'given surname',
-                        ]
-                    );
-                    $formats[$q][$e][$t] = $resolver->resolve($y);
-                }
-            }
-        }
-
-        self::$formats = $formats;
-    }
+    private static $nameParts = [
+        'initial',
+        'firstName',
+        'surname',
+        'preferredName',
+        'officialName',
+        'title',
+    ];
 
     /**
      * formatName
-     * @param Person|array $person
-     * @param array $options
-     * @return string
+     * @param Person $person
+     * @param string $personType
+     * @param string $style
+     * 25/07/2020 11:31
      */
-    public static function formatName($person, array $options): string
+    public static function formatName(Person $person, string $personType = 'General', string $style = 'Standard'): string
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-            [
-                'preferred' => true,
-                'preferredName' => true,
-                'reverse' => false,
-                'informal' => true,
-                'initial' => false,
-                'title' => false,
-                'style' => null,
-                'debug' => false,
-            ]
-        );
-
-        $resolver->setAllowedValues('style', ['long','short','formal',null]);
-
-        $options = $resolver->resolve($options);
-        if ($options['debug'])
-        // Backwards Compat
-        $options['preferred'] = $options['preferredName'] = $options['preferred'] && $options['preferredName'];
-
-        $personType = $person instanceof Person ? strtolower($person->getHumanisedRole()) : (isset($person['personType']) ? $person['personType'] : 'other');
-
-        $template = 'title first surname';
-
-        if ($options['style'] === null)
-        {
-            if ($options['reverse'])
-                $template = 'surname, first';
-
-            if (!$options['title'])
-                $template = str_replace('title ', '', $template);
-
-            if ($options['informal'] || $options['preferredName'])
-                $template = str_replace('first', 'preferred', $template);
-
-            if ($options['informal'] )
-                $template = str_replace('title', '', $template);
-
-            if ($options['initial'])
-                $template = str_replace(['first', 'preferred', 'given'], 'initial', $template);
-        } else {
-            $styles = self::getFormatByPersonType($personType);
-            if ($options['style'] === 'formal')
-            {
-                $options['preferred'] = $options['preferredName'] = false;
-            }
-            $template = 'formal';
-            $length = 'long';
-            if ($options['initial']) {
-                $template = 'first';
-                $length = 'short';
-            }
-            $direction = 'normal';
-            if ($options['reverse']) {
-                $direction = 'reversed';
-                $template = 'first';
-            }
-            if ($options['informal'] || $options['preferred'])
-                $template = 'preferred';
-
-            if ($template === 'formal')
-                $template = 'title first surname';
-            else
-                $template = isset($styles[$template][$length][$direction]) ? $styles[$template][$length][$direction] : 'title first surname';
-
-            $template = str_replace('given', 'first', $template);
-            if ($options['informal'] || $options['preferred'])
-                $template = str_replace('first', 'preferred', $template);
+        $format = self::getFormat($personType, $style);
+        $result = $format;
+        foreach (self::getNameParts() as $part) {
+            $method = 'get' . ucfirst($part);
+            $result = str_replace('['.$part.']', $person->$method(), $result);
         }
-
-        $template = trim($template);
-
-        if ($options['debug'])
-            dump($template,$person,$options);
-
-        $data = $person;
-        if ($person instanceof Person)
-            $data = [
-                'first' => $person->getFirstName(),
-                'surname' => $person->getSurname(),
-                'preferred' => $person->getPreferredName(),
-                'title' => $person->getTitle(),
-                'initial' => substr($person->getFirstName(), 0,1).'.',
-            ];
-
-        $name = trim(str_replace(
-            array_keys($data),
-            array_values($data),
-            $template)
-        );
-        return $name;
+        return trim($result);
     }
 
     /**
-     * getFormatByPersonType
+     * formatNameQuery
+     * @param string $alias
      * @param string $personType
-     * @return array
+     * @param string $style
+     * 25/07/2020 11:31
      */
-    private static function getFormatByPersonType(string $personType): array
+    public static function formatNameQuery(string $alias, string $personType = 'General', string $style = 'Standard'): string
     {
-        return isset(self::getFormats()[strtolower($personType)]) ? self::getFormats()[strtolower($personType)] : [];
+        $format = self::getFormat($personType, $style);
+        $w = explode(']', $format);
+        $result = '';
+        foreach($w as $item) {
+            $x = strpos($item, '[');
+            if ($x === false) {
+                $result .= ",'" . $item . "'";
+            } else if ($x === 0 && in_array(substr($item, 1), self::getNameParts())) {
+                $result .= ',' . $alias . '.' . substr($item, 1);
+            } else {
+                $result .= ",'" . substr($item, 0, $x) . "'";
+                $item = substr($item, $x);
+                if (in_array(substr($item, 1), self::getNameParts())) {
+                    $result .= ',' . $alias . '.' . substr($item, 1);
+                }
+            }
+        }
+        return trim($result, ',');
+    }
+
+    /**
+     * getFormat
+     * @param string $personType
+     * @param string $style
+     * @return array|bool|int|object|string|null
+     * @throws \Exception
+     * 25/07/2020 11:42
+     */
+    public static function getFormat(string $personType = 'General', string $style = 'Standard')
+    {
+        if (!in_array($style, self::getStyleList())) {
+            $style = 'Standard';
+        }
+        if (!in_array($personType, self::getPersonTypeList())) {
+            $style = 'General';
+        }
+       return SettingFactory::getSettingManager()->get('People', 'formatName'.$personType.$style, '[firstName] [surname]');
+    }
+
+    /**
+     * getStyleList
+     * @return array|string[]
+     * 25/07/2020 11:34
+     */
+    public static function getStyleList(): array
+    {
+        return self::$styleList;
+    }
+
+    /**
+     * getPersonTypeList
+     * @return array|string[]
+     * 25/07/2020 11:39
+     */
+    public static function getPersonTypeList(): array
+    {
+        return self::$personTypeList;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getNameParts(): array
+    {
+        return self::$nameParts;
     }
 }

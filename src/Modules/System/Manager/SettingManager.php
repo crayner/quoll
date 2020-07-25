@@ -421,35 +421,35 @@ class SettingManager
         switch ($setting['type']) {
             case 'string':
                 if (is_null($setting['value']) || is_string($setting['value'])) {
-                    $value = $setting['value'] ?? $default;
+                    $value = $setting['value'] ?: $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid string.', $scope,$name));
                 }
                 break;
             case 'boolean':
                 if (is_bool($setting['value'])) {
-                    $value = $setting['value'] ?? $default;
+                    $value = $setting['value'] ?: $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not boolean.', $scope,$name));
                 }
                 break;
             case 'integer':
                 if (is_null($setting['value']) || is_integer($setting['value'])) {
-                    $value = $setting['value'] ?? $default;
+                    $value = $setting['value'] ?: $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid integer.', $scope,$name));
                 }
                 break;
             case 'array':
                 if (is_null($setting['value']) || is_array($setting['value'])) {
-                    $value = $setting['value'] ?? ($default ?? []);
+                    $value = $setting['value'] ?: ($default ?: []);
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid array.', $scope,$name));
                 }
                 break;
             case 'image':
                 if (is_null($setting['value']) || is_string($setting['value'])) {
-                    $value = $setting['value'] ?? $default;
+                    $value = $setting['value'] ?: $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid image.', $scope,$name));
                 }
@@ -461,7 +461,7 @@ class SettingManager
                 break;
             case 'entity':
                 if (is_null($setting['value']) || is_string($setting['value'])) {
-                    $value = $setting['value'] ?? $default;
+                    $value = $setting['value'] ?: $default;
                 } else {
                     throw new \InvalidArgumentException(sprintf('The setting "%s", "%s" is not a valid person.', $scope,$name));
                 }
@@ -549,7 +549,7 @@ class SettingManager
         $content = json_decode($request->getContent(), true);
 
         $form->submit($content);
-
+dump($form);
         if ($form->isValid()) {
             $this->saveSettings($form, $content);
             if (count($this->getErrors()) === 0) {
@@ -675,7 +675,7 @@ class SettingManager
                         throw new \InvalidArgumentException('Work out how to handle an object!');
                     }
 
-                    $this->setSetting($setting['scope'], $setting['name'], $data);
+                    $this->set($setting['scope'], $setting['name'], $data);
                 }
             }
             $this->saveSettings($child, $content);

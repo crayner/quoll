@@ -118,7 +118,7 @@ class PeopleController extends AbstractPageController
 
 
         $photo = new Photo($person->getPersonalDocumentation(), 'getPersonalImage', '200', 'user max200', '/build/static/DefaultPerson.png');
-        $photo->setTransDomain(false)->setTitle($person->formatName(['informal' => true]));
+        $photo->setTransDomain(false)->setTitle($person->formatName('Standard'));
         $sidebar->addContent($photo);
 
         $container = new Container($tabName);
