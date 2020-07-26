@@ -239,4 +239,15 @@ class CareGiver extends AbstractEntity
     {
         // TODO: Implement toArray() method.
     }
+
+    /**
+     * isEqualTo
+     * @param CareGiver $careGiver
+     * @return bool
+     * 26/07/2020 09:54
+     */
+    public function isEqualTo(CareGiver $careGiver): bool
+    {
+        return $careGiver->getId() === $this->getId() && $careGiver->getPerson()->isEqualTo($this->getPerson());
+    }
 }

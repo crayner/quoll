@@ -476,12 +476,10 @@ class Family extends AbstractEntity
      * isEqualTo
      * @param Family $family
      * @return bool
+     * 26/07/2020 09:21
      */
     public function isEqualTo(Family $family)
     {
-        if ($this->getId() !== $family->getId())
-            return false;
-
-        return true;
+        return $this->getId() === $family->getId();
     }
 }

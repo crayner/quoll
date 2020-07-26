@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMemberAdult
@@ -33,6 +34,13 @@ class FamilyMemberCareGiver extends FamilyMember
      * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
      */
     private $careGiver;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="smallint",nullable=true)
+     * @Assert\Range(min=1,max=99)
+     */
+    private $contactPriority;
 
     /**
      * @var boolean|null
@@ -97,6 +105,24 @@ class FamilyMemberCareGiver extends FamilyMember
     public function setCareGiver(?CareGiver $careGiver): FamilyMemberCareGiver
     {
         $this->careGiver = $careGiver;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getContactPriority(): ?int
+    {
+        return $this->contactPriority;
+    }
+
+    /**
+     * @param int|null $contactPriority
+     * @return FamilyMemberCareGiver
+     */
+    public function setContactPriority(?int $contactPriority): FamilyMemberCareGiver
+    {
+        $this->contactPriority = $contactPriority;
         return $this;
     }
 
@@ -227,5 +253,16 @@ class FamilyMemberCareGiver extends FamilyMember
     public function toArray(?string $name = null): array
     {
         return parent::toArray('care_giver');
+    }
+
+    /**
+     * isEqualTo
+     * @param FamilyMemberCareGiver $careGiver
+     * @return bool
+     * 26/07/2020 09:39
+     */
+    public function isEqualTo(FamilyMemberCareGiver $careGiver): bool
+    {
+        return $this->getFamily()->isEqualTo($careGiver->getFamily()) && $this->getCareGiver()->isEqualTo($careGiver->getCareGiver());
     }
 }

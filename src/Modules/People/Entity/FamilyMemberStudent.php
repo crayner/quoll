@@ -108,4 +108,15 @@ class FamilyMemberStudent extends FamilyMember
     {
         return parent::toArray('student');
     }
+
+    /**
+     * isEqualTo
+     * @param FamilyMemberStudent $student
+     * @return bool
+     * 26/07/2020 09:40
+     */
+    public function isEqualTo(FamilyMemberStudent $student): bool
+    {
+        return $this->getFamily()->isEqualTo($student->getFamily()) && $this->getStudent()->isEqualTo($student->getStudent());
+    }
 }

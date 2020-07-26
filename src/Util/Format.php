@@ -17,6 +17,8 @@
 
 namespace App\Util;
 
+use App\Modules\System\Entity\Locale;
+use App\Provider\ProviderFactory;
 use DateTime;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -61,18 +63,12 @@ class Format
             return ;
 
         $settings = [];
-        $settings['i18n'] = $session->get('i18n');
+        $settings['locale'] = $session->has('locale') ? $session->get('locale') : ProviderFactory::getRepository(Locale::class)->findOneBy(['systemDefault' => true]);
+        $settings['dateFormatPHP'] = $settings['locale']->getDateFormatPHP();
+        $settings['dateTimeFormatPHP'] = $settings['locale']->getDateFormatPHP() . ' H:i';
+        $settings['timeFormatPHP'] = 'H:i';
 
-        $settings['absolutePath'] = $session->get('absolutePath');
-        $settings['absoluteURL'] = $session->get('absoluteURL');
-        $settings['gibbonThemeName'] = $session->get('gibbonThemeName');
-        $settings['currency'] = $session->get('currency');
-        $settings['currencySymbol'] = !empty(substr($settings['currency'], 4)) ? substr($settings['currency'], 4) : '';
-        $settings['currencyName'] = substr($settings['currency'], 0, 3);
-        $settings['nameFormatStaffInformal'] = $session->get('nameFormatStaffInformal');
-        $settings['nameFormatStaffInformalReversed'] = $session->get('nameFormatStaffInformalReversed');
-        $settings['nameFormatStaffFormal'] = $session->get('nameFormatStaffFormal');
-        $settings['nameFormatStaffFormalReversed'] = $session->get('nameFormatStaffFormalReversed');
+        self::setup($settings);
 
         self::$setup = true;
     }
@@ -88,49 +84,14 @@ class Format
     }
 
     /**
-     * Formats a name based on the provided Role Category. Optionally reverses the name (surname first) or uses an informal format (no title).
-     *
-     * @param string $title
-     * @param string $preferredName
-     * @param string $surname
-     * @param string $roleCategory
-     * @param bool $reverse
-     * @param bool $informal
-     * @return string
-     * @deprecated 
-     */
-    public static function name($title, $preferredName, $surname, $roleCategory = 'Staff', $reverse = false, $informal = false)
-    {
-        dd('Never use this.');
-        self::setupFromSession();
-        $output = '';
-
-        if (empty($preferredName) && empty($surname)) return '';
-
-        if ($roleCategory == 'Staff' or $roleCategory == 'Other') {
-            $setting = 'nameFormatStaff' . ($informal ? 'Informal' : 'Formal') . ($reverse ? 'Reversed' : '');
-            $format = static::getSetting($setting) ? static::getSetting($setting) : '[title] [preferredName] [surname]';
-            $output = str_replace(['[preferredName:1]', '[preferredName]'], $preferredName, $format);
-            $output = trim(str_replace(['[title]', '[surname]'], [$title, $surname], $output));
-        } elseif ($roleCategory == 'Parent') {
-            $format = (!$informal? '{oneString} ' : '') . ($reverse? '{threeString}, {twoString}' : '{twoString} {threeString}');
-            $output = str_replace(['{threeString}','{twoString}','{oneString}'], [$surname, $preferredName, $title], $format);
-        } elseif ($roleCategory == 'Student') {
-            $format = $reverse ? '{twoString}, {oneString}' : '{oneString} {twoString}';
-            $output = str_replace(['{twoString}','{oneString}'], [$surname, $preferredName], $format);
-        }
-
-        return trim($output, ' ');
-    }
-
-    /**
      * Formats a YYYY-MM-DD date with the language-specific format. Optionally provide a format string to use instead.
      *
      * @param DateTime|string $dateString
-     * @param string $format
+     * @param bool $format
      * @return string
+     * @throws \Exception
      */
-    public static function date($dateString, $format = false)
+    public static function date(string $dateString, bool $format = false)
     {
         self::setupFromSession();
         if (empty($dateString)) return '';

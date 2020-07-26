@@ -599,4 +599,6 @@ Edit Care Givers in Family: Edit Care Givers in Family
 Remove Care Giver from Family: Remove Care Giver from Family
 'Role: Care Giver': 'Role: Care Giver'
 CareGiver: Care Giver
-format_name_help: 'Name formats are created using the following name parts, used in any order.  The details MUST BE in English.<br />"{items}"'
+format_name_help: 'Name formats are created using the following name parts, used in any order.  The details MUST BE in English and the square brackets [] MUST BE used.<br />"<strong>{items}</strong>"'
+'Format Name {type}': 'Format Name {type}'
+Name Format Settings: Name Format Settings

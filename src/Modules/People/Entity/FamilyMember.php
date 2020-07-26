@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
- * @ORM\DiscriminatorMap({"adult" = "FamilyMemberCareGiver", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
+ * @ORM\DiscriminatorMap({"care_giver" = "FamilyMemberCareGiver", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
  * @FamilyMemberNotBlank()
  */
 class FamilyMember extends AbstractEntity
@@ -76,13 +76,6 @@ class FamilyMember extends AbstractEntity
      * @ORM\Column(type="text",nullable=true)
      */
     private $comment;
-
-    /**
-     * @var int|null
-     * @ORM\Column(type="smallint",nullable=true)
-     * @Assert\Range(min=1,max=99)
-     */
-    private $contactPriority;
 
     /**
      * FamilyMember constructor.
@@ -146,24 +139,6 @@ class FamilyMember extends AbstractEntity
     public function setComment(?string $comment): FamilyMember
     {
         $this->comment = $comment;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getContactPriority(): ?int
-    {
-        return $this->contactPriority;
-    }
-
-    /**
-     * @param int|null $contactPriority
-     * @return FamilyMemberCareGiver
-     */
-    public function setContactPriority(?int $contactPriority): FamilyMemberCareGiver
-    {
-        $this->contactPriority = $contactPriority;
         return $this;
     }
 
@@ -238,22 +213,6 @@ class FamilyMember extends AbstractEntity
             'person_id' => $person->getId(),
             'id' => $this->getId(),
         ];
-    }
-
-    /**
-     * isEqualTo
-     * @param FamilyMember $member
-     * @return bool
-     * 24/07/2020 15:23
-     */
-    public function isEqualTo(FamilyMember $member): bool
-    {
-        if (method_exists($member, 'getStudent') && method_exists($this, 'getStudent') && $member->getStudent() !== null) {
-            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getStudent()->getPerson()->isEqualTo($member->getStudent()->getPerson());
-        } else if (method_exists($member, 'getCareGiver') && method_exists($this, 'getCareGiver') && $member->getCareGiver() !== null) {
-            return $this->getFamily()->isEqualTo($member->getFamily()) && $member->getCareGiver()->getPerson()->isEqualTo($member->getCareGiver()->getPerson());
-        }
-        return false;
     }
 
     /**

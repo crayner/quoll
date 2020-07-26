@@ -131,24 +131,24 @@ class FamilyRelationshipManager implements SpecialInterface
     {
         if (!$family)
             $family = $this->getFamily();
-        $adults = FamilyManager::getCareGivers($family, false);
-        $children = FamilyManager::getStudents($family, false);
+        $careGivers = FamilyManager::getCareGivers($family, false);
+        $students = FamilyManager::getStudents($family, false);
         $relationships = $this->getExistingRelationships($family);
-        if (count($adults) * count($children) === $relationships->count())
+        if (count($careGivers) * count($students) === $relationships->count())
             return $relationships;
 
-        foreach($adults as $adult)
-            foreach($children as $child)
+        foreach($careGivers as $careGiver)
+            foreach($students as $student)
             {
-                $relationship = new FamilyRelationship($family, $adult, $child);
+                $relationship = new FamilyRelationship($family, $careGiver, $student);
                 $save = true;
-                foreach($relationships as $item)
+                foreach($relationships as $item) {
                     if ($relationship->isEqualTo($item)) {
                         $save = false;
                         break;
                     }
-                if ($save)
-                    $relationships->add($relationship);
+                }
+                if ($save) $relationships->add($relationship);
             }
 
         return $relationships;

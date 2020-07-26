@@ -543,4 +543,15 @@ class Student extends AbstractEntity
     {
         // TODO: Implement toArray() method.
     }
+
+    /**
+     * isEqualTo
+     * @param Student $student
+     * @return bool
+     * 26/07/2020 09:47
+     */
+    public function isEqualTo(Student $student): bool
+    {
+        return $student->getId() === $this->getId() && $student->getPerson()->isEqualTo($this->getPerson());
+    }
 }

@@ -27,7 +27,7 @@
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
 -
-    name: Students
+    name: Student
     description: 'Manage students'
     entryRoute: student_view
     securityRoles:
