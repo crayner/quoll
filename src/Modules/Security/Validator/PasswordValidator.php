@@ -38,10 +38,10 @@ class PasswordValidator extends ConstraintValidator
     {
         $settingProvider = SettingFactory::getSettingManager();
 
-        $alpha = $settingProvider->getSetting('System', 'passwordPolicyAlpha');
-        $numeric = $settingProvider->getSetting('System', 'passwordPolicyNumeric');
-        $punctuation = $settingProvider->getSetting('System', 'passwordPolicyNonAlphaNumeric');
-        $minLength = $settingProvider->getSetting('System', 'passwordPolicyMinLength');
+        $alpha = $settingProvider->get('System', 'passwordPolicyAlpha');
+        $numeric = $settingProvider->get('System', 'passwordPolicyNumeric');
+        $punctuation = $settingProvider->get('System', 'passwordPolicyNonAlphaNumeric');
+        $minLength = $settingProvider->get('System', 'passwordPolicyMinLength');
 
         if ($alpha && ! preg_match('/.*(?=.*[a-z])(?=.*[A-Z]).*/', $value))
             $this->context->buildViolation('The password must contain both lower and uppercase characters.')
@@ -67,7 +67,7 @@ class PasswordValidator extends ConstraintValidator
         if ($constraint->assumeCurrentUser) {
             $user = SecurityHelper::getCurrentUser();
             if ($user instanceof SecurityUser) {
-                if ($user->isPasswordValid($value)) {
+                if (SecurityHelper::isPasswordValid($user, $value)) {
                     $this->context->buildViolation('Your request failed because your new password is the same as your current password.')
                         ->setTranslationDomain('Security')
                         ->addViolation();

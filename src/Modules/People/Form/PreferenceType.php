@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints\Email;
  * Class PreferenceSettingsType
  * @package App\Modules\People\Form
  */
-class PreferenceSettingsType extends AbstractType
+class PreferenceType extends AbstractType
 {
     /**
      * buildForm
@@ -58,34 +58,9 @@ class PreferenceSettingsType extends AbstractType
                     'label' => 'Settings',
                 ]
             )
-            ->add('calendarFeedPersonal', EmailType::class,
-                [
-                    'label' => 'Personal Google Calendar ID',
-                    'help' => 'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.',
-                    'help_html' => true,
-                    'required' => false,
-                    'constraints' => [
-                        new Email(),
-                    ],
-                ]
-            )
+ /*            */
         ;
-        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People', 'personalBackground')) {
-            $builder
-                ->add('personalBackground', ReactFileType::class,
-                    [
-                        'label' => 'Personal Background',
-                        'help_html' => true,
-                        'data' => $options['data']->getPersonalBackground(),
-                        'required' => false,
-                        'file_prefix' => 'personal_bg',
-                        'show_thumbnail' => true,
-                        'image_method' => 'getPersonalBackground',
-                        'entity' => $options['data'],
-                    ]
-                )
-            ;
-        }
+ /*
         $builder
             ->add('theme', EntityType::class,
                 [
@@ -104,40 +79,31 @@ class PreferenceSettingsType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('i18nPersonal', EntityType::class,
-                [
-                    'label' => 'Personal Language',
-                    'class' => Locale::class,
-                    'help' => 'Override the system default language.',
-                    'placeholder' => 'System Default',
-                    'choice_label' => 'name',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-                            ->where('i.active = :yes')
-                            ->setParameter('yes', 'Y')
-                            ->orderBy('i.code', 'ASC')
-                        ;
-                    },
-                    'required' => false,
-                ]
-            )
-            ->add('receiveNotificationEmails', ToggleType::class,
-                [
-                    'label' => 'Receive Email Notifications?',
-                    'help' => 'Notifications can always be viewed on screen.',
-                ]
-            )
-        ;
+        ; */
         if ($options['data'] instanceof Person && $options['data']->isStaff()) {
-            $staff = ProviderFactory::getRepository(Staff::class)->findOneByPersonOrCreate($options['data']);
             $builder
-                ->add('staff', StaffPreferenceSettingsType::class, ['data' => $staff]);
+                ->add('staff', PreferenceStaffType::class,
+                    [
+                        'data' => $options['data']->getStaff(),
+                        'remove_background_image' => $options['remove_background_image'],
+                    ]
+                )
+                ->add('securityUser', PreferenceSecurityType::class, ['data' => $options['data']->getSecurityUser()])
+            ;
+        }
+        if ($options['data'] instanceof Person && $options['data']->isStudent()) {
+            $builder
+                ->add('student', PreferenceStudentType::class,
+                    [
+                        'data' => $options['data']->getStudent(),
+                        'remove_background_image' => $options['remove_background_image'],
+                    ]
+                )
+                ->add('securityUser', PreferenceSecurityType::class, ['data' => $options['data']->getSecurityUser()])
+            ;
         }
         $builder
-            ->add('submit', SubmitType::class, [
-                'row_style' => 'single',
-            ])
-            ->setAction($options['action'])
+            ->add('submit', SubmitType::class)
         ;
     }
 
@@ -147,11 +113,6 @@ class PreferenceSettingsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(
-            [
-                'action'
-            ]
-        );
         $resolver->setDefaults(
             [
                 'data_class' => Person::class,
@@ -160,6 +121,11 @@ class PreferenceSettingsType extends AbstractType
                     'className' => 'smallIntBorder fullWidth standardForm',
                     'autoComplete' => 'on',
                 ],
+            ]
+        );
+        $resolver->setRequired(
+            [
+                'remove_background_image',
             ]
         );
     }

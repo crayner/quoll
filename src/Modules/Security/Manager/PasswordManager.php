@@ -15,6 +15,7 @@
 
 namespace App\Modules\Security\Manager;
 
+use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
@@ -77,7 +78,7 @@ class PasswordManager
     public function changePassword(ResetPassword $rp, UserInterface $user): array
     {
         $session = $this->getSession();
-        $person = ProviderFactory::getRepository(Person::class)->find($user->getId());
+        $person = $user->getPerson();
         $data = [];
         $data['status'] = 'success';
 
@@ -88,9 +89,9 @@ class PasswordManager
 
         //Check password address is not blank
         $password = $rp->getRaw();
-        $forceReset = $person->isPasswordForceReset();
+        $forceReset = $user->isPasswordForceReset();
 
-        $ok = $user->changePassword($password);
+        $ok = SecurityHelper::encodeAndSetPassword($user, $password);
         TranslationHelper::setDomain('Security');
         if ($ok && $forceReset) {
             $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('return.success.a')];
