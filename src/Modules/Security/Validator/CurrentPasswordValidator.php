@@ -14,10 +14,9 @@
  * Date: 19/08/2019
  * Time: 18:11
  */
-
 namespace App\Modules\Security\Validator;
 
-use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Util\SecurityHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -34,12 +33,11 @@ class CurrentPasswordValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $user = UserHelper::getCurrentSecurityUser();
-        if (!$user->isPasswordValid($value)) {
+        $user = SecurityHelper::getCurrentUser();
+        if (!SecurityHelper::isPasswordValid($user, $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setTranslationDomain($constraint->translationDomain)
                 ->addViolation();
         }
     }
-
 }

@@ -21,7 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\People\Form\PreferenceSettingsType;
+use App\Modules\People\Form\PreferenceType;
 use App\Modules\Security\Form\Entity\ResetPassword;
 use App\Modules\Security\Form\ResetPasswordType;
 use App\Modules\Security\Manager\PasswordManager;
@@ -90,7 +90,12 @@ class PreferenceController extends AbstractPageController
 
         $person = $this->getUser()->getPerson();
 
-        $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
+        $settingsForm = $this->createForm(PreferenceType::class, $person,
+            [
+                'action' => $this->generateUrl('preferences', ['tabName' => 'Settings']),
+                'remove_background_image' => $this->generateUrl('remove_personal_image', ['documentation' => $person->getPersonalDocumentation()->getId()])
+            ]
+        );
 
         if ($request->getContent() !== '' && $tabName === 'Settings') {
             $settingsForm->submit(json_decode($request->getContent(), true));
@@ -101,7 +106,12 @@ class PreferenceController extends AbstractPageController
                 $em->flush();
                 $em->refresh($person);
                 $data = ErrorMessageHelper::getSuccessMessage($data, true);
-                $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
+                $settingsForm = $this->createForm(PreferenceType::class, $person,
+                    [
+                        'action' => $this->generateUrl('preferences', ['tabName' => 'Settings']),
+                        'remove_background_image' => $this->generateUrl('remove_personal_image', ['documentation' => $person->getPersonalDocumentation()->getId()])
+                    ]
+                );
                 $manager->singlePanel($settingsForm->createView());
                 $data['form'] = $manager->getFormFromContainer();
                 return new JsonResponse($data, 200);

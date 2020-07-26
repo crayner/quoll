@@ -375,10 +375,10 @@ class SecurityHelper
 
         $output = [];
         $provider = SettingFactory::getSettingManager();
-        $alpha = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha');
-        $numeric = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric');
-        $punctuation = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric');
-        $minLength = $provider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength');
+        $alpha = $provider->get('System', 'passwordPolicyAlpha');
+        $numeric = $provider->get('System', 'passwordPolicyNumeric');
+        $punctuation = $provider->get('System', 'passwordPolicyNonAlphaNumeric');
+        $minLength = $provider->get('System', 'passwordPolicyMinLength');
 
         if (!$alpha || !$numeric || !$punctuation || $minLength >= 0) {
             $output[] = 'The password policy stipulates that passwords must:';
@@ -437,14 +437,26 @@ class SecurityHelper
      * encodeAndSetPassword
      * @param SecurityUser $user
      * @param string $raw
+     * @return bool
+     * 26/07/2020 12:33
      */
-    public static function encodeAndSetPassword(SecurityUser $user, string $raw)
+    public static function encodeAndSetPassword(SecurityUser $user, string $raw): bool
     {
         $password = self::getEncoder()->encodePassword($user, $raw);
 
-        $person = $user->getPerson();
+        return $user->changePassword($password);
+    }
 
-        $person->setPassword($password);
+    /**
+     * isPasswordValid
+     * @param SecurityUser $user
+     * @param string $raw
+     * @return bool
+     * 26/07/2020 12:17
+     */
+    public static function isPasswordValid(SecurityUser $user, string $raw): bool
+    {
+        return self::getEncoder()->isPasswordValid($user, $raw);
     }
 
     /**

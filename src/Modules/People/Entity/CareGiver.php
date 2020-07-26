@@ -17,7 +17,6 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\System\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

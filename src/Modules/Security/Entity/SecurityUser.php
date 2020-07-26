@@ -640,4 +640,21 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         $this->superUser = $superUser;
         return $this;
     }
+
+    /**
+     * changePassword
+     * @param string $password
+     * @return bool
+     * 26/07/2020 12:32
+     */
+    public function changePassword(string $password): bool
+    {
+        $this->setPassword($password);
+
+        $em = ProviderFactory::getEntityManager();
+        $em->persist($this);
+        $em->flush();
+        
+        return true;
+    }
 }
