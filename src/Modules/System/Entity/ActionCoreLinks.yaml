@@ -220,7 +220,7 @@
     source:
         table: App\Modules\System\Entity\Module
         findBy:
-            name: Students
+            name: Student
     target: module
 -
     findBy:
@@ -228,7 +228,7 @@
     source:
         table: App\Modules\System\Entity\Module
         findBy:
-            name: Students
+            name: Student
     target: module
 -
     findBy:
@@ -461,4 +461,12 @@
         table: App\Modules\System\Entity\Module
         findBy:
             name: School
+    target: module
+-
+    findBy:
+        entryRoute: format_name_settings
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: People
     target: module

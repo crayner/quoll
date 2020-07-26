@@ -984,3 +984,20 @@
     securityRoles:
         arrayField:
             - ROLE_REGISTRAR
+-
+    name: 'Format Name Settings'
+    category: Settings
+    description: 'Manage the display format of personal names.'
+    routeList:
+        arrayField:
+            - format_name_settings
+            - format_name_save
+    entryRoute: format_name_settings
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+            - ROLE_REGISTRAR

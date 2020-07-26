@@ -56,7 +56,7 @@ class FormatNameSettingType extends AbstractType
                     'label' => 'Format Name {type}',
                     'label_translation_parameters' => ['{type}' => TranslationHelper::translate($this->tabName, [], 'People')],
                     'help' => 'format_name_help',
-                    'help_translation_parameters' => ['items' => '['.implode('],[',PersonNameManager::getNameParts()).']'],
+                    'help_translation_parameters' => ['items' => '['.implode('], [',PersonNameManager::getNameParts()).']'],
                 ]
             )
             ->add('formatName', SettingsType::class,
@@ -118,7 +118,7 @@ class FormatNameSettingType extends AbstractType
                 'scope' => 'People',
                 'name' => 'formatName' . $this->tabName . $style,
                 'entry_options' => [
-                    'help_translation_parameters' => ['{name}' => PersonNameManager::formatName($person, $this->tabName, $style)],
+                    'help_translation_parameters' => ['{name}' => '<strong>"'.PersonNameManager::formatName($person, $this->tabName, $style).'"</strong>'],
                 ],
             ];
         }
