@@ -132,10 +132,10 @@ export default function RenderPeople(props) {
     }
 
     function getPhoto(chosen) {
-        if (chosen.photo.includes(absolute_url) && chosen.photo[0] === '/') {
+        if (chosen.photo.includes(absolute_url) && (chosen.photo[0] === '/' || chosen.photo[0] === '\\')) {
             return chosen.photo.slice(1)
         }
-        if (chosen.photo.length > 1 && chosen.photo[0] === '/') {
+        if (chosen.photo.length > 1 && (chosen.photo[0] === '/' || chosen.photo[0] === '\\')) {
             return chosen.photo
         }
         if (chosen.photo.includes(absolute_url)) {
