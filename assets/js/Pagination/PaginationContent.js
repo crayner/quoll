@@ -149,6 +149,7 @@ export default function PaginationContent(props) {
         }
 
         if (typeof rowContent.id === 'undefined') {
+            console.log(rowContent)
             console.error('You must define an "id" in your pagination array.')
         }
 

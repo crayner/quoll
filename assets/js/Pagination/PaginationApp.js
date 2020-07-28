@@ -448,7 +448,8 @@ export default class PaginationApp extends Component {
         if (this.search && search !== '') {
             search = search.toLowerCase()
             let filtered = []
-            content.filter(value => {
+            Object.keys(content).filter(xxx => {
+                let value = content[xxx]
                 let selected = false
                 this.row.columns.map(column => {
                     if (column.search) {
