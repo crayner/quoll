@@ -20,6 +20,7 @@ use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Form\SecurityRoleType;
+use App\Modules\Security\Manager\SecurityManager;
 use App\Modules\Security\Pagination\SecurityRolePagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -63,7 +64,7 @@ class SecurityRoleController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * 29/06/2020 12:21
      */
-    public function edit(ContainerManager $manager, ?SecurityRole $role = null)
+    public function edit(ContainerManager $manager, SecurityManager $security, ?SecurityRole $role = null)
     {
         if ($role === null) {
             $role = new SecurityRole();
@@ -80,10 +81,12 @@ class SecurityRoleController extends AbstractPageController
             if ($form->isValid()) {
                 $data = ProviderFactory::create(SecurityRole::class)->persistFlush($role, []);
                 if ($data['status'] === 'success' && $this->getRequest()->get('_route') === 'security_role_add') {
+                    $security->updateSecurityRoleHierarchy($role);
                     $data['status'] = 'redirect';
                     $data['redirect'] = $this->generateUrl('security_role_edit', ['role' => $role->getId()]);
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
                 } elseif ($data['status'] === 'success') {
+                    $security->updateSecurityRoleHierarchy($role);
                     $form = $this->createForm(SecurityRoleType::class, $role, ['action' => $action]);
                 } else {
                     $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);

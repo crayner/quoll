@@ -145,7 +145,12 @@ class PersonType extends AbstractType
                     'label' => 'Gender',
                 ]
             )
-            ->add('submitBasic', SubmitType::class)
+            ->add('status', EnumType::class,
+                [
+                    'label' => 'Status',
+                    'placeholder' => 'Please select...'
+                ]
+            )
         ;
 
         if ($person->canBeStaff()) {
@@ -187,6 +192,8 @@ class PersonType extends AbstractType
                 )
             ;
         }
+        $builder
+            ->add('submitBasic', SubmitType::class);
     }
 
     /**

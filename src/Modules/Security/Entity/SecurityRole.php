@@ -17,6 +17,7 @@
 namespace App\Modules\Security\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\Security\Manager\RoleHierarchy;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -71,17 +72,6 @@ class SecurityRole extends AbstractEntity
      * @Assert\Choice(callback="getCategoryList")
      */
     private $category;
-
-    /**
-     * @var string[]
-     */
-    private static $categoryList = [
-        'Staff',
-        'Parent',
-        'Student',
-        'Contact',
-        'System',
-    ];
 
     /**
      * @var SecurityRole[]|Collection|null
@@ -188,15 +178,7 @@ class SecurityRole extends AbstractEntity
      */
     public static function getCategoryList(): array
     {
-        return self::$categoryList;
-    }
-
-    /**
-     * @param string[] $categoryList
-     */
-    public static function setCategoryList(array $categoryList): void
-    {
-        self::$categoryList = $categoryList;
+        return RoleHierarchy::getCategoryList();
     }
 
     /**

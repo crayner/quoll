@@ -91,6 +91,7 @@ class SecurityRoleType extends AbstractType
                     'label' => 'Child Security Roles',
                     'class' => SecurityRole::class,
                     'multiple' => true,
+                    'expanded' => true,
                     'choice_label' => 'role',
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('r')
@@ -98,9 +99,6 @@ class SecurityRoleType extends AbstractType
                             ->orderBy('r.category', 'ASC')
                         ;
                     },
-                    'attr' => [
-                        'size' => 8,
-                    ],
                 ]
             )
         ;

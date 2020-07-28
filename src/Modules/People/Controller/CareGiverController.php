@@ -129,6 +129,7 @@ class CareGiverController extends PeopleController
             if ($person->getContact() === null) {
                 new Contact($person);
             }
+            $person->getSecurityUser()->addSecurityRole('ROLE_CARE_GIVER');
             $data = ProviderFactory::create(Person::class)->persistFlush($person, []);
             if ($data['status'] === 'success') {
                 $data['status'] = 'redirect';

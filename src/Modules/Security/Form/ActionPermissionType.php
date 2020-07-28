@@ -20,12 +20,10 @@ use App\Form\Transform\SimpleArrayTransformer;
 use App\Form\Type\DisplayType;
 use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,9 +44,10 @@ class ActionPermissionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $roles = [];
-        foreach($options['data']->getSecurityRoles() as $role) {
-            $roles = array_merge($roles,SecurityHelper::rolesThatHaveAccess([$role->getRole()]));
-        }
+//        foreach($options['data']->getSecurityRoles() as $role) {
+            $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($options['data']->getSecurityRoles());
+//            dump($roles);
+//        }
 
         $roles = implode(', ', array_unique($roles));
 
@@ -73,22 +72,15 @@ class ActionPermissionType extends AbstractType
                     'label' => 'Restriction',
                 ]
             )
-            ->add('securityRoles', EntityType::class,
+            ->add('securityRoles', ChoiceType::class,
                 [
                     'label' => 'Security Roles',
-                    'class' => SecurityRole::class,
                     'multiple' => true,
                     'expanded' => true,
-                    'choice_label' => 'role',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('r')
-                            ->orderBy('r.category', 'ASC')
-                            ->addOrderBy('r.role', 'ASC')
-                            ;
-                    },
                     'attr' => [
                         'size' => 8,
                     ],
+                    'choices' => $this->getHierarchy(),
                 ]
             )
             ->add('reachableRoles', ParagraphType::class,
@@ -126,5 +118,19 @@ class ActionPermissionType extends AbstractType
     public function getParent()
     {
         return ReactFormType::class;
+    }
+
+    /**
+     * getHierarchy
+     * @return array
+     * 28/07/2020 16:12
+     */
+    public function getHierarchy(): array
+    {
+        $roles = [];
+        foreach(SecurityHelper::getAllCurrentUserRoles() as $role) {
+            $roles[$role] = $role;
+        }
+        return $roles;
     }
 }

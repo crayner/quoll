@@ -49,8 +49,9 @@ class RoleHierarchy implements RoleHierarchyInterface
     private static $categoryList = [
         'Staff',
         'Student',
-        'Parent',
-        'Other',
+        'Care Giver',
+        'Contact',
+        'System',
     ];
 
     /**
@@ -136,7 +137,7 @@ class RoleHierarchy implements RoleHierarchyInterface
             $role = ProviderFactory::getRepository(SecurityRole::class)->findOneByRole($role);
         }
 
-        return $role ? $role->getCategory() : 'Other';
+        return $role ? $role->getCategory() : 'Contact';
     }
 
     /**

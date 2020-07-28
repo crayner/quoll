@@ -18,7 +18,7 @@ parameters:
             - ROLE_SUPPORT
             - ROLE_CARE_GIVER
             - ROLE_ALLOWED_TO_SWITCH
-        ROLE_USER: ~
+        ROLE_USER: null
         ROLE_CONTACT:
             - ROLE_USER
         ROLE_FINANCE:
@@ -27,7 +27,7 @@ parameters:
             - ROLE_CONTACT
         ROLE_MEDICAL:
             - ROLE_STAFF
-        ROLE_ALLOWED_TO_SWITCH: ~
+        ROLE_ALLOWED_TO_SWITCH: null
         ROLE_STAFF:
             - ROLE_USER
         ROLE_SYSTEM_ADMIN:

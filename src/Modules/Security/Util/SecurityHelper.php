@@ -426,7 +426,7 @@ class SecurityHelper
             return [];
         }
 
-        if (self::isGr === null) {
+        if (self::$allCurrentUserRoles === null) {
             return self::$allCurrentUserRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(self::getCurrentUser()->getSecurityRoles());
         }
 
@@ -552,7 +552,7 @@ class SecurityHelper
         foreach ($roles as $role) {
 
             $accessAvailable = self::getHierarchy()->getReachableRoleNames([$role]);
-
+dump($role,$accessAvailable);
             foreach ($attributes as $attribute) {
                 if (in_array($attribute, $accessAvailable)) {
                     $result[] = $role;
