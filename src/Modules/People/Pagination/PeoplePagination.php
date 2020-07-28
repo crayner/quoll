@@ -38,6 +38,7 @@ class PeoplePagination extends AbstractPaginationManager
     {
         TranslationHelper::setDomain('People');
         TranslationHelper::setTranslation('Search in', 'Preferred, surname, username, role, student ID, email, phone number, vehicle registration', [], 'People');
+        TranslationHelper::addTranslation('Care Giver', [], 'People');
         foreach(Person::getStatusList() as $name) {
             TranslationHelper::setTranslation($name, $name, [], 'People');
         }

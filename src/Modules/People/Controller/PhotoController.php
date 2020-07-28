@@ -14,15 +14,11 @@
  * Date: 27/04/2020
  * Time: 10:14
  */
-
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PhotoImporter;
-use App\Modules\Security\Manager\SecurityUser;
-use App\Modules\Security\Util\SecurityHelper;
 use App\Util\ErrorMessageHelper;
 use App\Util\ImageHelper;
 use App\Util\StringHelper;
@@ -78,10 +74,13 @@ class PhotoController extends AbstractPageController
         if ($violations->count() === 0) {
             $path = $this->getParameter('upload_path');
             $fs = new Filesystem();
-            if (!is_dir($path))
+            if (!is_dir($path)) {
                 $fs->mkdir($path, 0755);
+            }
 
-            $name = uniqid(StringHelper::toSnakeCase($person->formatName('Reversed')). '_') . '.' . $file->guessExtension();
+            $path = realpath($path);
+
+            $name = uniqid('personal_'.StringHelper::toSnakeCase($person->formatName('Reversed')). '_') . '.' . $file->guessExtension();
 
             $file->move($path, $name);
 
@@ -89,11 +88,11 @@ class PhotoController extends AbstractPageController
 
             $file = new File($path . DIRECTORY_SEPARATOR . $name);
 
-            $person->setImage240($file->getRealpath());
+            $person->getPersonalDocumentation()->setPersonalImage(ImageHelper::getRelativeImageURL($file->getRealpath()));
 
             try {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($person);
+                $em->persist($person->getPersonalDocumentation());
                 $em->flush();
             } catch (IOException $e) {
                 $fs->remove($file->getRealpath());
@@ -102,7 +101,7 @@ class PhotoController extends AbstractPageController
 
             $photo = [];
             $photo['value'] = $person->getId();
-            $photo['photo'] = ImageHelper::getAbsoluteImageURL('file', $person->getImage240());
+            $photo['photo'] = ImageHelper::getAbsoluteImageURL('file', $person->getPersonalDocumentation()->getPersonalImage());
             return new JsonResponse(['status' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true), 'person' => $photo], 200);
         }
         return new JsonResponse(['status' => 'error', 'message' => $violations[0]->getMessage()], 200);

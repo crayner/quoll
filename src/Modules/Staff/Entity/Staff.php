@@ -56,7 +56,7 @@ class Staff extends AbstractEntity
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person", inversedBy="staff")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="staff")
      * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      */
     private $person;

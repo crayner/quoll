@@ -110,41 +110,21 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
     }
 
     /**
-     * findByFamilyWithoutAdult
+     * findByFamilyWithoutCareGiver
      * @param string $person
      * @param string $family
      * @return array
      */
-    public function findByFamilyWithoutAdult(string $person, string $family): array
+    public function findByFamilyWithoutCareGiver(string $person, string $family): array
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.family', 'f')
-            ->leftJoin('a.person', 'p')
+        return $this->createQueryBuilder('fmcg')
+            ->leftJoin('fmcg.family', 'f')
+            ->leftJoin('fmcg.careGiver','cg')
+            ->leftJoin('cg.person', 'p')
             ->where('f.id = :family')
             ->andWhere('p.id <> :person')
             ->setParameters(['person' => $person, 'family' => $family])
-            ->orderBy('a.contactPriority')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * findCurrentParentsAsArray
-     * @return array
-     */
-    public function findCurrentParentsAsArray(): array
-    {
-        $parentLabel = TranslationHelper::translate('Parent', [], 'People');
-        return $this->createQueryBuilder('m')
-            ->select(['p.id as value', "CONCAT('".$parentLabel.": ', p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "CONCAT(p.surname, p.firstName,p.preferredName) AS data", "'".$parentLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo"])
-            ->join('m.person', 'p')
-            ->where('(m.contactPriority <= 2 and m.contactPriority > 0)')
-            ->andWhere('p.securityRoles LIKE :role')
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->setParameter('role', '%ROLE_CARE_GIVER%')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
+            ->orderBy('fmcg.contactPriority', 'ASC')
             ->getQuery()
             ->getResult();
     }

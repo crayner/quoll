@@ -18,6 +18,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Manager\PersonNameManager;
+use App\Modules\People\Validator\StaffStudent;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
@@ -49,6 +50,7 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * @UniqueEntity("contact")
  * @UniqueEntity("personalDocumentation")
  * @UniqueEntity("careGiver")
+ * @StaffStudent()
  * @ORM\HasLifecycleCallbacks()
  */
 class Person extends AbstractEntity
@@ -66,7 +68,7 @@ class Person extends AbstractEntity
     /**
      * @var string|null
      * @ORM\Column(length=5,nullable=true)
-     * @ASSERT\Choice(callback="getTitleList")
+     * @ASSERT\Choice(callback="getTitleListNull")
      */
     private $title;
 
@@ -524,6 +526,16 @@ class Person extends AbstractEntity
             return $choice;
         }
         return self::$titleList;
+    }
+
+    /**
+     * getTitleListNull
+     * @return array
+     * 28/07/2020 14:35
+     */
+    public static function getTitleListNull(): array
+    {
+        return array_merge(self::$titleList, [null,'']);
     }
 
     /**

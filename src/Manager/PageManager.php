@@ -749,7 +749,6 @@ class PageManager
                         foreach($content['errors'] as $error)
                             $messages[] = ['class' => $error['class'], 'message' => TranslationHelper::translate($error['message'][0], $error['message'][1], $error['message'][2])];
                     } else {
-                        dump($content);
                         $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
                     }
                 } else

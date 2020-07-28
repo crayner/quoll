@@ -14,7 +14,6 @@
  * Date: 27/04/2020
  * Time: 13:51
  */
-
 namespace App\Modules\People\Controller;
 
 use App\Container\Container;
@@ -23,19 +22,18 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Family;
-use App\Modules\People\Entity\FamilyMember;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Form\FamilyCareGiverType;
-use App\Modules\People\Form\FamilyStudentType;
 use App\Modules\People\Form\FamilyGeneralType;
+use App\Modules\People\Form\FamilyStudentType;
 use App\Modules\People\Form\RelationshipsType;
 use App\Modules\People\Manager\FamilyManager;
 use App\Modules\People\Manager\FamilyRelationshipManager;
-use App\Modules\People\Manager\Hidden\Familycare_giverSort;
+use App\Modules\People\Manager\Hidden\FamilyCareGiverSort;
 use App\Modules\People\Pagination\FamilyCareGiversPagination;
-use App\Modules\People\Pagination\FamilyStudentsPagination;
 use App\Modules\People\Pagination\FamilyPagination;
+use App\Modules\People\Pagination\FamilyStudentsPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -43,7 +41,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class FamilyController
@@ -236,7 +236,7 @@ class FamilyController extends AbstractPageController
      * @return JsonResponse
      * 24/07/2020 13:24
      */
-    public function familyCareGiverEdit(ContainerManager $manager, Family $family, ?FamilyMemberCareGiver $careGiver = null)
+    public function familyCareGiverEdit(ContainerManager $manager, Family $family, FamilyMemberCareGiver $careGiver = null)
     {
         $request = $this->getRequest();
 
@@ -244,7 +244,7 @@ class FamilyController extends AbstractPageController
             $careGiver = new FamilyMemberCareGiver($family);
             $action = $this->generateUrl('family_care_giver_add', ['family' => $family->getId()]);
         } else {
-            $action = $this->generateUrl('family_care_giver_edit', ['family' => $family->getId(), 'care_giver' => $careGiver->getId()]);
+            $action = $this->generateUrl('family_care_giver_edit', ['family' => $family->getId(), 'careGiver' => $careGiver->getId()]);
         }
 
         $form = $this->createForm(FamilyCareGiverType::class, $careGiver, ['action' => $action]);
@@ -267,7 +267,7 @@ class FamilyController extends AbstractPageController
                 $data['form'] = $manager->getFormFromContainer();
                 if ($data['status'] === 'success') {
                     $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'care_givers']);
+                    $data['redirect'] = $this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Care Givers']);
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
                 }
                 return new JsonResponse($data);
@@ -278,12 +278,12 @@ class FamilyController extends AbstractPageController
                 return new JsonResponse($data);
             }
         }
-        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'care_givers']))->singlePanel($form->createView());
+        $manager->setReturnRoute($this->generateUrl('family_edit', ['family' => $family->getId(), 'tabName' => 'Care Givers']))->singlePanel($form->createView());
 
         return $this->getPageManager()->createBreadcrumbs('Edit care_giver',
             [
                 ['uri' => 'family_list', 'name' => 'Manage Families'],
-                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'care_givers'] , 'name' => 'Edit Family']
+                ['uri' => 'family_edit', 'uri_params' => ['family' => $family->getId(), 'tabName' => 'Care Givers'] , 'name' => 'Edit Family']
             ]
         )
             ->render(
@@ -294,18 +294,19 @@ class FamilyController extends AbstractPageController
     }
 
     /**
-     * familycare_giverSort
+     * familyCareGiverSort
      * @param FamilyMemberCareGiver $source
      * @param FamilyMemberCareGiver $target
      * @param FamilyCareGiversPagination $pagination
      * @param FamilyManager $familyManager
-     * @return JsonResponse
      * @Route("/family/care_giver/{source}/{target}/sort/", name="family_care_giver_sort")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     * 27/07/2020 13:21
      */
-    public function familycare_giverSort(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyCareGiversPagination $pagination, FamilyManager $familyManager)
+    public function familyCareGiverSort(FamilyMemberCareGiver $source, FamilyMemberCareGiver $target, FamilyCareGiversPagination $pagination, FamilyManager $familyManager)
     {
-        $manager = new Familycare_giverSort($source, $target, $pagination);
+        $manager = new FamilyCareGiverSort($source, $target, $pagination);
         $manager->setContent($familyManager::getCareGivers($source->getFamily(), true));
 
         return new JsonResponse($manager->getDetails());
@@ -316,10 +317,10 @@ class FamilyController extends AbstractPageController
      * @Route("/family/{family}/remove/{careGiver}/care/giver/",name="family_care_giver_remove")
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
-     * @param FamilyMember $careGiver
+     * @param FamilyMemberCareGiver $careGiver
      * @return RedirectResponse
      */
-    public function familyCareGiverRemove(Family $family, FamilyMember $careGiver)
+    public function familyCareGiverRemove(Family $family, FamilyMemberCareGiver $careGiver)
     {
         $request = $this->getPageManager();
         if ($careGiver->getFamily()->isEqualTo($family)) {
@@ -375,7 +376,6 @@ class FamilyController extends AbstractPageController
             if ($form->isValid()) {
                 $student->setFamily($family);
                 $data = ProviderFactory::create(FamilyMemberStudent::class)->persistFlush($student, []);
-                dump($data,$content,$student);
 
                 if ($data['status'] === 'success') {
                     $data['status'] = 'redirect';
@@ -416,20 +416,20 @@ class FamilyController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
      * @param FamilyMemberStudent $student
+     * @param FlashBagInterface $flashBag
+     * @param TranslatorInterface $translator
      * @return RedirectResponse
      */
-    public function familyStudentRemove(Family $family, FamilyMemberStudent $student)
+    public function familyStudentRemove(Family $family, FamilyMemberStudent $student, FlashBagInterface $flashBag, TranslatorInterface $translator)
     {
         $request = $this->getPageManager()->getRequest();
         if ($student->getFamily()->isEqualTo($family)) {
 
-            $data = ProviderFactory::create(FamilyMemberStudent::class)->delete($student);
-
-            $messages = array_unique($data['errors'], SORT_REGULAR);
-            foreach($messages as $message)
-                $request->getSession()->getBag('flashes')->add($message['class'], $message['message']);
+            $provider = ProviderFactory::create(FamilyMemberStudent::class);
+            $provider->delete($student);
+            $provider->getMessageManager()->pushToFlash($flashBag, $translator);
         } else {
-            $request->getSession()->getBag('flashes')->add('error', ['return.error.1',[],'messages']);
+            $request->addFlash('error', ErrorMessageHelper::getInvalidInputsMessage());
         }
 
         return $this->redirectToRoute('family_edit', ['family' => $family->getId(), 'tabName' => 'Students']);
@@ -441,7 +441,7 @@ class FamilyController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * @param Family $family
      * @param FamilyManager $manager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function familyDelete(Family $family, FamilyManager $manager)
     {

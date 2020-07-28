@@ -29,20 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FamilyMemberCareGiver extends FamilyMember
 {
     /**
-     * @var CareGiver|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver",inversedBy="memberOfFamilies")
-     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
-     */
-    private $careGiver;
-
-    /**
-     * @var int|null
-     * @ORM\Column(type="smallint",nullable=true)
-     * @Assert\Range(min=1,max=99)
-     */
-    private $contactPriority;
-
-    /**
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
@@ -86,44 +72,6 @@ class FamilyMemberCareGiver extends FamilyMember
     {
          $this->setRelationships(new ArrayCollection());
          parent::__construct($family);
-    }
-
-    /**
-     * @return CareGiver|null
-     */
-    public function getCareGiver(): ?CareGiver
-    {
-        return $this->careGiver;
-    }
-
-    /**
-     * setCareGiver
-     * @param CareGiver|null $careGiver
-     * @return $this
-     * 24/07/2020 12:51
-     */
-    public function setCareGiver(?CareGiver $careGiver): FamilyMemberCareGiver
-    {
-        $this->careGiver = $careGiver;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getContactPriority(): ?int
-    {
-        return $this->contactPriority;
-    }
-
-    /**
-     * @param int|null $contactPriority
-     * @return FamilyMemberCareGiver
-     */
-    public function setContactPriority(?int $contactPriority): FamilyMemberCareGiver
-    {
-        $this->contactPriority = $contactPriority;
-        return $this;
     }
 
     /**

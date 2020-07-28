@@ -16,6 +16,7 @@
  */
 namespace App\Modules\People\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\DisplayType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
@@ -24,6 +25,7 @@ use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -80,13 +82,13 @@ class FamilyStudentType extends AbstractType
                     [
                         'label' => "Student's Name",
                         'help' => 'This value cannot be changed',
-                        'data' => $options['data']->getPerson()->formatName('Standard'),
+                        'data' => $options['data']->getStudent()->getFullName('Standard'),
                         'mapped' => false,
                     ]
                 )
-                ->add('person', HiddenEntityType::class,
+                ->add('student', HiddenEntityType::class,
                     [
-                        'class' => Person::class,
+                        'class' => Student::class,
                     ]
                 )
             ;
@@ -110,13 +112,13 @@ class FamilyStudentType extends AbstractType
                         'mapped' => false,
                     ]
                 )
-                ->add('person', EntityType::class,
+                ->add('student', AutoSuggestEntityType::class,
                     [
                         'label' => "Student's Name",
-                        'class' => Person::class,
+                        'class' => Student::class,
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
-                        'query_builder' => ProviderFactory::getRepository(Person::class)->getAllStudentsQuery(),
+                        'query_builder' => ProviderFactory::getRepository(Student::class)->getAllStudentsQuery(),
                         'visible_values' => ['showStudentAdd'],
                         'visible_parent' => 'family_student_showHideForm',
                     ]

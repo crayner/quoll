@@ -26,7 +26,7 @@ use App\Util\ErrorMessageHelper;
  * Class FamilyAdultSort
  * @package App\Modules\People\Manager\Hidden
  */
-class FamilyAdultSort implements PaginationSortInterface
+class FamilyCareGiverSort implements PaginationSortInterface
 {
     /**
      * @var FamilyMemberCareGiver
@@ -131,9 +131,9 @@ class FamilyAdultSort implements PaginationSortInterface
      * Content.
      *
      * @param array $content
-     * @return FamilyAdultSort
+     * @return FamilyCareGiverSort
      */
-    public function setContent(array $content): FamilyAdultSort
+    public function setContent(array $content): FamilyCareGiverSort
     {
         $this->content = $content;
         return $this;

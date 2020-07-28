@@ -465,10 +465,11 @@ class Family extends AbstractEntity
     public function toArray(?string $name = NULL): array
     {
         return [
-            'name' => $this->getName(),
-            'status' => $this->getStatus(),
-            'careGivers' => FamilyManager::getCareGiverNames($this),
-            'students' => FamilyManager::getStudentNames($this),
+            'id'            => $this->getId(),
+            'name'          => $this->getName(),
+            'status'        => $this->getStatus(),
+            'careGivers'    => FamilyManager::getCareGiverNames($this),
+            'students'      => FamilyManager::getStudentNames($this),
         ];
     }
 

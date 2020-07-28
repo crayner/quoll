@@ -382,7 +382,6 @@ abstract class AbstractPaginationManager implements PaginationInterface
      */
     public function setInitialFilter(array $initialFilter): AbstractPaginationManager
     {
-        dump($initialFilter);
         $this->initialFilter = $initialFilter;
         return $this;
     }

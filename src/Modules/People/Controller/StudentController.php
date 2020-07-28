@@ -23,6 +23,7 @@ use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -115,10 +116,23 @@ class StudentController extends PeopleController
     {
         if (null === $person->getStudent()) {
             $student = new Student($person);
-            $data = ProviderFactory::create(Student::class)->persistFlush($person, []);
-            if ($data['status'] === 'success') {
+            $em = $this->getDoctrine()->getManager();
+            try {
+                $em->persist($student);
+                $student->setPerson($person);
+                $person->getSecurityUser()->addSecurityRole('ROLE_STUDENT');
+                $em->persist($person);
+                $em->flush();
+                $data = [];
+                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlySuccessMessage(true)];
                 $data['status'] = 'redirect';
                 $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
+            } catch (PDOException | \PDOException | \Exception $e) {
+                $data = [];
+                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
+                $data['status'] = 'redirect';
+                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
+
             }
         } else {
             $data['status'] = 'redirect';

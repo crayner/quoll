@@ -56,7 +56,7 @@ trait SchoolCommonFields
      * @var boolean|null
      * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $viewCalendarSchool;
+    private $viewCalendarSchool = true;
 
     /**
      * @var string|null

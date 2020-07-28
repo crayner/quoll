@@ -48,14 +48,14 @@ class FamilyCareGiverSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
         $provider = ProviderFactory::create(FamilyMemberCareGiver::class);
-        $adults = $provider->getRepository()->findByFamilyWithoutAdult($data['person'], $data['family']);
-        if (!empty($adults)) {
+        $caregivers = $provider->getRepository()->findByFamilyWithoutCareGiver($data['careGiver'], $data['family']);
+        if (!empty($careGivers)) {
             $priority = intval($data['contactPriority']);
-            foreach ($adults as $adult)
-                if ($adult->getContactPriority() === $priority)
-                    $adult->setContactPriority(++$priority);
+            foreach ($careGivers as $careGiver)
+                if ($careGiver->getContactPriority() === $priority)
+                    $careGiver->setContactPriority(++$priority);
 
-            $family = $adults[0]->getFamily();
+            $family = $careGivers[0]->getFamily();
             $provider->persistFlush($family);
         }
     }

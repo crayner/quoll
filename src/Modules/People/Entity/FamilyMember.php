@@ -21,6 +21,7 @@ use App\Manager\Traits\BooleanList;
 use App\Modules\People\Validator\FamilyMemberNotBlank;
 use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Util\StudentHelper;
+use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -72,6 +73,27 @@ class FamilyMember extends AbstractEntity
     private $family;
 
     /**
+     * @var CareGiver|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver",inversedBy="memberOfFamilies")
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
+     */
+    private $careGiver;
+
+    /**
+     * @var Student|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="memberOfFamilies")
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
+     */
+    private $student;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="smallint",nullable=true)
+     * @Assert\Range(min=1,max=99)
+     */
+    private $contactPriority;
+
+    /**
      * @var string|null
      * @ORM\Column(type="text",nullable=true)
      */
@@ -84,6 +106,7 @@ class FamilyMember extends AbstractEntity
     public function __construct(?Family $family = null)
     {
         $this->setFamily($family);
+        $this->setContactPriority(ProviderFactory::getRepository(FamilyMemberCareGiver::class)->getNextContactPriority($family));
     }
 
     /**
@@ -121,6 +144,60 @@ class FamilyMember extends AbstractEntity
     public function setFamily(?Family $family): FamilyMember
     {
         $this->family = $family;
+        return $this;
+    }
+
+    /**
+     * @return CareGiver|null
+     */
+    public function getCareGiver(): ?CareGiver
+    {
+        return $this->careGiver;
+    }
+
+    /**
+     * @param CareGiver|null $careGiver
+     * @return FamilyMember
+     */
+    public function setCareGiver(?CareGiver $careGiver): FamilyMember
+    {
+        $this->careGiver = $careGiver;
+        return $this;
+    }
+
+    /**
+     * @return Student|null
+     */
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student|null $student
+     * @return FamilyMember
+     */
+    public function setStudent(?Student $student): FamilyMember
+    {
+        $this->student = $student;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getContactPriority(): ?int
+    {
+        return $this->contactPriority;
+    }
+
+    /**
+     * @param int|null $contactPriority
+     * @return FamilyMember
+     */
+    public function setContactPriority(?int $contactPriority): FamilyMember
+    {
+        $this->contactPriority = $contactPriority;
         return $this;
     }
 
@@ -177,7 +254,7 @@ class FamilyMember extends AbstractEntity
                 'roll' => StudentHelper::getCurrentRollGroup($person),
                 'comment' => $this->getComment(),
                 'family_id' => $this->getFamily()->getId(),
-                'care_giver_id' => $this->getId(),
+                'care_giver_id' => $this->getCareGiver()->getId(),
                 'person_id' => $person->getId(),
                 'id' => $this->getId(),
                 'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),

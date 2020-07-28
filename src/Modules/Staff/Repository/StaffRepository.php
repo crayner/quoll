@@ -14,8 +14,10 @@
 namespace App\Modules\Staff\Repository;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Repository\PersonRepository;
 use App\Modules\School\Entity\House;
 use App\Modules\Staff\Entity\Staff;
+use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -28,6 +30,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StaffRepository extends ServiceEntityRepository
 {
+    /**
+     * @var array|null
+     */
+    private $params;
+
     /**
      * ApplicationFormRepository constructor.
      * @param ManagerRegistry $registry
@@ -72,25 +79,89 @@ class StaffRepository extends ServiceEntityRepository
      * getStaffQueryBuilder
      * @param string $status
      * @return QueryBuilder
-     * 17/07/2020 10:10
+     * 17/06/2020 11:33
      */
-    public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
+    public function getStaffQuery(string $status = 'Full'): QueryBuilder
     {
-        try {
-            $today = new \DateTimeImmutable(date('Y-m-d'));
-        } catch (\Exception $e) {
-            $today = null;
-        }
+        $today = new \DateTimeImmutable(date('Y-m-d'));
+        $this->setParams([])
+            ->addParam('status', $status)
+            ->addParam('today', $today);
 
-        return $this->createQueryBuilder('s')
-            ->where('p.status = :status')
-            ->leftJoin('s.person', 'p')
+        return $this->getAllStaffQuery()
+            ->andWhere('p.status = :status')
             ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
             ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
-            ->setParameters(['status' => $status, 'today' => $today])
+            ->setParameters($this->getParams())
+            ;
+    }
+
+    /**
+     * getAllStaffQueryBuilder
+     * @return QueryBuilder
+     * 18/07/2020 10:57
+     */
+    public function getAllStaffQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.person', 'p')
             ->orderBy('p.surname')
             ->addOrderBy('p.firstName')
             ;
     }
 
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        if (null === $this->params) {
+            $this->params = [];
+        }
+
+        return $this->params;
+    }
+
+    /**
+     * setParams
+     * @param array|null $params
+     * @return $this
+     * 27/07/2020 08:42
+     */
+    public function setParams(?array $params): StaffRepository
+    {
+        $this->params = $params;
+        return $this;
+    }
+
+    /**
+     * addParam
+     * @param $name
+     * @param $value
+     * @return $this
+     * 27/07/2020 08:46
+     */
+    public function addParam($name, $value): StaffRepository
+    {
+        $this->getParams();
+
+        $this->params[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * findCurrentStaffAsArray
+     * @return int|mixed|string
+     * 27/07/2020 08:28
+     */
+    public function findCurrentStaffAsArray(): array
+    {
+        $staff = TranslationHelper::translate('Staff', [], 'Staff');
+        return $this->getStaffQuery('Full')
+            ->select(["CONCAT(p.surname,p.firstName,p.preferredName) AS data", "'".$staff."' AS type", "CONCAT('".$staff.": ',p.surname,': ',p.firstName,' (',p.preferredName,')') AS label","COALESCE(d.personalImage,'/build/static/DefaultPerson.png') AS photo",'p.id AS value'])
+            ->leftJoin('p.personalDocumentation', 'd')
+            ->getQuery()
+            ->getResult();
+    }
 }

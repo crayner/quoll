@@ -38,6 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CareGiver extends AbstractEntity
 {
+    use PersonMethods;
+
     CONST VERSION = '1.0.00';
 
     /**

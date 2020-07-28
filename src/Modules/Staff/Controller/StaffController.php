@@ -19,7 +19,7 @@ namespace App\Modules\Staff\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Modules\People\Manager\Hidden\FamilyAdultSort;
+use App\Modules\People\Manager\Hidden\FamilyCareGiverSort;
 use App\Modules\Staff\Entity\StaffAbsenceType;
 use App\Modules\Staff\Form\StaffAbsenceTypeType;
 use App\Modules\Staff\Pagination\StaffAbsenceTypePagination;

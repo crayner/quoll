@@ -134,27 +134,4 @@ class RollGroupRepository extends ServiceEntityRepository
             return 0;
         }
     }
-
-    /**
-     * findCurrentStudentsAsArray
-     * @return array
-     * @throws \Exception
-     */
-    public function findCurrentStudentsAsArray(): array
-    {
-        $studentLabel = TranslationHelper::translate('Student', [], 'People');
-        return $this->createQueryBuilder('rg')
-            ->select(['p.id as value', "CONCAT('".$studentLabel.": ',p.surname, ', ', p.firstName, ' (', p.preferredName, ') in ', rg.abbreviation) AS label", "'".$studentLabel."' AS type", "CONCAT(p.surname, p.firstName,p.preferredName) AS data", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo"])
-            ->join('rg.studentEnrolments', 'se')
-            ->join('se.person', 'p')
-            ->where('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->andWhere('rg.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
-            ->getQuery()
-            ->getResult();
-    }
-
 }

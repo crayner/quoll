@@ -17,11 +17,12 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\Address;
-use App\Modules\People\Entity\Locality;
+use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
@@ -165,18 +166,6 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findStudentsByRollGroup
-     * @param RollGroup $rollGroup
-     * @param string $sortBy
-     * @return mixed
-     * @deprecated Use Student findByRollGroup
-     */
-    public function findStudentsByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
-    {
-        return ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy);
-    }
-
-    /**
      * findByRoles
      * @param array $roles
      * @param string $status
@@ -187,54 +176,15 @@ class PersonRepository extends ServiceEntityRepository
         $today = new \DateTimeImmutable(date('Y-m-d'));
         $this->getRoleSearch($roles)
             ->addParam('status', $status);
-//            ->addParam('today', $today);
         return $this->createQueryBuilder('p')
             ->join('p.securityUser', 'u')
             ->where('p.status = :status')
             ->andWhere($this->getWhere())
-//            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-//            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', "ASC")
             ->setParameters($this->getParams())
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * findCurrentStudents
-     * @return array
-     */
-    public function findCurrentStudents(): array
-    {
-        return $this->findAllStudents('Full');
-    }
-
-    /**
-     * findCurrentStaff
-     * @return array
-     * 22/06/2020 14:07
-     */
-    public function findCurrentStaff(): array
-    {
-        return $this->getStaffQueryBuilder()
-            ->getQuery()
-            ->getResult();;
-    }
-
-    /**
-     * findCurrentStaff
-     * @return array
-     * @throws \Exception
-     */
-    public function findCurrentStaffAsArray(): array
-    {
-        $staffLabel = TranslationHelper::translate('Staff', [], 'People');
-        return $this->getStaffQueryBuilder()
-            ->select(['p.id as value', "CONCAT('".$staffLabel.": ',p.surname, ', ', p.firstName, ' (', p.preferredName, ')') AS label", "'".$staffLabel."' AS type", "COALESCE(p.image_240,'build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, p.firstName,p.preferredName) AS data"])
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     /**
@@ -251,59 +201,6 @@ class PersonRepository extends ServiceEntityRepository
             ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * findAllStudentsByRollGroup
-     * @return mixed
-     */
-    public function findAllStudentsByRollGroup()
-    {
-        return $this->createQueryBuilder('p')
-            ->select(['p.id', 'p.studentIdentifier', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", 'rg.name AS rollGroup', 'rg.name AS type', 'p.image_240 AS photo'])
-            ->where('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->join('p.studentEnrolments', 'se')
-            ->andWhere('se.academicYear = :currentYear')
-            ->setParameter('currentYear', AcademicYearHelper::getCurrentAcademicYear())
-            ->join('se.rollGroup', 'rg')
-            ->orderBy('rg.name', 'ASC')
-            ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * findCurrentCareGivers
-     * @return array
-     */
-    public function findCurrentCareGivers(): array
-    {
-        return $this->createQueryBuilder('p')
-            ->select(['p','fa'])
-            ->join('p.adults', 'fa')
-            ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
-            ->andWhere('p.status = :full')
-            ->setParameter('full', 'Full')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * findAllCareGiverQuery
-     * @return QueryBuilder
-     * 18/07/2020 10:52
-     */
-    public function findAllCareGiverQuery(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p', 'p.id')
-            ->leftJoin('p.careGiver', 'cg')
-            ->where('p.careGiver IS NOT NULL')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC');
     }
 
     /**
@@ -356,40 +253,59 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function getPaginationContent(): array
     {
-        $students = $this->getAllStudentsQuery()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Student' AS role", 'u.canLogin'])
-            ->leftJoin('s.memberOfFamilies', 'fm')
+        $students = ProviderFactory::getRepository(Student::class)->getAllStudentsQuery()
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Student' AS role", 'u.canLogin','p.id'])
+            ->join('s.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.personalDocumentation', 'd')
             ->leftJoin('p.securityUser', 'u')
             ->getQuery()
             ->getResult();
-        $careGivers = $this->findAllCareGiverQuery()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Care Giver' AS role", 'u.canLogin'])
+        $careGivers = ProviderFactory::getRepository(CareGiver::class)->getAllCareGiversQuery()
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Care Giver' AS role", 'u.canLogin','p.id'])
             ->leftJoin('cg.memberOfFamilies', 'fm')
             ->leftJoin('fm.family', 'f')
             ->leftJoin('p.securityUser', 'u')
             ->leftJoin('p.personalDocumentation', 'd')
             ->getQuery()
             ->getResult();
-        $staff = $this->getAllStaffQueryBuilder()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", "COALESCE(u.username, '') AS username", "'Staff' AS role", 'u.canLogin'])
+        $staff = ProviderFactory::getRepository(Staff::class)->getAllStaffQuery()
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' AS family_id", "COALESCE(u.username, '') AS username", "'Staff' AS role", 'u.canLogin','p.id'])
             ->leftJoin('p.personalDocumentation', 'd')
             ->leftJoin('p.securityUser', 'u')
             ->getQuery()
             ->getResult();
 
         $others = $this->getAllContactsOnly()
-            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' As family_id", "'' AS username", "'Other' AS role", "0 AS canLogin"])
+            ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status', "'' AS family", "'' As family_id", "'' AS username", "'Other' AS role", "0 AS canLogin",'p.id'])
             ->leftJoin('p.personalDocumentation', 'd')
             ->getQuery()
             ->getResult();
 
-        $all = array_merge($students,$careGivers,$others);
-
-        foreach($staff as $id => $entity) {
+        $all = [];
+        foreach($students as $student) {
+            $all[$student['id']] = $student;
+        }
+        foreach($careGivers as $entity) {
+            $id = $entity['id'];
             if (key_exists($id,$all)) {
-                $all[$id]['role'] .= ', Staff';
+                $all[$id]['role'] .= ', Care Giver';
+            } else {
+                $all[$id] = $entity;
+            }
+        }
+        foreach($others as $entity) {
+            $id = $entity['id'];
+            if (key_exists($id,$all)) {
+                $all[$id]['role'] .= ', Other';
+            } else {
+                $all[$id] = $entity;
+            }
+        }
+        foreach($staff as $entity) {
+            $id = $entity['id'];
+            if (key_exists($id,$all)) {
+                $all[$id]['role'] .= ', Other';
             } else {
                 $all[$id] = $entity;
             }
@@ -398,7 +314,7 @@ class PersonRepository extends ServiceEntityRepository
         usort($all, function($a,$b) {
             return $a['fullName'] <= $b['fullName'] ? -1 : 1;
         });
-dump($all);
+
         return $all;
     }
 
@@ -423,42 +339,6 @@ dump($all);
     }
 
     /**
-     * getStaffQueryBuilder
-     * @param string $status
-     * @return QueryBuilder
-     * 17/06/2020 11:33
-     */
-    public function getStaffQueryBuilder(string $status = 'Full'): QueryBuilder
-    {
-        $today = new \DateTimeImmutable(date('Y-m-d'));
-        $this->setParams([])
-            ->addParam('status', $status)
-            ->addParam('today', $today);
-
-        return $this->getAllStaffQueryBuilder()
-            ->andWhere('p.status = :status')
-            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
-            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
-            ->setParameters($this->getParams())
-            ;
-    }
-
-    /**
-     * getAllStaffQueryBuilder
-     * @return QueryBuilder
-     * 18/07/2020 10:57
-     */
-    public function getAllStaffQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p','p.id')
-            ->leftJoin('p.staff', 's')
-            ->where('p.staff IS NOT NULL')
-            ->orderBy('p.surname')
-            ->addOrderBy('p.firstName')
-            ;
-    }
-
-    /**
      * getRoleSearch
      * @param array $roles
      * @return $this
@@ -478,35 +358,6 @@ dump($all);
     }
 
     /**
-     * findAllStudents
-     * @param string $status
-     * @return array
-     * 28/06/2020 12:05
-     */
-    public function findAllStudents(string $status = '%'): array
-    {
-        return $this->getAllStudentsQuery()
-            ->andWhere('p.status LIKE :status')
-            ->setParameter('status', $status)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * getAllStudentsQuery
-     * @return QueryBuilder
-     * 18/07/2020 11:01
-     */
-    public function getAllStudentsQuery(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p', 'p.id')
-            ->leftJoin('p.student', 's')
-            ->where('s.id IS NOT NULL')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', 'ASC');
-    }
-
-    /**
      * getAllContactsOnly
      * @return QueryBuilder
      * 18/07/2020 11:01
@@ -520,19 +371,5 @@ dump($all);
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
 
-    }
-
-    /**
-     * getCareGiverQuery
-     * @return QueryBuilder
-     * 24/07/2020 13:32
-     */
-    public function getAllCareGiversQuery(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.careGiver IS NOT NULL')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', 'ASC')
-            ;
     }
 }

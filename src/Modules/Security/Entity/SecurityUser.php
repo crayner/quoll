@@ -20,6 +20,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Manager\RoleHierarchy;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
@@ -46,6 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @UniqueEntity("person")
  * @UniqueEntity("username")
+ * @App\Modules\Security\Validator\SecurityUser()
  */
 class SecurityUser extends AbstractEntity implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
 {
@@ -69,8 +71,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var string|null
-     * @ORM\Column(length=64)
-     * @Assert\NotBlank()
+     * @ORM\Column(length=64,nullable=true)
      */
     private $username;
 
@@ -89,9 +90,9 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean",options={"default": 1})
+     * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $canLogin = true;
+    private $canLogin = false;
 
     /**
      * @var boolean
@@ -130,10 +131,10 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     private $failCount = 0;
 
     /**
-     * @var array|null
-     * @ORM\Column(type="simple_array")
+     * @var array
+     * @ORM\Column(type="simple_array",nullable=true)
      */
-    private $securityRoles;
+    private $securityRoles = [];
 
     /**
      * @var string|null
@@ -154,6 +155,8 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function __construct(?Person $person = null)
     {
         $this->setPerson($person);
+        $this->securityRoles = [];
+        $this->setCanLogin(false);
     }
 
     /**
@@ -411,10 +414,10 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     /**
      * addSecurityRole
      * @param string|null $role
-     * @return $this|SecurityRole
-     * 4/07/2020 09:13
+     * @return $this
+     * 28/07/2020 15:19
      */
-    public function addSecurityRole(?string $role): SecurityRole
+    public function addSecurityRole(?string $role): SecurityUser
     {
         if (null === $role || in_array($role, $this->getSecurityRoles())) {
             return $this;

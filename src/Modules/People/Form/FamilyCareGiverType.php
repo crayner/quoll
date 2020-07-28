@@ -17,12 +17,14 @@
 
 namespace App\Modules\People\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\DisplayType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
+use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
@@ -92,24 +94,23 @@ class FamilyCareGiverType extends AbstractType
                 )
                 ->add('personName', DisplayType::class,
                     [
-                        'label' => "Adult's Name",
+                        'label' => "Care Giver's Name",
                         'help' => 'This value cannot be changed',
-                        'data' => $options['data']->getPerson()->formatName('Formal'),
+                        'data' => $options['data']->getCareGiver()->getPerson()->formatName('Formal'),
                         'mapped' => false,
                     ]
                 )
-                ->add('person', HiddenEntityType::class,
+                ->add('careGiver', HiddenEntityType::class,
                     [
-                        'class' => Person::class,
+                        'class' => CareGiver::class,
                     ]
                 )
             ;
         } else {
-            $parentRoles = SecurityHelper::getHierarchy()->getReachableRoleNames(['ROLE_CARE_GIVER']);
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Edit Adult / Guardian',
+                        'label' => 'Edit Care Giver',
                         'help' => 'Family name: {name}',
                         'help_translation_parameters' => [
                             '{name}' => $options['data']->getFamily()->getName(),
@@ -118,7 +119,7 @@ class FamilyCareGiverType extends AbstractType
                 )
                 ->add('showHideForm', ToggleType::class,
                     [
-                        'label' => 'Add Adult to family',
+                        'label' => 'Add Care Giver to Family',
                         'visible_by_choice' => 'showAdultAdd',
                         'mapped' => false,
                         'data' => 'N',
@@ -132,13 +133,13 @@ class FamilyCareGiverType extends AbstractType
                         'help' => 'contact_priority_logic'
                     ]
                 )
-                ->add('person', EntityType::class,
+                ->add('careGiver', AutoSuggestEntityType::class,
                     [
                         'label' => "Care Giver's Name",
-                        'class' => Person::class,
+                        'class' => CareGiver::class,
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Please select...',
-                        'query_builder' => ProviderFactory::getRepository(Person::class)->getAllCareGiversQuery(),
+                        'query_builder' => ProviderFactory::getRepository(CareGiver::class)->getAllCareGiversQuery(),
                         'visible_values' => ['showAdultAdd'],
                         'visible_parent' => 'family_care_giver_showHideForm',
                     ]
@@ -167,14 +168,7 @@ class FamilyCareGiverType extends AbstractType
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
             )
-            ->add('contactPriority', IntegerType::class,
-                [
-                    'label' => 'Contact Priority',
-                    'visible_values' => ['showAdultAdd'],
-                    'visible_parent' => 'family_care_giver_showHideForm',
-                    'help' => 'The order in which school should contact family members.',
-                ]
-            )
+            ->add('contactPriority', HiddenType::class)
             ->add('contactCall', ToggleType::class,
                 [
                     'label' => 'Contact by phone call?',

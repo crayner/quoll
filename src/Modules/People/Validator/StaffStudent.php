@@ -11,27 +11,28 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 13/05/2020
- * Time: 14:04
+ * Date: 28/07/2020
+ * Time: 14:12
  */
 namespace App\Modules\People\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PostCode
+ * Class StaffStudent
  * @package App\Modules\People\Validator
+ * @author Craig Rayner <craig@craigrayner.com>
  * @Annotation()
  */
-class PostCode extends Constraint
+class StaffStudent extends Constraint
 {
-    const INVALID_POSTCODE_ERROR = '9e2814d1-0151-4545-8c15-adec8d3403dd';
+    const STAFF_STUDENT_ERROR = '7a1232a1-87bb-4c41-b8c1-c71fd3cf0b71';
 
     protected static $errorNames = [
-        self::INVALID_POSTCODE_ERROR => 'INVALID_POSTCODE_ERROR',
+        self::STAFF_STUDENT_ERROR => 'STAFF_STUDENT_ERROR',
     ];
 
-    public $message = 'The postcode {value} is not valid.';
+    public $message = 'A person can be staff or student, not both.';
 
     public $transDomain = 'People';
 

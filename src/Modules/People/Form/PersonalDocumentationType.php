@@ -58,7 +58,7 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'Personal Image',
                     'help' => 'Maximum size of 750kB. Width 240-720px, Height 320-960px, Ratio 0.7/1 - 0.84/1 (Portrait)',
-                    'file_prefix' => 'dob_cert_' . $person->getSurname(),
+                    'file_prefix' => 'personal_' . $person->getSurname(),
                     'image_method' => 'getPersonalImage',
                     'entity' => $options['data'],
                     'delete_route' => $options['remove_personal_image'],

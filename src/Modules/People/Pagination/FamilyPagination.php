@@ -37,15 +37,15 @@ class FamilyPagination extends AbstractPaginationManager
     public function execute(): PaginationInterface
     {
         TranslationHelper::setDomain('People');
-        TranslationHelper::setTranslation('Search in', 'Name, Adults & Students');
+        TranslationHelper::setTranslation('Search in', 'Name, Care Givers & Students');
         TranslationHelper::setTranslation('Care Giver', 'Care Giver');
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
-            ->setSort(true)
-            ->setSearch(true)
+            ->setSort()
+            ->setSearch()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
@@ -53,15 +53,15 @@ class FamilyPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Relationship Status')
             ->setContentKey('status')
-            ->setSort(true)
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
         $column->setLabel('Care Givers')
-            ->setSort(true)
-            ->setSearch(true)
+            ->setSort()
+            ->setSearch()
             ->setContentKey('careGivers')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
@@ -69,8 +69,8 @@ class FamilyPagination extends AbstractPaginationManager
 
         $column = new PaginationColumn();
         $column->setLabel('Students')
-            ->setSort(true)
-            ->setSearch(true)
+            ->setSort()
+            ->setSearch()
             ->setContentKey('students')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;

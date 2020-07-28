@@ -29,12 +29,6 @@ use Doctrine\ORM\PersistentCollection;
  */
 class FamilyMemberStudent extends FamilyMember
 {
-    /**
-     * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="memberOfFamilies")
-     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
-     */
-    private $student;
 
     /**
      * @var Collection|FamilyRelationship[]
@@ -50,24 +44,6 @@ class FamilyMemberStudent extends FamilyMember
     {
         $this->setRelationships(new ArrayCollection());
         parent::__construct($family);
-    }
-
-    /**
-     * @return Student|null
-     */
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    /**
-     * @param Student|null $student
-     * @return FamilyMember
-     */
-    public function setStudent(?Student $student): FamilyMemberStudent
-    {
-        $this->student = $student;
-        return $this;
     }
 
     /**

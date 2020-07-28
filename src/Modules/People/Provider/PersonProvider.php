@@ -17,6 +17,7 @@ namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
+use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Phone;
@@ -24,6 +25,8 @@ use App\Modules\School\Entity\House;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Comms\Entity\NotificationEvent;
+use App\Modules\Staff\Entity\Staff;
+use App\Modules\Student\Entity\Student;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Manager\SecurityUser;
@@ -179,9 +182,12 @@ class PersonProvider extends AbstractProvider
      */
     public function groupedChoiceList(): array
     {
-        $people = $this->getRepository(RollGroup::class)->findCurrentStudentsAsArray();
-        $people = array_merge($this->getRepository()->findCurrentStaffAsArray(),$people);
-        $people = array_merge($this->getRepository(FamilyMemberCareGiver::class)->findCurrentParentsAsArray(),$people);
+        $people = $this->getRepository(Student::class)->findCurrentStudentsAsArray();
+        $people = array_merge($this->getRepository(Staff::class)->findCurrentStaffAsArray(),$people);
+        $people = array_merge($this->getRepository(CareGiver::class)->findCurrentCareGiversAsArray(),$people);
+
+
+        dump($people[100],$people[700],$people[1000]);
 
         uasort($people, function($a, $b) {
             return $a['data'] < $b['data'] ? -1 : 1;

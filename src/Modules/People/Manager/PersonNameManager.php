@@ -120,7 +120,7 @@ class PersonNameManager
             $style = 'Standard';
         }
         if (!in_array($personType, self::getPersonTypeList())) {
-            $style = 'General';
+            $personType = 'General';
         }
        return SettingFactory::getSettingManager()->get('People', 'formatName'.$personType.$style, '[firstName] [surname]');
     }

@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Staff\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
@@ -26,6 +27,7 @@ use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -131,12 +133,12 @@ class StaffType extends AbstractType
                     'help' => 'Emergency contacts must be added as people within the database. You can then attach them here as an emergency contact for this person.'
                 ]
             )
-            ->add('emergencyContact1', EntityType::class,
+            ->add('emergencyContact1', AutoSuggestEntityType::class,
                 [
                     'label' => 'Emergency Contact #1',
                     'class' => Person::class,
                     'choice_label' => 'fullNameReversed',
-                    'placeholder' => ' ',
+                    'placeholder' => TranslationHelper::translate('Search...',[],'messages'),
                     'choice_translation_domain' => false,
                     'query_builder' => function(EntityRepository $er) use ($person) {
                         return $er->createQueryBuilder('p')
@@ -149,12 +151,12 @@ class StaffType extends AbstractType
                     },
                 ]
             )
-            ->add('emergencyContact2', EntityType::class,
+            ->add('emergencyContact2', AutoSuggestEntityType::class,
                 [
                     'label' => 'Emergency Contact #2',
                     'class' => Person::class,
                     'choice_label' => 'fullNameReversed',
-                    'placeholder' => ' ',
+                    'placeholder' => TranslationHelper::translate('Search...',[],'messages'),
                     'choice_translation_domain' => false,
                     'query_builder' => function(EntityRepository $er) use ($person) {
                         return $er->createQueryBuilder('p')

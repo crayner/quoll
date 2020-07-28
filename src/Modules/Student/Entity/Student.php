@@ -21,6 +21,7 @@ use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
+use App\Modules\People\Entity\PersonMethods;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\Theme;
@@ -50,6 +51,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Student extends AbstractEntity
 {
     use SchoolCommonFields;
+
+    use PersonMethods;
 
     CONST VERSION = '1.0.00';
 
@@ -193,11 +196,15 @@ class Student extends AbstractEntity
 
     /**
      * @param Person|null $person
+     * @param bool $reflect
      * @return Student
      */
-    public function setPerson(?Person $person): Student
+    public function setPerson(?Person $person, bool $reflect = true): Student
     {
         $this->person = $person;
+        if ($reflect && $person instanceof Person) {
+            $person->setStudent($this,false);
+        }
         return $this;
     }
 

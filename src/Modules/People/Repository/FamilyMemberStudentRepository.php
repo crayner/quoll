@@ -67,14 +67,14 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
      */
     public function findByFamily(?Family $family, bool $asArray = false): array
     {
-        $query = $this->createQueryBuilder('m')
-            ->join('m.family', 'f')
-            ->leftJoin('m.student', 's')
+        $query = $this->createQueryBuilder('fms')
+            ->join('fms.family', 'f')
+            ->leftJoin('fms.student', 's')
             ->leftJoin('s.person', 'p')
-            ->join('p.personalDocumentation', 'd')
+            ->leftJoin('p.personalDocumentation', 'd')
             ->leftJoin('s.studentEnrolments', 'se')
             ->leftJoin('se.rollGroup', 'rg')
-            ->where('m.family = :family')
+            ->where('fms.family = :family')
             ->andWhere('(se.academicYear = :academicYear OR se.academicYear IS NULL)')
             ->setParameter('family', $family)
             ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
@@ -83,11 +83,11 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
 
         if ($asArray) {
             $format = PersonNameManager::formatNameQuery('p', 'Student', 'Standard');
-            return $query->select(["CONCAT(".$format.") AS fullName", "COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", 'p.status', 'm.id AS student_id', 'm.comment', 'f.id AS family_id', 'p.id AS person_id', 'p.status', 'rg.name as roll'])
+            return $query->select(["CONCAT(".$format.") AS fullName", "COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", 'p.status', 'fms.id AS student_id', 'fms.comment', 'f.id AS family_id', 'p.id AS person_id', 'p.status', "COALESCE(rg.name,'Not Enrolled') AS roll"])
                 ->getQuery()
                 ->getResult();
         }
-        return $query->select(['p','m','s','d'])
+        return $query->select(['p','fms','s','d'])
             ->getQuery()
             ->getResult();
     }
