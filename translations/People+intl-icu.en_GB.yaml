@@ -459,10 +459,11 @@ customfield:
         text: Text
         time: Time
     categories:
-        other: Other
-        parent: Parent
+        contact: Contact
+        care giver: Care Giver
         staff: Staff
         student: Student
+        system: System
 A list of choices for your field.: A list of choices for your field.
 'Active: No': 'Active: No'
 'Active: Yes': 'Active: Yes'
@@ -602,3 +603,10 @@ CareGiver: Care Giver
 format_name_help: 'Name formats are created using the following name parts, used in any order.  The details MUST BE in English and the square brackets [] MUST BE used.<br />"<strong>{items}</strong>"<br />The system will substitute the correctly formatted name part with the appropriate data from the database. The examples of your name are done in this manner as a check. All characters that are not included as a name part are used in the format of the name.'
 'Format Name {type}': 'Format Name {type}'
 Format Name Settings: 'Format Name Settings'
+A person can be staff or student, not both.: A person can be staff or student, not both.
+Add Care Giver to Family: Add Care Giver to Family
+Add Care Giver to family: Add Care Giver to family
+Edit Care Giver: Edit Care Giver
+Edit care_giver: Edit Care Giver
+Name, Care Givers & Students: Name, Care Givers & Students
+This person could be a parent, guardian or emergency contact for any student.: This person could be a parent, guardian or emergency contact for any student.

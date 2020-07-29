@@ -97,6 +97,8 @@ class CustomFieldController extends AbstractPageController
                         $this->getRequest()->getSession()->set('newCustomField', true);
                     }
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                } else if ($data['status'] === 'success') {
+                    $form = $this->createForm(CustomFieldType::class, $customField, ['action' => $action]);
                 }
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([],true);

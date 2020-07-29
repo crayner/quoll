@@ -103,7 +103,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         foreach(CustomField::getCategoriesList() as $role) {
             $filter = new PaginationFilter();
             $filter->setName('Category: '. ucfirst($role))
-                ->setLabel(['Category: {name}', ['{name}' => TranslationHelper::translate('customfield.categories.'.$role, [], 'People')], 'People'])
+                ->setLabel(['Category: {name}', ['{name}' => TranslationHelper::translate('customfield.categories.'.strtolower($role), [], 'People')], 'People'])
                 ->setGroup('Category')
                 ->setContentKey('isCategory' . ucfirst($role))
                 ->setValue(true);

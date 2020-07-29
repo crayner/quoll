@@ -18,6 +18,7 @@ namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
+use App\Modules\Security\Entity\SecurityRole;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -96,16 +97,6 @@ class CustomField extends AbstractEntity
      * @Assert\Choice(callback="getCategoriesList",multiple=true))
      */
     private $categories;
-
-    /**
-     * @var string[]
-     */
-    private static $categoriesList = [
-        'staff',
-        'student',
-        'parent',
-        'other',
-    ];
 
     /**
      * @var bool|null
@@ -282,7 +273,7 @@ class CustomField extends AbstractEntity
      */
     public static function getCategoriesList(): array
     {
-        return self::$categoriesList;
+        return SecurityRole::getCategoryList();
     }
 
     /**
@@ -357,6 +348,12 @@ class CustomField extends AbstractEntity
         return $this;
     }
 
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     * 29/07/2020 10:30
+     */
     public function toArray(?string $name = null): array
     {
         $isRoles = [];
@@ -374,37 +371,15 @@ class CustomField extends AbstractEntity
     }
 
     /**
-     * create
+     * getCategoryNames
      * @return string
+     * 29/07/2020 10:37
      */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__CustomField` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(32) COLLATE utf8mb4_general_ci NOT NULL,
-                    `description` CHAR(191) COLLATE utf8mb4_general_ci NOT NULL,
-                    `active` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
-                    `field_type` CHAR(32) COLLATE utf8mb4_general_ci NOT NULL,
-                    `options` json DEFAULT NULL,
-                    `categories` longtext COLLATE utf8mb4_general_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `required` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
-                    `data_updater` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
-                    `application_form` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
-                    `public_registration_form` CHAR(1) COLLATE utf8mb4_general_ci NOT NULL,
-                    PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
     protected function getCategoryNames()
     {
         $roles = '';
         foreach($this->getCategories() as $role) {
-            $roles .= TranslationHelper::translate('customfield.categories.' . $role, [], 'People') . ', ';
+            $roles .= TranslationHelper::translate('customfield.categories.' . strtolower($role), [], 'People') . ', ';
         }
         return trim($roles, ', ');
     }
@@ -417,10 +392,5 @@ class CustomField extends AbstractEntity
     protected function isCategory(string $category): bool
     {
         return in_array($category, $this->getCategories());
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

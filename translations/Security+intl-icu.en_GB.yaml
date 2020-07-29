@@ -80,6 +80,8 @@ securityrole:
         staff: Staff
         student: Student
         system: System
+Care Giver: Care Giver
+System: System
 reachable:
     roles: 'Reachable Roles: {roles}'
 parent:
