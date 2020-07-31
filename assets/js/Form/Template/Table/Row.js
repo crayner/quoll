@@ -81,6 +81,9 @@ export default function Row(props) {
 
     if (form.row_style === 'transparent' || form.row_style === 'repeated')
     {
+        if (form.type === 'collection' && typeof form.children === 'undefined') {
+            return ([])
+        }
         if (form.type === 'collection') {
             Object.keys(form.children).map(childKey => {
                 let child = form.children[childKey]

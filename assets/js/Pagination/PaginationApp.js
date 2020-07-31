@@ -439,8 +439,15 @@ export default class PaginationApp extends Component {
                 }
                 if (filterDetail.value === value[filterDetail.contentKey])
                     return value
-                if (filterDetail['softMatch'] && value[filterDetail.contentKey].includes(filterDetail.value))
-                    return value
+
+                if (filterDetail['softMatch']) {
+                    if (typeof value[filterDetail.contentKey] !== 'string') {
+                        console.error('The filter value is not suitable for a soft match. Set the filter to hard match.')
+                    }
+
+                    if (value[filterDetail.contentKey].includes(filterDetail.value))
+                        return value
+                }
             })
             content = filtered
         })

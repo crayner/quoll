@@ -269,7 +269,6 @@ export function buildFormData(data, form) {
         if (typeof form.value === 'undefined') {
             form.value = null
         } else {
-            console.log(form.value)
             if (typeof form.value.date !== 'undefined')
                 return form.value.date.toString().slice(0, 10)
         }
