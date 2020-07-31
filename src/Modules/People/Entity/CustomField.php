@@ -17,8 +17,8 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\Security\Entity\SecurityRole;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,7 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class CustomFields
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\People\Repository\CustomFieldRepository")
- * @ORM\Table(name="CustomField",)
+ * @ORM\Table(name="CustomField",
+ *     indexes={@ORM\Index(name="display_order",columns={"display_order"})})
  * @App\Modules\People\Validator\CustomFieldOptions()
  */
 class CustomField extends AbstractEntity
@@ -121,6 +122,12 @@ class CustomField extends AbstractEntity
      * @ORM\Column(type="boolean",options={"default": 0})
      */
     private $publicRegistrationForm = false;
+
+    /**
+     * @var int
+     * @ORM\Column(type="smallint",options={"default": 0})
+     */
+    private $displayOrder = 0;
 
     /**
      * @return string|null
@@ -349,6 +356,24 @@ class CustomField extends AbstractEntity
     }
 
     /**
+     * @return int
+     */
+    public function getDisplayOrder(): int
+    {
+        return $this->displayOrder;
+    }
+
+    /**
+     * @param int $displayOrder
+     * @return CustomField
+     */
+    public function setDisplayOrder(int $displayOrder): CustomField
+    {
+        $this->displayOrder = $displayOrder;
+        return $this;
+    }
+
+    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -363,10 +388,16 @@ class CustomField extends AbstractEntity
         return array_merge([
             'id' => $this->getId(),
             'name' => $this->getName(),
-            'fieldType' => TranslationHelper::translate('customfield.fieldtype.' . $this->getFieldType(), [], 'People'),
+            'fieldType' => TranslationHelper::translate('customfield.fieldtype.' . strtolower($this->getFieldType()), [], 'People'),
             'active' => TranslationHelper::translate($this->isActive() ? 'Yes' : 'No', [], 'messages'),
             'isActive' => $this->isActive(),
             'categories' => $this->getCategoryNames(),
+            'isCategoryStaff' => $this->isCategory('Staff'),
+            'isCategoryStudent' => $this->isCategory('Student'),
+            'isCategoryCareGiver' => $this->isCategory('Care Giver'),
+            'isCategorySystem' => $this->isCategory('System'),
+            'isCategoryContact' => $this->isCategory('Contact'),
+            'canDelete' => $this->canDelete(),
         ], $isRoles);
     }
 
@@ -392,5 +423,26 @@ class CustomField extends AbstractEntity
     protected function isCategory(string $category): bool
     {
         return in_array($category, $this->getCategories());
+    }
+
+    /**
+     * isEqualTo
+     * @param CustomField $field
+     * @return bool
+     * 30/07/2020 12:40
+     */
+    public function isEqualTo(CustomField $field): bool
+    {
+        return $field->getId() === $this->getId();
+    }
+
+    /**
+     * canDelete
+     * @return bool
+     * 1/08/2020 08:33
+     */
+    public function canDelete(): bool
+    {
+        return ProviderFactory::create(CustomField::class)->canDelete($this);
     }
 }

@@ -74,9 +74,9 @@ class CustomFieldOptionsValidator extends ConstraintValidator
             case 'choice':
                 if (null === $value->getOptions())
                 {
-                    $value->setOptions([]);
+                    $value->setOptions(['']);
                 }
-                if (count($value->getOptions()) < 1) {
+                if (!is_array($value->getOptions())) {
                     $this->context->buildViolation($constraint->message)
                         ->setTranslationDomain($constraint->transDomain)
                         ->setCode(CustomFieldOptions::INVALID_OPTIONS_ERROR)

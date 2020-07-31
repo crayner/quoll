@@ -83,6 +83,12 @@ class CareGiver extends AbstractEntity
     private $memberOfFamilies;
 
     /**
+     * @var Collection|CustomFieldData[]
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="careGiver",cascade={"all"},orphanRemoval=true)
+     */
+    private $customData;
+
+    /**
      * CareGiver constructor.
      * @param Person|null $person
      */
@@ -232,6 +238,57 @@ class CareGiver extends AbstractEntity
         }
 
         $this->memberOfFamilies->add($parent);
+
+        return $this;
+    }
+
+    /**
+     * @return CustomFieldData[]|Collection
+     */
+    public function getCustomData(): Collection
+    {
+        if ($this->customData === null) $this->customData = new ArrayCollection();
+
+        if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
+
+        $iterator = $this->customData->getIterator();
+        $iterator->uasort(
+            function (CustomFieldData $a, CustomFieldData $b) {
+                return $a->getCustomField()->getDisplayOrder() <= $b->getCustomField()->getDisplayOrder() ? -1 : 1;
+            }
+        );
+
+        $this->customData = new ArrayCollection();
+        foreach(iterator_to_array($iterator, false) as $item) {
+            $this->addCustomData($item);
+        }
+
+        return $this->customData;
+    }
+
+    /**
+     * setCustomData
+     * @param Collection|null $customData
+     * @return $this
+     * 29/07/2020 11:26
+     */
+    public function setCustomData(?Collection $customData): CareGiver
+    {
+        $this->customData = $customData;
+        return $this;
+    }
+
+    /**
+     * addCustomData
+     * @param CustomFieldData $data
+     * @return $this
+     * 29/07/2020 11:26
+     */
+    public function addCustomData(CustomFieldData $data): CareGiver
+    {
+        if ($data === null || $this->getCustomData()->containsKey($data->getCustomField()->getId())) return $this;
+
+        $this->customData->set($data->getCustomField()->getId(), $data);
 
         return $this;
     }

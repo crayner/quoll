@@ -74,9 +74,7 @@ class StaffController extends PeopleController
     public function editSchoolStaff(ContainerManager $manager, Staff $staff)
     {
         if ($this->getRequest()->getContentType() === 'json') {
-
             $form = $this->createSchoolStaffForm($staff);
-
             return $this->saveContent($form, $manager, $staff, 'School');
         } else {
             $form = $this->createSchoolStaffForm($staff);
@@ -154,6 +152,7 @@ class StaffController extends PeopleController
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
+        dump($form,$content,$staff);
         $data = [];
         if ($form->isValid()) {
             $data = ProviderFactory::create(Staff::class)->persistFlush($staff, $data);

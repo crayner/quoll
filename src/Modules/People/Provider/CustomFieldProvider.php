@@ -16,8 +16,12 @@
  */
 namespace App\Modules\People\Provider;
 
+use App\Manager\EntityInterface;
 use App\Modules\People\Entity\CustomField;
+use App\Modules\People\Entity\CustomFieldData;
 use App\Provider\AbstractProvider;
+use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class CustomFieldProvider
@@ -29,4 +33,32 @@ class CustomFieldProvider extends AbstractProvider
      * @var string
      */
     protected $entityName = CustomField::class;
+
+    /**
+     * validateCustomFields
+     * @param string $category
+     * @param Collection $customFields
+     * @param EntityInterface $member
+     * @param string $usage
+     * @return Collection
+     * 29/07/2020 14:14
+     */
+    public function validateCustomFields(string $category, Collection $customFields, EntityInterface $member, string $usage = ''): Collection
+    {
+        $fields = $this->getRepository()->findByCategoryUsage($category, $usage);
+
+        return $customFields;
+    }
+
+    /**
+     * canDelete
+     * @param CustomField $field
+     * @return bool
+     * 1/08/2020 08:35
+     */
+    public function canDelete(CustomField $field): bool
+    {
+        if ($field->isActive()) return false;
+        return ProviderFactory::getRepository(CustomFieldData::class)->countCustomField($field) === 0;
+    }
 }

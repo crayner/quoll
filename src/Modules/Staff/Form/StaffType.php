@@ -20,18 +20,20 @@ use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
+use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
+use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Form\CustomFieldDataType;
+use App\Modules\People\Form\Subscriber\CustomFieldDataSubscriber;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -76,6 +78,7 @@ class StaffType extends AbstractType
             ->add('jobTitle', TextType::class,
                 [
                     'label' => 'Job Title',
+                    'required' => false,
                 ]
             )
             ->add('smartWorkflowHelp', ToggleType::class,
@@ -105,23 +108,27 @@ class StaffType extends AbstractType
             ->add('qualifications', TextType::class,
                 [
                     'label' => 'Qualification',
+                    'required' => false,
                 ]
             )
             ->add('biographicalGrouping', TextareaType::class,
                 [
                     'label' => 'Grouping',
                     'help' => 'Used to group staff when creating a staff directory.',
+                    'required' => false,
                 ]
             )
             ->add('biographicalGroupingPriority', TextareaType::class,
                 [
                     'label' => 'Grouping Priority',
                     'help' => 'Higher numbers move teachers up the order within their grouping.',
+                    'required' => false,
                 ]
             )
             ->add('biography', TextareaType::class,
                 [
                     'label' => 'Biography',
+                    'required' => false,
                     'attr' => [
                         'rows' => 8,
                     ],
@@ -137,6 +144,7 @@ class StaffType extends AbstractType
                 [
                     'label' => 'Emergency Contact #1',
                     'class' => Person::class,
+                    'required' => false,
                     'choice_label' => 'fullNameReversed',
                     'placeholder' => TranslationHelper::translate('Search...',[],'messages'),
                     'choice_translation_domain' => false,
@@ -156,6 +164,7 @@ class StaffType extends AbstractType
                     'label' => 'Emergency Contact #2',
                     'class' => Person::class,
                     'choice_label' => 'fullNameReversed',
+                    'required' => false,
                     'placeholder' => TranslationHelper::translate('Search...',[],'messages'),
                     'choice_translation_domain' => false,
                     'query_builder' => function(EntityRepository $er) use ($person) {
@@ -184,10 +193,40 @@ class StaffType extends AbstractType
             ->add('vehicleRegistration', TextType::class,
                 [
                     'label' => 'Vehicle Registration',
+                    'required' => false,
                 ]
             )
+        ;
+        if ($this->hasCustomFields()) {
+            $builder
+                ->add('customHeader', HeaderType::class,
+                    [
+                        'label' => 'Custom Data',
+                        'translation_domain' => 'People',
+                    ]
+                )
+                ->add('customData', ReactCollectionType::class,
+                    [
+                        'entry_type' => CustomFieldDataType::class,
+                        'entry_options' => [
+                            'category' => 'Staff',
+                        ],
+                        'allow_add' => false,
+                        'allow_delete' => false,
+                        'element_delete_route' => false,
+                        'column_count' => 2,
+                        'row_style' => 'transparent',
+                    ]
+                )
+            ;
+            $builder
+                ->get('customData')
+                ->addEventSubscriber(new CustomFieldDataSubscriber());
+        }
+        $builder
             ->add('submit', SubmitType::class)
         ;
+
     }
 
     /**
@@ -213,5 +252,15 @@ class StaffType extends AbstractType
     public function getParent()
     {
         return ReactFormType::class;
+    }
+
+    /**
+     * hasCustomFields
+     * @return bool
+     * 29/07/2020 13:49
+     */
+    private function hasCustomFields(): bool
+    {
+        return ProviderFactory::getRepository(CustomField::class)->countByCategory('Staff') > 0;
     }
 }

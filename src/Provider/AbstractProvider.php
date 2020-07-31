@@ -100,6 +100,10 @@ abstract class AbstractProvider implements EntityProviderInterface
      */
     private $logger;
 
+    /**
+     * @var string
+     */
+    private $env = 'prod';
 
     /**
      * AbstractProvider constructor.
@@ -119,6 +123,7 @@ abstract class AbstractProvider implements EntityProviderInterface
         if (method_exists($this, 'additionalConstruct'))
             $this->additionalConstruct();
         $this->logger = $providerFactory::getLogger();
+        $this->env = $_ENV['APP_ENV'];
     }
 
     /**
@@ -423,6 +428,7 @@ abstract class AbstractProvider implements EntityProviderInterface
         try {
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
+            if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
         }
         return $data;
@@ -531,22 +537,24 @@ abstract class AbstractProvider implements EntityProviderInterface
         try {
             $this->getEntityManager()->persist($entity);
             if ($flush) $data = $this->flush($data);
-            $data = ErrorMessageHelper::getSuccessMessage($data, true);
+            if ($data['status'] === 'success') {
+                $data = ErrorMessageHelper::getSuccessMessage($data, true);
+            }
         } catch (NotNullConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (UniqueConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (\PDOException | PDOException | ORMException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         } catch (\Exception $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+            if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $this->getLogger()->error($e->getMessage(),[get_class($this)]);
         }
 

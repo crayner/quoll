@@ -92,7 +92,7 @@ class CareGiverController extends PeopleController
         $data = [];
         if ($form->isValid()) {
             $data = ProviderFactory::create(CareGiver::class)->persistFlush($careGiver, $data);
-//            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
+            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
             if ($data['status'] !== 'success') {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 $manager->singlePanel($form->createView());

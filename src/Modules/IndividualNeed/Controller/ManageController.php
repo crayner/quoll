@@ -53,6 +53,7 @@ class ManageController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('individual_need_add'));
 
         return $this->getPageManager()
+            ->setUrl($this->generateUrl('individual_need_list'))
             ->setMessages($data['errors'] ?? [])
             ->createBreadcrumbs('Need Descriptors')
             ->render(['pagination' => $pagination->toArray()]);

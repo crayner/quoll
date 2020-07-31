@@ -22,31 +22,28 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Form\CareGiverType;
 use App\Modules\People\Form\ChangePasswordType;
 use App\Modules\People\Form\ContactType;
-use App\Modules\People\Form\CareGiverType;
-use App\Modules\People\Form\PersonalDocumentationType;
 use App\Modules\People\Form\PersonType;
+use App\Modules\People\Form\PersonalDocumentationType;
 use App\Modules\People\Form\SchoolStaffType;
 use App\Modules\People\Form\SchoolStudentType;
 use App\Modules\People\Pagination\PeoplePagination;
-use App\Modules\People\Util\UserHelper;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Form\Entity\SecurityUserType;
-use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Staff\Entity\Staff;
 use App\Modules\Staff\Form\StaffType;
 use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
-use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
+use App\Twig\Sidebar\Photo;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -119,11 +116,7 @@ class PeopleController extends AbstractPageController
         $photo->setTransDomain(false)->setTitle($person->formatName('Standard'));
         $sidebar->addContent($photo);
 
-        $container = new Container($tabName);
-        $section = new Section('form', 'single');
         TranslationHelper::setDomain('People');
-
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         $form = $this->createForm(PersonType::class, $person,
             [
@@ -133,49 +126,28 @@ class PeopleController extends AbstractPageController
 
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
-            $errors = [];
-            $status = 'success';
-            $redirect = '';
             $form->submit($content);
             if ($form->isValid())
             {
                 $id = $person->getId();
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($person);
-                $em->flush();
-                if ($id !== $person->getId())
+                $data = ProviderFactory::create(Person::class)->persistFlush($person,[]);
+                if ($id !== $person->getId() && $data['status'] === 'success')
                 {
-                    $status = 'redirect';
-                    $redirect = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => $tabName]);
+                    $data['status'] = 'redirect';
+                    $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => $tabName]);
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
-                } else {
+                } else if ($data['status'] === 'success') {
                     $data = ErrorMessageHelper::getSuccessMessage([], true);
-                    $status = $data['status'];
-                    $errors = $data['errors'];
                 }
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $status = $data['status'];
-                $errors = $data['errors'];
             }
 
-            $panel = new Panel('Basic', 'People', $section);
-            $container->addForm('single', $form->createView())->addPanel($panel);
-
-            $panel = new Panel('System', 'People', $section);
-            $container->addPanel($panel);
-
-            $manager->addContainer($container)->buildContainers();
-
-            return new JsonResponse(
-                [
-                    'form' => $manager->getFormFromContainer(),
-                    'errors' => $errors,
-                    'status' => $status,
-                    'redirect' => $redirect,
-                ],
-                200);
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer();
+            return new JsonResponse($data);
         }
+        $container = new Container($tabName);
 
         $panel = new Panel('Basic', 'People', new Section('form', 'Basic'));
 

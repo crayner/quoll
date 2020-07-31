@@ -288,6 +288,7 @@ class ReactFormType extends AbstractType
         if (in_array($vars['type'], ['collection'])) {
             if (isset($view->vars['prototype']))
                 $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
+            if (key_exists('column_count', $view->vars)) $vars['column_count'] = $view->vars['column_count'];
             $vars['collection_key'] = uniqid('collection', true);
             $vars['header_row'] = $view->vars['header_row'] ;
             $vars['allow_delete'] = $view->vars['allow_delete'];

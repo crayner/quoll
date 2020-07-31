@@ -85,7 +85,6 @@ class CustomFieldPagination extends AbstractPaginationManager
             ->setRouteParams(['customField' => 'id']);
         $row->addAction($action);
 
-
         $filter = new PaginationFilter();
         $filter->setName('Active: Yes')
             ->setGroup('Active')
@@ -105,7 +104,8 @@ class CustomFieldPagination extends AbstractPaginationManager
             $filter->setName('Category: '. ucfirst($role))
                 ->setLabel(['Category: {name}', ['{name}' => TranslationHelper::translate('customfield.categories.'.strtolower($role), [], 'People')], 'People'])
                 ->setGroup('Category')
-                ->setContentKey('isCategory' . ucfirst($role))
+                ->setContentKey('isCategory' . str_replace(' ','', ucfirst($role)))
+                ->setExactMatch()
                 ->setValue(true);
             $row->addFilter($filter);
         }

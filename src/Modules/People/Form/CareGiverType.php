@@ -18,10 +18,12 @@ namespace App\Modules\People\Form;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
+use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Form\Subscriber\CustomFieldDataSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -72,7 +74,30 @@ class CareGiverType extends AbstractType
 
                 ]
             )
+            ->add('customHeader', HeaderType::class,
+                [
+                    'label' => 'Custom Data',
+                    'translation_domain' => 'People',
+                ]
+            )
+            ->add('customData', ReactCollectionType::class,
+                [
+                    'entry_type' => CustomFieldDataType::class,
+                    'entry_options' => [
+                        'category' => 'Care Giver',
+                    ],
+                    'allow_add' => false,
+                    'allow_delete' => false,
+                    'element_delete_route' => false,
+                    'column_count' => 2,
+                    'row_style' => 'transparent',
+                ]
+            )
             ->add('submit', SubmitType::class)
+        ;
+        $builder
+            ->get('customData')
+            ->addEventSubscriber(new CustomFieldDataSubscriber());
         ;
     }
 

@@ -139,7 +139,7 @@ class CustomFieldType extends AbstractType
     {
        $resolver->setDefaults(
            [
-                'data_class' => CustomField::class,
+               'data_class' => CustomField::class,
                'translation_domain' => 'People',
            ]
        );

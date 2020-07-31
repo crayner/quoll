@@ -128,6 +128,8 @@ class EntitySortManager
     public function getDetails(): array
     {
         if ($this->details['status'] === 'success') {
+            $this->details['errors'] = [];
+            $this->details = ErrorMessageHelper::getSuccessMessage($this->details, true);
             $this->details['content'] = $this->getPagination()->setContent($this->content)->toArray()['content'];
         }
         return $this->details;

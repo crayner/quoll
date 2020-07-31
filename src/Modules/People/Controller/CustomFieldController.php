@@ -18,6 +18,7 @@ namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\EntitySortManager;
 use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Form\CustomFieldType;
 use App\Modules\People\Pagination\CustomFieldPagination;
@@ -38,18 +39,23 @@ class CustomFieldController extends AbstractPageController
     /**
      * list
      * @param CustomFieldPagination $pagination
+     * @param array $errors
+     * @return JsonResponse
      * @Route("/custom/field/list",name="custom_field_list")
-     * @Route("/custom/field/{customField}/delete",name="custom_field_delete")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function list(CustomFieldPagination $pagination)
+    public function list(CustomFieldPagination $pagination, array $errors = [])
     {
-        $content = ProviderFactory::getRepository(CustomField::class)->findBy([], ['name' => 'ASC']);
+        $content = ProviderFactory::getRepository(CustomField::class)->findBy([], ['displayOrder' => 'ASC', 'name' => 'ASC']);
         $pagination->setStack($this->getPageManager()->getStack())->setContent($content)
             ->setStoreFilterURL($this->generateUrl('custom_field_filter_save'))
+            ->setDraggableRoute('custom_field_sort')
             ->setAddElementRoute($this->generateUrl('custom_field_add'));
 
-        return $this->getPageManager()->createBreadcrumbs('Manage Custom Fields')
+        return $this->getPageManager()
+            ->setMessages($errors)
+            ->setUrl($this->generateUrl('custom_field_list'))
+            ->createBreadcrumbs('Manage Custom Fields')
             ->render(['pagination' => $pagination->toArray()]);
     }
 
@@ -125,9 +131,10 @@ class CustomFieldController extends AbstractPageController
     /**
      * filterSave
      * @param CustomFieldPagination $pagination
-     * @return JsonResponse
      * @Route("/custom/field/filter/save/",name="custom_field_filter_save")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     * 31/07/2020 08:51
      */
     public function filterSave(CustomFieldPagination $pagination)
     {
@@ -137,6 +144,43 @@ class CustomFieldController extends AbstractPageController
                 ->writeFilter($filter);
         }
         return new JsonResponse([]);
+    }
 
+    /**
+     * sortCustomFields
+     * @param CustomField $source
+     * @param CustomField $target
+     * @param CustomFieldPagination $pagination
+     * @Route("/custom/field/{source}/{target}/sort/",name="custom_field_sort")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     * 31/07/2020 08:51
+     */
+    public function sortCustomFields(CustomField $source, CustomField $target, CustomFieldPagination $pagination)
+    {
+        $manager = new EntitySortManager();
+        $manager->setSortField('displayOrder')
+            ->setIndexName('display_order')
+            ->execute($source, $target, $pagination);
+
+        return new JsonResponse($manager->getDetails());
+
+    }
+
+    /**
+     * delete
+     * @param CustomFieldPagination $pagination
+     * @param CustomField $customField
+     * @return JsonResponse
+     * @Route("/custom/field/{customField}/delete",name="custom_field_delete")
+     * @IsGranted("ROLE_ROUTE")
+     * 1/08/2020 08:41
+     */
+    public function delete(CustomFieldPagination $pagination, CustomField $customField)
+    {
+        $provider = ProviderFactory::create(CustomField::class);
+        $provider->delete($customField);
+        $data = $provider->getMessageManager()->pushToJsonData();
+        return $this->list($pagination, $data['errors'] ?? []);
     }
 }

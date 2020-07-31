@@ -14,11 +14,17 @@
 namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\People\Entity\CustomField;
+use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\Theme;
+use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -74,6 +80,7 @@ class Staff extends AbstractEntity
     private static $typeList = [
         'Teaching',
         'Support',
+        'Volunteer',
         'Other',
     ];
 
@@ -164,6 +171,12 @@ class Staff extends AbstractEntity
      * @ORM\JoinColumn(name="theme", referencedColumnName="id", nullable=true)
      */
     private $theme;
+
+    /**
+     * @var Collection|CustomFieldData[]
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="staff",cascade={"all"},orphanRemoval=true)
+     */
+    private $customData;
 
     /**
      * Staff constructor.
@@ -528,6 +541,58 @@ class Staff extends AbstractEntity
     public function setTheme(?Theme $theme): Staff
     {
         $this->theme = $theme;
+        return $this;
+    }
+
+    /**
+     * getCustomData
+     * @return Collection
+     * @throws \Exception
+     * 31/07/2020 09:41
+     */
+    public function getCustomData(): Collection
+    {
+        if ($this->customData === null) $this->customData = new ArrayCollection();
+
+        if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
+
+        $iterator = $this->customData->getIterator();
+        $iterator->uasort(
+            function (CustomFieldData $a, CustomFieldData $b) {
+                return $a->getCustomField()->getDisplayOrder() <= $b->getCustomField()->getDisplayOrder() ? -1 : 1;
+            }
+        );
+
+        $this->customData = new ArrayCollection();
+        foreach(iterator_to_array($iterator, false) as $item) {
+            $this->addCustomData($item);
+        }
+
+        return $this->customData;
+    }
+
+    /**
+     * @param CustomFieldData[]|Collection|null $customData
+     * @return Staff
+     */
+    public function setCustomData(?Collection $customData): Staff
+    {
+        $this->customData = $customData;
+        return $this;
+    }
+
+    /**
+     * addCustomData
+     * @param CustomFieldData $data
+     * @return $this
+     * 29/07/2020 11:11
+     */
+    public function addCustomData(CustomFieldData $data): Staff
+    {
+        if ($data === null || $this->getCustomData()->containsKey($data->getCustomField()->getId())) return $this;
+
+        $this->customData->set($data->getCustomField()->getId(), $data);
+
         return $this;
     }
 

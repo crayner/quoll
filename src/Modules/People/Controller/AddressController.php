@@ -120,10 +120,10 @@ class AddressController extends AbstractPageController
     }
 
     /**
-     * @Route("/address/{address}/delete/",name="address_delete")
      * @param Address $address
      * @param FlashBagInterface $bag
      * @return Response
+     * @Route("/address/{address}/delete/",name="address_delete")
      * @IsGranted("ROLE_ROUTE")
      */
     public function deleteAddress(Address $address, FlashBagInterface $bag)

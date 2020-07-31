@@ -18,6 +18,7 @@ namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
@@ -158,6 +159,12 @@ class Student extends AbstractEntity
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberStudent",mappedBy="student")
      */
     private $memberOfFamilies;
+
+    /**
+     * @var Collection|CustomFieldData[]
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student")
+     */
+    private $customData;
 
     /**
      * Student constructor.
@@ -542,6 +549,43 @@ class Student extends AbstractEntity
         }
 
         $this->memberOfFamilies->add($student);
+
+        return $this;
+    }
+
+    /**
+     * @return CustomFieldData[]|Collection
+     */
+    public function getCustomData(): Collection
+    {
+        if ($this->customData === null) $this->customData = new ArrayCollection();
+
+        if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
+
+        return $this->customData;
+    }
+
+    /**
+     * @param CustomFieldData[]|Collection|null $customData
+     * @return Student
+     */
+    public function setCustomData(?Collection $customData): Student
+    {
+        $this->customData = $customData;
+        return $this;
+    }
+
+    /**
+     * addCustomData
+     * @param CustomFieldData $data
+     * @return $this
+     * 29/07/2020 11:11
+     */
+    public function addCustomData(CustomFieldData $data): Student
+    {
+        if ($data === null || $this->getCustomData()->containsKey($data->getCustomField()->getId())) return $this;
+
+        $this->customData->set($data->getCustomField()->getId(), $data);
 
         return $this;
     }

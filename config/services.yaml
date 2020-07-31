@@ -137,3 +137,7 @@ services:
     App\Modules\System\Manager\SettingManager:
         arguments:
             $settings: "%settings%"
+
+    App\Modules\People\Listener\CustomFieldInjector:
+        tags:
+            - { name: 'doctrine.event_listener', event: 'postLoad' }

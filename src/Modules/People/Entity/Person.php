@@ -118,12 +118,6 @@ class Person extends AbstractEntity
     private $nameInCharacters;
 
     /**
-     * @var Collection|CustomFieldData[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="person")
-     */
-    private $additionalFields;
-
-    /**
      * @var string|null
      * @ORM\Column(length=16,options={"default": "Unspecified"})
      * @ASSERT\Choice(callback="getGenderAssert")
