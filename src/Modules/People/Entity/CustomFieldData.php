@@ -88,11 +88,6 @@ class CustomFieldData extends AbstractEntity
     private $value;
 
     /**
-     * @var array|null
-     */
-    private $arrayValue;
-
-    /**
      * @var boolean
      */
     private $booleanValue;
@@ -231,30 +226,6 @@ class CustomFieldData extends AbstractEntity
     public function setValue(?string $value): CustomFieldData
     {
         $this->value = $value;
-        return $this;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getArrayValue(): ?array
-    {
-        if ($this->getValue() !== null) {
-            $this->arrayValue = explode(',',$this->getValue());
-        }
-        return $this->arrayValue;
-    }
-
-    /**
-     * @param array|null $arrayValue
-     * @return CustomFieldData
-     */
-    public function setArrayValue(?array $arrayValue): CustomFieldData
-    {
-        $this->arrayValue = $arrayValue;
-        if (is_array($arrayValue)) {
-            return $this->setValue(implode(',', $arrayValue));
-        }
         return $this;
     }
 

@@ -18,8 +18,12 @@ namespace App\Modules\Student\Form;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
+use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactFormType;
+use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Form\CustomFieldDataType;
+use App\Modules\People\Form\Subscriber\CustomFieldDataSubscriber;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
@@ -68,7 +72,8 @@ class StudentType extends AbstractType
             ->add('studentIdentifier', TextType::class,
                 [
                     'label' => 'Student Identifier',
-                    'help' => 'Unique if present.'
+                    'help' => 'Unique if present.',
+                    'required' => false,
                 ]
             )
         ;
@@ -78,6 +83,7 @@ class StudentType extends AbstractType
                     [
                         'label' => 'Signed Student Agreements',
                         'multiple' => true,
+                        'required' => false,
                         'choices' => SettingFactory::getSettingManager()->get('School Admin', 'studentAgreementOptions'),
                     ]
                 )
@@ -87,29 +93,34 @@ class StudentType extends AbstractType
             ->add('lastSchool', TextType::class,
                 [
                     'label' => 'Previous School',
+                    'required' => false,
                     'help' => 'This student transferred from this school.',
                 ]
             )
             ->add('nextSchool', TextType::class,
                 [
                     'label' => 'Next School',
+                    'required' => false,
                     'help' => 'This student transferred to this school.',
                 ]
             )
             ->add('departureReason', TextType::class,
                 [
                     'label' => 'Reason for Departure',
+                    'required' => false,
                     'help' => 'Why did this student leave this school?',
                 ]
             )
             ->add('transport', TextType::class,
                 [
+                    'required' => false,
                     'label' => 'Transport',
                 ]
             )
             ->add('transportNotes', TextareaType::class,
                 [
                     'label' => 'Transport Notes',
+                    'required' => false,
                     'attr' => [
                         'rows' => 4,
                     ],
@@ -122,6 +133,7 @@ class StudentType extends AbstractType
                     [
                         'label' => 'Day Type',
                         'choices' => SettingFactory::getSettingManager()->get('People', 'dayTypeOptions'),
+                        'required' => false,
                         'placeholder' => 'Please select...',
                     ]
                 )
@@ -132,10 +144,39 @@ class StudentType extends AbstractType
                 [
                     'label' => 'Graduation Year',
                     'class' => AcademicYear::class,
+                    'required' => false,
                     'choice_label' => 'name',
                     'placeholder' => 'Please select...',
                 ]
             )
+        ;
+        if ($this->hasCustomFields()) {
+            $builder
+                ->add('customHeader', HeaderType::class,
+                    [
+                        'label' => 'Custom Data',
+                        'translation_domain' => 'People',
+                    ]
+                )
+                ->add('customData', ReactCollectionType::class,
+                    [
+                        'entry_type' => CustomFieldDataType::class,
+                        'entry_options' => [
+                            'category' => 'Staff',
+                        ],
+                        'allow_add' => false,
+                        'allow_delete' => false,
+                        'element_delete_route' => false,
+                        'column_count' => 2,
+                        'row_style' => 'transparent',
+                    ]
+                )
+            ;
+            $builder
+                ->get('customData')
+                ->addEventSubscriber(new CustomFieldDataSubscriber());
+        }
+        $builder
             ->add('submit', SubmitType::class)
         ;
 
@@ -164,5 +205,15 @@ class StudentType extends AbstractType
     public function getParent()
     {
         return ReactFormType::class;
+    }
+
+    /**
+     * hasCustomFields
+     * @return bool
+     * 29/07/2020 13:49
+     */
+    private function hasCustomFields(): bool
+    {
+        return ProviderFactory::getRepository(CustomField::class)->countByCategory('Student') > 0;
     }
 }

@@ -280,7 +280,7 @@ class CustomField extends AbstractEntity
      */
     public static function getCategoriesList(): array
     {
-        return SecurityRole::getCategoryList();
+        return ['Student','Staff','Care Giver'];
     }
 
     /**

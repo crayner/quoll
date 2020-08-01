@@ -34,17 +34,19 @@ export default class Messages extends Component {
         let cells = Object.keys(this.state.messages).map(key => {
             let message = this.state.messages[key]
             if (typeof message !== 'undefined') {
-                if (typeof message.close === 'undefined')
-                    message.close = true
                 if (typeof message === 'undefined')
                     return ''
                 if (typeof message === 'string') {
-                    let x = {}
-                    x.message = message
-                    x.class = 'error'
-                    x.id = key
+                    let x = {
+                        message: message,
+                        class: 'error',
+                        close: true,
+                        id: key
+                    }
                     message = { ...x }
                 }
+                if (typeof message.close === 'undefined')
+                    message.close = true
                 message['id'] = key
                 return <Message
                     message={message}

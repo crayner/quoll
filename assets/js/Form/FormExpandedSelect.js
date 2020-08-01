@@ -15,7 +15,6 @@ export default function FormExpandedSelect(props) {
     function onElementChange(e,child,parent)
     {
         let value = parent.value
-        console.log(e.target.value, e.target.checked, value)
         if (e.target.checked) {
             // turn the value on in the array by adding the value
             value.push(e.target.value)
@@ -27,7 +26,6 @@ export default function FormExpandedSelect(props) {
         let event = {}
         event.target = {}
         event.target.value = value
-        console.log(value)
         functions.onElementChange(event,parent)
     }
 

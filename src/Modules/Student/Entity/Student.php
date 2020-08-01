@@ -162,7 +162,7 @@ class Student extends AbstractEntity
 
     /**
      * @var Collection|CustomFieldData[]
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student")
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student",cascade={"all"},orphanRemoval=true)
      */
     private $customData;
 
@@ -561,6 +561,18 @@ class Student extends AbstractEntity
         if ($this->customData === null) $this->customData = new ArrayCollection();
 
         if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
+
+        $iterator = $this->customData->getIterator();
+        $iterator->uasort(
+            function (CustomFieldData $a, CustomFieldData $b) {
+                return $a->getCustomField()->getDisplayOrder() <= $b->getCustomField()->getDisplayOrder() ? -1 : 1;
+            }
+        );
+
+        $this->customData = new ArrayCollection();
+        foreach(iterator_to_array($iterator, false) as $item) {
+            $this->addCustomData($item);
+        }
 
         return $this->customData;
     }

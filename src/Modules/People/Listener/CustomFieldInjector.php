@@ -21,6 +21,7 @@ use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\Staff\Entity\Staff;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
@@ -44,6 +45,8 @@ class CustomFieldInjector
             $this->injectCustomFields($entity, 'Staff');
         if ($entity instanceof CareGiver)
             $this->injectCustomFields($entity, 'Care Giver');
+        if ($entity instanceof Student)
+            $this->injectCustomFields($entity, 'Student');
     }
 
     /**

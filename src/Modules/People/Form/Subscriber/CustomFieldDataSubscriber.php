@@ -90,40 +90,33 @@ class CustomFieldDataSubscriber implements EventSubscriberInterface
                     foreach ($field->getOptions() as $value) $choices[$value] = $value;
                     $options['choices'] = $choices;
                     if (!$field->isRequired()) {
-                        $options['placeHolder'] = ' ';
+                        $options['placeholder'] = ' ';
                         $choices[' '] = ' ';
                     }
                     $constraints[] = new Choice(['choices' => $choices]);
-//                    $options['data'] = $data->getArrayValue();
-                    $name = 'arrayValue';
                     break;
                 case 'date_time':
                     $options['widget'] = 'string';
                     $options['with_seconds'] = false;
                     $formType = DateTimeType::class;
-//                    $options['data'] = $data->getDateTimeValue();
                     $name = 'dateTimeValue';
                     break;
                 case 'date':
                     $formType = ReactDateType::class;
                     $options['input'] = 'datetime_immutable';
-//                    $options['data'] = $this->getDateTimeValue();
                     $name = 'dateTimeValue';
                     break;
                 case 'short_string':
- //                   $options['data'] = $data->getValue();
                     $constraints[] = new Length(['max' => $field->getOptions()['length']]);
                     break;
                 case 'text':
                     $formType = TextareaType::class;
- //                   $options['data'] = $data->getValue();
                     $options['attr'] = [
                         'rows' => $field->getOptions()['rows'],
                     ];
                     break;
                 case 'boolean':
                     $formType = ToggleType::class;
-//                    $options['data'] = $data->getValue();
                     $name = 'booleanValue';
                     break;
                 case 'integer':

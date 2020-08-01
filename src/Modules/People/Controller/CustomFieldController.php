@@ -79,16 +79,6 @@ class CustomFieldController extends AbstractPageController
 
         $form = $this->createForm(CustomFieldType::class, $customField, ['action' => $action]);
 
-        if ($this->getRequest()->getSession()->has('newCustomField') && $this->getRequest()->getSession()->get('newCustomField')) {
-            $form->get('options')->addError(
-                new FormError(
-                    TranslationHelper::translate('You will need ensure that these options are appropriate for your field.', [], 'People')
-                )
-            );
-            $this->getRequest()->getSession()->remove('newCustomField');
-            $this->addFlash('warning', ['You will need ensure that these options are appropriate for your field.', [], 'People']);
-        }
-
         if ($this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
@@ -103,6 +93,7 @@ class CustomFieldController extends AbstractPageController
                         $this->getRequest()->getSession()->set('newCustomField', true);
                     }
                     $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                    $this->addFlash('warning', ['You will need ensure that these options are appropriate for your field.', [], 'People']);
                 } else if ($data['status'] === 'success') {
                     $form = $this->createForm(CustomFieldType::class, $customField, ['action' => $action]);
                 }
