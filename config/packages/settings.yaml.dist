@@ -29,22 +29,22 @@ parameters:
             organisationAdministrator:
                 value: null
                 type: entity
-                class: App\Modules\People\Entity\Person
+                class: App\Modules\Staff\Entity\Staff
             organisationDBA:
                 value: null
                 type: entity
-                class: App\Modules\People\Entity\Person
+                class: App\Modules\Staff\Entity\Staff
             organisationAdmissions:
                 value: null
                 type: entity
-                class: App\Modules\People\Entity\Person
+                class: App\Modules\Staff\Entity\Staff
             firstDayOfTheWeek:
                 value: Sunday
                 type: string
             organisationHR:
                 value: null
                 type: entity
-                class: App\Modules\People\Entity\Person
+                class: App\Modules\Staff\Entity\Staff
             organisationName:
                 value: null
                 type: string

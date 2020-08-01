@@ -20,6 +20,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Form\Entity\OrganisationSettings;
 use App\Provider\ProviderFactory;
 use App\Validator\ReactImage;
@@ -110,11 +111,11 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationAdministrator',
                             'entry_type' => EntityType::class,
                             'entry_options' => [
-                                'class' => Person::class,
+                                'class' => Staff::class,
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
+                                'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                             ],
                         ],
                         [
@@ -122,11 +123,11 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationDBA',
                             'entry_type' => EntityType::class,
                             'entry_options' => [
-                                'class' => Person::class,
+                                'class' => Staff::class,
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
+                                'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                             ],
                         ],
                         [
@@ -134,11 +135,11 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationAdmissions',
                             'entry_type' => EntityType::class,
                             'entry_options' => [
-                                'class' => Person::class,
+                                'class' => Staff::class,
                                 'placeholder' => ' ',
                                 'choice_label' => 'fullNameReversed',
                                 'choice_translation_domain' => false,
-                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
+                                'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                             ],
                         ],
                         [
@@ -146,11 +147,11 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationHR',
                             'entry_type' => EntityType::class,
                             'entry_options' => [
-                                'class' => Person::class,
+                                'class' => Staff::class,
                                 'choice_label' => 'fullNameReversed',
                                 'placeholder' => ' ',
                                 'choice_translation_domain' => false,
-                                'query_builder' => ProviderFactory::getRepository(Person::class)->getStaffQueryBuilder(),
+                                'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                             ],
                         ],
                     ],

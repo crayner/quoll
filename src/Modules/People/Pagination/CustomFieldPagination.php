@@ -89,6 +89,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         $filter->setName('Active: Yes')
             ->setGroup('Active')
             ->setContentKey('isActive')
+            ->setExactMatch()
             ->setValue(true);
         $row->addFilter($filter);
 
@@ -96,6 +97,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         $filter->setName('Active: No')
             ->setGroup('Active')
             ->setContentKey('isActive')
+            ->setExactMatch()
             ->setValue(false);
         $row->addFilter($filter);
 

@@ -129,6 +129,8 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'Religion',
                     'required' => false,
+                    'choice_translation_domain' => false,
+                    'choice_list_prefix' => false,
                 ]
             )
             ->add('citizenship1', CountryType::class,
