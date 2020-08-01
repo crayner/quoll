@@ -31,6 +31,7 @@ export default class Messages extends Component {
     }
 
     render() {
+        let displayed = []
         let cells = Object.keys(this.state.messages).map(key => {
             let message = this.state.messages[key]
             if (typeof message !== 'undefined') {
@@ -48,6 +49,10 @@ export default class Messages extends Component {
                 if (typeof message.close === 'undefined')
                     message.close = true
                 message['id'] = key
+                if (displayed.includes(message.message)) {
+                    return null
+                }
+                displayed.push(message.message)
                 return <Message
                     message={message}
                     translate={this.translate}
