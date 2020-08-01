@@ -22,6 +22,7 @@ use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\PersonalDocumentation;
+use App\Modules\System\Manager\SettingFactory;
 use App\Util\ParameterBagHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -30,6 +31,7 @@ use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -61,6 +63,7 @@ class PersonalDocumentationType extends AbstractType
                     'file_prefix' => 'personal_' . $person->getSurname(),
                     'image_method' => 'getPersonalImage',
                     'entity' => $options['data'],
+                    'required' => false,
                     'delete_route' => $options['remove_personal_image'],
                 ]
             )
@@ -68,6 +71,7 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'First Language',
                     'placeholder' => ' ',
+                    'required' => false,
                     'preferred_choices' => ParameterBagHelper::get('preferred_languages'),
                 ]
             )
@@ -75,6 +79,7 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'Second Language',
                     'placeholder' => ' ',
+                    'required' => false,
                     'preferred_choices' => ParameterBagHelper::get('preferred_languages'),
                 ]
             )
@@ -82,6 +87,7 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'Third Language',
                     'placeholder' => ' ',
+                    'required' => false,
                     'preferred_choices' => ParameterBagHelper::get('preferred_languages'),
                 ]
             )
@@ -89,12 +95,14 @@ class PersonalDocumentationType extends AbstractType
                 [
                     'label' => 'Date of Birth',
                     'input' => 'datetime_immutable',
+                    'required' => false,
                 ]
             )
             ->add('countryOfBirth', CountryType::class,
                 [
                     'label' => 'Country of Birth',
                     'placeholder' => ' ',
+                    'required' => false,
                     'alpha3' => true,
                     'preferred_choices' => ParameterBagHelper::get('preferred_countries'),
                 ]
@@ -106,36 +114,97 @@ class PersonalDocumentationType extends AbstractType
                     'file_prefix' => 'dob_cert_' . $person->getSurname(),
                     'image_method' => 'getBirthCertificateScan',
                     'entity' => $options['data'],
+                    'required' => false,
                     'delete_route' => $options['remove_birth_certificate_scan'],
                 ]
             )
             ->add('ethnicity', EnumType::class,
                 [
                     'label' => 'Ethnicity',
+                    'required' => false,
                     'placeholder' => ' ',
+                ]
+            )
+            ->add('religion', EnumType::class,
+                [
+                    'label' => 'Religion',
+                    'required' => false,
                 ]
             )
             ->add('citizenship1', CountryType::class,
                 [
-                    'label' => 'Citizenship 1',
+                    'label' => 'Citizenship',
+                    'help' => 'This citizenship will be used by the school if/when required.',
                     'placeholder' => ' ',
                     'alpha3' => true,
+                    'required' => false,
                     'preferred_choices' => ParameterBagHelper::get('preferred_countries'),
                 ]
             )
             ->add('citizenship1Passport', TextType::class,
                 [
-                    'label' => 'Citizenship 1 Passport Number',
+                    'label' => 'Citizenship Passport Number',
+                    'required' => false,
                 ]
             )
             ->add('citizenship1PassportScan', ReactFileType::class,
                 [
                     'label' => 'Citizenship 1 Passport Scan',
                     'help' => 'The scan can be an image or a pdf, up to 2MB in size.',
+                    'required' => false,
                     'file_prefix' => 'passport_' . $person->getSurname(),
                     'image_method' => 'getCitizenship1PassportScan',
                     'entity' => $options['data'],
                     'delete_route' => $options['remove_passport_scan'],
+                ]
+            )
+            ->add('citizenship2', CountryType::class,
+                [
+                    'label' => '2nd Citizenship',
+                    'placeholder' => ' ',
+                    'alpha3' => true,
+                    'required' => false,
+                    'preferred_choices' => ParameterBagHelper::get('preferred_countries'),
+                ]
+            )
+            ->add('citizenship2Passport', TextType::class,
+                [
+                    'label' => '2nd Citizenship Passport Number',
+                    'required' => false,
+                ]
+            )
+            ->add('nationalIDCardNumber', TextType::class,
+                [
+                    'label' => '{National} Identification Card Number',
+                    'label_translation_parameters' => ['{National}' => Countries::getAlpha3Name(SettingFactory::getSettingManager()->get('System','country', 'AUS'))],
+                    'required' => false,
+                ]
+            )
+            ->add('nationalIDCardScan', ReactFileType::class,
+                [
+                    'label' => '{National} Identification Card Scan',
+                    'label_translation_parameters' => ['{National}' => Countries::getAlpha3Name(SettingFactory::getSettingManager()->get('System','country', 'AUS'))],
+                    'help' => 'The scan can be an image or a pdf, up to 2MB in size.',
+                    'required' => false,
+                    'file_prefix' => 'id_card_' . $person->getSurname(),
+                    'image_method' => 'getNationalIDCardScan',
+                    'entity' => $options['data'],
+                    'delete_route' => $options['remove_id_card_scan'],
+                ]
+            )
+            ->add('residencyStatus', TextType::class,
+                [
+                    'label' => '{National} Residency/Visa Type',
+                    'label_translation_parameters' => ['{National}' => Countries::getAlpha3Name(SettingFactory::getSettingManager()->get('System','country', 'AUS'))],
+                    'required' => false,
+                ]
+            )
+            ->add('visaExpiryDate', DateType::class,
+                [
+                    'label' => '{National} Visa Expiry Date',
+                    'label_translation_parameters' => ['{National}' => Countries::getAlpha3Name(SettingFactory::getSettingManager()->get('System','country', 'AUS'))],
+                    'required' => false,
+                    'input' => 'datetime_immutable',
                 ]
             )
             ->add('submit', SubmitType::class)
@@ -160,6 +229,7 @@ class PersonalDocumentationType extends AbstractType
             [
                 'remove_birth_certificate_scan',
                 'remove_passport_scan',
+                'remove_id_card_scan',
                 'remove_personal_image'
             ]
         );

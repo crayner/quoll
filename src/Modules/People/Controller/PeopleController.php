@@ -203,6 +203,7 @@ class PeopleController extends AbstractPageController
                     'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['documentation' => $person->getPersonalDocumentation()->getId()]),
                     'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['documentation' => $person->getPersonalDocumentation()->getId()]),
                     'remove_personal_image' => $this->generateUrl('remove_personal_image', ['documentation' => $person->getPersonalDocumentation()->getId()]),
+                    'remove_id_card_scan' => $this->generateUrl('remove_id_card_scan', ['documentation' => $person->getPersonalDocumentation()->getId()]),
                 ]
             );
             $panel = new Panel('Documentation', 'People', new Section('form', 'Documentation'));

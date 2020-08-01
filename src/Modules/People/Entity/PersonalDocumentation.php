@@ -366,7 +366,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function setBirthCertificateScan(?string $birthCertificateScan): PersonalDocumentation
     {
-        if ($birthCertificateScan === null && $this->birthCertificateScan !== null) return $this;
+        if ($birthCertificateScan === null) return $this;
         $this->birthCertificateScan = $birthCertificateScan;
         return $this;
     }
@@ -465,7 +465,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function setCitizenship1PassportScan(?string $citizenship1PassportScan): PersonalDocumentation
     {
-        if (null === $this->citizenship1PassportScan) return $this;
+        if (null === $citizenship1PassportScan) return $this;
 
         $this->citizenship1PassportScan = $citizenship1PassportScan;
         return $this;
@@ -542,7 +542,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public static function getReligionList(): array
     {
-        return SettingFactory::getSettingManager()->getSettingByScopeAsArray('User Admin', 'religions');
+        return SettingFactory::getSettingManager()->get('People', 'religions', []);
     }
 
     /**
@@ -577,7 +577,9 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function setNationalIDCardScan(?string $nationalIDCardScan): PersonalDocumentation
     {
-        $this->nationalIDCardScan = mb_substr($nationalIDCardScan, 0, 191);
+        if (null === $nationalIDCardScan) return $this;
+
+        $this->nationalIDCardScan = $nationalIDCardScan;
         return $this;
     }
 
@@ -664,6 +666,17 @@ class PersonalDocumentation extends AbstractEntity
     public function removePersonalImage(): PersonalDocumentation
     {
         $this->personalImage = null;
+        return $this;
+    }
+
+    /**
+     * removePersonalImage
+     * @return $this
+     * 20/07/2020 13:39
+     */
+    public function removeIDCardImage(): PersonalDocumentation
+    {
+        $this->nationalIDCardScan = null;
         return $this;
     }
 

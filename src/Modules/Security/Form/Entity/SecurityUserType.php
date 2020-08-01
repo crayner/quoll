@@ -98,6 +98,7 @@ class SecurityUserType extends AbstractType
                     'help_translation_parameters' => ['{name}' => $locale->getName()],
                     'class' => Locale::class,
                     'choice_label' => 'name',
+                    'required' => false,
                     'placeholder' => 'Over ride Locale...',
                     'visible_values' => ['can_login'],
                     'visible_parent' => 'security_user_canLogin',
@@ -115,6 +116,7 @@ class SecurityUserType extends AbstractType
                 [
                     'label' => 'User name',
                     'visible_values' => ['can_login'],
+                    'required' => false,
                     'visible_parent' => 'security_user_canLogin',
                 ]
             )
@@ -122,6 +124,7 @@ class SecurityUserType extends AbstractType
                 [
                     'label' => 'Force Reset Password',
                     'help' => 'User will be prompted on next login.',
+                    'required' => false,
                     'visible_values' => ['can_login'],
                     'visible_parent' => 'security_user_canLogin',
                 ]
@@ -130,8 +133,10 @@ class SecurityUserType extends AbstractType
                 [
                     'label' => 'Primary Role',
                     'choices' => $hierarchy,
+                    'required' => false,
                     'help' => 'Controls what a user can do and see.',
                     'multiple' => true,
+                    'expanded' => true,
                     'placeholder' => 'Please select...',
                     'visible_values' => ['can_login'],
                     'visible_parent' => 'security_user_canLogin',

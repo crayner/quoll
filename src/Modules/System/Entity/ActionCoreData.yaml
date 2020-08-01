@@ -339,6 +339,10 @@
             - contact_edit
             - security_user_edit
             - personal_documentation_edit
+            - remove_passport_scan
+            - remove_id_card_scan
+            - remove_personal_image
+            - remove_birth_certificate_scan
     entryRoute: people_list
     entrySidebar: true
     menuShow: true
@@ -456,10 +460,10 @@
             - family_add
             - family_edit
             - family_relationships
-            - family_adult_edit
-            - family_adult_sort
-            - family_adult_add
-            - family_adult_remove
+            - family_care_giver_edit
+            - family_care_giver_sort
+            - family_care_giver_add
+            - family_care_giver_remove
             - family_student_edit
             - family_student_add
             - family_student_remove
@@ -605,6 +609,7 @@
             - custom_field_add
             - custom_field_delete
             - custom_field_filter_save
+            - custom_field_sort
     entryRoute: custom_field_list
     entrySidebar: true
     menuShow: true

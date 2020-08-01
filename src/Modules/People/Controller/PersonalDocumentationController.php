@@ -74,6 +74,7 @@ class PersonalDocumentationController extends PeopleController
                 'remove_birth_certificate_scan' => $this->generateUrl('remove_birth_certificate_scan', ['documentation' => $documentation->getId()]),
                 'remove_passport_scan' => $this->generateUrl('remove_passport_scan', ['documentation' => $documentation->getId()]),
                 'remove_personal_image' => $this->generateUrl('remove_personal_image', ['documentation' => $documentation->getId()]),
+                'remove_id_card_scan' => $this->generateUrl('remove_id_card_scan', ['documentation' => $documentation->getId()])
             ]
         );
     }
@@ -157,6 +158,23 @@ class PersonalDocumentationController extends PeopleController
     public function removePassportScan(PersonalDocumentation $documentation)
     {
         $documentation->removeCitizenship1PassportScan();
+
+        $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * removePassportScan
+     * @param PersonalDocumentation $documentation
+     * @Route("/personal/documentation/{documentation}/id/card/scan/remove/",name="remove_id_card_scan")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     * 1/08/2020 15:28
+     */
+    public function removeIDCardScan(PersonalDocumentation $documentation)
+    {
+        $documentation->removeIDCardScan();
 
         $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
 

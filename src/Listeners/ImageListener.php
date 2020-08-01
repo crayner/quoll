@@ -136,6 +136,9 @@ class ImageListener implements EventSubscriber
             if (key_exists('citizenship1PassportScan', $changeSet)) {
                 ImageHelper::deleteImage($changeSet['citizenship1PassportScan'][0]);
             }
+            if (key_exists('nationalIDCardScan', $changeSet)) {
+                ImageHelper::deleteImage($changeSet['nationalIDCardScan'][0]);
+            }
         }
 
     }
