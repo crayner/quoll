@@ -47,7 +47,7 @@ class YearGroupController extends AbstractPageController
      */
     public function list(YearGroupPagination $pagination, array $data = [])
     {
-        $content = ProviderFactory::getRepository(YearGroup::class)->findBy([],['sequenceNumber' => 'ASC']);
+        $content = ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']);
         $pagination->setContent($content)
             ->setAddElementRoute($this->generateUrl('year_group_add'))
             ->setDraggableSort()
@@ -154,8 +154,8 @@ class YearGroupController extends AbstractPageController
     public function sort(YearGroup $source, YearGroup $target, YearGroupPagination $pagination)
     {
         $sort = new EntitySortManager();
-        $sort->setIndexName('sequence_number')
-            ->setSortField('sequenceNumber')
+        $sort->setIndexName('sort_order')
+            ->setSortField('sortOrder')
             ->execute($source, $target, $pagination);
         
         return new JsonResponse($sort->getDetails(), 200);

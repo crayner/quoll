@@ -44,7 +44,7 @@ class YearGroupRepository extends ServiceEntityRepository
     public function findCurrentYearGroups(): array
     {
         return $this->createQueryBuilder('yg')
-            ->orderBy('yg.sequenceNumber', 'ASC')
+            ->orderBy('yg.sortOrder', 'ASC')
             ->getQuery()
             ->getResult();
         ;
@@ -103,12 +103,12 @@ class YearGroupRepository extends ServiceEntityRepository
      * @return int
      * 2/06/2020 16:53
      */
-    public function findNextSequence(): int
+    public function findNextSortOrder(): int
     {
         try {
             return intval($this->createQueryBuilder('y')
-                ->select(['y.sequenceNumber'])
-                ->orderBy('y.sequenceNumber', 'DESC')
+                ->select('y.sortOrder')
+                ->orderBy('y.sortOrder', 'DESC')
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleScalarResult()) + 1;

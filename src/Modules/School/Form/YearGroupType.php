@@ -20,6 +20,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\YearGroup;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -40,7 +41,7 @@ class YearGroupType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $personRepository = ProviderFactory::getRepository(Person::class);
+        $repository = ProviderFactory::getRepository(Staff::class);
         $builder
             ->add('ygheader', HeaderType::class,
                 [
@@ -61,20 +62,20 @@ class YearGroupType extends AbstractType
                     'translation_domain' => 'messages',
                 ]
             )
-            ->add('sequenceNumber', HiddenType::class,
+            ->add('sortOrder', HiddenType::class,
                 [
-                    'data' => intval($options['data']->getSequenceNumber()) > 0 ? $options['data']->getSequenceNumber() : YearGroup::getNextSequence(),
+                    'data' => intval($options['data']->getSortOrder()) > 0 ? $options['data']->getSortOrder() : YearGroup::getNextSortOrder(),
                 ]
             )
             ->add('headOfYear', EntityType::class,
                 [
                     'label' => 'Head of Year',
                     'required' => false,
-                    'class' => Person::class,
+                    'class' => Staff::class,
                     'choice_label' => 'fullNameReversed',
                     'placeholder' => ' ',
                     'choice_translation_domain' => false,
-                    'query_builder' => $personRepository->getStaffQueryBuilder(),
+                    'query_builder' => $repository->getStaffQuery(),
                 ]
             )
             ->add('submit', SubmitType::class)

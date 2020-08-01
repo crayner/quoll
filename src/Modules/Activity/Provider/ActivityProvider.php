@@ -14,23 +14,20 @@
  * Date: 11/02/2020
  * Time: 14:24
  */
-
 namespace App\Modules\Activity\Provider;
 
-use App\Manager\Traits\EntityTrait;
-use App\Provider\EntityProviderInterface;
+use App\Provider\AbstractProvider;
 use App\Modules\Activity\Entity\Activity;
 
 /**
  * Class ActivityProvider
  * @package App\Modules\Activity\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class ActivityProvider implements EntityProviderInterface
+class ActivityProvider extends AbstractProvider
 {
-    use EntityTrait;
-
     /**
      * @var string
      */
-    private $entityName = Activity::class;
+    protected $entityName = Activity::class;
 }

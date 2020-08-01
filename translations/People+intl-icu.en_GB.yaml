@@ -583,6 +583,15 @@ personaldocumentation:
         southern european: Southern European
         sub-saharan african: Sub-Saharan African
         western european: Western European
+    religion:
+        '': ''
+        buddhism: Buddhism
+        christianity: Christianity
+        hinduism: Hinduism
+        islam: Islam
+        judaism: Judaism
+        'nonreligious/agnostic/atheist': 'Non Religious/Agnostic/Atheist'
+        other: Other
 Add to Care Giver: Add to Care Giver
 Add to Student: Add to Student
 Care Giver Details: 'Care Giver Details'
@@ -611,3 +620,10 @@ Edit care_giver: Edit Care Giver
 Name, Care Givers & Students: Name, Care Givers & Students
 This person could be a parent, guardian or emergency contact for any student.: This person could be a parent, guardian or emergency contact for any student.
 Custom Data: Custom Data
+Citizenship Passport Number: Citizenship Passport Number
+Citizenship: Citizenship
+This citizenship will be used by the school if/when required.: This citizenship will be used by the school if/when required.
+'{National} Identification Card Number': '{National} Identification Card Number'
+'{National} Identification Card Scan': '{National} Identification Card Scan'
+'{National} Residency/Visa Type': '{National} Residency/Visa Type'
+'{National} Visa Expiry Date': '{National} Visa Expiry Date'
