@@ -625,4 +625,15 @@ class Staff extends AbstractEntity
     {
         return $this->getPerson()->getFullName();
     }
+
+    /**
+     * isEqualTo
+     * @param Staff|null $staff
+     * @return bool
+     * 2/08/2020 09:22
+     */
+    public function isEqualTo(?Staff $staff): bool
+    {
+        return $staff ? $this->getPerson()->isEqualTo($staff->getPerson()) : false ;
+    }
 }

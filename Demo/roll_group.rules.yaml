@@ -8,9 +8,9 @@ associated:
     tutor:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
-        method: getPerson
+        method: getStaff
     tutor2:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
-        method: getPerson
+        method: getStaff
 

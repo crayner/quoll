@@ -14,9 +14,9 @@
                 <span style='font-size: 115%; font-weight: bold'>{{ 'Tutors'|trans }}</span><br/>
                 {% for tutor in rollGroup.tutors %}
                     {% if staffView %}
-                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.formatName({style: 'long'}) }}</a>
+                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
                     {% else %}
-                            <i>{{ tutor.formatName({style: 'long'}) }}
+                            <i>{{ tutor.getFullName() }}
                     {% endif %}
                     {% if rollGroup.tutors|length > 1 and loop.index is same as(1) %} ({{ 'Main Tutor'|trans }}){% endif %}
                     </i><br/>
@@ -26,9 +26,9 @@
                 <span style='font-size: 115%; font-weight: bold'>{{ 'Educational Assistants'|trans }}</span><br/>
                 {% for tutor in rollGroup.assistants %}
                     {% if staffView %}
-                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.formatName({style: 'long'}) }}</a>
+                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
                     {% else %}
-                        <i>{{ tutor.formatName(false, false, true) }}
+                        <i>{{ tutor.getFullName() }}
                     {% endif %}
                     </i><br/>
                 {% endfor %}

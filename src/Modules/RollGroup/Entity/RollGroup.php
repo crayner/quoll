@@ -16,7 +16,7 @@ namespace App\Modules\RollGroup\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
-use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
 use App\Provider\ProviderFactory;
@@ -90,44 +90,44 @@ class RollGroup extends AbstractEntity
     private $abbreviation;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor1",referencedColumnName="id",nullable=true)
      * @Assert\NotBlank()
      */
     private $tutor;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor2",referencedColumnName="id",nullable=true)
      */
     private $tutor2;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor3",referencedColumnName="id",nullable=true)
      */
     private $tutor3;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant1",referencedColumnName="id",nullable=true)
      */
     private $assistant;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant2",referencedColumnName="id",nullable=true)
      */
     private $assistant2;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant3",referencedColumnName="id",nullable=true)
      */
     private $assistant3;
@@ -250,108 +250,108 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getTutor(): ?Person
+    public function getTutor(): ?Staff
     {
         return $this->tutor;
     }
 
     /**
-     * @param Person|null $tutor
+     * @param Staff|null $tutor
      * @return RollGroup
      */
-    public function setTutor(?Person $tutor): RollGroup
+    public function setTutor(?Staff $tutor): RollGroup
     {
         $this->tutor = $tutor;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getTutor2(): ?Person
+    public function getTutor2(): ?Staff
     {
         return $this->tutor2;
     }
 
     /**
-     * @param Person|null $tutor2
+     * @param Staff|null $tutor2
      * @return RollGroup
      */
-    public function setTutor2(?Person $tutor2): RollGroup
+    public function setTutor2(?Staff $tutor2): RollGroup
     {
         $this->tutor2 = $tutor2;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getTutor3(): ?Person
+    public function getTutor3(): ?Staff
     {
         return $this->tutor3;
     }
 
     /**
-     * @param Person|null $tutor3
+     * @param Staff|null $tutor3
      * @return RollGroup
      */
-    public function setTutor3(?Person $tutor3): RollGroup
+    public function setTutor3(?Staff $tutor3): RollGroup
     {
         $this->tutor3 = $tutor3;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getAssistant(): ?Person
+    public function getAssistant(): ?Staff
     {
         return $this->assistant;
     }
 
     /**
-     * @param Person|null $assistant
+     * @param Staff|null $assistant
      * @return RollGroup
      */
-    public function setAssistant(?Person $assistant): RollGroup
+    public function setAssistant(?Staff $assistant): RollGroup
     {
         $this->assistant = $assistant;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getAssistant2(): ?Person
+    public function getAssistant2(): ?Staff
     {
         return $this->assistant2;
     }
 
     /**
-     * @param Person|null $assistant2
+     * @param Staff|null $assistant2
      * @return RollGroup
      */
-    public function setAssistant2(?Person $assistant2): RollGroup
+    public function setAssistant2(?Staff $assistant2): RollGroup
     {
         $this->assistant2 = $assistant2;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Staff|null
      */
-    public function getAssistant3(): ?Person
+    public function getAssistant3(): ?Staff
     {
         return $this->assistant3;
     }
 
     /**
-     * @param Person|null $assistant3
+     * @param Staff|null $assistant3
      * @return RollGroup
      */
-    public function setAssistant3(?Person $assistant3): RollGroup
+    public function setAssistant3(?Staff $assistant3): RollGroup
     {
         $this->assistant3 = $assistant3;
         return $this;
@@ -448,17 +448,17 @@ class RollGroup extends AbstractEntity
             $iterator = $this->studentEnrolments->getIterator();
             $iterator->uasort(
                 function ($a, $b) use ($sortBy) {
-                    if (!$a->getPerson() instanceof Person || !$b->getPerson() instanceof Person)
+                    if (!$a->getStaff() instanceof Staff || !$b->getStaff() instanceof Staff)
                         return 1;
 
                     if (strpos($sortBy, 'rollOrder') === 0)
-                        return ($a->getRollOrder().$a->getPerson()->getSurname().$a->getPerson()->getPreferredName() < $b->getRollOrder().$b->getPerson()->getSurname().$b->getPerson()->getPreferredName()) ? -1 : 1;
+                        return ($a->getRollOrder().$a->getStaff()->getSurname().$a->getStaff()->getPreferredName() < $b->getRollOrder().$b->getStaff()->getSurname().$b->getStaff()->getPreferredName()) ? -1 : 1;
 
                     if (strpos($sortBy, 'surname') === 0)
-                        return ($a->getPerson()->getSurname().$a->getPerson()->getPreferredName() < $b->getPerson()->getSurname().$b->getPerson()->getPreferredName()) ? -1 : 1;
+                        return ($a->getStaff()->getSurname().$a->getStaff()->getPreferredName() < $b->getStaff()->getSurname().$b->getStaff()->getPreferredName()) ? -1 : 1;
 
                     if (strpos($sortBy, 'preferredName') === 0)
-                        return ($a->getPerson()->getPreferredName().$a->getPerson()->getSurname() < $b->getPerson()->getPreferredName().$b->getPerson()->getSurname()) ? -1 : 1;
+                        return ($a->getStaff()->getPreferredName().$a->getStaff()->getSurname() < $b->getStaff()->getPreferredName().$b->getStaff()->getSurname()) ? -1 : 1;
 
                     return 1;
                 }
@@ -500,15 +500,16 @@ class RollGroup extends AbstractEntity
 
     /**
      * getFormatTutors
+     * @param string|null $style
      * @return string
      */
-    public function getFormatTutors(string $style = null): string
+    public function getFormatTutors(string $style = 'Formal'): string
     {
         $result = '';
-        $result = array_map(function (Person $person) use ($style) {
-            return $person->formatName($style);
+        $result = array_map(function (Staff $staff) use ($style) {
+            return $style === 'Reversed' ? $staff->getFullNameReversed() : $staff->getFullName();
         }, $this->getTutors());
-        return implode("<br/>\n", $result);
+        return trim(implode("<br />\n", $result), "<br />\n");
     }
 
     /**
@@ -574,72 +575,5 @@ class RollGroup extends AbstractEntity
     public function canDelete(): bool
     {
         return ProviderFactory::create(RollGroup::class)->canDelete($this);
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 17/06/2020 12:54
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__RollGroup` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` VARCHAR(10) NOT NULL,
-                    `abbreviation` VARCHAR(5) NOT NULL,
-                    `attendance` VARCHAR(1) NOT NULL DEFAULT 'Y',
-                    `website` VARCHAR(191) DEFAULT NULL,
-                    `academic_year` CHAR(36) DEFAULT NULL,
-                    `tutor1` CHAR(36) DEFAULT NULL,
-                    `tutor2` CHAR(36) DEFAULT NULL,
-                    `tutor3` CHAR(36) DEFAULT NULL,
-                    `assistant1` CHAR(36) DEFAULT NULL,
-                    `assistant2` CHAR(36) DEFAULT NULL,
-                    `assistant3` CHAR(36) DEFAULT NULL,
-                    `facility` CHAR(36) DEFAULT NULL,
-                    `next_roll_group` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name_academic_year` (`name`,`academic_year`),
-                    UNIQUE KEY `abbr_academic_year` (`abbreviation`,`academic_year`),
-                    UNIQUE KEY `tutor_academic_year` (`tutor1`,`academic_year`),
-                    KEY `academic_year` (`academic_year`),
-                    KEY `tutor1` (`tutor1`),
-                    KEY `tutor2` (`tutor2`),
-                    KEY `tutor3` (`tutor3`),
-                    KEY `assistant1` (`assistant1`),
-                    KEY `assistant2` (`assistant2`),
-                    KEY `assistant3` (`assistant3`),
-                    KEY `facility` (`facility`),
-                    KEY `next_roll_group` (`next_roll_group`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     * 17/06/2020 12:55
-     */
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__RollGroup`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`assistant1`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`assistant2`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`assistant3`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`tutor1`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`tutor2`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`tutor3`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`facility`) REFERENCES `__prefix__Facility` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`next_roll_group`) REFERENCES `__prefix__RollGroup` (`id`);';
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 17/06/2020 12:55
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
     }
 }

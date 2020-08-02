@@ -4,9 +4,15 @@
  * use displayImage($entity, string $method, string $size = '75', string $class ='') to format photo.
 #}
 
+{% dump(photo) %}
 {% if photo.fileExists %}
     <div class="text-center">
         <img title="{{ photo.title }}" class="{{ photo.class }}" src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="{{ asset(photo.fileName) }}" />
+    </div>
+    {% set x = addPageScript('components/photo_loader.html.twig', []) %}
+{% elseif photo.default is not same as(null) %}
+    <div class="text-center">
+        <img title="{{ photo.title }}" class="{{ photo.class }}" src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="{{ asset(photo.default) }}" />
     </div>
     {% set x = addPageScript('components/photo_loader.html.twig', []) %}
 {% endif %}

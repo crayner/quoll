@@ -22,6 +22,9 @@ use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class Photo implements SidebarContentInterface
 {
@@ -105,7 +108,7 @@ class Photo implements SidebarContentInterface
                 return $this->getTwig()->render('components/photo.html.twig', [
                     'photo' => $this,
                 ]);
-            } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            } catch (LoaderError | RuntimeError | SyntaxError $e) {
                 return '';
             }
         return '';
@@ -219,10 +222,17 @@ class Photo implements SidebarContentInterface
     /**
      * @return string|null
      */
-    public function getFileName(): ?string
+    public function getFileName(bool $useDefault = false): ?string
     {
         if (null === $this->fileName && null === $this->fileExists)
             $this->fileExists();
+        if ($useDefault && !$this->fileExists() && $this->getDefault() !== null) {
+            $fileName = ImageHelper::getRelativeImageURL($this->getDefault());
+            if (is_file($fileName) || $this->url_exists($fileName)) {
+                return $fileName;
+            }
+
+        }
         return $this->fileName;
     }
 
@@ -238,9 +248,9 @@ class Photo implements SidebarContentInterface
     public function getWidth(): int
     {
         if (is_null($this->width)) {
-            if (!$this->fileExists())
+            if (!$this->fileExists() && $this->getDefault() === null)
                 return $this->width = 0;
-            $info = getimagesize($this->getFileName());
+            $info = getimagesize($this->getFileName(true));
             $x = $info[0] > $info[1] ? $info[0] : $info[1];
             $x = floatval(intval($this->getSize()) / $x);
             return $this->width = intval($x * $info[0]);
@@ -287,7 +297,7 @@ class Photo implements SidebarContentInterface
             'className' => $this->getClass(),
             'title' => $this->getTransDomain() === false ? $this->getTitle() : TranslationHelper::translate($this->getTitle(), [], $this->getTransDomain()),
             'url' => $this->fileExists() ? ImageHelper::getAbsoluteImageURL('File', $this->getEntity()->$method()) : ($this->getDefault() ?: ''),
-            'exists' => $this->fileExists(),
+            'exists' => $this->fileExists() || $this->getDefault() !== null,
         ];
     }
 

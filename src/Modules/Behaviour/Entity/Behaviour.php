@@ -14,6 +14,7 @@ namespace App\Modules\Behaviour\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
+use App\Modules\Planner\Entity\PlannerEntry;
 use App\Modules\School\Entity\AcademicYear;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -96,7 +97,7 @@ class Behaviour extends AbstractEntity
     private $followup;
 
     /**
-     * @var $plannerEntry|null
+     * @var PlannerEntry|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Planner\Entity\PlannerEntry")
      * @ORM\JoinColumn(name="planner_entry", referencedColumnName="id")
      */

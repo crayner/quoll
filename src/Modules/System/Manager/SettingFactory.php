@@ -15,7 +15,11 @@
  * Time: 11:41
  */
 namespace App\Modules\System\Manager;
-
+/**
+ * Class SettingFactory
+ * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class SettingFactory
 {
     /**
@@ -37,7 +41,7 @@ class SettingFactory
      * @return SettingManager
      * 5/07/2020 11:44
      */
-    public static function getSettingManager(): SettingManager
+    public static function getSettingManager(): ?SettingManager
     {
         return self::$instance;
     }

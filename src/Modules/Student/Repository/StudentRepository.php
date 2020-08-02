@@ -54,10 +54,9 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function findByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
     {
-        $query = $this->createQueryBuilder()
-            ->from(Person::class, 'p')
+        $query = $this->createQueryBuilder('s')
             ->select(['s', 'p','se'])
-            ->leftJoin('p.student', 's')
+            ->leftJoin('s.person', 'p')
             ->join('s.studentEnrolments', 'se')
             ->where('se.rollGroup = :rollGroup')
             ->andWhere('p.student IS NOT NULL')

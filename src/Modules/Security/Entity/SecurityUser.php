@@ -602,7 +602,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getStudent(): ?Student
     {
-        return $this->getPerson() ? $this->getPerson()->getStudent() : null ;
+        return $this->getPerson()->getStudent() ?? null ;
     }
 
     /**
@@ -612,7 +612,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getStaff(): ?Staff
     {
-        return $this->getPerson() ? $this->getPerson()->getStaff() : null ;
+        return $this->getPerson()->getStaff() ?? null ;
     }
 
     /**

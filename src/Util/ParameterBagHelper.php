@@ -14,12 +14,15 @@
  * Date: 25/05/2020
  * Time: 12:08
  */
-
 namespace App\Util;
-
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * Class ParameterBagHelper
+ * @package App\Util
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class ParameterBagHelper
 {
     /**
@@ -28,9 +31,9 @@ class ParameterBagHelper
     private static $parameterBag;
 
     /**
-     * @return ParameterBagInterface
+     * @return ParameterBagInterface|null
      */
-    public static function getParameterBag(): ParameterBagInterface
+    public static function getParameterBag(): ?ParameterBagInterface
     {
         return self::$parameterBag;
     }

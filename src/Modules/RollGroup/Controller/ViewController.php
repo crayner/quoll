@@ -54,8 +54,8 @@ class ViewController extends AbstractPageController
     public function detail(RollGroup $rollGroup, SidebarContent $sidebar, ContainerManager $manager)
     {
         if ($rollGroup->getTutor()) {
-            $image = new Photo($rollGroup->getTutor(), 'getImage240', 200, 'max200 user');
-            $sidebar->addContent($image);
+            $image = new Photo($rollGroup->getTutor()->getPerson()->getPersonalDocumentation(), 'getPersonalImage', 200, 'max200 user','/build/static/DefaultPerson.png');
+            $sidebar->addContent($image->setTitle($rollGroup->getTutor()->getFullName()));
         }
 
         $canPrint = SecurityHelper::isActionAccessible('report_students_roll_group_print');

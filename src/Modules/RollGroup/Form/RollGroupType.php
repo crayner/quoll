@@ -16,6 +16,7 @@
  */
 namespace App\Modules\RollGroup\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\DisplayType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
@@ -23,6 +24,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -70,70 +72,58 @@ class RollGroupType extends AbstractType
                     'help' => 'Needs to be unique in the academic year.',
                 ]
             )
-            ->add('tutor', EntityType::class,
+            ->add('tutor', AutoSuggestEntityType::class,
                 [
                     'label' => 'Main Tutor',
-                    'class' => Person::class,
-                    'placeholder' => ' ',
-                    'choice_label' => 'fullNameReversed',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
-            ->add('tutor2', EntityType::class,
+            ->add('tutor2', AutoSuggestEntityType::class,
                 [
                     'label' => '2nd Tutor',
-                    'class' => Person::class,
-                    'placeholder' => ' ',
-                    'choice_label' => 'fullNameReversed',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
-            ->add('tutor3', EntityType::class,
+            ->add('tutor3', AutoSuggestEntityType::class,
                 [
                     'label' => '3rd Tutor',
-                    'class' => Person::class,
-                    'placeholder' => ' ',
-                    'choice_label' => 'fullNameReversed',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
-            ->add('assistant', EntityType::class,
+            ->add('assistant', AutoSuggestEntityType::class,
                 [
                     'label' => 'Educational Assistant',
-                    'class' => Person::class,
-                    'choice_label' => 'fullNameReversed',
-                    'placeholder' => ' ',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
-            ->add('assistant2', EntityType::class,
+            ->add('assistant2', AutoSuggestEntityType::class,
                 [
                     'label' => '2nd Educational Assistant',
-                    'class' => Person::class,
-                    'placeholder' => ' ',
-                    'choice_label' => 'fullNameReversed',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
-            ->add('assistant3', EntityType::class,
+            ->add('assistant3', AutoSuggestEntityType::class,
                 [
                     'label' => '3rd Educational Assistant',
-                    'class' => Person::class,
-                    'choice_label' => 'fullNameReversed',
-                    'placeholder' => ' ',
-                    'choice_loader' => new CallbackChoiceLoader(function() {
-                        return ProviderFactory::create(Person::class)->getCurrentStaffChoiceList(true);
-                    }),
+                    'class' => Staff::class,
+                    'placeholder' => 'Type any part of the name...',
+                    'choice_label' => 'getFullNameReversed',
+                    'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
             ->add('facility', EntityType::class,
