@@ -14,6 +14,7 @@ import {openUrl, trans} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 import { isEmpty } from '../component/isEmpty'
 import Parser from 'html-react-parser'
+import RollGroupStudents from './Special/RollGroupStudents'
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -612,6 +613,13 @@ export default class PaginationApp extends Component {
 
     render () {
         this.storeFilter()
+
+        if (this.row.special !== false) {
+            if (this.row.special === 'Roll Group Students') {
+                return <RollGroupStudents row={this.row} content={this.content} functions={this.functions} />
+            }
+        }
+
         return (
             <div className={'paginationApp'}>
                 {Parser(this.preContent)}

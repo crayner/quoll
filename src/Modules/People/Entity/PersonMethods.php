@@ -27,9 +27,9 @@ trait PersonMethods
      * @return string
      * 27/07/2020 10:31
      */
-    public function getFullName(): string
+    public function getFullName(string $style = 'Standard'): string
     {
-        return $this->getPerson()->formatName('Standard');
+        return $this->getPerson()->formatName($style);
     }
 
     /**

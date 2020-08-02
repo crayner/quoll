@@ -24,6 +24,7 @@ use App\Controller\AbstractPageController;
 use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\RollGroup\Form\DetailStudentSortType;
+use App\Modules\RollGroup\Pagination\RollGroupStudentsPagination;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
@@ -45,13 +46,14 @@ class ViewController extends AbstractPageController
      * @param RollGroup $rollGroup
      * @param SidebarContent $sidebar
      * @param ContainerManager $manager
+     * @param RollGroupStudentsPagination $pagination
      * @return Response
      * @Route("/roll/group/{rollGroup}/detail/",name="roll_group_detail")
      * @IsGranted("ROLE_ROUTE")
      * @todo This method is not finished.
      * 17/06/2020 12:39
      */
-    public function detail(RollGroup $rollGroup, SidebarContent $sidebar, ContainerManager $manager)
+    public function detail(RollGroup $rollGroup, SidebarContent $sidebar, ContainerManager $manager, RollGroupStudentsPagination $pagination)
     {
         if ($rollGroup->getTutor()) {
             $image = new Photo($rollGroup->getTutor()->getPerson()->getPersonalDocumentation(), 'getPersonalImage', 200, 'max200 user','/build/static/DefaultPerson.png');
@@ -80,7 +82,6 @@ class ViewController extends AbstractPageController
                     'form' => $form->createView(),
                     'canPrint' => $canPrint,
                     'canViewStudents' => $canViewStudents,
-                    'students' => ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy),
                 ]
             )
         );
@@ -88,14 +89,22 @@ class ViewController extends AbstractPageController
         $panel = new Panel('Roll Group', 'RollGroup', $section);
 
         $container = new Container('Roll Group');
-        $container->addPanel($panel);
+        $container->addForm('Roll Group', $form->createView());
 
         if ($canViewStudents) {
-            $manager->singlePanel($form->createView());
+            $students = ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy);
+            $pagination->setContent($students);
+            $panel->addSection(new Section('pagination', $pagination));
         }
+        $container->addPanel($panel);
 
+        $manager->addContainer($container);
         return $this->getPageManager()
-            ->createBreadcrumbs('Roll Groups')
+            ->createBreadcrumbs(['View Roll Group {name}', ['{name}' => $rollGroup->getName()]],
+                [
+                    ['uri' => 'roll_group_list', 'name' => 'Roll Groups'],
+                ]
+            )
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
 }

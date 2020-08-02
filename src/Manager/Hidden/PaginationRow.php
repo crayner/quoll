@@ -55,6 +55,11 @@ class PaginationRow
     private $addElement = ['Add', [], 'messages'];
 
     /**
+     * @var bool|string
+     */
+    private $special = false;
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -181,6 +186,7 @@ class PaginationRow
             'search' => $this->isSearch(),
             'filterGroups' => $this->isFilterGroups(),
             'defaultFilter' => $this->getDefaultFilter(),
+            'special' => $this->getSpecial(),
         ];
     }
 
@@ -275,6 +281,24 @@ class PaginationRow
     public function setAddElement(array $addElement): PaginationRow
     {
         $this->addElement = $addElement;
+        return $this;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
+    /**
+     * @param bool|string $special
+     * @return PaginationRow
+     */
+    public function setSpecial($special): PaginationRow
+    {
+        $this->special = $special;
         return $this;
     }
 

@@ -50,7 +50,9 @@ class RollGroupVoter extends RouteVoter
                     $token->getUser()->getPerson()->isRegistrar() ||
                     $token->getUser()->getStaff()->isEqualTo($subject->getTutor()) ||
                     $token->getUser()->getStaff()->isEqualTo($subject->getTutor2()) ||
-                    $token->getUser()->getStaff()->isEqualTo($subject->getTutor3())) {
+                    $token->getUser()->getStaff()->isEqualTo($subject->getTutor3()) ||
+                    $token->getUser()->isSuperUser()
+                ) {
                     return $vote;
                 }
 

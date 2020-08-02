@@ -17,6 +17,7 @@
 namespace App\Modules\Student\Repository;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -55,8 +56,9 @@ class StudentRepository extends ServiceEntityRepository
     public function findByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
     {
         $query = $this->createQueryBuilder('s')
-            ->select(['s', 'p','se'])
+            ->select(["s.id","CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS reversed_name","CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Preferred').") AS full_name",'se.rollOrder', "COALESCE(d.personalImage, 'build/static/DefaultPerson.png') AS photo",'p.id as person_id'])
             ->leftJoin('s.person', 'p')
+            ->leftJoin('p.personalDocumentation', 'd')
             ->join('s.studentEnrolments', 'se')
             ->where('se.rollGroup = :rollGroup')
             ->andWhere('p.student IS NOT NULL')

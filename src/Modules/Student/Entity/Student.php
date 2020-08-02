@@ -26,6 +26,7 @@ use App\Modules\People\Entity\PersonMethods;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\Theme;
+use App\Util\ImageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -602,9 +603,20 @@ class Student extends AbstractEntity
         return $this;
     }
 
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     * 2/08/2020 15:30
+     */
     public function toArray(?string $name = null): array
     {
-        // TODO: Implement toArray() method.
+        return [
+            'id' => $this->getId(),
+            'full_name' => $this->getFullName('Preferred'),
+            'reverse_name' => $this->getFullNameReversed(),
+            'photo' => $this->getPerson()->getPersonalDocumentation()->getPersonalImage(),
+        ];
     }
 
     /**
