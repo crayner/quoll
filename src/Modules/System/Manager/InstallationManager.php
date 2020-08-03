@@ -18,7 +18,7 @@ namespace App\Modules\System\Manager;
 
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Form\Entity\MySQLSettings;

@@ -1,5 +1,13 @@
 -
     findBy:
+        entryRoute: scale_list
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Assess
+    target: module
+-
+    findBy:
         entryRoute: alert_level_list
     source:
         table: App\Modules\System\Entity\Module
@@ -32,7 +40,7 @@
     target: module
 -
     findBy:
-        entryRoute: scale_list
+        entryRoute: scale_list_school
     source:
         table: App\Modules\System\Entity\Module
         findBy:

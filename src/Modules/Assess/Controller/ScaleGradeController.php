@@ -14,15 +14,15 @@
  * Date: 1/06/2020
  * Time: 11:20
  */
-namespace App\Modules\School\Controller;
+namespace App\Modules\Assess\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Modules\School\Entity\Scale;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\Scale;
+use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Form\ScaleGradeType;
-use App\Modules\School\Pagination\ScaleGradePagination;
+use App\Modules\Assess\Pagination\ScaleGradePagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ScaleGradeController
- * @package App\Modules\School\Controller
+ * @package App\Modules\Assess\Controller
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleGradeController extends AbstractPageController

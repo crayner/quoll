@@ -14,7 +14,7 @@
  * Date: 10/01/2020
  * Time: 08:26
  */
-namespace App\Modules\School\Pagination;
+namespace App\Modules\Assess\Pagination;
 
 use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
@@ -26,7 +26,7 @@ use App\Util\TranslationHelper;
 
 /**
  * Class ScalePagination
- * @package App\Modules\School\Pagination
+ * @package App\Modules\Assess\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScalePagination extends AbstractPaginationManager
@@ -37,7 +37,7 @@ class ScalePagination extends AbstractPaginationManager
      */
     public function execute(): PaginationInterface
     {
-        TranslationHelper::setDomain('School');
+        TranslationHelper::setDomain('Assess');
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
@@ -92,6 +92,7 @@ class ScalePagination extends AbstractPaginationManager
         $filter->setName('Active: Yes')
             ->setContentKey('isActive')
             ->setGroup('Active')
+            ->setExactMatch()
             ->setValue(true);
         $row->addFilter($filter);
 
@@ -99,8 +100,11 @@ class ScalePagination extends AbstractPaginationManager
         $filter->setName('Active: No')
             ->setGroup('Active')
             ->setContentKey('isActive')
+            ->setExactMatch()
             ->setValue(false);
         $row->addFilter($filter);
+
+        $row->addHighlight(['className' => 'warning', 'columnKey' => 'isActive', 'columnValue' => false]);
 
         $this->setRow($row);
         return $this;

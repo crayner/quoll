@@ -14,18 +14,18 @@
  * Date: 10/01/2020
  * Time: 07:58
  */
+namespace App\Modules\Assess\Provider;
 
-namespace App\Modules\School\Provider;
-
-use App\Modules\School\Entity\Scale;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\Scale;
+use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Repository\ScaleRepository;
 use App\Provider\AbstractProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class ScaleProvider
- * @package App\Modules\School\Provider
+ * @package App\Modules\Assess\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleProvider extends AbstractProvider
 {

@@ -2,83 +2,83 @@
     findBy:
         abbreviation: 'IBEE'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: E }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: '%'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: '50%' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'FLG'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 'E-' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'SLG'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 'D' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'ICHK'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 4 }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'Comp'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 'Complete' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'CAT'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 101 }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: 'KS3'
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: '4C' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: GPrd
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 'F' }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: IBDS
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 3 }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: IBDT
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 23 }
     target: lowestAcceptable
 -
     findBy:
         abbreviation: KS3S
     source:
-        table: App\Modules\School\Entity\ScaleGrade
+        table: App\Modules\Assess\Entity\ScaleGrade
         findBy: { scale: use_target_entity, value: 4 }
     target: lowestAcceptable

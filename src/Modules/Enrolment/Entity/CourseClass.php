@@ -16,7 +16,7 @@ namespace App\Modules\Enrolment\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Curriculum\Entity\Course;
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use App\Modules\Timetable\Entity\TTDayRowClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -88,7 +88,7 @@ class CourseClass extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale")
      * @ORM\JoinColumn(name="scale", referencedColumnName="id")
      */
     private $scale;

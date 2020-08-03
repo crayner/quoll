@@ -15,7 +15,7 @@ namespace App\Modules\Curriculum\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\ScaleGrade;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -65,7 +65,7 @@ class RubricColumn extends AbstractEntity
 
     /**
      * @var ScaleGrade|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ScaleGrade")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\ScaleGrade")
      * @ORM\JoinColumn(name="scale_grade", referencedColumnName="id")
      */
     private $scaleGrade;

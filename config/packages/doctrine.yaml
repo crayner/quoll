@@ -3,7 +3,7 @@ parameters:
     # This allows you to run cache:warmup even if your
     # environment variables are not available yet.
     # You should not need to change this value.
-    env(DATABASE_URL): ''
+    # env(DATABASE_URL): ''
 
 doctrine:
     dbal:
@@ -41,6 +41,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Modules/Activity/Entity'
                 prefix: 'App\Modules\Activity\Entity'
                 alias: Activity
+            Assess:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Modules/Assess/Entity'
+                prefix: 'App\Modules\Assess\Entity'
+                alias: Assess
             Attendance:
                 is_bundle: false
                 type: annotation

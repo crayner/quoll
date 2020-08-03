@@ -17,7 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
 use App\Modules\Department\Entity\Department;
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -102,7 +102,7 @@ class Rubric extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale")
      * @ORM\JoinColumn(name="scale", referencedColumnName="id")
      */
     private $scale;

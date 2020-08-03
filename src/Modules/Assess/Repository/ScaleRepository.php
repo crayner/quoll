@@ -11,16 +11,16 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Repository;
+namespace App\Modules\Assess\Repository;
 
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class ScaleRepository
- * @package App\Modules\School\Repository
+ * @package App\Modules\Assess\Repository
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleRepository extends ServiceEntityRepository
 {

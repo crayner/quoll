@@ -14,18 +14,18 @@
  * Date: 1/06/2020
  * Time: 10:52
  */
-namespace App\Modules\School\Controller;
+namespace App\Modules\Assess\Controller;
 
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\School\Entity\Scale;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\Scale;
+use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Form\ScaleType;
-use App\Modules\School\Pagination\ScaleGradePagination;
-use App\Modules\School\Pagination\ScalePagination;
+use App\Modules\Assess\Pagination\ScaleGradePagination;
+use App\Modules\Assess\Pagination\ScalePagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
@@ -35,7 +35,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ScaleController
- * @package App\Modules\School\Controller
+ * @package App\Modules\Assess\Controller
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleController extends AbstractPageController
@@ -47,6 +47,7 @@ class ScaleController extends AbstractPageController
      * @return JsonResponse
      * 1/06/2020 10:56
      * @Route("/scale/list/", name="scale_list")
+     * @Route("/scale/list/", name="scale_list_school")
      * @IsGranted("ROLE_ROUTE")
      */
     public function list(ScalePagination $pagination, array $data = [])

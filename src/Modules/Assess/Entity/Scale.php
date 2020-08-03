@@ -11,12 +11,11 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Entity;
+namespace App\Modules\Assess\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;
-use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,8 +26,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Scale
- * @package App\Modules\School\Entity
- * @ORM\Entity(repositoryClass="App\Modules\School\Repository\ScaleRepository")
+ * @package App\Modules\Assess\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Assess\Repository\ScaleRepository")
  * @ORM\Table(name="Scale",
  *     indexes={@ORM\Index(name="lowest_acceptable",columns={"lowest_acceptable"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),

@@ -18,8 +18,8 @@ namespace App\Modules\School\Form;
 
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
-use App\Modules\School\Entity\Scale;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\Scale;
+use App\Modules\Assess\Entity\ScaleGrade;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

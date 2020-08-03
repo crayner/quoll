@@ -17,7 +17,7 @@
 namespace App\Modules\MarkBook\Repository;
 
 use App\Modules\MarkBook\Entity\MarkBookTarget;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\ScaleGrade;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;

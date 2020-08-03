@@ -14,12 +14,11 @@
  * Date: 10/01/2020
  * Time: 07:59
  */
-
-namespace App\Modules\School\Provider;
+namespace App\Modules\Assess\Provider;
 
 use App\Modules\Curriculum\Entity\RubricColumn;
 use App\Modules\MarkBook\Entity\MarkBookTarget;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\ScaleGrade;
 use App\Provider\AbstractProvider;
 use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Schema\Index;
@@ -27,7 +26,8 @@ use Doctrine\DBAL\Schema\SchemaException;
 
 /**
  * Class ScaleGradeProvider
- * @package App\Modules\School\Provider
+ * @package App\Modules\Assess\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleGradeProvider extends AbstractProvider
 {

@@ -14,7 +14,7 @@
  * Date: 12/01/2020
  * Time: 16:34
  */
-namespace App\Modules\School\Pagination;
+namespace App\Modules\Assess\Pagination;
 
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
@@ -25,7 +25,7 @@ use App\Util\TranslationHelper;
 
 /**
  * Class ScaleGradePagination
- * @package App\Modules\School\Pagination
+ * @package App\Modules\Assess\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class ScaleGradePagination extends AbstractPaginationManager
@@ -36,7 +36,7 @@ class ScaleGradePagination extends AbstractPaginationManager
      */
     public function execute(): PaginationInterface
     {
-        TranslationHelper::setDomain('School');
+        TranslationHelper::setDomain('Assess');
         $row = new PaginationRow();
         $this->setTargetElement('scaleGradePaginationContent');
 

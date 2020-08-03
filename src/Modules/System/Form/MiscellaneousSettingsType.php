@@ -18,7 +18,7 @@ namespace App\Modules\System\Form;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

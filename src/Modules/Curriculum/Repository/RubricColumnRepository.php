@@ -17,7 +17,7 @@
 namespace App\Modules\Curriculum\Repository;
 
 use App\Modules\Curriculum\Entity\RubricColumn;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\ScaleGrade;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;

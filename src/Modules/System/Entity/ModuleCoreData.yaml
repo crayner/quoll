@@ -194,3 +194,17 @@
         convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
+-
+    name: Assess
+    description: 'Manage Assessment'
+    entryRoute: scale_list
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+    type: Core
+    active: true
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'https://www.craigrayner.com'

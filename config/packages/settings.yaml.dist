@@ -16,7 +16,7 @@ parameters:
             defaultAssessmentScale:
                 value: null
                 type: entity
-                class: App\Modules\School\Entity\Scale
+                class: App\Modules\Assess\Entity\Scale
             sessionDuration:
                 value: 900
                 type: integer

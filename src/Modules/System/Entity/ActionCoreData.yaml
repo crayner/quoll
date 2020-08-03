@@ -1,4 +1,26 @@
 -
+    name: Scales
+    category: Assess
+    description: 'Manage all aspects of grade scales, which are used throughout ARR to control grade input.'
+    routeList:
+        arrayField:
+            - scale_list
+            - scale_edit
+            - scale_add
+            - scale_delete
+            - scale_grade_edit
+            - scale_grade_add
+            - scale_grade_delete
+            - scale_grade_sort
+    entryRoute: scale_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+-
     name: 'Alert Levels'
     category: People
     description: 'Manage the alert levels which are used throughout the school to flag problems.'
@@ -70,15 +92,8 @@
     description: 'Manage all aspects of grade scales, which are used throughout ARR to control grade input.'
     routeList:
         arrayField:
-            - scale_list
-            - scale_edit
-            - scale_add
-            - scale_delete
-            - scale_grade_edit
-            - scale_grade_add
-            - scale_grade_delete
-            - scale_grade_sort
-    entryRoute: scale_list
+            - scale_list_school
+    entryRoute: scale_list_school
     entrySidebar: true
     menuShow: true
     precedence: null

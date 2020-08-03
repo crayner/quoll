@@ -16,7 +16,7 @@ namespace App\Modules\MarkBook\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\ScaleGrade;
+use App\Modules\Assess\Entity\ScaleGrade;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -62,7 +62,7 @@ class MarkBookTarget extends AbstractEntity
 
     /**
      * @var ScaleGrade|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ScaleGrade")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\ScaleGrade")
      * @ORM\JoinColumn(name="scale_grade", referencedColumnName="id")
      * @Assert\NotBlank()
      */

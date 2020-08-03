@@ -11,7 +11,7 @@
  * Date: 23/11/2018
  * Time: 15:27
  */
-namespace App\Modules\School\Entity;
+namespace App\Modules\Assess\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
@@ -24,8 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ScaleGrade
- * @package App\Modules\Schoo\Entity
- * @ORM\Entity(repositoryClass="App\Modules\School\Repository\ScaleGradeRepository")
+ * @package App\Modules\Assess\Entity
+ * @ORM\Entity(repositoryClass="App\Modules\Assess\Repository\ScaleGradeRepository")
  * @ORM\Table(name="ScaleGrade",
  *     indexes={@ORM\Index(name="scale",columns={"scale"})},
  *      uniqueConstraints={
@@ -48,7 +48,7 @@ class ScaleGrade extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale",inversedBy="scaleGrades")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale",inversedBy="scaleGrades")
      * @ORM\JoinColumn(name="scale", referencedColumnName="id")
      */
     private $scale;

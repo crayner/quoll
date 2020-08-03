@@ -22,7 +22,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Planner\Entity\PlannerEntry;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\AcademicYearTerm;
-use App\Modules\School\Entity\Scale;
+use App\Modules\Assess\Entity\Scale;
 use App\Modules\System\Entity\Hook;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -152,7 +152,7 @@ class MarkBookColumn extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale")
      * @ORM\JoinColumn(name="scale_attainment",referencedColumnName="id")
      */
     private $scaleAttainment;
@@ -185,7 +185,7 @@ class MarkBookColumn extends AbstractEntity
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Scale")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale")
      * @ORM\JoinColumn(name="scale_effort", referencedColumnName="id")
      */
     private $scaleEffort;
