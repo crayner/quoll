@@ -115,7 +115,6 @@ export default function PaginationContent(props) {
 
             columns.push(<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )
         })
-
         // add Actions column
         let actions = Object.keys(row.actions).map(actionKey => {
             let action = row.actions[actionKey]
@@ -153,12 +152,23 @@ export default function PaginationContent(props) {
             console.error('You must define an "id" in your pagination array.')
         }
 
-        if (draggableSort) {
-            return (
-                <tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id} draggable="true" onDragStart={(e) => drag(e)} onDragOver={(e) => allowDrop(e)} onDragEnter={(e) => toggleColour(e, true)} onDragLeave={(e) => toggleColour(e,false)}>{columns}</tr>)
+        let rowClassName = ''
+        if (row.highlight !== false) {
+            let highlights = {...row.highlight}
+            Object.keys(highlights).map(key => {
+                let highlight = highlights[key]
+                if (rowContent[highlight.columnKey] === highlight.columnValue) {
+                    rowClassName = rowClassName + ' ' + highlight.className
+                }
+            })
         }
 
-        return (<tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id}>{columns}</tr>)
+        if (draggableSort) {
+            return (
+                <tr className={rowClassName} key={rowKey} id={'pagination' + rowContent.id} draggable="true" onDragStart={(e) => drag(e)} onDragOver={(e) => allowDrop(e)} onDragEnter={(e) => toggleColour(e, true)} onDragLeave={(e) => toggleColour(e,false)}>{columns}</tr>)
+        }
+
+        return (<tr className={rowClassName} key={rowKey} id={'pagination' + rowContent.id}>{columns}</tr>)
 
     })
 

@@ -476,13 +476,39 @@ table .heading td:not(:first-child), div.table .heading .td:not(:first-child) {
     @apply bg-gray-400;
 }
 
-.striped tbody tr:hover {
-    @apply bg-gray-500;
+.striped tbody tr.error:nth-of-type(even) {
+    @apply bg-red-200 border-red-700 text-red-700;
 }
 
-.striped tbody tr.dropTarget:nth-of-type(even) {
-    @apply bg-green-200;
+.striped tbody tr.warning:nth-of-type(even) {
+    @apply bg-orange-300 border-orange-700 text-orange-700;
 }
+
+.striped tbody tr.success:nth-of-type(even) {
+    @apply bg-green-200 border-green-700 text-green-700;
+}
+
+.striped tbody tr.primary:nth-of-type(even) {
+    @apply bg-blue-700 border-blue-900 text-white;
+}
+
+.striped tbody tr.info:nth-of-type(even) {
+    @apply bg-blue-200 border-blue-700 text-blue-700;
+}
+
+.striped tbody tr:hover,
+.striped tbody tr.error:hover,
+.striped tbody tr.warning:hover,
+.striped tbody tr.success:hover,
+.striped tbody tr.info:hover,
+.striped tbody tr.primary:hover {
+    @apply bg-purple-700 border-purple-900 text-purple-200;
+}
+
+.striped tbody tr.dropTarget {
+    @apply bg-green-700 text-black border-green-900;
+}
+
 table tr, div.table div.tr {
     text-align: center;
 }
@@ -696,7 +722,8 @@ a.active {
     @apply bg-gray-100 border-gray-600 text-gray-600;
 }
 
-.info, .message {
+.info,
+.message {
     @apply bg-blue-200 border-blue-700 text-blue-700;
 }
 
@@ -718,7 +745,8 @@ a.active {
     @apply bg-gray-100 border-gray-800 text-gray-800;
 }
 
-.dull, .secondary {
+.dull,
+.secondary {
     @apply bg-gray-300 text-gray-600;
 }
 .primary {

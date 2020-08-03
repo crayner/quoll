@@ -60,6 +60,11 @@ class PaginationRow
     private $special = false;
 
     /**
+     * @var bool|array
+     */
+    private $highlight = false;
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -166,6 +171,7 @@ class PaginationRow
     /**
      * toArray
      * @return array
+     * 3/08/2020 08:51
      */
     public function toArray(): array
     {
@@ -187,6 +193,7 @@ class PaginationRow
             'filterGroups' => $this->isFilterGroups(),
             'defaultFilter' => $this->getDefaultFilter(),
             'special' => $this->getSpecial(),
+            'highlight' => $this->getHighlight(),
         ];
     }
 
@@ -302,4 +309,36 @@ class PaginationRow
         return $this;
     }
 
+    /**
+     * getHighlight
+     * @return array|bool
+     * 3/08/2020 08:50
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * setHighlight
+     * @param array $highlight
+     * @return $this
+     * 3/08/2020 08:50
+     */
+    public function addHighlight(array $highlight)
+    {
+        if (is_bool($this->getHighlight())) $this->highlight = [];
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(
+            [
+                'className',
+                'columnKey',
+                'columnValue',
+            ]
+        );
+        $resolver->setAllowedValues('className', ['error','warning','success','info','primary']);
+
+        $this->highlight[] = $resolver->resolve($highlight);
+        return $this;
+    }
 }

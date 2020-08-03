@@ -16,7 +16,7 @@ export default function Header(props) {
             const itemContent = Object.keys(items).map(key => {
                 const item = items[key]
                 return (<li className="hover:bg-purple-700" key={key}>
-                    <a className="block text-sm text-white focus:text-purple-200 text-left no-underline px-1 py-2 md:py-1 leading-normal"
+                    <a className="block text-sm text-white text-left no-underline px-1 py-2 md:py-1 leading-normal hover:text-white"
                        href={item.url}>{item.name}</a>
                 </li>)
             })
