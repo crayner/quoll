@@ -58,3 +58,9 @@ Duplicate to this Column: Duplicate to this Column
 Periods: Periods
 'Only timetable columns with no periods attached are available as targets to duplicate the source.': 'Only timetable columns with no periods attached are available as targets to duplicate the source.'
 'Source Timetable Column': 'Source Timetable Column'
+Link Type: Link Type
+This day will link to the timetable as a fixed day, or will be free to rotate days as required.: This day will link to the timetable as a fixed day, or will be free to rotate days as required.
+timetablecolumn:
+    linktype:
+        fixed: Fixed
+        rotate: Rotate

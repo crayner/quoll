@@ -2,7 +2,7 @@
     name: 'Monday'
     abbreviation: 'Mon'
     sequenceNumber: 1
-    schoolDay: 'Y'
+    schoolDay: true
     schoolOpen: { convertDate: '07:45:00'}
     schoolStart: { convertDate: '08:30:00'}
     schoolEnd: { convertDate: '15:30:00'}
@@ -11,7 +11,7 @@
     name: 'Tuesday'
     abbreviation: 'Tue'
     sequenceNumber: 2
-    schoolDay: 'Y'
+    schoolDay: true
     schoolOpen: { convertDate: '07:45:00'}
     schoolStart: { convertDate: '08:30:00'}
     schoolEnd: { convertDate: '15:30:00'}
@@ -20,7 +20,7 @@
     name: 'Wednesday'
     abbreviation: 'Wed'
     sequenceNumber: 3
-    schoolDay: 'Y'
+    schoolDay: true
     schoolOpen: { convertDate: '07:45:00'}
     schoolStart: { convertDate: '08:30:00'}
     schoolEnd: { convertDate: '15:30:00'}
@@ -29,7 +29,7 @@
     name: 'Thursday'
     abbreviation: 'Thu'
     sequenceNumber: 4
-    schoolDay: 'Y'
+    schoolDay: true
     schoolOpen: { convertDate: '07:45:00'}
     schoolStart: { convertDate: '08:30:00'}
     schoolEnd: { convertDate: '15:30:00'}
@@ -38,7 +38,7 @@
     name: 'Friday'
     abbreviation: 'Fri'
     sequenceNumber: 5
-    schoolDay: 'Y'
+    schoolDay: true
     schoolOpen: { convertDate: '07:45:00'}
     schoolStart: { convertDate: '08:30:00'}
     schoolEnd: { convertDate: '15:30:00'}
@@ -47,9 +47,9 @@
     name: 'Saturday'
     abbreviation: 'Sat'
     sequenceNumber: 6
-    schoolDay: 'N'
+    schoolDay: false
 -
     name: 'Sunday'
     abbreviation: 'Sun'
     sequenceNumber: 7
-    schoolDay: 'N'
+    schoolDay: false

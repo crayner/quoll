@@ -38,6 +38,7 @@ class TimetableDayPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
@@ -45,13 +46,15 @@ class TimetableDayPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Abbreviation')
             ->setContentKey('abbreviation')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
         $column->setLabel('Timetable Column')
-            ->setContentKey('timetable_column')
+            ->setContentKey('column')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);

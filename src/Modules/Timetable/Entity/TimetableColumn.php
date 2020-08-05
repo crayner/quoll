@@ -31,11 +31,14 @@
 namespace App\Modules\Timetable\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\School\Entity\DaysOfWeek;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TimetableColumn
@@ -62,14 +65,25 @@ class TimetableColumn extends AbstractEntity
     /**
      * @var string|null
      * @ORM\Column(length=30)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=30)
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="abbreviation")
+     * @ORM\Column(length=12,name="abbreviation")
+     * @Assert\NotBlank()
+     * @Assert\Length(max=12)
      */
     private $abbreviation;
+
+    /**
+     * @var DaysOfWeek|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\DaysOfWeek")
+     * @ORM\JoinColumn(name="day_of_the_week",nullable=true)
+     */
+    private $dayOfTheWeek;
 
     /**
      * @var Collection
@@ -142,6 +156,24 @@ class TimetableColumn extends AbstractEntity
     }
 
     /**
+     * @return DaysOfWeek|null
+     */
+    public function getDayOfTheWeek(): ?DaysOfWeek
+    {
+        return $this->dayOfTheWeek;
+    }
+
+    /**
+     * @param DaysOfWeek $dayOfTheWeek
+     * @return TimetableColumn
+     */
+    public function setDayOfTheWeek(DaysOfWeek $dayOfTheWeek): TimetableColumn
+    {
+        $this->dayOfTheWeek = $dayOfTheWeek;
+        return $this;
+    }
+
+    /**
      * getTimetableColumnPeriods
      * @return Collection
      */
@@ -206,6 +238,7 @@ class TimetableColumn extends AbstractEntity
             'periodCount' => $this->getTimetableColumnPeriods()->count(),
             'hasPeriods' => intval($this->getTimetableColumnPeriods()->count()) > 0,
             'canDelete' => true,
+            'linkType' => TranslationHelper::translate($this->getDayOfTheWeek() ? $this->getDayOfTheWeek()->getName() : 'Rotate', [], 'School'),
         ];
     }
 }

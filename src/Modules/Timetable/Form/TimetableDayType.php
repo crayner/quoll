@@ -20,6 +20,7 @@ use App\Form\Type\DisplayType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Timetable\Entity\TimetableColumn;
 use App\Modules\Timetable\Entity\TimetableDay;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -88,7 +89,12 @@ class TimetableDayType extends AbstractType
                     [
                         'label' => 'Timetable Column',
                         'class' => TimetableColumn::class,
+                        'placeholder' => 'Please select...',
                         'choice_label' => 'name',
+                        'query_builder' => function(EntityRepository $er) {
+                            return $er->createQueryBuilder('c')
+                                ->orderBy('c.name');
+                        },
                     ]
                 );
 

@@ -65,14 +65,18 @@ class ManageController extends AbstractPageController
 
     /**
      * edit
-     * @param ContainerManager $manager
+     * @param TimetableDayPagination $pagination
      * @param Timetable|null $timetable
+     * @param string $tabName
+     * @param array $messages
+     * @return JsonResponse
+     * @throws \Exception
      * @Route("/timetable/{timetable}/edit/{tabName}",name="timetable_edit")
      * @Route("/timetable/add/",name="timetable_add")
      * @IsGranted("ROLE_ROUTE")
      * 3/08/2020 14:37
      */
-    public function edit(ContainerManager $manager, TimetableDayPagination $pagination, ?Timetable $timetable = null, string $tabName = 'Details')
+    public function edit(TimetableDayPagination $pagination, ?Timetable $timetable = null, string $tabName = 'Details', array $messages = [])
     {
         if (null === $timetable) {
             $action = $this->generateUrl('timetable_add');
@@ -81,6 +85,7 @@ class ManageController extends AbstractPageController
         } else {
             $action = $this->generateUrl('timetable_edit', ['timetable' => $timetable->getId()]);
         }
+        $manager = $this->getContainerManager();
 
         $form = $this->createForm(TimetableType::class, $timetable, ['action' => $action]);
 
@@ -124,6 +129,8 @@ class ManageController extends AbstractPageController
 
         }
         return $this->getPageManager()
+            ->setMessages($messages)
+            ->setUrl($this->generateUrl('timetable_edit', ['timetable' => $timetable->getId(), 'tabName' => $tabName]))
             ->createBreadcrumbs($timetable->getId() === null ? 'Add Timetable' : ['Edit Timetable {name}', ['{name}' => $timetable->getName()], 'Timetable'])
             ->render(['containers' => $manager->getBuiltContainers()])
         ;

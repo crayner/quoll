@@ -16,8 +16,12 @@
  */
 namespace App\Modules\Timetable\Form;
 
+use App\Form\Type\EnumType;
 use App\Form\Type\ReactFormType;
+use App\Modules\School\Entity\DaysOfWeek;
 use App\Modules\Timetable\Entity\TimetableColumn;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -50,6 +54,22 @@ class TimetableColumnType extends AbstractType
                 [
                     'label' => 'Abbreviation',
                     'translation_domain' => 'messages',
+                ]
+            )
+            ->add('dayOfTheWeek', EntityType::class,
+                [
+                    'label' => 'Fix to Day',
+                    'help' => 'This day will link to the timetable as a fixed day, or, if blank, will be free to rotate to calendar days as required.',
+                    'class' => DaysOfWeek::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'Rotate',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('d')
+                            ->orderBy('d.sortOrder')
+                            ->where('d.schoolDay = :true')
+                            ->setParameter('true', true)
+                        ;
+                    },
                 ]
             )
             ->add('submit', SubmitType::class)

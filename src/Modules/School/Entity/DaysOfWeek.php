@@ -14,7 +14,7 @@
 namespace App\Modules\School\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,7 +27,7 @@ use Symfony\Component\Yaml\Yaml;
  * @ORM\Table(name="DaysOfWeek",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation",columns={"abbreviation"}),
- *     @ORM\UniqueConstraint(name="sequence_number",columns={"sequence_number"}) })
+ *     @ORM\UniqueConstraint(name="sort_order",columns={"sort_order"}) })
  * @UniqueEntity({"name"})
  * @UniqueEntity({"abbreviation"})
  * @todo Days of the Week Validator
@@ -35,8 +35,6 @@ use Symfony\Component\Yaml\Yaml;
 class DaysOfWeek extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-
-    use BooleanList;
 
     /**
      * @var string|null
@@ -68,34 +66,34 @@ class DaysOfWeek extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=7)
      */
-    private $sequenceNumber;
+    private $sortOrder;
 
     /**
-     * @var string
-     * @ORM\Column(length=1,options={"default": "Y"})
+     * @var bool
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $schoolDay = 'Y';
+    private $schoolDay = true;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolOpen;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolStart;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolEnd;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="time_immutable",nullable=true)
      */
     private $schoolClose;
@@ -159,18 +157,18 @@ class DaysOfWeek extends AbstractEntity
     /**
      * @return int|null
      */
-    public function getSequenceNumber(): ?int
+    public function getSortOrder(): ?int
     {
-        return $this->sequenceNumber;
+        return $this->sortOrder;
     }
 
     /**
-     * @param int|null $sequenceNumber
+     * @param int|null $sortOrder
      * @return DaysOfWeek
      */
-    public function setSequenceNumber(?int $sequenceNumber): DaysOfWeek
+    public function setSortOrder(?int $sortOrder): DaysOfWeek
     {
-        $this->sequenceNumber = $sequenceNumber;
+        $this->sortOrder = $sortOrder;
         return $this;
     }
 
@@ -180,30 +178,25 @@ class DaysOfWeek extends AbstractEntity
      */
     public function isSchoolDay(): bool
     {
-        return $this->getSchoolDay() === 'Y';
-    }
-    /**
-     * @return string
-     */
-    public function getSchoolDay(): string
-    {
-        return self::checkBoolean($this->schoolDay);
+        return (bool)$this->schoolDay;
     }
 
     /**
-     * @param string $schoolDay
+     * setSchoolDay
+     * @param bool|null $schoolDay
      * @return DaysOfWeek
+     * 5/08/2020 16:01
      */
-    public function setSchoolDay(string $schoolDay): DaysOfWeek
+    public function setSchoolDay(?bool $schoolDay): DaysOfWeek
     {
-        $this->schoolDay = self::checkBoolean($schoolDay);
+        $this->schoolDay = (bool)$schoolDay;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getSchoolOpen(): ?\DateTimeImmutable
+    public function getSchoolOpen(): ?DateTimeImmutable
     {
         return $this->schoolOpen;
     }
@@ -211,19 +204,19 @@ class DaysOfWeek extends AbstractEntity
     /**
      * SchoolOpen.
      *
-     * @param \DateTimeImmutable|null $schoolOpen
+     * @param DateTimeImmutable|null $schoolOpen
      * @return DaysOfWeek
      */
-    public function setSchoolOpen(?\DateTimeImmutable $schoolOpen): DaysOfWeek
+    public function setSchoolOpen(?DateTimeImmutable $schoolOpen): DaysOfWeek
     {
         $this->schoolOpen = $schoolOpen;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getSchoolStart(): ?\DateTimeImmutable
+    public function getSchoolStart(): ?DateTimeImmutable
     {
         return $this->schoolStart;
     }
@@ -231,19 +224,19 @@ class DaysOfWeek extends AbstractEntity
     /**
      * SchoolStart.
      *
-     * @param \DateTimeImmutable|null $schoolStart
+     * @param DateTimeImmutable|null $schoolStart
      * @return DaysOfWeek
      */
-    public function setSchoolStart(?\DateTimeImmutable $schoolStart): DaysOfWeek
+    public function setSchoolStart(?DateTimeImmutable $schoolStart): DaysOfWeek
     {
         $this->schoolStart = $schoolStart;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getSchoolEnd(): ?\DateTimeImmutable
+    public function getSchoolEnd(): ?DateTimeImmutable
     {
         return $this->schoolEnd;
     }
@@ -251,19 +244,19 @@ class DaysOfWeek extends AbstractEntity
     /**
      * SchoolEnd.
      *
-     * @param \DateTimeImmutable|null $schoolEnd
+     * @param DateTimeImmutable|null $schoolEnd
      * @return DaysOfWeek
      */
-    public function setSchoolEnd(?\DateTimeImmutable $schoolEnd): DaysOfWeek
+    public function setSchoolEnd(?DateTimeImmutable $schoolEnd): DaysOfWeek
     {
         $this->schoolEnd = $schoolEnd;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getSchoolClose(): ?\DateTimeImmutable
+    public function getSchoolClose(): ?DateTimeImmutable
     {
         return $this->schoolClose;
     }
@@ -271,10 +264,10 @@ class DaysOfWeek extends AbstractEntity
     /**
      * SchoolClose.
      *
-     * @param \DateTimeImmutable|null $schoolClose
+     * @param DateTimeImmutable|null $schoolClose
      * @return DaysOfWeek
      */
-    public function setSchoolClose(?\DateTimeImmutable $schoolClose): DaysOfWeek
+    public function setSchoolClose(?DateTimeImmutable $schoolClose): DaysOfWeek
     {
         $this->schoolClose = $schoolClose;
         return $this;
@@ -289,40 +282,6 @@ class DaysOfWeek extends AbstractEntity
     {
         return [];
     }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__DaysOfWeek` (
-                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` char(10) NOT NULL,
-                    `abbreviation` char(4) NOT NULL,
-                    `sequence_number` smallint(6) NOT NULL,
-                    `school_day` varchar(1) NOT NULL DEFAULT 'Y',
-                    `school_open` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_start` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_end` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_close` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `abbreviation` (`abbreviation`),
-                    UNIQUE KEY `sequence_number` (`sequence_number`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    /**
-     * getVersion
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return DaysOfWeek::VERSION;
-    }
-
     /**
      * coreData
      * @return array

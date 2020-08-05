@@ -61,6 +61,13 @@ class TimetableColumnPagination extends AbstractPaginationManager
         ;
         $row->addColumn($column);
 
+        $column = new PaginationColumn();
+        $column->setLabel('Link to')
+            ->setContentKey('linkType')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center')
+        ;
+        $row->addColumn($column);
+
         $action = new PaginationAction();
         $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')

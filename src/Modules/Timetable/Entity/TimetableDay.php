@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable",columns={"name","timetable"}),
  *     @ORM\UniqueConstraint(name="abbreviation_timetable",columns={"abbreviation","timetable"})})
  * @UniqueEntity({"name","timetable"})
- * @UniqueEntity({"abbreviation","Timetable"})
+ * @UniqueEntity({"abbreviation","timetable"})
  */
 class TimetableDay extends AbstractEntity
 {
@@ -318,8 +318,9 @@ class TimetableDay extends AbstractEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
-            'columns' => $this->getTimetableColumn()->getName(),
+            'column' => $this->getTimetableColumn()->getName(),
             'timetable' => $this->getTimetable()->getId(),
+            'canDelete' => true,
         ];
     }
 }
