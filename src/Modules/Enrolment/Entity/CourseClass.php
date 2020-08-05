@@ -17,7 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
-use App\Modules\Timetable\Entity\TTDayRowClass;
+use App\Modules\Timetable\Entity\TimetableDayRowClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,18 +100,18 @@ class CourseClass extends AbstractEntity
     private $courseClassPeople;
 
     /**
-     * @var Collection|TTDayRowClass[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TTDayRowClass", mappedBy="courseClass")
+     * @var Collection|TimetableDayRowClass[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TimetableDayRowClass",mappedBy="courseClass")
      */
-    private $TTDayRowClasses;
+    private $timetableDayRowClasses;
 
     /**
      * CourseClass constructor.
      */
     public function __construct()
     {
-        $this->TTDayRowClasses = new ArrayCollection();
-        $this->courseClassPeople = new ArrayCollection();
+        $this->setTimetableDayRowClasses(new ArrayCollection())
+            ->setCourseClassPeople(new ArrayCollection());
     }
 
     /**
@@ -284,27 +284,27 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * getTTDayRowClasses
+     * getTimetableDayRowClasses
      * @return Collection|null
      */
-    public function getTTDayRowClasses(): ?Collection
+    public function getTimetableDayRowClasses(): ?Collection
     {
-        if (empty($this->TTDayRowClasses))
-            $this->TTDayRowClasses = new ArrayCollection();
+        if (empty($this->timetableDayRowClasses))
+            $this->timetableDayRowClasses = new ArrayCollection();
 
-        if ($this->TTDayRowClasses instanceof PersistentCollection)
-            $this->TTDayRowClasses-> initialize();
+        if ($this->timetableDayRowClasses instanceof PersistentCollection)
+            $this->timetableDayRowClasses-> initialize();
 
-        return $this->TTDayRowClasses;
+        return $this->timetableDayRowClasses;
     }
 
     /**
-     * @param Collection|null $TTDayRowClasses
+     * @param Collection|null $timetableDayRowClasses
      * @return CourseClass
      */
-    public function setTTDayRowClasses(?Collection $TTDayRowClasses): CourseClass
+    public function setTimetableDayRowClasses(?Collection $timetableDayRowClasses): CourseClass
     {
-        $this->TTDayRowClasses = $TTDayRowClasses;
+        $this->timetableDayRowClasses = $timetableDayRowClasses;
         return $this;
     }
 
@@ -376,7 +376,7 @@ class CourseClass extends AbstractEntity
      */
     public function __toArray(array $ignore = []): array
     {
-        return EntityHelper::__toArray(CourseClass::class, $this, $ignore);
+        return [];
     }
 
     /**
@@ -406,35 +406,5 @@ class CourseClass extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [];
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__CourseClass` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(30) NOT NULL,
-                    `abbreviation` CHAR(8) NOT NULL,
-                    `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `attendance` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `course` CHAR(36) DEFAULT NULL,
-                    `scale` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `nameCourse` (`name`,`course`),
-                    UNIQUE KEY `abbreviationCourse` (`abbreviation`,`course`),
-                    KEY `scale` (`scale`),
-                    KEY `course` (`course`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__CourseClass`
-                    ADD CONSTRAINT FOREIGN KEY (`course`) REFERENCES `__prefix__Course` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`scale`) REFERENCES `__prefix__Scale` (`id`);';
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

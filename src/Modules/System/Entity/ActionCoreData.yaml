@@ -21,6 +21,44 @@
         arrayField:
             - ROLE_PRINCIPAL
 -
+    name: Timetables
+    category: Timetable
+    description: 'Manage Timetables'
+    routeList:
+        arrayField:
+            - timetable_list
+            - timetable_edit
+            - timetable_delete
+            - timetable_add
+            - timetable_day_add
+            - timetable_day_edit
+    entryRoute: timetable_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+-
+    name: 'Timetable Columns'
+    category: Timetable
+    description: 'Manage Timetable Columns'
+    routeList:
+        arrayField:
+            - timetable_column_list
+            - timetable_column_edit
+            - timetable_column_delete
+            - timetable_column_add
+    entryRoute: timetable_column_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+-
     name: 'Alert Levels'
     category: People
     description: 'Manage the alert levels which are used throughout the school to flag problems.'
@@ -88,7 +126,7 @@
             - ROLE_PRINCIPAL
 -
     name: Scales
-    category: Assess
+    category: Configure
     description: 'Manage all aspects of grade scales, which are used throughout ARR to control grade input.'
     routeList:
         arrayField:

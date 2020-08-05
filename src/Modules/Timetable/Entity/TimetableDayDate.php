@@ -18,13 +18,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TTDayDate
+ * Class timetableDayDate
  * @package App\Modules\Timetable\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTDayDateRepository")
- * @ORM\Table(name="TTDayDate",
+ * @ORM\Entity(repositoryClass="TimetableDayDateRepository")
+ * @ORM\Table(name="TimetableDayDate",
  *     indexes={@ORM\Index(name="timetable_day", columns={"timetable_day"})})
  */
-class TTDayDate extends AbstractEntity
+class TimetableDayDate extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -37,12 +37,12 @@ class TTDayDate extends AbstractEntity
     private $id;
 
     /**
-     * @var TTDay|null
-     * @ORM\ManyToOne(targetEntity="TTDay", inversedBy="timetableDayDates")
-     * @ORM\JoinColumn(name="timetable_day", referencedColumnName="id", nullable=false)
+     * @var TimetableDay|null
+     * @ORM\ManyToOne(targetEntity="TimetableDay",inversedBy="timetableDayDates")
+     * @ORM\JoinColumn(name="timetable_day",referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $TTDay;
+    private $timetableDay;
 
     /**
      * @var \DateTime|null
@@ -60,29 +60,29 @@ class TTDayDate extends AbstractEntity
 
     /**
      * @param string|null $id
-     * @return TTDayDate
+     * @return TimetableDayDate
      */
-    public function setId(?string $id): TTDayDate
+    public function setId(?string $id): TimetableDayDate
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return TTDay|null
+     * @return TimetableDay|null
      */
-    public function getTTDay(): ?TTDay
+    public function getTimetableDay(): ?TimetableDay
     {
-        return $this->TTDay;
+        return $this->timetableDay;
     }
 
     /**
-     * @param TTDay|null $TTDay
-     * @return TTDayDate
+     * @param TimetableDay|null $timetableDay
+     * @return TimetableDayDate
      */
-    public function setTTDay(?TTDay $TTDay): TTDayDate
+    public function setTimetableDay(?TimetableDay $timetableDay): TimetableDayDate
     {
-        $this->TTDay = $TTDay;
+        $this->timetableDay = $timetableDay;
         return $this;
     }
 
@@ -96,9 +96,9 @@ class TTDayDate extends AbstractEntity
 
     /**
      * @param \DateTime|null $date
-     * @return TTDayDate
+     * @return TimetableDayDate
      */
-    public function setDate(?\DateTime $date): TTDayDate
+    public function setDate(?\DateTime $date): TimetableDayDate
     {
         $this->date = $date;
         return $this;
@@ -116,7 +116,7 @@ class TTDayDate extends AbstractEntity
 
     public function create(): array
     {
-        return ["CREATE TABLE `__prefix__TTDayDate` (
+        return ["CREATE TABLE `__prefix__timetableDayDate` (
                     `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
                     `date` date NOT NULL,
                     `timetable_day` CHAR(36) DEFAULT NULL,
@@ -127,8 +127,8 @@ class TTDayDate extends AbstractEntity
 
     public function foreignConstraints(): string
     {
-        return "ALTER TABLE `__prefix__TTDayDate`
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__TTDay` (`id`);";
+        return "ALTER TABLE `__prefix__timetableDayDate`
+                    ADD CONSTRAINT FOREIGN KEY (`timetable_day`) REFERENCES `__prefix__timetableDay` (`id`);";
     }
 
     public static function getVersion(): string

@@ -8,6 +8,22 @@
     target: module
 -
     findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Timetable
+    target: module
+-
+    findBy:
+        entryRoute: timetable_column_list
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Timetable
+    target: module
+-
+    findBy:
         entryRoute: alert_level_list
     source:
         table: App\Modules\System\Entity\Module

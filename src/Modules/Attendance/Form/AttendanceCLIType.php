@@ -20,6 +20,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
@@ -39,14 +40,14 @@ class AttendanceCLIType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $people = [];
-        foreach(SettingFactory::getSettingManager()->getSettingByScopeAsArray('Attendance', 'attendanceCLIAdditionalUsers') as $personID) {
-            $people[] = ProviderFactory::getRepository(Person::class)->find($personID);
+        foreach(SettingFactory::getSettingManager()->get('Attendance', 'attendanceCLIAdditionalUsers') as $personID) {
+            $people[] = ProviderFactory::getRepository(Staff::class)->find($personID);
         }
         if ($people === []) {
             $people = null;
         }
 
-        $personRepository = ProviderFactory::getRepository(Person::class);
+        $repository = ProviderFactory::getRepository(Staff::class);
         $builder
             ->add('header', HeaderType::class,
                 [
@@ -71,12 +72,12 @@ class AttendanceCLIType extends AbstractType
                             'name' => 'attendanceCLIAdditionalUsers',
                             'entry_type' => EntityType::class,
                             'entry_options' => [
-                                'class' => Person::class,
+                                'class' => Staff::class,
                                 'multiple' => true,
                                 'data' => $people,
                                 'choice_label' => 'fullNameReversed',
                                 'choice_translation_domain' => false,
-                                'query_builder' => $personRepository->getStaffQueryBuilder(),
+                                'query_builder' => $repository->getStaffQuery(),
                                 'attr' => [
                                     'style' => ['height' => '140px'],
                                 ],

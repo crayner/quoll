@@ -44,6 +44,6 @@ class BuildController extends AbstractController
         $content = "<h3>Yes Built!!!</h3><ul>";
         $content .= ActionPermissionController::writeSecurityLinks();
 
-        return new Response($content.'</ul>');
+        return new Response($content.'</ul><p><a href="/">Return</a></p>');
     }
 }

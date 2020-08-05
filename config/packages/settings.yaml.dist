@@ -1047,10 +1047,10 @@ parameters:
                 type: boolean
             attendanceCLIAdditionalUsers:
                 value: null
-                type: string
+                type: array
             studentSelfRegistrationIPAddresses:
                 value: null
-                type: string
+                type: array
             countClassAsSchool:
                 value: false
                 type: boolean

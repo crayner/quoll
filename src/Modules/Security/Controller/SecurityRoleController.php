@@ -57,6 +57,7 @@ class SecurityRoleController extends AbstractPageController
     /**
      * edit
      * @param ContainerManager $manager
+     * @param SecurityManager $security
      * @param SecurityRole|null $role
      * @return JsonResponse
      * @Route("/security/role/add/",name="security_role_add")

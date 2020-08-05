@@ -1,0 +1,60 @@
+Abbreviation: Abbreviation
+Name: Name
+Timetable: Timetable
+Timetables in Academic Year {name}: Timetables in Academic Year {name}
+Timetables: Timetables
+Year Groups: Year Groups
+active: active
+Academic Year: Academic Year
+Active: Active
+Display Mode: Display Mode
+Submit: Submit
+This value is locked.: This value is locked.
+timetable:
+    displaymode:
+        '': ''
+        day of the week: Day of the Week
+        timetable day abbreviation: Timetable Day Abbreviation
+Add Timetable Column: Add Timetable Column
+Add Timetable Day: Add Timetable Day
+Add Timetable: Add Timetable
+Add: Add
+Column Rows: Column Rows
+Column: Column
+Columns: Columns
+Delete: Delete
+Details: Details
+Edit Timetable Column Row {column}-{name}: Edit Timetable Column Row {column}-{name}
+Edit Timetable Column {name}: Edit Timetable Column {name}
+Edit Timetable {name}: Edit Timetable {name}
+Edit: Edit
+End Time: End Time
+Header Background Colour: Header Background Colour
+Header Text Colour: Header Text Colour
+Please select...: Please select...
+Return: Return
+Rows: Rows
+Start Time: Start Time
+Time: Time
+Timetable Column: Timetable Column
+Timetable Columns: Timetable Columns
+Timetable Days: Timetable Days
+Type: Type
+timetablecolumnperiod:
+    type:
+        break: Break
+        lesson: Lesson
+        other: Other
+        pastoral: Pastoral
+        service: Service
+        sport: Sport
+'A gap in time exists between this row "(%previous%)" and the next row "(%current%)"': 'A gap in time exists between this row "(%previous%)" and the next row "(%current%)"'
+'Add Timetable Column Row {column}': 'Add Timetable Column Row {column}'
+'An overlap exists between this row "(%previous%)" and the next row "(%current%)."': 'An overlap exists between this row "(%previous%)" and the next row "(%current%)."'
+Copy Periods: Copy Periods
+Duplicate Column Periods: Duplicate Column Periods
+Duplicate to this Column: Duplicate to this Column
+'Edit Timetable Column Row {column} - {name}': 'Edit Timetable Column Row {column} - {name}'
+Periods: Periods
+'Only timetable columns with no periods attached are available as targets to duplicate the source.': 'Only timetable columns with no periods attached are available as targets to duplicate the source.'
+'Source Timetable Column': 'Source Timetable Column'

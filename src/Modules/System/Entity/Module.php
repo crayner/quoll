@@ -57,6 +57,12 @@ class Module extends AbstractEntity
 
     /**
      * @var string|null
+     * @ORM\Column(length=30,nullable=true)
+     */
+    private $displayName;
+
+    /**
+     * @var string|null
      * @ORM\Column(type="text")
      */
     private $description;
@@ -168,6 +174,7 @@ class Module extends AbstractEntity
     }
 
     /**
+     * @param bool $displayName
      * @return string|null
      */
     public function getName(): ?string
@@ -182,6 +189,25 @@ class Module extends AbstractEntity
     public function setName(?string $name): Module
     {
         $this->name = $name;
+        if ($this->getDisplayName() === null) return $this->setDisplayName($name);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * @param string|null $displayName
+     * @return Module
+     */
+    public function setDisplayName(?string $displayName): Module
+    {
+        $this->displayName = $displayName;
         return $this;
     }
 
@@ -366,7 +392,7 @@ class Module extends AbstractEntity
         if ($name === 'mainMenu') {
             return [
                 'route' => SecurityHelper::isModuleAccessible($this) ? $this->getEntryRoute() : null,
-                'name' => TranslationHelper::translate($this->getName(), [] , $this->getName()),
+                'name' => TranslationHelper::translate($this->getDisplayName() ?: $this->getName(), [] , $this->getName()),
                 'textDomain' => $this->getName(),
                 'category' => $this->getCategory(),
                 'type' => $this->getType(),
@@ -377,6 +403,7 @@ class Module extends AbstractEntity
         if ($name === 'buildContent') {
             return [
                 'name' => $this->getName(),
+                'displayName' => $this->getDisplayName(),
                 'description' => $this->getDescription(),
                 'entryRoute' => $this->getEntryRoute(),
                 'securityRoles' => [ 'arrayField' => $this->getSecurityRoles()],
@@ -391,6 +418,7 @@ class Module extends AbstractEntity
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'displayName' => $this->displayName,
             'description' => $this->description,
             'entryRoute' => $this->entryRoute,
             'type' => $this->getType(),

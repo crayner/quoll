@@ -30,7 +30,7 @@
  */
 namespace App\Modules\Timetable\Repository;
 
-use App\Modules\Timetable\Entity\TTColumn;
+use App\Modules\Timetable\Entity\TimetableColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,7 +38,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class TTColumnRepository
  * @package App\Modules\Timetable\Repository
  */
-class TTColumnRepository extends ServiceEntityRepository
+class TimetableColumnRepository extends ServiceEntityRepository
 {
     /**
      * TTColumnRepository constructor.
@@ -46,6 +46,6 @@ class TTColumnRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TTColumn::class);
+        parent::__construct($registry, TimetableColumn::class);
     }
 }

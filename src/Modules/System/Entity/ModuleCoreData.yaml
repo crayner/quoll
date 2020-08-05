@@ -1,5 +1,23 @@
 -
+    name: Timetable
+    displayName: null
+    description: 'Allows people to view timetables'
+    entryRoute: timetable_list
+    securityRoles:
+        arrayField:
+            - ROLE_STUDENT
+            - ROLE_STAFF
+            - ROLE_PARENT
+    type: Core
+    active: true
+    category: Admin
+    versionDate:
+        convertDate: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'https://www.craigrayner.com'
+-
     name: People
+    displayName: null
     description: 'Manage people'
     entryRoute: people_list
     securityRoles:
@@ -14,6 +32,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: System
+    displayName: null
     description: 'Allows administrators to configure system settings.'
     entryRoute: system_settings
     securityRoles:
@@ -28,6 +47,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Student
+    displayName: null
     description: 'Manage students'
     entryRoute: student_view
     securityRoles:
@@ -43,6 +63,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Staff
+    displayName: null
     description: 'Manage Staff'
     entryRoute: staff_view
     securityRoles:
@@ -57,6 +78,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: School
+    displayName: null
     description: 'Allows administrators to configure school settings.'
     entryRoute: academic_year_list
     securityRoles:
@@ -71,6 +93,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: 'Mark Book'
+    displayName: null
     description: 'A module for keeping track of marks'
     entryRoute: mark_book_view
     securityRoles:
@@ -85,6 +108,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Activity
+    displayName: null
     description: 'Manage an activity programme.'
     entryRoute: activity_list
     securityRoles:
@@ -99,6 +123,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Department
+    displayName: null
     description: 'Manage Department details.'
     entryRoute: department_view
     securityRoles:
@@ -112,6 +137,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Library
+    displayName: null
     description: 'Manage Libraries within the school.'
     entryRoute: library_settings
     securityRoles:
@@ -126,6 +152,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: 'Individual Need'
+    displayName: null
     description: 'Manage student individual needs'
     entryRoute: individual_need_list
     securityRoles:
@@ -140,6 +167,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Planner
+    displayName: null
     description: 'Supports lesson planning and information sharing for staff, student and parents.'
     entryRoute: planner_view
     securityRoles:
@@ -154,6 +182,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Attendance
+    displayName: null
     description: 'School attendance taking'
     entryRoute: attendance_code_list
     securityRoles:
@@ -168,6 +197,7 @@
     url: 'http://www.craigrayner.com'
 -
     name: Behaviour
+    displayName: null
     description: 'Tracking student behaviour'
     entryRoute: behaviour_settings
     securityRoles:
@@ -182,6 +212,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: 'Roll Group'
+    displayName: null
     description: 'Allows management of roll groups'
     entryRoute: roll_group_list
     securityRoles:
@@ -196,6 +227,7 @@
     url: 'https://www.craigrayner.com'
 -
     name: Assess
+    displayName: Scales
     description: 'Manage Assessment'
     entryRoute: scale_list
     securityRoles:
@@ -203,7 +235,7 @@
             - ROLE_PRINCIPAL
     type: Core
     active: true
-    category: People
+    category: Assess
     versionDate:
         convertDate: '2020-04-01'
     author: 'Craig Rayner'

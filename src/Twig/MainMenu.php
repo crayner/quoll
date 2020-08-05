@@ -58,7 +58,7 @@ class MainMenu implements ContentInterface
                     $items[] = $module->toArray('mainMenu');
 
                 $menuMainItems = [];
-                foreach(SettingFactory::getSettingManager()->getSetting('System', 'mainMenuCategoryOrder') as $category) {
+                foreach(SettingFactory::getSettingManager()->get('System', 'mainMenuCategoryOrder') as $category) {
                     foreach ($items as $w) {
                         if ($w['category'] === $category) {
                             $catTran = TranslationHelper::translate($category);
@@ -80,5 +80,13 @@ class MainMenu implements ContentInterface
             CacheHelper::clearCacheValue('mainMenuItem');
         }
         $this->content = $menuMainItems;
+    }
+
+    /**
+     * @return array|bool
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

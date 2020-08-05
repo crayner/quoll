@@ -17,6 +17,7 @@
 
 namespace App\Controller;
 
+use App\Container\ContainerManager;
 use App\Manager\PageManager;
 use MongoDB\Driver\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +35,12 @@ abstract class AbstractPageController extends AbstractController
      */
     public static function getSubscribedServices()
     {
-        return (array_merge(parent::getSubscribedServices(), ['page_manager' => PageManager::class]));
+        return (array_merge(parent::getSubscribedServices(),
+            [
+                'page_manager' => PageManager::class,
+                'container_manager' => ContainerManager::class,
+            ]
+        ));
     }
 
     /**
@@ -73,5 +79,15 @@ abstract class AbstractPageController extends AbstractController
     protected function getRequest(): Request
     {
         return $this->getPageManager()->getRequest();
+    }
+
+    /**
+     * getContainerManager
+     * @return ContainerManager
+     * 4/08/2020 13:46
+     */
+    public function getContainerManager(): ContainerManager
+    {
+        return $this->get('container_manager');
     }
 }

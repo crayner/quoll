@@ -43,13 +43,20 @@ class AcademicYearHelper
 
     /**
      * getCurrentAcademicYear
+     * @param bool $fetch
      * @return AcademicYear|mixed
      * 26/06/2020 08:58
+     * @throws \Exception
      */
-    public static function getCurrentAcademicYear()
+    public static function getCurrentAcademicYear(bool $refresh = false)
     {
         $session = self::$stack->getCurrentRequest()->getSession();
         if ($session->has('academicYear')) {
+            if ($refresh) {
+                $current =  ProviderFactory::getRepository(AcademicYear::class)->find($session->get('academicYear')->getId());
+                $session->set('academicYear', $current);
+                return $current;
+            }
             return $session->get('academicYear');
         }
         $current = ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');

@@ -14,8 +14,8 @@
 namespace App\Modules\Timetable\Repository;
 
 use App\Modules\People\Entity\Person;
-use App\Entity\TTColumnRow;
-use App\Entity\TTDay;
+use App\Modules\Timetable\Entity\TimetableColumnPeriod;
+use App\Modules\Timetable\Entity\TimetableDay;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,7 +23,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class TTColumnRowRepository
  * @package App\Modules\Timetable\Repository
  */
-class TTColumnRowRepository extends ServiceEntityRepository
+class TimetableColumnPeriodRepository extends ServiceEntityRepository
 {
     /**
      * TTColumnRowRepository constructor.
@@ -31,24 +31,27 @@ class TTColumnRowRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TTColumnRow::class);
+        parent::__construct($registry, TimetableColumnPeriod::class);
     }
 
     /**
      * findPersonPeriods
-     * @param TTDay $day
+     * @param TimetableDay $day
      * @param Person $person
+     * @param bool $asArray
+     * @return array|int|mixed|string
+     * 4/08/2020 12:06
      */
-    public function findPersonPeriods(TTDay $day, Person $person, bool $asArray = false)
+    public function findPersonPeriods(TimetableDay $day, Person $person, bool $asArray = false)
     {
         $query = $this->createQueryBuilder('tcr')
             ->select('c,cc,tdrc,tcr,s')
-            ->join('tcr.TTDayRowClasses', 'tdrc')
+            ->join('tcr.timetableDayRowClasses', 'tdrc')
             ->join('tdrc.courseClass', 'cc')
             ->join('cc.course', 'c')
             ->join('cc.courseClassPeople', 'ccp')
             ->leftJoin('tdrc.space', 's')
-            ->where('tdrc.TTDay = :day')
+            ->where('tdrc.timetableDay = :day')
             ->setParameter('day', $day)
             ->andWhere('ccp.person = :person')
             ->setParameter('person', $person)

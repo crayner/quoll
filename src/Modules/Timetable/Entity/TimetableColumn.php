@@ -35,14 +35,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class TTColumn
+ * Class TimetableColumn
  * @package App\Modules\Timetable\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTColumnRepository")
- * @ORM\Table(name="TTColumn")
+ * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableColumnRepository")
+ * @ORM\Table(name="TimetableColumn",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
+ *     @ORM\UniqueConstraint(name="abbreviation",columns={"abbreviation"})})
+ * @UniqueEntity("name")
+ * @UniqueEntity("abbreviation")
  */
-class TTColumn extends AbstractEntity
+class TimetableColumn extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -68,9 +73,17 @@ class TTColumn extends AbstractEntity
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="TTColumnRow", mappedBy="TTColumn")
+     * @ORM\OneToMany(targetEntity="TimetableColumnPeriod",mappedBy="timetableColumn",cascade={"all"})
      */
-    private $timetableColumnRows;
+    private $timetableColumnPeriods;
+
+    /**
+     * TimetableColumn constructor.
+     */
+    public function __construct()
+    {
+        $this->setTimetableColumnPeriods(new ArrayCollection());
+    }
 
     /**
      * @return string|null
@@ -84,9 +97,9 @@ class TTColumn extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return TTColumn
+     * @return TimetableColumn
      */
-    public function setId(?string $id): TTColumn
+    public function setId(?string $id): TimetableColumn
     {
         $this->id = $id;
         return $this;
@@ -102,9 +115,9 @@ class TTColumn extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return TTColumn
+     * @return TimetableColumn
      */
-    public function setName(?string $name): TTColumn
+    public function setName(?string $name): TimetableColumn
     {
         $this->name = $name;
         return $this;
@@ -120,46 +133,62 @@ class TTColumn extends AbstractEntity
 
     /**
      * @param string|null $abbreviation
-     * @return TTColumn
+     * @return TimetableColumn
      */
-    public function setAbbreviation(?string $abbreviation): TTColumn
+    public function setAbbreviation(?string $abbreviation): TimetableColumn
     {
         $this->abbreviation = $abbreviation;
         return $this;
     }
 
     /**
-     * getTimetableColumnRows
+     * getTimetableColumnPeriods
      * @return Collection
      */
-    public function getTimetableColumnRows(): Collection
+    public function getTimetableColumnPeriods(): Collection
     {
-        if (empty($this->timetableColumnRows))
-            $this->timetableColumnRows = new ArrayCollection();
+        if (empty($this->timetableColumnPeriods))
+            $this->timetableColumnPeriods = new ArrayCollection();
 
-        if ($this->timetableColumnRows instanceof PersistentCollection)
-            $this->timetableColumnRows->initialize();
+        if ($this->timetableColumnPeriods instanceof PersistentCollection)
+            $this->timetableColumnPeriods->initialize();
 
-        $iterator = $this->timetableColumnRows->getIterator();
+        $iterator = $this->timetableColumnPeriods->getIterator();
         $iterator->uasort(
             function ($a, $b) {
                 return ($a->getTimeStart()->format('His') < $b->getTimeStart()->format('His')) ? -1 : 1;
             }
         );
 
-        $this->timetableColumnRows = new ArrayCollection(iterator_to_array($iterator, false));
+        $this->timetableColumnPeriods = new ArrayCollection(iterator_to_array($iterator, false));
 
-
-        return $this->timetableColumnRows;
+        return $this->timetableColumnPeriods;
     }
 
     /**
-     * @param Collection $timetableColumnRows
-     * @return TTColumn
+     * @param Collection $timetableColumnPeriods
+     * @return TimetableColumn
      */
-    public function setTimetableColumnRows(Collection $timetableColumnRows): TTColumn
+    public function setTimetableColumnPeriods(Collection $timetableColumnPeriods): TimetableColumn
     {
-        $this->timetableColumnRows = $timetableColumnRows;
+        $this->timetableColumnPeriods = $timetableColumnPeriods;
+        return $this;
+    }
+
+    /**
+     * addTimetableColumnPeriod
+     * @param TimetableColumnPeriod $period
+     * @return $this
+     * 5/08/2020 10:19
+     */
+    public function addTimetableColumnPeriod(TimetableColumnPeriod $period, bool $reflect = true): TimetableColumn
+    {
+        if (!$this->getTimetableColumnPeriods()->contains($period)) {
+            if ($reflect) {
+                $period->setTimetableColumn($this, false);
+            }
+            $this->timetableColumnPeriods->add($period);
+        }
         return $this;
     }
 
@@ -170,26 +199,13 @@ class TTColumn extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
-        return [];
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE  `__prefix__TTColumn` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(30) NOT NULL,
-                    `abbreviation` CHAR(12) NOT NULL,
-                    PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'abbreviation' => $this->getAbbreviation(),
+            'periodCount' => $this->getTimetableColumnPeriods()->count(),
+            'hasPeriods' => intval($this->getTimetableColumnPeriods()->count()) > 0,
+            'canDelete' => true,
+        ];
     }
 }

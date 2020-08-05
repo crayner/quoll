@@ -13,8 +13,8 @@
  */
 namespace App\Modules\Timetable\Repository;
 
-use App\Modules\Timetable\Entity\TTDay;
-use App\Modules\Timetable\Entity\TTDayRowClass;
+use App\Modules\Timetable\Entity\TimetableDay;
+use App\Modules\Timetable\Entity\TimetableDayRowClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,7 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class TTDayRowClassRepository
  * @package App\Modules\Timetable\Repository
  */
-class TTDayRowClassRepository extends ServiceEntityRepository
+class TimetableDayRowClassRepository extends ServiceEntityRepository
 {
     /**
      * TTDayRowClassRepository constructor.
@@ -30,15 +30,15 @@ class TTDayRowClassRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TTDayRowClass::class);
+        parent::__construct($registry, TimetableDayRowClass::class);
     }
 
     /**
      * findByTTDay
-     * @param TTDay $day
+     * @param TimetableDay $day
      * @return mixed
      */
-    public function findByTTDay(TTDay $day)
+    public function findByTTDay(TimetableDay $day)
     {
         return $this->createQueryBuilder('tdrc')
             ->where('tdrc.TTDay = :day')

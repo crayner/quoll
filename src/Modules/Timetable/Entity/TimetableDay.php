@@ -14,25 +14,27 @@
 namespace App\Modules\Timetable\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Validator\Colour;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TTDay
+ * Class TIMETABLEDay
  * @package App\Modules\Timetable\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TTDayRepository")
- * @ORM\Table(name="TTDay",
+ * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableDayRepository")
+ * @ORM\Table(name="TimetableDay",
  *     indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"}),
  *     @ORM\Index(name="timetable", columns={"timetable"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable",columns={"name","timetable"}),
  *     @ORM\UniqueConstraint(name="abbreviation_timetable",columns={"abbreviation","timetable"})})
- * @UniqueEntity({"name","TT"})
- * @UniqueEntity({"abbreviation","TT"})
+ * @UniqueEntity({"name","timetable"})
+ * @UniqueEntity({"abbreviation","Timetable"})
  */
-class TTDay extends AbstractEntity
+class TimetableDay extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -45,61 +47,71 @@ class TTDay extends AbstractEntity
     private $id;
 
     /**
-     * @var TT|null
-     * @ORM\ManyToOne(targetEntity="TT", inversedBy="TTDays")
-     * @ORM\JoinColumn(name="timetable", referencedColumnName="id", nullable=false)
+     * @var Timetable|null
+     * @ORM\ManyToOne(targetEntity="Timetable", inversedBy="timetableDays")
+     * @ORM\JoinColumn(name="timetable",referencedColumnName="id",nullable=false)
      */
-    private $TT;
+    private $timetable;
 
     /**
-     * @var TTColumn|null
-     * @ORM\ManyToOne(targetEntity="TTColumn")
-     * @ORM\JoinColumn(name="timetable_column", referencedColumnName="id", nullable=false)
+     * @var TimetableColumn|null
+     * @ORM\ManyToOne(targetEntity="TimetableColumn")
+     * @ORM\JoinColumn(name="timetable_column",referencedColumnName="id",nullable=false)
      */
-    private $TTColumn;
+    private $timetableColumn;
 
     /**
      * @var string|null
      * @ORM\Column(length=12)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=12)
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=4, name="abbreviation")
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4)
      */
     private $abbreviation;
 
     /**
      * @var string|null
-     * @ORM\Column(length=6, name="colour")
+     * @ORM\Column(length=7, name="colour")
+     * @Colour(enforceType="hex")
      */
     private $colour;
 
     /**
      * @var string|null
-     * @ORM\Column(length=6, name="font_colour")
+     * @ORM\Column(length=7, name="font_colour")
+     * @Colour(enforceType="hex")
      */
     private $fontColour;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="TTDayRowClass", mappedBy="TTDay")
+     * @ORM\OneToMany(targetEntity="TimetableDayRowClass",mappedBy="timetableDay")
      */
-    private $TTDayRowClasses;
+    private $timetableDayRowClasses;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="TTDayDate", mappedBy="TTDay")
+     * @ORM\OneToMany(targetEntity="TimetableDayDate",mappedBy="timetableDay")
      */
     private $timetableDayDates;
 
     /**
-     * TTDay constructor.
+     * TimetableDay constructor.
+     * @param Timetable|null $timetable
      */
-    public function __construct()
+    public function __construct(?Timetable $timetable = null)
     {
-        $this->setTimetableDayDates(new ArrayCollection());
+        $this->setTimetableDayDates(new ArrayCollection())
+            ->setTimetableDayRowClasses(new ArrayCollection())
+            ->setTimetable($timetable)
+        ;
     }
 
     /**
@@ -114,47 +126,51 @@ class TTDay extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setId(?string $id): TTDay
+    public function setId(?string $id): TimetableDay
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return TT|null
+     * @return Timetable|null
      */
-    public function getTT(): ?TT
+    public function getTimetable(): ?Timetable
     {
-        return $this->TT;
+        return $this->timetable;
     }
 
     /**
-     * @param TT|null $TT
-     * @return TTDay
+     * @param Timetable|null $TIMETABLE
+     * @return TimetableDay
      */
-    public function setTT(?TT $TT): TTDay
+    public function setTimetable(?Timetable $timetable): TimetableDay
     {
-        $this->TT = $TT;
+        $this->timetable = $timetable;
         return $this;
     }
 
     /**
-     * @return TTColumn|null
+     * getTimetableColumn
+     * @return TimetableColumn|null
+     * 4/08/2020 08:41
      */
-    public function getTTColumn(): ?TTColumn
+    public function getTimetableColumn(): ?TimetableColumn
     {
-        return $this->TTColumn;
+        return $this->timetableColumn;
     }
 
     /**
-     * @param TTColumn|null $TTColumn
-     * @return TTDay
+     * setTimetableColumn
+     * @param TimetableColumn|null $timetableColumn
+     * @return $this
+     * 4/08/2020 08:41
      */
-    public function setTTColumn(?TTColumn $TTColumn): TTDay
+    public function setTimetableColumn(?TimetableColumn $timetableColumn): TimetableDay
     {
-        $this->TTColumn = $TTColumn;
+        $this->timetableColumn = $timetableColumn;
         return $this;
     }
 
@@ -168,9 +184,9 @@ class TTDay extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setName(?string $name): TTDay
+    public function setName(?string $name): TimetableDay
     {
         $this->name = $name;
         return $this;
@@ -186,9 +202,9 @@ class TTDay extends AbstractEntity
 
     /**
      * @param string|null $abbreviation
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setAbbreviation(?string $abbreviation): TTDay
+    public function setAbbreviation(?string $abbreviation): TimetableDay
     {
         $this->abbreviation = $abbreviation;
         return $this;
@@ -204,9 +220,9 @@ class TTDay extends AbstractEntity
 
     /**
      * @param string|null $colour
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setColour(?string $colour): TTDay
+    public function setColour(?string $colour): TimetableDay
     {
         $this->colour = $colour;
         return $this;
@@ -222,42 +238,44 @@ class TTDay extends AbstractEntity
 
     /**
      * @param string|null $fontColour
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setFontColour(?string $fontColour): TTDay
+    public function setFontColour(?string $fontColour): TimetableDay
     {
         $this->fontColour = $fontColour;
         return $this;
     }
 
     /**
-     * getTTDayRowClasses
+     * getTimetableDayRowClasses
      * @return Collection
+     * 4/08/2020 08:40
      */
-    public function getTTDayRowClasses(): Collection
+    public function getTimetableDayRowClasses(): Collection
     {
-        if (empty($this->TTDayRowClasses))
-            $this->TTDayRowClasses = new ArrayCollection();
+        if (empty($this->timetableDayRowClasses))
+            $this->timetableDayRowClasses = new ArrayCollection();
 
-        if ($this->TTDayRowClasses instanceof PersistentCollection)
-            $this->TTDayRowClasses->initialize();
+        if ($this->timetableDayRowClasses instanceof PersistentCollection)
+            $this->timetableDayRowClasses->initialize();
 
-        return $this->TTDayRowClasses;
+        return $this->timetableDayRowClasses;
     }
 
     /**
-     * @param Collection $TTDayRowClasses
-     * @return TTDay
+     * @param Collection $TIMETABLEDayRowClasses
+     * @return TimetableDay
      */
-    public function setTTDayRowClasses(Collection $TTDayRowClasses): TTDay
+    public function setTimetableDayRowClasses(Collection $TIMETABLEDayRowClasses): TimetableDay
     {
-        $this->TTDayRowClasses = $TTDayRowClasses;
+        $this->timetableDayRowClasses = $TIMETABLEDayRowClasses;
         return $this;
     }
 
     /**
      * getTimetableDayDates
      * @return Collection
+     * 4/08/2020 08:40
      */
     public function getTimetableDayDates(): Collection
     {
@@ -272,9 +290,9 @@ class TTDay extends AbstractEntity
 
     /**
      * @param Collection $timetableDayDates
-     * @return TTDay
+     * @return TimetableDay
      */
-    public function setTimetableDayDates(Collection $timetableDayDates): TTDay
+    public function setTimetableDayDates(Collection $timetableDayDates): TimetableDay
     {
         $this->timetableDayDates = $timetableDayDates;
         return $this;
@@ -286,7 +304,7 @@ class TTDay extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getName() . ' ('.$this->getAbbreviation().') of '.$this->getTT()->__toString();
+        return $this->getName() . ' ('.$this->getAbbreviation().') of '.$this->getTimetable()->__toString();
     }
 
     /**
@@ -296,36 +314,12 @@ class TTDay extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
-        return [];
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__TTDay` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(12) NOT NULL,
-                    `abbreviation` CHAR(4) NOT NULL,
-                    `colour` CHAR(6) NOT NULL,
-                    `font_colour` CHAR(6) NOT NULL,
-                    `timetable` CHAR(36) DEFAULT NULL,
-                    `timetable_column` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name_short_timetable` (`timetable`,`abbreviation`),
-                    UNIQUE KEY `name_timetable` (`timetable`,`name`),
-                    KEY `timetable` (`timetable`),
-                    KEY `timetable_column` (`timetable_column`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__TTDay`
-                    ADD CONSTRAINT FOREIGN KEY (`timetable`) REFERENCES `__prefix__TT` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`timetable_column`) REFERENCES `__prefix__TTColumn` (`id`);";
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'abbreviation' => $this->getAbbreviation(),
+            'columns' => $this->getTimetableColumn()->getName(),
+            'timetable' => $this->getTimetable()->getId(),
+        ];
     }
 }
