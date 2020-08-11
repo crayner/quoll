@@ -1,4 +1,19 @@
 -
+    name: 'Timetable Calendar Mapping'
+    category: Timetable
+    description: 'Mapping of Timetable to Calendar'
+    routeList:
+        arrayField:
+            - timetable_calendar_map
+    entryRoute: timetable_calendar_map
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL
+-
     name: Scales
     category: Assess
     description: 'Manage all aspects of grade scales, which are used throughout ARR to control grade input.'
@@ -31,7 +46,7 @@
             - timetable_delete
             - timetable_add
             - timetable_day_add
-            - timetable_day_edit
+            - timetable_day_edit.timetable_day_sort
     entryRoute: timetable_list
     entrySidebar: true
     menuShow: true
@@ -50,6 +65,13 @@
             - timetable_column_edit
             - timetable_column_delete
             - timetable_column_add
+            - timetable_column_row_edit
+            - timetable_column_row_add
+            - timetable_column_row_delete
+            - timetable_column_row_edit
+            - timetable_column_row_add
+            - timetable_column_row_delete
+            - timetable_column_duplicate_periods
     entryRoute: timetable_column_list
     entrySidebar: true
     menuShow: true

@@ -40,7 +40,7 @@ Timetable Column: Timetable Column
 Timetable Columns: Timetable Columns
 Timetable Days: Timetable Days
 Type: Type
-timetablecolumnperiod:
+timetableperiod:
     type:
         break: Break
         lesson: Lesson
@@ -59,8 +59,22 @@ Periods: Periods
 'Only timetable columns with no periods attached are available as targets to duplicate the source.': 'Only timetable columns with no periods attached are available as targets to duplicate the source.'
 'Source Timetable Column': 'Source Timetable Column'
 Link Type: Link Type
-This day will link to the timetable as a fixed day, or will be free to rotate days as required.: This day will link to the timetable as a fixed day, or will be free to rotate days as required.
+'This day will link to the timetable as a fixed day, or will be free to rotate days as required.': 'This day will link to the timetable as a fixed day, or will be free to rotate days as required.'
 timetablecolumn:
     linktype:
         fixed: Fixed
         rotate: Rotate
+Edit Timetable Day {name}: Edit Timetable Day {name}
+Fix to Day: Fix to Day
+Link to: Link to
+Rotate: Rotate
+'This day will link to the timetable as a fixed day, or, if blank, will be free to rotate to calendar days as required.': 'This day will link to the timetable as a fixed day, or, if blank, will be free to rotate to calendar days as required.'
+Timetable Calendar Mapping: Timetable Calendar Mapping
+Timetable Content Instructions: Timetable Content Instructions
+Order: Order
+Timetable Calendar Map: Timetable Calendar Map
+single: single
+Link to Calendar Days: Link to Calendar Days
+Link to Week Days: Link to Week Days
+Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.: Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.
+Settings are not available to match the day of the week {name}.: Settings are not available to match the day of the week {name}.

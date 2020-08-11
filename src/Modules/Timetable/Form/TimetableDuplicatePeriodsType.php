@@ -18,7 +18,7 @@ namespace App\Modules\Timetable\Form;
 
 use App\Form\Type\DisplayType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Timetable\Entity\TimetableColumn;
+use App\Modules\Timetable\Entity\TimetableDay;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package App\Modules\Timetable\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnDuplicatePeriodsType extends AbstractType
+class TimetableDuplicatePeriodsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,20 +42,20 @@ class TimetableColumnDuplicatePeriodsType extends AbstractType
                     'mapped' => false,
                 ]
             )
-            ->add('timetableColumn', EntityType::class,
+            ->add('timetableDay', EntityType::class,
                 [
-                    'label' => 'Duplicate to this Column',
-                    'help' => 'Only timetable columns with no periods attached are available as targets to duplicate the source.',
+                    'label' => 'Duplicate to this Day',
+                    'help' => 'Only timetable days with no periods attached are available as targets to duplicate the source.',
                     'submit_on_change' => true,
                     'mapped' => false,
-                    'class' => TimetableColumn::class,
+                    'class' => TimetableDay::class,
                     'choice_label' => 'name',
                     'placeholder' => 'Please select...',
                     'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('c')
-                            ->orderBy('c.name','ASC')
-                            ->leftJoin('c.timetableColumnPeriods', 'r')
-                            ->where('r.id IS NULL');
+                        return $er->createQueryBuilder('d')
+                            ->orderBy('d.name','ASC')
+                            ->leftJoin('d.periods', 'p')
+                            ->where('p.id IS NULL');
                     },
                 ]
             )
@@ -72,7 +72,7 @@ class TimetableColumnDuplicatePeriodsType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Timetable',
-                'data_class' => TimetableColumn::class,
+                'data_class' => TimetableDay::class,
             ]
         );
     }

@@ -39,8 +39,8 @@ parameters:
                 type: entity
                 class: App\Modules\Staff\Entity\Staff
             firstDayOfTheWeek:
-                value: Sunday
-                type: string
+                value: 1
+                type: integer
             organisationHR:
                 value: null
                 type: entity

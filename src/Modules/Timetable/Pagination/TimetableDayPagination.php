@@ -12,7 +12,7 @@
  *
  * User: craig
  * Date: 4/08/2020
- * Time: 08:04
+ * Time: 11:22
  */
 namespace App\Modules\Timetable\Pagination;
 
@@ -30,6 +30,11 @@ use App\Util\TranslationHelper;
  */
 class TimetableDayPagination extends AbstractPaginationManager
 {
+    /**
+     * execute
+     * @return PaginationInterface
+     * 4/08/2020 11:23
+     */
     public function execute(): PaginationInterface
     {
         TranslationHelper::setDomain('Timetable');
@@ -52,10 +57,23 @@ class TimetableDayPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Timetable Column')
-            ->setContentKey('column')
-            ->setSort()
+        $column->setLabel('Periods')
+            ->setContentKey('periodCount')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center')
+        ;
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Link to Week Days')
+            ->setContentKey('weekDays')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
+        ;
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Fixed')
+            ->setContentKey('fixed')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center')
         ;
         $row->addColumn($column);
 
@@ -65,7 +83,17 @@ class TimetableDayPagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('timetable_day_edit')
-            ->setRouteParams(['timetableDay' => 'id', 'timetable' => 'timetable']);
+            ->setRouteParams(['timetableDay' => 'id','timetable' => 'timetable']);
+        $row->addAction($action);
+
+        $action = new PaginationAction();
+        $action->setTitle('Copy Periods')
+            ->setAClass('thickbox p-3 sm:p-0')
+            ->setColumnClass('column p-2 sm:p-3')
+            ->setSpanClass('far fa-clone fa-fw fa-1-5x text-gray-800 hover:text-orange-500')
+            ->setRoute('timetable_day_period_duplicate')
+            ->setDisplayWhen('hasPeriods')
+            ->setRouteParams(['timetableDay' => 'id']);
         $row->addAction($action);
 
         $action = new PaginationAction();
@@ -79,6 +107,11 @@ class TimetableDayPagination extends AbstractPaginationManager
             ->setRouteParams(['timetableDay' => 'id']);
         $row->addAction($action);
 
+        $row->addHighlight([
+            'className' => 'warning',
+            'columnKey' => 'isFixed',
+            'columnValue' => true,
+        ]);
         $this->setRow($row);
         return $this;
     }

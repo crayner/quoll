@@ -61,7 +61,7 @@ class CalendarDisplayManager
     {
         $this->getDaysOfWeek();
         $this->locale = ProviderFactory::getRepository(Locale::class)->findOneByCode($locale) ?: ProviderFactory::getRepository(Locale::class)->findOneByCode('en_GB');
-        $this->firstDayofWeek = SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'firstDayOfTheWeek', 'Monday') == 'Sunday' ? 7 : 1;
+        $this->firstDayofWeek = SettingFactory::getSettingManager()->get('System', 'firstDayOfTheWeek', 1) === 7 ? 7 : 1;
         if ($this->firstDayofWeek === 7)
         {
             $this->lastDayofWeek  = 6;

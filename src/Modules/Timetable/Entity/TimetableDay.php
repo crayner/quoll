@@ -2,6 +2,23 @@
 /**
  * Created by PhpStorm.
  *
+ * Gibbon, Flexible & Open School System
+ * Copyright (C) 2010, Ross Parker
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program in the LICENCE file.
+ * If not, see <hTTColumnp://www.gnu.org/licenses/>.
+ *
  * Project: Kookaburra
  * Build: Quoll
  *
@@ -9,11 +26,14 @@
  *
  * User: craig
  * Date: 5/12/2018
- * Time: 16:52
+ * Time: 16:42
  */
 namespace App\Modules\Timetable\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\School\Entity\DaysOfWeek;
+use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use App\Validator\Colour;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,16 +43,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TIMETABLEDay
+ * Class TimetableColumn
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableDayRepository")
  * @ORM\Table(name="TimetableDay",
- *     indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"}),
- *     @ORM\Index(name="timetable", columns={"timetable"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable",columns={"name","timetable"}),
- *     @ORM\UniqueConstraint(name="abbreviation_timetable",columns={"abbreviation","timetable"})})
- * @UniqueEntity({"name","timetable"})
- * @UniqueEntity({"abbreviation","timetable"})
+ *     indexes={@ORM\Index(name="timetable",columns={"timetable"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),
+ *     @ORM\UniqueConstraint(name="abbreviation",columns={"abbreviation"}),
+ *     @ORM\UniqueConstraint(name="timetable_order",columns={"rotate_order","timetable"})})
+ * @UniqueEntity("name")
+ * @UniqueEntity("abbreviation")
+ * @UniqueEntity({"rotateOrder","timetable"})
  */
 class TimetableDay extends AbstractEntity
 {
@@ -48,70 +69,79 @@ class TimetableDay extends AbstractEntity
 
     /**
      * @var Timetable|null
-     * @ORM\ManyToOne(targetEntity="Timetable", inversedBy="timetableDays")
-     * @ORM\JoinColumn(name="timetable",referencedColumnName="id",nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Modules\Timetable\Entity\Timetable",inversedBy="timetableDays")
+     * @ORM\JoinColumn(name="timetable",referencedColumnName="id")
      */
     private $timetable;
-
-    /**
-     * @var TimetableColumn|null
-     * @ORM\ManyToOne(targetEntity="TimetableColumn")
-     * @ORM\JoinColumn(name="timetable_column",referencedColumnName="id",nullable=false)
-     */
-    private $timetableColumn;
-
+    
     /**
      * @var string|null
-     * @ORM\Column(length=12)
+     * @ORM\Column(length=30)
      * @Assert\NotBlank()
-     * @Assert\Length(max=12)
+     * @Assert\Length(max=30)
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=4, name="abbreviation")
+     * @ORM\Column(length=12,name="abbreviation")
      * @Assert\NotBlank()
-     * @Assert\Length(max=4)
+     * @Assert\Length(max=12)
      */
     private $abbreviation;
 
     /**
+     * @var Collection|DaysOfWeek[]|null
+     * @ORM\ManyToMany(targetEntity="App\Modules\School\Entity\DaysOfWeek")
+     * @ORM\JoinTable(name="TimetableDayDayOfWeek",
+     *      joinColumns={@ORM\JoinColumn(name="timetable_day",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="day_of_week",referencedColumnName="id")})
+     */
+    private $daysOfWeek;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="TimetablePeriod",mappedBy="timetableDay",cascade={"all"})
+     * @ORM\OrderBy({"timeStart" = "ASC"})
+     */
+    private $periods;
+
+    /**
      * @var string|null
-     * @ORM\Column(length=7, name="colour")
+     * @ORM\Column(length=7,name="colour",options={"default": "#0000CC"})
      * @Colour(enforceType="hex")
      */
     private $colour;
 
     /**
      * @var string|null
-     * @ORM\Column(length=7, name="font_colour")
+     * @ORM\Column(length=7,name="font_colour",options={"default": "#FFFFFF"})
      * @Colour(enforceType="hex")
      */
     private $fontColour;
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="TimetableDayRowClass",mappedBy="timetableDay")
+     * @var integer
+     * @ORM\Column(type="smallint")
+     * @Assert\Range(min=1,max=99)
      */
-    private $timetableDayRowClasses;
+    private $rotateOrder;
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="TimetableDayDate",mappedBy="timetableDay")
+     * @ORM\OneToMany(targetEntity="TimetableDate",mappedBy="timetableDay",cascade={"all"},orphanRemoval=true)
      */
-    private $timetableDayDates;
+    private $timetableDates;
 
     /**
-     * TimetableDay constructor.
+     * TimetableColumn constructor.
      * @param Timetable|null $timetable
      */
     public function __construct(?Timetable $timetable = null)
     {
-        $this->setTimetableDayDates(new ArrayCollection())
-            ->setTimetableDayRowClasses(new ArrayCollection())
+        $this->setPeriods(new ArrayCollection())
             ->setTimetable($timetable)
-        ;
+            ->nextRotateOrder();
     }
 
     /**
@@ -143,34 +173,12 @@ class TimetableDay extends AbstractEntity
     }
 
     /**
-     * @param Timetable|null $TIMETABLE
+     * @param Timetable|null $timetable
      * @return TimetableDay
      */
     public function setTimetable(?Timetable $timetable): TimetableDay
     {
         $this->timetable = $timetable;
-        return $this;
-    }
-
-    /**
-     * getTimetableColumn
-     * @return TimetableColumn|null
-     * 4/08/2020 08:41
-     */
-    public function getTimetableColumn(): ?TimetableColumn
-    {
-        return $this->timetableColumn;
-    }
-
-    /**
-     * setTimetableColumn
-     * @param TimetableColumn|null $timetableColumn
-     * @return $this
-     * 4/08/2020 08:41
-     */
-    public function setTimetableColumn(?TimetableColumn $timetableColumn): TimetableDay
-    {
-        $this->timetableColumn = $timetableColumn;
         return $this;
     }
 
@@ -211,6 +219,96 @@ class TimetableDay extends AbstractEntity
     }
 
     /**
+     * @return DaysOfWeek[]|Collection|null
+     */
+    public function getDaysOfWeek(): Collection
+    {
+        if ($this->daysOfWeek === null) $this->daysOfWeek = new ArrayCollection();
+
+        if ($this->daysOfWeek instanceof PersistentCollection) $this->daysOfWeek->initialize();
+
+        return $this->daysOfWeek;
+    }
+
+    /**
+     * setDaysOfWeek
+     * @param Collection|null $daysOfWeek
+     * @return TimetableDay
+     * 7/08/2020 13:35
+     */
+    public function setDaysOfWeek(?Collection $daysOfWeek): TimetableDay
+    {
+        $this->daysOfWeek = $daysOfWeek;
+        return $this;
+    }
+
+    /**
+     * getDaysOfWeekNames
+     * @return string
+     * 7/08/2020 12:55
+     */
+    public function getDaysOfWeekNames(): string
+    {
+        $result = [];
+        foreach ($this->getDaysOfWeek() as $day) {
+            $result[] = $day->getAbbreviation();
+        }
+        return implode(', ',$result);
+    }
+
+    /**
+     * getPeriods
+     * @return Collection
+     */
+    public function getPeriods(): Collection
+    {
+        if (empty($this->periods))
+            $this->periods = new ArrayCollection();
+
+        if ($this->periods instanceof PersistentCollection)
+            $this->periods->initialize();
+
+        $iterator = $this->periods->getIterator();
+        $iterator->uasort(
+            function ($a, $b) {
+                return ($a->getTimeStart()->format('His') < $b->getTimeStart()->format('His')) ? -1 : 1;
+            }
+        );
+
+        $this->periods = new ArrayCollection(iterator_to_array($iterator, false));
+
+        return $this->periods;
+    }
+
+    /**
+     * @param Collection $periods
+     * @return TimetableDay
+     */
+    public function setPeriods(Collection $periods): TimetableDay
+    {
+        $this->periods = $periods;
+        return $this;
+    }
+
+    /**
+     * addPeriod
+     * @param TimetablePeriod $period
+     * @param bool $reflect
+     * @return $this
+     * 5/08/2020 10:19
+     */
+    public function addPeriod(TimetablePeriod $period, bool $reflect = true): TimetableDay
+    {
+        if (!$this->getPeriods()->contains($period)) {
+            if ($reflect) {
+                $period->setTimetableDay($this, false);
+            }
+            $this->periods->add($period);
+        }
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getColour(): ?string
@@ -247,64 +345,31 @@ class TimetableDay extends AbstractEntity
     }
 
     /**
-     * getTimetableDayRowClasses
-     * @return Collection
-     * 4/08/2020 08:40
+     * @return int
      */
-    public function getTimetableDayRowClasses(): Collection
+    public function getRotateOrder(): int
     {
-        if (empty($this->timetableDayRowClasses))
-            $this->timetableDayRowClasses = new ArrayCollection();
-
-        if ($this->timetableDayRowClasses instanceof PersistentCollection)
-            $this->timetableDayRowClasses->initialize();
-
-        return $this->timetableDayRowClasses;
+        return $this->rotateOrder;
     }
 
     /**
-     * @param Collection $TIMETABLEDayRowClasses
+     * @param int $rotateOrder
      * @return TimetableDay
      */
-    public function setTimetableDayRowClasses(Collection $TIMETABLEDayRowClasses): TimetableDay
+    public function setRotateOrder(int $rotateOrder): TimetableDay
     {
-        $this->timetableDayRowClasses = $TIMETABLEDayRowClasses;
+        $this->rotateOrder = $rotateOrder;
         return $this;
     }
 
     /**
-     * getTimetableDayDates
-     * @return Collection
-     * 4/08/2020 08:40
+     * getFixed
+     * @return bool
+     * 10/08/2020 10:58
      */
-    public function getTimetableDayDates(): Collection
+    public function isFixed(): bool
     {
-        if (empty($this->timetableDayDates))
-            $this->timetableDayDates = new ArrayCollection();
-        
-        if ($this->timetableDayDates instanceof PersistentCollection)
-            $this->timetableDayDates->initialize();
-        
-        return $this->timetableDayDates;
-    }
-
-    /**
-     * @param Collection $timetableDayDates
-     * @return TimetableDay
-     */
-    public function setTimetableDayDates(Collection $timetableDayDates): TimetableDay
-    {
-        $this->timetableDayDates = $timetableDayDates;
-        return $this;
-    }
-
-    /**
-     * __toString
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getName() . ' ('.$this->getAbbreviation().') of '.$this->getTimetable()->__toString();
+        return ProviderFactory::create(TimetableDay::class)->isFixed($this);
     }
 
     /**
@@ -318,9 +383,25 @@ class TimetableDay extends AbstractEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
-            'column' => $this->getTimetableColumn()->getName(),
-            'timetable' => $this->getTimetable()->getId(),
+            'periodCount' => $this->getPeriods()->count(),
+            'hasPeriods' => intval($this->getPeriods()->count()) > 0,
             'canDelete' => true,
+            'weekDays' => $this->getDaysOfWeekNames(),
+            'timetable' => $this->getTimetable() ? $this->getTimetable()->getId() : null,
+            'fixed' => TranslationHelper::translate($this->isFixed() ? 'Yes' : 'No', [], 'messages'),
+            'isFixed' => $this->isFixed(),
         ];
+    }
+
+    /**
+     * nextRotateOrder
+     * @return TimetableDay
+     * 6/08/2020 13:05
+     */
+    public function nextRotateOrder(): TimetableDay
+    {
+        if ($this->getTimetable() instanceof Timetable)
+            return $this->setRotateOrder(ProviderFactory::getRepository(TimetableDay::class)->nextRotateOrder($this->getTimetable()));
+        return $this;
     }
 }

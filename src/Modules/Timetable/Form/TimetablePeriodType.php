@@ -19,7 +19,7 @@ namespace App\Modules\Timetable\Form;
 use App\Form\Type\DisplayType;
 use App\Form\Type\EnumType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Timetable\Entity\TimetableColumnPeriod;
+use App\Modules\Timetable\Entity\TimetablePeriod;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,7 +32,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package App\Modules\Timetable\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnPeriodType extends AbstractType
+class TimetablePeriodType extends AbstractType
 {
     /**
      * buildForm
@@ -43,11 +43,11 @@ class TimetableColumnPeriodType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('columnName', DisplayType::class,
+            ->add('dayName', DisplayType::class,
                 [
-                    'label' => 'Timetable Column',
+                    'label' => 'Timetable Day',
                     'mapped' => false,
-                    'data' => $options['data']->getTimetableColumn()->getName()
+                    'data' => $options['data']->getTimetableDay()->getName()
                 ]
             )
             ->add('name', TextType::class,
@@ -95,7 +95,7 @@ class TimetableColumnPeriodType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Timetable',
-                'data_class' => TimetableColumnPeriod::class,
+                'data_class' => TimetablePeriod::class,
             ]
         );
     }

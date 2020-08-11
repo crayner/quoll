@@ -19,6 +19,7 @@ namespace App\Modules\School\Entity;
 use App\Manager\AbstractEntity;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
@@ -69,14 +70,14 @@ class AcademicYear extends AbstractEntity
     private static $statusList = ['Past', 'Current', 'Upcoming'];
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
     private $firstDay;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      * @Assert\NotBlank()
      */
@@ -84,13 +85,13 @@ class AcademicYear extends AbstractEntity
 
     /**
      * @var Collection|AcademicYearTerm[]
-     * @ORM\OneToMany(targetEntity="App\Modules\School\Entity\AcademicYearTerm", mappedBy="academicYear")
+     * @ORM\OneToMany(targetEntity="App\Modules\School\Entity\AcademicYearTerm",mappedBy="academicYear",cascade={"all"})
      */
     private $terms;
 
     /**
      * @var Collection|AcademicYearSpecialDay[]
-     * @ORM\OneToMany(targetEntity="App\Modules\School\Entity\AcademicYearSpecialDay", mappedBy="academicYear")
+     * @ORM\OneToMany(targetEntity="App\Modules\School\Entity\AcademicYearSpecialDay",mappedBy="academicYear",cascade={"all"})
      */
     private $specialDays;
 
@@ -169,9 +170,9 @@ class AcademicYear extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getFirstDay(): ?\DateTimeImmutable
+    public function getFirstDay(): ?DateTimeImmutable
     {
         return $this->firstDay;
     }
@@ -179,19 +180,19 @@ class AcademicYear extends AbstractEntity
     /**
      * FirstDay.
      *
-     * @param \DateTimeImmutable|null $firstDay
+     * @param DateTimeImmutable|null $firstDay
      * @return AcademicYear
      */
-    public function setFirstDay(?\DateTimeImmutable $firstDay): AcademicYear
+    public function setFirstDay(?DateTimeImmutable $firstDay): AcademicYear
     {
         $this->firstDay = $firstDay;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getLastDay(): ?\DateTimeImmutable
+    public function getLastDay(): ?DateTimeImmutable
     {
         return $this->lastDay;
     }
@@ -199,10 +200,10 @@ class AcademicYear extends AbstractEntity
     /**
      * LastDay.
      *
-     * @param \DateTimeImmutable|null $lastDay
+     * @param DateTimeImmutable|null $lastDay
      * @return AcademicYear
      */
-    public function setLastDay(?\DateTimeImmutable $lastDay): AcademicYear
+    public function setLastDay(?DateTimeImmutable $lastDay): AcademicYear
     {
         $this->lastDay = $lastDay;
         return $this;
@@ -271,10 +272,9 @@ class AcademicYear extends AbstractEntity
      */
     public function getTerms()
     {
-        if (null === $this->terms)
-            $this->terms = new ArrayCollection();
-        if ($this->terms instanceof PersistentCollection)
-            $this->terms->initialize();
+        if (null === $this->terms) $this->terms = new ArrayCollection();
+
+        if ($this->terms instanceof PersistentCollection) $this->terms->initialize();
 
         return $this->terms;
     }
@@ -318,16 +318,16 @@ class AcademicYear extends AbstractEntity
 
     /**
      * hasSpecialDay
-     * @param \DateTimeImmutable $date
+     * @param DateTimeImmutable $date
      * @return bool
      */
-    public function hasSpecialDay(\DateTimeImmutable $date): bool
+    public function hasSpecialDay(DateTimeImmutable $date): bool
     {
         $found = $this->getSpecialDays()->filter(function(AcademicYearSpecialDay $day) use ($date) {
-            if ($date->format('Ymd') === $day->getDate()->format('Ymd'))
+            if ($date->format('Ymd') === $day->getDate()->format('Ymd')) {
                 return $day;
             }
-        );
+        });
 
         if ($found->count() === 1) {
             $this->specialDays->removeElement($found->first());

@@ -99,6 +99,9 @@ class ManageController extends AbstractPageController
                     $data['status'] = 'redirect';
                     $data['redirect'] = $this->generateUrl('timetable_edit', ['timetable' => $timetable->getId()]);
                 }
+                if ($data['status'] === 'success') {
+                    $form = $this->createForm(TimetableType::class, $timetable, ['action' => $action]);
+                }
             } else {
                 $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
             }
@@ -116,8 +119,9 @@ class ManageController extends AbstractPageController
             $container->addForm('Details', $form->createView())
                 ->addPanel($panel);
 
-            $content = ProviderFactory::getRepository(TimetableDay::class)->findBy(['timetable' => $timetable],['name' => 'ASC']);
+            $content = ProviderFactory::getRepository(TimetableDay::class)->findBy(['timetable' => $timetable],['rotateOrder' => 'ASC']);
             $pagination->setContent($content)
+                ->setDraggableRoute('timetable_day_sort')
                 ->setAddElementRoute($this->generateUrl('timetable_day_add', ['timetable' => $timetable->getId()]), TranslationHelper::translate('Add Timetable Day'))
             ;
             $panel = new Panel('Timetable Days', 'Timetable', new Section('pagination', $pagination));
@@ -128,6 +132,7 @@ class ManageController extends AbstractPageController
                 ->setAddElementRoute($this->generateUrl('timetable_add'), TranslationHelper::translate('Add Timetable'));
 
         }
+
         return $this->getPageManager()
             ->setMessages($messages)
             ->setUrl($this->generateUrl('timetable_edit', ['timetable' => $timetable->getId(), 'tabName' => $tabName]))

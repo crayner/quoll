@@ -1,5 +1,13 @@
 -
     findBy:
+        entryRoute: timetable_calendar_map
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Timetable
+    target: module
+-
+    findBy:
         entryRoute: scale_list
     source:
         table: App\Modules\System\Entity\Module

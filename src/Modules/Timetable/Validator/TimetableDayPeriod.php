@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraint;
  * @author Craig Rayner <craig@craigrayner.com>
  * @Annotation()
  */
-class TimetableColumnPeriod extends Constraint
+class TimetableDayPeriod extends Constraint
 {
     const TIMETABLE_COLUMN_ROW_ERROR = '001ab424-cf79-435f-b9b5-50f7ec0509ae';
 

@@ -11,23 +11,23 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 4/08/2020
- * Time: 11:39
+ * Date: 8/08/2020
+ * Time: 09:27
  */
 namespace App\Modules\Timetable\Provider;
 
-use App\Modules\Timetable\Entity\TimetableColumn;
+use App\Modules\Timetable\Entity\TimetableDate;
 use App\Provider\AbstractProvider;
 
 /**
- * Class TimetableColumnProvider
+ * Class TimetableDayDateProvider
  * @package App\Modules\Timetable\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnProvider extends AbstractProvider
+class TimetableDateProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected $entityName = TimetableColumn::class;
+    protected $entityName = TimetableDate::class;
 }

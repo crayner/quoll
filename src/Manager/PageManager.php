@@ -299,6 +299,10 @@ class PageManager
     {
         $this->addTranslation('Loading');
         $this->addTranslation('Close');
+        $this->addTranslation('Close Message');
+        $this->addTranslation('Submit');
+        $this->addTranslation('All / None');
+        $this->addTranslation('Yes/No');
         $locale = null;
         try {
             $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode($this->getLocale(), $this->request);

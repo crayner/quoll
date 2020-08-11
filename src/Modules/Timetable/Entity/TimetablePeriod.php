@@ -23,19 +23,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TimetableColumnPeriod
+ * Class TimetableDayPeriod
  * @package App\Modules\Timetable\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableColumnPeriodRepository")
- * @ORM\Table(name="TimetableColumnPeriod",
- *     indexes={@ORM\Index(name="timetable_column", columns={"timetable_column"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable_column",columns={"name","timetable_column"}),
- *     @ORM\UniqueConstraint(name="abbreviation_timetable_column",columns={"abbreviation","timetable_column"})}
+ * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetablePeriodRepository")
+ * @ORM\Table(name="TimetablePeriod",
+ *     indexes={@ORM\Index(name="timetable_day", columns={"timetable_day"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="name_timetable_day",columns={"name","timetable_day"}),
+ *     @ORM\UniqueConstraint(name="abbreviation_timetable_day",columns={"abbreviation","timetable_day"})}
  * )
- * @UniqueEntity({"name","timetableColumn"})
- * @UniqueEntity({"abbreviation","timetableColumn"})
- * @\App\Modules\Timetable\Validator\TimetableColumnPeriod()
+ * @UniqueEntity({"name","timetableDay"})
+ * @UniqueEntity({"abbreviation","timetableDay"})
+ * @\App\Modules\Timetable\Validator\TimetableDayPeriod()
  */
-class TimetableColumnPeriod extends AbstractEntity
+class TimetablePeriod extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -48,11 +48,11 @@ class TimetableColumnPeriod extends AbstractEntity
     private $id;
 
     /**
-     * @var TimetableColumn|null
-     * @ORM\ManyToOne(targetEntity="TimetableColumn",inversedBy="timetableColumnPeriods")
-     * @ORM\JoinColumn(name="timetable_column",referencedColumnName="id")
+     * @var TimetableDay|null
+     * @ORM\ManyToOne(targetEntity="TimetableDay",inversedBy="periods")
+     * @ORM\JoinColumn(name="timetable_day",referencedColumnName="id")
      */
-    private $timetableColumn;
+    private $timetableDay;
 
     /**
      * @var string|null
@@ -97,19 +97,19 @@ class TimetableColumnPeriod extends AbstractEntity
     private static $typeList = ['Lesson','Pastoral','Sport','Break','Service','Other'];
 
     /**
-     * @var Collection|TimetableDayRowClass[]|null
-     * @ORM\OneToMany(targetEntity="TimetableDayRowClass", mappedBy="timetableColumnPeriod")
+     * @var Collection|TimetablePeriodClass[]|null
+     * @ORM\OneToMany(targetEntity="TimetablePeriodClass", mappedBy="period")
      */
-    private $timetableDayRowClasses;
+    private $periodClasses;
 
     /**
-     * TimetableColumnPeriod constructor.
-     * @param TimetableColumn|null $column
+     * TimetableDayPeriod constructor.
+     * @param TimetableDay|null $timetableDay
      */
-    public function __construct(?TimetableColumn $column = null)
+    public function __construct(?TimetableDay $timetableDay = null)
     {
-        $this->setTimetableColumn($column)
-            ->setTimetableDayRowClasses(new ArrayCollection());
+        $this->setTimetableDay($timetableDay)
+            ->setPeriodClasses(new ArrayCollection());
     }
     /**
      * @return string|null
@@ -123,33 +123,33 @@ class TimetableColumnPeriod extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setId(?string $id): TimetableColumnPeriod
+    public function setId(?string $id): TimetablePeriod
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return TimetableColumn|null
+     * @return TimetableDay|null
      */
-    public function getTimetableColumn(): ?TimetableColumn
+    public function getTimetableDay(): ?TimetableDay
     {
-        return $this->timetableColumn;
+        return $this->timetableDay;
     }
 
     /**
-     * @param TimetableColumn|null $timetableColumn
+     * @param TimetableDay|null $timetableDay
      * @param bool $reflect
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setTimetableColumn(?TimetableColumn $timetableColumn, bool $reflect = true): TimetableColumnPeriod
+    public function setTimetableDay(?TimetableDay $timetableDay, bool $reflect = true): TimetablePeriod
     {
-        if ($timetableColumn instanceof TimetableColumn && $reflect) {
-            $timetableColumn->addTimetableColumnPeriod($this, false);
+        if ($timetableDay instanceof TimetableDay && $reflect) {
+            $timetableDay->addPeriod($this, false);
         }
-        $this->timetableColumn = $timetableColumn;
+        $this->timetableDay = $timetableDay;
         return $this;
     }
 
@@ -163,9 +163,9 @@ class TimetableColumnPeriod extends AbstractEntity
 
     /**
      * @param string|null $name
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setName(?string $name): TimetableColumnPeriod
+    public function setName(?string $name): TimetablePeriod
     {
         $this->name = $name;
         return $this;
@@ -181,9 +181,9 @@ class TimetableColumnPeriod extends AbstractEntity
 
     /**
      * @param string|null $abbreviation
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setAbbreviation(?string $abbreviation): TimetableColumnPeriod
+    public function setAbbreviation(?string $abbreviation): TimetablePeriod
     {
         $this->abbreviation = $abbreviation;
         return $this;
@@ -199,9 +199,9 @@ class TimetableColumnPeriod extends AbstractEntity
 
     /**
      * @param DateTimeImmutable|null $timeStart
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setTimeStart(?DateTimeImmutable $timeStart): TimetableColumnPeriod
+    public function setTimeStart(?DateTimeImmutable $timeStart): TimetablePeriod
     {
         $this->timeStart = $timeStart;
         return $this;
@@ -217,9 +217,9 @@ class TimetableColumnPeriod extends AbstractEntity
 
     /**
      * @param DateTimeImmutable|null $timeEnd
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setTimeEnd(?DateTimeImmutable $timeEnd): TimetableColumnPeriod
+    public function setTimeEnd(?DateTimeImmutable $timeEnd): TimetablePeriod
     {
         $this->timeEnd = $timeEnd;
         return $this;
@@ -235,9 +235,9 @@ class TimetableColumnPeriod extends AbstractEntity
 
     /**
      * @param string $type
-     * @return TimetableColumnPeriod
+     * @return TimetablePeriod
      */
-    public function setType(string $type): TimetableColumnPeriod
+    public function setType(string $type): TimetablePeriod
     {
         $this->type = in_array($type, self::getTypeList()) ? $type : null ;
         return $this;
@@ -252,27 +252,27 @@ class TimetableColumnPeriod extends AbstractEntity
     }
 
     /**
-     * gettimetableDayRowClasses
+     * getperiodClasses
      * @return Collection|null
      */
-    public function getTimetableDayRowClasses(): ?Collection
+    public function getPeriodClasses(): ?Collection
     {
-        if (empty($this->timetableDayRowClasses))
-            $this->timetableDayRowClasses = new ArrayCollection();
+        if (empty($this->periodClasses))
+            $this->periodClasses = new ArrayCollection();
 
-        if ($this->timetableDayRowClasses instanceof PersistentCollection)
-            $this->timetableDayRowClasses->initialize();
+        if ($this->periodClasses instanceof PersistentCollection)
+            $this->periodClasses->initialize();
 
-        return $this->timetableDayRowClasses;
+        return $this->periodClasses;
     }
 
     /**
-     * @param Collection|null $timetableDayRowClasses
-     * @return TimetableColumnPeriod
+     * @param Collection|null $periodClasses
+     * @return TimetablePeriod
      */
-    public function setTimetableDayRowClasses(?Collection $timetableDayRowClasses): TimetableColumnPeriod
+    public function setPeriodClasses(?Collection $periodClasses): TimetablePeriod
     {
-        $this->timetableDayRowClasses = $timetableDayRowClasses;
+        $this->periodClasses = $periodClasses;
         return $this;
     }
 
@@ -285,7 +285,7 @@ class TimetableColumnPeriod extends AbstractEntity
     {
         return [
             'id' => $this->getId(),
-            'column' => $this->getTimetableColumn()->getId(),
+            'timetableDay' => $this->getTimetableDay()->getId(),
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
             'time' => $this->getTimeStartName() . ' - ' . $this->getTimeEndName(),

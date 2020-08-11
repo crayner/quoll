@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Timetable\Manager;
 
-use App\Modules\Timetable\Entity\TimetableColumn;
+use App\Modules\Timetable\Entity\TimetableDay;
 use App\Provider\ProviderFactory;
 
 /**
@@ -24,23 +24,23 @@ use App\Provider\ProviderFactory;
  * @package App\Modules\Timetable\Manager
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnManager
+class TimetableDayManager
 {
     /**
-     * duplicateColumnPeriods
-     * @param TimetableColumn $source
+     * duplicateDayPeriods
+     * @param TimetableDay $source
      * @param string $target
      * 5/08/2020 10:01
      */
-    public function duplicateColumnPeriods(TimetableColumn $source, string $target)
+    public function duplicateDayPeriods(TimetableDay $source, string $target)
     {
-        $provider = ProviderFactory::create(TimetableColumn::class);
+        $provider = ProviderFactory::create(TimetableDay::class);
         $target = $provider->getRepository()->find($target);
 
-        foreach($source->getTimetableColumnPeriods() as $period) {
+        foreach($source->getPeriods() as $period) {
             $period = clone($period);
             $period->setId(null);
-            $target->addTimetableColumnPeriod($period);
+            $target->addPeriod($period);
 
         }
 

@@ -7,6 +7,7 @@ import PermissionApp from "../Permission/PermissionApp"
 import RelationshipApp from '../Family/RelationshipApp'
 import RequiredDataUpdates from './RequiredDataUpdates'
 import AddressApp from './AddressApp'
+import TimetableCalendarMap from './TimetableCalendarMap'
 
 export default class SpecialApp extends Component {
     constructor (props) {
@@ -32,6 +33,8 @@ export default class SpecialApp extends Component {
             result.push(<RequiredDataUpdates {...this.content} key={'required_data_updates'} />)
         } else if (this.name === 'address_manager') {
             result.push(<AddressApp {...this.content} key={'address_manager'} />)
+        } else if (this.name === 'timetable_calendar_map') {
+            result.push(<TimetableCalendarMap {...this.content} functions={this.functions} key={'timetable_calendar_map'} />)
         } else {
             console.log(this)
         }

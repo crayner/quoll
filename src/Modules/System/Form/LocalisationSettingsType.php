@@ -56,9 +56,8 @@ class LocalisationSettingsType extends AbstractType
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
                                 'choices' => [
-                                    'Monday' => "Monday",
-                                    'Sunday' => "Sunday",
-
+                                    'Monday' => 1,
+                                    'Sunday' => 7,
                                 ],
                             ],
                         ],

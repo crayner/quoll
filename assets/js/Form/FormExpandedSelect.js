@@ -57,8 +57,8 @@ export default function FormExpandedSelect(props) {
         let options = []
         let id = form.id + '_0'
         let name = form.full_name + '[0]'
-        options.push(<label key={'AllNone'} htmlFor={id}>{functions.translate('All / None')}&nbsp;<input type={'checkbox'}
-                                                                                                        id={id}
+        options.push(<label key={'AllNone'} htmlFor={id + '_all_none'}>{functions.translate('All / None')}&nbsp;<input type={'checkbox'}
+                                                                                                        id={id + '_all_none'}
                                                                                                         name={name}
                                                                                                         onChange={() => toggleAll(form)}
                                                                                                         checked={functions.toggleExpandedAllNone(form.id, false)}/><br/></label>)

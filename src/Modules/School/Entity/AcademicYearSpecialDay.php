@@ -347,6 +347,15 @@ class AcademicYearSpecialDay extends AbstractEntity
                 'description' => '',
             ];
         }
+        if ($name === 'mapping') {
+            return [
+                'year' => $this->getAcademicYear()->getName(),
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'date' => $this->getDate()->format('Y-m-d'),
+                'type' => TranslationHelper::translate('academicyearspecialday.type.'.strtolower($this->getType()), [], 'School'),
+            ];
+        }
         return [
             'year' => $this->getAcademicYear()->getName(),
             'name' => $this->getName(),
@@ -356,46 +365,5 @@ class AcademicYearSpecialDay extends AbstractEntity
             'canDelete' => true,
             'canDuplicate' => SpecialDayManager::canDuplicate($this),
         ];
-    }
-
-    /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__AcademicYearSpecialDay` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `type` CHAR(14) NOT NULL,
-                    `name` CHAR(20) NOT NULL,
-                    `description` CHAR(191) DEFAULT NULL,
-                    `date` date NOT NULL COMMENT '(DC2Type:date_immutable)',
-                    `school_open` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_start` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_end` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `school_close` time DEFAULT NULL COMMENT '(DC2Type:time_immutable)',
-                    `academic_year` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `academic_year_date` (`date`,`academic_year`),
-                    KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return 'ALTER TABLE `__prefix__AcademicYearSpecialDay`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`);';
-    }
-
-    /**
-     * coreData
-     * @return string
-     */public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

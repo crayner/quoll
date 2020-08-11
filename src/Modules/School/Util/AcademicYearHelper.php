@@ -19,6 +19,7 @@ namespace App\Modules\School\Util;
 
 use App\Modules\School\Entity\AcademicYear;
 use App\Provider\ProviderFactory;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -43,10 +44,9 @@ class AcademicYearHelper
 
     /**
      * getCurrentAcademicYear
-     * @param bool $fetch
+     * @param bool $refresh
      * @return AcademicYear|mixed
      * 26/06/2020 08:58
-     * @throws \Exception
      */
     public static function getCurrentAcademicYear(bool $refresh = false)
     {
@@ -63,8 +63,8 @@ class AcademicYearHelper
         if (null === $current) {
             $current = new AcademicYear();
             $current->setName(date('Y'))
-                ->setFirstDay(new \DateTimeImmutable(date('Y-01-01')))
-                ->setLastDay(new \DateTimeImmutable(date('Y-12-31')))
+                ->setFirstDay(new DateTimeImmutable(date('Y-01-01')))
+                ->setLastDay(new DateTimeImmutable(date('Y-12-31')))
                 ->setStatus('Current')
             ;
             ProviderFactory::getEntityManager()->persist($current);

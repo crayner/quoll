@@ -9,7 +9,8 @@ import Content from "./Content"
 import Footer from "./Footer"
 import {fetchJson} from "../component/fetchJson"
 import Parser from "html-react-parser"
-import { openUrl } from '../Container/ContainerFunctions'
+import { openUrl, trans } from '../Container/ContainerFunctions'
+import { isEmpty } from '../component/isEmpty'
 
 export default class PageApp extends Component {
     constructor (props) {
@@ -34,7 +35,8 @@ export default class PageApp extends Component {
             handleAddClick: this.getContentFromServer.bind(this),
             onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
             getContentSize: this.getContentSize.bind(this),
-            translate: this.translate.bind(this)
+            translate: this.translate.bind(this),
+            mergeTranslations: this.mergeTranslations.bind(this)
         }
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
         this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
@@ -65,8 +67,13 @@ export default class PageApp extends Component {
         document.removeEventListener('mousedown', this.handleClickOffSideBar, false)
     }
 
+    mergeTranslations(translations) {
+        this.translations = {...this.translations, ...translations}
+        return this.translations
+    }
+
     translate(id) {
-        return id
+        return trans(this.translations, id)
     }
 
     getContentSize() {

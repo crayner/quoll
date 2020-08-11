@@ -14,7 +14,7 @@
 namespace App\Modules\Timetable\Repository;
 
 use App\Modules\Timetable\Entity\TimetableDay;
-use App\Modules\Timetable\Entity\TimetableDayRowClass;
+use App\Modules\Timetable\Entity\TimetablePeriodClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,7 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class TTDayRowClassRepository
  * @package App\Modules\Timetable\Repository
  */
-class TimetableDayRowClassRepository extends ServiceEntityRepository
+class TimetablePeriodClassRepository extends ServiceEntityRepository
 {
     /**
      * TTDayRowClassRepository constructor.
@@ -30,7 +30,7 @@ class TimetableDayRowClassRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TimetableDayRowClass::class);
+        parent::__construct($registry, TimetablePeriodClass::class);
     }
 
     /**

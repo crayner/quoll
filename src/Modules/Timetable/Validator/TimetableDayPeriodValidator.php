@@ -15,6 +15,7 @@
  */
 namespace App\Modules\Timetable\Validator;
 
+use App\Modules\Timetable\Entity\TimetablePeriod;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraint;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @package App\Modules\Timetable\Validator
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnPeriodValidator extends ConstraintValidator
+class TimetableDayPeriodValidator extends ConstraintValidator
 {
     /**
      * validate
@@ -37,30 +38,30 @@ class TimetableColumnPeriodValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$value instanceof \App\Modules\Timetable\Entity\TimetableColumnPeriod) return $value;
+        if (!$value instanceof TimetablePeriod) return $value;
 
-        $column = $value->getTimetableColumn();
-        $rows = $column->getTimetableColumnPeriods();
+        $day = $value->getTimetableDay();
+        $periods = $day->getPeriods();
 
-        $iterator = $rows->getIterator();
+        $iterator = $periods->getIterator();
         $iterator->uasort(function ($a, $b) {
             return ($a->getTimeStart() < $b->getTimeStart()) ? -1 : 1;
         });
 
-        $rows = new ArrayCollection(iterator_to_array($iterator, false));
+        $periods = new ArrayCollection(iterator_to_array($iterator, false));
 
-        $row = $rows->first();
+        $row = $periods->first();
         $previous = null;
         do {
             if ($row === $value || $previous === $value) {
-                if ($previous instanceof \App\Modules\Timetable\Entity\TimetableColumnPeriod && $row === $value) {
+                if ($previous instanceof \App\Modules\Timetable\Entity\TimetablePeriod && $row === $value) {
                     if ($previous->getTimeEnd()->format('Hi') > $row->getTimeStart()->format('Hi')) {
                         $this->context->buildViolation('An overlap exists between the previous row "(%previous%)" and the current row "(%current%)."')
                             ->setParameter('%previous%', $previous->getName() . ' ' . $previous->getTimeEnd()->format('H:i'))
                             ->setParameter('%current%', $row->getName() . ' ' . $row->getTimeStart()->format('H:i'))
                             ->setTranslationDomain($constraint->transDomain)
                             ->atPath('timeStart')
-                            ->setCode(TimetableColumnPeriod::TIMETABLE_COLUMN_ROW_ERROR)
+                            ->setCode(TimetableDayPeriod::TIMETABLE_COLUMN_ROW_ERROR)
                             ->addViolation();
                     }
                     if ($row->getTimeStart()->format('Hi') > $previous->getTimeEnd()->format('Hi')) {
@@ -69,7 +70,7 @@ class TimetableColumnPeriodValidator extends ConstraintValidator
                             ->setParameter('%current%', $row->getName() . ' ' . $row->getTimeStart()->format('H:i'))
                             ->setTranslationDomain($constraint->transDomain)
                             ->atPath('timeStart')
-                            ->setCode(TimetableColumnPeriod::TIMETABLE_COLUMN_ROW_ERROR)
+                            ->setCode(TimetableDayPeriod::TIMETABLE_COLUMN_ROW_ERROR)
                             ->addViolation();
                     }
                 }
@@ -80,7 +81,7 @@ class TimetableColumnPeriodValidator extends ConstraintValidator
                             ->setParameter('%current%', $row->getName() . ' ' . $row->getTimeStart()->format('H:i'))
                             ->setTranslationDomain($constraint->transDomain)
                             ->atPath('timeEnd')
-                            ->setCode(TimetableColumnPeriod::TIMETABLE_COLUMN_ROW_ERROR)
+                            ->setCode(TimetableDayPeriod::TIMETABLE_COLUMN_ROW_ERROR)
                             ->addViolation();
                     }
                     if ($row->getTimeStart()->format('Hi') > $previous->getTimeEnd()->format('Hi')) {
@@ -89,14 +90,14 @@ class TimetableColumnPeriodValidator extends ConstraintValidator
                             ->setParameter('%current%', $row->getName() . ' ' . $row->getTimeStart()->format('H:i'))
                             ->setTranslationDomain($constraint->transDomain)
                             ->atPath('timeEnd')
-                            ->setCode(TimetableColumnPeriod::TIMETABLE_COLUMN_ROW_ERROR)
+                            ->setCode(TimetableDayPeriod::TIMETABLE_COLUMN_ROW_ERROR)
                             ->addViolation();
                     }
 
                 }
             }
-            $previous = $rows->current();
-        } while (false !== ($row = $rows->next()));
+            $previous = $periods->current();
+        } while (false !== ($row = $periods->next()));
     }
 
     /**

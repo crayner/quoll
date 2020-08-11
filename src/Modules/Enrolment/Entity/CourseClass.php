@@ -17,7 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\Traits\BooleanList;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
-use App\Modules\Timetable\Entity\TimetableDayRowClass;
+use App\Modules\Timetable\Entity\TimetablePeriodClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,17 +100,17 @@ class CourseClass extends AbstractEntity
     private $courseClassPeople;
 
     /**
-     * @var Collection|TimetableDayRowClass[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TimetableDayRowClass",mappedBy="courseClass")
+     * @var Collection|TimetablePeriodClass[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TimetablePeriodClass",mappedBy="courseClass")
      */
-    private $timetableDayRowClasses;
+    private $periodClasses;
 
     /**
      * CourseClass constructor.
      */
     public function __construct()
     {
-        $this->setTimetableDayRowClasses(new ArrayCollection())
+        $this->setPeriodClasses(new ArrayCollection())
             ->setCourseClassPeople(new ArrayCollection());
     }
 
@@ -284,27 +284,27 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * getTimetableDayRowClasses
+     * getPeriodClasses
      * @return Collection|null
      */
-    public function getTimetableDayRowClasses(): ?Collection
+    public function getPeriodClasses(): ?Collection
     {
-        if (empty($this->timetableDayRowClasses))
-            $this->timetableDayRowClasses = new ArrayCollection();
+        if (empty($this->periodClasses))
+            $this->periodClasses = new ArrayCollection();
 
-        if ($this->timetableDayRowClasses instanceof PersistentCollection)
-            $this->timetableDayRowClasses-> initialize();
+        if ($this->periodClasses instanceof PersistentCollection)
+            $this->periodClasses-> initialize();
 
-        return $this->timetableDayRowClasses;
+        return $this->periodClasses;
     }
 
     /**
-     * @param Collection|null $timetableDayRowClasses
+     * @param Collection|null $periodClasses
      * @return CourseClass
      */
-    public function setTimetableDayRowClasses(?Collection $timetableDayRowClasses): CourseClass
+    public function setPeriodClasses(?Collection $periodClasses): CourseClass
     {
-        $this->timetableDayRowClasses = $timetableDayRowClasses;
+        $this->periodClasses = $periodClasses;
         return $this;
     }
 

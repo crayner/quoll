@@ -43,7 +43,8 @@ export default class ContainerApp extends Component {
         this.hideSingleFormWarning = props.hideSingleFormWarning
 
         this.functions = {
-            translate: this.translate.bind(this),
+            translate: props.functions.translate,
+            mergeTranslations: props.functions.mergeTranslations,
             openUrl: openUrl.bind(this),
             downloadFile: downloadFile.bind(this),
             onSelectTab: this.onSelectTab.bind(this),
@@ -142,10 +143,6 @@ export default class ContainerApp extends Component {
             submit: isSubmit(this.submit),
             visibleKeys: visibleKeys,
         })
-    }
-
-    translate(id){
-        return trans(this.translations, id)
     }
 
     onSelectTab(tabIndex)

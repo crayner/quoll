@@ -12,7 +12,7 @@
  *
  * User: craig
  * Date: 4/08/2020
- * Time: 11:43
+ * Time: 08:04
  */
 namespace App\Modules\Timetable\Pagination;
 
@@ -24,11 +24,11 @@ use App\Manager\PaginationInterface;
 use App\Util\TranslationHelper;
 
 /**
- * Class TimetableColumnPeriodPagination
+ * Class TimetableDayPagination
  * @package App\Modules\Timetable\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnPeriodPagination extends AbstractPaginationManager
+class DayPagination extends AbstractPaginationManager
 {
     public function execute(): PaginationInterface
     {
@@ -38,6 +38,7 @@ class TimetableColumnPeriodPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
@@ -45,21 +46,24 @@ class TimetableColumnPeriodPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Abbreviation')
             ->setContentKey('abbreviation')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Time')
-            ->setContentKey('time')
+        $column->setLabel('Timetable Column')
+            ->setContentKey('column')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Type')
-            ->setContentKey('type')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto')
+        $column->setLabel('Order')
+            ->setContentKey('rotateOrder')
+            ->setSort()
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center')
         ;
         $row->addColumn($column);
 
@@ -68,8 +72,8 @@ class TimetableColumnPeriodPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('timetable_column_row_edit')
-            ->setRouteParams(['column' => 'column', 'row' => 'id']);
+            ->setRoute('timetable_day_edit')
+            ->setRouteParams(['timetableDay' => 'id', 'timetable' => 'timetable']);
         $row->addAction($action);
 
         $action = new PaginationAction();
@@ -77,12 +81,17 @@ class TimetableColumnPeriodPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('timetable_column_row_delete')
+            ->setRoute('timetable_day_delete')
             ->setOnClick('areYouSure')
             ->setDisplayWhen('canDelete')
-            ->setRouteParams(['row' => 'id']);
+            ->setRouteParams(['timetableDay' => 'id']);
         $row->addAction($action);
 
+        $row->addHighlight([
+            'className' => 'warning',
+            'columnKey' => 'isFixed',
+            'columnValue' => true,
+        ]);
         $this->setRow($row);
         return $this;
     }

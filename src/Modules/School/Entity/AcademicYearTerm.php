@@ -50,7 +50,7 @@ class AcademicYearTerm extends AbstractEntity
 
     /**
      * @var AcademicYear|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear", inversedBy="terms")
+     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear",inversedBy="terms")
      * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      * @ORM\OrderBy({"firstDay" = "ASC"})

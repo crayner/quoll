@@ -16,9 +16,11 @@
  */
 namespace App\Modules\Timetable\Form;
 
-use App\Form\Type\DisplayType;
+use App\Form\Type\EnumType;
+use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Timetable\Entity\TimetableColumn;
+use App\Modules\School\Entity\DaysOfWeek;
+use App\Modules\Timetable\Entity\Timetable;
 use App\Modules\Timetable\Entity\TimetableDay;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -30,7 +32,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TimetableDayType
+ * Class TimetableColumnType
  * @package App\Modules\Timetable\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
@@ -45,19 +47,9 @@ class TimetableDayType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('academicYearDisplay', DisplayType::class,
+            ->add('timetable', HiddenEntityType::class,
                 [
-                    'label' => 'Academic Year',
-                    'translation_domain' => 'School',
-                    'data' => $options['data']->getTimetable()->getAcademicYear()->getName(),
-                    'mapped' => false,
-                ]
-            )
-            ->add('timetableDisplay', DisplayType::class,
-                [
-                    'label' => 'Timetable',
-                    'data' => $options['data']->getTimetable()->getName(),
-                    'mapped' => false,
+                    'class' => Timetable::class,
                 ]
             )
             ->add('name', TextType::class,
@@ -82,33 +74,24 @@ class TimetableDayType extends AbstractType
                     'label' => 'Header Text Colour',
                 ]
             )
-        ;
-        if ($options['data']->getId() === null) {
-            $builder
-                ->add('timetableColumn', EntityType::class,
-                    [
-                        'label' => 'Timetable Column',
-                        'class' => TimetableColumn::class,
-                        'placeholder' => 'Please select...',
-                        'choice_label' => 'name',
-                        'query_builder' => function(EntityRepository $er) {
-                            return $er->createQueryBuilder('c')
-                                ->orderBy('c.name');
-                        },
-                    ]
-                );
-
-        } else {
-            $builder
-                ->add('timetableColumn', DisplayType::class,
-                    [
-                        'label' => 'Timetable Column',
-                        'mapped' => false,
-                        'data' => $options['data']->getTimetableColumn()->getName(),
-                    ]
-                );
-        }
-        $builder
+            ->add('daysOfWeek', EntityType::class,
+                [
+                    'label' => 'Link to Calendar Days',
+                    'help' => 'Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.',
+                    'class' => DaysOfWeek::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'Rotate',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('d')
+                            ->orderBy('d.sortOrder')
+                            ->where('d.schoolDay = :true')
+                            ->setParameter('true', true)
+                        ;
+                    },
+                ]
+            )
             ->add('submit', SubmitType::class)
         ;
     }

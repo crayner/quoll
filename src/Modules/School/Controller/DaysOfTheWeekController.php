@@ -54,7 +54,7 @@ class DaysOfTheWeekController extends AbstractPageController
         $container->setSelectedPanel($tabName);
         TranslationHelper::setDomain('School');
 
-        foreach (ProviderFactory::getRepository(DaysOfWeek::class)->findBy([], ['sequenceNumber' => 'ASC']) as $day) {
+        foreach (ProviderFactory::getRepository(DaysOfWeek::class)->findBy([], ['sortOrder' => 'ASC']) as $day) {
             $form = $this->createForm(DayOfTheWeekType::class, $day, ['action' => $this->generateUrl('days_of_the_week', ['tabName' => $day->getName()])]);
             $panel = new Panel($day->getName(), 'School', new Section('form', $day->getName()));
             $container->addForm($day->getName(), $form->createView())->addPanel($panel);

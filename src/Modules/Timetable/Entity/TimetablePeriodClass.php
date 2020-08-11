@@ -21,16 +21,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class timetableDayRowClass
  * @package App\Modules\Timetable\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableDayRowClassRepository")
- * @ORM\Table(name="TimetableDayRowClass", indexes={
+ * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetablePeriodClassRepository")
+ * @ORM\Table(name="TimetablePeriodClass", indexes={
  *     @ORM\Index(name="course_class", columns={"course_class"}),
  *     @ORM\Index(name="facility", columns={"facility"}),
- *     @ORM\Index(name="timetable_column_row", columns={"timetable_column_row"}),
- *     @ORM\Index(name="timetable_day", columns={"timetable_day"})
+ *     @ORM\Index(name="period", columns={"period"})
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class TimetableDayRowClass extends AbstractEntity
+class TimetablePeriodClass extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -43,22 +42,15 @@ class TimetableDayRowClass extends AbstractEntity
     private $id;
 
     /**
-     * @var TimetableColumnPeriod|null
-     * @ORM\ManyToOne(targetEntity="TimetableColumnPeriod",inversedBy="timetableDayRowClasses")
-     * @ORM\JoinColumn(name="timetable_column_row",referencedColumnName="id")
+     * @var TimetablePeriod|null
+     * @ORM\ManyToOne(targetEntity="TimetablePeriod",inversedBy="periodClasses")
+     * @ORM\JoinColumn(name="period",referencedColumnName="id")
      */
-    private $timetableColumnPeriod;
-
-    /**
-     * @var TimetableDay|null
-     * @ORM\ManyToOne(targetEntity="TimetableDay",inversedBy="timetableDayRowClasses")
-     * @ORM\JoinColumn(name="timetable_day",referencedColumnName="id")
-     */
-    private $timetableDay;
+    private $period;
 
     /**
      * @var CourseClass|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Enrolment\Entity\CourseClass",inversedBy="timetableDayRowClasses")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Enrolment\Entity\CourseClass",inversedBy="periodClasses")
      * @ORM\JoinColumn(name="course_class",referencedColumnName="id")
      */
     private $courseClass;
@@ -82,47 +74,29 @@ class TimetableDayRowClass extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return TimetableDayRowClass
+     * @return TimetablePeriodClass
      */
-    public function setId(?string $id): TimetableDayRowClass
+    public function setId(?string $id): TimetablePeriodClass
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return TimetableColumnPeriod|null
+     * @return TimetablePeriod|null
      */
-    public function getTimetableColumnPeriod(): ?TimetableColumnPeriod
+    public function getPeriod(): ?TimetablePeriod
     {
-        return $this->timetableColumnPeriod;
+        return $this->period;
     }
 
     /**
-     * @param TimetableColumnPeriod|null $timetableColumnPeriod
-     * @return TimetableDayRowClass
+     * @param TimetablePeriod|null $period
+     * @return TimetablePeriodClass
      */
-    public function setTimetableColumnPeriod(?TimetableColumnPeriod $timetableColumnPeriod): TimetableDayRowClass
+    public function setPeriod(?TimetablePeriod $period): TimetablePeriodClass
     {
-        $this->timetableColumnPeriod = $timetableColumnPeriod;
-        return $this;
-    }
-
-    /**
-     * @return TimetableDay|null
-     */
-    public function getTimetableDay(): ?TimetableDay
-    {
-        return $this->timetableDay;
-    }
-
-    /**
-     * @param TimetableDay|null $timetableDay
-     * @return TimetableDayRowClass
-     */
-    public function setTimetableDay(?TimetableDay $timetableDay): TimetableDayRowClass
-    {
-        $this->timetableDay = $timetableDay;
+        $this->period = $period;
         return $this;
     }
 
@@ -136,9 +110,9 @@ class TimetableDayRowClass extends AbstractEntity
 
     /**
      * @param CourseClass|null $courseClass
-     * @return TimetableDayRowClass
+     * @return TimetablePeriodClass
      */
-    public function setCourseClass(?CourseClass $courseClass): TimetableDayRowClass
+    public function setCourseClass(?CourseClass $courseClass): TimetablePeriodClass
     {
         $this->courseClass = $courseClass;
         return $this;
@@ -156,9 +130,9 @@ class TimetableDayRowClass extends AbstractEntity
      * Facility.
      *
      * @param Facility|null $facility
-     * @return TimetableDayRowClass
+     * @return TimetablePeriodClass
      */
-    public function setFacility(?Facility $facility): TimetableDayRowClass
+    public function setFacility(?Facility $facility): TimetablePeriodClass
     {
         $this->facility = $facility;
         return $this;

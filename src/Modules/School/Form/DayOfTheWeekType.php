@@ -16,6 +16,7 @@
  */
 namespace App\Modules\School\Form;
 
+use App\Form\Type\DisplayType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
@@ -71,11 +72,19 @@ class DayOfTheWeekType extends AbstractType
             ->add('name', HiddenType::class)
             ->add('abbreviation', HiddenType::class)
             ->add('id', HiddenType::class)
-            ->add('sequenceNumber', HiddenType::class)
+            ->add('sortOrder', HiddenType::class)
             ->add('dayName', HeaderType::class,
                 [
                     'label' => $options['data']->getName(),
                     'help' => $options['data']->getAbbreviation(),
+                ]
+            )
+            ->add('display8601', DisplayType::class,
+                [
+                    'label' => '1 (for Monday) through 7 (for Sunday)',
+                    'help' => 'ISO-8601 numeric representation of the day of the week.',
+                    'mapped' => false,
+                    'data' => $options['data']->getSortOrder(),
                 ]
             )
             ->add('schoolDay', ToggleType::class,

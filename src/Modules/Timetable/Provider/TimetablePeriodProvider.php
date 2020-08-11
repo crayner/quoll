@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Timetable\Provider;
 
-use App\Modules\Timetable\Entity\TimetableColumnPeriod;
+use App\Modules\Timetable\Entity\TimetablePeriod;
 use App\Provider\AbstractProvider;
 
 /**
@@ -24,10 +24,10 @@ use App\Provider\AbstractProvider;
  * @package App\Modules\Timetable\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class TimetableColumnPeriodProvider extends AbstractProvider
+class TimetablePeriodProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected $entityName = TimetableColumnPeriod::class;
+    protected $entityName = TimetablePeriod::class;
 }
