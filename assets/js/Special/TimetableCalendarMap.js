@@ -18,6 +18,8 @@ export default class TimetableCalendarMap extends Component {
             weeks: props.weeks,
             messages: [],
         }
+
+        console.log(props,this)
     }
 
     headerRow() {
@@ -41,6 +43,7 @@ export default class TimetableCalendarMap extends Component {
                         day = w
                     }
                 })
+                console.log(day)
                 let datum = []
                 let className = "text-sm w-1/8 float-left py-3 text-center border border-gray-800 h-32"
                 if (day !== null && day.schoolDay) {
@@ -53,21 +56,23 @@ export default class TimetableCalendarMap extends Component {
                         if (day.specialDay.type === 'School Closure') {
                             className += ' bg-gray-400'
                         }
-                        datum.push(<p className={'text-center text-xs m-0'} key={'special'}>{day.specialDay.name}</p> )
+                        datum.push(<p className={'text-center text-xs m-0'} key={'special'}>{day.specialDay.name}</p>)
+                    } else if (!day.schoolOpen) {
+                        className += ' bg-gray-400'
                     } else {
                         datum.push(<p className={'text-center text-xs m-0'} key={'name'}>{this.translations['School Day']}</p>)
 
                         let buttons = []
-                        buttons.push(<a className={'thickbox'} title={this.translations['Next Column']} key={0} onClick={() => this.nextColumn(day.date)}>
-                            <span className={'fas fa-pencil-alt fa-1-5x fa-fw text-gray-800 hover:text-orange-500'} /></a>)
-                        if (day.rotate) {
-                            buttons.push(<a className={'thickbox'} title={this.translations['Ripple Columns in Term']}
+                        buttons.push(<a className={'thickbox'} title={this.translations['Next Timetable Day']} key={0} onClick={() => this.nextColumn(day.date)}>
+                            <span className={'fas fa-step-forward fa-1-5x fa-fw text-gray-800 hover:text-orange-500'} /></a>)
+                        if (!day.dayDate.timetableDay.isFixed) {
+                            buttons.push(<a className={'thickbox'} title={this.translations['Ripple Timetable Days in Term']}
                                             key={1} onClick={() => this.rippleColumns(day.date)}>
                                 <span className={'fas fa-sync fa-1-5x fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
                         }
 
                         datum.push(<p className={'text-center text-xs m-1 mb-2'} key={'buttons'}>{buttons}</p>)
-                        datum.push(<p className={'text-center text-xs mx-0 mb-0 mt-1 font-bold'} key={'column'}><span className={'p-1 mt-1'} style={{color: day.dayDate.day.fontColour, backgroundColor: day.dayDate.day.colour}}>{day.dayDate.day.column}</span></p>)
+                        datum.push(<p className={'text-center text-xs mx-0 mb-0 mt-1 font-bold'} key={'column'}><span className={'p-1 mt-1'} style={{color: day.dayDate.timetableDay.fontColour, backgroundColor: day.dayDate.timetableDay.colour}}>{day.dayDate.timetableDay.name}</span></p>)
                     }
                 }
                 result.push(<div className={className} key={i}>{datum}</div>)

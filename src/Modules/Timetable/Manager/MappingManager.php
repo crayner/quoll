@@ -109,7 +109,7 @@ class MappingManager
             foreach ($term->getWeeks() as $week) {
                 foreach ($week->getDays() as $day) {
                     if ($day->isSchoolDay()) {
-                        $day->setTimetableDayDate($this->getDayDates()[$day->getDate()->format('Ymd')]);
+                        $day->setTimetableDate($this->getDayDates()[$day->getDate()->format('Ymd')], false);
                     }
                 }
             }
@@ -326,24 +326,20 @@ class MappingManager
                 foreach ($week->getDays() as $day) {
                     if ($day->isSchoolDay()) {
                         if (false !== $td = $this->getFixedTimetableDay($day->getDate())) {
-                            $tdd = ProviderFactory::getRepository(TimetableDate::class)->createTimetableDayDate($td, $day->getDate());
+                            $tDate = ProviderFactory::getRepository(TimetableDate::class)->createTimetableDate($td, $day->getDate());
                         } else {
                             $td = $this->getRotateTimetableDay($rotate, $day->getDate());
-                            $tdd = ProviderFactory::getRepository(TimetableDate::class)->createTimetableDayDate($td, $day->getDate());
+                            $tDate = ProviderFactory::getRepository(TimetableDate::class)->createTimetableDate($td, $day->getDate());
                         }
-                        $day->setTimetableDayDate($tdd);
-                        $this->dayDates->set($tdd->getDate()->format('Ymd'),$tdd);
+                        $day->setTimetableDate($tDate);
+                        $this->dayDates->set($tDate->getDate()->format('Ymd'),$tDate);
+                        ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, [], false);
                     }
                 }
             }
         }
 
-        foreach ($this->getTimetableDays() as $group) {
-            foreach ($group as $td) {
-                ProviderFactory::create(TimetableDay::class)->persistFlush($td, [], false);
-            }
-        }
-        ProviderFactory::create(TimetableDay::class)->flush();
+        ProviderFactory::create(TimetableDate::class)->flush();
 
         return $this->dayDates;
     }
@@ -404,7 +400,7 @@ class MappingManager
     public function getFixedTimetableDay(DateTimeImmutable $date)
     {
         foreach ($this->getTimetableDays()['fixed'] as $day) {
-            $dow = $day->getTimetableColumn()->getDaysofWeek();
+            $dow = $day->getDaysofWeek();
             if (intval($date->format('N')) === $dow->first()->getSortOrder()) {
                 return $day;
             }
@@ -424,7 +420,7 @@ class MappingManager
     {
         for ($i=0; $i<=$rotate->count(); $i++) {
             $td = $rotate->first();
-            foreach ($td->getTimetableColumn()->getDaysOfWeek() as $dow) {
+            foreach ($td->getDaysOfWeek() as $dow) {
                 if ($dow->getSortOrder() === intval($date->format('N'))) {
                     $rotate->removeElement($td);
                     $rotate->add($td);
@@ -469,24 +465,28 @@ class MappingManager
         $rotate = new ArrayCollection();
         foreach ($term->getWeeks() as $week) {
             foreach($week->getDays() as $day) {
-                if ($day->getTimetableDayDate() instanceof TimetableDate) {
+                if ($day->getTimetableDate() instanceof TimetableDate) {
                     if ($ripple) {
-                        if ($day->getTimetableDayDate()->getTimetableDay()->getTimetableColumn()->getDaysOfWeek()->count() === 1) continue;
+                        if ($day->getTimetableDate()->getTimetableDay()->isFixed()) continue;
 
                         $data = $this->nextTimetableDay($rotate, $day);
                         if ($data['status'] !== 'success') {
                             return $data;
                         }
-                    }
+/*                        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($day->getTimetableDate(), $data, false);
+                        if ($data['status'] !== 'success') {
+                            return $data;
+                        }
+*/                    }
                     if ($day->getDate()->format('Ymd') === $date->format('Ymd')) {
-                        if ($day->getTimetableDayDate()->getTimetableDay()->getTimetableColumn()->getDaysOfWeek()->count() === 1) {
+                        if ($day->getTimetableDate()->getTimetableDay()->isFixed()) {
                             $data['status'] = 'warning';
                             $data['errors'][] = ['class' => 'warning', 'message' => TranslationHelper::translate('No work was done as you asked to ripple a fixed day.',[],'Timetable')];
                             return $data;
                         }
                         $ripple = true;
                         $rotate = new ArrayCollection($this->setTimetableDays()->getTimetableDays('rotate'));
-                        while ($day->getTimetableDayDate()->getTimetableDay() !== ($td = $rotate->first())) {
+                        while ($day->getTimetableDate()->getTimetableDay() !== ($td = $rotate->first())) {
                             $rotate->removeElement($td);  // first shall be last
                             $rotate->add($td);
                         }
@@ -496,30 +496,42 @@ class MappingManager
                         if ($data['status'] !== 'success') {
                             return $data;
                         }
-                    }
+/*                        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($day->getTimetableDate(), $data, false);
+                        if ($data['status'] !== 'success') {
+                            return $data;
+                        }
+*/                    }
                 }
             }
         }
 
-        $data = ErrorMessageHelper::getSuccessMessage([], true);
+        if ($ripple) {
+            $data = ProviderFactory::create(TimetableDate::class)->flush($data);
+        }
+
+        if ($data['status'] === 'success') {
+            $data = ErrorMessageHelper::getSuccessMessage([], true);
+        }
+
         return $data;
     }
 
     /**
      * nextTimetableDay
-     * @param $rotate
-     * @param $day
+     * @param ArrayCollection $rotate
+     * @param Day $day
      * @return array
      * 10/08/2020 09:03
      */
-    protected function nextTimetableDay($rotate, $day): array
+    protected function nextTimetableDay(ArrayCollection $rotate, Day $day): array
     {
         $found = false;
+        $tDate = $day->getTimetableDate();
         do {
             $td = $rotate->first();
-            foreach ($td->getTimetableColumn()->getDaysOfWeek() as $dow) {
-                if (intval($day->getTimetableDayDate()->getDate()->format('N')) === $dow->getSortOrder()) {
-                    $day->getTimetableDayDate()->setTimetableDay($td);
+            foreach ($td->getDaysOfWeek() as $dow) {
+                if (intval($tDate->getDate()->format('N')) === $dow->getSortOrder()) {
+                    $tDate->setTimetableDay($td);
                     $found = true;
                     $rotate->removeElement($td);
                     $rotate->add($td);
@@ -532,6 +544,6 @@ class MappingManager
             }
         } while (!$found);
 
-        return ProviderFactory::create(TimetableDate::class)->persistFlush($day->getTimetableDayDate());
+        return ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, [], false);
     }
 }

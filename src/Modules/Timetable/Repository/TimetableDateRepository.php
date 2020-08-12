@@ -80,11 +80,10 @@ class TimetableDateRepository extends ServiceEntityRepository
     public function findByTimetable(Timetable $timetable): array
     {
         return $this->createQueryBuilder('dd')
-            ->select(['dd','d','t','c'])
+            ->select(['dd','d','t'])
             ->orderBy('dd.date','ASC')
             ->leftJoin('dd.timetableDay', 'd')
             ->leftJoin('d.timetable', 't')
-            ->leftJoin('d.timetableColumn', 'c')
             ->where('d.timetable = :timetable')
             ->setParameter('timetable', $timetable)
             ->getQuery()
@@ -102,10 +101,10 @@ class TimetableDateRepository extends ServiceEntityRepository
     {
         try {
             return $this->createQueryBuilder('dd')
-                ->select(['dd', 'd', 't', 'c'])
+                ->select(['dd', 'd', 't', 'w'])
                 ->leftJoin('dd.timetableDay', 'd')
                 ->leftJoin('d.timetable', 't')
-                ->leftJoin('d.timetableColumn', 'c')
+                ->leftJoin('d.daysOfWeek', 'w')
                 ->where('d.timetable = :timetable')
                 ->setParameter('timetable', $timetable)
                 ->andWhere('dd.date = :date')
@@ -123,12 +122,12 @@ class TimetableDateRepository extends ServiceEntityRepository
     private $dayDates;
 
     /**
-     * createTimetableDayDate
+     * createTimetableDate
      * @param TimetableDay $td
      * @param DateTimeImmutable $date
      * 8/08/2020 09:29
      */
-    public function createTimetableDayDate(TimetableDay $td, DateTimeImmutable $date)
+    public function createTimetableDate(TimetableDay $td, DateTimeImmutable $date)
     {
         $t = $td->getTimetable();
         if ($this->dayDates === null || !key_exists($t->getName(), $this->dayDates)) {

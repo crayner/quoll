@@ -32,43 +32,4 @@ class DaysOfWeekRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, DaysOfWeek::class);
     }
-
-    /**
-     * @var array
-     */
-    private $daysOfWeek;
-
-    /**
-     * @var array
-     */
-    private $daysOfWeekByName;
-
-    /**
-     * getDaysOfWeek
-     * @return array
-     */
-    public function findAllAsArray(): array
-    {
-        if (null === $this->daysOfWeek) {
-            $this->daysOfWeek = $this->createQueryBuilder('d', 'd.abbreviation')
-                ->getQuery()
-                ->getArrayResult();
-        }
-        return $this->daysOfWeek;
-    }
-
-    /**
-     * findAllByName
-     * @return array
-     */
-    public function findAllByName(): array
-    {
-        if ($this->daysOfWeekByName === null) {
-            $this->daysOfWeekByName = $this->createQueryBuilder('d', 'd.name')
-                ->orderBy('d.sequenceNumber')
-                ->getQuery()
-                ->getResult();
-        }
-        return $this->daysOfWeekByName;
-    }
 }

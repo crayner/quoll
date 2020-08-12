@@ -128,12 +128,6 @@ class TimetableDay extends AbstractEntity
     private $rotateOrder;
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="TimetableDate",mappedBy="timetableDay",cascade={"all"},orphanRemoval=true)
-     */
-    private $timetableDates;
-
-    /**
      * TimetableColumn constructor.
      * @param Timetable|null $timetable
      */
@@ -390,6 +384,8 @@ class TimetableDay extends AbstractEntity
             'timetable' => $this->getTimetable() ? $this->getTimetable()->getId() : null,
             'fixed' => TranslationHelper::translate($this->isFixed() ? 'Yes' : 'No', [], 'messages'),
             'isFixed' => $this->isFixed(),
+            'fontColour' => $this->getFontColour(),
+            'colour' => $this->getColour(),
         ];
     }
 

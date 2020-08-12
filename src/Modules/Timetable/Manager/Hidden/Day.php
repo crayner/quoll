@@ -57,7 +57,7 @@ class Day
     /**
      * @var TimetableDate
      */
-    private $timetableDayDate;
+    private $timetableDate;
 
     /**
      * Day constructor.
@@ -138,7 +138,7 @@ class Day
                         $this->setSchoolOpen(false);
                     }
                 } else {
-                    $this->setSchoolOpen($this->getTimetableDayDate() instanceof TimetableDate);
+                    $this->setSchoolOpen($this->getTimetableDate() instanceof TimetableDate);
                 }
 
             } else {
@@ -179,18 +179,22 @@ class Day
     /**
      * @return TimetableDate|null
      */
-    public function getTimetableDayDate(): ?TimetableDate
+    public function getTimetableDate(): ?TimetableDate
     {
-        return $this->timetableDayDate;
+        return $this->timetableDate;
     }
 
     /**
-     * @param TimetableDate $timetableDayDate
-     * @return Day
+     * setTimetableDate
+     * @param TimetableDate $timetableDate
+     * @param bool $reflect
+     * @return $this
+     * 11/08/2020 15:59
      */
-    public function setTimetableDayDate(TimetableDate $timetableDayDate): Day
+    public function setTimetableDate(TimetableDate $timetableDate, bool $reflect = true): Day
     {
-        $this->timetableDayDate = $timetableDayDate;
+        if ($reflect) $timetableDate->getTimetableDay()->addTimetableDate($timetableDate);
+        $this->timetableDate = $timetableDate;
         return $this;
     }
 
@@ -207,8 +211,8 @@ class Day
             'schoolOpen' => $this->isSchoolOpen(),
             'dayOfWeek' => $this->getDayOfWeek()->getSortOrder(),
             'specialDay' => $this->getSpecialDay() ? $this->getSpecialDay()->toArray('mapping') : null,
-            'dayDate' => $this->isSchoolOpen() ? $this->getTimetableDayDate()->toArray('mapping') : null,
-            'rotate' => $this->isSchoolOpen() ? $this->getTimetableDayDate()->getTimetableDay()->getTimetableColumn()->getDaysOfWeek()->count() > 1 : false,
+            'dayDate' => $this->isSchoolOpen() ? $this->getTimetableDate()->toArray('mapping') : null,
+            'rotate' => $this->isSchoolOpen() ? $this->getTimetableDate()->getTimetableDay()->getDaysOfWeek()->count() > 1 : false,
         ];
     }
 }

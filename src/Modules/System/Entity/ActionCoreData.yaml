@@ -5,6 +5,8 @@
     routeList:
         arrayField:
             - timetable_calendar_map
+            - timetable_calendar_ripple_map
+            - timetable_calendar_single_day_map
     entryRoute: timetable_calendar_map
     entrySidebar: true
     menuShow: true
@@ -47,32 +49,10 @@
             - timetable_add
             - timetable_day_add
             - timetable_day_edit.timetable_day_sort
+            - timetable_day_period_duplicate
+            - timetable_day_period_edit
+            - timetable_day_period_add
     entryRoute: timetable_list
-    entrySidebar: true
-    menuShow: true
-    precedence: null
-    restriction: null
-    securityRoles:
-        arrayField:
-            - ROLE_PRINCIPAL
--
-    name: 'Timetable Columns'
-    category: Timetable
-    description: 'Manage Timetable Columns'
-    routeList:
-        arrayField:
-            - timetable_column_list
-            - timetable_column_edit
-            - timetable_column_delete
-            - timetable_column_add
-            - timetable_column_row_edit
-            - timetable_column_row_add
-            - timetable_column_row_delete
-            - timetable_column_row_edit
-            - timetable_column_row_add
-            - timetable_column_row_delete
-            - timetable_column_duplicate_periods
-    entryRoute: timetable_column_list
     entrySidebar: true
     menuShow: true
     precedence: null

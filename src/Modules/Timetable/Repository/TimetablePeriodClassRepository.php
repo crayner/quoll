@@ -32,18 +32,4 @@ class TimetablePeriodClassRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TimetablePeriodClass::class);
     }
-
-    /**
-     * findByTTDay
-     * @param TimetableDay $day
-     * @return mixed
-     */
-    public function findByTTDay(TimetableDay $day)
-    {
-        return $this->createQueryBuilder('tdrc')
-            ->where('tdrc.TTDay = :day')
-            ->setParameter('day', $day)
-            ->getQuery()
-            ->getResult();
-    }
 }

@@ -427,6 +427,7 @@ abstract class AbstractProvider implements EntityProviderInterface
     {
         try {
             $this->getEntityManager()->flush();
+            $data = ErrorMessageHelper::getSuccessMessage($data, true);
         } catch (\Exception $e) {
             if ($this->env === 'dev') $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);

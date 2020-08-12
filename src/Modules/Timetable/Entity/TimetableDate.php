@@ -39,7 +39,7 @@ class TimetableDate extends AbstractEntity
 
     /**
      * @var TimetableDay|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Timetable\Entity\TimetableDay",inversedBy="timetableDates")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Timetable\Entity\TimetableDay")
      * @ORM\JoinColumn(name="timetable_day",referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -90,14 +90,12 @@ class TimetableDate extends AbstractEntity
 
     /**
      * @param TimetableDay|null $timetableDay
-     * @param bool $reflect
      * @return TimetableDate
      */
-    public function setTimetableDay(?TimetableDay $timetableDay, bool $reflect = true): TimetableDate
+    public function setTimetableDay(?TimetableDay $timetableDay): TimetableDate
     {
-        if ($timetableDay instanceof TimetableDay && $reflect) $timetableDay->addTimetableDayDate($this, false);
-
         $this->timetableDay = $timetableDay;
+
         return $this;
     }
 

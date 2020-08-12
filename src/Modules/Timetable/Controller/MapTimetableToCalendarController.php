@@ -26,6 +26,7 @@ use App\Modules\Timetable\Entity\TimetableDate;
 use App\Modules\Timetable\Manager\MappingManager;
 use App\Provider\ProviderFactory;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,6 +75,7 @@ class MapTimetableToCalendarController extends AbstractPageController
      * @param MappingManager $manager
      * @return JsonResponse
      * @Route("/timetable/{timetable}/calendar/ripple/{date}/columns/",name="timetable_calendar_ripple_map")
+     * @IsGranted("ROLE_ROUTE")
      * 9/08/2020 09:45
      */
     public function rippleTermDayColumns(Timetable $timetable, DateTimeImmutable $date, MappingManager $manager)
@@ -95,27 +97,22 @@ class MapTimetableToCalendarController extends AbstractPageController
      * @param MappingManager $manager
      * @return JsonResponse
      * @Route("/timetable/{timetable}/calendar/next/{date}/column/",name="timetable_calendar_single_day_map")
+     * @IsGranted("ROLE_ROUTE")
      * 9/08/2020 09:46
      */
     public function moveToNextColumn(Timetable $timetable, DateTimeImmutable $date, MappingManager $manager)
     {
-        $tDayDate = ProviderFactory::getRepository(TimetableDate::class)->findOneByTimetableDate($timetable, $date);
-        $tDays = ProviderFactory::getRepository(TimetableDay::class)->findBy([], ['rotateOrder' => 'ASC']);
-        $grab = false;
-        foreach ($tDays as $q=>$w) {
-            if ($grab) {
-                $tDayDate->setTimetableDay($w);
-                $grab = false;
-                break;
-            }
-            if ($tDayDate->getTimetableDay() === $w) {
-                $grab = true;
-            }
+        $tDate = ProviderFactory::getRepository(TimetableDate::class)->findOneByTimetableDate($timetable, $date);
+        $tDays = new ArrayCollection(ProviderFactory::getRepository(TimetableDay::class)->findBy([], ['rotateOrder' => 'ASC']));
+
+        $id = $tDays->indexOf($tDate->getTimetableDay()) + 1;
+        if ($id >= $tDays->count()) {
+            $id = 0;
         }
-        if ($grab) { // because the last day coould have been it.
-            $tDayDate->setTimetableDay($tDays[0]);
-        }
-        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($tDayDate);
+
+        $tDate->setTimetableDay($tDays->get($id), false);
+
+        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($tDate);
 
         $manager->execute($timetable);
 
