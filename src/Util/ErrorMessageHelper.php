@@ -44,8 +44,12 @@ class ErrorMessageHelper
      */
     public static function getInvalidInputsMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.error.1', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyInvalidInputsMessage($translate)];
         $data['status'] = 'error';
+        $data['key'][] = 'return.error.1';
         return $data;
     }
 
@@ -68,8 +72,12 @@ class ErrorMessageHelper
      */
     public static function getDatabaseErrorMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.error.2', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyDatabaseErrorMessage($translate)];
         $data['status'] = 'error';
+        $data['key'][] = 'return.error.2';
         return $data;
     }
 
@@ -92,7 +100,11 @@ class ErrorMessageHelper
      */
     public static function getSuccessMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.success.0', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'success', 'message' => self::onlySuccessMessage($translate)];
+        $data['key'][] = 'return.success.0';
         $data['status'] = 'success';
         return $data;
     }
@@ -100,12 +112,17 @@ class ErrorMessageHelper
     /**
      * getInvalidInputsMessage
      * @param array $data
+     * @param bool $translate
      * @return array
      */
     public static function getInvalidTokenMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.error.csrf', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationHelper::translate('return.error.csrf', [], 'messages') : ['return.error.csrf', [], 'messages'])];
         $data['status'] = 'error';
+        $data['key'][] = 'return.error.csrf';
         return $data;
     }
 
@@ -164,8 +181,12 @@ class ErrorMessageHelper
      */
     public static function getFileTransferMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.error.file_transfer', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyFileTransferMessage($translate)];
         $data['status'] = 'error';
+        $data['key'][] = 'return.error.file_transfer';
         return $data;
     }
 
@@ -192,8 +213,12 @@ class ErrorMessageHelper
      */
     public static function getLockedRecordMessage(array $data = [], string $id, string $class, bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.warning.3', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'warning', 'message' => self::onlyLockedRecordMessage($id, $class, $translate)];
         $data['status'] = 'warning';
+        $data['key'][] = 'return.warning.3';
         return $data;
     }
 
@@ -217,8 +242,12 @@ class ErrorMessageHelper
      */
     public static function getNothingToDoMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.warning.4', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'warning', 'message' => self::onlyNothingToDoMessage($translate)];
         $data['status'] = 'warning';
+        $data['key'][] = 'return.warning.4';
         return $data;
     }
 
@@ -242,8 +271,12 @@ class ErrorMessageHelper
      */
     public static function getNoAccessMessage(array $data = [], bool $translate = false): array
     {
+        if (key_exists('key', $data) && array_search('return.error.0', $data['key'])) {
+            return $data;
+        }
         $data['errors'][] = ['class' => 'error', 'message' => self::onlyNoAccessMessage($translate)];
         $data['status'] = 'error';
+        $data['key'][] = 'return.error.0';
         return $data;
     }
 
