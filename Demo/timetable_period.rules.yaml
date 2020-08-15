@@ -1,0 +1,3 @@
+properties:
+    timeStart: 'DateTimeImmutable'
+    timeEnd: 'DateTimeImmutable'

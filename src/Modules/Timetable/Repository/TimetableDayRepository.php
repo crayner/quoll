@@ -14,12 +14,15 @@
 namespace App\Modules\Timetable\Repository;
 
 use App\Modules\Timetable\Entity\Timetable;
+use App\Modules\Timetable\Entity\TimetableDate;
 use App\Modules\Timetable\Entity\TimetableDay;
+use App\Provider\ProviderFactory;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 /**
  * Class TimetableDayRepository
@@ -49,31 +52,6 @@ class TimetableDayRepository extends ServiceEntityRepository
             ->leftJoin('c.daysOfWeek', 'dow')
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * findByDateTT
-     * @param DateTimeImmutable $date
-     * @param Timetable $tt
-     * @return mixed
-     */
-    public function findByDateTT(DateTimeImmutable $date, Timetable $tt)
-    {
-        try {
-            return $this->createQueryBuilder('td')
-                ->select('td,tdd,tc,tcr')
-                ->join('td.timetableDayDates', 'tdd')
-                ->join('td.TTColumn', 'tc')
-                ->join('tc.timetableColumnPeriods', 'tcr')
-                ->where('tdd.date = :date')
-                ->setParameter('date', $date)
-                ->andWhere('td.TT = :timetable')
-                ->setParameter('timetable', $tt)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            return null;
-        }
     }
 
     /**

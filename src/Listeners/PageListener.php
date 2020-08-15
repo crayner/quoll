@@ -17,8 +17,10 @@
 namespace App\Listeners;
 
 use App\Manager\PageManager;
+use App\Modules\School\Entity\YearGroup;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\ParameterBagHelper;
@@ -39,33 +41,29 @@ class PageListener implements EventSubscriberInterface
     /**
      * @var PageManager
      */
-    private $pageManager;
+    private PageManager $pageManager;
 
     /**
      * @var ParameterBagInterface
      */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
     /**
      * PageListener constructor.
      * @param PageManager $pageManager
-     * @param ProviderFactory $factory Pre load to Container
-     * @param TranslationHelper $helper
-     * @param CacheHelper $cache
-     * @param SecurityHelper $securityHelper
-     * @param SettingFactory $settingFactory
      * @param ParameterBagInterface $parameterBag
      * @param ParameterBagHelper $parameterBagHelper
+     * @param SettingFactory $settingFactory
+     * @param SecurityHelper $securityHelper
+     * @param ProviderFactory $factory
      */
     public function __construct(
         PageManager $pageManager,
-        ProviderFactory $factory,
-        TranslationHelper $helper,
-        CacheHelper $cache,
-        SecurityHelper $securityHelper,
-        SettingFactory $settingFactory,
         ParameterBagInterface $parameterBag,
-        ParameterBagHelper $parameterBagHelper
+        ParameterBagHelper $parameterBagHelper,
+        SettingFactory $settingFactory,
+        SecurityHelper $securityHelper,
+        ProviderFactory $factory
     ) {
         $this->setPageManager($pageManager);
         $this->setParameterBag($parameterBag);
@@ -166,6 +164,11 @@ class PageListener implements EventSubscriberInterface
         return $this;
     }
 
+    /**
+     * saveSettings
+     * @param TerminateEvent $event
+     * 15/08/2020 09:44
+     */
     public function saveSettings(TerminateEvent $event)
     {
         $manager = SettingFactory::getSettingManager();

@@ -14,7 +14,6 @@
  * Date: 15/04/2020
  * Time: 14:22
  */
-
 namespace App\Modules\System\Util;
 
 use App\Modules\System\Entity\Locale;
@@ -34,12 +33,12 @@ class LocaleHelper
     /**
      * @var string
      */
-    private static $locale = 'en_GB';
+    private static string $locale = 'en_GB';
 
     /**
      * @var Locale|null
      */
-    private static $localeEntity;
+    private static ?Locale $localeEntity;
 
     /**
      * getLocale

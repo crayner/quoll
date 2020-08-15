@@ -1,0 +1,560 @@
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: {entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 2 } 
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 4 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 6 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 1 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 3 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 7 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 5 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 9 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 8 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Registration'
+    abbreviation: 'Reg'
+    timeStart: '08:15:00'
+    timeEnd: '08:30:00'
+    type: 'Pastoral'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Period 1'
+    abbreviation: 'P1'
+    timeStart: '08:30:00'
+    timeEnd: '09:40:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Period 2'
+    abbreviation: 'P2'
+    timeStart: '09:40:00'
+    timeEnd: '10:50:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Short Break'
+    abbreviation: 'SB'
+    timeStart: '10:50:00'
+    timeEnd: '11:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Period 3'
+    abbreviation: 'P3'
+    timeStart: '11:10:00'
+    timeEnd: '12:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Lunch'
+    abbreviation: 'LH'
+    timeStart: '12:20:00'
+    timeEnd: '13:10:00'
+    type: 'Break'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Period 4'
+    abbreviation: 'P4'
+    timeStart: '13:10:00'
+    timeEnd: '14:20:00'
+    type: 'Lesson'
+-
+    timetableDay: { entityName: 'App\Modules\Timetable\Entity\TimetableDay', findBy: 'rotateOrder', value: 10 }
+    name: 'Period 5'
+    abbreviation: 'P5'
+    timeStart: '14:20:00'
+    timeEnd: '15:30:00'
+    type: 'Lesson'

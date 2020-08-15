@@ -187,13 +187,11 @@ class Day
     /**
      * setTimetableDate
      * @param TimetableDate $timetableDate
-     * @param bool $reflect
      * @return $this
-     * 11/08/2020 15:59
+     * 13/08/2020 08:53
      */
-    public function setTimetableDate(TimetableDate $timetableDate, bool $reflect = true): Day
+    public function setTimetableDate(TimetableDate $timetableDate): Day
     {
-        if ($reflect) $timetableDate->getTimetableDay()->addTimetableDate($timetableDate);
         $this->timetableDate = $timetableDate;
         return $this;
     }

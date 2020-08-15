@@ -73,7 +73,7 @@ class Timetable extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=32,options={"default": "Day Of The Week"},nullable=true)
+     * @ORM\Column(length=32,options={"default": "Day Of The Week"})
      * @Assert\Choice(callback="getDisplayModeList")
      */
     private $displayMode = 'Day Of The Week';

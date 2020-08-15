@@ -14,19 +14,24 @@
  * Date: 3/09/2019
  * Time: 10:01
  */
-
 namespace App\Modules\School\Util;
 
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\System\Manager\DemoDataInterface;
 use App\Provider\ProviderFactory;
+use DateInterval;
+use DateTime;
 use DateTimeImmutable;
+use Doctrine\DBAL\Driver\PDOException;
+use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AcademicYearHelper
- * @package App\Util
+ * @package App\Modules\School\Util
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class AcademicYearHelper
+class AcademicYearHelper implements DemoDataInterface
 {
     /**
      * @var RequestStack
@@ -78,7 +83,7 @@ class AcademicYearHelper
      * getNextAcademicYear
      * @param AcademicYear|null $year
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getNextAcademicYear(?AcademicYear $year = null)
     {
@@ -86,5 +91,25 @@ class AcademicYearHelper
             $year = self::getCurrentAcademicYear();
 
         return ProviderFactory::getRepository(AcademicYear::class)->findOneByNext($year);
+    }
+
+    /**
+     * createNextYear
+     * 13/08/2020 10:08
+     */
+    public static function createNextYear()
+    {
+        $year = new AcademicYear();
+        $date = new DateTime();
+        $date->add(new DateInterval('P1Y'));
+
+        try {
+            $year->setName($date->format('Y'))
+                ->setStatus('Upcoming')
+                ->setFirstDay(new DateTimeImmutable($date->format('Y') . '-01-01'))
+                ->setLastDay(new DateTimeImmutable($date->format('Y') . '-01-01'));
+            ProviderFactory::create(AcademicYear::class)->persistFlush($year);
+        } catch (Exception | PDOException $e) {
+        }
     }
 }

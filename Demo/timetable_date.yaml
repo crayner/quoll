@@ -1,0 +1,3 @@
+call:
+    class: 'App\Modules\Timetable\Util\TimetableDemoData'
+    method: 'createTimetableDates'

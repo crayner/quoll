@@ -379,7 +379,7 @@ class TimetableDay extends AbstractEntity
             'abbreviation' => $this->getAbbreviation(),
             'periodCount' => $this->getPeriods()->count(),
             'hasPeriods' => intval($this->getPeriods()->count()) > 0,
-            'canDelete' => true,
+            'canDelete' => ProviderFactory::create(TimetableDay::class)->canDelete($this),
             'weekDays' => $this->getDaysOfWeekNames(),
             'timetable' => $this->getTimetable() ? $this->getTimetable()->getId() : null,
             'fixed' => TranslationHelper::translate($this->isFixed() ? 'Yes' : 'No', [], 'messages'),

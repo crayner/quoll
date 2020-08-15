@@ -142,4 +142,25 @@ class TimetableDateRepository extends ServiceEntityRepository
         }
         return $this->dayDates[$t->getName()][$date->format('Ymd')];
     }
+
+    /**
+     * countByTimetableDay
+     * @param TimetableDay $day
+     * @return int
+     * 13/08/2020 08:37
+     */
+    public function countByTimetableDay(TimetableDay $day): int
+    {
+        try {
+            return intval($this->createQueryBuilder('date')
+                ->select('COUNT(day.id)')
+                ->where('date.timetableDay = :timetable')
+                ->leftJoin('date.timetableDay', 'day')
+                ->setParameter('timetable', $day)
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

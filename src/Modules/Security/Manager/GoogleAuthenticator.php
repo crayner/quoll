@@ -18,7 +18,6 @@ namespace App\Modules\Security\Manager;
 
 use App\Manager\MessageManager;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Provider\SecurityUserProvider;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Manager\SettingManager;
 use App\Provider\ProviderFactory;
@@ -79,14 +78,14 @@ class GoogleAuthenticator implements AuthenticatorInterface
 	private $google_user;
 
     /**
-     * @var SecurityUserProvider
-     */
-    private $provider;
-
-    /**
      * @var Request
      */
     private $request;
+
+    /**
+     * @var SecurityUserProvider
+     */
+    private $provider;
 
     /**
      * GoogleAuthenticator constructor.
@@ -95,7 +94,6 @@ class GoogleAuthenticator implements AuthenticatorInterface
      * @param LoggerInterface $logger
      * @param SecurityUserProvider $provider
      * @param RequestStack $request
-     * @param ProviderFactory $factory
      */
 	public function __construct(
 	    RouterInterface $router,
@@ -489,11 +487,12 @@ class GoogleAuthenticator implements AuthenticatorInterface
 
     /**
      * getProvider
-     * @return SecurityUserProvider
+     * @return \App\Modules\Security\Provider\SecurityUserProvider
+     * 15/08/2020 09:59
      */
-    public function getProvider(): SecurityUserProvider
+    public function getProvider(): \App\Modules\Security\Provider\SecurityUserProvider
     {
-        return $this->provider;
+        return ProviderFactory::create(SecurityUser::class);
     }
 
     /**

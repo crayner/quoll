@@ -78,3 +78,21 @@ Link to Calendar Days: Link to Calendar Days
 Link to Week Days: Link to Week Days
 Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.: Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.
 Settings are not available to match the day of the week {name}.: Settings are not available to match the day of the week {name}.
+A gap in time exists between the previous row "(%previous%)" and the current row "(%current%)": A gap in time exists between the previous row "(%previous%)" and the current row "(%current%)"
+Add Period: Add Period
+Add Timetable Period in {day}: Add Timetable Period in {day}
+An overlap exists between the previous row "(%previous%)" and the current row "(%current%).": An overlap exists between the previous row "(%previous%)" and the current row "(%current%)."
+Duplicate Day Periods: Duplicate Day Periods
+Duplicate to this Day: Duplicate to this Day
+Edit Timetable Period in {day} - {name}: Edit Timetable Period in {day} - {name}
+Edit Timetable Timetable 1: Edit Timetable Timetable 1
+Fixed: Fixed
+Next Column: Next Column
+No work was done as you asked to ripple a fixed day.: No work was done as you asked to ripple a fixed day.
+Only timetable days with no periods attached are available as targets to duplicate the source.: Only timetable days with no periods attached are available as targets to duplicate the source.
+Ripple Columns in Term: Ripple Columns in Term
+School Day: School Day
+Timetable Day: Timetable Day
+Timetable Mapping Instructions: Timetable Mapping Instructions
+Week Number: Week Number
+'Edit Timetable Day ({name})': 'Edit Timetable Day ({name})'

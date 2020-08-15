@@ -321,7 +321,7 @@ class MappingManager
 
         // allocate Timetable days to dates
         foreach ($this->getTerms() as $term) {
-            $rotate = new ArrayCollection($this->getTimetableDays()['rotate']);
+            $rotate = new ArrayCollection($this->getTimetableDays('rotate'));
             foreach ($term->getWeeks() as $week) {
                 foreach ($week->getDays() as $day) {
                     if ($day->isSchoolDay()) {
@@ -355,7 +355,7 @@ class MappingManager
         if (is_array($this->timetableDays) && key_exists($key, $this->timetableDays)) {
             return $this->timetableDays[$key];
         }
-        return $this->timetableDays;
+        return $this->timetableDays ?: [];
     }
 
     /**
@@ -366,6 +366,8 @@ class MappingManager
     public function setTimetableDays(): MappingManager
     {
         $this->timetableDays = [];
+        $this->timetableDays['fixed'] = [];
+        $this->timetableDays['rotate'] = [];
 
         foreach(ProviderFactory::getRepository(TimetableDay::class)->findBy([],['rotateOrder' => 'ASC']) as $td) {
             if ($td->isFixed()) {
@@ -399,7 +401,7 @@ class MappingManager
      */
     public function getFixedTimetableDay(DateTimeImmutable $date)
     {
-        foreach ($this->getTimetableDays()['fixed'] as $day) {
+        foreach ($this->getTimetableDays('fixed') as $day) {
             $dow = $day->getDaysofWeek();
             if (intval($date->format('N')) === $dow->first()->getSortOrder()) {
                 return $day;

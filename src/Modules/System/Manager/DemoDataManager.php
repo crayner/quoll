@@ -31,16 +31,24 @@ use App\Modules\School\Entity\AcademicYearSpecialDay;
 use App\Modules\School\Entity\AcademicYearTerm;
 use App\Modules\School\Entity\Facility;
 use App\Modules\RollGroup\Entity\RollGroup;
-use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\House;
+use App\Modules\Timetable\Entity\Timetable;
+use App\Modules\Timetable\Entity\TimetableDate;
+use App\Modules\Timetable\Entity\TimetableDay;
+use App\Modules\Timetable\Entity\TimetablePeriod;
+use App\Modules\Timetable\Util\TimetableDemoData;
 use App\Provider\ProviderFactory;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
+use Exception;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Yaml\Yaml;
+use TypeError;
 
 /**
  * Class DemoDataManager
@@ -88,6 +96,10 @@ class DemoDataManager
         'academic_year' => AcademicYear::class,
         'academic_year_term' => AcademicYearTerm::class,
         'academic_year_special_day' => AcademicYearSpecialDay::class,
+        'timetable' => Timetable::class,
+        'timetable_day' => TimetableDay::class,
+        'timetable_period' => TimetablePeriod::class,
+        'timetable_date' => TimetableDate::class,
     ];
 
     /**
@@ -100,7 +112,7 @@ class DemoDataManager
      * @param LoggerInterface $logger
      * @param ValidatorInterface $validator
      */
-    public function __construct(LoggerInterface $logger, ValidatorInterface $validator)
+    public function __construct(LoggerInterface $logger, ValidatorInterface $validator, TimetableDemoData $tdd)
     {
         $this->logger = $logger;
         $this->dataPath = realpath($this->dataPath) . DIRECTORY_SEPARATOR;
@@ -160,6 +172,19 @@ class DemoDataManager
         $this->getLogger()->notice(sprintf('Loading %s file into %s', $name, $entityName));
         ini_set('max_execution_time', 60);
 
+        if (key_exists('call', $content)) {
+            $implements = class_implements($content['call']['class']);
+            if (in_array(DemoDataInterface::class, $implements)) {
+                $method = $content['call']['method'];
+                $class = $content['call']['class'];
+                $class::$method($this->getLogger());
+            } else {
+                $this->getLogger()->error(sprintf('You have not provided a correctly formatted call, or the method is missing or the class does not implement %s in %s', DemoDataInterface::class,$name));
+                throw new InvalidArgumentException(sprintf('You have not provided a correctly formatted call, or the method is missing or the class does not implement %s in %s', DemoDataInterface::class,$name));
+            }
+            return ;
+        }
+
         $valid = 0;
         foreach($content as $q=>$w) {
             $entity = new $entityName();
@@ -175,9 +200,13 @@ class DemoDataManager
                     if (key_exists($propertyName, $rules['properties'])) {
                         $value = $this->transformPropertyValue($rules['properties'][$propertyName], $value);
                     }
+                    if (is_array($value) && key_exists('entityName', $value) && key_exists('findBy', $value) && key_exists('value', $value)) {
+                        $value = ProviderFactory::getRepository($value['entityName'])->findOneBy([$value['findBy'] => $value['value']]);
+                    }
+
                     try {
                         $entity->$method($value);
-                    } catch (\TypeError | \Exception $e) {
+                    } catch (TypeError | Exception $e) {
                         $this->getLogger()->warning($e->getMessage(), is_array($value) ? $value : ['value' => $value]);
                     }
                 } else
@@ -188,7 +217,7 @@ class DemoDataManager
             if ($validatorList->count() === 0) {
                 $data = ProviderFactory::create($entityName)->persistFlush($entity, [], false);
                 if ($data['status'] !== 'success')
-                    $this->getLogger->error('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
+                    $this->getLogger()->error('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
                 $valid++;
             } else {
                 $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$w, $entity, $validatorList->__toString()]);
@@ -325,9 +354,6 @@ class DemoDataManager
                     if (!is_array($associateRules['findBy'])) {
                         $associateRules['findBy'] = [$associateRules['findBy']];
                     }
-                    if (!is_array($w)) {
-                        $w = [$w];
-                    }
 
                     $criteria = [];
                     foreach($associateRules['findBy'] as $a=>$b) {
@@ -367,21 +393,38 @@ class DemoDataManager
      * transformPropertyValue
      * @param string $type
      * @param $value
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
     private function transformPropertyValue(string $type, $value)
     {
         switch ($type) {
             case 'DateTimeImmutable':
-                dump($value);
                 if (empty($value))
                     return null;
                 try {
-                    return new \DateTimeImmutable($value);
-                } catch (\Exception $e) {
+                    return new DateTimeImmutable($value);
+                } catch (Exception $e) {
                     return null;
                 }
-                break;
+            case 'CollectionEntity':
+                if (empty($value)) return null;
+                $entities = new ArrayCollection();
+                foreach ($value as $item) {
+                    if (is_array($item) && key_exists('entityName', $item) && key_exists('findBy', $item) && key_exists('value', $item)) {
+                        $criteria = [];
+                        if (is_array($item['findBy'])) {
+                            foreach ($item['findBy'] as $q=>$w) {
+                                $criteria[$w] = $item['value'][$q];
+                            }
+                        } else {
+                            $criteria[$item['findBy']] = $item['value'];
+                        }
+                        $entities->add(ProviderFactory::getRepository($item['entityName'])->findOneBy($criteria));
+                    } else {
+                        $this->getLogger()->warning(sprintf('Not able to transform the value into a %s.  The value must be an array of objects, each object with keys: entityName, findBy, value to uniquely identify the entity.', $type));
+                    }
+                }
+                return $entities;
             default:
                 $this->getLogger()->warning(sprintf('Not able to transform the value %s into a %s', strval($value), $type));
                 return $value;
@@ -411,7 +454,7 @@ class DemoDataManager
     private function renderDefaultValues($entity, array $defaults): EntityInterface
     {
         if (!class_implements($entity, EntityInterface::class)) {
-            throw new \InvalidArgumentException(sprintf('The class %s does not implement %s. Ensure that the entity file extends %s or implements %s.', get_class($entity), EntityInterface::class, AbstractEntity::class, EntityInterface::class));
+            throw new InvalidArgumentException(sprintf('The class %s does not implement %s. Ensure that the entity file extends %s or implements %s.', get_class($entity), EntityInterface::class, AbstractEntity::class, EntityInterface::class));
         }
         if ($defaults === [])
             return $entity;
@@ -477,7 +520,7 @@ class DemoDataManager
             if (method_exists($entity, $method)) {
                 try {
                     $entity->$method($value);
-                } catch (\InvalidArgumentException $e) {
+                } catch (InvalidArgumentException $e) {
                     dump($entity,$name,$value);
                     throw $e;
                 }

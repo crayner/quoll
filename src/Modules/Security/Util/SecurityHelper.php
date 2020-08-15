@@ -587,6 +587,9 @@ dump($role,$accessAvailable);
      */
     public static function isEmailUnique(): bool
     {
+        if (SettingFactory::getSettingManager() === null) {
+            return true;
+        }
         return SettingFactory::getSettingManager()->get('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
     }
 }

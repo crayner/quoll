@@ -16,8 +16,10 @@
  */
 namespace App\Modules\Timetable\Provider;
 
+use App\Modules\Timetable\Entity\TimetableDate;
 use App\Modules\Timetable\Entity\TimetableDay;
 use App\Provider\AbstractProvider;
+use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -70,5 +72,16 @@ class TimetableDayProvider extends AbstractProvider
         }
 
         return true;
+    }
+
+    /**
+     * canDelete
+     * @param TimetableDay $day
+     * @return bool
+     * 13/08/2020 08:40
+     */
+    public function canDelete(TimetableDay $day): bool
+    {
+        return ProviderFactory::getRepository(TimetableDate::class)->countByTimetableDay($day) === 0;
     }
 }

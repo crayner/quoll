@@ -15,11 +15,13 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php,Provider,Manager/Hidden}'
+        exclude: '../src/{DependencyInjection,Entity,Modules,Migrations,Tests,Kernel.php,Manager/Hidden}'
 
     App\Modules\:
         resource: '../src/Modules/*'
-        exclude: '../src/Modules/{System/Manager/Hidden,Provider}'
+        exclude:
+            - '../src/Modules/*/Manager/Hidden'
+            - '../src/Modules/*/Provider'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -41,6 +43,16 @@ services:
     App\Translation\LoggerTranslator:
         decorates: translator.logging
 
+    App\Util\TranslationHelper:
+        tags:
+            - { name: 'container.preload', class: 'App\Util\TranslationHelper' }
+
+    App\Util\CacheHelper:
+        arguments:
+            $caching: '%caching%'
+        tags:
+            - { name: 'container.preload', class: 'App\Util\CacheHelper' }
+
     App\Logger\UserDetailProcessor:
         tags:
             - { name: 'monolog.processor' }
@@ -50,10 +62,6 @@ services:
             $stream: '%kernel.logs_dir%/translation.%kernel.environment%.log'
             $level:    'warning'
             $bubble:   false
-
-    App\Util\CacheHelper:
-        arguments:
-            $caching: '%caching%'
 
     App\Manager\RouterLoader:
         tags: [ 'routing.loader' ]
@@ -75,26 +83,31 @@ services:
         tags:
             - { name: 'doctrine.event_subscriber' }
 
+    App\Util\ParameterBagHelper:
+        calls:
+            - [setParameterBag, ['@parameter_bag']]
+
     App\Modules\System\Manager\DemoDataManager:
         arguments:
             $logger: '@monolog.logger.installation'
 
     App\Modules\People\Pagination\PeoplePagination:
         calls:
-            - ['setHierarchy', ['@security.role_hierarchy']]
+            - [setHierarchy, ['@security.role_hierarchy']]
 
     App\Modules\People\Form\FamilyGeneralType:
         calls:
-            - ['setPreferredLanguages', ['%preferred_languages%']]
+            - [setPreferredLanguages, ['%preferred_languages%']]
 
     App\Provider\ProviderFactory:
-        class: App\Provider\ProviderFactory
         calls:
-            - [setLogger, ['@monolog.logger.doctrine']]
+            - [ setLogger, ['@monolog.logger.doctrine'] ]
+        tags:
+            - { name: 'container.preload', class: 'App\Provider\ProviderFactory' }
 
     App\Modules\System\Manager\InstallationManager:
         calls:
-            - ['setLogger', ['@monolog.logger.installation']]
+            - [setLogger, ['@monolog.logger.installation']]
 
     App\Modules\System\Manager\CreateManager:
         calls:
@@ -115,7 +128,9 @@ services:
 
     App\Modules\Security\Util\SecurityHelper:
         calls:
-            - ['setLogger', ['@monolog.logger.security']]
+            - [ setLogger, ['@monolog.logger.security'] ]
+        tags:
+            - { name: 'container.preload', class: 'App\Modules\Security\Util\SecurityHelper' }
 
     App\Modules\Security\Voter\:
         resource: '../src\Modules/Security/Voter/*'
@@ -141,3 +156,11 @@ services:
     App\Modules\People\Listener\CustomFieldInjector:
         tags:
             - { name: 'doctrine.event_listener', event: 'postLoad' }
+
+    App\Modules\System\Manager\SettingFactory:
+        tags:
+            - { name: 'container.preload', class: 'App\Modules\System\Manager\SettingFactory' }
+
+    App\Modules\System\Util\LocaleHelper:
+        tags:
+            - { name: 'container.preload', class: 'App\Modules\System\Util\LocaleHelper' }

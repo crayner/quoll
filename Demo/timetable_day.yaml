@@ -1,0 +1,80 @@
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Monday Blue'
+    abbreviation: 'MoB'
+    colour: '#0000CC'
+    fontColour: '#FFFFFF'
+    rotateOrder: 1
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 1 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Wednesday Red'
+    abbreviation: 'WeR'
+    colour: '#CC0000'
+    fontColour: '#FFFFFF'
+    rotateOrder: 8
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 3 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Wednesday Blue'
+    abbreviation: 'WeB'
+    colour: '#0000CC'
+    fontColour: '#FFFFFF'
+    rotateOrder: 3
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 3 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Friday Blue'
+    abbreviation: 'FrB'
+    colour: '#0000CC'
+    fontColour: '#FFFFFF'
+    rotateOrder: 5
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 5 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Tuesday Blue'
+    abbreviation: 'TuB'
+    colour: '#0000CC'
+    fontColour: '#FFFFFF'
+    rotateOrder: 2
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 2 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Tuesday Red'
+    abbreviation: 'TuR'
+    colour: '#CC0000'
+    fontColour: '#FFFFFF'
+    rotateOrder: 7
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 2 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Thursday Red'
+    abbreviation: 'ThR'
+    colour: '#CC0000'
+    fontColour: '#FFFFFF'
+    rotateOrder: 9
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 4 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Friday Red'
+    abbreviation: 'FrR'
+    colour: '#CC0000'
+    fontColour: '#FFFFFF'
+    rotateOrder: 10
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 5 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Monday Red'
+    abbreviation: 'MoR'
+    colour: '#CC0000'
+    fontColour: '#FFFFFF'
+    rotateOrder: 6
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 1 }]
+-
+    timetable: {entityName: 'App\Modules\Timetable\Entity\Timetable', findBy: 'name', value: 'Timetable 1' }
+    name: 'Thursday Blue'
+    abbreviation: 'ThB'
+    colour: '#0000CC'
+    fontColour: '#FFFFFF'
+    rotateOrder: 4
+    daysOfWeek: [{entityName: 'App\Modules\School\Entity\DaysOfWeek', findBy: 'sortOrder', value: 4 }]

@@ -1,0 +1,34 @@
+-
+    academicYear: {entityName: 'App\Modules\School\Entity\AcademicYear', findBy: 'status', value: 'Current' }
+    name: 'Timetable 1'
+    abbreviation: 'T#1'
+    active: true
+    yearGroups:
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 7'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 8'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 9'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 10'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 11'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 12'
+        -
+            entityName: 'App\Modules\School\Entity\YearGroup'
+            findBy: 'name'
+            value: 'Year 13'

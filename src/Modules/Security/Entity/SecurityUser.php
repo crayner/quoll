@@ -26,6 +26,7 @@ use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -107,7 +108,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     private $lastIPAddress;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable",nullable=true)
      */
     private $lastTimestamp;
@@ -119,7 +120,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     private $lastFailIPAddress;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable",nullable=true)
      */
     private $lastFailTimestamp;
@@ -286,7 +287,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function isPasswordForceReset(): bool
     {
-        return $this->passwordForceReset;
+        return (bool)$this->passwordForceReset;
     }
 
     /**
@@ -295,7 +296,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function setPasswordForceReset(bool $passwordForceReset): SecurityUser
     {
-        $this->passwordForceReset = $passwordForceReset;
+        $this->passwordForceReset = (bool)$passwordForceReset;
         return $this;
     }
 
@@ -318,18 +319,18 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getLastTimestamp(): ?\DateTimeImmutable
+    public function getLastTimestamp(): ?DateTimeImmutable
     {
         return $this->lastTimestamp;
     }
 
     /**
-     * @param \DateTimeImmutable|null $lastTimestamp
+     * @param DateTimeImmutable|null $lastTimestamp
      * @return SecurityUser
      */
-    public function setLastTimestamp(?\DateTimeImmutable $lastTimestamp): SecurityUser
+    public function setLastTimestamp(?DateTimeImmutable $lastTimestamp): SecurityUser
     {
         $this->lastTimestamp = $lastTimestamp;
         return $this;
@@ -354,18 +355,18 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getLastFailTimestamp(): ?\DateTimeImmutable
+    public function getLastFailTimestamp(): ?DateTimeImmutable
     {
         return $this->lastFailTimestamp;
     }
 
     /**
-     * @param \DateTimeImmutable|null $lastFailTimestamp
+     * @param DateTimeImmutable|null $lastFailTimestamp
      * @return SecurityUser
      */
-    public function setLastFailTimestamp(?\DateTimeImmutable $lastFailTimestamp): SecurityUser
+    public function setLastFailTimestamp(?DateTimeImmutable $lastFailTimestamp): SecurityUser
     {
         $this->lastFailTimestamp = $lastFailTimestamp;
         return $this;
@@ -474,6 +475,15 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         return serialize(array(
             $this->getId(),
             $this->getUsername(),
+            $this->getPassword(),
+            $this->isPasswordForceReset(),
+            $this->getGoogleAPIRefreshToken(),
+            implode(',',$this->getSecurityRoles()),
+            $this->getLastFailTimestamp() ? $this->getLastFailTimestamp()->format('c') : null,
+            $this->getLastTimestamp() ? $this->getLastTimestamp()->format('c') : null,
+            $this->getFailCount(),
+            $this->getLastFailIPAddress(),
+            $this->getLastIPAddress(),
         ));
     }
 
@@ -487,21 +497,26 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         list (
             $this->id,
             $this->username,
+            $this->password,
+            $this->passwordForceReset,
+            $this->googleAPIRefreshToken,
+            $securityRoles,
+            $lastFailTimestamp,
+            $lastTimestamp,
+            $this->failCount,
+            $this->lastFailIPAddress,
+            $this->lastIPAddress
             ) = unserialize($serialized);
 
-        $su = ProviderFactory::create(SecurityUser::class)->loadUserByUsername($this->username);
-
-        $this->setPerson($su->getPerson())
-            ->setCanLogin($su->isCanLogin())
-            ->setPasswordForceReset($su->isPasswordForceReset())
-            ->setFailCount($su->getFailCount())
-            ->setLastIPAddress($su->getLastIPAddress())
-            ->setLastFailIPAddress($su->getLastFailIPAddress())
-            ->setLastTimestamp($su->getLastTimestamp())
-            ->setLastFailTimestamp($su->getLastFailTimestamp())
-            ->setPassword($su->getPassword())
-            ->setGoogleAPIRefreshToken($su->getGoogleAPIRefreshToken())
-            ->setSecurityRoles($su->getSecurityRoles());
+        $this->setSecurityRoles(explode(',', $securityRoles));
+        try {
+            if (!empty($lastFailTimestamp)) {
+                $this->setLastFailTimestamp(new DateTimeImmutable($lastFailTimestamp));
+            }
+            if (!empty($lastTimeStamp)) {
+                $this->setLastTimestamp(new DateTimeImmutable($lastTimestamp));
+            }
+        } catch (\Exception $e) {}
     }
 
     /**

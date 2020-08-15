@@ -101,6 +101,8 @@ class ProviderFactory
         self::$factory = $this;
         self::$stack = $stack;
         self::$parameterBag = $parameterBag;
+
+//        file_put_contents(__DIR__ . '/../../var/log/construct.log', json_encode(debug_backtrace()));
      }
 
     /**
@@ -127,12 +129,11 @@ class ProviderFactory
     /**
      * create
      * @param string $entityName
-     * @return ObjectRepository
-     * @throws ProviderException
+     * @return EntityProviderInterface
      */
     public static function create(string $entityName): EntityProviderInterface
     {
-        //The $entityName could be the plain name or the namespace name of the entity.
+        // The $entityName could be the plain name or the namespace name of the entity.
         // e.g. App\Modules\System\Entity\Module or Module
         $namespace = dirname($entityName);
         $entityName = basename($entityName);
@@ -140,10 +141,16 @@ class ProviderFactory
         if (isset(self::$instances[$entityName])) {
             return self::$instances[$entityName];
         }
+//        file_put_contents(__DIR__ . '/../../var/log/create.log', json_encode(debug_backtrace()));
 
         $providerName = str_replace('Entity', 'Provider', $namespace) . '\\' . $entityName . 'Provider';
         if (class_exists($providerName)) {
-            return self::addInstance($entityName,  new $providerName(self::$factory));
+            try {
+                return self::addInstance($entityName, new $providerName(self::$factory));
+            } catch (\Exception $e) {
+                self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $namespace));
+//                throw $e;
+            }
         }
 
         throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $namespace));
@@ -184,7 +191,7 @@ class ProviderFactory
     /**
      * @var null|SessionInterface
      */
-    private static $session;
+    private static ?SessionInterface $session;
 
     /**
      * @return SessionInterface
@@ -200,16 +207,18 @@ class ProviderFactory
     /**
      * @var Request|null
      */
-    private static $request;
+    private static ?Request $request = null;
 
     /**
-     * @return SessionInterface
+     * getRequest
+     * @return Request|null
+     * 15/08/2020 10:14
      */
     public static function getRequest(): ?Request
     {
-        if (null === self::$request)
+        if (null === self::$request) {
             self::$request = self::getStack()->getCurrentRequest();
-
+        }
         return self::$request;
     }
 
