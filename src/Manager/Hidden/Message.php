@@ -36,9 +36,9 @@ class Message
 
 
     /**
-     * @var string
+     * @var string|boolean
      */
-    private string $domain = 'messages';
+    private $domain = 'messages';
 
     /**
      * @var array
@@ -107,9 +107,9 @@ class Message
     }
 
     /**
-     * @return string
+     * @return string|boolean
      */
-    public function getDomain(): string
+    public function getDomain()
     {
         return $this->domain;
     }
@@ -166,7 +166,11 @@ class Message
     public function getTranslatedMessage(): string
     {
         if (null === $this->translatedMessage) {
-            $this->translatedMessage = TranslationHelper::translate($this->getMessage(), $this->getOptions(), $this->getDomain());
+            if (false === $this->getDomain()) {
+                $this->setTranslatedMessage($this->getMessage());
+            } else {
+                $this->setTranslatedMessage(TranslationHelper::translate($this->getMessage(), $this->getOptions(), $this->getDomain()));
+            }
         }
         return $this->translatedMessage;
     }

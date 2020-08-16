@@ -24,6 +24,7 @@ use App\Provider\ProviderFactory;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

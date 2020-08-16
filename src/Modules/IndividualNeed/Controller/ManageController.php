@@ -16,15 +16,14 @@
  */
 namespace App\Modules\IndividualNeed\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
+use App\Manager\MessageStatusManager;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\IndividualNeed\Form\INDescriptorType;
 use App\Modules\IndividualNeed\Pagination\INDescriptorPagination;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,15 +60,17 @@ class ManageController extends AbstractPageController
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 9/06/2020 12:44
      * @param INDescriptor|null $need
+     * @return JsonResponse
      * @Route("/individual/need/add/",name="individual_need_add")
      * @Route("/individual/need/{need}/edit/",name="individual_need_edit")
      * @IsGranted("ROLE_ROUTE")
-     * 9/06/2020 12:44
      */
-    public function edit(ContainerManager $manager, ?INDescriptor $need = null)
+    public function edit(?INDescriptor $need = null)
     {
+        $manager = $this->getContainerManager();
         if (!$need instanceof INDescriptor) {
             $need = new INDescriptor();
             $action = $this->generateUrl('individual_need_add');
@@ -85,22 +86,18 @@ class ManageController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $need->getId();
                 $provider = ProviderFactory::create(INDescriptor::class);
-                $data = $provider->persistFlush($need);
-                if ($data['status'] === 'success' && $id !== $need->getId()) {
+                $provider->persistFlush($need);
+                if ($provider->isStatusSuccess() && $id !== $need->getId()) {
                     $data['redirect'] = $this->generateUrl('individual_need_edit', ['need' => $need->getId()]);
                     $data['status'] = 'redirect';
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
-                } else if ($data['status'] !== 'success') {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                    $this->getMessageStatusManager()->convertToFlash();
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $pageHeader = new PageHeader($need->getId() !== null ? 'Edit Individual Need' : 'Add Individual Need');

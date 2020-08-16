@@ -19,6 +19,7 @@ namespace App\Manager;
 use App\Manager\Hidden\Message;
 use Doctrine\Common\Collections\ArrayCollection;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\EventListener\SessionListener;
@@ -420,5 +421,17 @@ class MessageStatusManager
         }
 
         return $this->setLogger(null);
+    }
+
+    /**
+     * toJsonResponse
+     *
+     * 16/08/2020 15:11
+     * @param array $data
+     * @return JsonResponse
+     */
+    public function toJsonResponse(array $data = []): JsonResponse
+    {
+        return new JsonResponse(array_merge($data, $this->toArray()));
     }
 }

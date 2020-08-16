@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Assess\Provider;
 
+use App\Manager\EntityInterface;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Repository\ScaleRepository;
@@ -41,10 +42,12 @@ class ScaleProvider extends AbstractProvider
 
     /**
      * canDelete
+     *
+     * 16/08/2020 15:00
      * @param Scale $scale
-     * @return bool
+     * @return EntityInterface
      */
-    public function canDelete(Scale $scale)
+    public function canDelete(Scale $scale): EntityInterface
     {
         if ($this->getRepository(ScaleGrade::class)->countScaleUse($scale) === 0)
             return true;
