@@ -42,10 +42,14 @@ class ToggleTransformer implements DataTransformerInterface
     /**
      * transform
      * @param mixed $value
-     * @return string
+     * @return mixed
      */
-    public function transform($value): string
+    public function transform($value)
     {
+        if ($this->useBoolean && is_bool($value)) {
+            return $value;
+        }
+
         if (is_bool($value))
             return $value ? 'Y' : 'N';
         return $value === 'Y' ? 'Y' : 'N';
@@ -54,7 +58,7 @@ class ToggleTransformer implements DataTransformerInterface
     /**
      * reverseTransform
      * @param mixed $value
-     * @return bool
+     * @return string
      */
     public function reverseTransform($value): string
     {

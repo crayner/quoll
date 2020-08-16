@@ -21,6 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\Behaviour\Form\BehaviourSettingsType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
@@ -46,26 +47,26 @@ class SettingController extends AbstractPageController
      * @IsGranted("ROLE_ROUTE")
      * 13/06/2020 11:18
      */
-    public function settings(ContainerManager $manager, string $tabName = 'Descriptors')
+    public function settings(string $tabName = 'Descriptors')
     {
         SettingFactory::getSettingManager()->getSettingsByScope('Behaviour');
+        $manager = $this->getContainerManager();
 
         $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
-
+dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors')->getData());
         if ($this->getRequest()->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
             try {
-                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
-                $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
+                SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+                if ($this->getMessageStatusManager()->getStatus() === 'success') {
+                    $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
+                    dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors'));
+                }
             } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $container = new Container($tabName);
