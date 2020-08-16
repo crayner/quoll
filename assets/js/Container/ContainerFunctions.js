@@ -199,11 +199,12 @@ function visibleByChoiceInitial(form, visibleKeys) {
 
 export function setVisibleKeysByForm(child, visibleKeys) {
     if (typeof child.visible_by_choice === 'string') {
+        console.log(child)
         let value = false
         if (child.value === child.visible_by_choice) {
             value = true
         }
-        if (child.type === 'toggle' && child.value === 'Y') {
+        if (child.type === 'toggle' && (child.value === 'Y' || child.value === '1')) {
             value = true
         }
         visibleKeys[child.id + '_' + child.visible_by_choice] = value
