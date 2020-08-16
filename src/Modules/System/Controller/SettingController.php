@@ -22,6 +22,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\DisplaySettingsType;
@@ -35,7 +36,9 @@ use App\Twig\PageHeader;
 use App\Util\ErrorMessageHelper;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,65 +68,42 @@ class SettingController extends AbstractPageController
         $container = new Container();
         $manager->setTranslationDomain('System');
         TranslationHelper::setDomain('System');
+
         // System Settings
-        $form = $this->createForm(SystemSettingsType::class, null, ['action' => $this->generateUrl('system_settings', ['tabName' => 'System'])]);
+        $form = $this->createSystemForm();
 
         if ($tabName === 'System' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => TranslationHelper::translate('return.error.2', [], 'messages')];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createSystemForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
 
-            return new JsonResponse($data, 200);
+            return new JsonResponse($settingProvider->getMessages()->toArray($manager->getFormFromContainer()), 200);
         }
 
         $panel = new Panel('System', 'System', new Section('form', 'System'));
         $container->addForm('System', $form->createView())->addPanel($panel);
 
         // Organisation Settings
-        $form = $this->createForm(OrganisationSettingsType::class, null,
-            [
-                'action' => $this->generateUrl('system_settings', ['tabName' => 'Organisation']),
-                'attr' => [
-                    'encType' => 'multipart/form-data',
-                ],
-                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
-                    [
-                        'scope' => 'System',
-                        'name' => 'organisationBackground',
-                        'route' => 'system_settings',
-                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
-                    ]
-                ),
-                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
-                    [
-                        'scope' => 'System',
-                        'name' => 'organisationLogo',
-                        'route' => 'system_settings',
-                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
-                    ]
-                ),
-            ]
-        );
+        $form = $this->createOrganisationForm();
 
         if ($tabName === 'Organisation' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => TranslationHelper::translate('return.error.2', [], 'messages') . ' ' . $e->getMessage()];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createOrganisationForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            $data['status'] = 'redirect';
-            $data['redirect'] = $this->generateUrl('system_settings', ['tabName' => 'Organisation']);
-            $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+
             return new JsonResponse($data, 200);
         }
 
@@ -131,22 +111,19 @@ class SettingController extends AbstractPageController
         $container->addForm('Organisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Security Settings
-        $form = $this->createForm(SecuritySettingsType::class, null,
-            [
-                'action' => $this->generateUrl('system_settings', ['tabName' => 'Security']),
-            ]
-        );
+        $form = $this->createSecurityForm();
 
         if ($tabName === 'Security' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true) . ' ' . $e->getMessage()];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createSecurityForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -155,22 +132,19 @@ class SettingController extends AbstractPageController
         $container->addForm('Security', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Localisation
-        $form = $this->createForm(LocalisationSettingsType::class, null,
-            [
-                'action' => $this->generateUrl('system_settings', ['tabName' => 'Localisation']),
-            ]
-        );
+        $form = $this->createLocalisationForm();
 
         if ($tabName === 'Localisation' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true) . ' ' . $e->getMessage()];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createLocalisationForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -179,23 +153,19 @@ class SettingController extends AbstractPageController
         $container->addForm('Localisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Miscellaneous
-        $form = $this->createForm(MiscellaneousSettingsType::class, null,
-            [
-                'action' => $this->generateUrl('system_settings', ['tabName' => 'Miscellaneous']),
-            ]
-        );
+        $form = $this->createMiscellaneousForm();
 
         if ($tabName === 'Miscellaneous' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true) . ' ' . $e->getMessage()];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createMiscellaneousForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -224,42 +194,22 @@ class SettingController extends AbstractPageController
         $settingProvider = SettingFactory::getSettingManager();
 
         // System Settings
-        $form = $this->createForm(DisplaySettingsType::class, null,
-            [
-                'action' => $this->generateUrl('display_settings'),
-                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
-                    [
-                        'scope' => 'System',
-                        'name' => 'organisationBackground',
-                        'route' => 'system_settings',
-                        'url' => urlencode($this->generateUrl('display_settings'))
-                    ]
-                ),
-                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
-                    [
-                        'scope' => 'System',
-                        'name' => 'organisationLogo',
-                        'route' => 'system_settings',
-                        'url' => urlencode($this->generateUrl('display_settings'))
-                    ]
-                ),
-
-            ]
-        );
+        $form = $this->createDisplayForm();
 
         if ($request->getContent() !== '') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                dump($e);
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+                $settingProvider->handleSettingsForm($form, $request);
+                if ($this->getMessageStatusManager()->getStatus() === 'success') {
+                    $form = $this->createDisplayForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
-            return new JsonResponse($data);
+            return new JsonResponse($data, 200);
         }
 
         $manager->singlePanel($form->createView());
@@ -282,7 +232,7 @@ class SettingController extends AbstractPageController
      * @param string $url
      * @Route("/setting/{scope}/image/{name}/{route}/{url}/removal/",name="setting_image_removal")
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function removeSettingImage(string $scope, string $name, string $route, string $url)
     {
@@ -315,5 +265,128 @@ class SettingController extends AbstractPageController
         $data['status'] = 'redirect';
         $data['redirect'] = urldecode($url);
         return new JsonResponse($data);
+    }
+
+    /**
+     * createDisplayForm
+     *
+     * 16/08/2020 09:07
+     * @return FormInterface
+     */
+    private function createDisplayForm(): FormInterface
+    {
+        return $this->createForm(DisplaySettingsType::class, null,
+            [
+                'action' => $this->generateUrl('display_settings'),
+                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationBackground',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('display_settings'))
+                    ]
+                ),
+                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationLogo',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('display_settings'))
+                    ]
+                ),
+
+            ]
+        );
+    }
+
+    /**
+     * createSystemForm
+     *
+     * 16/08/2020 09:10
+     * @return FormInterface
+     */
+    private function createSystemForm(): FormInterface
+    {
+        return $this->createForm(SystemSettingsType::class, null, ['action' => $this->generateUrl('system_settings', ['tabName' => 'System'])]);
+
+    }
+
+    /**
+     * createOrganisationForm
+     *
+     * 16/08/2020 09:15
+     * @return FormInterface
+     */
+    private function createOrganisationForm(): FormInterface
+    {
+        return $this->createForm(OrganisationSettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_settings', ['tabName' => 'Organisation']),
+                'attr' => [
+                    'encType' => 'multipart/form-data',
+                ],
+                'remove_organisation_background' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationBackground',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
+                    ]
+                ),
+                'remove_organisation_logo' => $this->generateUrl('setting_image_removal',
+                    [
+                        'scope' => 'System',
+                        'name' => 'organisationLogo',
+                        'route' => 'system_settings',
+                        'url' => urlencode($this->generateUrl('system_settings', ['tabName' => 'Organisation']))
+                    ]
+                ),
+            ]
+        );
+    }
+
+    /**
+     * createSecurityForm
+     *
+     * 16/08/2020 09:18
+     * @return FormInterface
+     */
+    private function createSecurityForm(): FormInterface
+    {
+        return $this->createForm(SecuritySettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_settings', ['tabName' => 'Security']),
+            ]
+        );
+    }
+
+    /**
+     * createLocalisationForm
+     *
+     * 16/08/2020 09:23
+     * @return FormInterface
+     */
+    private function createLocalisationForm(): FormInterface
+    {
+        return $this->createForm(LocalisationSettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_settings', ['tabName' => 'Localisation']),
+            ]
+        );
+    }
+
+    /**
+     * createMiscellaneousForm
+     *
+     * 16/08/2020 09:25
+     * @return FormInterface
+     */
+    private function createMiscellaneousForm(): FormInterface
+    {
+        return $this->createForm(MiscellaneousSettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_settings', ['tabName' => 'Miscellaneous']),
+            ]
+        );
     }
 }

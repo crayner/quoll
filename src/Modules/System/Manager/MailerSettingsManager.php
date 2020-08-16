@@ -16,6 +16,7 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Manager\MessageStatusManager;
 use App\Manager\ParameterFileManager;
 use App\Modules\Security\Entity\SecurityUser;
 use Symfony\Component\Form\FormInterface;
@@ -32,7 +33,7 @@ class MailerSettingsManager
     /**
      * @var string|null
      */
-    private $enableMailerSMTP;
+    private ?string $enableMailerSMTP;
 
     /**
      * @var string[]
@@ -78,12 +79,19 @@ class MailerSettingsManager
     ];
 
     /**
+     * @var MessageStatusManager
+     */
+    private MessageStatusManager $messages;
+
+    /**
      * handleMailerDsn
+     *
+     * 16/08/2020 09:43
      * @param FormInterface $form
      * @param Request $request
-     * @param SecurityUser $user
+     * @return bool
      */
-    public function handleMailerDsn(FormInterface $form, Request $request, SecurityUser $user)
+    public function handleMailerDsn(FormInterface $form, Request $request): bool
     {
         $content = json_decode($request->getContent(), true);
         $form->submit($content);
@@ -91,40 +99,47 @@ class MailerSettingsManager
         if ($form->isValid()) {
             $result = null;
             $config = ParameterFileManager::readParameterFile();
-            switch ($content['enableMailerSMTP']) {
+            switch ($this->getEnableMailerSMTP()) {
                 case 'gmail':
-                    $result = 'gmail://' . $content['mailerSMTPUsername'] . ':' . $content['mailerSMTPPassword'] . '@default';
+                    $result = 'gmail://' . $this->getMailerSMTPUsername() . ':' . $this->getMailerSMTPPassword() . '@default';
                     break;
                 case 'No':
                     $result = null;
                     break;
                 default:
-                    $result = 'smtp://' . $content['mailerSMTPUsername'] . ':' . $content['mailerSMTPPassword'] . '@' . $content['mailerSMTPHost'] . ':' . $content['mailerSMTPPort'] . '?encryption=' . $content['mailerSMTPSecure'];
+                    $result = 'smtp://' . $this->getMailerSMTPUsername() . ':' . $this->getMailerSMTPPassword() . '@' . $this->getMailerSMTPHost() . ':' . $this->getMailerSMTPPort() . '?encryption=' . $this->getMailerSMTPSecure();
             }
 
             $config['parameters']['mailer_dsn'] = $result;
 
             ParameterFileManager::writeParameterFile($config);
+            $this->getMessages()->success();
+            return true;
         }
+        return false;
     }
 
     /**
+     * getEnableMailerSMTP
+     *
+     * 16/08/2020 09:52
      * @return string|null
      */
     public function getEnableMailerSMTP(): ?string
     {
-        return $this->enableMailerSMTP;
+        return $this->enableMailerSMTP = $this->enableMailerSMTP = in_array($this->enableMailerSMTP, self::getEnableMailerSMTPList()) ? $this->enableMailerSMTP : 'No';
     }
 
     /**
-     * EnableMailerSMTP.
+     * setEnableMailerSMTP
      *
+     * 16/08/2020 09:51
      * @param string|null $enableMailerSMTP
-     * @return MailerSettingsManager
+     * @return $this
      */
     public function setEnableMailerSMTP(?string $enableMailerSMTP): MailerSettingsManager
     {
-        $this->enableMailerSMTP = $enableMailerSMTP;
+        $this->enableMailerSMTP = in_array($enableMailerSMTP, self::getEnableMailerSMTPList()) ? $enableMailerSMTP : 'No';
         return $this;
     }
 
@@ -274,4 +289,26 @@ class MailerSettingsManager
 
         return $this;
     }
+
+    /**
+     * @return MessageStatusManager
+     */
+    public function getMessages(): MessageStatusManager
+    {
+        return $this->messages;
+    }
+
+    /**
+     * setMessages
+     *
+     * 16/08/2020 09:58
+     * @param MessageStatusManager $messages
+     * @return MailerSettingsManager
+     */
+    public function setMessages(MessageStatusManager $messages): MailerSettingsManager
+    {
+        $this->messages = $messages;
+        return $this;
+    }
+
 }

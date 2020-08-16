@@ -15,12 +15,14 @@
 namespace App\Modules\System\Manager;
 
 use App\Manager\EntityInterface;
+use App\Manager\MessageStatusManager;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -44,13 +46,22 @@ class SettingManager
      */
     private $settingsChanged = false;
 
+    /**
+     * @var SettingManager
+     */
     private static $instance;
 
     /**
-     * SettingProvider constructor.
-     * @param array $settings
+     * @var MessageStatusManager
      */
-    public function __construct(?array $settings)
+    private MessageStatusManager $messages;
+
+    /**
+     * SettingProvider constructor.
+     * @param array|null $settings
+     * @param MessageStatusManager $messages
+     */
+    public function __construct(?array $settings, MessageStatusManager $messages)
     {
         if ($settings === null) {
             $fileSystem = new Filesystem();
@@ -61,6 +72,7 @@ class SettingManager
             }
         }
         $this->settings = $this->convertRawSettings($settings ?? []);
+        $this->messages = $messages;
         self::$instance = $this;
     }
 
@@ -88,7 +100,7 @@ class SettingManager
      * @param string $scope
      * @param string $name
      * @param bool $returnRow
-     * @throws \Exception
+     * @throws Exception
      * @deprecated Move this to getSetting.  Lots of work to do here...
      * 10/06/2020 10:47
      */
@@ -111,7 +123,7 @@ class SettingManager
 
     /**
      * getSystemSettings
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSystemSettings()
     {
@@ -125,12 +137,12 @@ class SettingManager
      * @param string $name
      * @param int $default
      * @return int
-     * @throws \Exception
+     * @throws Exception
      * @deprecated Use getSetting
      */
     public function getSettingByScopeAsInteger(string $scope, string $name, int $default = 0): int
     {
-        $result = $this->getSettingByScope($scope, $name);
+        $result = $this->get($scope, $name);
         if (empty($result))
             return $default;
         return intval($result);
@@ -142,12 +154,12 @@ class SettingManager
      * @param string $name
      * @param array $default
      * @return array
-     * @throws \Exception
+     * @throws Exception
      * @deprecated Use getSetting
      */
-    public function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
+    public function getSettingByScopeAsArray(string $scope, string $name, array $default = []): array
     {
-        return $this->getSetting($scope, $name, $default);
+        return $this->get($scope, $name, $default);
     }
 
     /**
@@ -162,14 +174,14 @@ class SettingManager
      */
     public function getSettingByScopeAsEntity(string $scope, string$name, string $entityName): ?EntityInterface
     {
-        $result = $this->getSettingByScope($scope, $name);
+        $result = $this->get($scope, $name);
         if (empty($result)) {
             return null;
         }
 
         try {
             return $this->getRepository($entityName)->find($result->getvalue);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -181,11 +193,11 @@ class SettingManager
      * @param array $default
      * @return array
      * @deprecated Use getSetting
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSettingByScopeAsDate(string $scope, string $name, ?\DateTime $default = null)
     {
-        $result = $this->getSettingByScope($scope, $name);
+        $result = $this->get($scope, $name);
         if (empty($result))
             return $default;
         return unserialize($result);
@@ -198,7 +210,7 @@ class SettingManager
      * @param bool|null $default
      * @return bool|null
      * @deprecated Use getSetting
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSettingByScopeAsBoolean(string $scope, string $name, ?bool $default = false)
     {
@@ -215,7 +227,7 @@ class SettingManager
      * @param string|null $default
      * @return string|null
      * @deprecated Use getSetting
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSettingByScopeAsString(string $scope, string $name, ?string $default = null)
     {
@@ -244,7 +256,7 @@ class SettingManager
      * @param string $name
      * @param $value
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      * 22/07/2020 11:14
      * @deprecated Use set(string $scope, string $name, $value)
      */
@@ -259,7 +271,7 @@ class SettingManager
      * @param string $name
      * @param $value
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      * 22/07/2020 11:14
      */
     public function set(string $scope, string $name, $value): self
@@ -314,7 +326,7 @@ class SettingManager
                 }
                 break;
             default:
-                throw new \Exception(sprintf('How do I save a %s', $setting['type']));
+                throw new Exception(sprintf('How do I save a %s', $setting['type']));
         }
 
         $this->getSettings()->get($scope)->set($name, $setting);
@@ -365,7 +377,7 @@ class SettingManager
      * @param bool $isEmpty
      * @return bool
      * 5/07/2020 17:46
-     * @throws \Exception
+     * @throws Exception
      */
     public function hasSetting(string $scope, string $name, bool $isEmpty = false): bool
     {
@@ -378,7 +390,7 @@ class SettingManager
                         return !in_array($w['value'], [null, '']);
                         break;
                     default:
-                        throw new \Exception('Missing hasSetting type work for '.$w['type']);
+                        throw new Exception('Missing hasSetting type work for '.$w['type']);
                 }
             }
         } else {
@@ -392,7 +404,7 @@ class SettingManager
      * @param string $name
      * @param null $default
      * @return array|bool|int|object|string|null
-     * @throws \Exception
+     * @throws Exception
      * 22/07/2020 11:15
      * @deprecated Use get(string $scope, string $name, $default = null)
      */
@@ -407,7 +419,7 @@ class SettingManager
      * @param string $name
      * @param null $default
      * @return array|bool|int|object|string|null
-     * @throws \Exception
+     * @throws Exception
      * 22/07/2020 11:14
      */
     public function get(string $scope, string $name, $default = null)
@@ -480,7 +492,7 @@ class SettingManager
      * @param $scope
      * @param $name
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      * 9/07/2020 10:35
      */
     public function getSettingType($scope, $name)
@@ -498,7 +510,7 @@ class SettingManager
      * @param $scope
      * @param $name
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      * 9/07/2020 13:03
      */
     public function getSettingClass($scope, $name)
@@ -519,67 +531,38 @@ class SettingManager
     /**
      * @return array
      */
-    public function getErrors(): array
+    public function getMessages(): MessageStatusManager
     {
-        return $this->errors = $this->errors ?: [];
-    }
-
-    /**
-     * Errors.
-     *
-     * @param array $error
-     * @return SettingManager
-     */
-    public function addError(array $error): SettingManager
-    {
-        $this->getErrors();
-        $this->errors[] = $error;
-        return $this;
+        return $this->messages;
     }
 
     /**
      * handleSettingsForm
+     *
+     * 16/08/2020 09:19
      * @param FormInterface $form
      * @param Request $request
-     * @param array|null $data
-     * @return array
+     * @return string
      */
-    public function handleSettingsForm(FormInterface $form, Request $request, ?array $data = null): array
+    public function handleSettingsForm(FormInterface $form, Request $request): bool
     {
         $content = json_decode($request->getContent(), true);
 
         $form->submit($content);
-dump($form);
+
         if ($form->isValid()) {
             $this->saveSettings($form, $content);
-            if (count($this->getErrors()) === 0) {
-                if (is_array($data)) {
-                    return ErrorMessageHelper::getSuccessMessage($data, true);
-                }
-                return $this->addError(['class' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true)])->getErrors();
+            if ($this->getMessages()->count() === 0) {
+                $this->getMessages()->success();
             }
-            else {
-                if (is_array($data)) {
-                    $data['errors'] = $this->getErrors();
-                    $data['status'] = $this->getStatus();
-                    return $data;
-                }
-                return $this->getErrors();
+        } else {
+            foreach ($form->getErrors(true) as $error) {
+                $this->getMessages()->error($error->getOrigin()->getName() . ': ' . $error->getMessage());
             }
-        }
 
-        foreach($form->getErrors(true) as $error)
-        {
-            $this->addError(['class' => 'error', 'message' => $error->getOrigin()->getName() . ': ' . $error->getMessage()]);
+            $this->getMessages()->error(MessageStatusManager::INVALID_INPUTS);
         }
-
-        if (is_array($data)) {
-            $data['errors'] = $this->getErrors();
-            $data['status'] = $this->getStatus();
-            return $data;
-        }
-
-        return $this->addError(['class' => 'error', 'message' => ErrorMessageHelper::onlyInvalidInputsMessage(true)])->getErrors();
+        return $this->getMessages()->getStatus() === 'success';
     }
 
     /**

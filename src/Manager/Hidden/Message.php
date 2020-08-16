@@ -16,6 +16,8 @@
  */
 namespace App\Manager\Hidden;
 
+use App\Util\TranslationHelper;
+
 /**
  * Class Message
  * @package App\Manager\Entity
@@ -23,30 +25,46 @@ namespace App\Manager\Hidden;
 class Message
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private $message;
+    private ?string $message;
 
     /**
      * @var string
      */
-    private $level;
+    private ?string $level;
 
 
     /**
      * @var string
      */
-    private $domain = 'messages';
+    private string $domain = 'messages';
 
     /**
      * @var array
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * @var null|string
      */
-    private $translatedMessage;
+    private ?string $translatedMessage = null;
+
+    /**
+     * Message constructor.
+     * @param string|null $level
+     * @param string|null $message
+     * @param array $options
+     * @param string $domain
+     */
+    public function __construct(?string $level = null, ?string $message = null, array $options = [], string $domain = 'messages')
+    {
+        $this->message = $message;
+        $this->level = $level;
+        $this->domain = $domain;
+        $this->options = $options;
+    }
+
 
     /**
      * @return string
@@ -143,10 +161,13 @@ class Message
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTranslatedMessage(): ?string
+    public function getTranslatedMessage(): string
     {
+        if (null === $this->translatedMessage) {
+            $this->translatedMessage = TranslationHelper::translate($this->getMessage(), $this->getOptions(), $this->getDomain());
+        }
         return $this->translatedMessage;
     }
 

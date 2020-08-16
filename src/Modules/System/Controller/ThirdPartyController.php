@@ -17,15 +17,12 @@
 namespace App\Modules\System\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Messenger\SendEmailNowMessage;
+use App\Manager\MessageStatusManager;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Twig\DefaultContextEmail;
-use App\Util\ErrorMessageHelper;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use App\Modules\System\Form\EmailSettingsType;
@@ -34,22 +31,19 @@ use App\Modules\System\Form\PaypalSettingsType;
 use App\Modules\System\Form\SMSSettingsType;
 use App\Modules\System\Manager\GoogleSettingManager;
 use App\Modules\System\Manager\MailerSettingsManager;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportException;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Messenger\MessageHandler;
-use Symfony\Component\Mailer\Messenger\SendEmailMessage;
 use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Messenger\Handler\HandlersLocator;
-use Symfony\Component\Messenger\MessageBus;
-use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class ThirdPartyController
@@ -59,17 +53,19 @@ class ThirdPartyController extends AbstractPageController
 {
     /**
      * thirdParty
-     * @param ContainerManager $manager
+     *
+     * 16/08/2020 10:19
      * @param string $tabName
-     * @return JsonResponse|Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      * @Route("/third/party/settings/{tabName}/", name="third_party_settings")
      * @IsGranted("ROLE_ROUTE"))
+     * @return JsonResponse|Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function thirdParty(ContainerManager $manager, string $tabName = 'Google')
+    public function thirdParty(string $tabName = 'Google')
     {
+        $manager = $this->getContainerManager();
         $pageManager = $this->getPageManager();
         if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
         $request = $pageManager->getRequest();
@@ -81,26 +77,23 @@ class ThirdPartyController extends AbstractPageController
         $container->setSelectedPanel($tabName);
 
         // Google
-        $form = $this->createForm(GoogleIntegrationType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'Google'])]);
+        $form = $this->createGoogleForm();
 
         if ($tabName === 'Google' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                $gm = new GoogleSettingManager();
-                $data['errors'][] = $gm->handleGoogleSecretsFile($form, $request);
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('third_party_settings', ['tabName' => 'Google']);
-                foreach($data['errors'] as $message) {
-                    $this->addFlash($message['class'], [$message['message'], [], 'System']);
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $gm = new GoogleSettingManager($this->getMessageStatusManager());
+                    if ($gm->handleGoogleSecretsFile($form, $request)) {
+                        $form = $this->createGoogleForm();
+                    }
+                    $this->getMessageStatusManager()->convertToFlash();
                 }
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
             }
 
-            $form = $this->createForm(GoogleIntegrationType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'Google'])]);
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -109,19 +102,20 @@ class ThirdPartyController extends AbstractPageController
         $container->addForm('Google', $form->createView())->addPanel($panel);
 
         // PayPal
-        $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'PayPal'])]);
+        $form = $this->createPaypalForm();
 
         if ($tabName === 'PayPal' && $request->getMethod() === 'POST') {
             $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createPaypalForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
             }
 
-            $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'PayPal'])]);
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -130,18 +124,19 @@ class ThirdPartyController extends AbstractPageController
         $container->addForm('PayPal', $form->createView())->addPanel($panel);
 
         // SMS
-        $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'SMS'])]);
+        $form = $this->createSMSForm();
 
         if ($tabName === 'SMS' && $request->getMethod() === 'POST') {
-            $data = [];
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-            } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
+                if ($settingProvider->handleSettingsForm($form, $request)) {
+                    $form = $this->createSMSForm();
+                }
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
             }
 
-            $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'SMS'])]);
             $manager->singlePanel($form->createView());
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -152,15 +147,16 @@ class ThirdPartyController extends AbstractPageController
         // EMail
         $msm = new MailerSettingsManager();
         $msm->parseFromDsn(ParameterBagHelper::get('mailer_dsn'));
-        $form = $this->createForm(EmailSettingsType::class, $msm, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'EMail'])]);
+        $form = $this->createEmailForm($msm);
 
         if ($tabName === 'EMail' && $request->getMethod() === 'POST') {
-            $msm->handleMailerDsn($form,$request,$this->getUser());
+            if ($msm->setMessages($this->getMessageStatusManager())->handleMailerDsn($form,$request)) {
+                $form = $this->createEmailForm($msm);
+            }
+
             $manager->singlePanel($form->createView());
-            $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
-            $data['form'] = $manager->getFormFromContainer();
-            $data['redirect'] = $this->generateUrl('third_party_settings', ['tabName' => 'EMail']);
-            $data['status'] = 'redirect';
+            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+
             return new JsonResponse($data, 200);
         }
 
@@ -191,7 +187,7 @@ class ThirdPartyController extends AbstractPageController
                 $this->addFlash('warning', TranslationHelper::translate('The email setting where not tested as you do not have an email address recorded in your personal record.', [], 'System'));
             } else {
                 $email = (new DefaultContextEmail())
-                    ->from(new Address(SettingFactory::getSettingManager()->get('System', 'organisationEMail', 'quoll@localhost.org.au'),SettingFactory::getSettingManager()->getSetting('System', 'organisationName', 'Quoll')))
+                    ->from(new Address(SettingFactory::getSettingManager()->get('System', 'organisationEmail', 'kookaburra@localhost.org.au'),SettingFactory::getSettingManager()->get('System', 'organisationName', 'Kookaburra')))
                     ->to(new Address($this->getUser()->getPerson()->getEmail(),$this->getUser()->getPerson()->formatName('Standard')))
                     ->subject(TranslationHelper::translate('Test EMail Settings on {address}', ['{address}' => ParameterBagHelper::get('absoluteURL')], 'System'))
                     ->htmlTemplate('email/security/email_settings_test_message.html.twig')
@@ -205,6 +201,51 @@ class ThirdPartyController extends AbstractPageController
                 }
             }
         }
-        return $this->redirectToRoute('third_party_settings', ['tabName' => 'EMail']);
+        return $this->thirdParty('EMail');
+    }
+
+    /**
+     * createGoogleForm
+     *
+     * 16/08/2020 09:30
+     * @return FormInterface
+     */
+    private function createGoogleForm(): FormInterface
+    {
+        return $this->createForm(GoogleIntegrationType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'Google'])]);
+    }
+
+    /**
+     * createPaypalForm
+     *
+     * 16/08/2020 09:34
+     * @return FormInterface
+     */
+    private function createPaypalForm(): FormInterface
+    {
+        return $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'PayPal'])]);
+    }
+
+    /**
+     * createSMSForm
+     *
+     * 16/08/2020 09:36
+     * @return FormInterface
+     */
+    private function createSMSForm(): FormInterface
+    {
+        return $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'SMS'])]);
+    }
+
+    /**
+     * createEmailSetting
+     *
+     * 16/08/2020 09:38
+     * @param MailerSettingsManager $msm
+     * @return FormInterface
+     */
+    private function createEmailForm(MailerSettingsManager $msm): FormInterface
+    {
+        return $this->createForm(EmailSettingsType::class, $msm, ['action' => $this->generateUrl('third_party_settings', ['tabName' => 'EMail'])]);
     }
 }

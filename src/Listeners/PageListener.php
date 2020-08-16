@@ -56,6 +56,7 @@ class PageListener implements EventSubscriberInterface
      * @param SettingFactory $settingFactory
      * @param SecurityHelper $securityHelper
      * @param ProviderFactory $factory
+     * @param TranslationHelper $helper
      */
     public function __construct(
         PageManager $pageManager,
@@ -63,7 +64,8 @@ class PageListener implements EventSubscriberInterface
         ParameterBagHelper $parameterBagHelper,
         SettingFactory $settingFactory,
         SecurityHelper $securityHelper,
-        ProviderFactory $factory
+        ProviderFactory $factory,
+        TranslationHelper $helper
     ) {
         $this->setPageManager($pageManager);
         $this->setParameterBag($parameterBag);

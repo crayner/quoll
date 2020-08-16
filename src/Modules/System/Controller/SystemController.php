@@ -14,12 +14,12 @@
  * Date: 24/04/2020
  * Time: 12:55
  */
-
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Manager\VersionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -31,7 +31,7 @@ class SystemController extends AbstractPageController
     /**
      * check
      * @param VersionManager $manager
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/system/check/", name="system_check")
      * @IsGranted("ROLE_ROUTE")
      */

@@ -303,6 +303,30 @@ class PageManager
         $this->addTranslation('Submit');
         $this->addTranslation('All / None');
         $this->addTranslation('Yes/No');
+        $this->addTranslation('File Download');
+        $this->addTranslation('Let me ponder your request');
+        $this->addTranslation('File Delete');
+        $this->addTranslation('Up');
+        $this->addTranslation('Down');
+        $this->addTranslation('Delete');
+        $this->addTranslation('Add');
+        $this->addTranslation('Are you sure you want to delete this record?');
+        $this->addTranslation('This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!');
+        $this->addTranslation('Close', [], 'messages');
+        $this->addTranslation('Yes', [], 'messages');
+        $this->addTranslation('Filter', [], 'messages');
+        $this->addTranslation('Delete', [], 'messages');
+        $this->addTranslation('All', [], 'messages');
+        $this->addTranslation('Clear', [], 'messages');
+        $this->addTranslation('Search for', [], 'messages');
+        $this->addTranslation('Filter Select', [], 'messages');
+        $this->addTranslation('There are no records to display.', [],'messages');
+        $this->addTranslation('Loading Content...', [],'messages');
+        $this->addTranslation('Default filtering is enforced.', [], 'messages');
+        $this->addTranslation('Close Message', [], 'messages');
+        $this->addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped.', [], 'messages');
+        $this->addTranslation('When dropping an item, ensure that the entire row is selected.', [], 'messages');
+        $this->addTranslation('Loading', [], 'messages');
         $locale = null;
         try {
             $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode($this->getLocale(), $this->request);
@@ -753,7 +777,15 @@ class PageManager
                         foreach($content['errors'] as $error)
                             $messages[] = ['class' => $error['class'], 'message' => TranslationHelper::translate($error['message'][0], $error['message'][1], $error['message'][2])];
                     } else {
-                        $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
+                        if (count($content) === 3) {
+                            try {
+                                $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content[0], $content[1], $content[2])];
+                            } catch (\TypeError $e) {
+                                throw new \InvalidArgumentException(sprintf('Invalid translation content: %s', serialize($content)));
+                            }
+                        } else {
+                            throw new \InvalidArgumentException(sprintf('Invalid translation content: %s', serialize($content)));
+                        }
                     }
                 } else
                     $messages[] = ['class' => $status, 'message' => TranslationHelper::translate($content, [], 'messages')];

@@ -560,7 +560,6 @@ export default class ContainerApp extends Component {
         parent.value = values
         parent.children = children
 
-        console.log(parent)
         let parentForm = {...getParentForm(this.state.forms,parent)}
         const parentName = getParentFormName(this.formNames,parent)
         this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,parent,parent.value)),this.singleForm))

@@ -79,7 +79,7 @@ class GoogleIntegrationType extends AbstractType
             ->add('clientSecretFile', ReactFileType::class,
                 [
                     'constraints' => [
-                        new ReactFile(['mimeTypes' => ['text/plain'], 'maxSize' => '1k']),
+                        new ReactFile(['mimeTypes' => ['application/json'], 'maxSize' => '1k']),
                     ],
                     'label' => 'Google OAuth Download File',
                     'help' => 'Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}',

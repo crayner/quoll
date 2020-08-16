@@ -152,6 +152,8 @@ services:
     App\Modules\System\Manager\SettingManager:
         arguments:
             $settings: "%settings%"
+        tags:
+            - { name: 'container.preload', class: 'App\Modules\System\Manager\SettingManager' }
 
     App\Modules\People\Listener\CustomFieldInjector:
         tags:
@@ -164,3 +166,8 @@ services:
     App\Modules\System\Util\LocaleHelper:
         tags:
             - { name: 'container.preload', class: 'App\Modules\System\Util\LocaleHelper' }
+
+    App\Manager\MessageStatusManager:
+        tags:
+            - { name: 'container.preload', class: 'App\Manager\MessageStatusManager' }
+

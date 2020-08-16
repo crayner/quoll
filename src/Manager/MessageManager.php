@@ -26,7 +26,7 @@ class MessageManager
     /**
      * @var array
      */
-    static $statusLevel = [
+    private static array $statusLevel = [
         'default'   => 0,
         'light'     => 1,
         'dark'      => 2,
@@ -36,6 +36,8 @@ class MessageManager
         'success'   => 32,
         'warning'   => 64,
         'danger'    => 128,
+        'error'     => 256,
+        'critical'  => 512,
     ];
 
 	/**
@@ -298,4 +300,13 @@ class MessageManager
         $data['errors'] = $this->serialiseTranslatedMessages();
         return $data;
     }
+
+    /**
+     * @return array
+     */
+    public static function getStatusLevel(): array
+    {
+        return self::$statusLevel;
+    }
+
 }
