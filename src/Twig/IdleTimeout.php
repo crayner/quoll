@@ -43,7 +43,7 @@ class IdleTimeout implements ContentInterface
     public function execute(): void
     {
         $this->addAttribute('route', UrlGeneratorHelper::getUrl('logout', ['timeout' => 'true'], true));
-        $this->addAttribute('duration',SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'sessionDuration', 1200));
+        $this->addAttribute('duration',SettingFactory::getSettingManager()->get('System', 'sessionDuration', 1200));
         $this->addAttribute('trans_sessionExpire',$this->translate('Your session is about to expire: you will be logged out shortly.'));
         $this->addAttribute('trans_stayConnected', $this->translate('Stay Connected'));
     }

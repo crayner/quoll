@@ -152,6 +152,7 @@ services:
     App\Modules\System\Manager\SettingManager:
         arguments:
             $settings: "%settings%"
+            $logger: '@monolog.logger.setting'
         tags:
             - { name: 'container.preload', class: 'App\Modules\System\Manager\SettingManager' }
 

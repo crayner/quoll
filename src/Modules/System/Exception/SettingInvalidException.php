@@ -11,31 +11,30 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 23/05/2020
- * Time: 16:06
+ * Date: 16/08/2020
+ * Time: 11:31
  */
-
 namespace App\Modules\System\Exception;
 
 use App\Modules\System\Manager\SettingFactory;
 use RuntimeException;
 
 /**
- * Class SettingNotFoundException
+ * Class SettingInvalidException
  * @package App\Modules\System\Exception
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class SettingNotFoundException extends RuntimeException
+class SettingInvalidException extends RuntimeException
 {
     /**
-     * SettingNotFoundException constructor.
-     * @param string $scope
-     * @param string $name
+     * SettingInvalidException constructor.
+     * @param array $setting
      * @param string $message
      */
-    public function __construct(string $scope, string $name, string $message = "")
+    public function __construct(array $setting, string $message = "")
     {
         if ('' === $message)
-            $message = sprintf('The Setting defined by "%s:%s" was not found.', $scope, $name);
+            $message = sprintf('The Setting defined by "%s:%s" is not a valid %s.', $setting['scope'], $setting['name'], $setting['type']);
         $sm = SettingFactory::getSettingManager();
         dump($sm->getSettings());
 

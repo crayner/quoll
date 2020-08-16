@@ -775,6 +775,10 @@ Attendance:
     notesReviewTemplate:
         name: 'Notes & Review Template'
         description: 'An HTML template to be used in the notes and review field.'
+    investigationNotificationRole:
+        name: Investigations Notification Role
+        description: People categories to notify when an Investigation is complete.
+
 'Timetable Admin':
     autoEnrolCourses:
         name: 'Auto-Enrol Courses Default'

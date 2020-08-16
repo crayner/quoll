@@ -94,6 +94,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
      * @param LoggerInterface $logger
      * @param SecurityUserProvider $provider
      * @param RequestStack $request
+     * @param ProviderFactory $factory
+     * @param ParameterBagHelper $helper
      */
 	public function __construct(
 	    RouterInterface $router,
@@ -101,7 +103,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
         LoggerInterface $logger,
         SecurityUserProvider $provider,
         RequestStack $request,
-        ProviderFactory $factory
+        ProviderFactory $factory,
+        ParameterBagHelper $helper
     ) {
         $this->settingManager = SettingFactory::getSettingManager();
 		$this->em = ProviderFactory::getEntityManager();

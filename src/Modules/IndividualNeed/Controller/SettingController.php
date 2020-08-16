@@ -34,29 +34,33 @@ class SettingController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
+     *
+     * 16/08/2020 10:31
      * @Route("/individual/need/settings/",name="individual_need_settings")
      * @Route("/individual/need/settings/",name="individual_need_config")
      * @IsGranted("ROLE_ROUTE")
-     * 9/06/2020 11:29
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager)
+    public function settings()
     {
-        SettingFactory::getSettingManager()->getSettingsByScope('Individual Needs');
+        $manager = SettingFactory::getSettingManager();
+        $manager->getSettingsByScope('Individual Needs');
 
         $form = $this->createForm(INTemplatesType::class, null, ['action' => $this->generateUrl('individual_need_settings')]);
 
         if ($this->getRequest()->getContent() !== '') {
-            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
-            $data = SettingFactory::getSettingManager()->getMessageManager()->pushToJsonData();
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            if ($manager->handleSettingsForm($form, $this->getRequest())) {
+                $form = $this->createForm(INTemplatesType::class, null, ['action' => $this->generateUrl('individual_need_settings')]);
+            }
+            $this->getContainerManager()->singlePanel($form->createView());
+            $data = $this->getMessageStatusManager()->toArray($this->getContainerManager()->getFormFromContainer());
+
             return new JsonResponse($data);
         }
 
-        $manager->singlePanel($form->createView());
+        $this->getContainerManager()->singlePanel($form->createView());
         return $this->getPageManager()
             ->createBreadcrumbs( 'Individual Need Settings',[])
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(['containers' => $this->getContainerManager()->getBuiltContainers()]);
     }
 }

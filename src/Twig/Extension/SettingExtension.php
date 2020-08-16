@@ -72,7 +72,7 @@ class SettingExtension extends AbstractExtension
      */
     public function getPersonFromSetting(string $scope, string $name, ?string $method = null)
     {
-        $person = ProviderFactory::getRepository(Person::class)->find(SettingFactory::getSettingManager()->getSettingByScopeAsInteger($scope, $name));
+        $person = ProviderFactory::getRepository(Person::class)->find(SettingFactory::getSettingManager()->get($scope, $name));
         if (!$person instanceof Person || null === $method || !method_exists($person, $method))
             return $person;
 

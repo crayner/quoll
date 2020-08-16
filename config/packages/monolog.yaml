@@ -2,13 +2,13 @@ monolog:
     channels:
         - 'demonstration'
         - 'gibbon'
-        - 'setting'
         - 'mailer'
         - 'importer'
         - 'notification'
         - 'installation'
         - 'translation'
         - 'page'
+        - 'setting'
     handlers:
         security:
             # log all messages (since debug is the lowest level)

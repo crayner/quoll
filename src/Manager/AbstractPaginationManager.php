@@ -129,7 +129,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function getPageMax(): int
     {
         if (null === $this->pageMax)
-            $this->pageMax = SettingFactory::getSettingManager()->getSettingByScopeAsInteger('System', 'pagination', 50);
+            $this->pageMax = SettingFactory::getSettingManager()->get('System', 'pagination', 50);
         return $this->pageMax;
     }
 

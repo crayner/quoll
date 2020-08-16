@@ -55,7 +55,7 @@ class PasswordGeneratorType extends AbstractType
                 'alpha' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha'),
                 'numeric' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric'),
                 'punctuation' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric'),
-                "minLength" => $provider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength'),
+                "minLength" => $provider->get('System', 'passwordPolicyMinLength'),
             ],
             'onClick' => 'generateNewPassword',
             'alertPrompt' => TranslationHelper::translate('Copy this password if required', [],'Security'),

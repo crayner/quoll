@@ -17,6 +17,7 @@
 
 namespace App\Modules\IndividualNeed\Form;
 
+use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\System\Form\SettingsType;
@@ -60,6 +61,16 @@ class INTemplatesType extends AbstractType
                             'scope' => 'Individual Needs',
                             'name' => 'notesReviewTemplate',
                             'entry_type' => CKEditorType::class,
+                        ],
+                        [
+                            'scope' => 'Individual Needs',
+                            'name' => 'investigationNotificationRole',
+                            'entry_type' => EnumType::class,
+                            'entry_options' => [
+                                'choice_list_prefix' => 'securityRole.category',
+                                'choice_translation_domain' => 'Security',
+                                'placeholder' => ' ',
+                            ]
                         ],
                     ],
                 ]

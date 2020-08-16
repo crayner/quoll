@@ -1080,6 +1080,11 @@ parameters:
             notesReviewTemplate:
                 value: null
                 type: string
+            investigationNotificationRole:
+                value: null
+                type: enum
+                class: 'App\Modules\Security\Manager\RoleCategories'
+                method: 'getCategoryList'
         'Timetable Admin':
             autoEnrolCourses:
                 value: false

@@ -18,7 +18,10 @@ namespace App\Manager;
 
 use App\Manager\Hidden\Message;
 use Doctrine\Common\Collections\ArrayCollection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\EventListener\SessionListener;
 
 class MessageStatusManager
 {
@@ -73,16 +76,24 @@ class MessageStatusManager
      */
     private string $domain = 'messages';
 
+    /**
+     * @var FlashBagInterface
+     */
     private FlashBagInterface $flashBag;
 
     /**
-     * MessageStatusManager constructor.
-     * @param FlashBagInterface $flashBag
+     * @var LoggerInterface|null
      */
-    public function __construct(FlashBagInterface $flashBag)
+    private ?LoggerInterface $logger = null;
+
+    /**
+     * MessageStatusManager constructor.
+     * @param SessionInterface $session
+     */
+    public function __construct(SessionInterface $session)
     {
-        $this->flashBag = $flashBag;
-        $this->setStatus('info')
+        $this->flashBag = $session->getFlashBag();
+        $this->setStatus('default')
             ->setMessages(new ArrayCollection());
 
     }
@@ -153,7 +164,7 @@ class MessageStatusManager
 
         $this->getMessages()->set($id, $message);
 
-        return $this;
+        return $this->logMessage($message);
     }
 
     /**
@@ -183,10 +194,12 @@ class MessageStatusManager
 
     /**
      * warning
+     *
+     * 16/08/2020 12:55
      * @param string $id
      * @param array $parameters
      * @param string|null $domain
-     * 15/08/2020 14:41
+     * @return $this
      */
     public function warning(string $id, array $parameters = [], ?string $domain = null)
     {
@@ -198,10 +211,12 @@ class MessageStatusManager
 
     /**
      * info
+     *
+     * 16/08/2020 12:55
      * @param string $id
      * @param array $parameters
      * @param string|null $domain
-     * 15/08/2020 14:41
+     * @return $this
      */
     public function info(string $id, array $parameters = [], ?string $domain = null)
     {
@@ -258,10 +273,12 @@ class MessageStatusManager
 
     /**
      * success
-     * @param string $id
+     *
+     * 16/08/2020 12:55
+     * @param string|null $id
      * @param array $parameters
      * @param string|null $domain
-     * 15/08/2020 14:42
+     * @return $this
      */
     public function success(?string $id = null, array $parameters = [], ?string $domain = null)
     {
@@ -274,10 +291,12 @@ class MessageStatusManager
 
     /**
      * error
+     *
+     * 16/08/2020 12:55
      * @param string $id
      * @param array $parameters
      * @param string|null $domain
-     * 15/08/2020 14:33
+     * @return $this
      */
     public function error(string $id, array $parameters = [], ?string $domain = null)
     {
@@ -344,13 +363,62 @@ class MessageStatusManager
     }
 
     /**
+     * @return LoggerInterface|null
+     */
+    public function getLogger(): ?LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param LoggerInterface|null $logger
+     * @return MessageStatusManager
+     */
+    public function setLogger(?LoggerInterface $logger): MessageStatusManager
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    /**
      * convertToFlash
-     * 15/08/2020 16:20
+     *
+     * 16/08/2020 12:57
      */
     public function convertToFlash()
     {
         foreach ($this->getMessages() as $message) {
             $this->getFlashBag()->add($message->getLevel(), [$message->getMessage(), $message->getOptions(), $message->getDomain()]);
         }
+    }
+
+    /**
+     * logMessage
+     *
+     * 16/08/2020 12:57
+     * @param Message $message
+     * @return MessageStatusManager
+     */
+    public function logMessage(Message $message): MessageStatusManager
+    {
+        if (null !== $this->getLogger()) {
+            $mapping = [
+                'default'   => 'debug',
+                'light'     => 'debug',
+                'dark'      => 'debug',
+                'secondary' => 'notice',
+                'primary'   => 'notice',
+                'info'      => 'info',
+                'success'   => 'debug',
+                'warning'   => 'warning',
+                'danger'    => 'emergency',
+                'error'     => 'error',
+                'critical'  => 'critical',
+            ];
+            $map = $mapping[$message->getLevel()];
+            $this->getLogger()->$map($message->getTranslatedMessage());
+        }
+
+        return $this->setLogger(null);
     }
 }

@@ -17,16 +17,12 @@
 
 namespace App\Modules\System\Form;
 
-use App\Modules\People\Entity\Person;
+use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
@@ -83,6 +79,8 @@ class SettingsType extends AbstractType
             [
                 'entry_type' => TextType::class,
                 'entry_options' => [],
+                'class' => null,
+                'method' => null,
             ]
         );
         $resolver->setAllowedTypes('scope', 'string');
@@ -94,10 +92,12 @@ class SettingsType extends AbstractType
 
         $manager = SettingFactory::getSettingManager();
         if (!$manager->hasSetting($setting['scope'], $setting['name'])) {
-            throw new InvalidOptionsException(sprintf('The setting %s - %s has not been defined.',$setting['scope'], $setting['name']));
+            throw new SettingNotFoundException($setting['scope'], $setting['name']);
         }
-        $setting['value'] = $manager->getSetting($setting['scope'], $setting['name']);
+        $setting['value'] = $manager->get($setting['scope'], $setting['name']);
         $setting['setting_type'] = $manager->getSettingType($setting['scope'], $setting['name']);
+        $setting['class'] = $manager->getSettingClass($setting['scope'], $setting['name']);
+        $setting['method'] = $manager->getSettingMethod($setting['scope'], $setting['name']);
         return $resolver->resolve($setting);
     }
 
@@ -117,6 +117,11 @@ class SettingsType extends AbstractType
             $data = $setting['value'];
             if ($setting['setting_type'] === 'boolean') {
                 $data = $data ? '1' : '0';
+            }
+
+            if ($setting['setting_type'] === 'enum') {
+                $setting['entry_options']['choice_list_class'] = $setting['class'];
+                $setting['entry_options']['choice_list_method'] = $setting['method'];
             }
 
             $builder->add($name, $setting['entry_type'], array_merge(
