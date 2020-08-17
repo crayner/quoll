@@ -19,6 +19,7 @@ namespace App\Modules\Assess\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
+use App\Manager\MessageStatusManager;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Form\ScaleGradeType;
@@ -38,15 +39,15 @@ class ScaleGradeController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 15:48
      * @param ScaleGradePagination $pagination
      * @param Scale $scale
-     * @param array $data
-     * @return JsonResponse
      * @Route("/scale/{scale}/grade/list/",name="scale_grade_list")
      * @IsGranted("ROLE_ROUTE")
-     * 1/06/2020 11:23
+     * @return JsonResponse
      */
-    public function list(ScaleGradePagination $pagination, Scale $scale, array $data = [])
+    public function list(ScaleGradePagination $pagination, Scale $scale)
     {
         $repository = ProviderFactory::getRepository(ScaleGrade::class);
         $content = $repository->findBy(['scale' => $scale],['sequenceNumber' => 'ASC']);
@@ -54,26 +55,26 @@ class ScaleGradeController extends AbstractPageController
             ->setReturnRoute($this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => 'Grades']))
             ->setAddElementRoute($this->generateUrl('scale_grade_add', ['scale' => $scale->getId()]));
         return $this->getPageManager()
-            ->setMessages(isset($data['errors']) ? $data['errors'] : [])
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->createBreadcrumbs('Scale Grade', [
-            ['uri' => 'scale_list', 'name' => 'Scales'],
-            ['uri' => 'scale_edit', 'name' => 'Edit Scale ({name})', 'trans_params' => ['{name}' => $scale->getName()], 'uri_params' => ['scale' => $scale->getId(), 'tabName' => 'Grades']]
-        ])
+                ['uri' => 'scale_list', 'name' => 'Scales'],
+                ['uri' => 'scale_edit', 'name' => 'Edit Scale ({name})', 'trans_params' => ['{name}' => $scale->getName()], 'uri_params' => ['scale' => $scale->getId(), 'tabName' => 'Grades']]
+            ])
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 15:51
      * @param Scale $scale
      * @param ScaleGrade|null $grade
-     * @return JsonResponse
      * @Route("/scale/{scale}/grade/{grade}/edit/",name="scale_grade_edit")
      * @Route("/scale/{scale}/grade/add/",name="scale_grade_add")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 09:07
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, Scale $scale, ?ScaleGrade $grade = null)
+    public function edit(Scale $scale, ?ScaleGrade $grade = null)
     {
         $request = $this->getRequest();
 
@@ -86,6 +87,7 @@ class ScaleGradeController extends AbstractPageController
         $grade->setScale($scale);
 
         $form = $this->createForm(ScaleGradeType::class, $grade, ['action' => $action]);
+        $manager = $this->getContainerManager();
 
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
@@ -93,25 +95,21 @@ class ScaleGradeController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $grade->getId();
                 $provider = ProviderFactory::create(ScaleGrade::class);
-                $data = $provider->persistFlush($grade, []);
-                if ($data['status'] === 'success') {
+                $provider->persistFlush($grade);
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ScaleGradeType::class, $grade, ['action' => $action]);
                     if ($id !== $grade->getId()) {
-                        ErrorMessageHelper::convertToFlash($data, $request->getSession()->getBag('flashes'));
-                        $data['redirect'] = $this->generateUrl('scale_grade_edit', ['scale' => $scale->getId(), 'grade' => $grade->getId()]);
-                        $data['status'] = 'redirect';
+                        $this->getMessageStatusManager()
+                            ->setReDirect($this->generateUrl('scale_grade_edit', ['scale' => $scale->getId(), 'grade' => $grade->getId()]))
+                            ->convertToFlash();
                     }
-                } else if ($data['status'] !== 'success') {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         if ($grade->getId() !== null) {
@@ -135,15 +133,17 @@ class ScaleGradeController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 17/08/2020 15:52
      * @param Scale $scale
      * @param ScaleGrade $grade
      * @param ScaleGradePagination $pagination
+     * @param EntitySortManager $manager
      * @return JsonResponse
      * @Route("/scale/{scale}/grade/{grade}/delete/",name="scale_grade_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 11:14
      */
-    public function delete(Scale $scale, ScaleGrade $grade, ScaleGradePagination $pagination)
+    public function delete(Scale $scale, ScaleGrade $grade, ScaleGradePagination $pagination, EntitySortManager $manager)
     {
         $provider = ProviderFactory::create(ScaleGrade::class);
         if ($scale === $grade->getScale()) {
@@ -156,16 +156,14 @@ class ScaleGradeController extends AbstractPageController
 
             $provider->delete($grade);
 
-            $data = $provider->getMessageManager()->pushToJsonData();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+            $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
         }
 
-        if ($data['status'] === 'success') {
+        if ($this->getMessageStatusManager()->isStatusSuccess()) {
             $provider->delete($scale);
-            $data = $provider->getMessageManager()->pushToJsonData();
         }
-        $manager = new EntitySortManager();
+
         $manager->setSortField('sequenceNumber')
             ->setFindBy(['scale' => $scale->getId()])
             ->setSource($grade)
@@ -173,28 +171,29 @@ class ScaleGradeController extends AbstractPageController
             ->setIndexName('scale_sequence')
             ->refreshSequences();
 
-        return $this->list($pagination, $scale, $data);
+        return $this->list($pagination, $scale);
     }
 
     /**
      * sort
+     *
+     * 17/08/2020 15:54
      * @param ScaleGradePagination $pagination
      * @param ScaleGrade $source
      * @param ScaleGrade $target
-     * @return JsonResponse
+     * @param EntitySortManager $manager
      * @Route("/scale/grade/{source}/{target}/sort/",name="scale_grade_sort")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 10:14
+     * @return JsonResponse
      */
-    public function sort(ScaleGradePagination $pagination, ScaleGrade $source, ScaleGrade $target)
+    public function sort(ScaleGradePagination $pagination, ScaleGrade $source, ScaleGrade $target, EntitySortManager $manager)
     {
-        $manager = new EntitySortManager();
         $manager->setSortField('sequenceNumber')
             ->setFindBy(['scale' => $source->getScale()->getId()])
             ->setIndexColumns(['sequenceNumber','scale'])
             ->setIndexName('scale_sequence')
             ->execute($source, $target, $pagination);
 
-        return new JsonResponse($manager->getDetails(), 200);
+        return $this->generateJsonResponse(['content' => $manager->getPaginationContent()]);
     }
 }

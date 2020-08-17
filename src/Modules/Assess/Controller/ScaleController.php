@@ -17,17 +17,16 @@
 namespace App\Modules\Assess\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
-use App\Modules\School\Form\ScaleType;
 use App\Modules\Assess\Pagination\ScaleGradePagination;
 use App\Modules\Assess\Pagination\ScalePagination;
+use App\Modules\School\Form\ScaleType;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,15 +41,15 @@ class ScaleController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 15:45
      * @param ScalePagination $pagination
-     * @param array $data
-     * @return JsonResponse
-     * 1/06/2020 10:56
      * @Route("/scale/list/", name="scale_list")
      * @Route("/scale/list/", name="scale_list_school")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function list(ScalePagination $pagination, array $data = [])
+    public function list(ScalePagination $pagination)
     {
         $content = ProviderFactory::getRepository(Scale::class)->findBy([], ['name' => 'ASC']);
         $pagination->setContent($content)
@@ -59,6 +58,7 @@ class ScaleController extends AbstractPageController
         return $this->getPageManager()
             ->setMessages(isset($data['errors']) ? $data['errors'] : [])
             ->createBreadcrumbs('Scales', [])
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->render(
                 [
                     'pagination' => $pagination->toArray(),
@@ -70,17 +70,17 @@ class ScaleController extends AbstractPageController
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 15:41
      * @param ScaleGradePagination $pagination
      * @param Scale|null $scale
      * @param string $tabName
-     * @return JsonResponse
-     * 1/06/2020 11:07
      * @Route("/scale/{scale}/edit/{tabName}", name="scale_edit")
      * @Route("/scale/add/{tabName}", name="scale_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager,ScaleGradePagination $pagination, ?Scale $scale = null, string $tabName = 'Details')
+    public function edit(ScaleGradePagination $pagination, ?Scale $scale = null, string $tabName = 'Details')
     {
         $request = $this->getRequest();
         if (!$scale instanceof Scale) {
@@ -91,33 +91,29 @@ class ScaleController extends AbstractPageController
         }
 
         $form = $this->createForm(ScaleType::class, $scale, ['action' => $action]);
+        $manager = $this->getContainerManager();
 
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
             $id = $scale->getId();
             $form->submit($content);
-            $data = [];
-            $data['status'] = 'success';
             if ($form->isValid()) {
-                $provider = ProviderFactory::create(Scale::class);
-                $data = $provider->persistFlush($scale, $data);
-                if ($data['status'] === 'success') {
+                ProviderFactory::create(Scale::class)
+                    ->persistFlush($scale);
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ScaleType::class, $scale, ['action' => $this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => $tabName])]);
                     if ($id !== $scale->getId()) {
-                        $data['redirect'] = $this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => $tabName]);
-                        $data['status'] = 'redirect';
-                        ErrorMessageHelper::convertToFlash($data, $request->getSession()->getBag('flashes'));
-                    } else if ($data['status'] !== 'success') {
-                        $data = ErrorMessageHelper::getDatabaseErrorMessage([],true);
+                        $this->getMessageStatusManager()
+                            ->setReDirect($this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => $tabName]))
+                            ->convertToFlash();
                     }
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $container = new Container();
@@ -151,21 +147,19 @@ class ScaleController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 17/08/2020 15:46
      * @param Scale $scale
      * @param ScalePagination $pagination
-     * @return JsonResponse
      * @Route("/scale/{scale}/delete/", name="scale_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 11:23
+     * @return JsonResponse
      */
     public function delete(Scale $scale, ScalePagination $pagination)
     {
-        $provider = ProviderFactory::create(Scale::class);
+        ProviderFactory::create(Scale::class)
+            ->delete($scale);
 
-        $provider->delete($scale);
-
-        $data = $provider->getMessageManager()->pushToJsonData();
-
-        return $this->list($pagination, $data);
+        return $this->list($pagination);
     }
 }

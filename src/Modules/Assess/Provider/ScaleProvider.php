@@ -16,10 +16,8 @@
  */
 namespace App\Modules\Assess\Provider;
 
-use App\Manager\EntityInterface;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
-use App\Modules\School\Repository\ScaleRepository;
 use App\Provider\AbstractProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -31,23 +29,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ScaleProvider extends AbstractProvider
 {
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|null
      */
-    private $scaleList;
+    private ?ArrayCollection $scaleList = null;
 
     /**
      * @var string
      */
-    protected $entityName = Scale::class;
+    protected string $entityName = Scale::class;
 
     /**
      * canDelete
      *
      * 16/08/2020 15:00
      * @param Scale $scale
-     * @return EntityInterface
+     * @return bool
      */
-    public function canDelete(Scale $scale): EntityInterface
+    public function canDelete(Scale $scale): bool
     {
         if ($this->getRepository(ScaleGrade::class)->countScaleUse($scale) === 0)
             return true;
@@ -56,15 +54,16 @@ class ScaleProvider extends AbstractProvider
 
     /**
      * findOneByAndStore
+     *
+     * 17/08/2020 15:36
      * @param string $name
      * @param $key
-     * @param array|null $orderBy
-     * @return Scale|ScaleRepository|null
+     * @return Scale|null
      */
-    public function findOneByAndStore(string $name, $key, ?array $orderBy = null)
+    public function findOneByAndStore(string $name, $key): ?Scale
     {
         $criteria = [$name => $key];
-        $scale = $this->getScaleFromList($name,$key) ?: $this->addScaleList($name,$key,$this->getRepository()->findOneBy($criteria,$orderBy));
+        $scale = $this->getScaleFromList($name,$key) ?: $this->addScaleList($name, $key, $this->getRepository()->findOneBy($criteria));
         return $scale;
     }
 
@@ -81,8 +80,11 @@ class ScaleProvider extends AbstractProvider
 
     /**
      * getScaleFromList
+     *
+     * 17/08/2020 15:37
      * @param string $name
      * @param $key
+     * @return Scale|null
      */
     private function getScaleFromList(string $name, $key): ?Scale
     {
@@ -96,12 +98,13 @@ class ScaleProvider extends AbstractProvider
     }
 
     /**
-     * ScaleList.
+     * addScaleList
      *
+     * 17/08/2020 15:37
      * @param string $name
      * @param $key
      * @param $entity
-     * @return ScaleRepository
+     * @return Scale
      */
     private function addScaleList(string $name, $key, $entity): Scale
     {
@@ -115,5 +118,4 @@ class ScaleProvider extends AbstractProvider
         $list->set($key, $entity);
         return $entity;
     }
-
 }

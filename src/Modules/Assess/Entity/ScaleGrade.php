@@ -80,7 +80,7 @@ class ScaleGrade extends AbstractEntity
      * @var bool|null
      * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $defaultGrade = false;
+    private bool $defaultGrade = false;
 
     /**
      * @return string|null
