@@ -14,7 +14,6 @@
  * Date: 31/12/2019
  * Time: 18:26
  */
-
 namespace App\Modules\School\Provider;
 
 use App\Modules\Staff\Entity\Staff;
@@ -33,7 +32,7 @@ class HouseProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = House::class;
+    protected string $entityName = House::class;
 
     /**
      * canDelete

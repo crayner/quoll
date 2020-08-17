@@ -188,12 +188,4 @@ class House extends AbstractEntity
     {
         return ProviderFactory::create(House::class)->canDelete($this);
     }
-
-    /**
-     * coreData
-     * @return string
-     */public static function getVersion(): string
-    {
-        return self::VERSION;
-    }
 }

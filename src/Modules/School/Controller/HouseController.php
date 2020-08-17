@@ -18,11 +18,11 @@ namespace App\Modules\School\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Form\HouseType;
 use App\Modules\School\Pagination\HousePagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,32 +36,34 @@ class HouseController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 13:38
      * @param HousePagination $pagination
-     * @param array $data
-     * @return JsonResponse
      * @Route("/house/list/", name="house_list")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 08:03
+     * @return JsonResponse
      */
-    public function list(HousePagination $pagination, array $data = [])
+    public function list(HousePagination $pagination)
     {
         $content = ProviderFactory::getRepository(House::class)->findBy([], ['name' => 'ASC']);
         $pagination->setContent($content)
             ->setAddElementRoute($this->generateUrl('house_add'));
 
         return $this->getPageManager()->createBreadcrumbs('Houses')
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * edit
+     *
+     * 17/08/2020 13:38
      * @param ContainerManager $manager
      * @param House|null $house
-     * @return JsonResponse
      * @Route("/house/{house}/edit/", name="house_edit")
      * @Route("/house/add/", name="house_add")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 09:22
+     * @return JsonResponse
      */
     public function edit(ContainerManager $manager, ?House $house = null)
     {
@@ -81,22 +83,18 @@ class HouseController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $house->getId();
                 $provider = ProviderFactory::create(House::class);
-                $data = $provider->persistFlush($house, []);
-                if ($data['status'] === 'success' && $id !== $house->getId()) {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('house_edit', ['house' => $house->getId()]);
-                } else if ($data['status'] !== 'success') {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                $provider->persistFlush($house);
+                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $house->getId()) {
+                    $this->getMessageStatusManager()
+                        ->getReDirect($this->generateUrl('house_edit', ['house' => $house->getId()]))
+                        ->convertToFlash();
                 }
-
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
-
-            return new JsonResponse($data);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         if ($house->getId() !== null) {
@@ -115,21 +113,19 @@ class HouseController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 17/08/2020 13:38
      * @param House $house
      * @param HousePagination $pagination
-     * @return JsonResponse
      * @Route("/house/{house}/delete/", name="house_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 09:21
+    * @return JsonResponse
      */
     public function delete(House $house, HousePagination $pagination)
     {
-        $provider = ProviderFactory::create(House::class);
+        ProviderFactory::create(House::class)
+            ->delete($house);
 
-        $provider->delete($house);
-
-        $data = $provider->getMessageManager()->pushToJsonData();
-
-        return $this->list($pagination, $data);
+        return $this->list($pagination);
     }
 }
