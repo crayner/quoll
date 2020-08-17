@@ -136,7 +136,6 @@ function renderExternalContent(data,functions){
     if (data.loader.type === 'html') {
         return (<section key={data.loader.target}>{renderExternalHTML(JSON.parse(data.content), 0, functions)}</section>)
     }
-    console.log(data)
 }
 
 function renderExternalHTML(content, key, functions) {
@@ -167,7 +166,6 @@ function renderExternalHTML(content, key, functions) {
             }
             return (<button key={key} {...element.attr}>{children}{element.content}</button>)
         }
-        console.log(elementName,element)
     })
 
 }

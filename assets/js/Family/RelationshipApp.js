@@ -46,7 +46,6 @@ export default class RelationshipApp extends Component {
         Object.keys(this.form.children.relationships.children).map(key => {
             let item = this.form.children.relationships.children[key]
             let relationship = this.relationships[key]
-            console.log(item,relationship)
             let careGiver = item.children.careGiver
             let student = item.children.student
             let family = item.children.family

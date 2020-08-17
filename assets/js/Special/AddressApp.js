@@ -174,7 +174,6 @@ export default class AddressApp extends Component {
             {method: 'POST', body: JSON.stringify(data)},
             false
         ).then(data => {
-            console.log(data)
             if (data.status === 'success') {
                 let address = {...this.state.address}
                 address.children.locality.value = data.locality_id

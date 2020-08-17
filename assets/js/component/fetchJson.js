@@ -38,7 +38,7 @@ export function fetchJson(url, options, locale) {
                     text = text.replace('<?php', '')
                     if (text.includes('window.Sfdump') || text.includes('<?php'))
                     {
-                        console.log(text)
+                        console.error(text)
                         return []
                     }
                     return typeof(text) === 'string' ? JSON.parse(text) : ''

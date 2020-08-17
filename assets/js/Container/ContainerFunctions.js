@@ -199,7 +199,6 @@ function visibleByChoiceInitial(form, visibleKeys) {
 
 export function setVisibleKeysByForm(child, visibleKeys) {
     if (typeof child.visible_by_choice === 'string') {
-        console.log(child)
         let value = false
         if (child.value === child.visible_by_choice) {
             value = true

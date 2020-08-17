@@ -195,6 +195,7 @@ export default function Widget(props) {
         let value = form.value
         if (form.value !== null && typeof form.value === 'object') {
             console.log(value)
+            console.error('Programmer did something wrong here!')
         }
         value = value.slice(0,8)
         widget_attr.type = 'time'

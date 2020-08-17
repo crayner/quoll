@@ -451,8 +451,6 @@ export default class LibraryApp extends Component {
         let parentForm = {...getParentForm(this.state.forms,form)}
         let parentFormName = getParentFormName(this.formNames,form)
 
-        console.log(form)
-        console.log(e.target.value)
         this.setMyState(buildState({...mergeParentForm(this.state.forms,parentFormName,parentForm)}, this.singleForm))
     }
 

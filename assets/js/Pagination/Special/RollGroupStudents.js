@@ -87,7 +87,6 @@ export default class RollGroupStudents extends Component {
 
 
     render () {
-        console.log(this)
         return (<div>
             <h3>{this.functions.translate('Sort By')}
                 {this.getButtons()}
@@ -118,7 +117,6 @@ Array.prototype.alphaSort = function (sortOrder) {
             a1 = a.full_name
             b1 = b.full_name
         }
-        console.log(sortOrder)
         if (a1 > b1) return 1
         if (a1 < b1) return -1
         return 0

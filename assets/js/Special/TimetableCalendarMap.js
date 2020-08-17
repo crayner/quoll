@@ -18,8 +18,6 @@ export default class TimetableCalendarMap extends Component {
             weeks: props.weeks,
             messages: [],
         }
-
-        console.log(props,this)
     }
 
     headerRow() {
@@ -43,7 +41,6 @@ export default class TimetableCalendarMap extends Component {
                         day = w
                     }
                 })
-                console.log(day)
                 let datum = []
                 let className = "text-sm w-1/8 float-left py-3 text-center border border-gray-800 h-32"
                 if (day !== null && day.schoolDay) {
@@ -96,7 +93,6 @@ export default class TimetableCalendarMap extends Component {
             [],
             false
         ).then(data => {
-            console.log(data)
             this.setState({
                 weeks: data.weeks,
                 messages: data.errors,

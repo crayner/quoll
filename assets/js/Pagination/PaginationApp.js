@@ -23,7 +23,7 @@ export default class PaginationApp extends Component {
         this.row = props.row
         this.content = props.content
         this.filters = props.row.filters
-        this.messages = props.translations
+        this.messages = props.functions.mergeTranslations(props.translations)
         this.search = props.row.search
         this.filterGroups = props.row.filterGroups
         this.contentLoader = props.contentLoader
@@ -47,7 +47,6 @@ export default class PaginationApp extends Component {
         this.functions.loadNewPage = this.loadNewPage.bind(this)
         this.functions.displayInformation = this.displayInformation.bind(this)
         this.functions.dropEvent = this.dropEvent.bind(this)
-        this.functions.translate = this.translate.bind(this)
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -60,7 +59,7 @@ export default class PaginationApp extends Component {
         this.changeFilter = this.changeFilter.bind(this)
         this.changeSearch = this.changeSearch.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
-        this.translate = this.translate.bind(this)
+        this.translate = props.functions.translate
         this.handleAddClick = this.handleAddClick.bind(this)
 
         this.path = ''
@@ -117,10 +116,6 @@ export default class PaginationApp extends Component {
             x.target.value = this.initialSearch
             this.changeSearch(x)
         }
-    }
-
-    translate(id) {
-        return trans(this.messages, id)
     }
 
     setInitialFilter() {
@@ -235,7 +230,6 @@ export default class PaginationApp extends Component {
         fetchJson(route,
             {},
             false).then(data => {
-                console.log(data)
                 let errors = this.state.messages
                 data.errors.map(error => {
                     errors.push(error)

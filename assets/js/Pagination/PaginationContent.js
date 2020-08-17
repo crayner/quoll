@@ -109,7 +109,6 @@ export default function PaginationContent(props) {
                     })
                 }
             } else {
-                console.log(columnDefinition)
                 columnContent = columnDefinition.translate ? functions.translate([rowContent[columnDefinition.contentKey]]) : [rowContent[columnDefinition.contentKey]]
             }
 

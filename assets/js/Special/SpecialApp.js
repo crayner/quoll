@@ -37,6 +37,7 @@ export default class SpecialApp extends Component {
             result.push(<TimetableCalendarMap {...this.content} functions={this.functions} key={'timetable_calendar_map'} />)
         } else {
             console.log(this)
+            console.error('The programmer needs to build the special.')
         }
         return result
     }

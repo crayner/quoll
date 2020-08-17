@@ -92,6 +92,7 @@ export default class ContainerApp extends Component {
         this.expandedAllNoneChecked = {}
         this.singleForm = (Object.keys(props.forms).length === 1 && Object.keys(props.forms)[0] === 'single')
         this.contentLoaders = props.contentLoader
+        this.translations = this.functions.mergeTranslations(props.translations)
         this.popup = props.popup
     }
 
