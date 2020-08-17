@@ -18,10 +18,12 @@ namespace App\Modules\Activity\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Activity\Form\ActivitySettingsType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,43 +37,41 @@ class SettingController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
-     * @return JsonResponse
+     *
+     * 18/08/2020 09:04
      * @Route("/activity/settings/", name="activity_settings")
      * @Route("/activity/settings/", name="activity_configuration")
      * @IsGranted("ROLE_ROUTE")
-     * 4/06/2020 10:52
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager)
+    public function settings()
     {
-        $request = $this->getRequest();
-
-        $settingProvider = SettingFactory::getSettingManager();
-        $settingProvider->getSettingsByScope('Activities');
+        $manager = SettingFactory::getSettingManager();
+        $manager->getSettingsByScope('Activities');
 
         $form = $this->createForm(ActivitySettingsType::class, null, ['action' => $this->generateUrl('activity_settings')]);
 
-        if ($request->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
+        if ($this->getRequest()->getContent() !== '') {
             try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                if ($data['status'] === 'success') {
+                $manager->handleSettingsForm($form, $this->getRequest());
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ActivitySettingsType::class, null, ['action' => $this->generateUrl('activity_settings')]);
                 }
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            } catch (Exception $e) {
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            $this->getContainerManager()->singlePanel($form->createView());
+            return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
         }
 
-        // Finally Finished
-        $manager->singlePanel($form->createView());
         return $this->getPageManager()->createBreadcrumbs('Activity Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers()
+                ]
+            );
     }
 }

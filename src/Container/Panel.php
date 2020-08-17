@@ -14,13 +14,11 @@
  * Date: 19/08/2019
  * Time: 13:31
  */
-
 namespace App\Container;
 
 use App\Manager\PaginationInterface;
 use App\Manager\SpecialInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Psr\Log\NullLogger;
 
 /**
  * Class Panel
@@ -46,7 +44,6 @@ class Panel
 
     /**
      * @var string
-     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $content;
 
@@ -62,25 +59,21 @@ class Panel
 
     /**
      * @var array|null
-     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $preContent;
 
     /**
      * @var array|null
-     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $postContent;
 
     /**
      * @var PaginationInterface
-     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $pagination;
 
     /**
      * @var SpecialInterface|null
-     * @deprecated Use Sections to manage all content in a panel. 20th June 2020
      */
     private $special;
 
@@ -93,6 +86,7 @@ class Panel
      * Panel constructor.
      * @param null|string $name
      * @param string|null $translationDomain
+     * @param Section|null $section
      */
     public function __construct(?string $name = null, ?string $translationDomain = null, ?Section $section = null)
     {
@@ -198,7 +192,7 @@ class Panel
      */
     public function getContent(): ?string
     {
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         return $this->content;
     }
 
@@ -214,7 +208,7 @@ class Panel
     {
         $section = new Section('postLoad', $content);
         $this->addSection($section);
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         if (is_string($contentLoaderTarget))
             $this->setPreContent([$contentLoaderTarget]);
 
@@ -268,7 +262,7 @@ class Panel
      */
     public function getPreContent(): ?array
     {
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         return $this->preContent;
     }
 
@@ -283,7 +277,7 @@ class Panel
     {
         $section = new Section('html', $preContent);
         $this->addSection($section);
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         $this->preContent = $preContent;
         return $this;
     }
@@ -294,7 +288,7 @@ class Panel
      */
     public function getPostContent(): ?array
     {
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         return $this->postContent;
     }
 
@@ -309,7 +303,7 @@ class Panel
     {
         $section = new Section('html', $postContent);
         $this->addSection($section);
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         $this->postContent = $postContent;
         return $this;
     }
@@ -321,7 +315,7 @@ class Panel
      */
     public function getPagination(): ?PaginationInterface
     {
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         return $this->pagination;
     }
 
@@ -336,7 +330,7 @@ class Panel
     {
         $section = new Section('pagination', $pagination);
         $this->addSection($section);
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
 //        $this->content = null;
 //        $this->pagination = $pagination;
         return $this;
@@ -348,7 +342,7 @@ class Panel
      */
     public function getSpecial(): ?SpecialInterface
     {
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
+        $this->debugError();
         return $this->special;
     }
 
@@ -361,11 +355,26 @@ class Panel
      */
     public function setSpecial(?SpecialInterface $special): Panel
     {
+        $this->debugError();
         $section = new Section('special', $special);
         $this->addSection($section);
-        trigger_error('Use Sections to manage all content in a panel. 20th June 2020', E_USER_DEPRECATED);
         $this->special = $special;
         return $this;
+    }
+
+    /**
+     * debugError
+     *
+     * 18/08/2020 09:22
+     */
+    private function debugError()
+    {
+        $x = debug_backtrace();
+        $result = [];
+        foreach ($x as $item) {
+            $result[] = $item['class'] . ':' . $item['function'] . ' @ ' . $item['line'];
+        }
+        trigger_error('Use Sections to manage all content in a panel. 20th June 2020 ' . implode(", ",$result), E_USER_DEPRECATED);
     }
 
     /**

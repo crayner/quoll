@@ -168,10 +168,10 @@ services:
         tags:
             - { name: 'container.preload', class: 'App\Modules\System\Util\LocaleHelper' }
 
-    App\Manager\MessageStatusManager:
+    App\Manager\StatusManager:
         tags:
-            - { name: 'container.preload', class: 'App\Manager\MessageStatusManager' }
+            - { name: 'container.preload', class: 'App\Manager\StatusManager' }
 
     App\Manager\EntitySortManager:
         calls:
-            - [ setMessages, ['@App\Manager\MessageStatusManager'] ]
+            - [ setMessages, ['@App\Manager\StatusManager'] ]
