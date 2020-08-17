@@ -49,6 +49,7 @@
             - timetable_add
             - timetable_day_add
             - timetable_day_edit.timetable_day_sort
+            - timetable_day_delete
             - timetable_day_period_duplicate
             - timetable_day_period_edit
             - timetable_day_period_add
@@ -743,6 +744,9 @@
     routeList:
         arrayField:
             - planner_settings
+            - planner_save_access_settings
+            - planner_save_miscellaneous_settings
+            - planner_save_templates_settings
     entryRoute: planner_settings
     entrySidebar: true
     menuShow: true

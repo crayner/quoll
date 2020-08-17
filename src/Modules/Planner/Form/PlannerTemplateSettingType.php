@@ -31,7 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package App\Modules\Planner\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class PlannerSettingType extends AbstractType
+class PlannerTemplateSettingType extends AbstractType
 {
     /**
      * buildForm
@@ -99,81 +99,6 @@ class PlannerSettingType extends AbstractType
                 [
                     'label' => 'Submit',
                     'panel' => 'Templates',
-                    'translation_domain' => 'messages',
-                ]
-            )
-            ->add('accessHeader', HeaderType::class,
-                [
-                    'label' => 'Access Settings',
-                    'panel' => 'Access',
-                ]
-            )
-            ->add('accessSettings', SettingsType::class,
-                [
-                    'settings' => [
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'makeUnitsPublic',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'shareUnitOutline',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'allowOutcomeEditing',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'sharingDefaultParents',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'sharingDefaultStudents',
-                            'entry_type' => ToggleType::class,
-                        ],
-                    ],
-                    'panel' => 'Access',
-                ]
-            )
-            ->add('submit2', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'panel' => 'Access',
-                    'translation_domain' => 'messages',
-                ]
-            )
-            ->add('miscellaneousHeader', HeaderType::class,
-                [
-                    'label' => 'Miscellaneous',
-                    'panel' => 'Miscellaneous',
-                ]
-            )
-            ->add('miscellaneousSettings', SettingsType::class,
-                [
-                    'settings' => [
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'parentWeeklyEmailSummaryIncludeBehaviour',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Planner',
-                            'name' => 'parentWeeklyEmailSummaryIncludeMarkBook',
-                            'entry_type' => ToggleType::class,
-                        ],
-                    ],
-                    'panel' => 'Miscellaneous',
-                ]
-            )
-            ->add('submit3', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'panel' => 'Miscellaneous',
                     'translation_domain' => 'messages',
                 ]
             )
