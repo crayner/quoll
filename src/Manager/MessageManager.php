@@ -16,12 +16,12 @@ class MessageManager
 	/**
 	 * @var string
 	 */
-	private $domain = 'messages';
+	private string $domain = 'messages';
 
 	/**
 	 * @var array
 	 */
-	private $messages = [];
+	private array $messages = [];
 
     /**
      * @var array

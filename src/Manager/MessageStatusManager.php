@@ -22,7 +22,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\EventListener\SessionListener;
 
 class MessageStatusManager
 {
@@ -88,6 +87,11 @@ class MessageStatusManager
     private ?LoggerInterface $logger = null;
 
     /**
+     * @var string
+     */
+    private string $reDirect = '';
+
+    /**
      * MessageStatusManager constructor.
      * @param SessionInterface $session
      */
@@ -113,7 +117,7 @@ class MessageStatusManager
      */
     public function setStatus(string $status): MessageStatusManager
     {
-        if (in_array($status, self::getStatusList()) && array_search($status, self::getStatusList()) > array_search($this->status, self::getStatusList())) {
+        if ((in_array($status, self::getStatusList()) && array_search($status, self::getStatusList()) > array_search($this->status, self::getStatusList())) || $status === 'redirect') {
             $this->status = $status;
         }
         return $this;
@@ -337,10 +341,11 @@ class MessageStatusManager
 
     /**
      * toArray
+     *
+     * 17/08/2020 11:34
      * @param array|null $formView
      * @param array $data
      * @return array
-     * 15/08/2020 15:42
      */
     public function toArray(?array $formView = null, array $data = []): array
     {
@@ -348,9 +353,22 @@ class MessageStatusManager
             $data['form'] = $formView;
         }
         $data['status'] = $this->getStatus();
-        $data['errors'] = [];
+        $data['redirect'] = $this->getReDirect();
+        $data['errors'] = $this->getMessageArray();
+        return $data;
+    }
+
+    /**
+     * getMessageArray
+     *
+     * 17/08/2020 11:33
+     * @return array
+     */
+    public function getMessageArray(): array
+    {
+        $data = [];
         foreach ($this->getMessages() as $message) {
-            $data['errors'][] = ['class' => $message->getLevel(), 'message' => $message->getTranslatedMessage()];
+            $data[] = ['class' => $message->getLevel(), 'message' => $message->getTranslatedMessage()];
         }
         return $data;
     }
@@ -443,6 +461,32 @@ class MessageStatusManager
      */
     public function isStatusSuccess(): bool
     {
-        return $this->getStatus() === 'success';
+        return $this->getStatus() === 'success' || $this->getStatus() === 'redirect';
     }
+
+    /**
+     * getReDirect
+     *
+     * 17/08/2020 11:24
+     * @return string
+     */
+    public function getReDirect(): string
+    {
+        return $this->reDirect;
+    }
+
+    /**
+     * setReDirect
+     *
+     * 17/08/2020 11:24
+     * @param string $reDirect
+     * @return MessageStatusManager
+     */
+    public function setReDirect(string $reDirect): MessageStatusManager
+    {
+        $this->reDirect = $reDirect;
+
+        return $this->setStatus('redirect');
+    }
+
 }

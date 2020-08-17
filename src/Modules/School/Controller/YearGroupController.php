@@ -16,15 +16,13 @@
  */
 namespace App\Modules\School\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
-use App\Manager\AbstractEntity;
 use App\Manager\EntitySortManager;
+use App\Manager\MessageStatusManager;
 use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Form\YearGroupType;
 use App\Modules\School\Pagination\YearGroupPagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,40 +36,41 @@ class YearGroupController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 11:36
      * @param YearGroupPagination $pagination
-     * @param array $data
-     * @return JsonResponse
      * @Route("/year/group/list/",name="year_group_list")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 15:47
+     * @return JsonResponse
      */
-    public function list(YearGroupPagination $pagination, array $data = [])
+    public function list(YearGroupPagination $pagination)
     {
         $content = ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']);
         $pagination->setContent($content)
             ->setAddElementRoute($this->generateUrl('year_group_add'))
             ->setDraggableSort()
             ->setDraggableRoute('year_group_sort')
-            ;
+        ;
 
         return $this->getPageManager()
-            ->setMessages(isset($data['errors']) ? $data['errors'] : [])
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->createBreadcrumbs('Year Groups')
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 11:17
      * @param YearGroup|null $year
-     * @return JsonResponse
      * @Route("/year/group/{year}/edit/", name="year_group_edit")
      * @Route("/year/group/add/", name="year_group_add")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 16:31
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, ?YearGroup $year = null)
+    public function edit(?YearGroup $year = null)
     {
+        $manager = $this->getContainerManager();
         $request = $this->getRequest();
         
         if (!$year instanceof YearGroup) {
@@ -88,22 +87,16 @@ class YearGroupController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $year->getId();
-                $provider = ProviderFactory::create(YearGroup::class);
-                $data = $provider->persistFlush($year);
-                if ($data['status'] === 'success' && $id !== $year->getId()) {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('year_group_edit', ['year' => $year->getId()]);
-                } else if ($data['status'] !== 'success') {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                ProviderFactory::create(YearGroup::class)->persistFlush($year);
+                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $year->getId()) {
+                    $this->getMessageStatusManager()->setRedirect($this->generateUrl('year_group_edit', ['year' => $year->getId()]));
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         if ($year->getId() !== null) {
@@ -123,12 +116,13 @@ class YearGroupController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 17/08/2020 11:37
      * @param YearGroup $year
      * @param YearGroupPagination $pagination
-     * @return mixed
      * @Route("/year/group/{year}/delete/", name="year_group_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 16:41
+     * @return JsonResponse
      */
     public function delete(YearGroup $year, YearGroupPagination $pagination)
     {
@@ -136,28 +130,27 @@ class YearGroupController extends AbstractPageController
 
         $provider->delete($year);
 
-        $data = $provider->getMessageManager()->pushToJsonData();
-
-        return $this->list($pagination, $data);
+        return $this->list($pagination);
     }
 
     /**
      * sort
+     *
+     * 17/08/2020 11:43
      * @param YearGroup $source
      * @param YearGroup $target
      * @param YearGroupPagination $pagination
-     * @return JsonResponse
+     * @param EntitySortManager $sort
      * @Route("/year/group/{source}/{target}/sort/",name="year_group_sort")
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 16:12
+     * @return JsonResponse
      */
-    public function sort(YearGroup $source, YearGroup $target, YearGroupPagination $pagination)
+    public function sort(YearGroup $source, YearGroup $target, YearGroupPagination $pagination, EntitySortManager $sort)
     {
-        $sort = new EntitySortManager();
         $sort->setIndexName('sort_order')
             ->setSortField('sortOrder')
             ->execute($source, $target, $pagination);
-        
-        return new JsonResponse($sort->getDetails(), 200);
+
+        return $sort->getMessages()->toJsonResponse(['content' => $sort->getPaginationContent()]);
     }
 }
