@@ -21,10 +21,10 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\Planner\Form\PlannerSettingType;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,38 +38,35 @@ class SettingController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 16:11
      * @param string $tabName
-     * @return JsonResponse
      * @Route("/planner/settings/",name="planner_settings")
      * @Route("/planner/settings/",name="planner_configure")
      * @Route("/planner/settings/",name="planner_view")
      * @IsGranted("ROLE_ROUTE")
-     * 12/06/2020 10:34
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager, string $tabName = 'Templates')
+    public function settings(string $tabName = 'Templates')
     {
         $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('Planner');
 
         $form = $this->createForm(PlannerSettingType::class, null, ['action' => $this->generateUrl('planner_settings', ['tabName' => $tabName])]);
+        $manager = $this->getContainerManager();
 
         if ($this->getRequest()->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
             try {
-                $data = $settingProvider->handleSettingsForm($form, $this->getRequest(), $data);
-                if ($data['status'] === 'success') {
+                $settingProvider->handleSettingsForm($form, $this->getRequest());
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(PlannerSettingType::class, null, ['action' => $this->generateUrl('planner_settings', ['tabName' => $tabName])]);
                 }
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $container = new Container($tabName);
