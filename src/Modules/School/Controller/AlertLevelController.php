@@ -21,6 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\School\Entity\AlertLevel;
 use App\Modules\School\Form\AlertLevelType;
 use App\Provider\ProviderFactory;
@@ -71,7 +72,7 @@ class AlertLevelController extends AbstractPageController
      * @param AlertLevel $level
      * @param ContainerManager $manager
      * @return JsonResponse
-     * @Route("/alert/levet/{level}/change/",name="alert_level_change")
+     * @Route("/alert/level/{level}/change/",name="alert_level_change")
      * @IsGranted("ROLE_ROUTE")
      * 12/06/2020 12:54
      */
@@ -84,18 +85,16 @@ class AlertLevelController extends AbstractPageController
 
         $form->submit($content);
         if ($form->isValid()) {
-            $data = ProviderFactory::create(AlertLevel::class)->persistFlush($level, []);
+            ProviderFactory::create(AlertLevel::class)->persistFlush($level);
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+            $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
         }
-        $container = new Container();
-        $container->setSelectedPanel($name);
+        $container = new Container($name);
         $panel = new Panel($name, 'School');
         $container
             ->addForm($name, $form->createView())
             ->addPanel($panel);
         $manager->addContainer($container);
-        $data['form'] = $manager->getFormFromContainer('formContent',$name);
-        return new JsonResponse($data);
+        return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer('formContent',$name)]);
     }
 }
