@@ -17,14 +17,13 @@
 namespace App\Modules\School\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\School\Form\ResourceSettingsType;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,36 +37,33 @@ class ResourceSettingController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 16:04
      * @param string|null $tabName
-     * @return JsonResponse
      * @Route("/resource/settings/",name="resource_settings")
      * @IsGranted("ROLE_ROUTE")
-     * 12/06/2020 09:49
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager, ?string $tabName = 'Category')
+    public function settings(?string $tabName = 'Category')
     {
         $settingProvider = SettingFactory::getSettingManager();
         $settingProvider->getSettingsByScope('Resources');
 
         $form = $this->createForm(ResourceSettingsType::class, null, ['action' => $this->generateUrl('resource_settings', ['tabName' => $tabName])]);
+        $manager = $this->getContainerManager();
 
         if ($this->getRequest()->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
             try {
-                $data = $settingProvider->handleSettingsForm($form, $this->getRequest(), $data);
-                if ($data['status'] === 'success') {
+                $settingProvider->handleSettingsForm($form, $this->getRequest());
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ResourceSettingsType::class, null, ['action' => $this->generateUrl('resource_settings', ['tabName' => $tabName])]);
                 }
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            } catch (Exception $e) {
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $container = new Container($tabName);
@@ -85,5 +81,4 @@ class ResourceSettingController extends AbstractPageController
             ->createBreadcrumbs('Resource Settings', [])
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
-
 }
