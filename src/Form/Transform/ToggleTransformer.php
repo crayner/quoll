@@ -46,10 +46,6 @@ class ToggleTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if ($this->useBoolean && is_bool($value)) {
-            return $value;
-        }
-
         if (is_bool($value))
             return $value ? 'Y' : 'N';
         return $value === 'Y' ? 'Y' : 'N';

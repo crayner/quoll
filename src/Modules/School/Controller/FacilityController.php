@@ -18,6 +18,7 @@ namespace App\Modules\School\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Form\FacilitySettingsType;
 use App\Modules\School\Form\FacilityType;
@@ -38,34 +39,36 @@ class FacilityController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 13:54
      * @param FacilityPagination $pagination
-     * @param array $data
-     * @return JsonResponse
      * @Route("/facility/list/", name="facility_list")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 15:50
+     * @return JsonResponse
      */
-    public function list(FacilityPagination $pagination, array $data = [])
+    public function list(FacilityPagination $pagination)
     {
         $content = ProviderFactory::getRepository(Facility::class)->findBy([], ['name' => 'ASC']);
         
-        $pagination->setContent($content)->setAddElementRoute($this->generateUrl('facility_add'));
+        $pagination->setContent($content)
+            ->setAddElementRoute($this->generateUrl('facility_add'));
         
         return $this->getPageManager()->createBreadcrumbs('Facilities')
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 17/08/2020 13:51
      * @param Facility|null $facility
-     * @return JsonResponse
      * @Route("/facility/{facility}/edit/", name="facility_edit")
      * @Route("/facility/add/", name="facility_add")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 16:00
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, ?Facility $facility = null)
+    public function edit(?Facility $facility = null)
     {
         $request = $this->getRequest();
 
@@ -77,29 +80,27 @@ class FacilityController extends AbstractPageController
         }
 
         $form = $this->createForm(FacilityType::class, $facility, ['action' => $action, 'facility_setting_uri' => $this->generateUrl('facility_settings')]);
+        $manager = $this->getContainerManager();
 
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $facility->getId();
-                $provider = ProviderFactory::create(Facility::class);
-                $data = $provider->persistFlush($facility, []);
-                if ($data['status'] === 'success' && $id === $facility->getId()) {
-                    $data['redirect'] = $this->generateUrl('facility_edit', ['facility' => $facility->getId()]);
-                    $data['status'] = 'redirect';
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
-                } else if ($data['status'] !== 'success') {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                ProviderFactory::create(Facility::class)->persistFlush($facility);
+                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $facility->getId()) {
+                    $this->getMessageStatusManager()
+                        ->setReDirect($this->generateUrl('facility_edit', ['facility' => $facility->getId()]))
+                        ->convertToFlash();
+                } else if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                    $form = $this->createForm(FacilityType::class, $facility, ['action' => $action, 'facility_setting_uri' => $this->generateUrl('facility_settings')]);
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
-
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
         
         if ($facility->getId() !== null) {
@@ -118,53 +119,49 @@ class FacilityController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 17/08/2020 13:54
      * @param Facility $facility
      * @param FacilityPagination $pagination
-     * @return JsonResponse
      * @Route("/facility/{facility}/delete/", name="facility_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 15:59
+     * @return JsonResponse
      */
     public function delete(Facility $facility, FacilityPagination $pagination)
     {
-        $provider = ProviderFactory::create(Facility::class);
+        ProviderFactory::create(Facility::class)
+            ->delete($facility);
 
-        $provider->delete($facility);
-
-        $data = $provider->getMessageManager()->pushToJsonData();
-
-        return $this->list($pagination, $data);
+        return $this->list($pagination);
     }
 
     /**
      * settings
-     * @param ContainerManager $manager
-     * @return JsonResponse
+     *
+     * 17/08/2020 13:51
      * @Route("/facility/settings/", name="facility_settings")
      * @IsGranted("ROLE_ROUTE")
-     * 3/06/2020 16:08
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager)
+    public function settings()
     {
         $request = $this->getRequest();
+        $manager = $this->getContainerManager();
 
         $form = $this->createForm(FacilitySettingsType::class, null, ['action' => $this->generateUrl('facility_settings',)]);
 
         if ($request->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
             try {
-                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
-                if ($data['status'] === 'success')
+                SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(FacilitySettingsType::class, null, ['action' => $this->generateUrl('facility_settings',)]);
+                }
             } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $manager->singlePanel($form->createView());

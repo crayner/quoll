@@ -14,14 +14,12 @@
 namespace App\Modules\School\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Facility
@@ -35,15 +33,13 @@ class Facility extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var string|null
@@ -59,88 +55,81 @@ class Facility extends AbstractEntity
      * @Assert\Choice(callback="getTypeList")
      * @Assert\NotBlank()
      */
-    private $type;
+    private ?string $type;
 
     /**
-     * @var integer
+     * @var int|null
      * @ORM\Column(type="smallint",nullable=true)
      * @Assert\Range(min=0,max=99999)
      */
-    private $capacity;
+    private ?int $capacity;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $computer = 'N';
+    private bool $computer = false;
 
     /**
-     * @var integer
-     * @ORM\Column(type="smallint",options={"default": "0"})
+     * @var int
+     * @ORM\Column(type="smallint",options={"default": 0})
      * @Assert\Range(min=0,max=999)
      */
-    private $studentComputers = 0;
+    private int $studentComputers = 0;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $projector = 'N';
+    private bool $projector = false;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $tv = 'N';
+    private bool $tv = false;
 
     /**
      * @var boolean
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $dvd = 'N';
+    private bool $dvd = false;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $hifi = 'N';
+    private bool $hifi = false;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $speakers = "N'";
+    private bool $speakers = false;
 
     /**
-     * @var string
-     * @ORM\Column(length=1, options={"default": "N"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $iwb = 'N';
+    private bool $iwb = false;
 
     /**
      * @var string|null
      * @ORM\Column(length=5,nullable=true)
      */
-    private $phoneInt;
+    private ?string $phoneInt;
 
     /**
      * @var string|null
      * @ORM\Column(length=20,nullable=true)
      */
-    private $phoneExt;
+    private ?string $phoneExt;
 
     /**
      * @var string|null
      * @ORM\Column(type="text",nullable=true)
      */
-    private $comment;
+    private ?string $comment;
 
     /**
      * @return string|null
@@ -217,31 +206,20 @@ class Facility extends AbstractEntity
     }
 
     /**
-     * isComputer
      * @return bool
      */
     public function isComputer(): bool
     {
-        return $this->getComputer() === 'Y';
+        return $this->computer;
     }
 
     /**
-     * getComputer
-     * @return string
-     */
-    public function getComputer(): string
-    {
-        return $this->computer = self::checkBoolean($this->computer, 'N');
-    }
-
-    /**
-     * setComputer
-     * @param string|null $computer
+     * @param bool $computer
      * @return Facility
      */
-    public function setComputer(?string $computer): Facility
+    public function setComputer(bool $computer): Facility
     {
-        $this->computer = self::checkBoolean($computer, 'N');
+        $this->computer = $computer;
         return $this;
     }
 
@@ -263,173 +241,111 @@ class Facility extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isProjector(): bool
     {
-        return $this->getProjector() === 'Y';
+        return $this->projector;
     }
 
     /**
-     * getProjector
-     * @return string
-     */
-    public function getProjector(): string
-    {
-        return $this->projector = self::checkBoolean($this->projector, 'N');
-    }
-
-    /**
-     * setProjector
-     * @param string|null $projector
+     * @param bool $projector
      * @return Facility
      */
-    public function setProjector(?string $projector): Facility
+    public function setProjector(bool $projector): Facility
     {
-        $this->projector = self::checkBoolean($projector, 'N');
+        $this->projector = $projector;
         return $this;
     }
 
     /**
-     * isTv
      * @return bool
      */
     public function isTv(): bool
     {
-        return $this->getTv() === 'Y';
+        return $this->tv;
     }
 
     /**
-     * getTv
-     * @return bool
-     */
-    public function getTv(): string
-    {
-        return $this->tv = self::checkBoolean($this->tv, 'N');
-    }
-
-    /**
-     * setTv
-     * @param string|null $tv
+     * @param bool $tv
      * @return Facility
      */
-    public function setTv(?string $tv): Facility
+    public function setTv(bool $tv): Facility
     {
-        $this->tv = self::checkBoolean($tv, 'N');
+        $this->tv = $tv;
         return $this;
     }
 
     /**
-     * isDvd
      * @return bool
      */
     public function isDvd(): bool
     {
-        return $this->getDvd() === 'Y';
+        return $this->dvd;
     }
 
     /**
-     * getDvd
-     * @return string
-     */
-    public function getDvd(): string
-    {
-        return $this->dvd = self::checkBoolean($this->dvd, 'N');
-    }
-
-    /**
-     * setDvd
-     * @param string|null $dvd
+     * @param bool $dvd
      * @return Facility
      */
-    public function setDvd(?string $dvd): Facility
+    public function setDvd(bool $dvd): Facility
     {
-        $this->dvd = self::checkBoolean($dvd, 'N');
+        $this->dvd = $dvd;
         return $this;
     }
 
     /**
-     * isHifi
      * @return bool
      */
     public function isHifi(): bool
     {
-        return $this->getHifi() === 'Y';
+        return $this->hifi;
     }
 
     /**
-     * getHifi
-     * @return string
-     */
-    public function getHifi(): string
-    {
-        return $this->hifi = self::checkBoolean($this->hifi, 'N');
-    }
-
-    /**
-     * setHifi
-     * @param string|null $hifi
+     * @param bool $hifi
      * @return Facility
      */
-    public function setHifi(?string $hifi): Facility
+    public function setHifi(bool $hifi): Facility
     {
-        $this->hifi = self::checkBoolean($hifi, 'N');
+        $this->hifi = $hifi;
         return $this;
     }
 
     /**
-     * isSpeakers
      * @return bool
      */
     public function isSpeakers(): bool
     {
-        return $this->getSpeakers() === 'Y';
+        return $this->speakers;
     }
 
     /**
-     * getSpeakers
-     * @return string
-     */
-    public function getSpeakers(): string
-    {
-        return $this->speakers = self::checkBoolean($this->speakers, 'N');
-    }
-
-    /**
-     * setSpeakers
-     * @param string|null $speakers
+     * @param bool $speakers
      * @return Facility
      */
-    public function setSpeakers(?string $speakers): Facility
+    public function setSpeakers(bool $speakers): Facility
     {
-        $this->speakers = self::checkBoolean($speakers, 'N');
+        $this->speakers = $speakers;
         return $this;
     }
 
     /**
-     * isIwb
      * @return bool
      */
     public function isIwb(): bool
     {
-        return $this->getIwb() === 'Y';
+        return $this->iwb;
     }
 
     /**
-     * getIwb
-     * @return string
-     */
-    public function getIwb(): string
-    {
-        return $this->iwb = self::checkBoolean($this->iwb, 'N');
-    }
-
-    /**
-     * setIwb
-     * @param string|null $iwb
+     * @param bool $iwb
      * @return Facility
      */
-    public function setIwb(?string $iwb): Facility
+    public function setIwb(bool $iwb): Facility
     {
-        $this->iwb = self::checkBoolean($iwb, 'N');
+        $this->iwb = $iwb;
         return $this;
     }
 

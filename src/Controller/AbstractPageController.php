@@ -107,4 +107,16 @@ abstract class AbstractPageController extends AbstractController
     {
         return $this->get('message_status_manager');
     }
+
+    /**
+     * generateJsonResponse
+     *
+     * 17/08/2020 13:49
+     * @param array $options
+     * @return JsonResponse
+     */
+    public function generateJsonResponse(array $options = []): JsonResponse
+    {
+        return $this->getMessageStatusManager()->toJsonResponse($options);
+    }
 }
