@@ -235,6 +235,7 @@ export default class PaginationApp extends Component {
         fetchJson(route,
             {},
             false).then(data => {
+                console.log(data)
                 let errors = this.state.messages
                 data.errors.map(error => {
                     errors.push(error)

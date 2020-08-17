@@ -44,11 +44,23 @@ export default function FormExpandedSelect(props) {
         event.target = {}
         event.target.value = []
         if (all === true) {
-            event.target.value = parent.choices.map(choice => {
-                return choice.value
+            event.target.value = parent.children.map(child => {
+                return child.value
             })
         }
-        functions.onElementChange(event,parent)
+        functions.onElementChange(event, parent)
+    }
+    
+    function isGrouped(choices)
+    {
+        let grouped  = false
+        Object.keys(choices).map(key => {
+            let choice = choices[key]
+            if (typeof choice.choices !== 'undefined') {
+                grouped = true
+            }
+        })
+        return grouped
     }
 
     function getOptions() {
@@ -62,6 +74,39 @@ export default function FormExpandedSelect(props) {
                                                                                                         name={name}
                                                                                                         onChange={() => toggleAll(form)}
                                                                                                         checked={functions.toggleExpandedAllNone(form.id, false)}/><br/></label>)
+        let grouped = isGrouped(form.choices)
+
+        if (grouped) {
+            options.push(<hr key={'line'} className={'text-black bg-black border-0'} style={{height: '1px'}} />)
+            Object.keys(form.choices).map(w => {
+                let group = form.choices[w]
+                let subOptions = []
+                Object.keys(group.choices).map(choiceKey => {
+                    let choice = group.choices[choiceKey]
+                    Object.keys(form.children).map(key => {
+                        const child = form.children[key]
+                        if (child.value === choice.value) {
+                            let name = child.full_name.replace('[]', '[' + child.name + ']')
+                            let checked = false
+                            if (form.value.length > 0 && form.value.includes(choice.value)) {
+                                checked = true
+                            }
+                            subOptions.push(<label key={choice.value} htmlFor={child.id}>{choice.label}&nbsp;<input
+                                type={'checkbox'}
+                                id={child.id}
+                                defaultValue={choice.value}
+                                name={name}
+                                checked={checked}
+                                onChange={(e) => onElementChange(e, child, form)}/><br/></label>)
+                        }
+                    })
+                })
+                options.push(<label key={w}><br /><span className={'float-left font-bold'}>{group.label}</span><br />{subOptions}<hr className={'text-black bg-black border-0'} style={{height: '1px'}} /></label> )
+            })
+            return options
+        }
+
+
         Object.keys(form.children).map(key => {
             const child = form.children[key]
             const choice = form.choices[key]
