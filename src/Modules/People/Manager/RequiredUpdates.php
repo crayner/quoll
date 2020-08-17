@@ -81,7 +81,7 @@ class RequiredUpdates implements SpecialInterface {
      */
     public function __construct()
     {
-        $this->settings = SettingFactory::getSettingManager()->getSettingByScopeAsArray( 'People', 'personalDataUpdaterRequiredFields');
+        $this->settings = SettingFactory::getSettingManager()->get( 'People', 'personalDataUpdaterRequiredFields');
     }
 
 

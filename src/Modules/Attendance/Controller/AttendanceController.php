@@ -22,6 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
+use App\Manager\MessageStatusManager;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Form\AttendanceCLIType;
 use App\Modules\Attendance\Form\AttendanceCodeType;
@@ -180,25 +181,21 @@ class AttendanceController extends AbstractPageController
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
-            $data = [];
-            $data['status'] = 'success';
             if ($form->isValid()) {
                 $id = $code->getId();
                 $provider = ProviderFactory::create(AttendanceCode::class);
-                $data = $provider->persistFlush($code, $data);
-                if ($data['status'] === 'success' && $id === $code->getId()) {
+                $provider->persistFlush($code);
+                if ($this->getMessageStatusManager()->isStatusSuccess() && $id === $code->getId()) {
                     $form = $this->createForm(AttendanceCodeType::class, $code,
                         ['action' => $this->generateUrl('attendance_code_edit', ['code' => $code->getId()])]
                     );
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $manager->setReturnRoute($this->generateUrl('attendance_code_list', ['tabName' => 'Code']))
@@ -218,18 +215,18 @@ class AttendanceController extends AbstractPageController
      * @param AttendanceCode $target
      * @param AttendanceCode $source
      * @param AttendanceCodePagination $pagination
+     * @param EntitySortManager $manager
      * @return JsonResponse
      * @Route("/attendance/{source}/code/{target}/sort/",name="attendance_code_sort")
      * @IsGranted("ROLE_ROUTE")
      * 13/06/2020 10:49
      */
-    public function sort(AttendanceCode $target, AttendanceCode $source, AttendanceCodePagination $pagination)
+    public function sort(AttendanceCode $target, AttendanceCode $source, AttendanceCodePagination $pagination, EntitySortManager $manager)
     {
-        $manager = new EntitySortManager();
         $manager->setIndexName('sort_order')
             ->setSortField('sortOrder')
             ->execute($source, $target, $pagination);
 
-        return new JsonResponse($manager->getDetails());
+        return $manager->getMessages()->toJsonResponse(['content' => $manager->getPaginationContent()]);
     }
 }

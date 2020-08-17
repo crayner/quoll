@@ -85,8 +85,20 @@ class RoleHierarchy implements RoleHierarchyInterface
      */
     public function getStaffRoles(): array
     {
+        return self::getCategoryRoles('Staff');
+    }
+
+    /**
+     * getCategoryRoles
+     *
+     * 17/08/2020 08:55
+     * @param string $category
+     * @return array
+     */
+    public static function getCategoryRoles(string $category): array
+    {
         $result = [];
-        foreach(ProviderFactory::getRepository(SecurityRole::class)->findByCategoryAsStrings('Staff') as $role) {
+        foreach(ProviderFactory::getRepository(SecurityRole::class)->findByCategoryAsStrings($category) as $role) {
             $result[] = $role['role'];
         }
         return $result;

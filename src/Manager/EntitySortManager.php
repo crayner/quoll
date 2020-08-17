@@ -49,11 +49,6 @@ class EntitySortManager
     /**
      * @var array
      */
-    private $details = [];
-
-    /**
-     * @var array
-     */
     private $content = [];
 
     /**
@@ -77,6 +72,11 @@ class EntitySortManager
     private $indexColumns;
 
     /**
+     * @var MessageStatusManager
+     */
+    private MessageStatusManager $messages;
+
+    /**
      * ScaleGradeSort constructor.
      *
      * @param AbstractEntity $source
@@ -88,10 +88,9 @@ class EntitySortManager
         AbstractEntity $target,
         AbstractPaginationManager $pagination
     ) {
-        $this->setSource($source);
-        $this->setTarget($target);
-        $this->setPagination($pagination);
-        $this->details = [];
+        $this->setSource($source)
+            ->setTarget($target)
+            ->setPagination($pagination);
 
         $provider = ProviderFactory::create(get_class($this->getSource()));
 
@@ -112,39 +111,12 @@ class EntitySortManager
                 $item->$method($key++);
                 $result[] = $item;
             }
-            $this->setDetails($this->saveSort($provider, $result, $this->details, basename(get_class($this->getSource()))));
+            $this->saveSort($provider, $result, basename(get_class($this->getSource())));
         } else {
-            $this->setDetails(['status' => 'success', 'errors' => ['class' => 'info', 'messages' => TranslationHelper::translate('No change is required.', [], 'messages')]]);
+            $this->getMessages()->info('No change is required.', [], 'messages');
             $result = $content;
         }
         $this->setContent($result);
-    }
-
-    /**
-     * getDetails
-     * @return array
-     * 2/06/2020 10:47
-     */
-    public function getDetails(): array
-    {
-        if ($this->details['status'] === 'success') {
-            $this->details['errors'] = [];
-            $this->details = ErrorMessageHelper::getSuccessMessage($this->details, true);
-            $this->details['content'] = $this->getPagination()->setContent($this->content)->toArray()['content'];
-        }
-        return $this->details;
-    }
-
-    /**
-     * Details.
-     *
-     * @param array $details
-     * @return $this
-     */
-    public function setDetails(array $details)
-    {
-        $this->details = $details;
-        return $this;
     }
 
     /**
@@ -167,14 +139,14 @@ class EntitySortManager
     }
 
     /**
-     * saveAdults
+     * saveSort
+     *
+     * 16/08/2020 16:42
      * @param EntityProviderInterface $provider
      * @param array $result
-     * @param array $data
      * @param string $tableName
-     * @return array
      */
-    public function saveSort(EntityProviderInterface $provider, array $result, array $data, string $tableName): array
+    public function saveSort(EntityProviderInterface $provider, array $result, string $tableName)
     {
         $sm = $provider->getEntityManager()->getConnection()->getSchemaManager();
         $prefix = $provider->getEntityManager()->getConnection()->getParams()['driverOptions']['prefix'];
@@ -190,17 +162,15 @@ class EntitySortManager
             }
 
             foreach ($result as $item)
-                $data = $provider->persistFlush($item, $data, false);
+                $provider->persistFlush($item, false);
             $provider->flush();
 
             $sm->createIndex($index, $table);
-            $data = ErrorMessageHelper::getSuccessMessage($data, true);
+            $this->getMessages()->success();
         } catch (SchemaException | \Exception $e) {
-            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
+            $this->getMessages()->error($e->getMessage(), [], false);
+            $this->getMessages()->error(MessageStatusManager::DATABASE_ERROR);
         }
-
-        return $data;
     }
 
     /**
@@ -357,8 +327,43 @@ class EntitySortManager
             $item->$method($key++);
         }
 
-        $this->setDetails($this->saveSort($provider, $content, [], basename(get_class($this->getSource()))));
+        $this->saveSort($provider, $content, basename(get_class($this->getSource())));
         $this->setContent($content);
+    }
+
+    /**
+     * getMessages
+     *
+     * 16/08/2020 16:38
+     * @return MessageStatusManager
+     */
+    public function getMessages(): MessageStatusManager
+    {
+        return $this->messages;
+    }
+
+    /**
+     * setMessages
+     *
+     * 16/08/2020 16:38
+     * @param MessageStatusManager $messages
+     * @return $this
+     */
+    public function setMessages(MessageStatusManager $messages): EntitySortManager
+    {
+        $this->messages = $messages;
+        return $this;
+    }
+
+    /**
+     * getPaginationContent
+     *
+     * 16/08/2020 17:21
+     * @return array
+     */
+    public function getPaginationContent(): array
+    {
+        return $this->getPagination()->setContent($this->getContent())->getContent();
     }
 }
 

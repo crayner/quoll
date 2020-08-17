@@ -24,9 +24,7 @@ use App\Modules\People\Form\CustomFieldType;
 use App\Modules\People\Pagination\CustomFieldPagination;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
-use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

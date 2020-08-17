@@ -14,10 +14,8 @@
 namespace App\Modules\Attendance\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,15 +38,13 @@ class AttendanceCode extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
      * @var string|null
@@ -56,7 +52,7 @@ class AttendanceCode extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Length(max=30)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
@@ -64,70 +60,67 @@ class AttendanceCode extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Length(max=4)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @var string|null
      * @ORM\Column(length=12)
      * @Assert\Choice(callback="getTypeList")
      */
-    private $type = 'Additional';
+    private string $type = 'Additional';
 
     /**
      * @var array
      */
-    private static $typeList = ['Core','Additional'];
+    private static array $typeList = ['Core','Additional'];
 
     /**
      * @var string|null
      * @ORM\Column(length=3)
      * @Assert\Choice(callback="getDirectionList")
      */
-    private $direction = 'In';
+    private string $direction = 'In';
 
     /**
      * @var array
      */
-    private static $directionList = ['In','Out'];
+    private static array $directionList = ['In','Out'];
 
     /**
      * @var string|null
      * @ORM\Column(length=14)
      * @Assert\Choice(callback="getScopeList")
      */
-    private $scope = 'Onsite';
+    private string $scope = 'Onsite';
 
     /**
      * @var array
      */
-    private static $scopeList = ['Onsite','Onsite - Late','Offsite','Offsite - Left'];
+    private static array $scopeList = ['Onsite','Onsite - Late','Offsite','Offsite - Left'];
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean
+     * @ORM\Column(type="boolean")
      */
-    private $active;
+    private bool $active;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean
+     * @ORM\Column(type="boolean")
      */
-    private $reportable;
+    private bool $reportable;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1)
-     * @Assert\Choice(callback="getBooleanList")
+     * @var boolean
+     * @ORM\Column(type="boolean")
      */
-    private $future;
+    private bool $future;
 
     /**
      * @var array|null
      * @ORM\Column(type="simple_array")
      */
-    private $securityRoles;
+    private ?array $securityRoles;
 
     /**
      * @var integer|null
@@ -147,7 +140,7 @@ class AttendanceCode extends AbstractEntity
         $this->active = 'Y';
         $this->reportable = 'Y';
         $this->future = 'Y';
-        $this->sortOrder = ProviderFactory::getRepository(AttendanceCode::class)->nextSortOrder();
+        $this->sortOrder = $this->nextSortOrder();
     }
 
     /**
@@ -215,10 +208,10 @@ class AttendanceCode extends AbstractEntity
     }
 
     /**
-     * @param string|null $type
+     * @param string $type
      * @return AttendanceCode
      */
-    public function setType(?string $type): AttendanceCode
+    public function setType(string $type): AttendanceCode
     {
         $this->type = in_array($type, self::getTypeList()) ? $type : '';
         return $this;
@@ -233,10 +226,10 @@ class AttendanceCode extends AbstractEntity
     }
 
     /**
-     * @param string|null $direction
+     * @param string $direction
      * @return AttendanceCode
      */
-    public function setDirection(?string $direction): AttendanceCode
+    public function setDirection(string $direction): AttendanceCode
     {
         $this->direction = in_array($direction, self::getDirectionList()) ? $direction :  '';
         return $this;
@@ -251,92 +244,66 @@ class AttendanceCode extends AbstractEntity
     }
 
     /**
-     * @param string|null $scope
+     * @param string $scope
      * @return AttendanceCode
      */
-    public function setScope(?string $scope): AttendanceCode
+    public function setScope(string $scope): AttendanceCode
     {
         $this->scope = in_array($scope, self::getScopeList()) ? $scope : '';
         return $this;
     }
 
     /**
-     * isActive
      * @return bool
      */
     public function isActive(): bool
     {
-        return $this->getActive() === 'Y';
+        return (bool)$this->active;
     }
 
     /**
-     * @return string|null
-     */
-    public function getActive(): ?string
-    {
-        return self::checkBoolean($this->active, 'N');
-    }
-
-    /**
-     * @param string|null $active
+     * @param bool $active
      * @return AttendanceCode
      */
-    public function setActive(?string $active): AttendanceCode
+    public function setActive(bool $active): AttendanceCode
     {
-        $this->active = self::checkBoolean($active, 'N');
+        $this->active = $active;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
     public function isReportable(): bool
     {
-        return $this->getReportable() === 'Y';
+        return (bool)$this->reportable;
     }
 
     /**
-     * @return string|null
-     */
-    public function getReportable(): ?string
-    {
-        return self::checkBoolean($this->reportable, 'N');
-    }
-
-    /**
-     * @param string|null $reportable
+     * @param bool $reportable
      * @return AttendanceCode
      */
-    public function setReportable(?string $reportable): AttendanceCode
+    public function setReportable(bool $reportable): AttendanceCode
     {
-        $this->reportable = self::checkBoolean($reportable,'N');
+        $this->reportable = $reportable;
         return $this;
     }
 
     /**
-     * isFuture
      * @return bool
      */
     public function isFuture(): bool
     {
-        return $this->getFuture() === 'Y';
+        return (bool)$this->future;
     }
 
     /**
-     * @return string|null
-     */
-    public function getFuture(): ?string
-    {
-        return self::checkBoolean($this->future, 'N');
-    }
-
-    /**
-     * @param string|null $future
+     * @param bool $future
      * @return AttendanceCode
      */
-    public function setFuture(?string $future): AttendanceCode
+    public function setFuture(bool $future): AttendanceCode
     {
-        $this->future = self::checkBoolean($future, 'N');
+        $this->future = $future;
         return $this;
     }
 
@@ -351,22 +318,11 @@ class AttendanceCode extends AbstractEntity
     /**
      * SecurityRoles.
      *
-     * @param array|null $securityRoles
+     * @param array $securityRoles
      * @return AttendanceCode
      */
-    public function setSecurityRoles($securityRoles): AttendanceCode
+    public function setSecurityRoles(array $securityRoles): AttendanceCode
     {
-        if ($securityRoles instanceof ArrayCollection) {
-            $result = [];
-            foreach($securityRoles as $role)
-            {
-                if ($role instanceof Role)
-                    $result[] = $role->getId();
-                else
-                    $result[] = $role;
-            }
-            $securityRoles = $result;
-        }
         $this->securityRoles = $securityRoles;
         return $this;
     }
@@ -444,47 +400,6 @@ class AttendanceCode extends AbstractEntity
             'active' => $this->isActive() ? TranslationHelper::translate('Yes', [], 'messages') :  TranslationHelper::translate('No', [], 'messages'),
             'canDelete' => ProviderFactory::create(AttendanceCode::class)->canDelete($this),
         ];
-    }
-
-    /**
-     * create
-     * @return array|string[]
-     * 12/06/2020 16:46
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__AttendanceCode` (
-                    `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` varchar(30) NOT NULL,
-                    `code` varchar(4) NOT NULL,
-                    `type` varchar(12) NOT NULL,
-                    `direction` varchar(3) NOT NULL,
-                    `scope` varchar(14) NOT NULL,
-                    `active` varchar(1) NOT NULL,
-                    `reportable` varchar(1) NOT NULL,
-                    `future` varchar(1) NOT NULL,
-                    `security_roles` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `sort_order` smallint(6) NOT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name` (`name`),
-                    UNIQUE KEY `sort_order` (`sort_order`),
-                    UNIQUE KEY `code` (`code`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 12/06/2020 13:48
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
     }
 
     /**

@@ -28,7 +28,7 @@ class ToggleTransformer implements DataTransformerInterface
     /**
      * @var boolean
      */
-    private $useBoolean;
+    private bool $useBoolean = true;
 
     /**
      * ToggleToBooleanTransformer constructor.

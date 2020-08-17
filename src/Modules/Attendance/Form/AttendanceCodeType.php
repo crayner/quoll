@@ -21,6 +21,7 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Security\Manager\RoleHierarchy;
+use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -46,10 +47,15 @@ class AttendanceCodeType extends AbstractType
      */
     public function __construct(RoleHierarchy $hierarchy)
     {
-        $choices = $hierarchy->getAssignableRoleNames(['ROLE_SYSTEM_ADMIN']);
         $this->choices = [];
-        foreach($choices as $choice) {
-            $this->choices[$choice] = $choice;
+        foreach ($hierarchy::getCategoryList() as $item) {
+            if ($item === 'System') continue;
+            $choices = [];
+            foreach ($hierarchy::getCategoryRoles($item) as $role) {
+                if ($role === 'ROLE_USER') continue;
+                $choices[TranslationHelper::translate($role, [], 'Security')] = $role;
+            }
+            $this->choices[TranslationHelper::translate($item, [], 'Security')] = $choices;
         }
     }
 
@@ -108,11 +114,7 @@ class AttendanceCodeType extends AbstractType
                     'data' => $options['data']->getSecurityRoles(),
                     'choices' => $this->choices,
                     'multiple' => true,
-                    'attr' => [
-                        'style' => [
-                            'height' => '125px',
-                        ],
-                    ],
+                    'expanded' => true,
                     'choice_translation_domain' => 'Security',
                 ]
             )

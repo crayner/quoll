@@ -408,7 +408,7 @@ class Activity extends AbstractEntity
      */
     public static function getActivityTypeList(): array
     {
-        return SettingFactory::getSettingManager()->getSettingByScopeAsArray('Activities', 'activityTypes');
+        return SettingFactory::getSettingManager()->get('Activities', 'activityTypes');
     }
 
     /**

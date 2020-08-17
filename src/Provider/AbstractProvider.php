@@ -537,7 +537,7 @@ abstract class AbstractProvider implements EntityProviderInterface
      * @param array $data
      * @param bool $flush
      */
-    public function persistFlush(EntityInterface $entity, array $data = [], bool $flush = true): MessageStatusManager
+    public function persistFlush(EntityInterface $entity, bool $flush = true): MessageStatusManager
     {
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {

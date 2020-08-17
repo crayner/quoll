@@ -39,7 +39,7 @@ class AttendanceRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $ip = $options['ip'];
-        $registeredIPList = SettingFactory::getSettingManager()->getSettingByScopeAsArray('Attendance', 'studentSelfRegistrationIPAddresses');
+        $registeredIPList = SettingFactory::getSettingManager()->get('Attendance', 'studentSelfRegistrationIPAddresses');
         $warning = 'Your current IP address ({ip}) is included in the saved list.';
         $class = 'success';
         if (!in_array($ip, $registeredIPList))

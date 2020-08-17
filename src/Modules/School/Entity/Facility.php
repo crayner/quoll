@@ -493,7 +493,7 @@ class Facility extends AbstractEntity
      */
     public static function getTypeList(): array
     {
-        $x = SettingFactory::getSettingManager()->getSettingByScopeAsArray('School Admin', 'facilityTypes');
+        $x = SettingFactory::getSettingManager()->get('School Admin', 'facilityTypes');
         asort($x);
         $result = [];
         foreach($x as $name) {

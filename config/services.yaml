@@ -172,3 +172,6 @@ services:
         tags:
             - { name: 'container.preload', class: 'App\Manager\MessageStatusManager' }
 
+    App\Manager\EntitySortManager:
+        calls:
+            - [ setMessages, ['@App\Manager\MessageStatusManager'] ]

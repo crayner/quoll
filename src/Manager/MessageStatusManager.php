@@ -434,4 +434,15 @@ class MessageStatusManager
     {
         return new JsonResponse(array_merge($data, $this->toArray()));
     }
+
+    /**
+     * isStatusSuccess
+     *
+     * 17/08/2020 10:45
+     * @return bool
+     */
+    public function isStatusSuccess(): bool
+    {
+        return $this->getStatus() === 'success';
+    }
 }

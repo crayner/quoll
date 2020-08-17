@@ -4,9 +4,9 @@
     type: 'Core'
     direction: 'In'
     scope: 'Onsite'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'N'
+    active: true
+    reportable: true
+    future: false
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 1
 -
@@ -15,9 +15,9 @@
     type: 'Core'
     direction: 'In'
     scope: 'Onsite - Late'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'N'
+    active: true
+    reportable: true
+    future: false
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 2
 -
@@ -26,9 +26,9 @@
     type: 'Core'
     direction: 'In'
     scope: 'Offsite'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'Y'
+    active: true
+    reportable: true
+    future: true
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 3
 -
@@ -37,9 +37,9 @@
     type: 'Core'
     direction: 'Out'
     scope: 'Offsite'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'Y'
+    active: true
+    reportable: true
+    future: true
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 4
 -
@@ -48,9 +48,9 @@
     type: 'Core'
     direction: 'Out'
     scope: 'Offsite - Left'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'N'
+    active: true
+    reportable: true
+    future: false
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 5
 -
@@ -59,8 +59,8 @@
     type: 'Core'
     direction: 'Out'
     scope: 'Offsite - Left'
-    active: 'Y'
-    reportable: 'Y'
-    future: 'N'
+    active: true
+    reportable: true
+    future: false
     securityRoles: ['ROLE_TEACHER','ROLE_SUPPORT']
     sortOrder: 6
