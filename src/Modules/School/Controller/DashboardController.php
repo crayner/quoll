@@ -16,12 +16,10 @@
  */
 namespace App\Modules\School\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\School\Form\DashboardSettingsType;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,39 +33,37 @@ class DashboardController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
-     * @return JsonResponse
+     *
+     * 18/08/2020 08:53
      * @Route("/dashboard/settings/",name="dashboard_settings")
      * @IsGranted("ROLE_ROUTE")
-     * 4/06/2020 11:32
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager)
+    public function settings()
     {
-        $request = $this->getRequest();
         // System Settings
         $form = $this->createForm(DashboardSettingsType::class, null, ['action' => $this->generateUrl('dashboard_settings',)]);
 
-        if ($request->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
+        if ($this->getRequest()->getContent() !== '') {
             try {
-                $data['errors'] = SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
-                if ($data['status'] === 'success')
+                SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+                if ($this->getStatusManager()->isStatusSuccess())
                     $form = $this->createForm(DashboardSettingsType::class, null, ['action' => $this->generateUrl('dashboard_settings')]);
             } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            $this->getContainerManager()->singlePanel($form->createView());
+            return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
         }
 
-        $manager->singlePanel($form->createView());
-
         return $this->getPageManager()->createBreadcrumbs('Dashboard Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers()
+                ]
+            );
     }
-
 }
