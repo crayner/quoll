@@ -18,7 +18,7 @@ namespace App\Modules\IndividualNeed\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\IndividualNeed\Form\INDescriptorType;
 use App\Modules\IndividualNeed\Pagination\INDescriptorPagination;
@@ -90,14 +90,14 @@ class ManageController extends AbstractPageController
                 if ($provider->isStatusSuccess() && $id !== $need->getId()) {
                     $data['redirect'] = $this->generateUrl('individual_need_edit', ['need' => $need->getId()]);
                     $data['status'] = 'redirect';
-                    $this->getMessageStatusManager()->convertToFlash();
+                    $this->getStatusManager()->convertToFlash();
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $pageHeader = new PageHeader($need->getId() !== null ? 'Edit Individual Need' : 'Add Individual Need');

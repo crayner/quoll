@@ -22,7 +22,7 @@ use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Form\AttendanceCLIType;
 use App\Modules\Attendance\Form\AttendanceCodeType;
@@ -185,17 +185,17 @@ class AttendanceController extends AbstractPageController
                 $id = $code->getId();
                 $provider = ProviderFactory::create(AttendanceCode::class);
                 $provider->persistFlush($code);
-                if ($this->getMessageStatusManager()->isStatusSuccess() && $id === $code->getId()) {
+                if ($this->getStatusManager()->isStatusSuccess() && $id === $code->getId()) {
                     $form = $this->createForm(AttendanceCodeType::class, $code,
                         ['action' => $this->generateUrl('attendance_code_edit', ['code' => $code->getId()])]
                     );
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $manager->setReturnRoute($this->generateUrl('attendance_code_list', ['tabName' => 'Code']))

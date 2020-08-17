@@ -21,7 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Behaviour\Form\BehaviourSettingsType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
@@ -57,16 +57,16 @@ dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors')->getD
         if ($this->getRequest()->getContent() !== '') {
             try {
                 SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
-                if ($this->getMessageStatusManager()->getStatus() === 'success') {
+                if ($this->getStatusManager()->getStatus() === 'success') {
                     $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
                     dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors'));
                 }
             } catch (\Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $container = new Container($tabName);

@@ -18,7 +18,7 @@ namespace App\Modules\RollGroup\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\RollGroup\Form\RollGroupType;
 use App\Modules\RollGroup\Pagination\RollGroupListPagination;
@@ -63,7 +63,7 @@ class ManageController extends AbstractPageController
             ->setContentAttr(['className' => 'info']);
 
         return $this->getPageManager()
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs('Roll Groups')
             ->setUrl($this->generateUrl('roll_group_list'))
@@ -107,20 +107,20 @@ class ManageController extends AbstractPageController
                 $year = ProviderFactory::getRepository(AcademicYear::class)->find($year->getId());
                 $rollGroup->setAcademicYear($year);
                 $provider->persistFlush($rollGroup);
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(RollGroupType::class, $rollGroup, ['action' => $this->generateUrl('roll_group_edit', ['rollGroup' => $rollGroup->getId()])]);
                     if ($id !== $rollGroup->getId()) {
-                        $this->getMessageStatusManager()
+                        $this->getStatusManager()
                             ->setReDirect($this->generateUrl('roll_group_edit', ['rollGroup' => $rollGroup->getId()]))
                             ->convertToFlash();
                     }
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $manager->setReturnRoute($this->generateUrl('roll_group_list'))

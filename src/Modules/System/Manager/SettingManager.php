@@ -15,7 +15,7 @@
 namespace App\Modules\System\Manager;
 
 use App\Manager\EntityInterface;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\System\Exception\SettingInvalidException;
 use App\Modules\System\Exception\SettingNotFoundException;
 use App\Modules\System\Form\SettingsType;
@@ -55,9 +55,9 @@ class SettingManager
     private static SettingManager $instance;
 
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private MessageStatusManager $messages;
+    private StatusManager $messages;
 
     /**
      * @var
@@ -67,10 +67,10 @@ class SettingManager
     /**
      * SettingProvider constructor.
      * @param array|null $settings
-     * @param MessageStatusManager $messages
+     * @param StatusManager $messages
      * @param LoggerInterface $logger
      */
-    public function __construct(?array $settings, MessageStatusManager $messages, LoggerInterface $logger)
+    public function __construct(?array $settings, StatusManager $messages, LoggerInterface $logger)
     {
         if ($settings === null) {
             $fileSystem = new Filesystem();
@@ -471,9 +471,9 @@ class SettingManager
      *
      * 16/08/2020 13:11
      * @param bool $setLogger
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function getMessages(bool $setLogger = true): MessageStatusManager
+    public function getMessages(bool $setLogger = true): StatusManager
     {
         if ($setLogger) $this->messages->setLogger($this->getLogger());
         return $this->messages;
@@ -503,7 +503,7 @@ class SettingManager
                 $this->getMessages()->error($error->getOrigin()->getName() . ': ' . $error->getMessage());
             }
 
-            $this->getMessages()->error(MessageStatusManager::INVALID_INPUTS);
+            $this->getMessages()->error(StatusManager::INVALID_INPUTS);
         }
         return $this->getMessages(false)->getStatus() === 'success';
     }

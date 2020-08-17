@@ -72,9 +72,9 @@ class EntitySortManager
     private $indexColumns;
 
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private MessageStatusManager $messages;
+    private StatusManager $messages;
 
     /**
      * ScaleGradeSort constructor.
@@ -169,7 +169,7 @@ class EntitySortManager
             $this->getMessages()->success();
         } catch (SchemaException | \Exception $e) {
             $this->getMessages()->error($e->getMessage(), [], false);
-            $this->getMessages()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessages()->error(StatusManager::DATABASE_ERROR);
         }
     }
 
@@ -335,9 +335,9 @@ class EntitySortManager
      * getMessages
      *
      * 16/08/2020 16:38
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function getMessages(): MessageStatusManager
+    public function getMessages(): StatusManager
     {
         return $this->messages;
     }
@@ -346,10 +346,10 @@ class EntitySortManager
      * setMessages
      *
      * 16/08/2020 16:38
-     * @param MessageStatusManager $messages
+     * @param StatusManager $messages
      * @return $this
      */
-    public function setMessages(MessageStatusManager $messages): EntitySortManager
+    public function setMessages(StatusManager $messages): EntitySortManager
     {
         $this->messages = $messages;
         return $this;

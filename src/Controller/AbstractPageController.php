@@ -17,7 +17,7 @@
 namespace App\Controller;
 
 use App\Container\ContainerManager;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Manager\PageManager;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
@@ -45,7 +45,7 @@ abstract class AbstractPageController extends AbstractController
                 'container_manager' => ContainerManager::class,
                 'provider_factory' => ProviderFactory::class,
                 'setting_factory' => SettingFactory::class,
-                'message_status_manager' => MessageStatusManager::class,
+                'message_status_manager' => StatusManager::class,
             ]
         ));
     }
@@ -99,11 +99,11 @@ abstract class AbstractPageController extends AbstractController
     }
 
     /**
-     * getMessageStatusManager
-     * @return MessageStatusManager
+     * getStatusManager
+     * @return StatusManager
      * 15/08/2020 15:45
      */
-    public function getMessageStatusManager(): MessageStatusManager
+    public function getStatusManager(): StatusManager
     {
         return $this->get('message_status_manager');
     }
@@ -117,6 +117,6 @@ abstract class AbstractPageController extends AbstractController
      */
     public function generateJsonResponse(array $options = []): JsonResponse
     {
-        return $this->getMessageStatusManager()->toJsonResponse($options);
+        return $this->getStatusManager()->toJsonResponse($options);
     }
 }

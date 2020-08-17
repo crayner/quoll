@@ -18,7 +18,7 @@ namespace App\Modules\School\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Form\YearGroupType;
 use App\Modules\School\Pagination\YearGroupPagination;
@@ -53,7 +53,7 @@ class YearGroupController extends AbstractPageController
         ;
 
         return $this->getPageManager()
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->createBreadcrumbs('Year Groups')
             ->render(['pagination' => $pagination->toArray()]);
     }
@@ -88,15 +88,15 @@ class YearGroupController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $year->getId();
                 ProviderFactory::create(YearGroup::class)->persistFlush($year);
-                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $year->getId()) {
-                    $this->getMessageStatusManager()->setRedirect($this->generateUrl('year_group_edit', ['year' => $year->getId()]));
+                if ($this->getStatusManager()->isStatusSuccess() && $id !== $year->getId()) {
+                    $this->getStatusManager()->setRedirect($this->generateUrl('year_group_edit', ['year' => $year->getId()]));
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         if ($year->getId() !== null) {

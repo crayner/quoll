@@ -20,7 +20,7 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\Assess\Pagination\ScaleGradePagination;
@@ -58,7 +58,7 @@ class ScaleController extends AbstractPageController
         return $this->getPageManager()
             ->setMessages(isset($data['errors']) ? $data['errors'] : [])
             ->createBreadcrumbs('Scales', [])
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->render(
                 [
                     'pagination' => $pagination->toArray(),
@@ -100,16 +100,16 @@ class ScaleController extends AbstractPageController
             if ($form->isValid()) {
                 ProviderFactory::create(Scale::class)
                     ->persistFlush($scale);
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ScaleType::class, $scale, ['action' => $this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => $tabName])]);
                     if ($id !== $scale->getId()) {
-                        $this->getMessageStatusManager()
+                        $this->getStatusManager()
                             ->setReDirect($this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => $tabName]))
                             ->convertToFlash();
                     }
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());

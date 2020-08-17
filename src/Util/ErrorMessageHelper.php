@@ -17,7 +17,7 @@
 
 namespace App\Util;
 
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
@@ -32,7 +32,7 @@ class ErrorMessageHelper
      * @param bool $translate
      * @return array
      */
-    public static function uniqueErrors(array $data, bool $translate = false): MessageStatusManager
+    public static function uniqueErrors(array $data, bool $translate = false): StatusManager
     {
         $data['errors'] = array_unique(isset($data['errors']) ? $data['errors'] : [], SORT_REGULAR);
 

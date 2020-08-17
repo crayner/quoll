@@ -53,7 +53,7 @@ class SettingController extends AbstractPageController
                 $form = $this->createForm(INTemplatesType::class, null, ['action' => $this->generateUrl('individual_need_settings')]);
             }
             $this->getContainerManager()->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($this->getContainerManager()->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($this->getContainerManager()->getFormFromContainer());
 
             return new JsonResponse($data);
         }

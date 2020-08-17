@@ -18,7 +18,7 @@ namespace App\Modules\School\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Form\FacilitySettingsType;
 use App\Modules\School\Form\FacilityType;
@@ -54,7 +54,7 @@ class FacilityController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('facility_add'));
         
         return $this->getPageManager()->createBreadcrumbs('Facilities')
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->render(['pagination' => $pagination->toArray()]);
     }
 
@@ -88,15 +88,15 @@ class FacilityController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $facility->getId();
                 ProviderFactory::create(Facility::class)->persistFlush($facility);
-                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $facility->getId()) {
-                    $this->getMessageStatusManager()
+                if ($this->getStatusManager()->isStatusSuccess() && $id !== $facility->getId()) {
+                    $this->getStatusManager()
                         ->setReDirect($this->generateUrl('facility_edit', ['facility' => $facility->getId()]))
                         ->convertToFlash();
-                } else if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                } else if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(FacilityType::class, $facility, ['action' => $action, 'facility_setting_uri' => $this->generateUrl('facility_settings')]);
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
@@ -153,11 +153,11 @@ class FacilityController extends AbstractPageController
         if ($request->getContent() !== '') {
             try {
                 SettingFactory::getSettingManager()->handleSettingsForm($form, $request);
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(FacilitySettingsType::class, null, ['action' => $this->generateUrl('facility_settings',)]);
                 }
             } catch (\Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());

@@ -16,7 +16,7 @@
  */
 namespace App\Modules\System\Manager;
 
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Manager\ParameterFileManager;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -36,15 +36,15 @@ class GoogleSettingManager
      */
     private ?SettingManager $provider;
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private MessageStatusManager $messageStatusManager;
+    private StatusManager $messageStatusManager;
 
     /**
      * GoogleSettingManager constructor.
-     * @param MessageStatusManager $messageStatusManager
+     * @param StatusManager $messageStatusManager
      */
-    public function __construct(MessageStatusManager $messageStatusManager)
+    public function __construct(StatusManager $messageStatusManager)
     {
         $this->messageStatusManager = $messageStatusManager;
         $this->provider = SettingFactory::getSettingManager();
@@ -68,7 +68,7 @@ class GoogleSettingManager
             try {
                 $secret = json_decode(file_get_contents($file->getRealPath()), true);
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->warning($this->messageStatusManager::FILE_TRANSFER);
+                $this->getStatusManager()->warning($this->messageStatusManager::FILE_TRANSFER);
                 return false;
             }
             unlink($file->getRealPath());
@@ -88,7 +88,7 @@ class GoogleSettingManager
 
                 ParameterFileManager::writeParameterFile($config);
 
-                $this->getMessageStatusManager()->info('Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'System');
+                $this->getStatusManager()->info('Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'System');
             }
         } else {
             $content = json_decode($request->getContent(), true);
@@ -104,11 +104,11 @@ class GoogleSettingManager
 
                 ParameterFileManager::writeParameterFile($config);
 
-                $this->getMessageStatusManager()->info('Your requested did not included a valid Google Secret File. All other Google changes where saved.', [], 'System');
+                $this->getStatusManager()->info('Your requested did not included a valid Google Secret File. All other Google changes where saved.', [], 'System');
             }
         }
 
-        return $this->getMessageStatusManager()->getStatus() === 'success';
+        return $this->getStatusManager()->getStatus() === 'success';
     }
 
     /**
@@ -126,7 +126,7 @@ class GoogleSettingManager
         $config['parameters']['google_redirect_uris'] = [];
 
         ParameterFileManager::writeParameterFile($config);
-        $this->getMessageStatusManager()->info('Google integration has been turned off.', [], 'System');
+        $this->getStatusManager()->info('Google integration has been turned off.', [], 'System');
     }
 
     /**
@@ -140,9 +140,9 @@ class GoogleSettingManager
     }
 
     /**
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function getMessageStatusManager(): MessageStatusManager
+    public function getStatusManager(): StatusManager
     {
         return $this->messageStatusManager;
     }

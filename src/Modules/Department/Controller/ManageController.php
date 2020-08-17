@@ -21,7 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Form\DepartmentSettingType;
 use App\Modules\Department\Form\DepartmentStaffType;
@@ -74,10 +74,10 @@ class ManageController extends AbstractPageController
             try {
                 SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
             } catch (\Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            if ($this->getMessageStatusManager()->isStatusSuccess()) {
+            if ($this->getStatusManager()->isStatusSuccess()) {
                 $form = $this->createForm(DepartmentSettingType::class, null, ['action' => $this->generateUrl('department_list')]);
             }
 
@@ -95,7 +95,7 @@ class ManageController extends AbstractPageController
         $manager->addContainer($container);
 
         return $this->getPageManager()
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->createBreadcrumbs('Departments')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
@@ -139,18 +139,18 @@ class ManageController extends AbstractPageController
                     $id = $department->getId();
                     ProviderFactory::create(Department::class)
                         ->persistFlush($department);
-                    if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                    if ($this->getStatusManager()->isStatusSuccess()) {
                         $form = $this->createForm(DepartmentType::class, $department,
                             ['action' => $this->generateUrl('department_edit', ['department' => $department->getId(), 'tabName' => 'General'])]
                         );
                         if ($id !== $department->getId()) {
-                            $this->getMessageStatusManager()
+                            $this->getStatusManager()
                                 ->setReDirect($this->generateUrl('department_edit', ['department' => $department->getId(), 'tabName' => 'General']))
                                 ->convertToFlash();
                         }
                     }
                 } else {
-                    $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                    $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
                 }
 
                 $manager->singlePanel($form->createView());
@@ -180,7 +180,7 @@ class ManageController extends AbstractPageController
         }
 
         return $this->getPageManager()
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs($department->getId() === null ? 'Add Department' : ['Edit Department: {name}', ['{name}' => $department->getName()]])
             ->render(['containers' => $manager->getBuiltContainers()]);
@@ -252,11 +252,11 @@ class ManageController extends AbstractPageController
             if ($form->isValid()) {
                 $id = $staff->getId();
                 ProviderFactory::create(DepartmentStaff::class)->persistFlush($staff);
-                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $staff->getId()) {
+                if ($this->getStatusManager()->isStatusSuccess() && $id !== $staff->getId()) {
                     $form = $this->createForm(DepartmentStaffType::class, $staff, ['action' => $this->generateUrl('department_staff_edit_popup', ['department' => $department->getId(), 'staff' => $staff->getId()])]);
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());

@@ -20,7 +20,7 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\School\Form\ResourceSettingsType;
 use App\Modules\System\Manager\SettingFactory;
 use Exception;
@@ -55,11 +55,11 @@ class ResourceSettingController extends AbstractPageController
         if ($this->getRequest()->getContent() !== '') {
             try {
                 $settingProvider->handleSettingsForm($form, $this->getRequest());
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ResourceSettingsType::class, null, ['action' => $this->generateUrl('resource_settings', ['tabName' => $tabName])]);
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());

@@ -17,7 +17,7 @@
 namespace App\Provider;
 
 use App\Manager\EntityInterface;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use Doctrine\Persistence\ObjectRepository;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
@@ -51,9 +51,9 @@ abstract class AbstractProvider implements EntityProviderInterface
     private $entityManager;
 
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private MessageStatusManager $messageManager;
+    private StatusManager $messageManager;
 
     /**
      * @var EntityRepository
@@ -140,9 +140,9 @@ abstract class AbstractProvider implements EntityProviderInterface
      * getMessageManager
      *
      * 16/08/2020 14:58
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function getMessageManager(): MessageStatusManager
+    public function getMessageManager(): StatusManager
     {
         return $this->messageManager;
     }
@@ -192,7 +192,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->warning(MessageStatusManager::LOCKED_RECORD);
+                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD);
                 return $entity;
             }
         } elseif (method_exists($entity, 'canDelete')) {
@@ -203,7 +203,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->warning(MessageStatusManager::LOCKED_RECORD);
+                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD);
                 return $entity;
             }
         } else {
@@ -284,7 +284,7 @@ abstract class AbstractProvider implements EntityProviderInterface
             if ($flush)
                 $this->getEntityManager()->flush();
         } catch (Exception $e) {
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         }
         return $this;
     }
@@ -427,16 +427,16 @@ abstract class AbstractProvider implements EntityProviderInterface
      * flush
      *
      * 16/08/2020 14:57
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function flush(): MessageStatusManager
+    public function flush(): StatusManager
     {
         try {
             $this->getEntityManager()->flush();
             $this->getMessageManager()->success();
         } catch (Exception $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         }
         return $this->getMessageManager();
     }
@@ -537,7 +537,7 @@ abstract class AbstractProvider implements EntityProviderInterface
      * @param array $data
      * @param bool $flush
      */
-    public function persistFlush(EntityInterface $entity, bool $flush = true): MessageStatusManager
+    public function persistFlush(EntityInterface $entity, bool $flush = true): StatusManager
     {
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {
@@ -545,16 +545,16 @@ abstract class AbstractProvider implements EntityProviderInterface
             if ($flush) $this->flush();
         } catch (NotNullConstraintViolationException $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         } catch (UniqueConstraintViolationException $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         } catch (\PDOException | PDOException | ORMException $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         } catch (Exception $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(MessageStatusManager::DATABASE_ERROR);
+            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
         }
 
         return $this->getMessageManager();
@@ -565,10 +565,10 @@ abstract class AbstractProvider implements EntityProviderInterface
      * persist
      * @param EntityInterface $entity
      * @param array $data
-     * @return MessageStatusManager 10/08/2020 08:56
+     * @return StatusManager 10/08/2020 08:56
      * 10/08/2020 08:56
      */
-    public function persist(EntityInterface $entity, array $data = []): MessageStatusManager
+    public function persist(EntityInterface $entity, array $data = []): StatusManager
     {
         return $this->persistFlush($entity, $data, false);
     }

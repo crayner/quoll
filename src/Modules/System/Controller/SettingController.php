@@ -22,7 +22,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\DisplaySettingsType;
@@ -78,7 +78,7 @@ class SettingController extends AbstractPageController
                     $form = $this->createSystemForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
@@ -98,11 +98,11 @@ class SettingController extends AbstractPageController
                     $form = $this->createOrganisationForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -119,11 +119,11 @@ class SettingController extends AbstractPageController
                     $form = $this->createSecurityForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -140,11 +140,11 @@ class SettingController extends AbstractPageController
                     $form = $this->createLocalisationForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -161,11 +161,11 @@ class SettingController extends AbstractPageController
                     $form = $this->createMiscellaneousForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -199,15 +199,15 @@ class SettingController extends AbstractPageController
         if ($request->getContent() !== '') {
             try {
                 $settingProvider->handleSettingsForm($form, $request);
-                if ($this->getMessageStatusManager()->getStatus() === 'success') {
+                if ($this->getStatusManager()->getStatus() === 'success') {
                     $form = $this->createDisplayForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }

@@ -16,7 +16,7 @@
  */
 namespace App\Modules\System\Manager;
 
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Manager\ParameterFileManager;
 use App\Modules\Security\Entity\SecurityUser;
 use Symfony\Component\Form\FormInterface;
@@ -79,9 +79,9 @@ class MailerSettingsManager
     ];
 
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private MessageStatusManager $messages;
+    private StatusManager $messages;
 
     /**
      * handleMailerDsn
@@ -291,9 +291,9 @@ class MailerSettingsManager
     }
 
     /**
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function getMessages(): MessageStatusManager
+    public function getMessages(): StatusManager
     {
         return $this->messages;
     }
@@ -302,10 +302,10 @@ class MailerSettingsManager
      * setMessages
      *
      * 16/08/2020 09:58
-     * @param MessageStatusManager $messages
+     * @param StatusManager $messages
      * @return MailerSettingsManager
      */
-    public function setMessages(MessageStatusManager $messages): MailerSettingsManager
+    public function setMessages(StatusManager $messages): MailerSettingsManager
     {
         $this->messages = $messages;
         return $this;

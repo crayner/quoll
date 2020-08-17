@@ -21,7 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Planner\Form\PlannerSettingType;
 use App\Modules\System\Manager\SettingFactory;
 use Exception;
@@ -58,11 +58,11 @@ class SettingController extends AbstractPageController
         if ($this->getRequest()->getContent() !== '') {
             try {
                 $settingProvider->handleSettingsForm($form, $this->getRequest());
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(PlannerSettingType::class, null, ['action' => $this->generateUrl('planner_settings', ['tabName' => $tabName])]);
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());

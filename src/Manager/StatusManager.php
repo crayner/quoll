@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class MessageStatusManager
+class StatusManager
 {
     const INVALID_INPUTS = 'return.error.1';
 
@@ -113,9 +113,9 @@ class MessageStatusManager
 
     /**
      * @param string $status
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function setStatus(string $status): MessageStatusManager
+    public function setStatus(string $status): StatusManager
     {
         if ((in_array($status, self::getStatusList()) && array_search($status, self::getStatusList()) > array_search($this->status, self::getStatusList())) || $status === 'redirect') {
             $this->status = $status;
@@ -145,9 +145,9 @@ class MessageStatusManager
 
     /**
      * @param ArrayCollection $messages
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function setMessages(ArrayCollection $messages): MessageStatusManager
+    public function setMessages(ArrayCollection $messages): StatusManager
     {
         $this->messages = $messages;
         return $this;
@@ -159,7 +159,7 @@ class MessageStatusManager
      * @param string $id
      * @param array $parameters
      * @param string|null $domain
-     * @return MessageStatusManager
+     * @return StatusManager
      * 15/08/2020 14:33
      */
     public function addMessage(string $status, string $id, array $parameters = [], ?string $domain = null)
@@ -321,9 +321,9 @@ class MessageStatusManager
 
     /**
      * @param string $domain
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function setDomain(string $domain): MessageStatusManager
+    public function setDomain(string $domain): StatusManager
     {
         $this->domain = $domain;
         return $this;
@@ -391,9 +391,9 @@ class MessageStatusManager
 
     /**
      * @param LoggerInterface|null $logger
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function setLogger(?LoggerInterface $logger): MessageStatusManager
+    public function setLogger(?LoggerInterface $logger): StatusManager
     {
         $this->logger = $logger;
         return $this;
@@ -416,9 +416,9 @@ class MessageStatusManager
      *
      * 16/08/2020 12:57
      * @param Message $message
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function logMessage(Message $message): MessageStatusManager
+    public function logMessage(Message $message): StatusManager
     {
         if (null !== $this->getLogger()) {
             $mapping = [
@@ -480,9 +480,9 @@ class MessageStatusManager
      *
      * 17/08/2020 11:24
      * @param string $reDirect
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public function setReDirect(string $reDirect): MessageStatusManager
+    public function setReDirect(string $reDirect): StatusManager
     {
         $this->reDirect = $reDirect;
 

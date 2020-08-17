@@ -18,7 +18,7 @@ namespace App\Modules\School\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\School\Entity\House;
 use App\Modules\School\Form\HouseType;
 use App\Modules\School\Pagination\HousePagination;
@@ -50,7 +50,7 @@ class HouseController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('house_add'));
 
         return $this->getPageManager()->createBreadcrumbs('Houses')
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->render(['pagination' => $pagination->toArray()]);
     }
 
@@ -84,17 +84,17 @@ class HouseController extends AbstractPageController
                 $id = $house->getId();
                 $provider = ProviderFactory::create(House::class);
                 $provider->persistFlush($house);
-                if ($this->getMessageStatusManager()->isStatusSuccess() && $id !== $house->getId()) {
-                    $this->getMessageStatusManager()
+                if ($this->getStatusManager()->isStatusSuccess() && $id !== $house->getId()) {
+                    $this->getStatusManager()
                         ->getReDirect($this->generateUrl('house_edit', ['house' => $house->getId()]))
                         ->convertToFlash();
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         if ($house->getId() !== null) {

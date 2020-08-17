@@ -21,7 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\School\Entity\AlertLevel;
 use App\Modules\School\Form\AlertLevelType;
 use App\Provider\ProviderFactory;
@@ -87,7 +87,7 @@ class AlertLevelController extends AbstractPageController
         if ($form->isValid()) {
             ProviderFactory::create(AlertLevel::class)->persistFlush($level);
         } else {
-            $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
         $container = new Container($name);
         $panel = new Panel($name, 'School');
@@ -95,6 +95,6 @@ class AlertLevelController extends AbstractPageController
             ->addForm($name, $form->createView())
             ->addPanel($panel);
         $manager->addContainer($container);
-        return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer('formContent',$name)]);
+        return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer('formContent',$name)]);
     }
 }

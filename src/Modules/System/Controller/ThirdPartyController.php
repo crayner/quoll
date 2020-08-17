@@ -20,7 +20,7 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\System\Manager\SettingFactory;
 use App\Twig\DefaultContextEmail;
 use App\Util\ParameterBagHelper;
@@ -82,18 +82,18 @@ class ThirdPartyController extends AbstractPageController
         if ($tabName === 'Google' && $request->getMethod() === 'POST') {
             try {
                 if ($settingProvider->handleSettingsForm($form, $request)) {
-                    $gm = new GoogleSettingManager($this->getMessageStatusManager());
+                    $gm = new GoogleSettingManager($this->getStatusManager());
                     if ($gm->handleGoogleSecretsFile($form, $request)) {
                         $form = $this->createGoogleForm();
                     }
-                    $this->getMessageStatusManager()->convertToFlash();
+                    $this->getStatusManager()->convertToFlash();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
+                $this->getStatusManager()->error(StatusManager::DATABASE_ERROR);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -111,11 +111,11 @@ class ThirdPartyController extends AbstractPageController
                     $form = $this->createPaypalForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
+                $this->getStatusManager()->error(StatusManager::DATABASE_ERROR);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -132,11 +132,11 @@ class ThirdPartyController extends AbstractPageController
                     $form = $this->createSMSForm();
                 }
             } catch (Exception $e) {
-                $this->getMessageStatusManager()->error(MessageStatusManager::DATABASE_ERROR);
+                $this->getStatusManager()->error(StatusManager::DATABASE_ERROR);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }
@@ -150,12 +150,12 @@ class ThirdPartyController extends AbstractPageController
         $form = $this->createEmailForm($msm);
 
         if ($tabName === 'EMail' && $request->getMethod() === 'POST') {
-            if ($msm->setMessages($this->getMessageStatusManager())->handleMailerDsn($form,$request)) {
+            if ($msm->setMessages($this->getStatusManager())->handleMailerDsn($form,$request)) {
                 $form = $this->createEmailForm($msm);
             }
 
             $manager->singlePanel($form->createView());
-            $data = $this->getMessageStatusManager()->toArray($manager->getFormFromContainer());
+            $data = $this->getStatusManager()->toArray($manager->getFormFromContainer());
 
             return new JsonResponse($data, 200);
         }

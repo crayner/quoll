@@ -19,7 +19,7 @@ namespace App\Modules\Assess\Controller;
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Assess\Entity\ScaleGrade;
 use App\Modules\School\Form\ScaleGradeType;
@@ -55,7 +55,7 @@ class ScaleGradeController extends AbstractPageController
             ->setReturnRoute($this->generateUrl('scale_edit', ['scale' => $scale->getId(), 'tabName' => 'Grades']))
             ->setAddElementRoute($this->generateUrl('scale_grade_add', ['scale' => $scale->getId()]));
         return $this->getPageManager()
-            ->setMessages($this->getMessageStatusManager()->getMessageArray())
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->createBreadcrumbs('Scale Grade', [
                 ['uri' => 'scale_list', 'name' => 'Scales'],
                 ['uri' => 'scale_edit', 'name' => 'Edit Scale ({name})', 'trans_params' => ['{name}' => $scale->getName()], 'uri_params' => ['scale' => $scale->getId(), 'tabName' => 'Grades']]
@@ -96,16 +96,16 @@ class ScaleGradeController extends AbstractPageController
                 $id = $grade->getId();
                 $provider = ProviderFactory::create(ScaleGrade::class);
                 $provider->persistFlush($grade);
-                if ($this->getMessageStatusManager()->isStatusSuccess()) {
+                if ($this->getStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(ScaleGradeType::class, $grade, ['action' => $action]);
                     if ($id !== $grade->getId()) {
-                        $this->getMessageStatusManager()
+                        $this->getStatusManager()
                             ->setReDirect($this->generateUrl('scale_grade_edit', ['scale' => $scale->getId(), 'grade' => $grade->getId()]))
                             ->convertToFlash();
                     }
                 }
             } else {
-                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
@@ -157,10 +157,10 @@ class ScaleGradeController extends AbstractPageController
             $provider->delete($grade);
 
         } else {
-            $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
 
-        if ($this->getMessageStatusManager()->isStatusSuccess()) {
+        if ($this->getStatusManager()->isStatusSuccess()) {
             $provider->delete($scale);
         }
 

@@ -14,7 +14,7 @@
  */
 namespace App\Provider;
 
-use App\Manager\MessageStatusManager;
+use App\Manager\StatusManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -38,9 +38,9 @@ class ProviderFactory
     private static $entityManager;
 
     /**
-     * @var MessageStatusManager
+     * @var StatusManager
      */
-    private static MessageStatusManager $messageManager;
+    private static StatusManager $messageManager;
 
     /**
      * @var AuthorizationCheckerInterface
@@ -80,7 +80,7 @@ class ProviderFactory
     /**
      * ProviderFactory constructor.
      * @param EntityManagerInterface $entityManager
-     * @param MessageStatusManager $messageManager
+     * @param StatusManager $messageManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param RouterInterface $router
      * @param RequestStack $stack
@@ -88,7 +88,7 @@ class ProviderFactory
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        MessageStatusManager $messageManager,
+        StatusManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
         RequestStack $stack,
@@ -168,9 +168,9 @@ class ProviderFactory
      * getMessageManager
      *
      * 16/08/2020 14:40
-     * @return MessageStatusManager
+     * @return StatusManager
      */
-    public static function getMessageManager(): MessageStatusManager
+    public static function getMessageManager(): StatusManager
     {
         return self::$messageManager;
     }
