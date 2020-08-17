@@ -39,7 +39,7 @@ class DepartmentStaff extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var Department|null
@@ -47,12 +47,12 @@ class DepartmentStaff extends AbstractEntity
      * @ORM\JoinColumn(name="department",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $department;
+    private ?Department $department = null;
 
     /**
      * @var Department|null
      */
-    private static $dept;
+    private static ?Department $dept = null;
 
     /**
      * @var Staff|null
@@ -96,10 +96,16 @@ class DepartmentStaff extends AbstractEntity
     }
 
     /**
+     * getDepartment
+     *
+     * 17/08/2020 15:26
      * @return Department|null
      */
     public function getDepartment(): ?Department
     {
+        if (self::$dept !== $this->department) {
+            self::$dept = $this->department;
+        }
         return $this->department;
     }
 

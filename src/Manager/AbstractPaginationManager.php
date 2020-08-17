@@ -558,6 +558,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * AddElementRoute.
      *
      * @param string|array $addElementRoute
+     * @param string|null $addElementPrompt
      * @return AbstractPaginationManager
      */
     public function setAddElementRoute($addElementRoute, ?string $addElementPrompt = null): AbstractPaginationManager
@@ -652,10 +653,12 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @param array|string|null $refreshRoute
      * @return AbstractPaginationManager
      */
-    public function setRefreshRoute($refreshRoute): AbstractPaginationManager
+    public function setRefreshRoute($refreshRoute, ?string $refreshPrompt = null): AbstractPaginationManager
     {
         $refreshRoute = is_string($refreshRoute) ? ['url' => $refreshRoute] : $refreshRoute;
         $this->refreshRoute = self::resolveRoute($refreshRoute);
+        if ($refreshPrompt !== null) {
+            $this->getRow()->setRefreshPrompt($refreshPrompt);      }
         return $this;
     }
 

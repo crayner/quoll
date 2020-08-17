@@ -65,6 +65,11 @@ class PaginationRow
     private $highlight = false;
 
     /**
+     * @var string
+     */
+    private string $refreshPrompt = 'Refresh';
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -188,7 +193,7 @@ class PaginationRow
             'lastPage' => TranslationHelper::translate('Last Page', [], 'messages'),
             'addElement' => $this->getAddElement(),
             'returnPrompt' => TranslationHelper::translate('Return', [], 'messages'),
-            'refreshPrompt' => TranslationHelper::translate('Refresh', [], 'messages'),
+            'refreshPrompt' => $this->getRefreshPrompt(),
             'search' => $this->isSearch(),
             'filterGroups' => $this->isFilterGroups(),
             'defaultFilter' => $this->getDefaultFilter(),
@@ -339,6 +344,24 @@ class PaginationRow
         $resolver->setAllowedValues('className', ['error','warning','success','info','primary']);
 
         $this->highlight[] = $resolver->resolve($highlight);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefreshPrompt(): string
+    {
+        return $this->refreshPrompt !== 'Refresh' ? TranslationHelper::translate($this->refreshPrompt) : TranslationHelper::translate($this->refreshPrompt, [], 'messages');
+    }
+
+    /**
+     * @param string $refreshPrompt
+     * @return PaginationRow
+     */
+    public function setRefreshPrompt(string $refreshPrompt): PaginationRow
+    {
+        $this->refreshPrompt = $refreshPrompt;
         return $this;
     }
 }

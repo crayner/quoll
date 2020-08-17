@@ -94,7 +94,7 @@ class DepartmentStaffType extends AbstractType
                         'choice_label' => 'fullNameReversed',
                         'placeholder' => 'Type a name...',
                         'data' => $options['data']->getStaff() ?? null,
-                        'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQueryBuilder(),
+                        'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                     ]
                 )
             ;
