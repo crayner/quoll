@@ -18,6 +18,7 @@ namespace App\Modules\RollGroup\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\MessageStatusManager;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\RollGroup\Form\RollGroupType;
 use App\Modules\RollGroup\Pagination\RollGroupListPagination;
@@ -25,7 +26,6 @@ use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,13 +40,14 @@ class ManageController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 17/08/2020 12:27
      * @param RollGroupListPagination $pagination
-     * @return JsonResponse
      * @Route("/roll/group/list/",name="roll_group_list")
      * @Route("/roll/group/list/",name="roll_group_catalogue")
      * @Route("/roll/group/list/",name="report_generate")
      * @IsGranted("ROLE_ROUTE")
-     * 17/06/2020 12:30
+     * @return JsonResponse
      */
     public function list(RollGroupListPagination $pagination)
     {
@@ -54,12 +55,15 @@ class ManageController extends AbstractPageController
         $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['academicYear' => $academicYear],['name' => 'ASC']);
 
         $pagination->setCurrentUser($this->getUser())
+            ->setAddElementRoute($this->generateUrl('roll_group_add'))
             ->setContent($rollGroups);
 
         $pageHeader = new PageHeader('Roll Groups');
         $pageHeader->setContent(TranslationHelper::translate('This page shows all roll groups in the current academic year.', [], 'Roll Group'))
             ->setContentAttr(['className' => 'info']);
+
         return $this->getPageManager()
+            ->setMessages($this->getMessageStatusManager()->getMessageArray())
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs('Roll Groups')
             ->setUrl($this->generateUrl('roll_group_list'))
@@ -69,16 +73,18 @@ class ManageController extends AbstractPageController
                 ]
             );
     }
+
     /**
      * edit
+     *
+     * 17/08/2020 12:27
+     * @param RollGroup|null $rollGroup
      * @Route("/roll/group/{rollGroup}/edit/", name="roll_group_edit")
      * @Route("/roll/group/add/", name="roll_group_add")
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @param RollGroup|null $rollGroup
      * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, ?RollGroup $rollGroup = null)
+    public function edit(?RollGroup $rollGroup = null)
     {
         if (!$rollGroup instanceof RollGroup) {
             $rollGroup = new RollGroup();
@@ -89,35 +95,32 @@ class ManageController extends AbstractPageController
         }
 
         $form = $this->createForm(RollGroupType::class, $rollGroup, ['action' => $action]);
+        $manager = $this->getContainerManager();
 
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
-            $data = [];
-            $data['status'] = 'success';
             if ($form->isValid()) {
                 $id = $rollGroup->getId();
                 $provider = ProviderFactory::create(RollGroup::class);
                 $year = AcademicYearHelper::getCurrentAcademicYear();
                 $year = ProviderFactory::getRepository(AcademicYear::class)->find($year->getId());
                 $rollGroup->setAcademicYear($year);
-                $data = $provider->persistFlush($rollGroup, $data);
-                if ($data['status'] === 'success') {
+                $provider->persistFlush($rollGroup);
+                if ($this->getMessageStatusManager()->isStatusSuccess()) {
                     $form = $this->createForm(RollGroupType::class, $rollGroup, ['action' => $this->generateUrl('roll_group_edit', ['rollGroup' => $rollGroup->getId()])]);
                     if ($id !== $rollGroup->getId()) {
-                        $data['status'] = 'redirect';
-                        $data['redirect'] = $this->generateUrl('roll_group_edit', ['rollGroup' => $rollGroup->getId()]);
-                        $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage(true));
+                        $this->getMessageStatusManager()
+                            ->setReDirect($this->generateUrl('roll_group_edit', ['rollGroup' => $rollGroup->getId()]))
+                            ->convertToFlash();
                     }
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
+                $this->getMessageStatusManager()->error(MessageStatusManager::INVALID_INPUTS);
             }
 
             $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->getMessageStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
         }
 
         $manager->setReturnRoute($this->generateUrl('roll_group_list'))
@@ -133,19 +136,18 @@ class ManageController extends AbstractPageController
 
     /**
      * delete
-     * @Route("/roll/group/{rollGroup}/delete/", name="roll_group_delete")
-     * @IsGranted("ROLE_ROUTE")
+     *
+     * 17/08/2020 12:28
      * @param RollGroup $rollGroup
      * @param RollGroupListPagination $pagination
+     * @Route("/roll/group/{rollGroup}/delete/", name="roll_group_delete")
+     * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
     public function delete(RollGroup $rollGroup, RollGroupListPagination $pagination)
     {
-        $provider = ProviderFactory::create(RollGroup::class);
-
-        $provider->delete($rollGroup);
-
-        $data = $provider->getMessageManager()->pushToJsonData();
+       ProviderFactory::create(RollGroup::class)
+            ->delete($rollGroup);
 
         return $this->list($pagination);
     }

@@ -23,6 +23,7 @@ use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Util\TranslationHelper;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class RollGroupListPagination
@@ -121,10 +122,12 @@ class RollGroupListPagination  extends AbstractPaginationManager
 
     /**
      * setCurrentUser
-     * @param SecurityUser $currentUser
-     * @return RollGroupListPagination
+     *
+     * 17/08/2020 12:22
+     * @param UserInterface $currentUser
+     * @return $this
      */
-    public function setCurrentUser(SecurityUser $currentUser): RollGroupListPagination
+    public function setCurrentUser(UserInterface $currentUser): RollGroupListPagination
     {
         $this->currentUser = $currentUser;
         return $this;

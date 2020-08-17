@@ -14,7 +14,6 @@
 namespace App\Modules\RollGroup\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Manager\Traits\EntityGlobals;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\AcademicYear;
@@ -56,8 +55,6 @@ class RollGroup extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     use EntityGlobals;
 
     /**
@@ -66,28 +63,28 @@ class RollGroup extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
-    private $academicYear;
+    private ?AcademicYear $academicYear;
 
     /**
      * @var string|null
      * @ORM\Column(length=10)
      * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=5, name="abbreviation")
      * @Assert\NotBlank()
      */
-    private $abbreviation;
+    private ?string $abbreviation;
 
     /**
      * @var Staff|null
@@ -95,14 +92,14 @@ class RollGroup extends AbstractEntity
      * @ORM\JoinColumn(name="tutor1",referencedColumnName="id",nullable=true)
      * @Assert\NotBlank()
      */
-    private $tutor;
+    private ?Staff $tutor;
 
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor2",referencedColumnName="id",nullable=true)
      */
-    private $tutor2;
+    private  $tutor2;
 
     /**
      * @var Staff|null
@@ -148,11 +145,10 @@ class RollGroup extends AbstractEntity
     private $nextRollGroup;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $attendance = 'Y';
+    private bool $attendance = true;
 
     /**
      * @var string|null
@@ -396,20 +392,26 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * isAttendance
+     *
+     * 17/08/2020 12:18
+     * @return bool
      */
-    public function getAttendance(): ?string
+    public function isAttendance(): bool
     {
-        return $this->attendance;
+        return (bool)$this->attendance;
     }
 
     /**
-     * @param string|null $attendance
-     * @return RollGroup
+     * setAttendance
+     *
+     * 17/08/2020 12:18
+     * @param bool $attendance
+     * @return $this
      */
-    public function setAttendance(?string $attendance): RollGroup
+    public function setAttendance(bool $attendance): RollGroup
     {
-        $this->attendance = self::checkBoolean($attendance);
+        $this->attendance = $attendance;
         return $this;
     }
 
@@ -505,7 +507,6 @@ class RollGroup extends AbstractEntity
      */
     public function getFormatTutors(string $style = 'Formal'): string
     {
-        $result = '';
         $result = array_map(function (Staff $staff) use ($style) {
             return $style === 'Reversed' ? $staff->getFullNameReversed() : $staff->getFullName();
         }, $this->getTutors());
