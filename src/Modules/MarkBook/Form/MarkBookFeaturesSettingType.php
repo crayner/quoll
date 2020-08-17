@@ -14,7 +14,6 @@
  * Date: 14/01/2020
  * Time: 17:09
  */
-
 namespace App\Modules\MarkBook\Form;
 
 use App\Form\Type\HeaderType;
@@ -24,7 +23,6 @@ use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\SettingsType;
-use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,7 +34,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package App\Modules\MarkBook\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class MarkBookSettingType extends AbstractType
+class MarkBookFeaturesSettingType extends AbstractType
 {
     /**
      * buildForm
@@ -123,101 +121,6 @@ class MarkBookSettingType extends AbstractType
                 [
                     'label' => 'Submit',
                     'panel' => 'Features',
-                    'translation_domain' => 'messages',
-                ]
-            )
-            ->add('interfaceHeader', HeaderType::class,
-                [
-                    'label' => 'Interface',
-                    'panel' => 'Interface',
-                ]
-            )
-            ->add('interfaceSettings', SettingsType::class,
-                [
-                    'settings' => [
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'markBookType',
-                            'entry_type' => SimpleArrayType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'enableGroupByTerm',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'attainmentAlternativeName',
-                            'entry_type' => TextType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'attainmentAlternativeNameAbrev',
-                            'entry_type' => TextType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'effortAlternativeName',
-                            'entry_type' => TextType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'effortAlternativeNameAbrev',
-                            'entry_type' => TextType::class,
-                        ],
-                    ],
-                    'panel' => 'Interface',
-                ]
-            )
-            ->add('submit2', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'panel' => 'Interface',
-                    'translation_domain' => 'messages',
-                ]
-            )
-            ->add('warningsHeader', HeaderType::class,
-                [
-                    'label' => 'Warnings',
-                    'panel' => 'Warnings',
-                ]
-            )
-            ->add('warningsSettings', SettingsType::class,
-                [
-                    'settings' => [
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'showStudentAttainmentWarning',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'showStudentEffortWarning',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'showParentAttainmentWarning',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'showParentEffortWarning',
-                            'entry_type' => ToggleType::class,
-                        ],
-                        [
-                            'scope' => 'Mark Book',
-                            'name' => 'personalisedWarnings',
-                            'entry_type' => ToggleType::class,
-                        ],
-                    ],
-                    'panel' => 'Warnings',
-                ]
-            )
-            ->add('submit3', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                    'panel' => 'Warnings',
                     'translation_domain' => 'messages',
                 ]
             )

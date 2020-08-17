@@ -21,7 +21,10 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\MarkBook\Form\MarkBookSettingType;
+use App\Manager\StatusManager;
+use App\Modules\MarkBook\Form\MarkBookFeaturesSettingType;
+use App\Modules\MarkBook\Form\MarkBookInterfaceSettingType;
+use App\Modules\MarkBook\Form\MarkBookWarningsSettingType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -38,58 +41,119 @@ class MarkBookController extends AbstractPageController
 {
     /**
      * settings
-     * @param ContainerManager $manager
+     *
+     * 18/08/2020 08:52
      * @param string $tabName
-     * @return JsonResponse
-     * @Route("/mark/book/view",name="mark_book_view")
-     * @Route("/mark/book/settings/{tabName}", name="mark_book_settings")
-     * @Route("/mark/book/settings/{tabName}", name="mark_book_configure")
+     * @Route("/mark/book/view/{tabName}",name="mark_book_view",methods={"GET"})
+     * @Route("/mark/book/settings/{tabName}", name="mark_book_settings",methods={"GET"})
+     * @Route("/mark/book/settings/{tabName}", name="mark_book_configure",methods={"GET"})
      * @IsGranted("ROLE_ROUTE")
-     * 2/06/2020 13:46
+     * @return JsonResponse
      */
-    public function settings(ContainerManager $manager, string $tabName = 'Features')
+    public function settings(string $tabName = 'Features')
     {
-        $request = $this->getRequest();
-
-        $settingProvider = SettingFactory::getSettingManager();
-        $settingProvider->getSettingsByScope('Mark Book');
         $container = new Container($tabName);
-
-        $form = $this->createForm(MarkBookSettingType::class, null, ['action' => $this->generateUrl('mark_book_settings')]);
-
-        if ($request->getContent() !== '') {
-            $data = [];
-            $data['status'] = 'success';
-            try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form,$request);
-                $form = $this->createForm(MarkbookSettingType::class, null, ['action' => $this->generateUrl('mark_book_settings')]);
-            } catch (\Exception $e) {
-                if ($_ENV['APP_ENV'] === 'dev') {
-                    throw $e;
-                }
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-            }
-
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
-        }
-
-        $panel = new Panel('Features','MarkBook', new Section('form', 'single'));
+        $panel = new Panel('Features','MarkBook', new Section('form', 'Features'));
+        $form = $this->createForm(MarkBookFeaturesSettingType::class, null, ['action' => $this->generateUrl('mark_book_features')]);
         $container->setTranslationDomain('MarkBook')
-            ->addForm('single', $form->createView())
+            ->addForm('Features', $form->createView())
             ->addPanel($panel);
-        $panel = new Panel('Interface','MarkBook', new Section('form', 'single'));
-        $container->addPanel($panel);
-        $panel = new Panel('Warnings','MarkBook', new Section('form', 'single'));
-        $container->addPanel($panel);
+        $panel = new Panel('Interface','MarkBook', new Section('form', 'Interface'));
+        $form = $this->createForm(MarkBookInterfaceSettingType::class, null, ['action' => $this->generateUrl('mark_book_interface')]);
+        $container->addPanel($panel)
+            ->addForm('Interface', $form->createView());
+        $panel = new Panel('Warnings','MarkBook', new Section('form', 'Warnings'));
+        $form = $this->createForm(MarkBookWarningsSettingType::class, null, ['action' => $this->generateUrl('mark_book_warnings')]);
+        $container->addPanel($panel)
+            ->addForm('Warnings', $form->createView());
 
         // Finally Finished
-        $manager->addContainer($container);
-
+        $this->getContainerManager()->addContainer($container);
         return $this->getPageManager()->createBreadcrumbs('Mark Book Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(['containers' => $this->getContainerManager()->getBuiltContainers()]);
     }
 
+    /**
+     * saveFeatures
+     *
+     * 18/08/2020 08:37
+     * @Route("/mark/book/features/settings/", name="mark_book_features",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveFeatures()
+    {
+        $manager = SettingFactory::getSettingManager();
+        $manager->getSettingsByScope('Mark Book');
+
+        $form = $this->createForm(MarkBookFeaturesSettingType::class, null, ['action' => $this->generateUrl('mark_book_features')]);
+
+        try {
+            $manager->handleSettingsForm($form,$this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess()) {
+                $form = $this->createForm(MarkBookFeaturesSettingType::class, null, ['action' => $this->generateUrl('mark_book_features')]);
+            }
+        } catch (\Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
+
+    /**
+     * saveInterface
+     *
+     * 18/08/2020 08:37
+     * @Route("/mark/book/interface/settings/", name="mark_book_interface",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveInterface()
+    {
+        $manager = SettingFactory::getSettingManager();
+        $manager->getSettingsByScope('Mark Book');
+
+        $form = $this->createForm(MarkBookInterfaceSettingType::class, null, ['action' => $this->generateUrl('mark_book_interface')]);
+
+        try {
+            $manager->handleSettingsForm($form,$this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess()) {
+                $form = $this->createForm(MarkBookInterfaceSettingType::class, null, ['action' => $this->generateUrl('mark_book_interface')]);
+            }
+        } catch (\Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
+
+    /**
+     * saveInterface
+     *
+     * 18/08/2020 08:37
+     * @Route("/mark/book/warnings/settings/", name="mark_book_warnings",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveWarnings()
+    {
+        $manager = SettingFactory::getSettingManager();
+        $manager->getSettingsByScope('Mark Book');
+
+        $form = $this->createForm(MarkBookWarningsSettingType::class, null, ['action' => $this->generateUrl('mark_book_warnings')]);
+
+        try {
+            $manager->handleSettingsForm($form,$this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess()) {
+                $form = $this->createForm(MarkBookWarningsSettingType::class, null, ['action' => $this->generateUrl('mark_book_warnings')]);
+            }
+        } catch (\Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
 }

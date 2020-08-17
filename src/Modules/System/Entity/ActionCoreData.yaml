@@ -854,6 +854,9 @@
     routeList:
         arrayField:
             - mark_book_settings
+            - mark_book_features
+            - mark_book_warnings
+            - mark_book_interface
     entryRoute: mark_book_settings
     entrySidebar: true
     menuShow: true
