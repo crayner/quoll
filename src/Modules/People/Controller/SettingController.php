@@ -17,114 +17,115 @@
 namespace App\Modules\People\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\People\Form\PeopleSettingsType;
-use App\Modules\People\Form\UpdaterSettingsType;
-use App\Modules\People\Manager\RequiredUpdates;
+use App\Manager\StatusManager;
+use App\Modules\People\Form\PeopleDayTypeSettingsType;
+use App\Modules\People\Form\PeopleFieldValueSettingsType;
+use App\Modules\People\Form\PeoplePrivacyDataSettingsType;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SettingController
  * @package App\Modules\People\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class SettingController extends AbstractPageController
 {
     /**
      * peopleSettings
+     *
+     * 19/08/2020 09:20
+     * @param string|null $tabName
      * @Route("/people/settings/{tabName}",name="people_settings")
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @param string|null $tabName
      * @return JsonResponse
      */
-    public function peopleSettings(ContainerManager $manager, ?string $tabName = 'Field Values')
+    public function peopleSettings(?string $tabName = 'Field Values')
     {
-        $provider = SettingFactory::getSettingManager();
-        $request = $this->getRequest();
-
-        // System Settings
-        $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings', ['tabName' => $tabName])]);
-
-        if ($request->getContent() !== '') {
-
-            $data = [];
-            try {
-                $data['errors'] = $provider->handleSettingsForm($form, $request);
-                if ('success' === $provider->getStatus())
-                    $form = $this->createForm(PeopleSettingsType::class, null, ['action' => $this->generateUrl('people_settings', ['tabName' => $tabName])]);
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([],true);
-            }
-
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
-        }
-
-        $section = new Section('form', 'single');
+        $form = $this->createForm(PeopleFieldValueSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_field_value')]);
         $container = new Container($tabName);
-        $panel = new Panel('Field Values', 'People', $section);
-        $container->addPanel($panel);
-        $panel = new Panel('Privacy / Data Options', 'People', $section);
-        $container->addPanel($panel);
-        $panel = new Panel('Day Type Options', 'People', $section);
-        $container->addPanel($panel)->addForm('single', $form->createView());
-
-        $manager->addContainer($container);
+        $panel = new Panel('Field Values', 'People', new Section('form', 'Field Values'));
+        $container->addForm('Field Values', $form->createView())
+            ->addPanel($panel);
+        $form = $this->createForm(PeoplePrivacyDataSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_privacy_data')]);
+        $panel = new Panel('Privacy / Data Options', 'People', new Section('form', 'Privacy / Data Options'));
+        $container->addForm('Privacy / Data Options', $form->createView())
+            ->addPanel($panel);
+        $form = $this->createForm(PeopleDayTypeSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_day_type')]);
+        $panel = new Panel('Day Type Options', 'People', new Section('form', 'Day Type Options'));
+        $container->addForm('Day Type Options', $form->createView())
+            ->addPanel($panel);
 
         return $this->getPageManager()->createBreadcrumbs('People Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(['containers' => $this->getContainerManager()->addContainer($container)->getBuiltContainers()]);
     }
 
     /**
-     * updaterSettings
-     * @Route("/updater/settings/", name="updater_settings")
+     * saveFieldValueSettings
+     *
+     * 19/08/2020 09:16
+     * @Route("/people/field/value/settings/",name="people_settings_save_field_value")
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
-    public function updaterSettings(ContainerManager $manager)
+    public function saveFieldValueSettings()
     {
-        $form = $this->createForm(UpdaterSettingsType::class, null, ['action' => $this->generateUrl('updater_settings')]);
-        $request = $this->getRequest();
-        $required = new RequiredUpdates();
-
-        if ($request->getContent() !== '') {
-            $settingProvider = SettingFactory::getSettingManager();
-            $data = [];
-            try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                if ('success' === $settingProvider->getStatus()) {
-                    $form = $this->createForm(UpdaterSettingsType::class, null, ['action' => $this->generateUrl('updater_settings')]);
-                }
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage();
-            }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+        $form = $this->createForm(PeopleFieldValueSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_field_value')]);
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->isStatusSuccess())
+                $form = $this->createForm(PeopleFieldValueSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_field_value')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->singlePanel($form->createView())->getFormFromContainer()]);
+    }
 
-        $container = new Container();
-        $panel = new Panel('Settings', 'People', new Section('form', 'Settings'));
-        $container->addPanel($panel);
-        $container->addForm('Settings', $form->createView());
-        $panel = new Panel('Required Data', 'People', new Section('special', $required->toArray()));
-        $container->addPanel($panel);
-        $manager->addContainer($container);
+    /**
+     * savePrivacyDataSettings
+     *
+     * 19/08/2020 09:17
+     * @Route("/people/privacy/data/settings/",name="people_settings_save_privacy_data")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function savePrivacyDataSettings()
+    {
+        $form = $this->createForm(PeoplePrivacyDataSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_privacy_data')]);
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->isStatusSuccess())
+                $form = $this->createForm(PeoplePrivacyDataSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_privacy_data')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->singlePanel($form->createView())->getFormFromContainer()]);
+    }
 
-        return $this->getPageManager()
-            ->createBreadcrumbs('Data Updater Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+    /**
+     * saveDayTypeSettings
+     *
+     * 19/08/2020 09:18
+     * @Route("/people/day/type/settings/",name="people_settings_save_day_type")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveDayTypeSettings()
+    {
+        $form = $this->createForm(PeopleDayTypeSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_day_type')]);
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->isStatusSuccess())
+                $form = $this->createForm(PeopleDayTypeSettingsType::class, null, ['action' => $this->generateUrl('people_settings_save_day_type')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->singlePanel($form->createView())->getFormFromContainer()]);
     }
 }
