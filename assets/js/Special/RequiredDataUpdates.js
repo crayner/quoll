@@ -49,6 +49,7 @@ export default class RequiredDataUpdates extends Component {
         let hidden = []
         let loop = 0
         let count = 0
+        let total = Object.keys(settings).length
         Object.keys(settings).map(name => {
             let row = []
             let first = settings[name][Object.keys(settings[name])[0]]
@@ -77,11 +78,15 @@ export default class RequiredDataUpdates extends Component {
             }
             elements.push(<tr key={loop++}>{row}</tr>)
             count++
+            total--
             if (count > 9) {
                 count = 0
                 elements = this.renderSubmitButton(elements, loop)
                 loop++
-                elements.push(this.headerRow(loop))
+                if (total > 0) {
+                    elements.push(this.headerRow(loop))
+                    elements.push(<tr key={loop++}><td colSpan={'5'}><Messages messages={this.state.errors} translate={this.functions.translate}/></td></tr>)
+                }
                 loop++
             }
         })

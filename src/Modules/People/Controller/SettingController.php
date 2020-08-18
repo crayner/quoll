@@ -127,19 +127,4 @@ class SettingController extends AbstractPageController
             ->createBreadcrumbs('Data Updater Settings')
             ->render(['containers' => $manager->getBuiltContainers()]);
     }
-
-    /**
-     * storeRequiredDataUpdates
-     * @Route("/updater/store/required/")
-     */
-    public function storeRequiredDataUpdates()
-    {
-        $content = json_decode($this->getRequest()->getContent(), true);
-        $required = new RequiredUpdates();
-        $data = $required->handleRequest($content['requiredDataUpdates']);
-        $data = ErrorMessageHelper::getSuccessMessage($data, true);
-        $data['settings'] = $required->toArray();
-        return new JsonResponse($data);
-
-    }
 }

@@ -17,6 +17,7 @@
 namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
+use App\Manager\StatusManager;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
@@ -43,8 +44,8 @@ class RequiredUpdates implements SpecialInterface {
         'dob'                    => ['label' => 'Date of Birth', 'default' => ''],
         'email'                  => ['label' => 'Email', 'default' => ''],
         'emailAlternate'         => ['label' => 'Alternate Email', 'default' => ''],
-        'address1'               => ['label' => 'Residential Address', 'default' => 'required'],
-        'address2'               => ['label' => 'Postal Address', 'default' => ''],
+        'residentialAddress'     => ['label' => 'Residential Address', 'default' => 'required'],
+        'postalAddress'          => ['label' => 'Postal Address', 'default' => ''],
         'phone1'                 => ['label' => 'Phone 1', 'default' => ''],
         'phone2'                 => ['label' => 'Phone 2', 'default' => ''],
         'phone3'                 => ['label' => 'Phone 3', 'default' => ''],
@@ -66,8 +67,14 @@ class RequiredUpdates implements SpecialInterface {
         'employer'               => ['label' => 'Employer', 'default' => ''],
         'jobTitle'               => ['label' => 'Job Title', 'default' => ''],
         'vehicleRegistration'    => ['label' => 'Vehicle Registration', 'default' => ''],
-        'emergencyContact1'      => ['label' => 'Emergency Contact 1', 'default' => ''],
-        'emergencyContact2'      => ['label' => 'Emergency Contact 2', 'default' => ''],
+        'emergency1Contact'      => ['label' => '1st Emergency Contact', 'default' => ''],
+        'emergency1Phone1'       => ['label' => '1st Emergency Contact Personal Phone', 'default' => ''],
+        'emergency1Phone2'       => ['label' => '1st Emergency Contact Additional Phone', 'default' => ''],
+        'emergency1Relationship' => ['label' => '1st Emergency Contact Relationship', 'default' => ''],
+        'emergency2Contact'      => ['label' => '2nd Emergency Contact', 'default' => ''],
+        'emergency2Phone1'       => ['label' => '2nd Emergency Contact Personal Phone', 'default' => ''],
+        'emergency2Phone2'       => ['label' => '2nd Emergency Contact Additional Phone', 'default' => ''],
+        'emergency2Relationship' => ['label' => '2nd Emergency Contact Relationship', 'default' => ''],
     ];
 
     /**
@@ -76,11 +83,17 @@ class RequiredUpdates implements SpecialInterface {
     private $settings;
 
     /**
-     * RequiredUpdates constructor.
-     * @param array $settings
+     * @var StatusManager
      */
-    public function __construct()
+    private StatusManager $statusManager;
+
+    /**
+     * RequiredUpdates constructor.
+     * @param StatusManager $statusManager
+     */
+    public function __construct(StatusManager $statusManager)
     {
+        $this->statusManager = $statusManager;
         $this->settings = SettingFactory::getSettingManager()->get( 'People', 'personalDataUpdaterRequiredFields');
     }
 
@@ -167,27 +180,33 @@ class RequiredUpdates implements SpecialInterface {
 
         try {
             $updaterData = $resolver->resolve($updaterData);
+            $this->getStatusManager()->success();
         } catch (InvalidOptionsException $e) {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        foreach($updaterData as $q=>$w)
-        {
-            $resolver->clear();
-            $resolver->setRequired(array_keys($this->getSettingDefaults(false)));
-            try {
-                $updaterData[$q] = $resolver->resolve($w);
-            } catch (InvalidOptionsException $e) {
-                $data = ErrorMessageHelper::getInvalidInputsMessage($data);
+        if ($this->getStatusManager()->isStatusSuccess()) {
+            foreach ($updaterData as $q => $w) {
+                $resolver->clear();
+                $resolver->setRequired(array_keys($this->getSettingDefaults(false)));
+                try {
+                    $updaterData[$q] = $resolver->resolve($w);
+                } catch (InvalidOptionsException $e) {
+                    $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+                }
+
+                foreach ($updaterData[$q] as $e => $r) {
+                    if (!in_array($r, $this->getOptions())) {
+                        $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+                    }
+                    if ($r === '') {
+                        $updaterData[$q][$e] = null;
+                    }
+                }
             }
 
-            foreach($updaterData[$q] as $e=>$r) {
-                if (!in_array($r, $this->getOptions()))
-                    $data = ErrorMessageHelper::getInvalidInputsMessage($data);
-            }
+            $this->setSettings($updaterData);
+            SettingFactory::getSettingManager()->set('People', 'personalDataUpdaterRequiredFields', $this->getSettings());
         }
-
-        $this->setSettings($updaterData);
-        SettingFactory::getSettingManager()->setSettingByScope('People', 'personalDataUpdaterRequiredFields', serialize($this->getSettings()));
         return $data;
     }
 
@@ -242,4 +261,13 @@ class RequiredUpdates implements SpecialInterface {
         }
         return $result;
     }
+
+    /**
+     * @return StatusManager
+     */
+    public function getStatusManager(): StatusManager
+    {
+        return $this->statusManager;
+    }
+
 }
