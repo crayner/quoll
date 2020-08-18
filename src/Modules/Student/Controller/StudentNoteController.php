@@ -14,19 +14,17 @@
  * Date: 3/05/2020
  * Time: 10:56
  */
-
 namespace App\Modules\Student\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Student\Entity\StudentNoteCategory;
 use App\Modules\Student\Form\NoteCategoryType;
-use App\Modules\Student\Pagination\StudentNoteCategoryPagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,60 +34,70 @@ use Symfony\Component\Routing\Annotation\Route;
 class StudentNoteController extends AbstractPageController
 {
     /**
-     * noteCategory
+     * noteCategoryEdit
+     *
+     * 18/08/2020 15:38
+     * @param StudentNoteCategory|null $category
      * @Route("/student/note/category/add", name="student_note_category_add")
      * @Route("/student/note/{category}/category/edit/", name="student_note_category_edit")
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @param StudentNoteCategory|null $category
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
-    public function noteCategoryEdit(ContainerManager $manager, ?StudentNoteCategory $category = null)
+    public function noteCategoryEdit(?StudentNoteCategory $category = null)
     {
         $category = $category ?: new StudentNoteCategory();
-        $request = $this->getRequest();
 
         $route = intval($category->getId()) > 0 ? $this->generateUrl('student_note_category_edit', ['category' => $category->getId()]) : $this->generateUrl('student_note_category_add');
 
         $form = $this->createForm(NoteCategoryType::class, $category, ['action' => $route]);
 
-        if ($request->getContent() !== '') {
-            $content = json_decode($request->getContent(), true);
+        if ($this->getRequest()->getContent() !== '') {
+            $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $category->getId();
-                $provider = ProviderFactory::create(StudentNoteCategory::class);
-                $data = $provider->persistFlush($category, []);
-                if ($id !== $category->getId() && $data['status'] === 'success')
+               ProviderFactory::create(StudentNoteCategory::class)
+                   ->persistFlush($category);
+                if ($id !== $category->getId() && $this->getStatusManager()->isStatusSuccess())
                     $form = $this->createForm(NoteCategoryType::class, $category, ['action' => $this->generateUrl('student_note_category_edit', ['category' => $category->getId()])]);
             } else {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([],true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->setReturnRoute($this->generateUrl('student_settings'))
-                ->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('student_settings'))
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer()
+                ]
+            );
         }
 
-        $manager->setReturnRoute($this->generateUrl('student_settings'))
-            ->singlePanel($form->createView());
-
-        return $this->getPageManager()->createBreadcrumbs($category->getId()> 0 ? 'Edit Student Note Category' : 'Add Student Note Category',
-            [
-                ['uri' => 'student_settings', 'name' => 'Student Settings'],
-            ]
-        )
-            ->render(['containers' => $manager->getBuiltContainers()]);
+        return $this->getPageManager()->createBreadcrumbs($category->getId() !== null ? 'Edit Student Note Category' : 'Add Student Note Category',
+                [
+                    ['uri' => 'student_settings', 'name' => 'Student Settings'],
+                ]
+            )
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('student_settings'))
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers()
+                ]
+            )
+        ;
     }
 
     /**
      * noteCategoryDelete
+     *
+     * 18/08/2020 15:38
+     * @param StudentNoteCategory $category
      * @Route("/student/note/{category}/category/delete/", name="student_note_category_delete")
      * @IsGranted("ROLE_ROUTE")
-     * @param StudentNoteCategory $category
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function noteCategoryDelete(StudentNoteCategory $category)
     {
@@ -98,14 +106,14 @@ class StudentNoteController extends AbstractPageController
                 $em = ProviderFactory::getEntityManager();
                 $em->remove($category);
                 $em->flush();
-                $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                $this->getStatusManager()->success();
             } catch (\PDOException | PDOException $e) {
-                $this->addFlash('error', ErrorMessageHelper::onlyDatabaseErrorMessage());
+                $this->getStatusManager()->error(StatusManager::DATABASE_ERROR);
             }
         } else {
-            $this->addFlash('warning', ErrorMessageHelper::onlyInvalidInputsMessage());
+            $this->getStatusManager()->warning(StatusManager::INVALID_INPUTS);
         }
-
+        $this->getStatusManager()->convertToFlash();
         return $this->forward(SettingController::class.'::studentSettings');
     }
 }

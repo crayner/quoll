@@ -541,6 +541,9 @@
             - student_note_category_edit
             - student_note_category_add
             - student_note_category_delete
+            - student_settings_notes
+            - student_settings_alert
+            - student_settings_miscellaneous
     entryRoute: student_settings
     entrySidebar: true
     menuShow: true
@@ -586,6 +589,7 @@
     routeList:
         arrayField:
             - updater_settings
+            - updater_settings_store
     entryRoute: updater_settings
     entrySidebar: true
     menuShow: true

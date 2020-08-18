@@ -15,6 +15,7 @@ namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\Person;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,46 +38,46 @@ class StudentNote extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id", nullable=false)
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var StudentNoteCategory|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\StudentNoteCategory")
      * @ORM\JoinColumn(name="student_note_category",referencedColumnName="id")
      */
-    private $studentNoteCategory;
+    private ?StudentNoteCategory $studentNoteCategory;
 
     /**
      * @var string|null
      * @ORM\Column(length=50)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @var string|null
      * @ORM\Column(type="text")
      */
-    private $note;
+    private ?string $note;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person_creator", referencedColumnName="id", nullable=false)
      */
-    private $creator;
+    private ?Person $creator;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    private $timestamp;
+    private ?DateTimeImmutable $timestamp;
 
     /**
      * @return string|null
@@ -189,18 +190,18 @@ class StudentNote extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getTimestamp(): ?\DateTimeImmutable
+    public function getTimestamp(): ?DateTimeImmutable
     {
         return $this->timestamp;
     }
 
     /**
-     * @param \DateTimeImmutable|null $timestamp
+     * @param DateTimeImmutable|null $timestamp
      * @return StudentNote
      */
-    public function setTimestamp(?\DateTimeImmutable $timestamp): StudentNote
+    public function setTimestamp(?DateTimeImmutable $timestamp): StudentNote
     {
         $this->timestamp = $timestamp;
         return $this;
@@ -214,35 +215,5 @@ class StudentNote extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [];
-    }
-
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__StudentNote` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `title` CHAR(50) NOT NULL,
-                    `note` longtext NOT NULL,
-                    `timestamp` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
-                    `person` CHAR(36) DEFAULT NULL,
-                    `student_note_category` CHAR(36) DEFAULT NULL,
-                    `person_creator` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `person` (`person`),
-                    KEY `student_note_category` (`student_note_category`),
-                    KEY `person_creator` (`person_creator`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__StudentNote`
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`student_note_category`) REFERENCES `__prefix__StudentNoteCategory` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person_creator`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

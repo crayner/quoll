@@ -14,11 +14,10 @@
  * Date: 3/05/2020
  * Time: 08:59
  */
-
 namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
+use App\Util\StringHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -33,35 +32,32 @@ class StudentNoteCategory extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var string|null
      * @ORM\Column(length=30)
      * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var null|string
      * @ORM\Column(type="text", nullable=true)
      */
-    private $template;
+    private ?string $template;
 
     /**
-     * @var string
-     * @ORM\Column(length=1,options={"default": "Y"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $active;
+    private bool $active = true;
 
     /**
      * StudentNoteCategory constructor.
@@ -114,24 +110,16 @@ class StudentNoteCategory extends AbstractEntity
      */
     public function isActive(): bool
     {
-        return $this->getActive() === 'Y';
+        return $this->active;
     }
 
     /**
-     * @return string
-     */
-    public function getActive(): string
-    {
-        return $this->active = self::checkBoolean($this->active);
-    }
-
-    /**
-     * @param string|null $active
+     * @param bool $active
      * @return StudentNoteCategory
      */
-    public function setActive(?string $active): StudentNoteCategory
+    public function setActive(bool $active): StudentNoteCategory
     {
-        $this->active = self::checkBoolean($active);
+        $this->active = $active;
         return $this;
     }
 
@@ -153,12 +141,19 @@ class StudentNoteCategory extends AbstractEntity
         return $this;
     }
 
+    /**
+     * toArray
+     *
+     * 18/08/2020 15:30
+     * @param string|null $name
+     * @return array
+     */
     public function toArray(?string $name = null): array
     {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-            'active' => self::getYesNo($this->isActive()),
+            'active' => StringHelper::getYesNo($this->isActive()),
             'canDelete' => $this->canDelete(),
         ];
     }
@@ -172,53 +167,14 @@ class StudentNoteCategory extends AbstractEntity
         return !$this->isActive();
     }
 
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__StudentNoteCategory` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(30) NOT NULL,
-                    `template` longtext NULL DEFAULT NULL,
-                    `active` CHAR(1) NOT NULL DEFAULT 'Y',
-                    PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
     /**
      * coreData
-     * @return array|string[]
+     *
+     * 18/08/2020 15:30
+     * @return array
      */
     public function coreData(): array
     {
-        return Yaml::parse("
--
-  name: 'Academic'
-  active: 'Y'
--
-  name: 'Pastoral'
-  template: ''
-  active: 'Y'
--
-  name: 'Behaviour'
-  template: ''
-  active: 'Y'
--
-  name: 'Other'
-  template: ''
-  active: 'Y'
-");
-    }
-
-    /**
-     * getVersion
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
+        return Yaml::parse(file_get_contents(__DIR__ . 'StudentNoteCategoryCoreData.yaml'));
     }
 }

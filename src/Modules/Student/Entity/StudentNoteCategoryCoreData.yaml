@@ -1,0 +1,12 @@
+-
+    name: 'Academic'
+    active: true
+-
+    name: 'Pastoral'
+    active: true
+-
+    name: 'Behaviour'
+    active: true
+-
+    name: 'Other'
+    active: true

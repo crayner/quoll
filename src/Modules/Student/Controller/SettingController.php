@@ -17,17 +17,19 @@
 namespace App\Modules\Student\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Student\Entity\StudentNoteCategory;
-use App\Modules\Student\Form\StudentSettingsType;
+use App\Modules\Student\Form\StudentAlertSettingsType;
+use App\Modules\Student\Form\StudentMiscellaneousSettingsType;
+use App\Modules\Student\Form\StudentNoteSettingsType;
 use App\Modules\Student\Pagination\StudentNoteCategoryPagination;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,19 +42,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class SettingController extends AbstractPageController
 {
     /**
-     * Student Settings
-     * @Route("/student/settings/{tabName}",name="student_settings")
-     * @Route("/student/settings/{tabName}",name="student_settings_people")
-     * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
+     * studentSettings
+     *
+     * 18/08/2020 15:19
      * @param StudentNoteCategoryPagination $pagination
      * @param string $tabName
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/student/settings/{tabName}",name="student_settings",methods={"GET"})
+     * @Route("/student/settings/{tabName}",name="student_settings_people",methods={"GET"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function studentSettings(ContainerManager $manager, StudentNoteCategoryPagination $pagination, string $tabName = 'Categories')
+    public function studentSettings(StudentNoteCategoryPagination $pagination, string $tabName = 'Categories')
     {
-        $settingProvider = SettingFactory::getSettingManager();
-        $request = $this->getRequest();
         $container = new Container($tabName);
 
         $content = ProviderFactory::getRepository(StudentNoteCategory::class)->findBy([], ['name' => 'ASC']);
@@ -63,39 +64,102 @@ class SettingController extends AbstractPageController
         $panel->addSection(new Section('pagination', $pagination));
         $container->addPanel($panel);
 
-        // System Settings
-        $form = $this->createForm(StudentSettingsType::class, null, ['action' => $this->generateUrl('student_settings')]);
+        $form = $this->createForm(StudentNoteSettingsType::class, null, ['action' => $this->generateUrl('student_settings_notes')]);
+        $panel = new Panel('Notes', 'Student', new Section('form', 'Notes'));
+        $container->addPanel($panel)
+            ->addForm('Notes', $form->createView());
 
-        if ($request->getContent() !== '') {
-            $data = [];
-            try {
-                $data['errors'] = $settingProvider->handleSettingsForm($form, $request);
-                if ('success' === $settingProvider->getStatus())
-                    $form = $this->createForm(StudentSettingsType::class, null, ['action' => $this->generateUrl('student_settings')]);
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
-            }
+        $form = $this->createForm(StudentAlertSettingsType::class, null, ['action' => $this->generateUrl('student_settings_alert')]);
+        $panel = new Panel('Alerts', 'Student', new Section('form', 'Alerts'));
+        $container->addPanel($panel)
+            ->addForm('Alerts', $form->createView());
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+        $form = $this->createForm(StudentMiscellaneousSettingsType::class, null, ['action' => $this->generateUrl('student_settings_miscellaneous')]);
+        $panel = new Panel('Miscellaneous', 'Student', new Section('form', 'Miscellaneous'));
+        $container->addPanel($panel)
+            ->addForm('Miscellaneous', $form->createView());
 
-            return new JsonResponse($data, 200);
-        }
-        $section = new Section('form', 'single');
-        $panel = new Panel('Notes', 'Student', $section);
-        $container->addPanel($panel)->addForm('single', $form->createView());
 
-        $panel = new Panel('Alerts', 'Student', $section);
-        $container->addPanel($panel);
-
-        $panel = new Panel('Miscellaneous', 'Student', $section);
-        $container->addPanel($panel);
-
-        $manager->addContainer($container);
-        $manager->buildContainers();
-
-        return $this->getPageManager()->createBreadcrumbs('Student Settings')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+        return $this->getPageManager()
+            ->createBreadcrumbs('Student Settings')
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->addContainer($container)
+                        ->getBuiltContainers()
+                ]
+            );
     }
 
+    /**
+     * saveNoteSettings
+     *
+     * 18/08/2020 14:36
+     * @Route("/student/notes/settings/",name="student_settings_notes",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveNoteSettings()
+    {
+        $form = $this->createForm(StudentNoteSettingsType::class, null, ['action' => $this->generateUrl('student_settings_notes')]);
+
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess())
+                $form = $this->createForm(StudentNoteSettingsType::class, null, ['action' => $this->generateUrl('student_settings_notes')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
+
+    /**
+     * saveAlertSettings
+     *
+     * 18/08/2020 14:40
+     * @Route("/student/alert/settings/",name="student_settings_alert",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveAlertSettings()
+    {
+        $form = $this->createForm(StudentAlertSettingsType::class, null, ['action' => $this->generateUrl('student_settings_alert')]);
+
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess())
+                $form = $this->createForm(StudentAlertSettingsType::class, null, ['action' => $this->generateUrl('student_settings_alert')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
+
+    /**
+     * saveMiscellaneousSettings
+     *
+     * 18/08/2020 14:41
+     * @Route("/student/miscellaneous/settings/",name="student_settings_miscellaneous",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function saveMiscellaneousSettings()
+    {
+        $form = $this->createForm(StudentMiscellaneousSettingsType::class, null, ['action' => $this->generateUrl('student_settings_miscellaneous')]);
+
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess())
+                $form = $this->createForm(StudentMiscellaneousSettingsType::class, null, ['action' => $this->generateUrl('student_settings_miscellaneous')]);
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        $this->getContainerManager()->singlePanel($form->createView());
+        return $this->generateJsonResponse(['form' => $this->getContainerManager()->getFormFromContainer()]);
+    }
 }

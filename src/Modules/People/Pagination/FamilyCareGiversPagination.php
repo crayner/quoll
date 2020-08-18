@@ -96,7 +96,7 @@ class FamilyCareGiversPagination extends AbstractPaginationManager
         $action->setTitle('Edit Care Givers in Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800')
+            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-green-500')
             ->setRoute('family_care_giver_edit')
             ->setRouteParams(['family' => 'family_id', 'careGiver' => 'care_giver_id']);
         $row->addAction($action);
@@ -105,7 +105,7 @@ class FamilyCareGiversPagination extends AbstractPaginationManager
         $action->setTitle('Remove Care Giver from Family')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800')
+            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-orange-500')
             ->setRoute('family_care_giver_remove')
             ->setOnClick('areYouSure')
             ->setRouteParams(['family' => 'family_id', 'careGiver' => 'care_giver_id']);
@@ -115,7 +115,7 @@ class FamilyCareGiversPagination extends AbstractPaginationManager
         $action->setTitle('Reset Password')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800')
+            ->setSpanClass('fas fa-user-lock fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('person_reset_password')
             ->setRouteParams(['person' => 'person_id']);
         $row->addAction($action);
