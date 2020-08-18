@@ -21,13 +21,16 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Staff\Entity\StaffAbsenceType;
-use App\Modules\Staff\Form\StaffSettingsType;
+use App\Modules\Staff\Form\StaffAbsenceSettingsType;
+use App\Modules\Staff\Form\StaffFieldValueSettingsType;
 use App\Modules\Staff\Pagination\StaffAbsenceTypePagination;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,39 +44,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class SettingController extends AbstractPageController
 {
     /**
-     * Staff Settings
-     * @Route("/staff/settings/{tabName}",name="staff_settings")
-     * @Route("/staff/settings/{tabName}",name="staff_settings_people")
-     * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
+     * staffSettings
+     *
+     * 18/08/2020 16:03
      * @param StaffAbsenceTypePagination $pagination
-     * @return Response
+     * @param string $tabName
+     * @Route("/staff/settings/{tabName}",name="staff_settings",methods={"GET"})
+     * @Route("/staff/settings/{tabName}",name="staff_settings_people",methods={"GET"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function staffSettings(ContainerManager $manager, StaffAbsenceTypePagination $pagination, string $tabName = 'List')
+    public function staffSettings(StaffAbsenceTypePagination $pagination, string $tabName = 'List')
     {
-        // System Settings
-        $form = $this->createForm(StaffSettingsType::class, null, ['action' => $this->generateUrl('staff_settings')]);
-        $settingProvider = SettingFactory::getSettingManager();
-
-        if ($this->getRequest()->getContent() !== '') {
-            $data = [];
-            try {
-                $settingProvider->handleSettingsForm($form, $this->getRequest());
-                $data['errors'] = $settingProvider->getErrors();
-                if ('success' === $settingProvider->getStatus()) {
-                    $form = $this->createForm(StaffSettingsType::class, null, ['action' => $this->generateUrl('staff_settings', ['tabName' => 'Settings'])]);
-                }
-            } catch (\Exception $e) {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
-            }
-
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data, 200);
-
-        }
-
         $container = new Container($tabName);
         $content =  ProviderFactory::getRepository(StaffAbsenceType::class)->findBy([], ['sequenceNumber' => 'ASC']);
         $pagination->setContent($content)->setDraggableRoute('staff_absence_type_sort')
@@ -85,17 +67,82 @@ class SettingController extends AbstractPageController
         $section = new Section('pagination', $pagination);
         $panel->addSection($section);
         $container->addPanel($panel);
-        $section = new Section('form','single');
-        $panel = new Panel('Absence Settings', 'Staff', $section);
-        $container->addForm('single', $form->createView())
+        $form = $this->createForm(StaffAbsenceSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_absence')]);
+        $panel = new Panel('Absence Settings', 'Staff', new Section('form','Absence Settings'));
+        $container->addForm('Absence Settings', $form->createView())
             ->addPanel($panel);
-        $panel = new Panel('Field Values', 'Staff', $section);
-        $container->addPanel($panel);
-        $manager->addContainer($container);
+        $form = $this->createForm(StaffFieldValueSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_field_values')]);
+        $panel = new Panel('Field Values', 'Staff', new Section('form', 'Field Values'));
+        $container->addPanel($panel)
+            ->addForm('Field Values', $form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs('Staff Settings')
-            ->render([
-                'containers' => $manager->getBuiltContainers(),
-            ]);
+        return $this->getPageManager()
+            ->createBreadcrumbs('Staff Settings')
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->addContainer($container)
+                        ->getBuiltContainers(),
+                ]
+            )
+        ;
+    }
+
+    /**
+     * staffAbsenceSettings
+     *
+     * 18/08/2020 15:58
+     * @Route("/staff/absence/settings/",name="staff_settings_absence",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function staffAbsenceSettings()
+    {
+        $form = $this->createForm(StaffAbsenceSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_absence')]);
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess()) {
+                $form = $this->createForm(StaffAbsenceSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_absence')]);
+            }
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        return $this->generateJsonResponse(
+            [
+                'form' => $this->getContainerManager()
+                    ->singlePanel($form->createView())
+                    ->getFormFromContainer()
+            ]
+        );
+    }
+
+    /**
+     * staffFieldValueSettings
+     *
+     * 18/08/2020 15:51
+     * @Route("/staff/field/value/settings/",name="staff_settings_field_values",methods={"POST"})
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function staffFieldValueSettings()
+    {
+        $form = $this->createForm(StaffFieldValueSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_field_values')]);
+        try {
+            SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+            if ($this->getStatusManager()->isStatusSuccess()) {
+                $form = $this->createForm(StaffFieldValueSettingsType::class, null, ['action' => $this->generateUrl('staff_settings_field_values')]);
+            }
+        } catch (Exception $e) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        }
+
+        return $this->generateJsonResponse(
+            [
+                'form' => $this->getContainerManager()
+                    ->singlePanel($form->createView())
+                    ->getFormFromContainer()
+            ]
+        );
     }
 }

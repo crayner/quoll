@@ -119,4 +119,15 @@ abstract class AbstractPageController extends AbstractController
     {
         return $this->getStatusManager()->toJsonResponse($options);
     }
+
+    /**
+     * isStatusSuccess
+     *
+     * 19/08/2020 08:36
+     * @return bool
+     */
+    public function isStatusSuccess(): bool
+    {
+        return $this->getStatusManager()->isStatusSuccess();
+    }
 }

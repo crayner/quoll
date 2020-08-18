@@ -896,6 +896,8 @@
             - staff_absence_type_edit
             - staff_absence_type_delete
             - staff_absence_type_sort
+            - staff_setting_field_value
+            - staff_setting_absence
     entryRoute: staff_settings
     entrySidebar: true
     menuShow: true

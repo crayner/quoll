@@ -14,7 +14,6 @@
  * Date: 3/12/2019
  * Time: 12:04
  */
-
 namespace App\Modules\Staff\Form;
 
 use App\Form\Type\HeaderType;
@@ -25,16 +24,16 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class StaffSettingsType
- * @package Kookaburra\UserAdmin\Form
+ * Class StaffAbsenceSettingsType
+ * @package App\Modules\Staff\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
-class StaffSettingsType extends AbstractType
+class StaffAbsenceSettingsType extends AbstractType
 {
     /**
      * buildForm
@@ -47,7 +46,6 @@ class StaffSettingsType extends AbstractType
             ->add('staffAbsenceHeader', HeaderType::class,
                 [
                     'label' => 'Staff Absence',
-                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffAbsenceSettings', SettingsType::class,
@@ -79,13 +77,11 @@ class StaffSettingsType extends AbstractType
                             ],
                         ],
                     ],
-                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffCoverageHeader', HeaderType::class,
                 [
                     'label' => 'Staff Coverage',
-                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('staffCoverageSettings', SettingsType::class,
@@ -97,14 +93,11 @@ class StaffSettingsType extends AbstractType
                             'entry_type' => SimpleArrayType::class,
                         ],
                     ],
-                    'panel' => 'Absence Settings',
-
                 ]
             )
             ->add('notificationHeader', HeaderType::class,
                 [
                     'label' => 'Notifications',
-                    'panel' => 'Absence Settings',
                 ]
             )
             ->add('notificationSettings', SettingsType::class,
@@ -116,48 +109,9 @@ class StaffSettingsType extends AbstractType
                             'entry_type' => TextType::class,
                         ],
                     ],
-                    'panel' => 'Absence Settings',
                 ]
             )
-            ->add('submit2', SubmitType::class,
-                [
-                    'panel' => 'Absence Settings',
-                ]
-            )
-            ->add('fieldValuesHeader', HeaderType::class,
-                [
-                    'label' => 'Field Values',
-                    'panel' => 'Field Values',
-                ]
-            )
-            ->add('fieldValueSettings', SettingsType::class,
-                [
-                    'settings' => [
-                        [
-                            'scope' => 'Staff',
-                            'name' => 'salaryScalePositions',
-                            'entry_type' => SimpleArrayType::class,
-                        ],
-                        [
-                            'scope' => 'Staff',
-                            'name' => 'responsibilityPosts',
-                            'entry_type' => SimpleArrayType::class,
-                        ],
-                        [
-                            'scope' => 'Staff',
-                            'name' => 'jobOpeningDescriptionTemplate',
-                            'entry_type' => CKEditorType::class,
-                        ],
-                    ],
-                    'panel' => 'Field Values'
-                ]
-            )
-            ->add('submit', SubmitType::class,
-                [
-                    'panel' => 'Field Values'
-
-                ]
-            )
+            ->add('submit2', SubmitType::class)
         ;
     }
 

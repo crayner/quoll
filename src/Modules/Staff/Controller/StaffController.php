@@ -16,10 +16,12 @@
  */
 namespace App\Modules\Staff\Controller;
 
-use App\Container\ContainerManager;
+use App\Container\Container;
+use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
-use App\Modules\People\Manager\Hidden\FamilyCareGiverSort;
+use App\Manager\StatusManager;
 use App\Modules\Staff\Entity\StaffAbsenceType;
 use App\Modules\Staff\Form\StaffAbsenceTypeType;
 use App\Modules\Staff\Pagination\StaffAbsenceTypePagination;
@@ -34,20 +36,33 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class StaffController
  * @package App\Modules\Staff\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class StaffController extends AbstractPageController
 {
     /**
      * view
+     *
+     * 19/08/2020 08:47
      * @Route("/staff/view/", name="staff_view")
-     * @param ContainerManager $manager
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function view(ContainerManager $manager)
+    public function view()
     {
-        $manager->setContent('<h3>View Staff</h3><p>@todo</p>');
-        return $this->getPageManager()->createBreadcrumbs('View Staff')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+        $container = new Container();
+        $panel = new Panel('single', 'Staff', new Section('html', $this->renderView('components/todo.html.twig')));
+        $container->addPanel($panel);
+
+        return $this->getPageManager()
+            ->createBreadcrumbs('View Staff')
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->addContainer($container)
+                        ->getBuiltContainers()
+                ]
+            );
     }
 
     /**
@@ -77,14 +92,15 @@ class StaffController extends AbstractPageController
 
     /**
      * staffAbsenceTypeEdit
-     * @param ContainerManager $manager
-     * @param StaffAbsenceType $absenceType
-     * @return RedirectResponse|JsonResponse
+     *
+     * 19/08/2020 08:42
+     * @param StaffAbsenceType|null $absenceType
      * @Route("/staff/absence/{absenceType}/type/edit/", name="staff_absence_type_edit")
      * @Route("/staff/absence/type/add/", name="staff_absence_type_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function staffAbsenceTypeEdit(ContainerManager $manager, ?StaffAbsenceType $absenceType = null)
+    public function staffAbsenceTypeEdit(?StaffAbsenceType $absenceType = null)
     {
         $absenceType = $absenceType ?: new StaffAbsenceType();
 
@@ -95,61 +111,68 @@ class StaffController extends AbstractPageController
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
-            $data = [];
-            $data['status'] = 'success';
             if ($form->isValid()) {
                 $id = $absenceType->getId();
-                $data = ProviderFactory::create(StaffAbsenceType::class)->persistFlush($absenceType, $data);
-                if ($data['status'] === 'success') {
+                ProviderFactory::create(StaffAbsenceType::class)->persistFlush($absenceType);
+                if ($this->isStatusSuccess()) {
                     if ($id !== $absenceType->getId()) {
-                        $data['status'] = 'redirect';
-                        $data['redirect'] = $this->generateUrl('staff_absence_type_edit', ['absenceType' => $absenceType->getId()]);
-                        $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                        $this->getStatusManager()
+                            ->setReDirect($this->generateUrl('staff_absence_type_edit', ['absenceType' => $absenceType->getId()]))
+                            ->convertToFlash();
                     }
                     $route = $absenceType->getId() !== null ? $this->generateUrl('staff_absence_type_edit', ['absenceType' => $absenceType->getId()]) : $this->generateUrl('staff_absence_type_add');
                     $form = $this->createForm(StaffAbsenceTypeType::class, $absenceType, ['action' => $route]);
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data, 200);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer()
+                ]
+            );
         }
 
-        $manager->setReturnRoute($this->generateUrl('staff_settings', ['tabName' => 'List']));
+        $this->getContainerManager()
+            ->setReturnRoute($this->generateUrl('staff_settings', ['tabName' => 'List']));
+
         if ($absenceType->getId() !== null) {
-            $manager->setAddElementRoute($this->generateUrl('staff_absence_type_add'));
+            $this->getContainerManager()
+                ->setAddElementRoute($this->generateUrl('staff_absence_type_add'));
         }
-
-        $manager->singlePanel($form->createView());
 
         return $this->getPageManager()->createBreadcrumbs($absenceType->getId() === null ? 'Add Absence Type' : 'Edit Absence Type')
             ->render(
                 [
-                    'containers' => $manager->getBuiltContainers(),
+                    'containers' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers(),
                 ]
             );
     }
 
     /**
      * staffAbsenceTypeSort
+     *
+     * 18/08/2020 16:06
      * @param StaffAbsenceType $source
      * @param StaffAbsenceType $target
      * @param StaffAbsenceTypePagination $pagination
-     * @return JsonResponse
+     * @param EntitySortManager $manager
      * @Route("/staff/absence/type/{source}/{target}/sort/", name="staff_absence_type_sort")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function staffAbsenceTypeSort(StaffAbsenceType $source, StaffAbsenceType $target, StaffAbsenceTypePagination $pagination)
+    public function staffAbsenceTypeSort(StaffAbsenceType $source, StaffAbsenceType $target, StaffAbsenceTypePagination $pagination, EntitySortManager $manager)
     {
-        $manager = new EntitySortManager();
         $manager->setIndexName('sequence_number')
             ->setSortField('sequenceNumber')
             ->execute($source, $target, $pagination);
 
-        return new JsonResponse($manager->getDetails());
+        return $this->generateJsonResponse(['content' => $manager->getPaginationContent()]);
     }
 }
 

@@ -40,42 +40,9 @@ export default function Panels(props) {
     })
 
     const content = Object.keys(panels).map(name => {
-        const panel = {...panels[name]}
-        let panelContent = []
-        panelContent.push(<Panel {...props} panelName={name} key={name}/>)
-
-        let preContent = []
-        if (panel.preContent !== null) {
-            console.info('preContent is deprecated.  Add this to html or text section in the panel.')
-            preContent = panel.preContent.map(name => {
-                if (typeof externalContent[name] !== 'undefined')
-                    return renderExternalContent(externalContent[name], functions)
-                return Parser(name)
-            })
-        }
-
-        let special = []
-        if (panel.special !== null) {
-            console.info('special is deprecated.  Add this to special section in the panel.')
-            special.push(<SpecialApp {...panel.special} functions={functions} key={'special'} />)
-        }
-
-        let postContent = []
-        if (panel.postContent !== null) {
-            console.info('postContent is deprecated.  Add this to html or text section in the panel.')
-            postContent = panel.postContent.map(name => {
-                if (typeof externalContent[name] !== 'undefined')
-                    return renderExternalContent(externalContent[name], functions)
-                return Parser(name)
-            })
-        }
-
         return (
             <TabPanel key={name}>
-                {preContent}
-                {special}
-                {panelContent}
-                {postContent}
+                <Panel {...props} panelName={name} key={name}/>
             </TabPanel>
         )
     })
