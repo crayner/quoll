@@ -359,35 +359,35 @@ class SettingManager
                 if (is_null($setting['value']) || is_string($setting['value'])) {
                     $value = $setting['value'] ?: $default;
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 break;
             case 'boolean':
                 if (is_bool($setting['value'])) {
                     $value = $setting['value'] ?: $default;
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 break;
             case 'integer':
                 if (is_null($setting['value']) || is_integer($setting['value'])) {
                     $value = $setting['value'] ?: $default;
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 break;
             case 'array':
                 if (is_null($setting['value']) || is_array($setting['value'])) {
                     $value = $setting['value'] ?: ($default ?: []);
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 break;
             case 'image':
                 if (is_null($setting['value']) || is_string($setting['value'])) {
                     $value = $setting['value'] ?: $default;
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 if ($value !== null && $value !== '') {
                     if (!is_file(__DIR__ . '/../../../../public/' . ltrim($setting['value'], '/'))) {
@@ -399,7 +399,7 @@ class SettingManager
                 if (is_null($setting['value']) || is_string($setting['value'])) {
                     $value = $setting['value'] ?: $default;
                 } else {
-                    throw new SettingInvalidException($setting);
+                    throw new SettingInvalidException($scope,$name,$setting['type']);
                 }
                 if (is_string($value)) {
                     $value = ProviderFactory::getRepository($setting['class'])->find($value);
@@ -413,12 +413,13 @@ class SettingManager
 
     /**
      * getSettingType
-     * @param $scope
-     * @param $name
+     *
+     * 18/08/2020 10:42
+     * @param string $scope
+     * @param string $name
      * @return mixed
-     * 9/07/2020 10:35
      */
-    public function getSettingType($scope, $name)
+    public function getSettingType(string $scope, string $name)
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
@@ -431,12 +432,12 @@ class SettingManager
     /**
      * getSettingClass
      *
-     * 16/08/2020 13:26
-     * @param $scope
-     * @param $name
+     * 18/08/2020 10:42
+     * @param string $scope
+     * @param string $name
      * @return string|null
      */
-    public function getSettingClass($scope, $name): ?string
+    public function getSettingClass(string $scope, string $name): ?string
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
@@ -450,12 +451,12 @@ class SettingManager
     /**
      * getSettingMethod
      *
-     * 16/08/2020 13:26
-     * @param $scope
-     * @param $name
+     * 18/08/2020 10:42
+     * @param string $scope
+     * @param string $name
      * @return string|null
      */
-    public function getSettingMethod($scope, $name): ?string
+    public function getSettingMethod(string $scope, string $name): ?string
     {
         if (!$this->hasSetting($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
@@ -537,7 +538,8 @@ class SettingManager
 
     /**
      * writeSettings
-     * 6/07/2020 07:52
+     *
+     * 18/08/2020 10:31
      */
     public function writeSettings()
     {
@@ -545,7 +547,10 @@ class SettingManager
             $settings = [];
             foreach($this->getSettings() as $q=>$w) {
                 foreach($w as $a=>$b) {
-                    $settings[$q][$a] = $b;
+                    foreach ($b as $z=>$x) {
+                        if (in_array($z, ['method', 'class']) && $x === null) continue;
+                        $settings[$q][$a][$z] = $x;
+                    }
                 }
             }
 

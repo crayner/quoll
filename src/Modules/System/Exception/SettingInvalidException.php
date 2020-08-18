@@ -28,13 +28,15 @@ class SettingInvalidException extends RuntimeException
 {
     /**
      * SettingInvalidException constructor.
-     * @param array $setting
+     * @param string $scope
+     * @param string $name
+     * @param string $type
      * @param string $message
      */
-    public function __construct(array $setting, string $message = "")
+    public function __construct(string $scope, string $name, string $type, string $message = "")
     {
         if ('' === $message)
-            $message = sprintf('The Setting defined by "%s:%s" is not a valid %s.', $setting['scope'], $setting['name'], $setting['type']);
+            $message = sprintf('The Setting defined by "%s:%s" is not a valid %s.', $scope, $name, $type);
         $sm = SettingFactory::getSettingManager();
         dump($sm->getSettings());
 
