@@ -16,14 +16,13 @@
  */
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Modules\People\Form\PhoneType;
 use App\Modules\People\Pagination\PhonePagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,15 +48,17 @@ class PhoneController extends AbstractPageController
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 19/08/2020 11:19
+     * Popup size is 700x350, in window called Phone_Details
      * @param Phone|null $phone
      * @Route("/phone/add/popup/",name="phone_add_popup")
      * @Route("/phone/add/",name="phone_add")
      * @Route("/phone/{phone}/edit/popup/",name="phone_edit_popup")
-     * Popup size is 700x350, in window called Phone_Details
      * @IsGranted("ROLE_SUPPORT")
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, ?Phone $phone)
+    public function edit(?Phone $phone)
     {
         if (null === $phone) {
             $phone = new Phone();
@@ -73,39 +74,43 @@ class PhoneController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $phone->getId();
-                $data = ProviderFactory::create(Phone::class)->persistFlush($phone);
-                if ($id !== $phone->getId() && $data['status'] === 'success') {
-                    $action = $this->generateUrl('phone_edit_popup', [ 'phone' => $phone->getId()]);
-                    $form = $this->createForm(PhoneType::class, $phone, ['action' => $action]);
-                    $data['redirect'] = $action;
-                    $data['status'] = 'redirect';
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                ProviderFactory::create(Phone::class)->persistFlush($phone);
+                if ($id !== $phone->getId() && $this->isStatusSuccess()) {
+                    $this->getStatusManager()
+                        ->setReDirect($this->generateUrl('phone_edit_popup', [ 'phone' => $phone->getId()]))
+                        ->convertToFlash();
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
         }
 
         if ($phone->getId() !== null) {
-            $manager->setAddElementRoute($this->generateUrl('phone_add'));
+            $this->getContainerManager()->setAddElementRoute($this->generateUrl('phone_add'));
         }
-        $manager->singlePanel($form->createView());
 
         return $this->getPageManager()->setPopup()->createBreadcrumbs($phone->getId() !== null ? 'Edit Phone' : 'Add Phone',
             [
                 ['uri' => 'phone_list', 'name' => 'Manage Phones'],
             ]
         )
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(['containers' => $this->getContainerManager()->singlePanel($form->createView())->getBuiltContainers()]);
     }
 
     /**
      * refreshChoiceList
+     *
+     * 19/08/2020 11:20
      * @Route("/phone/list/refresh/",name="phone_refresh")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function refreshChoiceList()
     {
@@ -118,11 +123,13 @@ class PhoneController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 19/08/2020 11:20
      * @param Phone $phone
      * @param PhonePagination $pagination
-     * @return JsonResponse
      * @Route("/phone/{phone}/delete/",name="phone_delete")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function delete(Phone $phone, PhonePagination $pagination)
     {
@@ -132,6 +139,8 @@ class PhoneController extends AbstractPageController
 
     /**
      * getPagination
+     *
+     * 19/08/2020 11:20
      * @param PhonePagination $pagination
      * @param array $messages
      * @return JsonResponse
