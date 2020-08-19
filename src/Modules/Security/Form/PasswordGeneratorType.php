@@ -14,11 +14,9 @@
  * Date: 2/09/2019
  * Time: 16:13
  */
-
 namespace App\Modules\Security\Form;
 
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -51,11 +49,11 @@ class PasswordGeneratorType extends AbstractType
         $resolver->setDefault('generateButton', [
             'title' => TranslationHelper::translate('Generate', [], 'Security'),
             'class' => 'button generatePassword -ml-px button-right',
-            'passwordPolicy' => [
-                'alpha' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha'),
-                'numeric' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric'),
-                'punctuation' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric'),
-                "minLength" => $provider->get('System', 'passwordPolicyMinLength'),
+            'passwordPolicy'    => [
+                'alpha'         => $provider->get('System', 'passwordPolicyAlpha'),
+                'numeric'       => $provider->get('System', 'passwordPolicyNumeric'),
+                'punctuation'   => $provider->get('System', 'passwordPolicyNonAlphaNumeric'),
+                "minLength"     => $provider->get('System', 'passwordPolicyMinLength'),
             ],
             'onClick' => 'generateNewPassword',
             'alertPrompt' => TranslationHelper::translate('Copy this password if required', [],'Security'),

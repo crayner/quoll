@@ -28,6 +28,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class SecurityHelper
@@ -435,12 +436,13 @@ class SecurityHelper
 
     /**
      * encodeAndSetPassword
-     * @param SecurityUser $user
+     *
+     * 19/08/2020 11:36
+     * @param UserInterface $user
      * @param string $raw
      * @return bool
-     * 26/07/2020 12:33
      */
-    public static function encodeAndSetPassword(SecurityUser $user, string $raw): bool
+    public static function encodeAndSetPassword(UserInterface $user, string $raw): bool
     {
         $password = self::getEncoder()->encodePassword($user, $raw);
 
@@ -449,14 +451,15 @@ class SecurityHelper
 
     /**
      * isPasswordValid
+     *
+     * 19/08/2020 12:19
      * @param SecurityUser $user
-     * @param string $raw
+     * @param string|null $raw
      * @return bool
-     * 26/07/2020 12:17
      */
-    public static function isPasswordValid(SecurityUser $user, string $raw): bool
+    public static function isPasswordValid(SecurityUser $user, ?string $raw): bool
     {
-        return self::getEncoder()->isPasswordValid($user, $raw);
+        return self::getEncoder()->isPasswordValid($user, $raw ?? '');
     }
 
     /**

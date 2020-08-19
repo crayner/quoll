@@ -15,9 +15,10 @@
 
 namespace App\Modules\Security\Manager;
 
+use App\Manager\StatusManager;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Manager\SettingFactory;
 use App\Util\TranslationHelper;
-use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Provider\ProviderFactory;
 use App\Modules\Security\Form\Entity\ResetPassword;
@@ -37,22 +38,27 @@ class PasswordManager
     /**
      * @var UserPasswordEncoderInterface
      */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     /**
      * @var TokenStorageInterface
      */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     /**
      * @var RouterInterface
      */
-    private $router;
+    private RouterInterface $router;
 
     /**
-     * @var RouterInterface
+     * @var RequestStack
      */
-    private $stack;
+    private RequestStack $stack;
+
+    /**
+     * @var StatusManager
+     */
+    private StatusManager $statusManager;
 
     /**
      * PasswordManager constructor.
@@ -60,25 +66,32 @@ class PasswordManager
      * @param TokenStorageInterface $tokenStorage
      * @param RouterInterface $router
      * @param RequestStack $stack
+     * @param StatusManager $statusManager
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, TokenStorageInterface $tokenStorage, RouterInterface $router, RequestStack $stack)
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router,
+        RequestStack $stack,
+        StatusManager $statusManager)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
         $this->stack = $stack;
+        $this->statusManager = $statusManager;
     }
 
     /**
      * changePassword
+     *
+     * 19/08/2020 11:49
      * @param ResetPassword $rp
      * @param UserInterface $user
-     * @return array
      */
-    public function changePassword(ResetPassword $rp, UserInterface $user): array
+    public function changePassword(ResetPassword $rp, UserInterface $user)
     {
         $session = $this->getSession();
-        $person = $user->getPerson();
         $data = [];
         $data['status'] = 'success';
 
@@ -94,29 +107,26 @@ class PasswordManager
         $ok = SecurityHelper::encodeAndSetPassword($user, $password);
         TranslationHelper::setDomain('Security');
         if ($ok && $forceReset) {
-            $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('return.success.a')];
-            // Set Session
+            $this->getStatusManager()->success();
             $token = $this->tokenStorage->getToken();
             $session->set('_security_main', serialize($token));
-            return $data;
+            return;
         }
 
         if ($ok) {
-            $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('return.success.0', [], 'messages')];
-            // Set Session
+            $this->getStatusManager()->success();
             $token = $this->tokenStorage->getToken();
             $session->set('_security_main', serialize($token));
-            return $data;
+            return;
         }
 
         // Failed to change password.
         $data['status'] = 'error';
-        if ($forceReset)
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationHelper::translate('return.error.a')];
-        else
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationHelper::translate('return.error.2', [], 'messages')];
-
-        return $data;
+        if ($forceReset) {
+            $this->getStatusManager()->error('Your account status could not be updated, and so you cannot continue to use the system. Please contact {email} if you have any questions.', ['{email}' => "<a href='mailto:".SettingFactory::getSettingManager()->get('System', 'organisationAdministratorEmail')."'>".SettingFactory::getSettingManager()->get('System', 'organisationAdministratorName').'</a>'], 'Security');
+        } else {
+            $this->getStatusManager()->error(StatusManager::DATABASE_ERROR);
+        }
     }
 
     /**
@@ -126,5 +136,16 @@ class PasswordManager
     private function getSession(): SessionInterface
     {
         return $this->stack->getCurrentRequest()->getSession();
+    }
+
+    /**
+     * getStatusManager
+     *
+     * 19/08/2020 11:44
+     * @return StatusManager
+     */
+    private function getStatusManager(): StatusManager
+    {
+        return $this->statusManager;
     }
 }

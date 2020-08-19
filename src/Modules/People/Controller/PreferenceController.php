@@ -21,11 +21,14 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
+use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\PreferenceType;
 use App\Modules\Security\Form\Entity\ResetPassword;
 use App\Modules\Security\Form\ResetPasswordType;
 use App\Modules\Security\Manager\PasswordManager;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,14 +44,13 @@ class PreferenceController extends AbstractPageController
 {
     /**
      * preference
-     * @param ContainerManager $manager
      * @param PasswordManager $passwordManager
      * @param string $tabName
      * @return JsonResponse|Response
      * @Route("/personal/preferences/{tabName}", name="preferences")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function preferences(ContainerManager $manager, PasswordManager $passwordManager, string $tabName = 'Settings')
+    public function preferences(PasswordManager $passwordManager, string $tabName = 'Preferences')
     {
         $request = $this->getRequest();
 
@@ -64,26 +66,26 @@ class PreferenceController extends AbstractPageController
         {
             $passwordForm->submit(json_decode($request->getContent(), true));
             if ($passwordForm->isValid()) {
-                $data = $passwordManager->changePassword($rp, $this->getUser());
+                $passwordManager->changePassword($rp, $this->getUser());
                 $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
                     [
                         'action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password']),
                         'policy' => $this->renderView('security/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
                     ]
                 );
-                $manager->singlePanel($passwordForm->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
             } else {
-                $manager->singlePanel($passwordForm->createView());
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($passwordForm->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
         }
 
 
-        $manager->setTranslationDomain('People');
         $container = new Container($tabName);
         $passwordPanel = new Panel('Reset Password', 'Security', new Section('form', 'Reset Password'));
         $container->addForm('Reset Password', $passwordForm->createView());
@@ -99,38 +101,39 @@ class PreferenceController extends AbstractPageController
 
         if ($request->getContent() !== '' && $tabName === 'Settings') {
             $settingsForm->submit(json_decode($request->getContent(), true));
-            $data = [];
             if ($settingsForm->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($person);
-                $em->flush();
-                $em->refresh($person);
-                $data = ErrorMessageHelper::getSuccessMessage($data, true);
+                ProviderFactory::create(Person::class)->persistFlush($person);
                 $settingsForm = $this->createForm(PreferenceType::class, $person,
                     [
                         'action' => $this->generateUrl('preferences', ['tabName' => 'Settings']),
                         'remove_background_image' => $this->generateUrl('remove_personal_image', ['documentation' => $person->getPersonalDocumentation()->getId()])
                     ]
                 );
-                $manager->singlePanel($settingsForm->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-                $manager->singlePanel($settingsForm->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($settingsForm->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
         }
 
-        $settingsPanel = new Panel('Settings', 'People', new Section('form','Settings'));
-        $container->addForm('Settings', $settingsForm->createView());
-        $container->addPanel($passwordPanel)->addPanel($settingsPanel)->setTarget('preferences');
-
-        $manager->addContainer($container)->buildContainers();
+        $settingsPanel = new Panel('Preferences', 'People', new Section('form','Preferences'));
+        $container->addForm('Preferences', $settingsForm->createView());
+        $container->addPanel($passwordPanel)
+            ->addPanel($settingsPanel);
 
         return $this->getPageManager()->createBreadcrumbs('Personal Preferences')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->addContainer($container)
+                        ->getBuiltContainers(),
+                ]
+            );
     }
 
 }
