@@ -355,8 +355,9 @@ class SecurityRole extends AbstractEntity
 
     /**
      * canDelete
+     *
+     * 19/08/2020 09:57
      * @return bool
-     * 29/06/2020 10:32
      */
     public function canDelete(): bool
     {

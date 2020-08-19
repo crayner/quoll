@@ -73,7 +73,23 @@ class SecurityManager
      */
     private function writeHierarchyFile(array $hierarchy) 
     {
+        ksort($hierarchy);
         $result['parameters']['security.hierarchy.roles'] = $hierarchy;
         file_put_contents($this->hierarchyPath, Yaml::dump($result, 8));
+    }
+
+    /**
+     * removeRole
+     *
+     * 19/08/2020 10:14
+     * @param SecurityRole $role
+     */
+    public function removeRole(SecurityRole $role)
+    {
+        $roles = $this->readHierarchyFile();
+        if (key_exists($role->getRole(), $roles)) {
+            unset($roles[$role->getRole()]);
+            $this->writeHierarchyFile($roles);
+        }
     }
 }

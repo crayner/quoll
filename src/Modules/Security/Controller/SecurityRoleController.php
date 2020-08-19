@@ -16,14 +16,13 @@
  */
 namespace App\Modules\Security\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Form\SecurityRoleType;
 use App\Modules\Security\Manager\SecurityManager;
 use App\Modules\Security\Pagination\SecurityRolePagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,12 +36,12 @@ class SecurityRoleController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 19/08/2020 09:36
      * @param SecurityRolePagination $pagination
-     * @return JsonResponse
      * @Route("/security/roles/list/",name="security_role_list")
-     * @Route("/security/role/{role}/delete/",name="security_role_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 29/06/2020 10:14
+     * @return JsonResponse
      */
     public function list(SecurityRolePagination $pagination)
     {
@@ -50,22 +49,24 @@ class SecurityRoleController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('security_role_add'));
 
         return $this->getPageManager()
+            ->setMessages($this->getStatusManager()->getMessageArray())
+            ->setUrl($this->generateUrl('security_role_list'))
             ->createBreadcrumbs('Security Roles')
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 19/08/2020 09:37
      * @param SecurityManager $security
      * @param SecurityRole|null $role
-     * @return JsonResponse
      * @Route("/security/role/add/",name="security_role_add")
      * @Route("/security/role/{role}/edit/",name="security_role_edit")
      * @IsGranted("ROLE_ROUTE")
-     * 29/06/2020 12:21
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, SecurityManager $security, ?SecurityRole $role = null)
+    public function edit(SecurityManager $security, ?SecurityRole $role = null)
     {
         if ($role === null) {
             $role = new SecurityRole();
@@ -80,38 +81,62 @@ class SecurityRoleController extends AbstractPageController
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
-                $data = ProviderFactory::create(SecurityRole::class)->persistFlush($role, []);
-                if ($data['status'] === 'success' && $this->getRequest()->get('_route') === 'security_role_add') {
+                ProviderFactory::create(SecurityRole::class)->persistFlush($role);
+                if ($this->isStatusSuccess() && $this->getRequest()->get('_route') === 'security_role_add') {
                     $security->updateSecurityRoleHierarchy($role);
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('security_role_edit', ['role' => $role->getId()]);
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
-                } elseif ($data['status'] === 'success') {
+                    $this->getStatusManager()
+                        ->setReDirect($this->generateUrl('security_role_edit', ['role' => $role->getId()]))
+                        ->convertToFlash();
+                } elseif ($this->isStatusSuccess()) {
                     $security->updateSecurityRoleHierarchy($role);
                     $form = $this->createForm(SecurityRoleType::class, $role, ['action' => $action]);
-                } else {
-                    $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer()
+                ]
+            );
         }
 
-        $manager->setReturnRoute($this->generateUrl('security_role_list'))
-            ->singlePanel($form->createView());
-
         if ($role->getId()) {
-            $manager->setAddElementRoute($this->generateUrl('security_role_add'));
+            $this->getContainerManager()
+                ->setAddElementRoute($this->generateUrl('security_role_add'));
         }
 
         return $this->getPageManager()
             ->createBreadcrumbs($role->getId() ? 'Edit Security Role' : 'Add Security Role')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('security_role_list'))
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers()
+                ]
+            );
+    }
 
+    /**
+     * delete
+     *
+     * 19/08/2020 09:48
+     * @param SecurityManager $security
+     * @param SecurityRole $role
+     * @param SecurityRolePagination $pagination
+     * @return JsonResponse
+     * @Route("/security/role/{role}/delete/",name="security_role_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function delete(SecurityManager $security, SecurityRole $role, SecurityRolePagination $pagination)
+    {
+        ProviderFactory::create(SecurityRole::class)->delete($role);
+        if ($this->isStatusSuccess()) $security->removeRole($role);
+
+        return $this->list($pagination);
     }
 }

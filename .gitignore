@@ -26,5 +26,6 @@ yarn-error.log
 /public/*.yaml
 /config/packages/quoll.yaml
 /config/packages/settings.yaml
+/config/packages/role_hierarchy.yaml
 /config/packages/quoll_*.yaml
 /config/packages/*quoll.yaml
