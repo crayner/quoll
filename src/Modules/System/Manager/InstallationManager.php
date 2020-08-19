@@ -81,7 +81,7 @@ class InstallationManager
         if (false === realpath($this->getParameterPath(false)) && false !== realpath($this->getParameterPath(false).'.dist'))
         {
             $this->getLogger()->debug(TranslationHelper::translate('The parameter file needs to be created'));
-            if (false === copy($this->getParameterPath(false).'.dist', $this->getParameterPath(false))) {
+            if (false === $this->copyDistFile('quoll')) {
                 $this->getLogger()->error(TranslationHelper::translate('Not able to copy the parameter file.'));
                 return $this->twig->render($this->twig->render('error/error.html.twig',
                     [
@@ -99,6 +99,8 @@ class InstallationManager
                 $this->getLogger()->notice(TranslationHelper::translate('The parameter file has been created.'));
             }
         }
+
+        $this->copyDistFile('role_hierarchy');
 
         $version = Yaml::parse(file_get_contents(__DIR__.'/../../../../config/packages/version.yaml'));
         $version = $version['parameters'];
@@ -199,13 +201,28 @@ class InstallationManager
     /**
      * getParameterPath
      * @param bool $test
+     * @param string $name
      * @return false|string
      */
-    protected function getParameterPath(bool $test = true)
+    protected function getParameterPath(bool $test = true, string $name = 'quoll')
     {
         if ($test)
-            return realpath(__DIR__ . '/../../../../config/packages/quoll.yaml');
-        return realpath(__DIR__ . '/../../../../config/packages') . '/quoll.yaml';
+            return realpath(__DIR__ . '/../../../../config/packages/' . $name . '.yaml');
+        return realpath(__DIR__ . '/../../../../config/packages') . '/' . $name . '.yaml';
+    }
+
+    /**
+     * copyDistFile
+     *
+     * 19/08/2020 10:33
+     * @param string $name
+     * @return bool
+     */
+    protected function copyDistFile(string $name)
+    {
+        if (false === $this->getParameterPath(true, $name)) {
+            return copy($this->getParameterPath(false, $name).'.dist', $this->getParameterPath(false, $name));
+        }
     }
 
     /**
