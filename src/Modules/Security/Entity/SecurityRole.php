@@ -325,7 +325,7 @@ class SecurityRole extends AbstractEntity
             'role' => $this->getRole(),
             'category' => TranslationHelper::translate('securityrole.category.' . strtolower($this->getCategory()), [], 'Security'),
             'label' => $this->getLabel(),
-            'children' => $this->getChildRolesAsString(true),
+            'children' => $this->getChildRolesAsString(false),
             'future_years' => TranslationHelper::translate($this->isAllowFutureYears() ? 'Yes' : 'No', [], 'messages'),
             'past_years' => TranslationHelper::translate($this->isAllowPastYears() ? 'Yes' : 'No', [], 'messages'),
             'login' => TranslationHelper::translate($this->isAllowLogin() ? 'Yes' : 'No', [], 'messages'),

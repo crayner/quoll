@@ -32,7 +32,7 @@ class ActionPermissionPagination extends AbstractPaginationManager
 {
     /**
      * execute
-     * @return $this|PaginationInterface
+     * @return PaginationInterface
      * 17/06/2020 12:26
      */
     public function execute(): PaginationInterface
@@ -71,9 +71,9 @@ class ActionPermissionPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Reachable Roles')
+        $column->setLabel('Assigned Roles')
             ->setContentKey('roles')
-            ->setSort()
+            ->setSearch()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 

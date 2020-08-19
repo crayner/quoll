@@ -20,8 +20,10 @@ use App\Form\Transform\SimpleArrayTransformer;
 use App\Form\Type\DisplayType;
 use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
+use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
+use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -43,13 +45,9 @@ class ActionPermissionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $roles = [];
-//        foreach($options['data']->getSecurityRoles() as $role) {
-            $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($options['data']->getSecurityRoles());
-//            dump($roles);
-//        }
-
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames($options['data']->getSecurityRoles());
         $roles = implode(', ', array_unique($roles));
+
 
         $builder
             ->add('name', DisplayType::class,
@@ -128,8 +126,9 @@ class ActionPermissionType extends AbstractType
     public function getHierarchy(): array
     {
         $roles = [];
-        foreach(SecurityHelper::getAllCurrentUserRoles() as $role) {
-            $roles[$role] = $role;
+        foreach (ProviderFactory::getRepository(SecurityRole::class)->findBy([],['category' => 'ASC', 'role' => 'ASC']) as $role)
+        {
+            $roles[$role->getCategory()][$role->getRole()] = $role->getRole();
         }
         return $roles;
     }

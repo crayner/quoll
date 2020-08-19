@@ -18,6 +18,7 @@ namespace App\Modules\Security\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Form\ActionPermissionType;
 use App\Modules\Security\Pagination\ActionPermissionPagination;
@@ -38,12 +39,13 @@ use Symfony\Component\Yaml\Yaml;
 class ActionPermissionController extends AbstractPageController
 {
     /**
-     * actionPermisionList
+     * list
+     *
+     * 19/08/2020 10:47
      * @param ActionPermissionPagination $pagination
-     * @return JsonResponse
      * @Route("/action/permissions/list/",name="action_permission_list")
      * @IsGranted("ROLE_ROUTE")
-     * 30/06/2020 08:47
+     * @return JsonResponse
      */
     public function list(ActionPermissionPagination $pagination)
     {
@@ -60,13 +62,14 @@ class ActionPermissionController extends AbstractPageController
 
     /**
      * edit
+     *
+     * 19/08/2020 10:44
      * @param Action $item
-     * @param ContainerManager $manager
      * @Route("/action/{item}/permission/edit/", name="action_permission_edit")
      * @IsGranted("ROLE_ROUTE")
-     * 30/06/2020 09:45
+     * @return JsonResponse
      */
-    public function edit(Action $item, ContainerManager $manager)
+    public function edit(Action $item)
     {
         $form = $this->createForm(ActionPermissionType::class, $item, ['action' => $this->generateUrl('action_permission_edit', ['item' => $item->getId()])]);
 
@@ -74,22 +77,16 @@ class ActionPermissionController extends AbstractPageController
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
             if ($form->isValid()) {
-                $data = ProviderFactory::create(Action::class)->persistFlush($item, []);
+                ProviderFactory::create(Action::class)->persistFlush($item);
                 $form = $this->createForm(ActionPermissionType::class, $item, ['action' => $this->generateUrl('action_permission_edit', ['item' => $item->getId()])]);
             } else {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(['form' => $this->getContainerManager()
+                ->singlePanel($form->createView())
+                ->getFormFromContainer()]);
         }
-
-        $manager
-            ->setReturnRoute($this->generateUrl('action_permission_list'))
-            ->setTranslationDomain('Security')
-            ->singlePanel($form->createView());
 
         return $this->getPageManager()
             ->createBreadcrumbs('Edit Action Permission',
@@ -102,14 +99,20 @@ class ActionPermissionController extends AbstractPageController
             )
             ->render(
                 [
-                    'containers' => $manager->getBuiltContainers(),
+                    'containers' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('action_permission_list'))
+                        ->setTranslationDomain('Security')
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers(),
                 ]
             );
     }
 
     /**
      * writeSecurityLinks
-     * 1/07/2020 09:59
+     *
+     * 19/08/2020 10:47
+     * @return string
      */
     public static function writeSecurityLinks(): string
     {

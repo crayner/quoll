@@ -465,42 +465,6 @@ class Action extends AbstractEntity
     }
 
     /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__Action` (
-                      `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                      `name` varchar(50) NOT NULL COMMENT 'The action name and restriction should be unique to the module that it is related to',
-                      `restriction` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
-                      `precedence` smallint(6) DEFAULT NULL,
-                      `category` varchar(20) NOT NULL,
-                      `description` varchar(191) NOT NULL,
-                      `route_list` longtext NOT NULL COMMENT '(DC2Type:simple_array)',
-                      `entry_route` varchar(191) NOT NULL,
-                      `entry_sidebar` varchar(1) NOT NULL DEFAULT 'Y',
-                      `menu_show` varchar(1) NOT NULL DEFAULT 'Y',
-                      `module` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                      `security_roles` longtext DEFAULT NULL COMMENT '(DC2Type:simple_array)',
-                      PRIMARY KEY (`id`),
-                      UNIQUE KEY `entry_route_precedence` (`entry_route`,`precedence`) USING BTREE,
-                      UNIQUE KEY `module_restriction_name` (`name`,`restriction`,`module`) USING BTREE,
-                      KEY `module` (`module`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__Action`
-                    ADD CONSTRAINT FOREIGN KEY (`module`) REFERENCES `__prefix__Module` (`id`);";
-    }
-
-    /**
      * coreData
      * @return array
      * 12/06/2020 10:16
@@ -508,15 +472,6 @@ class Action extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/ActionCoreData.yaml'));
-    }
-
-    /**
-     * coreData
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 
     /**
