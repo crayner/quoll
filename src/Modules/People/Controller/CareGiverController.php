@@ -17,6 +17,7 @@
 namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
@@ -38,34 +39,39 @@ class CareGiverController extends PeopleController
 {
     /**
      * editCareGiver
-     * @param ContainerManager $manager
+     *
+     * 20/08/2020 09:06
      * @param CareGiver $careGiver
-     * @return JsonResponse
-     * 20/07/2020 11:27
      * @Route("/care/giver/{careGiver}/edit/",name="care_giver_edit")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function editCareGiver(ContainerManager $manager, CareGiver $careGiver)
+    public function editCareGiver(CareGiver $careGiver)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createCareGiverForm($careGiver);
 
-            return $this->saveCareGiverContent($form, $manager, $careGiver);
+            return $this->saveCareGiverContent($form, $careGiver);
         } else {
             $form = $this->createCareGiverForm($careGiver);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
         }
     }
 
     /**
      * createCareGiverForm
+     *
+     * 20/08/2020 08:46
      * @param CareGiver $careGiver
      * @return FormInterface
-     * 20/07/2020 11:29
      */
     private function createCareGiverForm(CareGiver $careGiver): FormInterface
     {
@@ -77,47 +83,37 @@ class CareGiverController extends PeopleController
     }
 
     /**
-     * saveContent
+     * saveCareGiverContent
+     *
+     * 19/08/2020 12:42
      * @param FormInterface $form
-     * @param ContainerManager $manager
      * @param CareGiver $careGiver
      * @return JsonResponse
-     * 20/07/2020 11:31
      */
-    private function saveCareGiverContent(FormInterface $form, ContainerManager $manager, CareGiver $careGiver)
+    private function saveCareGiverContent(FormInterface $form, CareGiver $careGiver)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
-        $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(CareGiver::class)->persistFlush($careGiver, $data);
-            $data = ProviderFactory::create(Person::class)->persistFlush($careGiver->getPerson(), $data);
-            if ($data['status'] !== 'success') {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data);
-            } else {
+            ProviderFactory::create(CareGiver::class)->persistFlush($careGiver);
+            if ($this->isStatusSuccess()) {
                 $form = $this->createCareGiverForm($careGiver);
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 
     /**
      * addToCareGiver
+     *
+     * 19/08/2020 12:44
      * @param Person $person
      * @Route("/care/giver/{person}/add/",name="care_giver_add")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
-     * 21/07/2020 10:47
      */
     public function addToCareGiver(Person $person)
     {
@@ -130,17 +126,19 @@ class CareGiverController extends PeopleController
                 new Contact($person);
             }
             $person->getSecurityUser()->addSecurityRole('ROLE_CARE_GIVER');
-            $data = ProviderFactory::create(Person::class)->persistFlush($person, []);
-            if ($data['status'] === 'success') {
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Care Giver']);
+            ProviderFactory::create(Person::class)->persistFlush($person);
+            if ($this->isStatusSuccess()) {
+                $this->getStatusManager()
+                    ->setReDirect($this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Care Giver']))
+                    ->convertToFlash();
             }
         } else {
-            $data = [];
-            $data['status'] = 'redirect';
-            $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Care Giver']);
-            $this->addFlash('warning', ErrorMessageHelper::onlyNothingToDoMessage());
+            $this->getStatusManager()->warning(StatusManager::NOTHING_TO_DO);
+            $this->getStatusManager()
+                ->setReDirect($this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Care Giver']))
+                ->convertToFlash();
         }
-        return new JsonResponse($data);
+
+        return $this->generateJsonResponse();
     }
 }

@@ -40,19 +40,20 @@ class CustomFieldRepository extends ServiceEntityRepository
 
     /**
      * countByCategory
+     *
+     * 20/08/2020 08:59
      * @param string $category
      * @return int
-     * 29/07/2020 13:57
      */
     public function countByCategory(string $category): int
     {
-        $category = '%'.$category.'%';
-
         try {
             return intval($this->createQueryBuilder('f')
                 ->select(['COUNT(f.id)'])
                 ->where('f.categories LIKE :category')
-                ->setParameter('category', $category)
+                ->andWhere('f.active = :true')
+                ->setParameter('category', '%'.$category.'%')
+                ->setParameter('true', true)
                 ->getQuery()
                 ->getSingleScalarResult());
         } catch (NoResultException | NonUniqueResultException $e) {

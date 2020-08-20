@@ -16,18 +16,15 @@
  */
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\SchoolStudentType;
 use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
-use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -38,154 +35,127 @@ use Symfony\Component\Routing\Annotation\Route;
 class StudentController extends PeopleController
 {
     /**
-     * edit
-     * @param ContainerManager $manager
+     * editStudent
+     *
+     * 20/08/2020 14:07
      * @param Student $student
-     * @return Response
      * @Route("/student/{student}/edit/",name="student_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
-     * 19/07/2020 09:21
+     * @return JsonResponse
      */
-    public function editStudent(ContainerManager $manager, Student $student)
+    public function editStudent(Student $student)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createStudentForm($student);
 
-            return $this->saveStudentContent($form, $manager, $student, 'Student');
+            return $this->saveStudentContent($form, $student, 'Student');
         } else {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             $form = $this->createStudentForm($student);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->singleForm($form);
         }
     }
 
     /**
-     * edit
-     * @param ContainerManager $manager
-     * @param Person $person
-     * @return Response
+     * editSchoolStudent
+     *
+     * 20/08/2020 14:08
+     * @param Student $student
      * @Route("/student/{student}/school/edit/",name="student_school_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
-     * 19/07/2020 09:21
+     * @return JsonResponse
      */
-    public function editSchoolStudent(ContainerManager $manager, Student $student)
+    public function editSchoolStudent(Student $student)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createSchoolStudentForm($student);
 
-            return $this->saveStudentContent($form, $manager, $student, 'School');
+            return $this->saveStudentContent($form, $student, 'School');
         } else {
             $form = $this->createSchoolStudentForm($student);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return $this->singleForm($form);
         }
     }
 
     /**
      * studentDeletePersonalBackground
+     *
+     * 20/08/2020 14:09
      * @param Student $student
-     * @return JsonResponse
      * @Route("/student/{student}/personal/background/remove/",name="student_personal_background_remove")
      * @IsGranted("ROLE_ROUTE")
-     * 19/07/2020 10:23
+     * @return JsonResponse
      */
     public function studentDeletePersonalBackground(Student $student)
     {
         $student->removePersonalBackground();
 
-        $data = ProviderFactory::create(Student::class)->persistFlush($student, []);
+        ProviderFactory::create(Student::class)->persistFlush($student);
 
-        return new JsonResponse($data);
+        return $this->getStatusManager()->toJsonResponse();
     }
 
     /**
      * addToStudent
+     *
+     * 20/08/2020 14:15
      * @param Person $person
      * @Route("/student/{person}/add/",name="student_add")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
-     * 19/07/2020 12:13
      */
     public function addToStudent(Person $person)
     {
         if (null === $person->getStudent()) {
             $student = new Student($person);
-            $em = $this->getDoctrine()->getManager();
-            try {
-                $em->persist($student);
-                $student->setPerson($person);
-                $person->getSecurityUser()->addSecurityRole('ROLE_STUDENT');
-                $em->persist($person);
-                $em->flush();
-                $data = [];
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlySuccessMessage(true)];
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
-            } catch (PDOException | \PDOException | \Exception $e) {
-                $data = [];
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
-
-            }
+            $student->setPerson($person);
+            $person->getSecurityUser()->addSecurityRole('ROLE_STUDENT');
+            ProviderFactory::create(Student::class)->persistFlush($student, false);
+            ProviderFactory::create(Person::class)->persistFlush($person);
         } else {
-            $data['status'] = 'redirect';
-            $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Student']);
-            $this->addFlash('warning', ErrorMessageHelper::onlyNothingToDoMessage());
+            $this->getStatusManager()->warning(StatusManager::NOTHING_TO_DO);
         }
-        return new JsonResponse($data);
+        return $this->getStatusManager()->toJsonResponse();
     }
 
     /**
      * saveStudentContent
+     *
+     * 20/08/2020 14:18
      * @param FormInterface $form
-     * @param ContainerManager $manager
      * @param Student $student
      * @param string $tabName
      * @return JsonResponse
-     * 19/07/2020 16:29
      */
-    private function saveStudentContent(FormInterface $form, ContainerManager $manager, Student $student, string $tabName)
+    private function saveStudentContent(FormInterface $form, Student $student, string $tabName)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
-        $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(Student::class)->persistFlush($student,$data);
-            if ($data['status'] !== 'success') {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data);
-            } else {
+            ProviderFactory::create(Student::class)->persistFlush($student);
+            if ($this->isStatusSuccess()) {
                 if ($tabName === 'School') {
                     $form = $this->createSchoolStudentForm($student);
                 } else {
                     $form = $this->createStudentForm($student);
                 }
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 
     /**
      * createStudentForm
+     *
+     * 20/08/2020 14:18
      * @param Student $student
      * @return FormInterface
-     * 20/07/2020 11:03
      */
     private function createStudentForm(Student $student): FormInterface
     {
@@ -198,9 +168,10 @@ class StudentController extends PeopleController
 
     /**
      * createSchoolStudentForm
+     *
+     * 20/08/2020 14:18
      * @param Student $student
      * @return FormInterface
-     * 20/07/2020 11:04
      */
     private function createSchoolStudentForm(Student $student): FormInterface
     {

@@ -539,24 +539,24 @@ abstract class AbstractProvider implements EntityProviderInterface
      */
     public function persistFlush(EntityInterface $entity, bool $flush = true): StatusManager
     {
-        $data['status'] = isset($data['status']) ? $data['status'] : 'success';
-        try {
-            $this->getEntityManager()->persist($entity);
-            if ($flush) $this->flush();
-        } catch (NotNullConstraintViolationException $e) {
-            if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
-        } catch (UniqueConstraintViolationException $e) {
-            if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
-        } catch (\PDOException | PDOException | ORMException $e) {
-            if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
-        } catch (Exception $e) {
-            if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
-            $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
+        if ($this->isStatusSuccess()) {
+            try {
+                $this->getEntityManager()->persist($entity);
+                if ($flush) $this->flush();
+            } catch (NotNullConstraintViolationException $e) {
+                if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e), [], false);
+                $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
+            } catch (UniqueConstraintViolationException $e) {
+                if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e), [], false);
+                $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
+            } catch (\PDOException | PDOException | ORMException $e) {
+                if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e), [], false);
+                $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
+            } catch (Exception $e) {
+                if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e), [], false);
+                $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
+            }
         }
-
         return $this->getMessageManager();
     }
 
@@ -660,6 +660,6 @@ abstract class AbstractProvider implements EntityProviderInterface
      */
     public function isStatusSuccess(): bool
     {
-        return $this->getMessageManager()->getStatus() === 'success';
+        return $this->getMessageManager()->getStatus() === 'success' || $this->getMessageManager()->getStatus() === 'default';
     }
 }

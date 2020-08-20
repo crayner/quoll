@@ -25,9 +25,11 @@ use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Phone;
 use App\Modules\Security\Util\SecurityHelper;
+use App\Modules\System\Manager\SettingFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -237,10 +239,18 @@ class ContactType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $emailConstraint = [];
+        if (SettingFactory::getSettingManager()->get('People','uniqueEmailAddress')) {
+            $emailConstraint = [
+                new UniqueEntity(['fields' => ['email'], 'ignoreNull' => true]),
+            ];
+        }
+
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
                 'data_class' => Contact::class,
+                'constraints' => $emailConstraint,
             ]
         );
     }

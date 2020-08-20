@@ -40,7 +40,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\Index(name="postal_address",columns={"postal_address"})
  *  }
  * )
- * @UniqueEntity("contact")
  */
 class Contact extends AbstractEntity
 {

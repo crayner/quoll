@@ -32,7 +32,7 @@ class CustomFieldProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = CustomField::class;
+    protected string $entityName = CustomField::class;
 
     /**
      * validateCustomFields
@@ -60,5 +60,17 @@ class CustomFieldProvider extends AbstractProvider
     {
         if ($field->isActive()) return false;
         return ProviderFactory::getRepository(CustomFieldData::class)->countCustomField($field) === 0;
+    }
+
+    /**
+     * hasCustomFields
+     *
+     * 20/08/2020 08:56
+     * @param string $category
+     * @return bool
+     */
+    public function hasCustomFields(string $category): bool
+    {
+        return $this->getRepository()->countByCategory($category) > 0;
     }
 }

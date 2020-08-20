@@ -152,7 +152,7 @@ class StudentManager
             }
 
             // Privacy
-            $privacySetting = $settingProvider->getSettingByScopeAsBoolean('People', 'privacy');
+            $privacySetting = $settingProvider->get('People', 'privacy');
             if ($privacySetting && $privacy !== '' && null !== $privacy) {
                 if ($alert = ProviderFactory::getRepository(AlertLevel::class)->find(1)) {
                     $alerts[] = self::resolveAlert([

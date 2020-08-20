@@ -24,6 +24,7 @@ use App\Provider\ProviderFactory;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -129,5 +130,23 @@ abstract class AbstractPageController extends AbstractController
     public function isStatusSuccess(): bool
     {
         return $this->getStatusManager()->isStatusSuccess();
+    }
+
+    /**
+     * singleForm
+     *
+     * 19/08/2020 16:24
+     * @param FormInterface $form
+     * @return JsonResponse
+     */
+    public function singleForm(FormInterface $form): JsonResponse
+    {
+        return $this->generateJsonResponse(
+            [
+                'form' => $this->getContainerManager()
+                    ->singlePanel($form->createView())
+                    ->getFormFromContainer(),
+            ]
+        );
     }
 }

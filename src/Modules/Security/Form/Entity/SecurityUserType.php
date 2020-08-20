@@ -22,6 +22,7 @@ use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
+use App\Modules\Security\Entity\SecurityRole;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
@@ -65,12 +66,6 @@ class SecurityUserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $hierarchy = [];
-        foreach($this->hierarchy->getAssignableRoleNames($options['user']->getRoles()) as $role)
-        {
-            $hierarchy[$role] = $role;
-        }
-
         $roles = implode(', ', $this->hierarchy->getReachableRoleNames($options['data']->getSecurityRoles()));
         $locale = ProviderFactory::getRepository(Locale::class)->findOneByCode(ParameterBagHelper::get('locale'));
 
@@ -132,7 +127,7 @@ class SecurityUserType extends AbstractType
             ->add('securityRoles', ChoiceType::class,
                 [
                     'label' => 'Primary Role',
-                    'choices' => $hierarchy,
+                    'choices' => $this->getHierarchy(),
                     'required' => false,
                     'help' => 'Controls what a user can do and see.',
                     'multiple' => true,
@@ -140,9 +135,6 @@ class SecurityUserType extends AbstractType
                     'placeholder' => 'Please select...',
                     'visible_values' => ['can_login'],
                     'visible_parent' => 'security_user_canLogin',
-                    'attr' => [
-                        'size' => 4,
-                    ],
                 ]
             )
             ->add('reachableRoles', ParagraphType::class,
@@ -200,4 +192,21 @@ class SecurityUserType extends AbstractType
     {
         return ReactFormType::class;
     }
+
+    /**
+     * getHierarchy
+     *
+     * 20/08/2020 13:48
+     * @return array
+     */
+    public function getHierarchy(): array
+    {
+        $roles = [];
+        foreach (ProviderFactory::getRepository(SecurityRole::class)->findBy([],['category' => 'ASC', 'role' => 'ASC']) as $role)
+        {
+            $roles[$role->getCategory()][$role->getRole()] = $role->getRole();
+        }
+        return $roles;
+    }
+
 }

@@ -202,16 +202,10 @@ class PersonType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $emailConstraint = [];
-        if (SettingFactory::getSettingManager()->getSettingByScopeAsBoolean('People','uniqueEmailAddress'))
-            $emailConstraint = [
-                new UniqueEntity(['fields' => ['email'], 'ignoreNull' => true]),
-            ];
         $resolver->setDefaults(
             [
                 'translation_domain' => 'People',
                 'data_class' => Person::class,
-                'constraints' => $emailConstraint,
             ]
         );
     }

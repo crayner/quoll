@@ -17,6 +17,7 @@
 namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\SchoolStaffType;
 use App\Modules\Staff\Entity\Staff;
@@ -38,27 +39,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class StaffController extends PeopleController
 {
     /**
-     * edit
-     * @param ContainerManager $manager
+     * editStaff
+     *
+     * 20/08/2020 14:25
      * @param Staff $staff
-     * @return Response
      * @Route("/staff/{staff}/edit/",name="staff_edit",methods={"POST"})
      * @IsGranted("ROLE_ROUTE")
-     * 19/07/2020 09:21
+     * @return JsonResponse
      */
-    public function editStaff(ContainerManager $manager, Staff $staff)
+    public function editStaff(Staff $staff)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createStaffForm($staff);
 
-            return $this->saveContent($form, $manager, $staff, 'Staff');
+            return $this->saveContent($form, $staff, 'Staff');
         } else {
             $form = $this->createStaffForm($staff);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return $this->singleForm($form);
         }
     }
 
@@ -71,118 +70,100 @@ class StaffController extends PeopleController
      * @IsGranted("ROLE_ROUTE")
      * 19/07/2020 09:21
      */
-    public function editSchoolStaff(ContainerManager $manager, Staff $staff)
+    public function editSchoolStaff(Staff $staff)
     {
         if ($this->getRequest()->getContentType() === 'json') {
             $form = $this->createSchoolStaffForm($staff);
-            return $this->saveContent($form, $manager, $staff, 'School');
+            return $this->saveContent($form, $staff, 'School');
         } else {
             $form = $this->createSchoolStaffForm($staff);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return $this->singleForm($form);
         }
     }
 
     /**
      * staffDeletePersonalBackground
+     *
+     * 20/08/2020 14:27
      * @param Staff $staff
-     * @return JsonResponse
      * @Route("/staff/{staff}/personal/background/remove/",name="staff_personal_background_remove")
      * @IsGranted("ROLE_ROUTE")
-     * 19/07/2020 10:23
+     * @return JsonResponse
      */
     public function staffDeletePersonalBackground(Staff $staff)
     {
         $staff->removePersonalBackground();
 
-        $data = ProviderFactory::create(Staff::class)->persistFlush($staff, []);
+        ProviderFactory::create(Staff::class)->persistFlush($staff);
 
-        return new JsonResponse($data);
+        return $this->getStatusManager()->toJsonResponse();
     }
 
     /**
      * addToStaff
+     *
+     * 20/08/2020 14:32
      * @param Person $person
      * @Route("/staff/{person}/add/",name="staff_add")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
-     * 19/07/2020 12:13
      */
     public function addToStaff(Person $person)
     {
         if (null === $person->getStaff()) {
             $staff = new Staff($person);
-            $em = $this->getDoctrine()->getManager();
-            try {
-                $em->persist($staff);
-                $staff->setPerson($person);
-                $person->getSecurityUser()->addSecurityRole('ROLE_STAFF');
-                $em->persist($person);
-                $em->flush();
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']);
-                $this->addFlash('warning', ErrorMessageHelper::onlyNothingToDoMessage());
-            } catch (PDOException | \PDOException | \Exception $e) {
-                $data = [];
-                $data['errors'][] = ['class' => 'error', 'message' => ErrorMessageHelper::onlyDatabaseErrorMessage(true)];
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']);
+            $staff->setPerson($person);
+            $person->getSecurityUser()->addSecurityRole('ROLE_STAFF');
+            ProviderFactory::create(Staff::class)->persistFlush($staff, false);
+            ProviderFactory::create(Person::class)->persistFlush($person);
+            if ($this->isStatusSuccess()) {
+                $this->getStatusManager()->setReDirect($this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']))
+                    ->convertToFlash();
             }
+            return $this->getStatusManager()->toJsonResponse();
        } else {
-            $data['status'] = 'redirect';
-            $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => 'Staff']);
-            $this->addFlash('warning', ErrorMessageHelper::onlyNothingToDoMessage());
+            $this->getStatusManager()->warning(StatusManager::NOTHING_TO_DO);
+            $form = $this->createStaffForm();
+            return $this->singleForm($form);
         }
-        return new JsonResponse($data);
     }
 
     /**
      * saveContent
+     *
+     * 20/08/2020 14:34
      * @param FormInterface $form
-     * @param ContainerManager $manager
      * @param Staff $staff
      * @param string $tabName
      * @return JsonResponse
-     * 19/07/2020 16:29
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, Staff $staff, string $tabName)
+    private function saveContent(FormInterface $form, Staff $staff, string $tabName)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
-        dump($form,$content,$staff);
-        $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(Staff::class)->persistFlush($staff, $data);
-            if ($data['status'] !== 'success') {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data);
-            } else {
+            ProviderFactory::create(Staff::class)->persistFlush($staff);
+            if ($this->isStatusSuccess()) {
                 if ($tabName === 'School') {
                     $form = $this->createSchoolStaffForm($staff);
                 } else {
                     $form = $this->createStaffForm($staff);
                 }
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 
     /**
      * createSchoolStaffForm
+     *
+     * 20/08/2020 14:34
      * @param Staff $staff
      * @return FormInterface
-     * 20/07/2020 10:57
      */
     private function createSchoolStaffForm(Staff $staff): FormInterface
     {
@@ -195,10 +176,11 @@ class StaffController extends PeopleController
     }
 
     /**
-     * createSchoolStaffForm
+     * createStaffForm
+     *
+     * 20/08/2020 14:34
      * @param Staff $staff
      * @return FormInterface
-     * 20/07/2020 10:57
      */
     private function createStaffForm(Staff $staff): FormInterface
     {

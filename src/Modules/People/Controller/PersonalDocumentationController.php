@@ -14,15 +14,13 @@
  * Date: 20/07/2020
  * Time: 11:24
  */
-
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\People\Form\PersonalDocumentationType;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,34 +35,33 @@ class PersonalDocumentationController extends PeopleController
 {
     /**
      * editPersonalDocumentation
-     * @param ContainerManager $manager
+     *
+     * 19/08/2020 16:19
      * @param PersonalDocumentation $documentation
-     * @return JsonResponse
-     * 20/07/2020 11:27
      * @Route("/personal/documentation/{documentation}/edit/",name="personal_documentation_edit")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function editPersonalDocumentation(ContainerManager $manager, PersonalDocumentation $documentation)
+    public function editPersonalDocumentation(PersonalDocumentation $documentation)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createDocumentationForm($documentation);
 
-            return $this->saveContent($form, $manager, $documentation);
+            return $this->saveContent($form, $documentation);
         } else {
             $form = $this->createDocumentationForm($documentation);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
+        return $this->singleForm($form);
     }
 
     /**
      * createDocumentationForm
+     *
+     * 20/08/2020 08:45
      * @param PersonalDocumentation $documentation
      * @return FormInterface
-     * 20/07/2020 11:29
      */
     private function createDocumentationForm(PersonalDocumentation $documentation): FormInterface
     {
@@ -81,103 +78,98 @@ class PersonalDocumentationController extends PeopleController
 
     /**
      * saveContent
+     *
+     * 19/08/2020 16:32
      * @param FormInterface $form
-     * @param ContainerManager $manager
      * @param PersonalDocumentation $documentation
      * @return JsonResponse
-     * 20/07/2020 11:31
      */
-    private function saveContent(FormInterface $form, ContainerManager $manager, PersonalDocumentation $documentation)
+    private function saveContent(FormInterface $form, PersonalDocumentation $documentation)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
 
         $form->submit($content);
-        $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, $data);
-            if ($data['status'] !== 'success') {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data);
-            } else {
-                    $form = $this->createDocumentationForm($documentation);
+            $id = $documentation->getId();
+            ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation);
+            if ($this->isStatusSuccess() && $id !== $documentation->getId()) {
+                $form = $this->createDocumentationForm($documentation);
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 
     /**
      * removeBirthCertificateScan
+     *
+     * 19/08/2020 16:28
      * @param PersonalDocumentation $documentation
-     * @return JsonResponse
-     * 20/07/2020 13:37
      * @Route("/personal/documentation/{documentation}/birth/certicate/scan/remove/",name="remove_birth_certificate_scan")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function removeBirthCertificateScan(PersonalDocumentation $documentation)
     {
         $documentation->removeBirthCertificateScan();
 
-        $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
+        ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation);
 
-        return new JsonResponse($data);
+        return $this->generateJsonResponse();
     }
 
     /**
-     * removeBirthCertificateScan
+     * removePersonalImage
+     *
+     * 19/08/2020 16:28
      * @param PersonalDocumentation $documentation
-     * @return JsonResponse
-     * 20/07/2020 13:37
      * @Route("/personal/documentation/{documentation}/personal/image/remove/",name="remove_personal_image")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function removePersonalImage(PersonalDocumentation $documentation)
     {
         $documentation->removePersonalImage();
 
-        $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
+        ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation);
 
-        return new JsonResponse($data);
+        return $this->generateJsonResponse();
     }
 
     /**
      * removePassportScan
+     *
+     * 19/08/2020 16:29
      * @param PersonalDocumentation $documentation
-     * @return JsonResponse
-     * 20/07/2020 13:37
      * @Route("/personal/documentation/{documentation}/passport/scan/remove/",name="remove_passport_scan")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function removePassportScan(PersonalDocumentation $documentation)
     {
         $documentation->removeCitizenship1PassportScan();
 
-        $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
+        ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation);
 
-        return new JsonResponse($data);
+        return $this->generateJsonResponse();
     }
 
     /**
-     * removePassportScan
+     * removeIDCardScan
+     *
+     * 19/08/2020 16:30
      * @param PersonalDocumentation $documentation
      * @Route("/personal/documentation/{documentation}/id/card/scan/remove/",name="remove_id_card_scan")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
-     * 1/08/2020 15:28
      */
     public function removeIDCardScan(PersonalDocumentation $documentation)
     {
-        $documentation->removeIDCardScan();
+        $documentation->removeNationalIDCardScan();
 
-        $data = ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation, []);
+        ProviderFactory::create(PersonalDocumentation::class)->persistFlush($documentation);
 
-        return new JsonResponse($data);
+        return $this->generateJsonResponse();
     }
 }

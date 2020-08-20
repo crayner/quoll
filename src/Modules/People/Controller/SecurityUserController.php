@@ -16,9 +16,8 @@
  */
 namespace App\Modules\People\Controller;
 
-
 use App\Container\ContainerManager;
-use App\Modules\People\Entity\Person;
+use App\Manager\StatusManager;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Form\Entity\SecurityUserType;
 use App\Provider\ProviderFactory;
@@ -31,35 +30,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityUserController extends PeopleController
 {
     /**
-     * editUser
-     * @param ContainerManager $manager
+     * editSecurityUser
+     *
+     * 20/08/2020 11:28
      * @param SecurityUser $user
-     * @return JsonResponse
-     * 20/07/2020 11:27
      * @Route("/security/user/{user}/edit/",name="security_user_edit")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function editSecurityUser(ContainerManager $manager, SecurityUser $user)
+    public function editSecurityUser(SecurityUser $user)
     {
         if ($this->getRequest()->getContentType() === 'json') {
 
             $form = $this->createSecurityUserForm($user);
 
-            return $this->saveSecurityUserContent($form, $manager, $user);
+            return $this->saveSecurityUserContent($form, $user);
         } else {
             $form = $this->createSecurityUserForm($user);
-            $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return $this->singleForm($form);
         }
     }
 
     /**
      * createSecurityUserForm
+     *
+     * 20/08/2020 11:28
      * @param SecurityUser $user
      * @return FormInterface
-     * 21/07/2020 14:24
      */
     private function createSecurityUserForm(SecurityUser $user): FormInterface
     {
@@ -72,36 +70,26 @@ class SecurityUserController extends PeopleController
     }
 
     /**
-     * saveContent
+     * saveSecurityUserContent
+     *
+     * 20/08/2020 11:28
      * @param FormInterface $form
-     * @param ContainerManager $manager
      * @param SecurityUser $securityUser
      * @return JsonResponse
-     * 20/07/2020 11:31
      */
-    private function saveSecurityUserContent(FormInterface $form, ContainerManager $manager, SecurityUser $securityUser)
+    private function saveSecurityUserContent(FormInterface $form, SecurityUser $securityUser)
     {
         $content = json_decode($this->getRequest()->getContent(), true);
         $form->submit($content);
 
-        $data = [];
         if ($form->isValid()) {
-            $data = ProviderFactory::create(SecurityUser::class)->persistFlush($securityUser, $data);
-            if ($data['status'] !== 'success') {
-                $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
-                $manager->singlePanel($form->createView());
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data);
-            } else {
+            ProviderFactory::create(SecurityUser::class)->persistFlush($securityUser);
+            if ($this->isStatusSuccess()) {
                 $form = $this->createSecurityUserForm($securityUser);
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
         } else {
-            $data = ErrorMessageHelper::getInvalidInputsMessage($data, true);
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
         }
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 }

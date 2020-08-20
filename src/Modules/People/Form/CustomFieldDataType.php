@@ -23,7 +23,6 @@ use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

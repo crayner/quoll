@@ -21,6 +21,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\CareGiverType;
 use App\Modules\People\Form\ChangePasswordType;
@@ -38,9 +39,8 @@ use App\Modules\Student\Form\StudentType;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContent;
 use App\Twig\Sidebar\Photo;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\DBAL\Driver\PDOException;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,13 +53,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class PeopleController extends AbstractPageController
 {
     /**
-     * manage
+     * list
+     *
+     * 19/08/2020 15:53
      * @param PeoplePagination $pagination
-     * @return JsonResponse
      * @Route("/people/list/", name="people_list")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function manage(PeoplePagination $pagination)
+    public function list(PeoplePagination $pagination)
     {
         $pagination->setStack($this->getPageManager()->getStack())
             ->setContent([])
@@ -73,8 +75,11 @@ class PeopleController extends AbstractPageController
 
     /**
      * manageContent
+     *
+     * 19/08/2020 15:54
      * @param PeoplePagination $pagination
      * @Route("/people/content/loader/", name="people_content_loader")
+     * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
     public function manageContent(PeoplePagination $pagination)
@@ -84,23 +89,24 @@ class PeopleController extends AbstractPageController
 
             $pagination->setContent($content);
             return new JsonResponse(['content' => $pagination->getContent(), 'pageMax' => $pagination->getPageMax(), 'status' => 'success'], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return new JsonResponse(['class' => 'error', 'message' => $e->getMessage()], 200);
         }
     }
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 19/08/2020 15:55
      * @param SidebarContent $sidebar
      * @param Person|null $person
      * @param string $tabName
-     * @return Response
      * @Route("/person/{person}/edit/{tabName}", name="person_edit")
      * @Route("/person/add/{tabName}", name="person_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, SidebarContent $sidebar, ?Person $person = null, string $tabName = 'Basic')
+    public function edit(SidebarContent $sidebar, ?Person $person = null, string $tabName = 'Basic')
     {
 
         $request = $this->getRequest();
@@ -130,22 +136,24 @@ class PeopleController extends AbstractPageController
             if ($form->isValid())
             {
                 $id = $person->getId();
-                $data = ProviderFactory::create(Person::class)->persistFlush($person,[]);
-                if ($id !== $person->getId() && $data['status'] === 'success')
+                ProviderFactory::create(Person::class)->persistFlush($person);
+                if ($id !== $person->getId() && $this->isStatusSuccess())
                 {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => $tabName]);
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
-                } else if ($data['status'] === 'success') {
-                    $data = ErrorMessageHelper::getSuccessMessage([], true);
+                    $this->getStatusManager()
+                        ->setReDirect($this->generateUrl('person_edit', ['person' => $person->getId(), 'tabName' => $tabName]))
+                        ->convertToFlash();
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
         }
         $container = new Container($tabName);
 
@@ -229,13 +237,18 @@ class PeopleController extends AbstractPageController
         }
 
 
-        $manager->setReturnRoute($this->generateUrl('people_list'));
-        $manager->addContainer($container)->buildContainers();
+        if ($person !== null) {
+            $this->getContainerManager()
+                ->setAddElementRoute($this->generateUrl('person_add'));
+        }
 
         return $this->getPageManager()->createBreadcrumbs([$person->getId() !== null ? 'Edit Person: {name}' : 'Add Person', ['{name}' => $person->getFullName()]])
             ->render(
                 [
-                    'containers' => $manager->getBuiltContainers(),
+                    'containers' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('people_list'))
+                        ->addContainer($container)
+                        ->getBuiltContainers(),
                 ]
             );
     }
@@ -243,6 +256,8 @@ class PeopleController extends AbstractPageController
 
     /**
      * delete
+     *
+     * 19/08/2020 15:57
      * @param Person $person
      * @param PeoplePagination $pagination
      * @Route("/person/{person}/delete/",name="person_delete")
@@ -251,18 +266,7 @@ class PeopleController extends AbstractPageController
      */
     public function delete(Person $person, PeoplePagination $pagination)
     {
-        if ($person->canDelete()) {
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($person);
-                $em->flush();
-                $this->getPageManager()->addMessage('success', ErrorMessageHelper::onlySuccessMessage(true));
-            } catch (PDOException $e) {
-                $this->getPageManager()->addMessage('error', ErrorMessageHelper::onlyDatabaseErrorMessage(true));
-            }
-        } else {
-            $this->getPageManager()->addMessage('warning', ErrorMessageHelper::onlyLockedRecordMessage($person->formatName('Preferred'), get_class($person), true));
-        }
+        ProviderFactory::create(Person::class)->delete($person);
 
         $pagination->setStack($this->getPageManager()->getStack())
             ->setContent([])
@@ -271,6 +275,7 @@ class PeopleController extends AbstractPageController
             ->setContentLoader($this->generateUrl('people_content_loader'));
 
         return $this->getPageManager()->createBreadcrumbs('Manage People')
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->render(
                 [
                     'pagination' => $pagination->toArray(),
@@ -281,10 +286,12 @@ class PeopleController extends AbstractPageController
 
     /**
      * writePeopleFilter
+     *
+     * 19/08/2020 16:08
      * @param PeoplePagination $pagination
-     * @return JsonResponse
      * @Route("/people/filter/list", name="people_list_filter")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function writePeopleFilter(PeoplePagination $pagination)
     {
@@ -298,11 +305,13 @@ class PeopleController extends AbstractPageController
 
     /**
      * resetPassword
+     *
+     * 19/08/2020 16:07
      * @param Person $person
      * @param ContainerManager $manager
-     * @return Response
      * @Route("/password/{person}/reset/",name="person_reset_password")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse|Response
      */
     public function resetPassword(Person $person, ContainerManager $manager)
     {
@@ -323,24 +332,22 @@ class PeopleController extends AbstractPageController
         if ($request->getContent() !== '') {
             $content = json_decode($request->getContent(), true);
             $form->submit($content);
-            $data = [];
             if ($form->isValid()) {
                 $user = new SecurityUser($person);
                 $user->changePassword($content['raw']['first']);
-                $data['status'] = 'success';
-                $data['errors'][] = ['class' => 'success', 'message' => TranslationHelper::translate('Your account has been successfully updated. You can now continue to use the system as per normal.', [], 'Security')];
-                $manager->singlePanel($form->createView());
-                $person->setPasswordForceReset($content['passwordForceReset']);
-                $this->getDoctrine()->getManager()->persist($person);
-                $this->getDoctrine()->getManager()->flush();
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
+                $this->getStatusManager()->info('Your account has been successfully updated. You can now continue to use the system as per normal.', [], 'Security');
+                $user->setPasswordForceReset($content['passwordForceReset']);
+                ProviderFactory::create(Person::class)->persistFlush($person);
             } else {
-                $manager->singlePanel($form->createView());
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $data['form'] = $manager->getFormFromContainer();
-                return new JsonResponse($data, 200);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
+            return $this->generateJsonResponse(
+                [
+                    'form' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getFormFromContainer(),
+                ]
+            );
 
         }
 

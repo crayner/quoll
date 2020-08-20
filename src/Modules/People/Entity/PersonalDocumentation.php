@@ -584,6 +584,18 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
+     * removeNationalIDCardScan
+     *
+     * 19/08/2020 16:32
+     * @return $this
+     */
+    public function removeNationalIDCardScan(): PersonalDocumentation
+    {
+        $this->nationalIDCardScan = null;
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getResidencyStatus(): ?string
