@@ -404,17 +404,14 @@ export default class ContainerApp extends Component {
         }
     }
 
-    replaceSpecialContent(name, content)
+    replaceSpecialContent(name, content, index)
     {
         let panels = {...this.state.panels}
-        if (typeof panels[name] === 'object' && typeof panels[name].special === 'object') {
-            let special = {...panels[name].special}
-            Object.keys(content).map(key => {
-                if (typeof special[key] !== 'undefined') {
-                    Object.assign(special[key], content[key])
-                }
-            })
-            Object.assign(panels[name].special, {...special})
+        if (typeof index === 'undefined') {
+            index = 0
+        }
+        if (typeof panels[name] === 'object' && typeof panels[name].sections === 'object') {
+            Object.assign(panels[name].sections[index].content, {...content.special})
             this.setState({
                 panels: {...panels}
             })

@@ -11,13 +11,23 @@ import Messages from '../component/Messages'
 export default class RelationshipApp extends Component {
     constructor (props) {
         super(props)
-        this.form = props.form
         this.functions = props.functions
+        this.form = props.form
         this.messages = props.messages
         this.relationships = props.relationships
         this.state = {
-            loading: false
+            loading: false,
+            messages: [],
+            status: true,
         }
+    }
+
+    shouldComponentUpdate (nextProps, nextState, nextContext) {
+        if (!nextState.loading) {
+            nextState.form = nextProps.form
+        }
+        console.log(nextProps, nextState, nextContext)
+        return true
     }
 
     getRelationshipChoices(list) {
@@ -115,13 +125,17 @@ export default class RelationshipApp extends Component {
             {method: this.form.method, body: JSON.stringify(data)},
             false)
             .then(data => {
-                let errors = this.form.errors
-                errors = errors.concat(data.errors)
-                data.special.form.errors = errors
+                console.log(data)
+                data.special.form.attr.className = 'notGood'
+                if (data.status === 'success') {
+                    data.special.form.attr.className = 'allGood'
+                }
                 this.setState({
-                    loading: false
+                    loading: false,
+                    messages: data.errors,
+                    status: data.status === 'success'
                 })
-                this.functions.replaceSpecialContent('Relationships', {'form': data.special.form});
+                this.functions.replaceSpecialContent('Relationships', {...data});
             })
     }
 
@@ -129,8 +143,14 @@ export default class RelationshipApp extends Component {
     render () {
         const submit = {...this.form.children.submit}
         const token = {...this.form.children._token}
-        return (<form action={this.form.action} method={'POST'} id={this.form.id}>
-                    <Messages messages={this.form.errors} translate={this.functions.translate} />
+        this.form.attr = {}
+        this.form.attr.className = 'notGood'
+        if (this.state.status) {
+            this.form.attr.className = 'allGood'
+        }
+        return (<section className={'RelationshipForm'}>
+                    <Messages messages={this.state.messages} translate={this.functions.translate} />
+                    <form action={this.form.action} method={'POST'} id={this.form.id} {...this.form.attr}>
                     <table className={'smallIntBorder fullWidth standardForm relative'}>
                         <tbody>
                             <tr className={'break flex flex-col sm:flex-row justify-between content-center p-0'}>
@@ -150,7 +170,8 @@ export default class RelationshipApp extends Component {
                             </tr>
                         </tbody>
                     </table>
-                </form>)
+                </form>
+            </section>)
     }
 }
 
