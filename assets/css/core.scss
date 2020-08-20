@@ -347,6 +347,20 @@ textarea[disabled] {
 span, button, button:focus {
     outline: none;
 }
+div.react-messages + form.allGood {
+    border-left-width: 6px;
+    --border-opacity: 1;
+    border-color: #2f855a;
+    border-color: rgba(47, 133, 90, var(--border-opacity));
+    padding-left: 2px;
+}
+div.react-messages + form.notGood {
+    border-left-width: 6px;
+    --border-opacity: 1;
+    border-color: #c53030;
+    border-color: rgba(197, 48, 48, var(--border-opacity));
+    padding-left: 2px;
+}
 .smallIntBorder {
     background-color: #fafafa;
     margin: 5px 0px;

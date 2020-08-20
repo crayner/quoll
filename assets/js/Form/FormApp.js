@@ -34,18 +34,6 @@ export default function FormApp(props) {
         table_attr.className = 'smallIntBorder fullWidth standardForm relative'
         if (form.row_class !== null) table_attr.className = form.row_class
 
-        let preFormContent = []
-        if (typeof form.preFormContent === 'object') {
-            if (form.preFormContent.targetElement === 'pagination')
-                preFormContent.push(<PaginationApp {...form.preFormContent} key={'pagination'} functions={functions} />)
-        }
-
-        let postFormContent = []
-        if (typeof form.postFormContent === 'object') {
-            if (form.postFormContent.targetElement === 'pagination')
-                postFormContent.push(<PaginationApp {...form.postFormContent} key={'pagination'} functions={functions} />)
-        }
-
         if (typeof form.attr === 'undefined') {
             form.attr = {}
         }
@@ -56,7 +44,6 @@ export default function FormApp(props) {
 
         if (singleForm) {
             return (<section className={'panelSection'}>
-                {preFormContent}
                 <Messages messages={form.errors} translate={functions.translate} />
                 <table {...table_attr}>
                     <tbody>
@@ -64,25 +51,24 @@ export default function FormApp(props) {
                     {rows}
                     </tbody>
                 </table>
-                {postFormContent}
             </section>)
         }
 
-        return (<form
-                    action={form.action}
-                    id={form.id}
-                    {...form.attr}
-                    method={form.method !== undefined ? form.method : 'POST'}>
-                    {preFormContent}
+        return (<section className={'panelForm'}>
                     <Messages messages={form.errors} translate={functions.translate} />
-                    <table {...table_attr}>
-                        <tbody>
-                            {dummyRow}
-                            {rows}
-                        </tbody>
-                    </table>
-                    {postFormContent}
-                </form>
+                    <form
+                        action={form.action}
+                        id={form.id}
+                        {...form.attr}
+                        method={form.method !== undefined ? form.method : 'POST'}>
+                        <table {...table_attr}>
+                            <tbody>
+                                {dummyRow}
+                                {rows}
+                            </tbody>
+                        </table>
+                    </form>
+                </section>
         )
     }
     // Future Expansion for grid not table

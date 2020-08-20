@@ -7,7 +7,6 @@ import {fetchJson} from "../component/fetchJson"
 import {createPassword} from "../component/createPassword"
 import {
     setPanelErrors,
-    trans,
     downloadFile,
     openUrl,
     buildState,
@@ -21,6 +20,8 @@ import {
     findElementById,
     buildFormData,
     isSubmit,
+    clearFormBorder,
+    setFormBorder,
     checkHiddenRows,
     initialContentLoaders,
     checkChainedElements,
@@ -300,6 +301,7 @@ export default class ContainerApp extends Component {
         this.submit[parentName] = true
         this.setState({
             submit: true,
+            forms: clearFormBorder(this.state.forms, parentName)
         })
         let parentForm = {...getParentForm(this.state.forms,form)}
         let data = buildFormData({}, parentForm)
@@ -327,6 +329,11 @@ export default class ContainerApp extends Component {
                     let form = {...data.form}
                     form.errors = errors
                     this.submit[parentName] = false
+                    if (data.status === 'success') {
+                        form = setFormBorder(form, 'allGood')
+                    } else {
+                        form = setFormBorder(form, 'notGood')
+                    }
                     let forms = checkHiddenRows({...mergeParentForm(this.state.forms, parentName, {...form})})
                     let visibleKeys = forms.visible_keys
                     delete forms.visible_keys
@@ -334,7 +341,9 @@ export default class ContainerApp extends Component {
                     this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}), visibleKeys)
                 }
             }).catch(error => {
+                parentForm.errors.push({'class': 'error', 'message': 'An error occurred on the server'})
                 parentForm.errors.push({'class': 'error', 'message': error})
+                parentForm = setFormBorder(parentForm, 'notGood')
                 this.submit[parentName] = false
                 this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
         })

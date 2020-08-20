@@ -25,6 +25,21 @@ export default class Messages extends Component {
     cancelMessage(id) {
         let messages = this.props.messages
         messages.splice(id,1)
+        //  remove allGood and notGood Class
+        let w = document.getElementsByClassName("notGood")
+        if (w.length > 0) {
+            for (let q=0; q<w.length; q++) {
+                let item = w.item(q)
+                item.classList.remove('notGood')
+            }
+        }
+        w = document.getElementsByClassName("allGood")
+        if (w.length > 0) {
+            for (let q=0; q<w.length; q++) {
+                let item = w.item(q)
+                item.classList.remove('allGood')
+            }
+        }
         this.setState({
             messages: messages
         })
@@ -75,7 +90,7 @@ export default class Messages extends Component {
         if (cells.length === 0)
             return null
 
-        return (<div className={'clear-both'}>{cells}</div>)
+        return (<div className={'clear-both react-messages'}>{cells}</div>)
     }
 }
 

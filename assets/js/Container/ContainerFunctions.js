@@ -359,3 +359,29 @@ export function setChainedSelect(form, forms, formNames)
     forms = {...mergeParentForm(forms,parentName,parent)}
     return {...forms}
 }
+
+export function clearFormBorder(forms, name)
+{
+    let form = forms[name]
+    if (typeof form.attr === 'undefined') {
+        form.attr = {}
+    }
+    form.attr.className = ''
+    forms[name] = {...form}
+
+    return {...forms}
+}
+
+export function setFormBorder(form, className)
+{
+    if (typeof form.attr === 'undefined') {
+        form.attr = {}
+    }
+    if (typeof form.attr.className === 'string') {
+        form.attr.className = form.attr.className + ' ' + className
+    } else {
+        form.attr.className = className
+    }
+
+    return {...form}
+}
