@@ -533,9 +533,11 @@ abstract class AbstractProvider implements EntityProviderInterface
 
     /**
      * persistFlush
+     *
+     * 20/08/2020 15:44
      * @param EntityInterface $entity
-     * @param array $data
      * @param bool $flush
+     * @return StatusManager
      */
     public function persistFlush(EntityInterface $entity, bool $flush = true): StatusManager
     {

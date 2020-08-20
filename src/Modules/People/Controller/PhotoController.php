@@ -17,8 +17,11 @@
 namespace App\Modules\People\Controller;
 
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\People\Manager\PhotoImporter;
+use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
 use App\Util\ImageHelper;
 use App\Util\StringHelper;
@@ -55,9 +58,11 @@ class PhotoController extends AbstractPageController
 
     /**
      * uploadPhoto
+     *
+     * 20/08/2020 15:31
+     * @param Person $person
      * @Route("/personal/photo/{person}/upload/",name="personal_photo_upload_api")
      * @IsGranted("ROLE_ROUTE")
-     * @param Person $person
      * @return JsonResponse
      */
     public function uploadPhoto(Person $person)
@@ -90,43 +95,37 @@ class PhotoController extends AbstractPageController
 
             $person->getPersonalDocumentation()->setPersonalImage(ImageHelper::getRelativeImageURL($file->getRealpath()));
 
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($person->getPersonalDocumentation());
-                $em->flush();
-            } catch (IOException $e) {
-                $fs->remove($file->getRealpath());
-                return new JsonResponse(['status' => 'error', 'message' => $e->getMessage()]);
-            }
+            ProviderFactory::create(PersonalDocumentation::class)->persistFlush($person->getPersonalDocumentation());
 
             $photo = [];
             $photo['value'] = $person->getId();
             $photo['photo'] = ImageHelper::getAbsoluteImageURL('file', $person->getPersonalDocumentation()->getPersonalImage());
-            return new JsonResponse(['status' => 'success', 'message' => ErrorMessageHelper::onlySuccessMessage(true), 'person' => $photo], 200);
+            $message = $this->getStatusManager()->getMessages()->first()->getTranslatedMessage();
+            return $this->getStatusManager()->toJsonResponse(['person' => $photo, 'message' => $message]);
         }
-        return new JsonResponse(['status' => 'error', 'message' => $violations[0]->getMessage()], 200);
+        $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+        foreach ($violations as $violation) {
+            $this->getStatusManager()->error($violation->getMessage());
+        }
+        return $this->getStatusManager()->toJsonResponse();
     }
 
     /**
      * removePhoto
+     *
+     * 20/08/2020 16:30
+     * @param Person $person
      * @Route("/personal/photo/{person}/remove/",name="personal_photo_remove_api")
      * @IsGranted("ROLE_ROUTE")
-     * @param Person $person
      * @return JsonResponse
      */
     public function removePhoto(Person $person)
     {
-        try {
-            $person->setImage240(null);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
-            $em->flush();
-            $photo = [];
-            $photo['value'] = $person->getId();
-            $photo['photo'] = 'build/static/DefaultPerson.png';
-            return new JsonResponse(['status' => 'success', 'message' => TranslationHelper::translate('The photo was removed.',[],'People'), 'person' => $photo], 200);
-        } catch ( \Exception $e) {
-            return new JsonResponse(['status' => 'error', 'message' => $e->getMessage()], 200);
-        }
+        $person->getPersonalDocumentation()->removePersonalImage();
+        ProviderFactory::create(PersonalDocumentation::class)->persistFlush($person->getPersonalDocumentation());
+        $photo = [];
+        $photo['value'] = $person->getId();
+        $photo['photo'] = 'build/static/DefaultPerson.png';
+        return $this->getStatusManager()->toJsonResponse(['person' => $photo]);
     }
 }

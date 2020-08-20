@@ -76,9 +76,16 @@ export default class PhotoLoaderApp extends Component {
 
     addMessage(message, status)
     {
-        message = {
-            status: status,
-            message: message
+        if (typeof message === 'string') {
+            message = {
+                status: status,
+                message: message
+            }
+        }
+        if (typeof message !== 'object' && typeof message.status !== 'string' && typeof message.message !== 'string') {
+            console.log(message)
+            console.error('invalid message')
+            return
         }
         clearTimeout(this.timeout)
         let messages = this.state.messages
@@ -127,23 +134,21 @@ export default class PhotoLoaderApp extends Component {
             {},
             false
             ).then(data => {
+                console.log(data)
                 if (data.status === 'success') {
-                    this.addMessage(data.message,'success')
                     this.replacePerson(data.person)
-                } else if (data.status === 'error') {
-                    this.addMessage(data.message, 'error')
                 }
+                this.addMessage(data.message)
             }).catch(error => {
-                this.addMessage(error, 'error')
+                this.addMessage(error,'error')
             })
 
     }
 
     render () {
-        let x = 0
-        const messages = this.state.messages.map(message => {
-            x = x + 1
-            return (<div className={message.status} key={x}>{message.message}</div>)
+        const messages = this.state.messages.map((message,x) => {
+            if (typeof message !== 'undefined')
+                return (<div className={message.status} key={x}>{message.message}</div>)
         })
 
         return (

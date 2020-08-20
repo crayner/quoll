@@ -77,7 +77,7 @@ export default function RenderPeople(props) {
                 acceptedFiles="image/jpeg,image/png,image/jpg,image/gif"
                 InputComponent={dropFilesHere}
                 styles={{
-                    dropzone: {height: 120, borderColor: 'gray', borderStyle: 'solid', borderWidth: '1px'},
+                    dropzone: {height: 120, borderColor: 'gray', borderStyle: 'solid', borderWidth: '1px', width: '100%', backgroundColor: 'white'},
                     dropzoneActive: {borderColor: 'green', backgroundColor: 'aquamarine'},
                     dropzoneReject: {borderColor: 'red', backgroundColor: 'moccasin'},
                 }}
@@ -168,7 +168,7 @@ export default function RenderPeople(props) {
                             <img src={getPhoto(chosen)} title={getLabel(chosen)} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />
                         </label>
                     </td>
-                    <td className="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right">
+                    <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 ">
                         <SingleFileAutoSubmit />
                     </td>
                 </tr> : null}
