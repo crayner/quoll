@@ -18,6 +18,7 @@ namespace App\Modules\People\Controller;
 
 use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Locality;
 use App\Modules\People\Form\AddressType;
@@ -136,15 +137,16 @@ class AddressController extends AbstractPageController
 
     /**
      * localityEdit
-     * @param ContainerManager $manager
+     *
+     * 20/08/2020 15:22
      * @param Locality|null $locality
-     * @return JsonResponse
      * @Route("/locality/{locality}/edit/popup/",name="locality_edit_popup")
      * @Route("/locality/add/",name="locality_add")
      * @Route("/locality/add/popup/",name="locality_add_popup")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function localityEdit(ContainerManager $manager, ?Locality $locality = null)
+    public function localityEdit(?Locality $locality = null)
     {
         if (is_null($locality)) {
             $locality = new Locality();
@@ -160,35 +162,36 @@ class AddressController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $locality->getId();
-                $data = ProviderFactory::create(Locality::class)->persistFlush($locality);
-                if ($data['status'] === 'success' && $id !== $locality->getId()) {
-                    $action = $this->generateUrl('locality_edit_popup', ['locality' => $locality->getId()]);
-                    $form = $this->createForm(LocalityType::class, $locality, ['action' => $action]);
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $action;
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                ProviderFactory::create(Locality::class)->persistFlush($locality);
+                if ($this->isStatusSuccess() && $id !== $locality->getId()) {
+                    $this->getStatusManager()->setReDirect($this->generateUrl('locality_edit_popup', ['locality' => $locality->getId()]))
+                        ->convertToFlash();
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->singleForm($form);
         }
 
         if ($locality->getId() !== null) {
-            $manager->setAddElementRoute($this->generateUrl('locality_add'));
+            $this->getContainerManager()->setAddElementRoute($this->generateUrl('locality_add'));
         }
-        $manager->singlePanel($form->createView());
-        
-        return $this->getPageManager()->render(['containers' => $manager->getBuiltContainers()]);
-        
+
+        return $this->getPageManager()
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()->singlePanel($form->createView())->getBuiltContainers()
+                ]
+            );
     }
 
     /**
      * refreshChoiceList
+     *
+     * 20/08/2020 15:22
      * @Route("/address/list/refresh/",name="address_list_refresh")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function refreshChoiceList()
     {
@@ -201,8 +204,11 @@ class AddressController extends AbstractPageController
 
     /**
      * refreshLocalityChoiceList
+     *
+     * 20/08/2020 15:23
      * @Route("/locality/list/refresh/",name="locality_list_refresh")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function refreshLocalityChoiceList()
     {
@@ -214,10 +220,12 @@ class AddressController extends AbstractPageController
     }
 
     /**
-     * list locality
+     * listLocality
+     *
+     * 20/08/2020 15:23
+     * @param LocalityPagination $pagination
      * @Route("/locality/list/",name="locality_list")
      * @IsGranted("ROLE_ROUTE")
-     * @param LocalityPagination $pagination
      * @return JsonResponse
      */
     public function listLocality(LocalityPagination $pagination)
@@ -228,22 +236,24 @@ class AddressController extends AbstractPageController
             ->setAddElementRoute(['url' => $this->generateUrl('locality_add_popup'), 'target' => 'Locality_Details', 'options' => 'width=800,height=450']);
 
         return $this->getPageManager()->createBreadcrumbs('Manage Localities')
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
      * deleteLocality
+     *
+     * 20/08/2020 15:23
      * @param Locality $locality
-     * @param FlashBagInterface $bag
-     * @return Response
+     * @param LocalityPagination $pagination
      * @Route("/locality/{locality}/delete/",name="locality_delete")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function deleteLocality(Locality $locality, FlashBagInterface $bag)
+    public function deleteLocality(Locality $locality, LocalityPagination $pagination)
     {
         ProviderFactory::create(Locality::class)->delete($locality);
-        ProviderFactory::create(Locality::class)->getMessageManager()->pushToFlash($bag);
 
-        return $this->forward(AddressController::class . '::listLocality');
+        return $this->listLocality($pagination);
     }
 }
