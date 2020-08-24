@@ -18,6 +18,7 @@ namespace App\Modules\People\Form;
 
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ParagraphType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
@@ -34,17 +35,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class CustomFieldType
  * @package App\Modules\People\Form
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class CustomFieldType extends AbstractType
 {
+    /**
+     * buildForm
+     *
+     * 24/08/2020 14:34
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('header', HeaderType::class,
-                [
-                    'label' => $options['data']->getId() === null ? 'Add Custom Field' : 'Edit Custom Field',
-                ]
-            )
             ->add('name', TextType::class,
                 [
                     'label' => 'Custom Field name',
@@ -69,8 +73,15 @@ class CustomFieldType extends AbstractType
                     'placeholder' => 'Please select...',
                 ]
             );
+        dump($options['data']);
         if ($options['data']->getFieldType() === 'text') {
             $builder
+                ->add('optionPrompt', ParagraphType::class,
+                    [
+                        'help' => 'Ensure that you create the options necessary for this custom field.',
+                        'wrapper_class' => 'info',
+                    ]
+                )
                 ->add('options', TextType::class,
                     [
                         'help' => 'Enter the number of rows to display for field Data',
@@ -79,6 +90,12 @@ class CustomFieldType extends AbstractType
                 );
         } else if ($options['data']->getFieldType() === 'short_string') {
             $builder
+                ->add('optionPrompt', ParagraphType::class,
+                    [
+                        'help' => 'Ensure that you create the options necessary for this custom field.',
+                        'wrapper_class' => 'info',
+                    ]
+                )
                 ->add('options', TextType::class,
                     [
                         'help' => 'Maximum characters in the short string (max: 191)',
@@ -87,6 +104,12 @@ class CustomFieldType extends AbstractType
                 );
         } else if ($options['data']->getFieldType() === 'choice') {
             $builder
+                ->add('optionPrompt', ParagraphType::class,
+                    [
+                        'help' => 'Ensure that you create the options necessary for this custom field.',
+                        'wrapper_class' => 'info',
+                    ]
+                )
                 ->add('options', SimpleArrayType::class,
                     [
                         'help' => 'A list of choices for your field.',

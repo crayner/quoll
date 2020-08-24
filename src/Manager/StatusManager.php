@@ -478,14 +478,16 @@ class StatusManager
     /**
      * setReDirect
      *
-     * 17/08/2020 11:24
+     * 24/08/2020 14:03
      * @param string $reDirect
+     * @param bool $convertToFlash
      * @return StatusManager
      */
-    public function setReDirect(string $reDirect): StatusManager
+    public function setReDirect(string $reDirect, bool $convertToFlash = false): StatusManager
     {
         $this->reDirect = $reDirect;
 
+        if ($convertToFlash) $this->convertToFlash();
         return $this->setStatus('redirect');
     }
 

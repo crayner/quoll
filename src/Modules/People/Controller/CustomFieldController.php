@@ -16,14 +16,12 @@
  */
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\EntitySortManager;
 use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Form\CustomFieldType;
 use App\Modules\People\Pagination\CustomFieldPagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,12 +35,11 @@ class CustomFieldController extends AbstractPageController
     /**
      * list
      * @param CustomFieldPagination $pagination
-     * @param array $errors
      * @return JsonResponse
      * @Route("/custom/field/list",name="custom_field_list")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function list(CustomFieldPagination $pagination, array $errors = [])
+    public function list(CustomFieldPagination $pagination)
     {
         $content = ProviderFactory::getRepository(CustomField::class)->findBy([], ['displayOrder' => 'ASC', 'name' => 'ASC']);
         $pagination->setStack($this->getPageManager()->getStack())->setContent($content)
@@ -51,7 +48,7 @@ class CustomFieldController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('custom_field_add'));
 
         return $this->getPageManager()
-            ->setMessages($errors)
+            ->setMessages($this->getStatusManager()->getMessageArray())
             ->setUrl($this->generateUrl('custom_field_list'))
             ->createBreadcrumbs('Manage Custom Fields')
             ->render(['pagination' => $pagination->toArray()]);
@@ -59,14 +56,15 @@ class CustomFieldController extends AbstractPageController
 
     /**
      * edit
-     * @param ContainerManager $manager
+     *
+     * 24/08/2020 14:07
      * @param CustomField|null $customField
-     * @return JsonResponse
      * @Route("/custom/field/{customField}/edit/",name="custom_field_edit")
      * @Route("/custom/field/add",name="custom_field_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function edit(ContainerManager $manager, ?CustomField $customField = null)
+    public function edit(?CustomField $customField = null)
     {
         if (null === $customField) {
             $customField = new CustomField();
@@ -80,39 +78,31 @@ class CustomFieldController extends AbstractPageController
         if ($this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
-            $data = [];
             if ($form->isValid()) {
                 $id = $customField->getId();
-                $data = ProviderFactory::create(CustomField::class)->persistFlush($customField, []);
-                if ($data['status'] === 'success' && $id !== $customField->getId()) {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('custom_field_edit', ['customField' => $customField->getId()]);
-                    if (in_array($customField->getFieldType(), ['text', 'short_string', 'choice'])) {
-                        $this->getRequest()->getSession()->set('newCustomField', true);
-                    }
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
-                    $this->addFlash('warning', ['You will need ensure that these options are appropriate for your field.', [], 'People']);
-                } else if ($data['status'] === 'success') {
+                ProviderFactory::create(CustomField::class)->persistFlush($customField);
+                if ($this->isStatusSuccess() && $id !== $customField->getId()) {
+                    $this->getStatusManager()->setReDirect($this->generateUrl('custom_field_edit', ['customField' => $customField->getId()]),true);
+                } else if ($this->isStatusSuccess()) {
                     $form = $this->createForm(CustomFieldType::class, $customField, ['action' => $action]);
                 }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $this->getStatusManager()->invalidInputs();
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
-        }
-        $manager->setReturnRoute($this->generateUrl('custom_field_list'));
 
-        if (null !== $customField->getId()) {
-            $manager->setAddElementRoute($this->generateUrl('custom_field_add'));
+            return $this->singleForm($form);
         }
-        $manager->singlePanel($form->createView());
 
-        return $this->getPageManager()->createBreadcrumbs($customField->getId() === null ? 'Add Custom Field' : 'Edit Custom Field')
+        if (null !== $customField->getId()) $this->getContainerManager()->setAddElementRoute($this->generateUrl('custom_field_add'));
+
+        return $this->getPageManager()
+            ->createBreadcrumbs($customField->getId() === null ? 'Add Custom Field' : 'Edit Custom Field')
             ->render(
                 [
-                    'containers' => $manager->getBuiltContainers(),
+                    'containers' => $this->getContainerManager()
+                        ->setReturnRoute($this->generateUrl('custom_field_list'))
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers(),
                 ]
             );
     }
@@ -137,39 +127,39 @@ class CustomFieldController extends AbstractPageController
 
     /**
      * sortCustomFields
+     *
+     * 24/08/2020 14:47
      * @param CustomField $source
      * @param CustomField $target
      * @param CustomFieldPagination $pagination
+     * @param EntitySortManager $manager
      * @Route("/custom/field/{source}/{target}/sort/",name="custom_field_sort")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
-     * 31/07/2020 08:51
      */
-    public function sortCustomFields(CustomField $source, CustomField $target, CustomFieldPagination $pagination)
+    public function sortCustomFields(CustomField $source, CustomField $target, CustomFieldPagination $pagination, EntitySortManager $manager)
     {
-        $manager = new EntitySortManager();
         $manager->setSortField('displayOrder')
             ->setIndexName('display_order')
             ->execute($source, $target, $pagination);
 
-        return new JsonResponse($manager->getDetails());
-
+        return $manager->getMessages()->toJsonResponse(['content' => $manager->getPaginationContent()]);
     }
 
     /**
      * delete
+     *
+     * 24/08/2020 14:32
      * @param CustomFieldPagination $pagination
      * @param CustomField $customField
-     * @return JsonResponse
      * @Route("/custom/field/{customField}/delete",name="custom_field_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 1/08/2020 08:41
+     * @return JsonResponse
      */
     public function delete(CustomFieldPagination $pagination, CustomField $customField)
     {
-        $provider = ProviderFactory::create(CustomField::class);
-        $provider->delete($customField);
-        $data = $provider->getMessageManager()->pushToJsonData();
-        return $this->list($pagination, $data['errors'] ?? []);
+        ProviderFactory::create(CustomField::class)
+            ->delete($customField);
+        return $this->list($pagination);
     }
 }

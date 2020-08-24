@@ -86,6 +86,15 @@ class EntitySortManager
     private StatusManager $messages;
 
     /**
+     * EntitySortManager constructor.
+     * @param StatusManager $messages
+     */
+    public function __construct(StatusManager $messages)
+    {
+        $this->messages = $messages;
+    }
+
+    /**
      * ScaleGradeSort constructor.
      *
      * @param AbstractEntity $source

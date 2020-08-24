@@ -388,6 +388,7 @@ class CustomField extends AbstractEntity
         return array_merge([
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'description' => $this->getDescription(),
             'fieldType' => TranslationHelper::translate('customfield.fieldtype.' . strtolower($this->getFieldType()), [], 'People'),
             'active' => TranslationHelper::translate($this->isActive() ? 'Yes' : 'No', [], 'messages'),
             'isActive' => $this->isActive(),

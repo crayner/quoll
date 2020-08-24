@@ -55,7 +55,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Active')
             ->setContentKey(['active'])
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center');
         $row->addColumn($column);
 
         $column = new PaginationColumn();
@@ -69,7 +69,7 @@ class CustomFieldPagination extends AbstractPaginationManager
         $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-green-500')
+            ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('custom_field_edit')
             ->setRouteParams(['customField' => 'id']);
         $row->addAction($action);
