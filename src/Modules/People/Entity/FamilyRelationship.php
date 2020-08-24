@@ -40,43 +40,44 @@ class FamilyRelationship extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var Family|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Family")
-     * @ORM\JoinColumn(name="family", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="family", referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $family;
+    private ?Family $family;
 
     /**
      * @var FamilyMemberCareGiver|null
      * @ORM\ManyToOne(targetEntity="FamilyMemberCareGiver",inversedBy="relationships")
-     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="care_giver",referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $careGiver;
+    private ?FamilyMemberCareGiver $careGiver;
 
     /**
      * @var FamilyMemberStudent|null
      * @ORM\ManyToOne(targetEntity="FamilyMemberStudent",inversedBy="relationships")
-     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="student",referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $student;
+    private ?FamilyMemberStudent $student;
 
     /**
      * @var string|null
-     * @ORM\Column(length=31,nullable=true)
+     * @ORM\Column(length=31)
+     * @Assert\NotBlank()
      * @Assert\Choice(callback="getRelationshipList")
      */
-    private $relationship;
+    private ?string $relationship;
 
     /**
      * @var array
      */
-    private static $relationshipList = [
+    private static array $relationshipList = [
         'Mother',
         'Father',
         'Step-Mother',

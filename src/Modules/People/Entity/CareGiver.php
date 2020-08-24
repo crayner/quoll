@@ -308,4 +308,27 @@ class CareGiver extends AbstractEntity
     {
         return $careGiver->getId() === $this->getId() && $careGiver->getPerson()->isEqualTo($this->getPerson());
     }
+
+    /**
+     * getFullNameReversed
+     *
+     * 24/08/2020 09:50
+     * @return string
+     */
+    public function getFullNameReversed(): string
+    {
+        return $this->getPerson()->formatName('Reversed', 'CareGiver');
+    }
+
+    /**
+     * getFullName
+     *
+     * 24/08/2020 09:50
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->getPerson()->formatName('Standard', 'CareGiver');
+    }
+
 }

@@ -17,7 +17,6 @@
 namespace App\Modules\People\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\People\Validator\FamilyMemberNotBlank;
 use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Util\StudentHelper;
@@ -106,7 +105,6 @@ class FamilyMember extends AbstractEntity
     public function __construct(?Family $family = null)
     {
         $this->setFamily($family);
-        $this->setContactPriority(ProviderFactory::getRepository(FamilyMemberCareGiver::class)->getNextContactPriority($family));
     }
 
     /**
@@ -246,40 +244,6 @@ class FamilyMember extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         $person = $this->getPerson();
-        if ($name === 'care_giver') {
-            return [
-                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
-                'fullName' => $person->formatName('Standard'),
-                'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
-                'roll' => StudentHelper::getCurrentRollGroup($person),
-                'comment' => $this->getComment(),
-                'family_id' => $this->getFamily()->getId(),
-                'care_giver_id' => $this->getCareGiver()->getId(),
-                'person_id' => $person->getId(),
-                'id' => $this->getId(),
-                'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),
-                'contactPriority' => $this->getContactPriority(),
-                'phone' => TranslationHelper::translate($this->isContactCall() ? 'Yes' : 'No', [], 'messages'),
-                'sms' => TranslationHelper::translate($this->isContactSMS() ? 'Yes' : 'No', [], 'messages'),
-                'email' => TranslationHelper::translate($this->isContactEmail() ? 'Yes' : 'No', [], 'messages'),
-                'mail' => TranslationHelper::translate($this->isContactMail() ? 'Yes' : 'No', [], 'messages'),
-            ];
-
-        }
-        if ($name === 'student') {
-            return [
-                'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
-                'fullName' => $person->formatName('Standard'),
-                'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
-                'roll' => StudentHelper::getCurrentRollGroup($this->getStudent()),
-                'comment' => $this->getComment(),
-                'family_id' => $this->getFamily()->getId(),
-                'student_id' => $this->getId(),
-                'person_id' => $person->getId(),
-                'id' => $this->getId(),
-            ];
-
-        }
         return [
             'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getImage240()),
             'fullName' => $person->formatName('Standard'),

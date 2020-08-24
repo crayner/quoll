@@ -17,11 +17,13 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\CareGiver;
+use App\Modules\People\Manager\PersonNameManager;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
  * Class ParentContactRepository
@@ -62,13 +64,18 @@ class CareGiverRepository extends ServiceEntityRepository
 
     /**
      * getAllCareGiversQuery
+     *
+     * 23/08/2020 08:48
      * @return QueryBuilder
-     * 27/07/2020 08:57
      */
     public function getAllCareGiversQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('cg')
+            ->select(['p','cg','pd','c','cd'])
             ->leftJoin('cg.person', 'p')
+            ->leftJoin('p.personalDocumentation','pd')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('cg.customData', 'cd')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC')
         ;

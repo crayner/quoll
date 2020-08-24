@@ -27,16 +27,9 @@ use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
-use App\Modules\People\Entity\Person;
-use App\Modules\People\Form\Subscriber\FamilyCareGiverSubscriber;
-use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\ProviderFactory;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -73,6 +66,8 @@ class FamilyCareGiverType extends AbstractType
 
     /**
      * buildForm
+     *
+     * 22/08/2020 10:13
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -82,14 +77,22 @@ class FamilyCareGiverType extends AbstractType
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Edit Adult',
-                        'help' => 'This person could be a parent, guardian or emergency contact for any student.'
+                        'label' => 'Edit Care Giver',
+                        'help' => 'This person could be a parent, guardian or emergency contact for any student.',
                     ]
                 )
                 ->add('adultNote', ParagraphType::class,
                     [
                         'wrapper_class' => 'warning',
                         'help' => 'contact_priority_logic'
+                    ]
+                )
+                ->add('familyName', DisplayType::class,
+                    [
+                        'label' => 'Family Name',
+                        'help' => 'This value cannot be changed',
+                        'data' => $options['data']->getFamily()->getName(),
+                        'mapped' => false,
                     ]
                 )
                 ->add('personName', DisplayType::class,
@@ -110,24 +113,22 @@ class FamilyCareGiverType extends AbstractType
             $builder
                 ->add('adultEditHeader', HeaderType::class,
                     [
-                        'label' => 'Edit Care Giver',
-                        'help' => 'Family name: {name}',
-                        'help_translation_parameters' => [
-                            '{name}' => $options['data']->getFamily()->getName(),
-                        ],
+                        'label' => 'Add Care Giver',
                     ]
                 )
-                ->add('showHideForm', ToggleType::class,
+                ->add('familyName', DisplayType::class,
                     [
-                        'label' => 'Add Care Giver to Family',
-                        'visible_by_choice' => 'showAdultAdd',
+                        'label' => 'Family Name',
+                        'help' => 'This value cannot be changed',
+                        'data' => $options['data']->getFamily()->getName(),
+                        'visible_values' => ['showCareGiverAdd'],
+                        'visible_parent' => 'family_care_giver_showHideForm',
                         'mapped' => false,
-                        'data' => 'N',
                     ]
                 )
                 ->add('adultNote', ParagraphType::class,
                     [
-                        'visible_values' => ['showAdultAdd'],
+                        'visible_values' => ['showCareGiverAdd'],
                         'visible_parent' => 'family_care_giver_showHideForm',
                         'wrapper_class' => 'warning',
                         'help' => 'contact_priority_logic'
@@ -135,23 +136,29 @@ class FamilyCareGiverType extends AbstractType
                 )
                 ->add('careGiver', AutoSuggestEntityType::class,
                     [
+                        'visible_values' => ['showCareGiverAdd'],
+                        'visible_parent' => 'family_care_giver_showHideForm',
+                        'choice_label' => 'getFullNameReversed',
+                        'placeholder' => "Any part of a care giver's name...",
                         'label' => "Care Giver's Name",
                         'class' => CareGiver::class,
-                        'choice_label' => 'fullNameReversed',
-                        'placeholder' => 'Please select...',
-                        'query_builder' => ProviderFactory::getRepository(CareGiver::class)->getAllCareGiversQuery(),
-                        'visible_values' => ['showAdultAdd'],
-                        'visible_parent' => 'family_care_giver_showHideForm',
+                        'query_builder' => ProviderFactory::getRepository(CareGiver::class)->getAllCareGiversQuery()->where('p.status = :full')->setParameter('full', 'Full'),
                     ]
                 )
             ;
         }
         $builder
+            ->add('family', HiddenEntityType::class,
+                [
+                    'class' => Family::class,
+                ]
+            )
+            ->add('contactPriority', HiddenType::class)
             ->add('comment', TextareaType::class,
                 [
                     'label' => 'Comment'   ,
                     'required' => false,
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'attr' => [
                         'rows' => 5,
@@ -163,16 +170,15 @@ class FamilyCareGiverType extends AbstractType
                 [
                     'label' => 'Data Access?',
                     'visible_parent' => 'family_care_giver_showHideForm',
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'help' => 'Access data on family members?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
             )
-            ->add('contactPriority', HiddenType::class)
             ->add('contactCall', ToggleType::class,
                 [
                     'label' => 'Contact by phone call?',
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'help' => 'Receive non-emergency phone calls from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
@@ -181,7 +187,7 @@ class FamilyCareGiverType extends AbstractType
             ->add('contactSMS', ToggleType::class,
                 [
                     'label' => 'Contact by SMS?',
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'help' => 'Receive non-emergency SMS messages from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
@@ -190,7 +196,7 @@ class FamilyCareGiverType extends AbstractType
             ->add('contactEmail', ToggleType::class,
                 [
                     'label' => 'Contact by Email?',
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'help' => 'Receive non-emergency emails from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
@@ -199,31 +205,31 @@ class FamilyCareGiverType extends AbstractType
             ->add('contactMail', ToggleType::class,
                 [
                     'label' => 'Contact by Mail?',
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'help' => 'Receive postage mail from school?',
                     'wrapper_class' => 'flex-1 relative text-right',
                 ]
             )
-            ->add('panelName', HiddenType::class,
-                [
-                    'data' => 'Adults',
-                    'mapped' => false,
-                ]
-            )
-            ->add('family', HiddenEntityType::class,
-                [
-                    'class' => Family::class,
-                ]
-            )
             ->add('submit', SubmitType::class,
                 [
-                    'visible_values' => ['showAdultAdd'],
+                    'visible_values' => ['showCareGiverAdd'],
                     'visible_parent' => 'family_care_giver_showHideForm',
                     'label' => 'Submit',
                 ]
             )
         ;
-        $builder->addEventSubscriber(new FamilyCareGiverSubscriber());
+        if ($options['data']->getId() === null) {
+            $builder
+                ->add('showHideForm', ToggleType::class,
+                    [
+                        'label' => 'Add Care Giver to Family',
+                        'visible_by_choice' => 'showCareGiverAdd',
+                        'mapped' => false,
+                        'data' => 'N',
+                    ]
+                )
+            ;
+        }
     }
 }

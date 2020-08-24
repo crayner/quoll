@@ -629,4 +629,26 @@ class Student extends AbstractEntity
     {
         return $student->getId() === $this->getId() && $student->getPerson()->isEqualTo($this->getPerson());
     }
+
+    /**
+     * getFullNameReversed
+     *
+     * 24/08/2020 09:52
+     * @return string
+     */
+    public function getFullNameReversed(): string
+    {
+        return $this->getPerson()->formatName('Reversed', 'Student');
+    }
+
+    /**
+     * getFullName
+     *
+     * 24/08/2020 09:52
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->getPerson()->formatName('Standard', 'Student');
+    }
 }

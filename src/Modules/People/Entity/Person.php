@@ -26,7 +26,6 @@ use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as ASSERT;
@@ -478,12 +477,15 @@ class Person extends AbstractEntity
 
     /**
      * formatName
+     *
+     * 24/08/2020 09:50
      * @param string $style
+     * @param string|null $role
      * @return string
      */
-    public function formatName(string $style = 'General'): string
+    public function formatName(string $style = 'General', ?string $role = null): string
     {
-        return PersonNameManager::formatName($this, str_replace(' ', '', $this->getHumanisedRole()), $style);
+        return PersonNameManager::formatName($this, str_replace(' ', '', $role ?: $this->getHumanisedRole()), $style);
     }
 
     /**
@@ -839,36 +841,48 @@ class Person extends AbstractEntity
      * @param bool $reflect
      * @return Person
      */
-    public function setContact(Contact $contact, bool $reflect = true): Person
+    public function setContact(Contact $contact): Person
     {
-        if ($reflect) {
-            $contact = $contact->setPerson($this, false);
-        }
         $this->contact = $contact;
         return $this;
     }
 
     /**
+     * reflectContact
+     *
+     * 24/08/2020 11:30
+     * @param Contact $contact
+     * @return Person
+     */
+    public function reflectContact(Contact $contact): Person
+    {
+        $contact->setPerson($this);
+        return $this->setContact($contact);
+    }
+
+    /**
+     * getPersonalDocumentation
+     *
+     * 22/08/2020 11:06
      * @return PersonalDocumentation
      */
     public function getPersonalDocumentation(): PersonalDocumentation
     {
-        return $this->personalDocumentation = $this->personalDocumentation ?? new PersonalDocumentation($this);
+        return $this->personalDocumentation = $this->personalDocumentation ?: new PersonalDocumentation($this);
     }
 
     /**
      * setPersonalDocumentation
+     *
+     * 22/08/2020 11:13
      * @param PersonalDocumentation|null $personalDocumentation
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:10
      */
-    public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation, bool $reflect = true): Person
+    public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation): Person
     {
-        $this->personalDocumentation = $personalDocumentation ?? new PersonalDocumentation($this);
-        if ($reflect) {
-            $personalDocumentation->setPerson($this, false);
-        }
+        $this->personalDocumentation = $personalDocumentation ?: new PersonalDocumentation($this);
+        $personalDocumentation->setPerson($this);
+
         return $this;
     }
 

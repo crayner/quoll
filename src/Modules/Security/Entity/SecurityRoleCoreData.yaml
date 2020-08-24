@@ -1,4 +1,11 @@
 -
+    role: ROLE_FINANCE
+    label: 'Financial Staff'
+    category: Staff
+    allow_future_years: false
+    allow_past_years: false
+    allow_login: false
+-
     role: ROLE_LIBRARIAN
     label: Librarian
     category: Staff
@@ -61,13 +68,6 @@
     allow_future_years: false
     allow_past_years: false
     allow_login: false
--
-    role: ROLE_FINANCE
-    label: 'Finance Staff'
-    category: Staff
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: true
 -
     role: ROLE_CARE_GIVER
     label: 'Care Giver'

@@ -341,6 +341,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function setContentLoader(string $contentLoader)
     {
         $this->contentLoader = $contentLoader;
+        $this->setContent([]);
         return $this;
     }
 

@@ -523,6 +523,8 @@
             - family_student_edit
             - family_student_add
             - family_student_remove
+            - family_student_content_loader
+            - family_care_giver_content_loader
     entryRoute: family_list
     entrySidebar: true
     menuShow: true

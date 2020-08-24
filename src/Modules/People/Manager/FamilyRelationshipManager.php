@@ -18,21 +18,18 @@
 namespace App\Modules\People\Manager;
 
 use App\Manager\SpecialInterface;
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\FamilyRelationship;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Driver\PDOException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Util\StringUtil;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -44,26 +41,34 @@ class FamilyRelationshipManager implements SpecialInterface
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    private ValidatorInterface $validator;
 
     /**
      * @var array
      */
-    private $form;
+    private array $form;
 
     /**
      * @var Family
      */
-    private $family;
+    private Family $family;
+
+    /**
+     * @var StatusManager
+     */
+    private StatusManager $statusManager;
 
     /**
      * FamilyRelationshipManager constructor.
      * @param ValidatorInterface $validator
+     * @param StatusManager $statusManager
      */
     public function __construct(
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        StatusManager $statusManager
     ) {
         $this->validator = $validator;
+        $this->statusManager = $statusManager;
     }
 
     /**
@@ -71,7 +76,6 @@ class FamilyRelationshipManager implements SpecialInterface
      * @param array $content
      * @param Family $family
      * @param FormInterface $form
-     * @return array
      */
     public function handleRequest(array $content, Family $family, FormInterface $form)
     {
@@ -79,10 +83,10 @@ class FamilyRelationshipManager implements SpecialInterface
 
         $provider = ProviderFactory::create(FamilyRelationship::class);
         $relationships = [];
-        $ok = true;
-        if (!key_exists('relationships', $content))
-            return ErrorMessageHelper::getInvalidInputsMessage([], true);
-
+        if (!key_exists('relationships', $content)) {
+            $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
+            return;
+        }
         foreach($content['relationships'] as $q=>$item)
         {
             $fr = $provider->findOneRelationship($item);
@@ -95,23 +99,19 @@ class FamilyRelationshipManager implements SpecialInterface
             $errors = $this->getValidator()->validate($fr);
             if ($errors->count() > 0)
             {
+                $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
                 $error = $errors->get(0);
                 $form->get('relationships')->get($q)->get('relationship')->addError(new FormError($error->getMessage()));
-                return ErrorMessageHelper::getInvalidInputsMessage([],true);
-                break;
+                return;
             }
             $relationships[] = $fr;
         }
 
-        try {
-            $em = ProviderFactory::getEntityManager();
-            foreach($relationships as $fr)
-                $em->persist($fr);
-            $em->flush();
-            return ErrorMessageHelper::getSuccessMessage([],true);
-        } catch (\PDOException | PDOException | \Exception $e) {
-            return ErrorMessageHelper::getDatabaseErrorMessage([],true);
+        foreach($relationships as $fr) {
+            ProviderFactory::create(FamilyRelationship::class)->persistFlush($fr, false);
         }
+        ProviderFactory::create(FamilyRelationship::class)->flush();
+        $this->getStatusManager()->success();
     }
 
     /**
@@ -156,8 +156,11 @@ class FamilyRelationshipManager implements SpecialInterface
 
     /**
      * getExistingRelationships
+     *
+     * 21/08/2020 08:06
      * @param Family $family
      * @return ArrayCollection
+     * @noinspection PhpUndefinedMethodInspection
      */
     private function getExistingRelationships(Family $family): ArrayCollection
     {
@@ -181,8 +184,10 @@ class FamilyRelationshipManager implements SpecialInterface
      */
     public function toArray(): array
     {
+        $form = $this->getForm();
+        $form['attr'] = [];
         return [
-            'form' => $this->getForm(),
+            'form' => $form,
             'name' => $this->getName(),
             'messages' => $this->getTranslations(),
             'relationships' => $this->getRelationshipsAsArray(),
@@ -191,6 +196,8 @@ class FamilyRelationshipManager implements SpecialInterface
 
     /**
      * getRelationshipsAsArray
+     *
+     * 21/08/2020 09:03
      * @return array
      */
     private function getRelationshipsAsArray(): array
@@ -254,4 +261,11 @@ class FamilyRelationshipManager implements SpecialInterface
         return $this;
     }
 
+    /**
+     * @return StatusManager
+     */
+    public function getStatusManager(): StatusManager
+    {
+        return $this->statusManager;
+    }
 }

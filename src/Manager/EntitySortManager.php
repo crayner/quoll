@@ -18,10 +18,9 @@ namespace App\Manager;
 
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
-use App\Util\TranslationHelper;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
+use Exception;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 /**
@@ -34,42 +33,52 @@ class EntitySortManager
     /**
      * @var AbstractEntity
      */
-    private $source;
+    private AbstractEntity $source;
 
     /**
      * @var AbstractEntity
      */
-    private $target;
+    private AbstractEntity $target;
+
+    /**
+     * @var ?string
+     */
+    private ?string $tableName = null;
+
+    /**
+     * @var ?string
+     */
+    private ?string $entityName = null;
 
     /**
      * @var AbstractPaginationManager
      */
-    private $pagination;
+    private AbstractPaginationManager $pagination;
 
     /**
      * @var array
      */
-    private $content = [];
+    private array $content = [];
 
     /**
      * @var array
      */
-    private $findBy = [];
+    private array $findBy = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $sortField;
+    private ?string $sortField;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $indexName;
+    private ?string $indexName;
 
     /**
-     * @var array
+     * @var array|null
      */
-    private $indexColumns;
+    private ?array $indexColumns;
 
     /**
      * @var StatusManager
@@ -92,7 +101,7 @@ class EntitySortManager
             ->setTarget($target)
             ->setPagination($pagination);
 
-        $provider = ProviderFactory::create(get_class($this->getSource()));
+        $provider = ProviderFactory::create($this->getEntityName());
 
         $content = $provider->getRepository()->findBy($this->getFindBy(),[$this->getSortField() => 'ASC']);
 
@@ -111,9 +120,9 @@ class EntitySortManager
                 $item->$method($key++);
                 $result[] = $item;
             }
-            $this->saveSort($provider, $result, basename(get_class($this->getSource())));
+            $this->saveSort($provider, $result);
         } else {
-            $this->getMessages()->info('No change is required.', [], 'messages');
+            $this->getMessages()->info(StatusManager::NOTHING_TO_DO);
             $result = $content;
         }
         $this->setContent($result);
@@ -144,16 +153,15 @@ class EntitySortManager
      * 16/08/2020 16:42
      * @param EntityProviderInterface $provider
      * @param array $result
-     * @param string $tableName
      */
-    public function saveSort(EntityProviderInterface $provider, array $result, string $tableName)
+    public function saveSort(EntityProviderInterface $provider, array $result)
     {
         $sm = $provider->getEntityManager()->getConnection()->getSchemaManager();
         $prefix = $provider->getEntityManager()->getConnection()->getParams()['driverOptions']['prefix'];
 
         try {
-            $table = $sm->listTableDetails($prefix . $tableName);
-            $indexes = $sm->listTableIndexes($prefix . $tableName);
+            $table = $sm->listTableDetails($prefix . $this->getTableName());
+            $indexes = $sm->listTableIndexes($prefix . $this->getTableName());
             if (key_exists($this->getIndexName(), $indexes) || key_exists($this->getIndexName(), $indexes)) {
                 $index = $table->getIndex($this->getIndexName());
                 $sm->dropIndex($index, $table);
@@ -167,8 +175,9 @@ class EntitySortManager
 
             $sm->createIndex($index, $table);
             $this->getMessages()->success();
-        } catch (SchemaException | \Exception $e) {
-            $this->getMessages()->error($e->getMessage(), [], false);
+        } catch (SchemaException | Exception $e) {
+            if ($_SERVER['APP_ENV'] === 'dev') $this->getMessages()->error($e->getMessage(), [], false);
+            $this->getMessages()->info('When using a single table discriminator search, the correct table name must be set manually to ensure the single table is correctly addressed in the save routine.  Use setTableName() using the base name without prefix. The given tableName = ' . $this->getTableName(), [], false);
             $this->getMessages()->error(StatusManager::DATABASE_ERROR);
         }
     }
@@ -327,7 +336,7 @@ class EntitySortManager
             $item->$method($key++);
         }
 
-        $this->saveSort($provider, $content, basename(get_class($this->getSource())));
+        $this->saveSort($provider, $content);
         $this->setContent($content);
     }
 
@@ -359,11 +368,60 @@ class EntitySortManager
      * getPaginationContent
      *
      * 16/08/2020 17:21
+     * @param string|null $serialisationName
      * @return array
      */
-    public function getPaginationContent(): array
+    public function getPaginationContent(?string $serialisationName = null): array
     {
-        return $this->getPagination()->setContent($this->getContent())->getContent();
+        return $this->getPagination()->setContent($this->getContent(), $serialisationName)->getContent();
+    }
+
+    /**
+     * getTableName
+     *
+     * 22/08/2020 08:59
+     * @return string|null
+     */
+    public function getTableName(): ?string
+    {
+        return $this->tableName = $this->tableName ?: basename(get_class($this->getSource()));
+    }
+
+    /**
+     * setTableName
+     *
+     * 22/08/2020 08:59
+     * @param string $tableName
+     * @return $this
+     */
+    public function setTableName(string $tableName): EntitySortManager
+    {
+        $this->tableName = $tableName;
+        return $this;
+    }
+
+    /**
+     * getEntityName
+     *
+     * 22/08/2020 09:13
+     * @return string|null
+     */
+    public function getEntityName(): ?string
+    {
+        return $this->entityName = $this->entityName ?: get_class($this->getSource());
+    }
+
+    /**
+     * setEntityName
+     *
+     * 22/08/2020 09:13
+     * @param string|null $entityName
+     * @return $this
+     */
+    public function setEntityName(?string $entityName): EntitySortManager
+    {
+        $this->entityName = $entityName;
+        return $this;
     }
 }
 

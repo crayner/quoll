@@ -26,6 +26,7 @@ use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Student\Entity\Student;
+use App\Modules\Student\Form\StudentSelectType;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -104,23 +105,15 @@ class FamilyStudentType extends AbstractType
                         ],
                     ]
                 )
-                ->add('showHideForm', ToggleType::class,
-                    [
-                        'label' => 'Add student to family',
-                        'visible_by_choice' => 'showStudentAdd',
-                        'data' => 'N',
-                        'mapped' => false,
-                    ]
-                )
                 ->add('student', AutoSuggestEntityType::class,
                     [
-                        'label' => "Student's Name",
-                        'class' => Student::class,
-                        'choice_label' => 'fullNameReversed',
-                        'placeholder' => 'Please select...',
-                        'query_builder' => ProviderFactory::getRepository(Student::class)->getAllStudentsQuery(),
                         'visible_values' => ['showStudentAdd'],
                         'visible_parent' => 'family_student_showHideForm',
+                        'label' => "Student's Name",
+                        'placeholder' => "Any part of a student's name...",
+                        'class' => Student::class,
+                        'choice_label' => 'getFullNameReversed',
+                        'query_builder' => ProviderFactory::getRepository(Student::class)->getAllStudentsQuery(),
                     ]
                 )
             ;
@@ -153,5 +146,17 @@ class FamilyStudentType extends AbstractType
                 ]
             )
         ;
+        if ($options['data']->getId() === null) {
+            $builder
+                ->add('showHideForm', ToggleType::class,
+                    [
+                        'label' => 'Add student to family',
+                        'visible_by_choice' => 'showStudentAdd',
+                        'data' => 'N',
+                        'mapped' => false,
+                    ]
+                )
+            ;
+        }
     }
 }

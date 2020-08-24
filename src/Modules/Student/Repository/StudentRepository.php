@@ -29,6 +29,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
  * Class StudentRepository
@@ -185,13 +186,18 @@ class StudentRepository extends ServiceEntityRepository
 
     /**
      * getAllStudentsQuery
+     *
+     * 24/08/2020 12:31
      * @return QueryBuilder
-     * 18/07/2020 11:01
      */
     public function getAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('s')
+            ->select(['s','p','pd','c','cd'])
             ->leftJoin('s.person', 'p')
+            ->leftJoin('p.personalDocumentation', 'pd')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('s.customData', 'cd')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }

@@ -97,14 +97,18 @@ class StaffRepository extends ServiceEntityRepository
     }
 
     /**
-     * getAllStaffQueryBuilder
+     * getAllStaffQuery
+     *
+     * 24/08/2020 11:39
      * @return QueryBuilder
-     * 18/07/2020 10:57
      */
     public function getAllStaffQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('s')
+            ->select(['s','p','pd','c'])
             ->leftJoin('s.person', 'p')
+            ->leftJoin('p.personalDocumentation', 'pd')
+            ->leftJoin('p.contact', 'c')
             ->orderBy('p.surname')
             ->addOrderBy('p.firstName')
             ;
