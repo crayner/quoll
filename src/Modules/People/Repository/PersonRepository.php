@@ -319,26 +319,6 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * countAddressUsa
-     * @param Address $address
-     * @return int
-     */
-    public function countAddressUse(Address $address): int
-    {
-        try {
-            return $this->createQueryBuilder('f')
-                ->select('COUNT(f.id)')
-                ->where('f.physicalAddress = :address')
-                ->orWhere('f.postalAddress = :address')
-                ->setParameter('address', $address)
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
      * getRoleSearch
      * @param array $roles
      * @return $this

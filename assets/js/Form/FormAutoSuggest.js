@@ -7,7 +7,6 @@ import Autosuggest from 'react-autosuggest'
 export default function FormAutoSuggest(props) {
     const {
         wrapper_attr,
-        widget_attr,
         errors,
         functions,
         form
@@ -162,7 +161,6 @@ export default function FormAutoSuggest(props) {
 FormAutoSuggest.propTypes = {
     form: PropTypes.object.isRequired,
     wrapper_attr: PropTypes.object.isRequired,
-    widget_attr: PropTypes.object.isRequired,
     errors: PropTypes.array,
     functions: PropTypes.object.isRequired,
 }

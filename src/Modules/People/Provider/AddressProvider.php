@@ -17,6 +17,7 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\People\Entity\Address;
+use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
@@ -35,17 +36,16 @@ class AddressProvider extends AbstractProvider
 
     /**
      * canDelete
+     *
+     * 25/08/2020 07:57
      * @param Address $address
      * @return bool
      */
     public function canDelete(Address $address): bool
     {
-        if ($this->getRepository(Family::class)->countAddressUse($address) > 0) {
-            return false;
-        }
-        if ($this->getRepository(Person::class)->countAddressUse($address) > 0) {
-            return false;
-        }
+        if ($this->getRepository(Family::class)->countAddressUse($address) > 0) return false;
+        if ($this->getRepository(Contact::class)->countAddressUse($address) > 0) return false;
+
         return true;
     }
 }

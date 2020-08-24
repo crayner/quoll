@@ -463,7 +463,7 @@ export default class ContainerApp extends Component {
                     form.choices = data.choices
                 }
                 parentForm = {...replaceFormElement(parentForm, form)}
-                parentForm.errors.push({'class': 'info', 'message': this.translate('The list has been refreshed.')})
+                parentForm.errors.push({'class': 'info', 'message': this.functions.translate('The list has been refreshed.')})
                 this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName,parentForm)}, this.singleForm))
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})

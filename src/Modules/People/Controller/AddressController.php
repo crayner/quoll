@@ -16,7 +16,6 @@
  */
 namespace App\Modules\People\Controller;
 
-use App\Container\ContainerManager;
 use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\People\Entity\Address;
@@ -26,25 +25,25 @@ use App\Modules\People\Form\LocalityType;
 use App\Modules\People\Pagination\AddressPagination;
 use App\Modules\People\Pagination\LocalityPagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class AddressController
  * @package App\Modules\People\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class AddressController extends AbstractPageController
 {
     /**
      * list
+     *
+     * 25/08/2020 07:59
+     * @param AddressPagination $pagination
      * @Route("/address/list/",name="address_list")
      * @IsGranted("ROLE_ROUTE")
-     * @param AddressPagination $pagination
      * @return JsonResponse
      */
     public function list(AddressPagination $pagination)
@@ -55,30 +54,30 @@ class AddressController extends AbstractPageController
             ->setAddElementRoute(['url' => $this->generateUrl('address_add_popup'), 'target' => 'Address_Details', 'options' => 'width=800,height=600']);
 
         return $this->getPageManager()->createBreadcrumbs('Manage Addresses')
+            ->setUrl($this->generateUrl('address_list'))
             ->render(['pagination' => $pagination->toArray()]);
     }
 
     /**
-     * Manage Address
+     * addressManage
+     *
+     * 25/08/2020 08:11
+     * @param Address|null $address
      * @Route("/address/add/",name="address_add",methods={"GET"})
      * @Route("/address/add/popup/",name="address_add_popup",methods={"GET","POST"})
      * @Route("/address/{address}/edit/popup/",name="address_edit_popup",methods={"GET","POST"})
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @param Address|null $address
      * @return JsonResponse
      */
-    public function addressManage(ContainerManager $manager, ?Address $address = null)
+    public function addressManage(?Address $address = null)
     {
         $request = $this->getRequest();
 
         if ($address === null) {
             $address = new Address();
             $action = $this->generateUrl('address_add_popup');
-            $locality = new Locality();
         } else {
             $action = $this->generateUrl('address_edit_popup', ['address' => $address->getId()]);
-            $locality = $address->getLocality();
         }
 
         $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
@@ -87,26 +86,19 @@ class AddressController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $address->getId();
-                $data = ProviderFactory::create(Address::class)->persistFlush($address, []);
-                if ($data['status'] === 'success' && $id !== $address->getId()) {
-                    $action = $this->generateUrl('address_edit_popup', ['address' => $address->getId()]);
-                    $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $action;
-                    $this->addFlash('success', ErrorMessageHelper::onlySuccessMessage());
+                ProviderFactory::create(Address::class)->persistFlush($address);
+                if ($this->isStatusSuccess() && $id !== $address->getId()) {
+                    $this->getStatusManager()->setReDirect($this->generateUrl('address_edit_popup', ['address' => $address->getId()]), true);
                 }
+                $form = $this->createForm(AddressType::class, $address, ['action' => $action]);
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->invalidInputs();
             }
-            $manager->singlePanel($form->createView());
-            $data['form'] = $manager->getFormFromContainer();
-            return new JsonResponse($data);
+
+            return $this->singleForm($form);
         }
 
-        if ($address->getId() !== null)
-            $manager->setAddElementRoute($this->generateUrl('address_add'));
-
-        $manager->singlePanel($form->createView());
+        if ($address->getId() !== null) $this->getContainerManager()->setAddElementRoute($this->generateUrl('address_add'));
 
         return $this->getPageManager()->setPopup(true)->createBreadcrumbs($address->getId() !== null ? 'Edit Address' : 'Add Address',
                 [
@@ -115,24 +107,28 @@ class AddressController extends AbstractPageController
             )
             ->render(
                 [
-                    'containers' => $manager->getBuiltContainers(),
+                    'containers' => $this->getContainerManager()
+                        ->singlePanel($form->createView())
+                        ->getBuiltContainers(),
                 ]
             );
     }
 
     /**
+     * deleteAddress
+     *
+     * 25/08/2020 08:11
      * @param Address $address
-     * @param FlashBagInterface $bag
-     * @return Response
+     * @param AddressPagination $pagination
      * @Route("/address/{address}/delete/",name="address_delete")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
-    public function deleteAddress(Address $address, FlashBagInterface $bag)
+    public function deleteAddress(Address $address, AddressPagination $pagination)
     {
         ProviderFactory::create(Address::class)->delete($address);
-        ProviderFactory::create(Address::class)->getMessageManager()->pushToFlash($bag);
 
-        return $this->forward(AddressController::class . '::list');
+        return $this->list($pagination);
     }
 
     /**
@@ -197,7 +193,7 @@ class AddressController extends AbstractPageController
     {
         $result = [];
         foreach(ProviderFactory::getRepository(Address::class)->findBy([],['streetNumber' => 'ASC','streetName' => 'ASC']) as $address) {
-            $result[] = new ChoiceView($address, $address->getId(), $address->toString());
+            $result[] = new ChoiceView($address, (string)$address->getId(), (string)$address->toString());
         }
         return new JsonResponse(['choices' => $result]);
     }
@@ -214,7 +210,7 @@ class AddressController extends AbstractPageController
     {
         $result = [];
         foreach(ProviderFactory::getRepository(Locality::class)->findBy([],['name' => 'ASC','territory' => 'ASC']) as $locality) {
-            $result[] = new ChoiceView($locality, $locality->getId(), $locality->toString());
+            $result[] = new ChoiceView($locality, (string)$locality->getId(), (string)$locality->toString());
         }
         return new JsonResponse(['choices' => $result]);
     }

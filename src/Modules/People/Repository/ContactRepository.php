@@ -16,6 +16,7 @@
  */
 namespace App\Modules\People\Repository;
 
+use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Locality;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -76,4 +77,27 @@ class ContactRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * countAddressUse
+     *
+     * 25/08/2020 07:55
+     * @param Address $address
+     * @return int
+     */
+    public function countAddressUse(Address $address): int
+    {
+        try {
+            return $this->createQueryBuilder('c')
+                ->select('COUNT(c.id)')
+                ->where('c.physicalAddress = :address')
+                ->orWhere('c.postalAddress = :address')
+                ->setParameter('address', $address)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
 }
