@@ -17,6 +17,9 @@
 namespace App\Modules\People\Entity;
 
 use App\Modules\Student\Entity\Student;
+use App\Modules\Student\Util\StudentHelper;
+use App\Util\ImageHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -77,12 +80,25 @@ class FamilyMemberStudent extends FamilyMember
 
     /**
      * toArray
+     *
+     * 22/08/2020 10:36
      * @param string|null $name
      * @return array
      */
     public function toArray(?string $name = null): array
     {
-        return parent::toArray('student');
+        return [
+            'id' => $this->getId(),
+            'photo' => ImageHelper::getAbsoluteImageURL('File', $this->getPerson()->getPersonalDocumentation()->getPersonalImage() ?: '/build/static/DefaultPerson.png'),
+            'fullName' => $this->getPerson()->formatName('Standard'),
+            'status' => TranslationHelper::translate($this->getPerson()->getStatus(), [], 'People'),
+            'roll' => StudentHelper::getCurrentRollGroup($this->getStudent()),
+            'comment' => $this->getComment(),
+            'family_id' => $this->getFamily()->getId(),
+            'student_id' => $this->getId(),
+            'person_id' => $this->getPerson()->getId(),
+        ];
+;
     }
 
     /**

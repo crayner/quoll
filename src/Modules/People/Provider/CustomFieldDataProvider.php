@@ -29,5 +29,5 @@ class CustomFieldDataProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = CustomFieldData::class;
+    protected string $entityName = CustomFieldData::class;
 }

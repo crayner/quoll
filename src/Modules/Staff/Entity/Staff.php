@@ -609,22 +609,24 @@ class Staff extends AbstractEntity
 
     /**
      * getFullNameReversed
+     *
+     * 24/08/2020 09:50
      * @return string
-     * 17/07/2020 10:14
      */
     public function getFullNameReversed(): string
     {
-        return $this->getPerson()->getFullNameReversed();
+        return $this->getPerson()->formatName('Reversed', 'Staff');
     }
 
     /**
      * getFullName
+     *
+     * 24/08/2020 09:50
      * @return string
-     * 17/07/2020 10:14
      */
     public function getFullName(): string
     {
-        return $this->getPerson()->getFullName();
+        return $this->getPerson()->formatName('Standard', 'Staff');
     }
 
     /**

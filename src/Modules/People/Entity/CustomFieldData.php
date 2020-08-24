@@ -76,7 +76,7 @@ class CustomFieldData extends AbstractEntity
 
     /**
      * @var CareGiver|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver",inversedBy="customData")
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\CareGiver", inversedBy="customData")
      * @ORM\JoinColumn(name="care_giver",referencedColumnName="id",nullable=true)
      */
     private $careGiver;

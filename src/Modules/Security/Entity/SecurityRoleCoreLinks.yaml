@@ -1,5 +1,13 @@
 -
     findBy:
+        role: ROLE_FINANCE
+    source:
+        table: App\Modules\Security\Entity\SecurityRole
+        findBy:
+            name: null
+    target: childRole
+-
+    findBy:
         role: ROLE_LIBRARIAN
     source:
         table: App\Modules\Security\Entity\SecurityRole
@@ -65,14 +73,6 @@
 -
     findBy:
         role: ROLE_CONTACT
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            name: null
-    target: childRole
--
-    findBy:
-        role: ROLE_FINANCE
     source:
         table: App\Modules\Security\Entity\SecurityRole
         findBy:

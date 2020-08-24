@@ -3,7 +3,6 @@ namespace App\Form\Type;
 
 use App\Form\Transform\EntityToStringTransformer;
 use App\Provider\ProviderFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,30 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class HiddenEntityType
  * @package App\Form\Type
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class HiddenEntityType extends AbstractType
 {
-	/**
-	 * @var EntityManagerInterface
-	 */
-	private $manager;
-
-	/**
-	 * HiddenEntityType constructor.
-	 *
-	 * @param EntityManagerInterface $manager
-	 */
-	public function __construct(EntityManagerInterface $manager)
-	{
-		$this->manager = $manager;
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->addModelTransformer(new EntityToStringTransformer($this->manager, $options));
+		$builder->addModelTransformer(new EntityToStringTransformer($options));
 	}
 
 	/**
@@ -48,7 +33,13 @@ class HiddenEntityType extends AbstractType
 		return 'hidden_entity';
 	}
 
-	public function getParent()
+    /**
+     * getParent
+     *
+     * 23/08/2020 10:26
+     * @return string|null
+     */
+    public function getParent()
 	{
 		return HiddenType::class;
 	}

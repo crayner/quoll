@@ -461,7 +461,7 @@ class StatusManager
      */
     public function isStatusSuccess(): bool
     {
-        return $this->getStatus() === 'success' || $this->getStatus() === 'redirect';
+        return $this->getStatus() === 'success' || $this->getStatus() === 'redirect' || $this->getMessages()->count() === 0;
     }
 
     /**
@@ -489,4 +489,23 @@ class StatusManager
         return $this->setStatus('redirect');
     }
 
+    /**
+     * invalidInputs
+     *
+     * 21/08/2020 07:59
+     */
+    public function invalidInputs()
+    {
+        $this->error(static::INVALID_INPUTS);
+    }
+
+    /**
+     * databaseError
+     *
+     * 21/08/2020 07:59
+     */
+    public function databaseError()
+    {
+        $this->error(static::DATABASE_ERROR);
+    }
 }

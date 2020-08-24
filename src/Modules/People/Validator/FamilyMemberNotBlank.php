@@ -32,11 +32,11 @@ class FamilyMemberNotBlank extends Constraint
         self::PARENT_AND_STUDENT_ERROR => 'PARENT_AND_STUDENT_ERROR',
     ];
 
-    public $message = 'This value must not be blank';
+    public $message = 'A student or care giver must be set';
 
-    public $transDomain = 'validators';
+    public $transDomain = 'People';
 
-    public $atPath = 'family';  // family, parent or student
+    public $atPath = 'family';  // family, careGiver or student
 
     /**
      * getTargets

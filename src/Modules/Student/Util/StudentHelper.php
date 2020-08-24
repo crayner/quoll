@@ -17,8 +17,10 @@
 
 namespace App\Modules\Student\Util;
 
+use App\Manager\EntityInterface;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 
 /**
@@ -47,18 +49,16 @@ class StudentHelper
      * getCurrentRollGroup
      * @param Person|int $person
      */
-    public static function getCurrentRollGroup($person): string
+    public static function getCurrentRollGroup($student): string
     {
-        if (is_int($person))
-            $person = ProviderFactory::getRepository(Person::class)->find($person);
-        if (!$person instanceof Person)
+        if (is_int($student)) $student = ProviderFactory::getRepository(Student::class)->find($student);
+        if ($student instanceof Person && $student->isStudent()) $student = $student->getPerson();
+        if (!$student instanceof Student)
             return '';
 
-        if (!$person->isStudent())
-            return '';
 
         $se = null;
-        foreach($person->getStudentEnrolments() as $enrolment)
+        foreach($student->getStudentEnrolments() as $enrolment)
         {
             if ($enrolment->getAcademicYear()->getId() === AcademicYearHelper::getCurrentAcademicYear()->getId()) {
                 $se = $enrolment;

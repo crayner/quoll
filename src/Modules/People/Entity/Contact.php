@@ -130,9 +130,13 @@ class Contact extends AbstractEntity
      */
     private $jobTitle;
 
+    /**
+     * Contact constructor.
+     * @param Person|null $person
+     */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        $person->reflectContact($this);
     }
 
     /**
@@ -166,11 +170,8 @@ class Contact extends AbstractEntity
      * @param bool $reflect
      * @return Contact
      */
-    public function setPerson(Person $person, bool $reflect = true): Contact
+    public function setPerson(Person $person): Contact
     {
-        if ($reflect) {
-            $person->setContact($this, false);
-        }
         $this->person = $person;
         return $this;
     }

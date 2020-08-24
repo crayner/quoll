@@ -33,6 +33,11 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 class CustomFieldInjector
 {
     /**
+     * @var array
+     */
+    private array $fields = [];
+
+    /**
      * onPostLoad
      * @param LifecycleEventArgs $args
      * 30/07/2020 09:19
@@ -56,7 +61,7 @@ class CustomFieldInjector
      */
     private function injectCustomFields(EntityInterface $entity, string $category)
     {
-        $fields = ProviderFactory::getRepository(CustomField::class)->findByCategoryUsage($category);
+        $fields = $this->getFields($category);
 
         foreach($entity->getCustomData() as $customData) {
             foreach($fields as $q=>$field) {
@@ -70,5 +75,19 @@ class CustomFieldInjector
         foreach($fields as $field) {
             $entity->addCustomData(new CustomFieldData($entity, $field));
         }
+    }
+
+    /**
+     * getFields
+     *
+     * 24/08/2020 12:03
+     * @param string $category
+     * @return array
+     */
+    public function getFields(string $category): array
+    {
+        if (key_exists($category, $this->fields))
+            return $this->fields[$category];
+        return $this->fields[$category] = ProviderFactory::getRepository(CustomField::class)->findByCategoryUsage($category);
     }
 }

@@ -129,7 +129,7 @@ class EntityToStringTransformer implements DataTransformerInterface
 	/**
 	 * @param mixed $id
 	 *
-	 * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+	 * @throws TransformationFailedException
 	 *
 	 * @return mixed|object
 	 */

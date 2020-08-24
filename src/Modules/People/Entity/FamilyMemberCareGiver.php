@@ -13,12 +13,16 @@
  */
 namespace App\Modules\People\Entity;
 
+use App\Modules\Student\Util\StudentHelper;
+use App\Provider\ProviderFactory;
+use App\Util\ImageHelper;
+use App\Util\StringHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyMemberAdult
@@ -32,46 +36,47 @@ class FamilyMemberCareGiver extends FamilyMember
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
-    private $childDataAccess = false;
+    private bool $childDataAccess = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
-    private $contactCall = false;
+    private bool $contactCall = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="contact_SMS")
      */
-    private $contactSMS = false;
+    private bool $contactSMS = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
-    private $contactEmail = false;
+    private bool $contactEmail = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean")
      */
-    private $contactMail = false;
+    private bool $contactMail = false;
 
     /**
-     * @var Collection|FamilyRelationship[]
+     * @var Collection|FamilyRelationship[]|null
      * @ORM\OneToMany(targetEntity="FamilyRelationship",mappedBy="careGiver",orphanRemoval=true)
      */
-    private $relationships;
+    private ?Collection $relationships;
 
     /**
-     * FamilyMemberAdult constructor.
+     * FamilyMemberCareGiver constructor.
      * @param Family|null $family
      */
     public function __construct(?Family $family = null)
     {
-         $this->setRelationships(new ArrayCollection());
-         parent::__construct($family);
+        $this->setContactPriority(ProviderFactory::getRepository(FamilyMemberCareGiver::class)->getNextContactPriority($family));
+        $this->setRelationships(new ArrayCollection());
+        parent::__construct($family);
     }
 
     /**
@@ -79,7 +84,7 @@ class FamilyMemberCareGiver extends FamilyMember
      */
     public function isChildDataAccess(): bool
     {
-        return (bool)$this->childDataAccess;
+        return (bool) $this->childDataAccess;
     }
 
     /**
@@ -200,7 +205,24 @@ class FamilyMemberCareGiver extends FamilyMember
      */
     public function toArray(?string $name = null): array
     {
-        return parent::toArray('care_giver');
+        $person = $this->getPerson();
+        return [
+            'id' => $this->getId(),
+            'photo' => ImageHelper::getAbsoluteImageURL('File', $person->getPersonalDocumentation()->getPersonalImage()),
+            'fullName' => $person->formatName('Standard'),
+            'status' => TranslationHelper::translate($person->getStatus(), [], 'People'),
+            'roll' => StudentHelper::getCurrentRollGroup($person),
+            'comment' => $this->getComment(),
+            'family_id' => $this->getFamily()->getId(),
+            'care_giver_id' => $this->getCareGiver()->getId(),
+            'person_id' => $person->getId(),
+            'childDataAccess' => TranslationHelper::translate($this->isChildDataAccess() ? 'Yes' : 'No', [], 'messages'),
+            'contactPriority' => $this->getContactPriority(),
+            'phone' => StringHelper::getYesNo($this->isContactCall()),
+            'sms' => TranslationHelper::translate($this->isContactSMS() ? 'Yes' : 'No', [], 'messages'),
+            'email' => TranslationHelper::translate($this->isContactEmail() ? 'Yes' : 'No', [], 'messages'),
+            'mail' => TranslationHelper::translate($this->isContactMail() ? 'Yes' : 'No', [], 'messages'),
+        ];
     }
 
     /**
