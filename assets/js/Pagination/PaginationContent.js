@@ -68,15 +68,17 @@ export default function PaginationContent(props) {
                     columnDefinition.contentKey.map((value, key) => {
                         if (key === 0) {
                             let url = rowContent[value]
-                            if (!url.includes('http')) {
-                                if (url[0] !== '/') {
-                                    url = '/' + url
+                            if (url !== null) {
+                                if (!url.includes('http')) {
+                                    if (url[0] !== '/') {
+                                        url = '/' + url
+                                    }
+                                    let host = window.location.protocol + '//' + window.location.hostname
+                                    url = host + url
                                 }
-                                let host = window.location.protocol + '//' + window.location.hostname
-                                url = host + url
+                                columnContent.push(<Img src={url} style={style} className={className}
+                                                        key={key}/>)
                             }
-                            columnContent.push(<Img src={url} style={style} className={className}
-                                                    key={key}/>)
                         }
                     })
                 } else if (columnDefinition.contentType === 'link') {

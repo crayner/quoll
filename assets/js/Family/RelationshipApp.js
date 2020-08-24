@@ -26,7 +26,6 @@ export default class RelationshipApp extends Component {
         if (!nextState.loading) {
             nextState.form = nextProps.form
         }
-        console.log(nextProps, nextState, nextContext)
         return true
     }
 
@@ -125,7 +124,6 @@ export default class RelationshipApp extends Component {
             {method: this.form.method, body: JSON.stringify(data)},
             false)
             .then(data => {
-                console.log(data)
                 data.special.form.attr.className = 'notGood'
                 if (data.status === 'success') {
                     data.special.form.attr.className = 'allGood'

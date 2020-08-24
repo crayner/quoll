@@ -361,6 +361,9 @@ div.react-messages + form.notGood {
     border-color: rgba(197, 48, 48, var(--border-opacity));
     padding-left: 2px;
 }
+.react-message {
+    min-height: 2.5rem;
+}
 .smallIntBorder {
     background-color: #fafafa;
     margin: 5px 0px;

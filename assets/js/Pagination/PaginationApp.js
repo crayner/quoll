@@ -10,7 +10,7 @@ import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
-import {openUrl, trans} from "../Container/ContainerFunctions"
+import {openUrl} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 import { isEmpty } from '../component/isEmpty'
 import Parser from 'html-react-parser'
@@ -29,9 +29,7 @@ export default class PaginationApp extends Component {
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
         this.initialFilter = props.initialFilter
-
         this.initialSearch = props.initialSearch
-
         this.addElementRoute = props.addElementRoute
         this.returnRoute = props.returnRoute
         this.refreshRoute = props.refreshRoute
@@ -158,7 +156,7 @@ export default class PaginationApp extends Component {
         })
     }
 
-    areYouSure(path, content) {
+    areYouSure(path) {
         this.path = path
         this.setState({
             confirm: true,
@@ -176,7 +174,7 @@ export default class PaginationApp extends Component {
         window.open(path, options.options)
     }
 
-    displayInformation(path, content) {
+    displayInformation(path) {
         this.path = path
         this.setState({
             information: {header: this.translate('Loading') + '...', 'content': ''},
@@ -209,7 +207,7 @@ export default class PaginationApp extends Component {
 
     dropEvent(ev) {
         ev.preventDefault()
-        var data = ev.dataTransfer.getData("text")
+        let data = ev.dataTransfer.getData("text")
         let source = data.replace('pagination', '')
         let target = ev.target.parentNode.id.replace('pagination', '')
         if (source === target || source === '' || target === '') {
@@ -411,13 +409,13 @@ export default class PaginationApp extends Component {
             }
         }
         if (this.returnRoute !== null) {
-            control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.returnRoute, '_self')} title={this.row.returnPrompt}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
+            control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={() => this.functions.handleAddClick(this.returnRoute, '_self')} title={this.row.returnPrompt}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
         }
         if (this.refreshRoute !== null) {
-            control.push(<a key={'refresh'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.refreshRoute, '_self')} title={this.row.refreshPrompt}><span className={'fas fa-sync fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
+            control.push(<a key={'refresh'} className={'close-button gray ml-3'} onClick={() => this.functions.handleAddClick(this.refreshRoute, '_self')} title={this.row.refreshPrompt}><span className={'fas fa-sync fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
         }
         if (this.addElementRoute !== null) {
-            control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
+            control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={() => this.functions.handleAddClick(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-indigo-500'}/></a>)
         }
         return control
     }
@@ -428,7 +426,7 @@ export default class PaginationApp extends Component {
         let content = this.content
         filter.map(filterValue => {
             const filterDetail = this.filters[filterValue.name]
-            let filtered = content.filter(value => {
+            content = content.filter(value => {
                 if (typeof filterDetail.value === 'object') {
                     if (filterDetail.value.includes(value[filterDetail.contentKey]))
                         return value
@@ -445,7 +443,6 @@ export default class PaginationApp extends Component {
                         return value
                 }
             })
-            content = filtered
         })
 
         if (this.search && search !== '') {
@@ -568,7 +565,7 @@ export default class PaginationApp extends Component {
         })
     }
 
-    clearSearch(e) {
+    clearSearch() {
         const filteredContent = this.filterContent(this.state.filter, '')
 
         let results = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
@@ -602,7 +599,7 @@ export default class PaginationApp extends Component {
             {method: 'POST', body: JSON.stringify(data)},
             false
         ).then(data => {
-            this.storeFilterWait = false
+            this.storeFilterWait = data === 'craig'
         })
     }
 

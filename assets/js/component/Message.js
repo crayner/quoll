@@ -14,13 +14,13 @@ export default function Message(props) {
     if (typeof message.message === 'string') {
         return (
             <div className={message.class + ' react-message'}>
-                {Parser(message.message)}
                 {message.close ?
-                <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
-                        title={translate('Close Message')} type='button'>
-                    <span className={'fas fa-times-circle fa-fw ' + message.class}/>
-                </button>
+                    <div className={'float-right'}><button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
+                                                           title={translate('Close Message')} type='button'>
+                        <span className={'fas fa-times-circle fa-fw ' + message.class}/>
+                    </button></div>
                     : '' }
+                {Parser(message.message)}
             </div>
         )
     }
@@ -29,13 +29,13 @@ export default function Message(props) {
         message.message.stack = message.message.stack.replace('<anonymous>', '&lt;anonymous&gt;')
         return (
             <div className={message.class + ' react-message'}>
-                {Parser(message.message.message)}<br/><span className={'small'}>{Parser(message.message.stack)}</span>
                 {message.close ?
-                <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
-                        title={translate('Close Message')} type='button'>
-                    <span className={'fas fa-times-circle fa-fw ' + message.class}/>
-                </button>
+                    <div className={'float-right'}><button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
+                                                           title={translate('Close Message')} type='button'>
+                        <span className={'fas fa-times-circle fa-fw ' + message.class}/>
+                    </button></div>
                     : '' }
+                    {Parser(message.message.message)}<br/><span className={'small'}>{Parser(message.message.stack)}</span>
             </div>
         )
     }
