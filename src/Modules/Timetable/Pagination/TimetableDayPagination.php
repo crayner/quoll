@@ -97,6 +97,16 @@ class TimetableDayPagination extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
+        $action->setTitle('Remove All Periods')
+            ->setAClass('thickbox p-3 sm:p-0')
+            ->setColumnClass('column p-2 sm:p-3')
+            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
+            ->setRoute('timetable_day_period_remove_all')
+            ->setDisplayWhen('hasPeriods')
+            ->setRouteParams(['timetableDay' => 'id']);
+        $row->addAction($action);
+
+        $action = new PaginationAction();
         $action->setTitle('Delete')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')

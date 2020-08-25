@@ -69,14 +69,15 @@ class MapTimetableToCalendarController extends AbstractPageController
     }
 
     /**
-     * shuffleTermDays
+     * rippleTermDayColumns
+     *
+     * 25/08/2020 09:09
      * @param Timetable $timetable
      * @param DateTimeImmutable $date
      * @param MappingManager $manager
-     * @return JsonResponse
      * @Route("/timetable/{timetable}/calendar/ripple/{date}/columns/",name="timetable_calendar_ripple_map")
      * @IsGranted("ROLE_ROUTE")
-     * 9/08/2020 09:45
+     * @return JsonResponse
      */
     public function rippleTermDayColumns(Timetable $timetable, DateTimeImmutable $date, MappingManager $manager)
     {
@@ -84,10 +85,9 @@ class MapTimetableToCalendarController extends AbstractPageController
             ->execute()
             ->getTermByDate($date);
 
-        $data = $manager->rippleTermColumns($term,$date);
-        $data['weeks'] = $term->getWeeksArray();
+        $manager->rippleTermColumns($term,$date);
 
-        return new JsonResponse($data);
+        return $this->getStatusManager()->toJsonResponse(['weeks' => $term->getWeeksArray()]);
     }
 
     /**
@@ -106,19 +106,16 @@ class MapTimetableToCalendarController extends AbstractPageController
         $tDays = new ArrayCollection(ProviderFactory::getRepository(TimetableDay::class)->findBy([], ['rotateOrder' => 'ASC']));
 
         $id = $tDays->indexOf($tDate->getTimetableDay()) + 1;
-        if ($id >= $tDays->count()) {
-            $id = 0;
-        }
+        if ($id >= $tDays->count()) $id = 0;
 
-        $tDate->setTimetableDay($tDays->get($id), false);
+        $tDate->setTimetableDay($tDays->get($id));
 
-        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($tDate);
+        ProviderFactory::create(TimetableDate::class)->persistFlush($tDate);
 
         $manager->execute($timetable);
 
         $term = $manager->getTermByDate($date);
 
-        $data['weeks'] = $term->getWeeksArray();
-        return new JsonResponse($data);
+        return $this->getStatusManager()->toJsonResponse(['weeks' => $term->getWeeksArray()]);
     }
 }

@@ -65,7 +65,7 @@ class TimetableDay extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var Timetable|null
@@ -377,7 +377,7 @@ class TimetableDay extends AbstractEntity
             'id' => $this->getId(),
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
-            'periodCount' => $this->getPeriods()->count(),
+            'periodCount' => $this->getPeriods()->count() ?: '0',
             'hasPeriods' => intval($this->getPeriods()->count()) > 0,
             'canDelete' => ProviderFactory::create(TimetableDay::class)->canDelete($this),
             'weekDays' => $this->getDaysOfWeekNames(),

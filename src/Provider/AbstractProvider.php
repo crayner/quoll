@@ -169,10 +169,9 @@ abstract class AbstractProvider implements EntityProviderInterface
      * delete
      *
      * @param $id
-     * @return object|string
-     * @throws Exception
+     * @return EntityInterface|null
      */
-    public function delete($id)
+    public function delete($id): ?EntityInterface
     {
         if ($id === 'ignore') return $this->getEntity();
         if ($id instanceof $this->entityName) {
@@ -192,7 +191,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD);
+                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD, ['{id}' => $entity->__toString(), '{class}' => get_class($entity)]);
                 return $entity;
             }
         } elseif (method_exists($entity, 'canDelete')) {
@@ -203,7 +202,7 @@ abstract class AbstractProvider implements EntityProviderInterface
                 $this->entity = null;
                 return $entity;
             } else {
-                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD);
+                $this->getMessageManager()->warning(StatusManager::LOCKED_RECORD, ['{id}' => $entity->__toString(), '{class}' => get_class($entity)]);
                 return $entity;
             }
         } else {

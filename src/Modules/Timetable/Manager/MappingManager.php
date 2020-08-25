@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Timetable\Manager;
 
+use App\Manager\StatusManager;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\AcademicYearTerm;
 use App\Modules\School\Entity\DaysOfWeek;
@@ -81,6 +82,20 @@ class MappingManager
      * @var array
      */
     private $timetableDays;
+
+    /**
+     * @var StatusManager
+     */
+    private StatusManager $messages;
+
+    /**
+     * MappingManager constructor.
+     * @param StatusManager $messages
+     */
+    public function __construct(StatusManager $messages)
+    {
+        $this->messages = $messages;
+    }
 
     /**
      * execute
@@ -454,15 +469,13 @@ class MappingManager
 
     /**
      * rippleTermColumns
+     *
+     * 25/08/2020 09:10
      * @param Term $term
      * @param DateTimeImmutable $date
-     * 9/08/2020 14:29
      */
-    public function rippleTermColumns(Term $term, DateTimeImmutable $date): array
+    public function rippleTermColumns(Term $term, DateTimeImmutable $date)
     {;
-        $data = [];
-        $data['errors'] = [];
-        $data['status'] = 'success';
         $ripple = false;
         $rotate = new ArrayCollection();
         foreach ($term->getWeeks() as $week) {
@@ -471,20 +484,13 @@ class MappingManager
                     if ($ripple) {
                         if ($day->getTimetableDate()->getTimetableDay()->isFixed()) continue;
 
-                        $data = $this->nextTimetableDay($rotate, $day);
-                        if ($data['status'] !== 'success') {
-                            return $data;
-                        }
-/*                        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($day->getTimetableDate(), $data, false);
-                        if ($data['status'] !== 'success') {
-                            return $data;
-                        }
-*/                    }
+                        $this->nextTimetableDay($rotate, $day);
+                        if (!$this->getMessages()->isStatusSuccess()) return;
+                    }
                     if ($day->getDate()->format('Ymd') === $date->format('Ymd')) {
                         if ($day->getTimetableDate()->getTimetableDay()->isFixed()) {
-                            $data['status'] = 'warning';
-                            $data['errors'][] = ['class' => 'warning', 'message' => TranslationHelper::translate('No work was done as you asked to ripple a fixed day.',[],'Timetable')];
-                            return $data;
+                            $this->getMessages()->warning('No work was done as you asked to ripple a fixed day.',[],'Timetable');
+                            return;
                         }
                         $ripple = true;
                         $rotate = new ArrayCollection($this->setTimetableDays()->getTimetableDays('rotate'));
@@ -495,37 +501,25 @@ class MappingManager
                         $rotate->removeElement($td);  // first shall be last
                         $rotate->add($td);
                         $data = $this->nextTimetableDay($rotate, $day);
-                        if ($data['status'] !== 'success') {
-                            return $data;
-                        }
-/*                        $data = ProviderFactory::create(TimetableDate::class)->persistFlush($day->getTimetableDate(), $data, false);
-                        if ($data['status'] !== 'success') {
-                            return $data;
-                        }
-*/                    }
+                        if (!$this->getMessages()->isStatusSuccess()) return;
+                    }
                 }
             }
         }
 
         if ($ripple) {
-            $data = ProviderFactory::create(TimetableDate::class)->flush($data);
+            ProviderFactory::create(TimetableDate::class)->flush();
         }
-
-        if ($data['status'] === 'success') {
-            $data = ErrorMessageHelper::getSuccessMessage([], true);
-        }
-
-        return $data;
     }
 
     /**
      * nextTimetableDay
+     *
+     * 25/08/2020 09:12
      * @param ArrayCollection $rotate
      * @param Day $day
-     * @return array
-     * 10/08/2020 09:03
      */
-    protected function nextTimetableDay(ArrayCollection $rotate, Day $day): array
+    protected function nextTimetableDay(ArrayCollection $rotate, Day $day)
     {
         $found = false;
         $tDate = $day->getTimetableDate();
@@ -546,6 +540,18 @@ class MappingManager
             }
         } while (!$found);
 
-        return ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, [], false);
+        ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, false);
     }
+
+    /**
+     * getMessages
+     *
+     * 25/08/2020 09:04
+     * @return StatusManager
+     */
+    public function getMessages(): StatusManager
+    {
+        return $this->messages;
+    }
+
 }
