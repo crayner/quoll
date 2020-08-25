@@ -53,6 +53,8 @@
             - timetable_day_period_duplicate
             - timetable_day_period_edit
             - timetable_day_period_add
+            - timetable_day_period_delete
+            - timetable_day_period_remove_all
     entryRoute: timetable_list
     entrySidebar: true
     menuShow: true

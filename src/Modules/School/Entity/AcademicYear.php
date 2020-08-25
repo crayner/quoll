@@ -237,7 +237,7 @@ class AcademicYear extends AbstractEntity
      */
     public function __toString(): string
     {
-       return $this->getName();
+       return $this->getName() ?: $this->getId();
     }
 
     /**

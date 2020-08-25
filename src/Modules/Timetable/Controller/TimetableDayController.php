@@ -30,9 +30,9 @@ use App\Modules\Timetable\Manager\TimetableDayManager;
 use App\Modules\Timetable\Pagination\TimetableDayPagination;
 use App\Modules\Timetable\Pagination\TimetablePeriodPagination;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -44,15 +44,16 @@ class TimetableDayController extends AbstractPageController
 {
     /**
      * edit
+     *
+     * 25/08/2020 09:47
      * @param Timetable $timetable
      * @param TimetablePeriodPagination $pagination
      * @param TimetableDay|null $timetableDay
      * @param string $tabName
-     * @return JsonResponse
-     * 4/08/2020 08:20
      * @Route("/timetable/{timetable}/day/{timetableDay}/edit/{tabName}",name="timetable_day_edit")
      * @Route("/timetable/{timetable}/day/add/",name="timetable_day_add")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function edit(Timetable $timetable, TimetablePeriodPagination $pagination, ?TimetableDay $timetableDay = null, string $tabName = 'Details')
     {
@@ -62,7 +63,6 @@ class TimetableDayController extends AbstractPageController
         } else {
             $action = $this->generateUrl('timetable_day_edit', ['timetable' => $timetable->getId(), 'timetableDay' => $timetableDay->getId(), 'tabName' => $tabName]);
         }
-        $manager = $this->getContainerManager();
 
         $form = $this->createForm(TimetableDayType::class, $timetableDay, ['action' => $action]);
 
@@ -71,22 +71,20 @@ class TimetableDayController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $timetableDay->getId();
-                $data = ProviderFactory::create(TimetableDay::class)->persistFlush($timetableDay);
+                ProviderFactory::create(TimetableDay::class)->persistFlush($timetableDay);
                 if ($id !== $timetableDay->getId()) {
-                    $data['status'] = 'redirect';
-                    $data['redirect'] = $this->generateUrl('timetable_day_edit',['timetableDay' => $timetableDay->getId(),'timetable' => $timetable->getId()]);
+                    $this->getStatusManager()->setReDirect($this->generateUrl('timetable_day_edit',['timetableDay' => $timetableDay->getId(),'timetable' => $timetable->getId()]), true);
                }
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
+                $this->getStatusManager()->invalidInputs();
             }
 
-            $this->getContainerManager()->singlePanel($form->createView());
-            $data['form'] = $this->getContainerManager()->getFormFromContainer();
-            return new JsonResponse($data);
+            return $this->singleForm($form);
         }
 
         if ($timetableDay->getId() !== null) {
-            $manager->setReturnRoute($this->generateUrl('timetable_edit', ['timetable' => $timetable->getId(), 'tabName' => 'Timetable Days']))
+            $this->getContainerManager()
+                ->setReturnRoute($this->generateUrl('timetable_edit', ['timetable' => $timetable->getId(), 'tabName' => 'Timetable Days']))
                 ->setAddElementRoute($this->generateUrl('timetable_day_add', ['timetable' => $timetable->getId()]));
             $container = new Container($tabName);
             $panel = new Panel('Details', 'Timetable', new Section('form', 'Details'));
@@ -98,53 +96,63 @@ class TimetableDayController extends AbstractPageController
             $panel = new Panel('Periods', 'Timetable', new Section('pagination', $pagination));
             $container->addPanel($panel);
 
-            $manager->addContainer($container);
+            $this->getContainerManager()
+                ->addContainer($container);
         } else {
-            $manager->singlePanel($form->createView())
+            $this->getContainerManager()
+                ->singlePanel($form->createView())
                 ->setReturnRoute($this->generateUrl('timetable_edit', ['timetable' => $timetable->getId(), 'tabName' => 'Timetable Days']));
         }
+
         return $this->getPageManager()
             ->createBreadcrumbs($timetableDay->getId() === null ? 'Add Timetable Day' : ['Edit Timetable Day ({name})', ['{name}' => $timetableDay->getName()], 'Timetable'])
-            ->render(['containers' => $manager->getBuiltContainers()])
-            ;
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->getBuiltContainers()
+                ]
+            )
+        ;
     }
 
     /**
      * delete
+     *
+     * 25/08/2020 09:24
      * @param TimetableDayPagination $pagination
      * @param TimetableDay $timetableDay
      * @Route("/timetable/day/{timetableDay}/delete}/",name="timetable_day_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 5/08/2020 15:11
+     * @return Response
      */
     public function delete(TimetableDayPagination $pagination, TimetableDay $timetableDay)
     {
-        $provider = ProviderFactory::create(TimetableDay::class);
         $timetable = $timetableDay->getTimetable();
-        $provider->delete($timetableDay);
-        $data = $provider->getMessageManager()->pushToJsonData();
+        ProviderFactory::create(TimetableDay::class)
+            ->delete($timetableDay);
 
-        return $this->forward(ManageController::class.'::edit',['pagination' => $pagination, 'timetable' => $timetable, 'messages' => $data['errors'] ?? [], 'tabName' => 'Timetable Days']);
+        return $this->forward(ManageController::class.'::edit',['pagination' => $pagination, 'timetable' => $timetable, 'tabName' => 'Timetable Days']);
     }
 
     /**
      * sort
+     *
+     * 25/08/2020 09:26
      * @param TimetableDay $target
      * @param TimetableDay $source
      * @param TimetableDayPagination $pagination
-     * @return JsonResponse
+     * @param EntitySortManager $manager
      * @Route("/timetable/day/{source}/{target}/sort/",name="timetable_day_sort")
      * @IsGranted("ROLE_ROUTE")
-     * 13/06/2020 10:49
+     * @return JsonResponse
      */
-    public function sort(TimetableDay $target, TimetableDay $source, TimetableDayPagination $pagination)
+    public function sort(TimetableDay $target, TimetableDay $source, TimetableDayPagination $pagination, EntitySortManager $manager)
     {
-        $manager = new EntitySortManager();
         $manager->setIndexName('rotate_order')
             ->setSortField('rotateOrder')
             ->execute($source, $target, $pagination);
 
-        return new JsonResponse($manager->getDetails());
+        return $this->generateJsonResponse(['content' => $manager->getPaginationContent()]);
     }
 
     /**
@@ -153,6 +161,7 @@ class TimetableDayController extends AbstractPageController
      * @param TimetableDayManager $tdm
      * @return JsonResponse
      * @Route("/timetable/day/{timetableDay}/duplicate/periods/",name="timetable_day_period_duplicate")
+     * @IsGranted("ROLE_ROUTE")
      * 5/08/2020 08:13
      */
     public function duplicatePeriods(TimetableDay $timetableDay, TimetableDayManager $tdm)
@@ -161,20 +170,43 @@ class TimetableDayController extends AbstractPageController
 
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(),true);
-            $data = $tdm->duplicateDayPeriods($timetableDay, $content['timetableDay']);
-            $this->getContainerManager()->singlePanel($form->createView());
-            $data['form'] = $this->getContainerManager()->getFormFromContainer();
-            return new JsonResponse($data);
+            $tdm->duplicateDayPeriods($timetableDay, $content['timetableDay']);
+
+            return $this->singleForm($form);
         }
 
         $this->getContainerManager()->singlePanel($form->createView())
             ->setReturnRoute($this->generateUrl('timetable_edit', ['timetable' => $timetableDay->getTimetable()->getId(), 'tabName' => 'Timetable Days']));
+
         return $this->getPageManager()
             ->createBreadcrumbs('Duplicate Day Periods',
                 [
                     ['uri' => 'timetable_edit', 'uri_params' => ['timetable' => $timetableDay->getTimetable()->getId(), 'tabName' => 'Timetable Days'], 'name' => 'Timetable Days' ]
                 ]
             )
-            ->render(['containers' => $this->getContainerManager()->getBuiltContainers()]);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()->getBuiltContainers()
+                ]
+            )
+        ;
+    }
+
+    /**
+     * delete
+     *
+     * 25/08/2020 09:41
+     * @param TimetablePeriod $period
+     * @param TimetablePeriodPagination $pagination
+     * @return Response
+     * @Route("/timetable/day/period/{period}/delete/",name="timetable_day_period_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function deletePeriod(TimetablePeriod $period, TimetablePeriodPagination $pagination)
+    {
+        ProviderFactory::create(TimetablePeriod::class)
+            ->delete($period);
+
+        return $this->edit($period->getTimetableDay()->getTimetable(), $pagination, $period->getTimetableDay(), 'Periods');
     }
 }

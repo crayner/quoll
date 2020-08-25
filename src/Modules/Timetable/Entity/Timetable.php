@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TT
+ * Class Timetable
  * @package App\Modules\Timetable\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Timetable\Repository\TimetableRepository")
  * @ORM\Table(name="Timetable",
@@ -45,7 +45,7 @@ class Timetable extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var AcademicYear|null
@@ -53,7 +53,7 @@ class Timetable extends AbstractEntity
      * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $academicYear;
+    private ?AcademicYear $academicYear;
 
     /**
      * @var string|null
@@ -61,7 +61,7 @@ class Timetable extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Length(max=30)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
@@ -69,25 +69,25 @@ class Timetable extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Length(max=12)
      */
-    private $abbreviation;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=32,options={"default": "Day Of The Week"})
-     * @Assert\Choice(callback="getDisplayModeList")
-     */
-    private $displayMode = 'Day Of The Week';
+    private ?string $abbreviation;
 
     /**
      * @var string
+     * @ORM\Column(length=32,options={"default": "Day Of The Week"})
+     * @Assert\Choice(callback="getDisplayModeList")
      */
-    private static $displayModeList = [
+    private string $displayMode = 'Day Of The Week';
+
+    /**
+     * @var array
+     */
+    private static array $displayModeList = [
         'Day Of The Week',
         'Timetable Day Abbreviation'
     ];
 
     /**
-     * @var Collection|YearGroup[]
+     * @var Collection|YearGroup[]|null
      * @ORM\ManyToMany(targetEntity="App\Modules\School\Entity\YearGroup")
      * @ORM\JoinTable(name="TimetableYearGroup",
      *      joinColumns={@ORM\JoinColumn(name="timetable",referencedColumnName="id")},
@@ -95,13 +95,13 @@ class Timetable extends AbstractEntity
      *      )
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
-    private $yearGroups;
+    private ?Collection $yearGroups;
 
     /**
      * @var bool|null
      * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $active = true;
+    private bool $active = true;
 
     /**
      * @var Collection|TimetableDay[]
@@ -111,11 +111,13 @@ class Timetable extends AbstractEntity
 
     /**
      * Timetable constructor.
+     * @param AcademicYear|null $academicYear
      */
-    public function __construct()
+    public function __construct(?AcademicYear $academicYear = null)
     {
          $this->setYearGroups(new ArrayCollection())
-            ->setTimetableDays(new ArrayCollection());
+             ->setAcademicYear($academicYear)
+             ->setTimetableDays(new ArrayCollection());
     }
 
     /**
@@ -193,20 +195,26 @@ class Timetable extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * getDisplayMode
+     *
+     * 25/08/2020 08:53
+     * @return string
      */
-    public function getDisplayMode(): ?string
+    public function getDisplayMode(): string
     {
-        return $this->displayMode;
+        return $this->displayMode = in_array($this->displayMode, self::getDisplayModeList()) ? $this->displayMode : 'Day Of The Week';
     }
 
     /**
-     * @param string|null $displayMode
-     * @return Timetable
+     * setDisplayMode
+     *
+     * 25/08/2020 08:52
+     * @param string $displayMode
+     * @return $this
      */
-    public function setDisplayMode(?string $displayMode): Timetable
+    public function setDisplayMode(string $displayMode): Timetable
     {
-        $this->displayMode = in_array($displayMode, self::getDisplayModeList()) ? $displayMode : null;
+        $this->displayMode = in_array($displayMode, self::getDisplayModeList()) ? $displayMode : 'Day Of The Week';
         return $this;
     }
 
@@ -233,25 +241,34 @@ class Timetable extends AbstractEntity
     }
 
     /**
-     * @return bool|null
+     * isActive
+     *
+     * 25/08/2020 08:52
+     * @return bool
      */
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
-        return $this->active;
+        return (bool)$this->active;
     }
 
     /**
+     * setActive
+     *
+     * 25/08/2020 08:52
      * @param bool|null $active
-     * @return Timetable
+     * @return $this
      */
     public function setActive(?bool $active): Timetable
     {
-        $this->active = $active;
+        $this->active = (bool)$active;
         return $this;
     }
 
     /**
-     * @return array
+     * getDisplayModeList
+     *
+     * 25/08/2020 08:52
+     * @return array|string[]
      */
     public static function getDisplayModeList(): array
     {
@@ -289,7 +306,7 @@ class Timetable extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getName() . ' ('.$this->getAbbreviation().')';
+        return $this->getName() !== null ? $this->getAcademicYear()->__toString() . ': ' . $this->getName() . ' ('.$this->getAbbreviation().')' : $this->getId();
     }
 
     /**
@@ -330,6 +347,6 @@ class Timetable extends AbstractEntity
      */
     public function canDelete(): bool
     {
-        return true;
+        return $this->getTimetableDays()->count() === 0;
     }
 }

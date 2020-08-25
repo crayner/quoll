@@ -86,26 +86,11 @@ dump($action,$timetablePeriod,$timetableDay);
 
         return $this->getPageManager()
             ->createBreadcrumbs($timetablePeriod->getId() === null ? ['Add Timetable Period in {day}', ['{day}' => $timetableDay->getName()]] : ['Edit Timetable Period in {day} - {name}', ['{name}' => $timetablePeriod->getName(),'{day}' => $timetableDay->getName()]])
-            ->render(['containers' => $this->getContainerManager()->getBuiltContainers()])
-            ;
-    }
-
-    /**
-     * delete
-     * @param TimetablePeriodPagination $pagination
-     * @param TimetablePeriod $timetablePeriod
-     * @Route("/timetable/day/period/{period}/delete/",name="timetable_day_period_delete")
-     * @IsGranted("ROLE_ROUTE")
-     * @return Response
-     * 5/08/2020 07:47
-     */
-    public function delete(TimetablePeriodPagination $pagination, TimetablePeriod $timetablePeriod)
-    {
-        $provider = ProviderFactory::create(TimetablePeriod::class);
-        $timetableDay = $timetablePeriod->getTimetableDay();
-        $provider->delete($timetablePeriod);
-        $data = $provider->getMessageManager()->pushToJsonData();
-
-        return $this->forward(TimetableDayController::class.'::edit',['pagination' => $pagination, 'timetableDay' => $timetableDay, 'messages' => $data['errors'] ?? [], 'tabName' => 'Periods']);
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()->getBuiltContainers()
+                ]
+            )
+        ;
     }
 }
