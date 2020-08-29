@@ -18,6 +18,8 @@ namespace App\Modules\People\Validator;
 
 use App\Modules\People\Entity\FamilyMember;
 use App\Modules\People\Entity\CareGiver;
+use App\Modules\People\Entity\FamilyMemberCareGiver;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\Student\Entity\Student;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -39,15 +41,15 @@ class FamilyMemberNotBlankValidator extends ConstraintValidator
     {
         if (!$value instanceof FamilyMember) return;
 
-        dump($value);
-
-        if (!$value->getStudent() instanceof Student && !$value->getCareGiver() instanceof CareGiver) {
-            $this->context->buildViolation($constraint->message)
+        if ($value instanceof FamilyMemberStudent && !$value->getStudent() instanceof Student) {
+            $this->context->buildViolation($constraint->message['student'])
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(FamilyMemberNotBlank::PARENT_AND_STUDENT_ERROR)
                 ->atPath('student')
                 ->addViolation();
-            $this->context->buildViolation($constraint->message)
+        }
+        if ($value instanceof FamilyMemberCareGiver && !$value->getCareGiver() instanceof CareGiver) {
+            $this->context->buildViolation($constraint->message['careGiver'])
                 ->setTranslationDomain($constraint->transDomain)
                 ->setCode(FamilyMemberNotBlank::PARENT_AND_STUDENT_ERROR)
                 ->atPath('careGiver')

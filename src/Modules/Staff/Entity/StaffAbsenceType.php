@@ -271,75 +271,14 @@ class StaffAbsenceType extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
+     * coreData
+     *
+     * 26/08/2020 10:42
+     * @return array
      */
-    public function create(): array
-    {
-        return [
-        "CREATE TABLE `__prefix__StaffAbsenceType` (
-            `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-            `name` varchar(60) NOT NULL,
-            `abbreviation` varchar(10) NOT NULL,
-            `active` varchar(1) NOT NULL DEFAULT 'Y',
-            `requires_approval` varchar(1) NOT NULL DEFAULT 'N',
-            `reasons` longtext COMMENT '(DC2Type:simple_array)',
-            `sequence_number` smallint NOT NULL DEFAULT '0',
-            PRIMARY KEY (`id`),
-            UNIQUE KEY `name` (`name`),
-            UNIQUE KEY `abbreviation` (`abbreviation`),
-            UNIQUE KEY `sequence_number` (`sequence_number`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
-        ];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return '';
-    }
-
-    /**
-     * getVersion
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return StaffAbsenceType::VERSION;
-    }
-
     public function coreData(): array
     {
-        return Yaml::parse("
--
-  name: 'Sick Leave'
-  abbreviation: 'S'
-  active: 'Y'
-  requiresApproval: 'N'
-  sequenceNumber: 1
--
-  name: 'Personal Leave'
-  abbreviation: 'P'
-  active: 'Y'
-  requiresApproval: 'N'
-  sequenceNumber: 2
--
-  name: 'Non-paid Leave'
-  abbreviation: 'NP'
-  active: 'Y'
-  requiresApproval: 'N'
-  sequenceNumber: 3
--
-  name: 'School Related'
-  abbreviation: 'SR'
-  active: 'Y'
-  requiresApproval: 'N'
-  reasons: { arrayField: ['PD','Sports Trip','Offsite Event','Other']}
-  sequenceNumber: 4
-");
+        return Yaml::parse(file_get_contents(__DIR__ . '/StaffAbsenceTypeCoreData.yaml'));
         
     }
 }

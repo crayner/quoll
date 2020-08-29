@@ -8,7 +8,7 @@ associated:
         findBy: status
     yearGroup:
         entityName: 'App\Modules\School\Entity\YearGroup'
-        findBy: sequenceNumber
+        findBy: sortOrder
     rollGroup:
         entityName: 'App\Modules\RollGroup\Entity\RollGroup'
         findBy: abbreviation

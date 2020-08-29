@@ -16,6 +16,7 @@ namespace App\Modules\People\Repository;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Connection;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\Person;
@@ -113,4 +114,22 @@ class FamilyMemberStudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findByDemonstrationData
+     *
+     * 27/08/2020 14:58
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     */
+    public function findByDemonstrationData(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        if (ProviderFactory::getRequest()->attributes->get('_route') === 'demonstration_load') return [];
+
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
+
 }

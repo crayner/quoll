@@ -348,7 +348,7 @@ class MappingManager
                         }
                         $day->setTimetableDate($tDate);
                         $this->dayDates->set($tDate->getDate()->format('Ymd'),$tDate);
-                        ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, [], false);
+                        ProviderFactory::create(TimetableDate::class)->persistFlush($tDate, false);
                     }
                 }
             }

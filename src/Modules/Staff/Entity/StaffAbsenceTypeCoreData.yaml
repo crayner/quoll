@@ -1,0 +1,29 @@
+-
+    name: 'Sick Leave'
+    abbreviation: 'S'
+    active: 'Y'
+    requiresApproval: 'N'
+    sequenceNumber: 1
+-
+    name: 'Personal Leave'
+    abbreviation: 'P'
+    active: 'Y'
+    requiresApproval: 'N'
+    sequenceNumber: 2
+-
+    name: 'Non-paid Leave'
+    abbreviation: 'NP'
+    active: 'Y'
+    requiresApproval: 'N'
+    sequenceNumber: 3
+-
+    name: 'School Related'
+    abbreviation: 'SR'
+    active: 'Y'
+    requiresApproval: 'N'
+    reasons:
+        - 'PD'
+        - 'Sports Trip'
+        - 'Offsite Event'
+        - 'Other'
+    sequenceNumber: 4

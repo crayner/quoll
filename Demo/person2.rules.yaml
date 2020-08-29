@@ -15,8 +15,3 @@ associated:
     staff:
         entityName: 'App\Modules\Staff\Entity\Staff'
         create: true
-properties:
-    dob: 'DateTimeImmutable'
-    visaExpiryDate: 'DateTimeImmutable'
-    dateStart: 'DateTimeImmutable'
-    dateEnd: 'DateTimeImmutable'

@@ -42,12 +42,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="family",columns={"family"}),
  *     @ORM\Index(name="member_type",columns={"member_type"})}
  * )
- * @UniqueEntity({"student","family"},ignoreNull=true)
- * @UniqueEntity({"careGiver","family"},ignoreNull=true)
- * @UniqueEntity({"contactPriority","family"},ignoreNull=true)
+ * @UniqueEntity({"student","family"},ignoreNull=true, repositoryMethod="findByDemonstrationData")
+ * @UniqueEntity({"careGiver","family"},ignoreNull=true, repositoryMethod="findByDemonstrationData")
+ * @UniqueEntity({"contactPriority","family"},ignoreNull=true, repositoryMethod="findByDemonstrationData")
  * @ORM\MappedSuperclass()
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="member_type",type="string",length=191)
+ * @ORM\DiscriminatorColumn(name="member_type",type="string",length=16)
  * @ORM\DiscriminatorMap({"care_giver" = "FamilyMemberCareGiver", "student" = "FamilyMemberStudent", "member" = "FamilyMember"})
  * @FamilyMemberNotBlank()
  */

@@ -1,5 +1,5 @@
 -
     event: 'Login - Failed'
     type: 'Core'
-    scopes: { arrayField: ['All'] }
+    scopes: ['All']
     active: 'Y'

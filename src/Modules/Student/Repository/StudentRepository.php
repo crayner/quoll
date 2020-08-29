@@ -201,4 +201,26 @@ class StudentRepository extends ServiceEntityRepository
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }
+
+    /**
+     * getDemonstrationStudents
+     *
+     * 27/08/2020 10:29
+     * @return array
+     */
+    public function getDemonstrationStudents(): array
+    {
+        $result = $this->createQueryBuilder('st')
+            ->select(['st','p','s','cd','c'])
+            ->leftJoin('st.person', 'p')
+            ->leftJoin('p.securityUser', 's')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('st.customData', 'cd')
+            ->where('s.username IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+        $items = [];
+        foreach ($result as $w) $items[$w->getPerson()->getSecurityUser()->getUsername()] = $w;
+        return $items;
+    }
 }

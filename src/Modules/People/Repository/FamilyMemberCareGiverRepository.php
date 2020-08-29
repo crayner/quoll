@@ -19,8 +19,10 @@ namespace App\Modules\People\Repository;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -90,11 +92,14 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
 
     /**
      * getNextContactPriority
-     * @param Family $family
+     *
+     * 25/08/2020 13:39
+     * @param Family|null $family
      * @return int
      */
-    public function getNextContactPriority(Family $family): int
+    public function getNextContactPriority(?Family $family): int
     {
+        if (is_null($family)) return 1;
         try {
             return $this->createQueryBuilder('a')
                     ->select('a.contactPriority')
@@ -135,7 +140,7 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
      * @return int|mixed|string
      * 19/06/2020 09:31
      */
-    public function findFamiliesOfParent(Person $parent)
+    public function findFamiliesOfCareGiver(Person $parent)
     {
         return $this->createQueryBuilder('fa')
             ->select(['f','fa'])
@@ -144,5 +149,22 @@ class FamilyMemberCareGiverRepository extends ServiceEntityRepository
             ->setParameter('parent', $parent)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findByDemonstrationData
+     *
+     * 27/08/2020 14:58
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     */
+    public function findByDemonstrationData(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        if (ProviderFactory::getRequest()->attributes->get('_route') === 'demonstration_load') return [];
+
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

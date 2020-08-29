@@ -127,7 +127,7 @@ class ActionPermissionController extends AbstractPageController
                 $item = [];
                 $item['findBy']['role'] = $securityRole->getRole();
                 $item['source']['table'] = SecurityRole::class;
-                $item['source']['findBy']['name'] = $role;
+                $item['source']['findBy']['role'] = $role->getRole();
                 $item['target'] = 'childRole';
             }
             $links[] = $item;

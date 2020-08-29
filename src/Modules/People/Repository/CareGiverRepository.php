@@ -80,4 +80,30 @@ class CareGiverRepository extends ServiceEntityRepository
             ->addOrderBy('p.firstName', 'ASC')
         ;
     }
+
+    /**
+     * getDemonstrationCareGivers
+     *
+     * 27/08/2020 10:33
+     * @return array
+     */
+    public function getDemonstrationCareGivers(): array
+    {
+        $result = $this->createQueryBuilder('cg')
+            ->select(['cg','p','su','c','cd'])
+            ->leftJoin('cg.person', 'p')
+            ->leftJoin('p.personalDocumentation','pd')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('cg.customData', 'cd')
+            ->leftJoin('p.securityUser', 'su')
+            ->getQuery()
+            ->getResult();
+        $items = [];
+        foreach ($result as $w) {
+            $items[$w->getPerson()->getSecurityUser()->getUsername()] = $w;
+        }
+        dump($items);
+        return $items;
+    }
+
 }

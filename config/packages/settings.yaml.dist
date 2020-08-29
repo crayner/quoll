@@ -82,7 +82,9 @@ parameters:
                 type: string
             installType:
                 value: Development
-                type: string
+                type: enum
+                class: 'App\Modules\System\Util\SettingLists'
+                method: 'getInstallationTypeList'
             statsCollection:
                 value: true
                 type: boolean
@@ -708,6 +710,7 @@ parameters:
             facilityTypes:
                 value:
                     - Classroom
+                    - Creative Space
                     - Hall
                     - Laboratory
                     - Library

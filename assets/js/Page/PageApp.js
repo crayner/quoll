@@ -41,6 +41,7 @@ export default class PageApp extends Component {
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
         this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
         this.getContentFromServer = this.getContentFromServer.bind(this)
+        this.dataClick = this.dataClick.bind(this)
 
         this.state = {
             contentWidth: 0,
@@ -122,6 +123,9 @@ export default class PageApp extends Component {
         let node = document.getElementById('sidebar')
         if (node && node.contains(e.target) || e.target.classList.contains('ignore-mouse-down') || e.target.classList.contains('fa-fw'))
             return
+
+        if (e.target.getAttribute('data-click') === "true")
+            return this.dataClick(e.target)
 
         if (e.target.tagName === 'HTML')
             return
@@ -223,6 +227,14 @@ export default class PageApp extends Component {
             window.history.pushState('', data.title, data.url ? data.url : url);
             setTimeout(this.functions.getContentSize,100)
         })
+    }
+
+    dataClick(button) {
+        let func = button.getAttribute('data-function')
+        let url = button.getAttribute('data-url')
+        let options = button.getAttribute('data-options')
+
+        this.functions[func](url,options)
     }
 
     render () {

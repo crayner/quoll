@@ -2,7 +2,8 @@ associated:
     family:
         entityName: 'App\Modules\People\Entity\Family'
         findBy: familySync
+        preLoad: getDemonstrationFamilies
     careGiver:
-        entityName: 'App\Modules\Security\Entity\SecurityUser'
+        entityName: 'App\Modules\People\Entity\CareGiver'
         findBy: username
-        method: getCareGiver
+        preLoad: getDemonstrationCareGivers

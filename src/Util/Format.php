@@ -14,30 +14,32 @@
  * Date: 27/07/2019
  * Time: 13:58
  */
-
 namespace App\Util;
 
 use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use DateTime;
 use DateTimeImmutable;
+use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class Format
  * @package App\Util
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class Format
 {
     /**
      * @var bool
      */
-    private static $setup = false;
+    private static bool $setup = false;
 
     /**
      * @var array
      */
-    protected static $settings = [
+    protected static array $settings = [
         'dateFormatPHP'     => 'd/m/Y',
         'dateTimeFormatPHP' => 'd/m/Y H:i',
         'timeFormatPHP'     => 'H:i',
@@ -62,11 +64,16 @@ class Format
         if (self::$setup || null === $session)
             return ;
 
-        $settings = [];
-        $settings['locale'] = $session->has('locale') ? $session->get('locale') : ProviderFactory::getRepository(Locale::class)->findOneBy(['systemDefault' => true]);
-        $settings['dateFormatPHP'] = $settings['locale']->getDateFormatPHP();
-        $settings['dateTimeFormatPHP'] = $settings['locale']->getDateFormatPHP() . ' H:i';
-        $settings['timeFormatPHP'] = 'H:i';
+        try {
+            $settings = [];
+            $settings['locale'] = $session->has('locale') ? $session->get('locale') : ProviderFactory::getRepository(Locale::class)->findOneBy(['systemDefault' => true]);
+            if (!$settings['locale'] instanceof Locale) return;
+            $settings['dateFormatPHP'] = $settings['locale']->getDateFormatPHP();
+            $settings['dateTimeFormatPHP'] = $settings['locale']->getDateFormatPHP() . ' H:i';
+            $settings['timeFormatPHP'] = 'H:i';
+        } catch (ConnectionException | TableNotFoundException $e) {
+            return;
+        }
 
         self::setup($settings);
 
@@ -89,7 +96,6 @@ class Format
      * @param DateTime|string $dateString
      * @param bool $format
      * @return string
-     * @throws \Exception
      */
     public static function date(string $dateString, bool $format = false)
     {
@@ -105,7 +111,6 @@ class Format
      * @param null $expectedFormat
      * @param null $timezone
      * @return DateTimeImmutable
-     * @throws \Exception
      */
     private static function createDateTime($dateOriginal, $expectedFormat = null, $timezone = null): DateTime
     {

@@ -407,72 +407,12 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @return array
-     */
-    public function getFields(): array
-    {
-        return $this->fields = is_array($this->fields) ? $this->fields : [];
-    }
-
-    /**
-     * @param string|array $fields
-     * @return Person
-     */
-    public function setFields(array $fields): Person
-    {
-        $this->fields = $fields;
-        return $this;
-    }
-
-    /**
-     * addField
-     * @param $field
-     * @param $value
-     * @return Person
-     */
-    public function addField($key, $value): Person
-    {
-        $this->getFields();
-
-        $this->fields[$key] = $value;
-        return $this;
-    }
-
-    /**
-     * mergeFields
-     * @param array $fields
-     * @return Person
-     */
-    public function mergeFields(array $fields): Person
-    {
-        foreach($fields as $field)
-            if (! isset($this->getFields()[$field->getId()]))
-                $this->fields[$field->getId()] = null;
-        ksort($this->fields);
-
-        return $this;
-    }
-
-    /**
      * isSystemAdmin
      * @return bool
      */
     public function isSystemAdmin(): bool
     {
-        return in_array('ROLE_SYSTEM_ADMIN', $this->getSecurityRoles() ?: []);
-    }
-
-    /**
-     * renderImage
-     * @param int $dimension
-     * @param bool $asHeight
-     * @return string
-     * @deprecated 4/Sep 2019: Please use Person::photo()
-     */
-    public function renderImage(int $dimension = 75, bool $asHeight = false)
-    {
-        trigger_error('Deprecated 4/Sep 2019: Please use Person::photo()', E_USER_DEPRECATED);
-        return $this->photo($dimension);
+        return $this->getSecurityUser()->isSuperUser();
     }
 
     /**
@@ -486,24 +426,6 @@ class Person extends AbstractEntity
     public function formatName(string $style = 'General', ?string $role = null): string
     {
         return PersonNameManager::formatName($this, str_replace(' ', '', $role ?: $this->getHumanisedRole()), $style);
-    }
-
-    /**
-     * getFullName
-     * @return string
-     */
-    public function getFullName()
-    {
-        return $this->formatName('Standard');
-    }
-
-    /**
-     * getFullNameReversed
-     * @return string
-     */
-    public function getFullNameReversed()
-    {
-        return $this->formatName('Reversed');
     }
 
     /**
@@ -535,79 +457,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * Returns an HTML <img> based on the supplied photo path, using a placeholder image if none exists. Size may be either 75 or 240 at this time.
-     *
-     * @param int|string $size
-     * @param string $class
-     * @return array
-     */
-    public function photo($size = 75, string $class = '')
-    {
-        $class .= ' inline-block shadow bg-white border border-gray-600 ';
-
-        $path = $this->getImage240(true);
-
-        switch ($size) {
-            case 240:
-            case 'lg':
-                $class .= 'w-48 sm:w-64 max-w-full p-1 mx-auto';
-                $imageSize = 240;
-                break;
-            case 75:
-            case 'md':
-                $class .= 'w-20 lg:w-24 p-1';
-                $imageSize = 75;
-                break;
-            case 'sm':
-                $class .= 'w-12 sm:w-20 p-px sm:p-1';
-                $imageSize = 75;
-                break;
-            default:
-                $imageSize = $size;
-        }
-
-        if (!file_exists(__DIR__ . '/../../public/' .$path) ) {
-            $path = '/themes/{theme}/img/anonymous_'.$imageSize.'.jpg';
-        }
-
-        $result['class'] = $class;
-        $result['asset'] = $path;
-        $result['fileName'] = $path;
-        $result['title'] = $this->formatName('Preferred');
-        $result['fileExists'] = true;
-        return $result;
-    }
-
-    /**
-     * Display an icon if this user's birthday is within the next week.
-     *
-     * @return string
-     */
-    public function birthdayIcon()
-    {
-        if (!$this->getDob() instanceof \DateTime)
-            return '';
-
-        $dob = new \DateTime(date('Y-') . $this->getDob()->format('m-d'));
-        $today = new \DateTime('now');
-        if ($today->format('Ymd') > $dob->format('Ymd'))
-            return '';
-
-        $daysUntilNextBirthday = $today->diff($dob)->days;
-        if ($daysUntilNextBirthday >= 8)
-            return '';
-
-        // HEY SHORTY IT'S YOUR BIRTHDAY! (or Close)
-        $result['colour'] = 'text-pink-800';
-        $result['params']['{name}'] = $this->getPreferredName();
-        $result['params']['count'] = $daysUntilNextBirthday;
-        if ($daysUntilNextBirthday > 0)
-            $result['colour'] = 'text-gray-800';
-
-        return $result;
-    }
-
-    /**
      * getEmergencyRelationshipList
      * @return array
      */
@@ -634,21 +483,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * uniqueIdentifier
-     * @return string
-     */
-    public function uniqueIdentifier(): string
-    {
-        if (is_string($this->getStudentIdentifier()) && $this->getStudentIdentifier() !== '')
-            return $this->getStudentIdentifier();
-
-        if (is_string($this->getUsername()) && $this->getUsername() !== '')
-                return $this->getUsername();
-
-        return str_pad($this->getId(), 10, '0', STR_PAD_LEFT);
-    }
-
-    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -668,7 +502,7 @@ class Person extends AbstractEntity
         }
         return [
             'fullName' => $this->formatName('Reversed'),
-            'photo' => $this->getImage240(false) ? ImageHelper::getRelativeImageURL($this->getPersonalDocumentation()->getPersonalImage(false)) : '/build/static/DefaultPerson.png',
+            'photo' => $this->getPersonalDocumentation()->getPersonalImage() ? ImageHelper::getRelativeImageURL($this->getPersonalDocumentation()->getPersonalImage(false)) : '/build/static/DefaultPerson.png',
             'status' => TranslationHelper::translate($this->getStatus()),
             '_status' => $this->getStatus(),
             'family' => $this->getFamilyName(),
@@ -777,17 +611,28 @@ class Person extends AbstractEntity
 
     /**
      * setStudent
+     *
+     * 29/08/2020 09:41
      * @param Student|null $student
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:22
      */
-    public function setStudent(?Student $student, bool $reflect = true): Person
+    public function setStudent(?Student $student): Person
     {
+        if (null !== $student && null === $student->getPerson()) return $this->reflectStudent($student);
         $this->student = $student;
-        if ($reflect && $student instanceof Student) {
-            $student->setPerson($this, false);
-        }
+        return $this;
+    }
+
+    /**
+     * reflectStudent
+     *
+     * 29/08/2020 12:14
+     * @param Student $student
+     * @return Person
+     */
+    public function reflectStudent(Student $student): Person
+    {
+        $this->student = $student->setPerson($this);
         return $this;
     }
 
@@ -811,17 +656,28 @@ class Person extends AbstractEntity
 
     /**
      * setCareGiver
+     *
+     * 29/08/2020 09:44
      * @param CareGiver|null $careGiver
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:13
      */
-    public function setCareGiver(?CareGiver $careGiver, bool $reflect = true): Person
+    public function setCareGiver(?CareGiver $careGiver): Person
     {
-        if ($reflect && $careGiver instanceof CareGiver) {
-            $careGiver->setPerson($this, false);
-        }
+        if (null !== $careGiver && null === $careGiver->getPerson()) return $this->reflectCareGiver($careGiver);
         $this->careGiver = $careGiver;
+        return $this;
+    }
+
+    /**
+     * reflectCareGiver
+     *
+     * 29/08/2020 09:44
+     * @param CareGiver $careGiver
+     * @return Person
+     */
+    public function reflectCareGiver(CareGiver $careGiver): Person
+    {
+        $this->careGiver = $careGiver->setPerson($this);
         return $this;
     }
 
@@ -837,12 +693,15 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @param Contact|null $contact
-     * @param bool $reflect
-     * @return Person
+     * setContact
+     *
+     * 29/08/2020 10:06
+     * @param Contact $contact
+     * @return $this
      */
     public function setContact(Contact $contact): Person
     {
+        if (null === $contact->getPerson()) return $this->reflectContact($contact);
         $this->contact = $contact;
         return $this;
     }
@@ -856,8 +715,8 @@ class Person extends AbstractEntity
      */
     public function reflectContact(Contact $contact): Person
     {
-        $contact->setPerson($this);
-        return $this->setContact($contact);
+        $this->contact = $contact->setPerson($this);
+        return $this;
     }
 
     /**
@@ -875,14 +734,26 @@ class Person extends AbstractEntity
      * setPersonalDocumentation
      *
      * 22/08/2020 11:13
-     * @param PersonalDocumentation|null $personalDocumentation
-     * @return $this
+     * @param PersonalDocumentation $personalDocumentation
+     * @return Person
      */
-    public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation): Person
+    public function setPersonalDocumentation(PersonalDocumentation $personalDocumentation): Person
     {
-        $this->personalDocumentation = $personalDocumentation ?: new PersonalDocumentation($this);
-        $personalDocumentation->setPerson($this);
+        if (null === $personalDocumentation->getPerson()) return $this->reflectPersonalDocumentation($personalDocumentation);
+        $this->personalDocumentation = $personalDocumentation;
+        return $this;
+    }
 
+    /**
+     * reflectPersonalDocumentation
+     *
+     * 29/08/2020 10:07
+     * @param PersonalDocumentation $personalDocumentation
+     * @return Person
+     */
+    public function reflectPersonalDocumentation(PersonalDocumentation $personalDocumentation): Person
+    {
+        $this->personalDocumentation = $personalDocumentation->setPerson($this);
         return $this;
     }
 
@@ -957,6 +828,9 @@ class Person extends AbstractEntity
     }
 
     /**
+     * getStaff
+     *
+     * 29/08/2020 09:32
      * @return Staff|null
      */
     public function getStaff(): ?Staff
@@ -966,17 +840,28 @@ class Person extends AbstractEntity
 
     /**
      * setStaff
+     *
+     * 29/08/2020 09:32
      * @param Staff|null $staff
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:19
      */
-    public function setStaff(?Staff $staff, bool $reflect = true): Person
+    public function setStaff(?Staff $staff): Person
     {
+        if (null !== $staff && null === $staff->getPerson()) return $this->reflectStaff($staff);
         $this->staff = $staff;
-        if ($reflect && $staff instanceof Staff) {
-            $staff->setPerson($this, false);
-        }
+        return $this;
+    }
+
+    /**
+     * reflectStaff
+     *
+     * 29/08/2020 12:15
+     * @param Staff $staff
+     * @return Person
+     */
+    public function reflectStaff(Staff $staff): Person
+    {
+        $this->staff = $staff->setPerson($this);
         return $this;
     }
 
@@ -1000,17 +885,29 @@ class Person extends AbstractEntity
 
     /**
      * setSecurityUser
+     *
+     * 29/08/2020 10:44
      * @param SecurityUser|null $securityUser
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:19
      */
-    public function setSecurityUser(?SecurityUser $securityUser, bool $reflect = true): Person
+    public function setSecurityUser(?SecurityUser $securityUser): Person
     {
+        if (null !== $securityUser && null === $securityUser->getPerson()) return $this->reflectSecurityUser($securityUser);
         $this->securityUser = $securityUser;
-        if ($reflect && $securityUser instanceof SecurityUser) {
-            $securityUser->setPerson($this, false);
-        }
+        return $this;
+    }
+
+    /**
+     * reflectSecurityUser
+     *
+     * 30/08/2020 08:07
+     * @param SecurityUser $securityUser
+     * @return $this
+     */
+    public function reflectSecurityUser(SecurityUser $securityUser): Person
+    {
+        $securityUser->setPerson($this);
+        $this->securityUser = $securityUser;
         return $this;
     }
 
@@ -1095,4 +992,28 @@ class Person extends AbstractEntity
     {
         return $this->getFirstName() ? substr($this->getFirstName(), 0, 1) : '';
     }
+
+    /**
+     * getFullNameReversed
+     *
+     * 25/08/2020 13:53
+     * @return string
+     */
+    public function getFullNameReversed(): string
+    {
+        return $this->formatName('Reversed');
+    }
+
+    /**
+     * getFullName
+     *
+     * 25/08/2020 13:53
+     * @param string $style
+     * @return string
+     */
+    public function getFullName(string $style = 'Standard'): string
+    {
+        return $this->formatName($style);
+    }
+
 }

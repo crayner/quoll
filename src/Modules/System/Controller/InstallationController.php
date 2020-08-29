@@ -14,7 +14,6 @@
  * Date: 20/05/2020
  * Time: 13:22
  */
-
 namespace App\Modules\System\Controller;
 
 use App\Container\Container;
@@ -33,19 +32,14 @@ use App\Modules\System\Form\MySQLType;
 use App\Modules\System\Form\SystemType;
 use App\Modules\System\Manager\CreateManager;
 use App\Modules\System\Manager\InstallationManager;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class InstallationController
@@ -55,14 +49,15 @@ class InstallationController extends AbstractPageController
 {
     /**
      * installationCheck
+     *
+     * 25/08/2020 13:02
      * @param PageManager $pageManager
      * @param InstallationManager $manager
      * @param ValidatorInterface $validator
-     * @param ContainerManager $containerManager
-     * @return JsonResponse
      * @Route("/installation/check/",name="installation_check")
+     * @return JsonResponse
      */
-    public function installationCheck(PageManager $pageManager, InstallationManager $manager, ValidatorInterface $validator, ContainerManager $containerManager)
+    public function installationCheck(PageManager $pageManager, InstallationManager $manager, ValidatorInterface $validator)
     {
         $i18n = new Language();
 
@@ -83,40 +78,36 @@ class InstallationController extends AbstractPageController
             if ($list->count() === 0) {
                 $manager->setLocale($form->get('code')->getData());
                 $manager->setInstallationStatus('mysql');
-                $data = ErrorMessageHelper::getSuccessMessage([], true);
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('installation_mysql', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                $this->getStatusManager()
+                    ->success()->setReDirect($this->generateUrl('installation_mysql', [], UrlGeneratorInterface::ABSOLUTE_URL), true);
                 $fs = new Filesystem();
                 $fs->remove(__DIR__ . '/../../../../var/cache/*');
-                return new JsonResponse($data);
             } else {
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $containerManager->singlePanel($form->createView());
-                $data['form'] = $containerManager->getFormFromContainer();
-                return new JsonResponse($data);
+                $this->getStatusManager()->invalidInputs();
             }
+            return $this->singleForm($form);
         }
-
-        $containerManager->singlePanel($form->createView());
 
         return $pageManager->render(
             [
                 'content' => $manager->check($this->getParameter('systemRequirements')),
-                'containers' => $containerManager->getBuiltContainers(),
+                'containers' => $this->getContainerManager()->singlePanel($form)->getBuiltContainers(),
             ]
         );
     }
 
     /**
      * installationMySQLSettings
+     *
+     * 25/08/2020 13:14
      * @param InstallationManager $manager
-     * @param ContainerManager $containerManager
      * @param string $proceed
      * @Route("/installation/mysql/{proceed}", name="installation_mysql")
+     * @return JsonResponse
      */
-    public function installationMySQLSettings(InstallationManager $manager, ContainerManager $containerManager, string $proceed = '0')
+    public function installationMySQLSettings(InstallationManager $manager, string $proceed = '0')
     {
-        $mysql = new MySQLSettings($proceed);
+        $mysql = new MySQLSettings();
         $manager->readCurrentMySQLSettings($mysql);
         $data = null;
 
@@ -130,136 +121,110 @@ class InstallationController extends AbstractPageController
                 if ($proceed === 0) {
                     $manager->setInstallationStatus('build');
                 }
-                $data = $manager->setMySQLSettings($form);
-                $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL);
+                $manager->setMySQLSettings($form,$this->getStatusManager());
+                $this->getStatusManager()->setReDirect($this->generateUrl('installation_mysql', ['proceed' => 'proceed'], UrlGeneratorInterface::ABSOLUTE_URL));
                 if ($proceed !== '0' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
-                    $data['redirect'] = $this->generateUrl('installation_table_create', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $this->getStatusManager()->setReDirect($this->generateUrl('installation_table_create', [], UrlGeneratorInterface::ABSOLUTE_URL),true);
                 }
             } else {
-                $containerManager->singlePanel($form->createView());
-                $data = ErrorMessageHelper::getInvalidInputsMessage([], true);
-                $data['form'] = $containerManager->getFormFromContainer();
+                $this->getStatusManager()->invalidInputs();
             }
-            return new JsonResponse($data);
+            return $this->getStatusManager()->toJsonResponse();
         }
 
-        $containerManager->singlePanel($form->createView());
+        $container = new Container();
+        $panel = new Panel('single','System', new Section('html', $this->renderView('installation/mysql_settings.html.twig',
+            [
+                'message' => $this->getStatusManager()->getFirstMessageTranslated(),
+                'proceed' => $proceed,
+            ]
+        )));
+
+        $container->addForm('single', $form->createView())
+            ->addPanel($panel->addSection(new Section('form', 'single')));
 
         return $this->getPageManager()->render(
             [
-                'content' => $this->renderView('installation/mysql_settings.html.twig',
-                    [
-                        'message' => $data ? $data['errors'][0] : null,
-                        'proceed' => $proceed,
-                    ]
-                ),
-                'containers' => $containerManager->getBuiltContainers(),
+                'containers' => $this->getContainerManager()
+                    ->addContainer($container)
+                    ->getBuiltContainers(),
             ]
         );
     }
 
     /**
-     * installationBuild
+     * createTables
+     *
+     * 25/08/2020 13:21
      * @param CreateManager $manager
-     * @param ContainerManager $containerManager
-     * @return JsonResponse
      * @Route("/installation/table/create/", name="installation_table_create")
+     * @return JsonResponse
      */
-    public function createTables(CreateManager $manager, ContainerManager $containerManager)
+    public function createTables(CreateManager $manager)
     {
         TranslationHelper::setDomain('System');
 
-        $form = $this->createForm(SubmitOnlyType::class, null,
-            [
-                'action' => $this->generateUrl('installation_table_create'),
-                'translation_domain' => 'System',
-                'submitLabel' => 'Proceed',
-            ]
-        );
-
-        if ($this->getRequest()->getContent() !== '') {
-            $content = json_decode($this->getRequest()->getContent(), true);
-            $form->submit($content);
-            if ($form->isValid()) {
-                $data['redirect'] = $this->generateUrl('installation_core_data');
-                $data['status'] = 'redirect';
-
-                return new JsonResponse($data);
-            }
-        }
-
-        $containerManager->singlePanel($form->createView());
         $manager->getLogger()->notice(TranslationHelper::translate('The creation of tables for the database has commenced.'));
+
+        $container = new Container();
+        $panel = new Panel('single', 'System', new Section('html', $this->renderView('installation/table_complete.html.twig',
+            [
+                'tableCount' => $manager->createTables($this->getDoctrine()->getManager()),
+            ]
+        )));
+        $container->addPanel($panel);
         $manager->setInstallationStatus('Create');
+
         return $this->getPageManager()->render(
             [
-                'content' => $this->renderView('installation/table_complete.html.twig',
-                    [
-                        'tableCount' => $manager->createTables($this->getDoctrine()->getManager()),
-                    ]
-                ),
-                'containers' => $containerManager->getBuiltContainers(),
+                'containers' => $this->getContainerManager()
+                    ->addContainer($container)
+                    ->getBuiltContainers(),
             ]
         );
     }
 
     /**
      * coreData
+     *
+     * 25/08/2020 13:21
      * @param CreateManager $createManager
-     * @param ContainerManager $manager
-     * @return JsonResponse
      * @Route("/installation/core/data/",name="installation_core_data")
+     * @return JsonResponse
      */
-    public function coreData(CreateManager $createManager, ContainerManager $manager)
+    public function coreData(CreateManager $createManager)
     {
         TranslationHelper::setDomain('System');
 
-        $form = $this->createForm(SubmitOnlyType::class, null,
-            [
-                'action' => $this->generateUrl('installation_core_data'),
-                'translation_domain' => 'System',
-                'submitLabel' => 'Proceed',
-            ]
-        );
-
-        if ($this->getRequest()->getContent() !== '') {
-            $content = json_decode($this->getRequest()->getContent(), true);
-            $form->submit($content);
-            if ($form->isValid()) {
-                $data['redirect'] = $this->generateUrl('installation_system_settings');
-                $data['status'] = 'redirect';
-
-                return new JsonResponse($data);
-            }
-        }
-
-        $manager->singlePanel($form->createView());
         $createManager->getLogger()->notice(TranslationHelper::translate('Core Data will be added to tables.'));
         $count = $createManager->coreData();
+        $container = new Container();
+        $panel = new Panel('single', 'System', new Section('html', $this->renderView('installation/core_data_complete.html.twig',
+            [
+                'tableCount' => $count,
+                'itemCount' => $createManager->getTotalItemCount(),
+            ]
+        )));
+        $container->addPanel($panel);
+
         $createManager->setInstallationStatus('Core Data');
         return $this->getPageManager()->render(
             [
-                'content' => $this->renderView('installation/core_data_complete.html.twig',
-                    [
-                        'tableCount' => $count,
-                        'itemCount' => $createManager->getTotalItemCount(),
-                    ]
-                ),
-                'containers' => $manager->getBuiltContainers(),
+                'containers' => $this->getContainerManager()->addContainer($container)->getBuiltContainers(),
             ]
         );
     }
 
     /**
      * systemSettings
-     * @Route("/installation/system/settings/{tabName}",name="installation_system_settings")
+     *
+     * 27/08/2020 08:41
      * @param InstallationManager $installationManager
-     * @param ContainerManager $manager
      * @param string $tabName
+     * @Route("/installation/system/settings/{tabName}",name="installation_system_settings")
      * @return JsonResponse
      */
-    public function systemSettings(InstallationManager $installationManager, ContainerManager $manager, string $tabName = 'System User')
+    public function systemSettings(InstallationManager $installationManager, string $tabName = 'System User')
     {
         $settings = new SystemSettings();
         $settings->injectRequest($this->getRequest());
@@ -270,18 +235,14 @@ class InstallationController extends AbstractPageController
         if ($this->getRequest()->getContent() !== '') {
             $content = json_decode($this->getRequest()->getContent(), true);
             $form->submit($content);
-            if ($form->isSubmitted()) {
-                if ($form->isValid()) {
-                    $installationManager->setAdministrator($form);
-                    $installationManager->setSystemSettings($form);
-                }
-                $data['redirect'] = $this->generateUrl('home');
-                $data['status'] = 'redirect';
-                return new JsonResponse($data);
+            if ($form->isValid()) {
+                $installationManager->setAdministrator($form);
+                $installationManager->setSystemSettings($form);
+                $this->getStatusManager()->setReDirect($this->generateUrl('home'));
             }
+            return $this->singleForm($form);
         }
 
-        $manager->singlePanel($form->createView());
         $container = new Container($tabName);
         $container->addForm('single', $form->createView());
         $panel = new Panel('System User', 'People', new Section('form', 'single'));
@@ -290,11 +251,10 @@ class InstallationController extends AbstractPageController
         $container->addPanel($panel);
         $panel = new Panel('Organisation', 'System', new Section('form', 'single'));
         $container->addPanel($panel);
-        $manager->addContainer($container);
 
         return $this->getPageManager()->render(
             [
-                'containers' => $manager->getBuiltContainers(),
+                'containers' => $this->getContainerManager()->addContainer($container)->getBuiltContainers(),
             ]
         );
     }

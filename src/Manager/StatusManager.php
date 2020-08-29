@@ -283,9 +283,9 @@ class StatusManager
      * @param string|null $id
      * @param array $parameters
      * @param string|null $domain
-     * @return $this
+     * @return StatusManager
      */
-    public function success(?string $id = null, array $parameters = [], ?string $domain = null)
+    public function success(?string $id = null, array $parameters = [], ?string $domain = null): StatusManager
     {
         if (null === $id) {
             $id = self::SUCCESS;
@@ -509,5 +509,49 @@ class StatusManager
     public function databaseError()
     {
         $this->error(static::DATABASE_ERROR);
+    }
+
+    /**
+     * getLastMessage
+     *
+     * 26/08/2020 13:39
+     * @return Message|bool
+     */
+    public function getLastMessage()
+    {
+        return $this->getMessages()->last();
+    }
+
+    /**
+     * getLastMessageTranslated
+     *
+     * 26/08/2020 13:40
+     * @return string
+     */
+    public function getLastMessageTranslated(): string
+    {
+        return $this->getLastMessage() ? $this->getLastMessage()->getTranslatedMessage(): '';
+    }
+
+    /**
+     * getFirstMessage
+     *
+     * 26/08/2020 15:51
+     * @return Message|bool
+     */
+    public function getFirstMessage()
+    {
+        return $this->getMessages()->first();
+    }
+
+    /**
+     * getFirstMessageTranslated
+     *
+     * 26/08/2020 15:51
+     * @return string
+     */
+    public function getFirstMessageTranslated(): string
+    {
+        return $this->getFirstMessage() ? $this->getFirstMessage()->getTranslatedMessage(): '';
     }
 }

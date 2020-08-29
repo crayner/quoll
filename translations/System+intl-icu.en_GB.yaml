@@ -264,7 +264,6 @@ Username: Username
 Your requested included a valid Google Secret File.  The information was successfully stored.: Your requested included a valid Google Secret File.  The information was successfully stored.
 country: country
 Demonstration Data Completed: Demonstration Data Completed
-Full details can be found in the installation-{date}.log file in the /var/log directory.: Full details can be found in the installation-{date}.log file in the /var/log directory.
 Demonstration Data: Demonstration Data
 A list of module categories in display order.: A list of module categories in display order.
 Allow the system to send emails.: Allow the system to send emails.
@@ -315,3 +314,13 @@ Saturday: Saturday
 Thursday: Thursday
 Tuesday: Tuesday
 Wednesday: Wednesday
+settinglists:
+    system__installtype:
+        development: Development
+        production: Production
+        testing: Testing
+single: single
+'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.': 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.'
+Next Table: Next Table
+'<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>': '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>'
+'for {table}': 'for {table}'

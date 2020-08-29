@@ -20,6 +20,7 @@ use App\Manager\AbstractPaginationManager;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -257,15 +258,17 @@ class ContainerManager
 
     /**
      * singlePanel
-     * @param FormView $view
+     *
+     * 25/08/2020 12:57
+     * @param $view
      * @param string|null $application
      * @param string $target
      * @param string $domain
      * @return $this
-     * 20/06/2020 10:49
      */
-    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'messages'): ContainerManager
+    public function singlePanel($view, ?string $application = null, string $target = 'formContent', string $domain = 'messages'): ContainerManager
     {
+        if ($view instanceof FormInterface) $view = $view->createView();
         $container = new Container();
         $container->addForm('single', $view);
         $panel = new Panel('single');

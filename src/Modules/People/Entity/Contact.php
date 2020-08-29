@@ -22,7 +22,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -43,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Contact extends AbstractEntity
 {
-    CONST VERSION = '1.0.00';
+    const VERSION = '1.0.00';
 
     /**
      * @var string|null
@@ -60,7 +59,7 @@ class Contact extends AbstractEntity
      * @Assert\NotBlank()
      */
     private $person;
-    
+
     /**
      * @var string|null
      * @ORM\Column(length=75,nullable=true)
@@ -122,13 +121,13 @@ class Contact extends AbstractEntity
      * @var string|null
      * @ORM\Column(length=90,nullable=true)
      */
-    private $employer;
+    private ?string $employer = null;
 
     /**
      * @var string|null
      * @ORM\Column(length=90,nullable=true)
      */
-    private $jobTitle;
+    private ?string $jobTitle = null;
 
     /**
      * Contact constructor.
@@ -136,7 +135,7 @@ class Contact extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $person->reflectContact($this);
+        if ($person) $person->reflectContact($this);
     }
 
     /**
@@ -337,11 +336,10 @@ class Contact extends AbstractEntity
     public function getPhoneList(bool $includeFamily = false): array
     {
         $result = [];
-        if ($this->getPersonalPhone())
-        {
+        if ($this->getPersonalPhone()) {
             $result[] = $this->getPersonalPhone()->__toString();
         }
-        foreach($this->getAdditionalPhones() as $phone) {
+        foreach ($this->getAdditionalPhones() as $phone) {
             $result[] = $phone->__toString();
         }
         if ($includeFamily) {
@@ -430,55 +428,25 @@ class Contact extends AbstractEntity
     }
 
     /**
-     * create
-     * @return array|string[]
-     * 4/07/2020 09:44
+     * getFullNameReversed
+     *
+     * 25/08/2020 13:53
+     * @return string
      */
-    public function create(): array
+    public function getFullNameReversed(): string
     {
-        return [
-            "CREATE TABLE `__prefix__Contact` (
-                `id` char(36) NOT NULL COMMENT '(DC2Type:guid)',
-                `physical_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `postal_address` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `email` varchar(75) DEFAULT NULL,
-                `email_alternate` varchar(75) DEFAULT NULL,
-                `website` varchar(191) DEFAULT NULL,
-                `profession` varchar(90) DEFAULT NULL,
-                `employer` varchar(90) DEFAULT NULL,
-                `job_title` varchar(90) DEFAULT NULL,
-                `person` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                `personal_phone` char(36) DEFAULT NULL COMMENT '(DC2Type:guid)',
-                PRIMARY KEY (`id`),
-                UNIQUE KEY `person` (`person`),
-                KEY `physical_address` (`physical_address`),
-                KEY `postal_address` (`postal_address`),
-                KEY `personal_phone` (`personal_phone`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
-        ];
+        return $this->getPerson()->formatName('Reversed');
     }
 
     /**
-     * foreignConstraints
+     * getFullName
+     *
+     * 25/08/2020 13:53
+     * @param string $style
      * @return string
-     * 4/07/2020 09:44
      */
-    public function foreignConstraints(): string
+    public function getFullName(string $style = 'Standard'): string
     {
-        return "ALTER TABLE `__prefix__Contact`
-                    ADD CONSTRAINT FOREIGN KEY (`physical_address`) REFERENCES `__prefix__Address` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`personal_phone`) REFERENCES `__prefix__Phone` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`postal_address`) REFERENCES `__prefix__Address` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     * 4/07/2020 09:44
-     */
-    public static function getVersion(): string
-    {
-        return static::VERSION;
+        return $this->getPerson()->formatName($style);
     }
 }

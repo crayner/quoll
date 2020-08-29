@@ -20,7 +20,6 @@ use App\Manager\AbstractEntity;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Manager\RoleHierarchy;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
@@ -28,6 +27,8 @@ use App\Modules\System\Entity\Locale;
 use App\Provider\ProviderFactory;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -50,7 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("username")
  * @App\Modules\Security\Validator\SecurityUser()
  */
-class SecurityUser extends AbstractEntity implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
+class SecurityUser extends AbstractEntity implements UserInterface, EncoderAwareInterface, EquatableInterface, Serializable
 {
     CONST VERSION = '1.0.00';
 
@@ -60,104 +61,105 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
-     * @var Person
+     * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="securityUser",cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var string|null
      * @ORM\Column(length=64,nullable=true)
      */
-    private $username;
+    private ?string $username;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true)
      */
-    private $password;
+    private ?string $password;
 
     /**
      * @var Locale|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Locale")
      * @ORM\JoinColumn(name="locale",nullable=true)
      */
-    private $locale;
+    private ?Locale $locale;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $canLogin = false;
+    private bool $canLogin = false;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean",options={"default": 0, "comment": "Force user to reset password on next login."})
      */
-    private $passwordForceReset = false;
+    private bool $passwordForceReset = false;
 
     /**
      * @var string|null
      * @ORM\Column(length=15,nullable=true,name="last_ip_address")
      */
-    private $lastIPAddress;
+    private ?string $lastIPAddress;
 
     /**
      * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable",nullable=true)
      */
-    private $lastTimestamp;
+    private ?DateTimeImmutable $lastTimestamp = null;
 
     /**
      * @var string|null
      * @ORM\Column(length=15,nullable=true,name="last_fail_ip_address")
      */
-    private $lastFailIPAddress;
+    private ?string $lastFailIPAddress;
 
     /**
      * @var DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable",nullable=true)
      */
-    private $lastFailTimestamp;
+    private ?DateTimeImmutable $lastFailTimestamp = null;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="smallint", options={"default": 0})
      */
-    private $failCount = 0;
+    private int $failCount = 0;
 
     /**
-     * @var array
+     * @var array|null
      * @ORM\Column(type="simple_array",nullable=true)
      */
-    private $securityRoles = [];
+    private ?array $securityRoles = [];
 
     /**
      * @var string|null
      * @ORM\Column(length=191,name="google_api_refresh_token",nullable=true)
      */
-    private $googleAPIRefreshToken;
+    private ?string $googleAPIRefreshToken;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $superUser = false;
+    private bool $superUser = false;
 
     /**
      * SecurityUser constructor.
-     * @param Person $person
+     * @param Person|null $person
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
-        $this->securityRoles = [];
-        $this->setCanLogin(false);
+        if ($person) $person->reflectSecurityUser($this);
+        $this->setSecurityRoles([])
+            ->setCanLogin(false);
     }
 
     /**
@@ -165,7 +167,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
@@ -183,22 +185,19 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getPerson(): ?Person
     {
-        return $this->person;
+        return isset($this->person) ? $this->person : null;
     }
 
     /**
      * setPerson
-     * @param Person|null $person
-     * @param bool $reflect
+     *
+     * 29/08/2020 10:51
+     * @param Person $person
      * @return $this
-     * 4/07/2020 11:24
      */
-    public function setPerson(?Person $person, bool $reflect = true): SecurityUser
+    public function setPerson(Person $person): SecurityUser
     {
         $this->person = $person;
-        if ($reflect && $person instanceof Person) {
-            $person->setSecurityUser($this, false);
-        }
         return $this;
     }
 
@@ -403,12 +402,15 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
+     * setSecurityRoles
+     *
+     * 29/08/2020 10:48
      * @param array|null $securityRoles
-     * @return SecurityUser
+     * @return $this
      */
     public function setSecurityRoles(?array $securityRoles): SecurityUser
     {
-        $this->securityRoles = $securityRoles;
+        $this->securityRoles = $securityRoles ?: [];
         return $this;
     }
 
@@ -452,6 +454,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     public function toArray(?string $name = null): array
     {
         // TODO: Implement toArray() method.
+        return [];
     }
 
     /**
@@ -516,7 +519,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
             if (!empty($lastTimeStamp)) {
                 $this->setLastTimestamp(new DateTimeImmutable($lastTimestamp));
             }
-        } catch (\Exception $e) {}
+        } catch (Exception $e) {}
     }
 
     /**
@@ -531,13 +534,14 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * isEqualTo
+     *
+     * 29/08/2020 10:50
      * @param UserInterface $user
      * @return bool
-     * 1/07/2020 13:13
      */
     public function isEqualTo(UserInterface $user)
     {
-        return $user->getId() === $this->getId();
+        return $user->getId() === $this->getId() && $user->getUsername() === $this->getUsername();
     }
 
     /**
@@ -612,12 +616,14 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * getStudent
+     *
+     * 30/08/2020 08:10
      * @return Student|null
-     * 11/07/2020 12:44
      */
     public function getStudent(): ?Student
     {
-        return $this->getPerson()->getStudent() ?? null ;
+        if (!$this->getPerson()) throw new Exception($this->getId());
+        return $this->getPerson()->getStudent() ?: null;
     }
 
     /**
@@ -627,7 +633,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function getStaff(): ?Staff
     {
-        return $this->getPerson()->getStaff() ?? null ;
+        return $this->getPerson()->getStaff() ?: null;
     }
 
     /**

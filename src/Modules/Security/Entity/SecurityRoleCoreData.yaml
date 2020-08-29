@@ -2,104 +2,104 @@
     role: ROLE_FINANCE
     label: 'Financial Staff'
     category: Staff
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_LIBRARIAN
     label: Librarian
     category: Staff
-    allow_future_years: true
-    allow_past_years: false
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: false
+    allowLogin: true
 -
     role: ROLE_HEAD_TEACHER
     label: 'Head Teacher'
     category: Staff
-    allow_future_years: true
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: true
+    allowLogin: true
 -
     role: ROLE_PRINCIPAL
     label: Principal
     category: Staff
-    allow_future_years: true
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: true
+    allowLogin: true
 -
     role: ROLE_TEACHER
     label: Teacher
     category: Staff
-    allow_future_years: false
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: false
+    allowPastYears: true
+    allowLogin: true
 -
     role: ROLE_STUDENT
     label: Student
     category: Student
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: true
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: true
 -
     role: ROLE_SUPPORT
     label: 'Support Staff'
     category: Staff
-    allow_future_years: true
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: true
+    allowLogin: true
 -
     role: ROLE_REGISTRAR
     label: Registrar
     category: Staff
-    allow_future_years: true
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: true
+    allowLogin: true
 -
     role: ROLE_USER
     label: 'Any User'
     category: Contact
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_CONTACT
     label: Contact
     category: Contact
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_CARE_GIVER
     label: 'Care Giver'
     category: 'Care Giver'
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: true
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: true
 -
     role: ROLE_MEDICAL
     label: 'Medical Staff'
     category: Staff
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_ALLOWED_TO_SWITCH
     label: 'Allowed to impersonate appropriate people'
     category: System
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_STAFF
     label: 'All Staff'
     category: Staff
-    allow_future_years: false
-    allow_past_years: false
-    allow_login: false
+    allowFutureYears: false
+    allowPastYears: false
+    allowLogin: false
 -
     role: ROLE_SYSTEM_ADMIN
     label: 'System Administrator'
     category: Staff
-    allow_future_years: true
-    allow_past_years: true
-    allow_login: true
+    allowFutureYears: true
+    allowPastYears: true
+    allowLogin: true

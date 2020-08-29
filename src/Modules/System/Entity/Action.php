@@ -475,16 +475,6 @@ class Action extends AbstractEntity
     }
 
     /**
-     * isArrayField
-     * @param string $name
-     * @return bool
-     */
-    public function isArrayField(string $name): bool
-    {
-         return in_array($name, ['routeList']);
-    }
-
-    /**
      * coreDataLinks
      * @return mixed
      * 12/06/2020 10:16

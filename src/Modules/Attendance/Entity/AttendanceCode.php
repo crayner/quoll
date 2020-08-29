@@ -411,15 +411,4 @@ class AttendanceCode extends AbstractEntity
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/AttendanceCodeCoreData.yaml'));
     }
-
-    /**
-     * isArrayField
-     * @param string $name
-     * @return bool
-     * 4/07/2020 11:51
-     */
-    public function isArrayField(string $name): bool
-    {
-        return in_array($name, ['securityRoles']);
-    }
 }

@@ -49,29 +49,29 @@ class SecurityRole extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var string|null
      * @ORM\Column(length=63)
      * @Assert\NotBlank()
      */
-    private $role;
+    private ?string $role;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(length=63)
      * @Assert\NotBlank()
      */
-    private $label;
+    private ?string $label;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(length=63)
      * @Assert\NotBlank()
      * @Assert\Choice(callback="getCategoryList")
      */
-    private $category;
+    private ?string $category;
 
     /**
      * @var SecurityRole[]|Collection|null
@@ -81,25 +81,33 @@ class SecurityRole extends AbstractEntity
      *      inverseJoinColumns={@ORM\JoinColumn(name="child",referencedColumnName="id")}
      *      )
      */
-    private $childRoles;
+    private ?Collection $childRoles = null;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $allowLogin;
+    private bool $allowLogin = true;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",options={"default": 1})
      */
-    private $allowFutureYears;
+    private bool $allowFutureYears = true;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",options={"default": 0})
      */
-    private $allowPastYears;
+    private bool $allowPastYears = false;
+
+    /**
+     * SecurityRole constructor.
+     */
+    public function __construct()
+    {
+        $this->setChildRoles(new ArrayCollection());
+    }
 
     /**
      * @return string|null

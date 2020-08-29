@@ -171,7 +171,7 @@ class MySQLSettings
      */
     public function isDemo(): bool
     {
-        return $this->getDemo() === 'Y' ? true : false;
+        return $this->getDemo() === 'Y';
     }
 
     /**

@@ -22,6 +22,7 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Validator\Password;
+use App\Modules\System\Manager\InstallationManager;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Form\Entity\SystemSettings;
 use App\Provider\ProviderFactory;
@@ -49,13 +50,13 @@ class SystemType extends AbstractType
     /**
      * @var ParameterBagInterface
      */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
     /**
-     * AbsoluteURL.
+     * getAbsoluteURL
      *
-     * @param string $absoluteURL
-     * @return SystemType
+     * 29/08/2020 08:11
+     * @return string
      */
     public function getAbsoluteURL(): string
     {
@@ -99,12 +100,12 @@ class SystemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $provider = SettingFactory::getSettingManager();
-        $systemName = $provider->getSetting('System', 'systemName');
-        $installType = $provider->getSetting('System', 'installType');
-        $orgName = $provider->getSetting('System', 'organisationName');
-        $orgNameShort = $provider->getSetting('System', 'organisationAbbreviation');
-        $country = $provider->getSetting('System', 'country');
-        $currency = $provider->getSetting('System', 'currency');
+        $systemName = $provider->get('System', 'systemName');
+        $installType = $provider->get('System', 'installType');
+        $orgName = $provider->get('System', 'organisationName');
+        $orgNameShort = $provider->get('System', 'organisationAbbreviation');
+        $country = $provider->get('System', 'country');
+        $currency = $provider->get('System', 'currency');
 
         $builder
             ->add('userAccountHeader', HeaderType::class,
@@ -146,18 +147,34 @@ class SystemType extends AbstractType
                 ]
             )
             ->add('firstName', TextType::class,
-               [
-                   'label' => 'First Name',
-                   'help' => 'First name as shown in ID documents.',
-                   'panel' => 'System User',
-                   'attr' => [
-                       'class' => 'w-full',
-                       'maxLength' => 60,
-                   ],
-                   'constraints' => [
-                       new NotBlank(),
-                   ],
-               ]
+                [
+                    'label' => 'First Name',
+                    'help' => 'First name as shown in ID documents.',
+                    'panel' => 'System User',
+                    'attr' => [
+                        'class' => 'w-full',
+                        'maxLength' => 60,
+                    ],
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add('gender', EnumType::class,
+                [
+                    'label' => 'Gender',
+                    'panel' => 'System User',
+                    'translation_domain' => 'People',
+                    'choice_list_class' => Person::class,
+                    'choice_list_method' => 'getGenderList',
+                    'choice_list_prefix' => 'person.gender',
+                    'attr' => [
+                        'class' => 'w-full',
+                    ],
+                    'constraints' => [
+                        new Choice(['choices' => Person::getGenderList()]),
+                    ],
+                ]
             )
             ->add('email', EmailType::class,
                [

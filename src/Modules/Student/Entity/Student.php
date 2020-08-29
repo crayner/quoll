@@ -22,11 +22,11 @@ use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
-use App\Modules\People\Entity\PersonMethods;
+use App\Modules\People\Util\CustomDataHandler;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\Theme;
-use App\Util\ImageHelper;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -54,8 +54,6 @@ class Student extends AbstractEntity
 {
     use SchoolCommonFields;
 
-    use PersonMethods;
-
     CONST VERSION = '1.0.00';
 
     /**
@@ -64,88 +62,88 @@ class Student extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="student")
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      */
-    private $person;
+    private ?Person $person = null;
 
     /**
      * @var string|null
      * @ORM\Column(length=20,nullable=true)
      */
-    private $studentIdentifier;
+    private ?string $studentIdentifier;
 
     /**
      * @var array|null
      * @ORM\Column(type="simple_array",nullable=true)
      */
-    private $studentAgreements;
+    private ?array $studentAgreements;
 
     /**
      * @var StudentEnrolment[]|Collection||null
      * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="student")
      */
-    private $studentEnrolments;
+    private ?Collection $studentEnrolments;
 
     /**
      * @var string|null
      * @ORM\Column(length=100,nullable=true)
      */
-    private $lastSchool;
+    private ?string $lastSchool;
 
     /**
      * @var string|null
      * @ORM\Column(length=100,nullable=true)
      */
-    private $nextSchool;
+    private ?string $nextSchool;
 
     /**
      * @var string|null
      * @ORM\Column(length=50,nullable=true)
      */
-    private $departureReason;
+    private ?string $departureReason;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true)
      */
-    private $transport;
+    private ?string $transport;
 
     /**
      * @var string|null
      * @ORM\Column(type="text",nullable=true)
      */
-    private $transportNotes;
+    private ?string $transportNotes;
 
     /**
      * @var ApplicationForm|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\ApplicationForm")
      * @ORM\JoinColumn(name="application_form", referencedColumnName="id", nullable=true)
      */
-    private $applicationForm;
+    private ?ApplicationForm $applicationForm = null;
 
     /**
      * @var string|null
      * @ORM\Column(type="text", nullable=true)
      */
-    private $privacy;
+    private ?string $privacy;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true,options={"comment": "Student day type, as specified in the application form."})
      */
-    private $dayType;
+    private ?string $dayType;
 
     /**
      * @var Theme|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Theme")
      * @ORM\JoinColumn(name="theme", referencedColumnName="id", nullable=true)
      */
-    private $theme;
+    private ?Theme $theme = null;
 
     /**
      * @var AcademicYear|null
@@ -153,27 +151,28 @@ class Student extends AbstractEntity
      * @ORM\JoinColumn(nullable=true,name="graduation_year",referencedColumnName="id")
      * @ORM\OrderBy({"firstDay" = "ASC"})
      */
-    private $graduationYear;
+    private ?AcademicYear $graduationYear = null;
 
     /**
      * @var Collection|FamilyMemberStudent[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\FamilyMemberStudent",mappedBy="student")
      */
-    private $memberOfFamilies;
+    private ?Collection $memberOfFamilies = null;
 
     /**
-     * @var Collection|CustomFieldData[]
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student",cascade={"all"},orphanRemoval=true)
+     * @var Collection|CustomFieldData[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student",cascade={"all"},orphanRemoval=true,fetch="EXTRA_LAZY")
      */
-    private $customData;
+    private ?Collection $customData = null;
 
     /**
-     * Student constructor.
+     * Contact constructor.
      * @param Person|null $person
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        if ($person) $person->reflectStudent($this);
+        $this->setCustomData(new ArrayCollection());
     }
 
     /**
@@ -207,12 +206,21 @@ class Student extends AbstractEntity
      * @param bool $reflect
      * @return Student
      */
-    public function setPerson(?Person $person, bool $reflect = true): Student
+    public function setPerson(?Person $person): Student
     {
         $this->person = $person;
-        if ($reflect && $person instanceof Person) {
-            $person->setStudent($this,false);
-        }
+        return $this;
+    }
+
+    /**
+     * @param Person|null $person
+     * @param bool $reflect
+     * @return Student
+     */
+    public function reflectPerson(?Person $person): Student
+    {
+        $person->setStudent($this);
+        $this->person = $person;
         return $this;
     }
 
@@ -422,18 +430,18 @@ class Student extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getMessengerLastBubble(): ?\DateTimeImmutable
+    public function getMessengerLastBubble(): ?DateTimeImmutable
     {
         return $this->messengerLastBubble;
     }
 
     /**
-     * @param \DateTimeImmutable|null $messengerLastBubble
+     * @param DateTimeImmutable|null $messengerLastBubble
      * @return Student
      */
-    public function setMessengerLastBubble(?\DateTimeImmutable $messengerLastBubble): Student
+    public function setMessengerLastBubble(?DateTimeImmutable $messengerLastBubble): Student
     {
         $this->messengerLastBubble = $messengerLastBubble;
         return $this;
@@ -563,16 +571,18 @@ class Student extends AbstractEntity
 
         if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
 
-        $iterator = $this->customData->getIterator();
-        $iterator->uasort(
-            function (CustomFieldData $a, CustomFieldData $b) {
-                return $a->getCustomField()->getDisplayOrder() <= $b->getCustomField()->getDisplayOrder() ? -1 : 1;
-            }
-        );
+        if ($this->customData->count() > 0 && CustomDataHandler::findCustomFields('Student')->count() > 0) {
+            $iterator = $this->customData->getIterator();
+            $iterator->uasort(
+                function (CustomFieldData $a, CustomFieldData $b) {
+                    return $a->getCustomField()->getDisplayOrder() <= $b->getCustomField()->getDisplayOrder() ? -1 : 1;
+                }
+            );
 
-        $this->customData = new ArrayCollection();
-        foreach(iterator_to_array($iterator, false) as $item) {
-            $this->addCustomData($item);
+            $this->customData = new ArrayCollection();
+            foreach (iterator_to_array($iterator, false) as $item) {
+                $this->addCustomData($item);
+            }
         }
 
         return $this->customData;
@@ -645,10 +655,25 @@ class Student extends AbstractEntity
      * getFullName
      *
      * 24/08/2020 09:52
+     * @param string $style
      * @return string
      */
-    public function getFullName(): string
+    public function getFullName(string $style = 'Standard'): string
     {
-        return $this->getPerson()->formatName('Standard', 'Student');
+        return $this->getPerson()->formatName($style, 'Student');
+    }
+
+    /**
+     * uniqueIdentifier
+     *
+     * 29/08/2020 10:17
+     * @return string
+     */
+    public function uniqueIdentifier(): string
+    {
+        if (is_string($this->getStudentIdentifier()) && $this->getStudentIdentifier() !== '')
+            return $this->getStudentIdentifier();
+
+        return substr($this->getId(), 0, 20);
     }
 }

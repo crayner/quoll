@@ -420,7 +420,7 @@ class Locale extends AbstractEntity
      */
     public function coreData(): array
     {
-        return Yaml::parse(file_get_contents(__DIR__ . '/I18nCoreData.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/LocaleCoreData.yaml'));
     }
 
     /**

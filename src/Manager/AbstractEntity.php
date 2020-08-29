@@ -82,7 +82,7 @@ abstract class AbstractEntity implements EntityInterface
                 } else if (array_key_first($value) === 'arrayField') {
                     $method = 'set' . ucfirst($name);
                     $this->$method($value['arrayField']);
-                } else {
+                } else if (key_exists('table', $value) || key_exists('reference', $value) || key_exists('value', $value)){
                     $resolver = new OptionsResolver();
                     $resolver->setRequired(
                         [
@@ -96,6 +96,9 @@ abstract class AbstractEntity implements EntityInterface
                     $entity = ProviderFactory::create($table)->findOneByAndStore($value['reference'], $value['value']);
                     $method = 'set' . ucfirst($name);
                     $this->$method($entity);
+                } else {
+                    $method = 'set' . ucfirst($name);
+                    $this->$method($value);
                 }
             } else {
                 $method = 'set' . ucfirst($name);

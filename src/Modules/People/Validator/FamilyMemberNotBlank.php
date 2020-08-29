@@ -32,11 +32,9 @@ class FamilyMemberNotBlank extends Constraint
         self::PARENT_AND_STUDENT_ERROR => 'PARENT_AND_STUDENT_ERROR',
     ];
 
-    public $message = 'A student or care giver must be set';
+    public $message = ['student' => 'A student must be set.', 'careGiver' => 'A care giver must be set.'];
 
     public $transDomain = 'People';
-
-    public $atPath = 'family';  // family, careGiver or student
 
     /**
      * getTargets

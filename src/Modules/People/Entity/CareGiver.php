@@ -38,8 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CareGiver extends AbstractEntity
 {
-    use PersonMethods;
-
     CONST VERSION = '1.0.00';
 
     /**
@@ -48,15 +46,15 @@ class CareGiver extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
-     * @var Person
+     * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="careGiver",cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $person;
+    private ?Person $person = null;
 
     /**
      * @var string|null
@@ -94,49 +92,52 @@ class CareGiver extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        if ($person !== null) $person->reflectCareGiver($this);
         $this->setVehicleRegistration(true);
         $this->setReceiveNotificationEmails(true);
     }
 
     /**
+     * getId
+     *
+     * 29/08/2020 12:07
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
-     * @param string|null $id
-     * @return CareGiver
+     * setId
+     *
+     * 29/08/2020 12:07
+     * @param string $id
+     * @return $this
      */
-    public function setId(?string $id): CareGiver
+    public function setId(string $id): CareGiver
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return Person
+     * @return Person|null
      */
-    public function getPerson(): Person
+    public function getPerson(): ?Person
     {
         return $this->person;
     }
 
     /**
      * setPerson
+     *
+     * 29/08/2020 12:13
      * @param Person|null $person
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:11
      */
-    public function setPerson(?Person $person, bool $reflect = true): CareGiver
+    public function setPerson(?Person $person): CareGiver
     {
-        if ($person && $person instanceof Person) {
-            $person->setCareGiver($this, false);
-        }
         $this->person = $person;
         return $this;
     }
@@ -312,7 +313,7 @@ class CareGiver extends AbstractEntity
     /**
      * getFullNameReversed
      *
-     * 24/08/2020 09:50
+     * 24/08/2020 09:52
      * @return string
      */
     public function getFullNameReversed(): string
@@ -323,12 +324,13 @@ class CareGiver extends AbstractEntity
     /**
      * getFullName
      *
-     * 24/08/2020 09:50
+     * 24/08/2020 09:52
+     * @param string $style
      * @return string
      */
-    public function getFullName(): string
+    public function getFullName(string $style = 'Standard'): string
     {
-        return $this->getPerson()->formatName('Standard', 'CareGiver');
+        return $this->getPerson()->formatName($style, 'CareGiver');
     }
 
 }

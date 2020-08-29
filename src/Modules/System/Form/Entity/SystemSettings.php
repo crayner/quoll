@@ -65,6 +65,11 @@ class SystemSettings
     private $request;
 
     /**
+     * @var string
+     */
+    private string $gender = 'Unspecified';
+
+    /**
      * injectRequest
      * @param Request $request
      */
@@ -463,6 +468,24 @@ class SystemSettings
     public function setTimezone(?string $timezone): SystemSettings
     {
         $this->timezone = $timezone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     * @return SystemSettings
+     */
+    public function setGender(string $gender): SystemSettings
+    {
+        $this->gender = $gender;
         return $this;
     }
 }

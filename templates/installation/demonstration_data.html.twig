@@ -1,4 +1,8 @@
 {% trans_default_domain 'System' %}
 
-<h3>{{ 'Demonstration Data Completed'|trans }}</h3>
-<p>{{ 'Full details can be found in the installation-{date}.log file in the /var/log directory.'|trans({'{date}': 'now'|date('Y-m-d')}) }}</p>
+<h3>{{ 'Demonstration Data Completed'|trans }}{% if next is not same as('') %}&nbsp;{{ 'for {table}'|trans({'{table}': table}) }}{% endif %}</h3>
+<p>{{ 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.'|trans({'{date}': 'now'|date('Y-m-d')}) }}</p>
+{% if rotating and next is not same as('')%}
+<p>{{ '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>'|trans({'{table}': table, '{next}': next})|raw }}
+    <button class="p-2 relative bg-blue-800 text-blue-200 float-right clear-both mt-3" id="next_table" name="next_demo_table" type="button" data-Click="true" data-url="{{ path('demonstration_load') }}" data-function="getContent">{{ 'Next Table'|trans }} <span class="far fa-hand-point-right fa-fw"></span></button></p>
+{% endif %}

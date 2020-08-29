@@ -1,4 +1,5 @@
 {% trans_default_domain 'System' %}
 
 <h2>{{ 'Installation - Step {step}'|trans({'{step}': '2'}) }} [{{ 'Core Data'|trans }}]</h2>
-<p>{{ 'installation_core_data_complete'|trans({count: tableCount, '{date}': 'now'|date('Y-m-d'), '{items}': itemCount, '{env}': app.environment}) }}</p>
+<p>{{ 'installation_core_data_complete'|trans({count: tableCount, '{date}': 'now'|date('Y-m-d'), '{items}': itemCount, '{env}': app.environment}) }}
+    <button class="p-2 relative bg-blue-800 text-blue-200 float-right clear-both mt-3" id="my_sql_proceed" name="my_sql_proceed" type="button" data-Click="true" data-url="{{ path('installation_system_settings') }}" data-function="getContent">{{ 'Proceed'|trans }} <span class="far fa-hand-point-right fa-fw"></span></button></p>

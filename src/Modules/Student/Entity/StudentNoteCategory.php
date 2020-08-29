@@ -175,6 +175,6 @@ class StudentNoteCategory extends AbstractEntity
      */
     public function coreData(): array
     {
-        return Yaml::parse(file_get_contents(__DIR__ . 'StudentNoteCategoryCoreData.yaml'));
+        return Yaml::parse(file_get_contents(__DIR__ . '/StudentNoteCategoryCoreData.yaml'));
     }
 }

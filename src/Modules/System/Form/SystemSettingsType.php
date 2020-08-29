@@ -17,6 +17,7 @@
 
 namespace App\Modules\System\Form;
 
+use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use Symfony\Component\Form\AbstractType;
@@ -71,13 +72,8 @@ class SystemSettingsType extends AbstractType
                         [
                             'scope' => 'System',
                             'name' => 'installType',
-                            'entry_type' => ChoiceType::class,
+                            'entry_type' => EnumType::class,
                             'entry_options' => [
-                                'choices' => [
-                                    'Production' => 'Production',
-                                    'Testing' => 'Testing',
-                                    'Development' => 'Development',
-                                ],
                                 'placeholder' => false,
                             ],
                         ],

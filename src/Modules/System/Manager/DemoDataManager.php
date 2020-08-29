@@ -18,6 +18,7 @@ namespace App\Modules\System\Manager;
 
 use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
+use App\Manager\StatusManager;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
@@ -87,8 +88,8 @@ class DemoDataManager
         'person2' => Person::class,
         'department_staff' => DepartmentStaff::class,
         'family' => Family::class,
-        'family_care_giver' => FamilyMemberCareGiver::class,
         'family_student' => FamilyMemberStudent::class,
+        'family_care_giver' => FamilyMemberCareGiver::class,
         'facility' => Facility::class,
         'roll_group' => RollGroup::class,
         'student_enrolment' => StudentEnrolment::class,
@@ -105,18 +106,24 @@ class DemoDataManager
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    private ValidatorInterface $validator;
+
+    /**
+     * @var StatusManager
+     */
+    private StatusManager $messages;
 
     /**
      * DemoDataManager constructor.
      * @param LoggerInterface $logger
      * @param ValidatorInterface $validator
      */
-    public function __construct(LoggerInterface $logger, ValidatorInterface $validator, TimetableDemoData $tdd)
+    public function __construct(LoggerInterface $logger, ValidatorInterface $validator, TimetableDemoData $tdd, StatusManager $messages)
     {
         $this->logger = $logger;
         $this->dataPath = realpath($this->dataPath) . DIRECTORY_SEPARATOR;
         $this->validator = $validator;
+        $this->messages = $messages;
     }
 
     /**
@@ -168,6 +175,7 @@ class DemoDataManager
         $content = Yaml::parse(file_get_contents($file->getRealPath()));
         $validator = $this->validator;
         $this->associatedEntities = [];
+        $this->rules = [];
         $rules = $this->getEntityRules($name);
         $this->getLogger()->notice(sprintf('Loading %s file into %s', $name, $entityName));
         ini_set('max_execution_time', 60);
@@ -186,6 +194,7 @@ class DemoDataManager
         }
 
         $valid = 0;
+        $invalid = 0;
         foreach($content as $q=>$w) {
             $entity = new $entityName();
             $entity = $this->renderDefaultValues($entity, $rules['defaults']);
@@ -196,12 +205,12 @@ class DemoDataManager
                 if (method_exists($entity, $method)) {
                     if (key_exists($propertyName, $rules['associated'])) {
                         $value = $this->getAssociatedValue($value, $name, $propertyName);
-                    }
-                    if (key_exists($propertyName, $rules['properties'])) {
+                    } else if (key_exists($propertyName, $rules['properties'])) {
                         $value = $this->transformPropertyValue($rules['properties'][$propertyName], $value);
-                    }
-                    if (is_array($value) && key_exists('entityName', $value) && key_exists('findBy', $value) && key_exists('value', $value)) {
-                        $value = ProviderFactory::getRepository($value['entityName'])->findOneBy([$value['findBy'] => $value['value']]);
+                    } else if (is_array($value) && key_exists('entityName', $value) && key_exists('findBy', $value) && key_exists('value', $value)) {
+                        $value = $this->getAssociatedEntity($propertyName, $value, $rules);
+                    } else if (is_array($value) && key_exists('datetimeimmutable', $value)) {
+                        $value = new DateTimeImmutable($value['datetimeimmutable']);
                     }
 
                     try {
@@ -215,22 +224,21 @@ class DemoDataManager
 
             $validatorList = $validator->validate($entity);
             if ($validatorList->count() === 0) {
-                $data = ProviderFactory::create($entityName)->persistFlush($entity, [], false);
-                if ($data['status'] !== 'success')
-                    $this->getLogger()->error('Something when wrong with persist:' . $data['errors'][0]['message'], [$entity]);
+                ProviderFactory::create($entityName)->persistFlush($entity,false);
+                if (!$this->getMessages()->isStatusSuccess())
+                    $this->getLogger()->error('Something when wrong with persist:' . $this->getMessages()->getLastMessageTranslated());
                 $valid++;
             } else {
                 $this->getLogger()->warning(sprintf('An entity failed validation for %s', $entityName), [$w, $entity, $validatorList->__toString()]);
+                $invalid++;
             }
 
-            if ($valid % 50 === 0 && $valid !== 0) {
+            if (($valid + $invalid) % 50 === 0 && ($valid + $invalid) !== 0) {
                 $this->flush(sprintf('50 (to %s) records pushed to the database for %s from %s', $valid, $entityName, strval(count($content))));
-                ini_set('max_execution_time', 60);
+                ini_set('max_execution_time', 10);
             }
-
-            if ($valid > 1150)
-                $this->getLogger()->debug('Count = ' . $valid . $entity->getFormalName());
         }
+        if (($valid + $invalid) > 0) $this->getLogger()->notice('Count = ' . $valid . ' created in ' . get_class($entity));
         $this->flush(sprintf('%s records added to %s from a total of %s', strval($valid), $entityName, strval(count($content))));
     }
 
@@ -287,10 +295,11 @@ class DemoDataManager
         if (!is_array($value)) {
             $key = strval($value);
 
-            if (key_exists($propertyName, $this->associatedEntities))
-                if (key_exists($key, $this->associatedEntities[$propertyName]))
+            if (key_exists($propertyName, $this->associatedEntities)) {
+                if (key_exists($key, $this->associatedEntities[$propertyName])) {
                     return $this->associatedEntities[$propertyName][$key];
-
+                }
+            }
             if (is_string($rules['associated'][$propertyName]))
                 $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
 
@@ -305,22 +314,32 @@ class DemoDataManager
                     'findBy' => 'id',
                     'useCollection' => false,
                     'method' => null,
+                    'preLoad' => '',
                 ]
             );
+            $resolver->setAllowedTypes('preLoad', ['string']);
 
             $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
+            if ($associateRules['preLoad'] !== '' && !key_exists($propertyName, $this->associatedEntities)) {
+                $method = $associateRules['preLoad'];
+                $this->associatedEntities[$propertyName] = ProviderFactory::getRepository($associateRules['entityName'])->$method();
+            }
 
-            $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy([$associateRules['findBy'] => $value]);
+            if ($associateRules['preLoad'] === '' && (!key_exists($propertyName, $this->associatedEntities) || !key_exists($key, $this->associatedEntities[$propertyName]))) {
+                $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy([$associateRules['findBy'] => $value]);
+            }
 
-            if ($this->associatedEntities[$propertyName][$key] !== null
+
+            if (key_exists($key, $this->associatedEntities[$propertyName])
                 && $associateRules['method'] !== null
                 && method_exists($this->associatedEntities[$propertyName][$key], $associateRules['method'])) {
                 $method = $associateRules['method'];
                 $this->associatedEntities[$propertyName][$key] = $this->associatedEntities[$propertyName][$key]->$method();
             }
 
-            if (null === $this->associatedEntities[$propertyName][$key]) {
+            if (!key_exists($key, $this->associatedEntities[$propertyName])) {
                 $this->getLogger()->notice(sprintf('The entity %s does not have a row defined by %s => %s', $associateRules['entityName'], $associateRules['findBy'], (string)$value));
+                return null;
             }
 
             return $this->associatedEntities[$propertyName][$key];
@@ -345,7 +364,7 @@ class DemoDataManager
             $associateRules = $resolver->resolve($rules['associated'][$propertyName]);
 
             if ($associateRules['create']) {
-                return $this->createSubEntity($associateRules, $value);
+                return $this->createSubEntity($associateRules, $value, $this->getEntityRules($name));
             }
 
             if ($associateRules['useCollection']) {
@@ -503,19 +522,26 @@ class DemoDataManager
 
     /**
      * createSubEntity
+     *
+     * 29/08/2020 09:26
      * @param array $associatedRules
      * @param array $data
+     * @param array $entityRules
      * @return mixed
+     * @throws Exception
      */
-    private function createSubEntity(array $associatedRules, array $data)
+    private function createSubEntity(array $associatedRules, array $data, array $entityRules)
     {
         $entity = new $associatedRules['entityName']();
+
         foreach($data as $name=>$value) {
             $method = 'set' . ucfirst($name);
 
-            if (is_array($value) && isset($value['entityName'])) {
-                $value = $this->getAssociatedEntity($name, $value);
+            if (is_array($value) && key_exists('entityName', $value)) {
+                $value = $this->getAssociatedEntity($name, $value, $entityRules);
             }
+
+            if (is_array($value) && key_exists('datetimeimmutable', $value)) $value = new DateTimeImmutable($value['datetimeimmutable']);
 
             if (method_exists($entity, $method)) {
                 try {
@@ -534,14 +560,22 @@ class DemoDataManager
 
     /**
      * getAssociatedEntity
+     *
+     * 28/08/2020 08:51
      * @param string $propertyName
      * @param array $value
+     * @param string $name
      * @return EntityInterface
-     * 10/07/2020 13:56
      */
-    private function getAssociatedEntity(string $propertyName, array $value): EntityInterface
+    private function getAssociatedEntity(string $propertyName, array $value, array $rules): EntityInterface
     {
         $key = strval($value['value']);
+
+        $associateRules = key_exists($propertyName, $rules['associated']) ? $rules['associated'][$propertyName] : [];
+        if (key_exists('preLoad', $associateRules) && !key_exists($propertyName, $this->associatedEntities)) {
+            $method = $associateRules['preLoad'];
+            $this->associatedEntities[$propertyName] = ProviderFactory::getRepository($associateRules['entityName'])->$method();
+        }
 
         if (key_exists($propertyName, $this->associatedEntities))
             if (key_exists($key, $this->associatedEntities[$propertyName]))
@@ -557,7 +591,6 @@ class DemoDataManager
             [
                 'findBy' => 'id',
                 'useCollection' => false,
-
             ]
         );
 
@@ -570,5 +603,24 @@ class DemoDataManager
         }
 
         return $this->associatedEntities[$propertyName][$key];
+    }
+
+    /**
+     * getEntities
+     *
+     * 30/08/2020 07:11
+     * @return string[]
+     */
+    public function getEntities(): array
+    {
+        return $this->entities;
+    }
+
+    /**
+     * @return StatusManager
+     */
+    public function getMessages(): StatusManager
+    {
+        return $this->messages;
     }
 }

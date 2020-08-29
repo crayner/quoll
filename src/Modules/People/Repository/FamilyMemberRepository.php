@@ -14,6 +14,7 @@
 namespace App\Modules\People\Repository;
 
 use App\Modules\People\Entity\FamilyMember;
+use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,5 +31,23 @@ class FamilyMemberRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FamilyMember::class);
+    }
+
+    /**
+     * findByDemonstrationData
+     *
+     * 27/08/2020 14:58
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     */
+    public function findByDemonstrationData(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        dump(ProviderFactory::getRequest()->attributes);
+        if (ProviderFactory::getRequest()->attributes->get('_route') === 'demonstration_load') return [];
+
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 }

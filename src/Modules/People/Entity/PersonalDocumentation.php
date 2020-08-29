@@ -19,7 +19,9 @@ namespace App\Modules\People\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\System\Manager\SettingFactory;
 use App\Validator as AssertLocal;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,40 +46,40 @@ class PersonalDocumentation extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
-     * @var Person
+     * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="personalDocumentation", cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var string|null
      * @ORM\Column(length=5,nullable=true)
      */
-    private $languageFirst;
+    private ?string $languageFirst;
 
     /**
      * @var string|null
      * @ORM\Column(length=5,nullable=true)
      */
-    private $languageSecond;
+    private ?string $languageSecond;
 
     /**
      * @var string|null
      * @ORM\Column(length=5,nullable=true)
      */
-    private $languageThird;
+    private ?string $languageThird;
 
     /**
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
      * @Assert\Country(alpha3=true)
      */
-    private $countryOfBirth;
+    private ?string $countryOfBirth;
 
     /**
      * @var string|null
@@ -87,19 +89,19 @@ class PersonalDocumentation extends AbstractEntity
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
      * )
      */
-    private $birthCertificateScan;
+    private ?string $birthCertificateScan;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true)
      */
-    private $ethnicity;
+    private ?string $ethnicity;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      */
-    private $dob;
+    private ?DateTimeImmutable $dob;
 
     /**
      * @var string|null
@@ -115,12 +117,12 @@ class PersonalDocumentation extends AbstractEntity
      *     maxHeight = 960
      * )
      */
-    private $personalImage;
+    private ?string $personalImage;
 
     /**
      * @var array
      */
-    private static $ethnicityList = [
+    private static array $ethnicityList = [
         'OCEANIAN' => [
 	        'Australian Peoples',
             'New Zealand Peoples',
@@ -173,13 +175,13 @@ class PersonalDocumentation extends AbstractEntity
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
      */
-    private $citizenship1;
+    private ?string $citizenship1;
 
     /**
      * @var string|null
      * @ORM\Column(length=30,name="citizenship1_passport",nullable=true)
      */
-    private $citizenship1Passport;
+    private ?string $citizenship1Passport;
 
     /**
      * @var string|null
@@ -189,57 +191,57 @@ class PersonalDocumentation extends AbstractEntity
      *     mimeTypes = {"image/*","application/pdf","application/x-pdf"}
      * )
      */
-    private $citizenship1PassportScan;
+    private ?string $citizenship1PassportScan;
 
     /**
      * @var string|null
      * @ORM\Column(length=3,nullable=true)
      */
-    private $citizenship2;
+    private ?string $citizenship2;
 
     /**
      * @var string|null
      * @ORM\Column(length=30,name="citizenship2_passport",nullable=true)
      */
-    private $citizenship2Passport;
+    private ?string $citizenship2Passport;
 
     /**
      * @var string|null
      * @ORM\Column(length=30,nullable=true)
      */
-    private $religion;
+    private ?string $religion;
 
     /**
      * @var string|null
      * @ORM\Column(length=30,name="national_card_number",nullable=true)
      */
-    private $nationalIDCardNumber;
+    private ?string $nationalIDCardNumber;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,name="national_card_scan",nullable=true)
      */
-    private $nationalIDCardScan;
+    private ?string $nationalIDCardScan;
 
     /**
      * @var string|null
      * @ORM\Column(length=191,nullable=true)
      */
-    private $residencyStatus;
+    private ?string $residencyStatus;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(nullable=true, type="date_immutable")
      */
-    private $visaExpiryDate;
+    private ?DateTimeImmutable $visaExpiryDate;
 
     /**
      * PersonalDocumentation constructor.
-     * @param Person $person
+     * @param Person|null $person
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        if ($person !== null) $person->reflectPersonalDocumentation($this);
     }
 
     /**
@@ -247,14 +249,14 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
-     * @param string|null $id
+     * @param string $id
      * @return PersonalDocumentation
      */
-    public function setId(?string $id): PersonalDocumentation
+    public function setId(string $id): PersonalDocumentation
     {
         $this->id = $id;
         return $this;
@@ -262,19 +264,20 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * getPerson
-     * @return Person
-     * 20/07/2020 12:49
+     *
+     * 29/08/2020 12:18
+     * @return Person|null
      */
-    public function getPerson(): Person
+    public function getPerson(): ?Person
     {
-        return $this->person;
+        return isset($this->person) ? $this->person : null;
     }
 
     /**
-     * @param Person|null $person
+     * @param Person $person
      * @return PersonalDocumentation
      */
-    public function setPerson(?Person $person): PersonalDocumentation
+    public function setPerson(Person $person): PersonalDocumentation
     {
         $this->person = $person;
         return $this;
@@ -414,7 +417,10 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
-     * @return null|string
+     * getCitizenship1
+     *
+     * 29/08/2020 10:15
+     * @return string|null
      */
     public function getCitizenship1(): ?string
     {
@@ -614,9 +620,9 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getVisaExpiryDate(): ?\DateTimeImmutable
+    public function getVisaExpiryDate(): ?DateTimeImmutable
     {
         return $this->visaExpiryDate;
     }
@@ -624,28 +630,28 @@ class PersonalDocumentation extends AbstractEntity
     /**
      * VisaExpiryDate.
      *
-     * @param \DateTimeImmutable|null $visaExpiryDate
+     * @param DateTimeImmutable|null $visaExpiryDate
      * @return PersonalDocumentation
      */
-    public function setVisaExpiryDate(?\DateTimeImmutable $visaExpiryDate): PersonalDocumentation
+    public function setVisaExpiryDate(?DateTimeImmutable $visaExpiryDate): PersonalDocumentation
     {
         $this->visaExpiryDate = $visaExpiryDate;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getDob(): ?\DateTimeImmutable
+    public function getDob(): ?DateTimeImmutable
     {
         return $this->dob;
     }
 
     /**
-     * @param \DateTimeImmutable|null $dob
+     * @param DateTimeImmutable|null $dob
      * @return PersonalDocumentation
      */
-    public function setDob(?\DateTimeImmutable $dob): PersonalDocumentation
+    public function setDob(?DateTimeImmutable $dob): PersonalDocumentation
     {
         $this->dob = $dob;
         return $this;
@@ -695,6 +701,7 @@ class PersonalDocumentation extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         // TODO: Implement toArray() method.
+        return [];
     }
 
     /**
@@ -707,4 +714,39 @@ class PersonalDocumentation extends AbstractEntity
         $languages = Languages::getNames();
         return array_flip($languages);
     }
+
+
+    /**
+     * Display an icon if this user's birthday is within the next week.
+     *
+     * @return string
+     */
+    public function birthdayIcon()
+    {
+        if (!$this->getDob() instanceof DateTimeImmutable)
+            return '';
+
+        try {
+            $dob = new DateTimeImmutable(date('Y') . $this->getDob()->format('-m-d'));
+        } catch (Exception $e) {
+            return '';
+        }
+        $today = new DateTimeImmutable('now');
+        if ($today->format('Ymd') > $dob->format('Ymd'))
+            return '';
+
+        $daysUntilNextBirthday = $today->diff($dob)->days;
+        if ($daysUntilNextBirthday >= 8)
+            return '';
+
+        // HEY SHORTY IT'S YOUR BIRTHDAY! (or Close)
+        $result['colour'] = 'text-pink-800';
+        $result['params']['{name}'] = $this->getPerson()->getPreferredName();
+        $result['params']['count'] = $daysUntilNextBirthday;
+        if ($daysUntilNextBirthday > 0)
+            $result['colour'] = 'text-gray-800';
+
+        return $result;
+    }
+
 }

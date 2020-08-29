@@ -97,4 +97,21 @@ class CustomFieldRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findByCategory
+     *
+     * 28/08/2020 11:43
+     * @param string $category
+     * @return array
+     */
+    public function findByCategory(string $category): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.categories LIKE :category')
+            ->setParameter('category', '%'.$category.'%')
+            ->orderBy('f.displayOrder', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,28 +1,28 @@
 -
     name: 'Year 7'
     abbreviation: 'Y07'
-    sequenceNumber: 1
+    sortOrder: 1
 -
     name: 'Year 8'
     abbreviation: 'Y08'
-    sequenceNumber: 2
+    sortOrder: 2
 -
     name: 'Year 9'
     abbreviation: 'Y09'
-    sequenceNumber: 3
+    sortOrder: 3
 -
     name: 'Year 10'
     abbreviation: 'Y10'
-    sequenceNumber: 4
+    sortOrder: 4
 -
     name: 'Year 11'
     abbreviation: 'Y11'
-    sequenceNumber: 5
+    sortOrder: 5
 -
     name: 'Year 12'
     abbreviation: 'Y12'
-    sequenceNumber: 6
+    sortOrder: 6
 -
     name: 'Year 13'
     abbreviation: 'Y13'
-    sequenceNumber: 7
+    sortOrder: 7

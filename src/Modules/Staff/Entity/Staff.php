@@ -14,13 +14,11 @@
 namespace App\Modules\Staff\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\People\Entity\CustomField;
 use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\School\Entity\ApplicationForm;
 use App\Modules\System\Entity\Theme;
-use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Staff
  * @package App\Modules\People\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Staff\Repository\StaffRepository")
- * @ORM\Table(name="staff",
+ * @ORM\Table(name="Staff",
  *  uniqueConstraints={
  *      @ORM\UniqueConstraint(name="person", columns={"person"})
  *  },
@@ -184,8 +182,8 @@ class Staff extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person)
-            ->setCustomData(new ArrayCollection())
+        if ($person) $person->reflectStaff($this);
+        $this->setCustomData(new ArrayCollection())
             ->setType('Other');
     }
 
@@ -219,15 +217,13 @@ class Staff extends AbstractEntity
 
     /**
      * setPerson
+     *
+     * 28/08/2020 10:55
      * @param Person|null $person
-     * @param bool $reflect
      * @return $this
-     * 2/07/2020 09:19
      */
-    public function setPerson(?Person $person, bool $reflect = true): Staff
+    public function setPerson(?Person $person): Staff
     {
-        if ($reflect and $person instanceof Person)
-            $person->setStaff($this, false);
         $this->person = $person;
         return $this;
     }
@@ -608,9 +604,20 @@ class Staff extends AbstractEntity
     }
 
     /**
+     * isEqualTo
+     * @param Staff|null $staff
+     * @return bool
+     * 2/08/2020 09:22
+     */
+    public function isEqualTo(?Staff $staff): bool
+    {
+        return $staff ? $this->getPerson()->isEqualTo($staff->getPerson()) : false ;
+    }
+
+    /**
      * getFullNameReversed
      *
-     * 24/08/2020 09:50
+     * 24/08/2020 09:52
      * @return string
      */
     public function getFullNameReversed(): string
@@ -621,22 +628,13 @@ class Staff extends AbstractEntity
     /**
      * getFullName
      *
-     * 24/08/2020 09:50
+     * 24/08/2020 09:52
+     * @param string $style
      * @return string
      */
-    public function getFullName(): string
+    public function getFullName(string $style = 'Standard'): string
     {
-        return $this->getPerson()->formatName('Standard', 'Staff');
+        return $this->getPerson()->formatName($style, 'Staff');
     }
 
-    /**
-     * isEqualTo
-     * @param Staff|null $staff
-     * @return bool
-     * 2/08/2020 09:22
-     */
-    public function isEqualTo(?Staff $staff): bool
-    {
-        return $staff ? $this->getPerson()->isEqualTo($staff->getPerson()) : false ;
-    }
 }

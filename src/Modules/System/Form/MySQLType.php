@@ -46,18 +46,6 @@ class MySQLType extends AbstractType
     {
         if ($options['proceed'] === 'proceed') {
             $builder
-                ->add('proceedHelp', ParagraphType::class,
-                    [
-                        'help' => 'database_build_ready',
-                        'wrapper_class' => 'relative w-full info',
-                    ]
-                )
-                ->add('proceed', SubmitType::class,
-                    [
-                        'label' => 'Proceed',
-                        'label_class' => '',
-                    ]
-                )
                 ->add('proceedFlag', HiddenType::class,
                     [
                         'data' => 'Ready to Go',

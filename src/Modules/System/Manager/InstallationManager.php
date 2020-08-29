@@ -16,9 +16,11 @@
  */
 namespace App\Modules\System\Manager;
 
+use App\Manager\StatusManager;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\Person;
 use App\Modules\Assess\Entity\Scale;
+use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Form\Entity\MySQLSettings;
@@ -26,13 +28,12 @@ use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
+use function apache_get_modules;
 
 /**
  * Class InstallationManager
@@ -43,17 +44,17 @@ class InstallationManager
     /**
      * @var Environment
      */
-    private $twig;
+    private Environment $twig;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
-    private $logger;
+    private ?LoggerInterface $logger;
     
     /**
      * @var UrlHelper
      */
-    private $urlHelper;
+    private UrlHelper $urlHelper;
 
     /**
      * InstallationManager constructor.
@@ -71,9 +72,6 @@ class InstallationManager
      * check
      * @param array $systemRequirements
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function check(array $systemRequirements): string
     {
@@ -83,17 +81,17 @@ class InstallationManager
             $this->getLogger()->debug(TranslationHelper::translate('The parameter file needs to be created'));
             if (false === $this->copyDistFile('quoll')) {
                 $this->getLogger()->error(TranslationHelper::translate('Not able to copy the parameter file.'));
-                return $this->twig->render($this->twig->render('error/error.html.twig',
+                return $this->twig->render('error/error.html.twig',
                     [
                         'extendedError' => 'Unable to copy the quoll.yaml file from the distribution file in /config/packages directory.',
                         'extendedParams' => [],
                         'manager' => $this,
                     ]
-                ));
+                );
             } else {
                 $config = $this->readParameterFile();
                 $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
-                $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
+                $config['parameters']['guid'] = str_replace(['{','-','}'], '', uniqid("", true));
                 $config['parameters']['timezone'] = ini_get('date.timezone');
                 $this->writeParameterFile($config);
                 $this->getLogger()->notice(TranslationHelper::translate('The parameter file has been created.'));
@@ -124,7 +122,7 @@ class InstallationManager
         $systemDisplay['System Requirements']['MySQL PDO Support']['result'] = extension_loaded('pdo_mysql');
         $ready &= $systemDisplay['System Requirements']['MySQL PDO Support']['result'];
 
-        $apacheModules = \apache_get_modules();
+        $apacheModules = apache_get_modules();
         $systemDisplay['System Requirements']['mod_rewrite'] = [];
         $systemDisplay['System Requirements']['mod_rewrite']['name'] = 'Apache Module {name}';
         $systemDisplay['System Requirements']['mod_rewrite']['comment'] = '';
@@ -216,13 +214,14 @@ class InstallationManager
      *
      * 19/08/2020 10:33
      * @param string $name
-     * @return bool
+     * @return string|bool
      */
-    protected function copyDistFile(string $name)
+    protected function copyDistFile(string $name): string
     {
         if (false === $this->getParameterPath(true, $name)) {
             return copy($this->getParameterPath(false, $name).'.dist', $this->getParameterPath(false, $name));
         }
+        return false;
     }
 
     /**
@@ -303,10 +302,12 @@ class InstallationManager
 
     /**
      * setMySQLSettings
+     *
+     * 26/08/2020 15:58
      * @param FormInterface $form
-     * @return array
+     * @param StatusManager $status
      */
-    public function setMySQLSettings(FormInterface $form): array
+    public function setMySQLSettings(FormInterface $form, StatusManager $status)
     {
         $setting = $form->getData();
         $config = $this->readParameterFile();
@@ -323,35 +324,7 @@ class InstallationManager
 
         $this->getLogger()->notice('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.');
 
-        return [
-            'status' => 'success',
-            'errors' => [
-                [
-                    'class' => 'success',
-                    'message' => TranslationHelper::translate('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.')
-                ]
-            ]
-        ];
-    }
-    /**
-     * buildDatabase
-     * @param KernelInterface $kernel
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
-     */
-    public function buildDatabase(KernelInterface $kernel, Request $request): Response
-    {
-        $this->manager->setLogger($this->getLogger());
-        $this->manager->installation($kernel);
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-        $this->getLogger()->notice(TranslationHelper::translate('Module Installation commenced.'));
-
-        $this->setInstallationStatus('system');
-        $this->getLogger()->notice(TranslationHelper::translate('The database build was completed.'));
-
-        return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
+        $status->success('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.', [],'System');
     }
 
     /**
@@ -361,12 +334,13 @@ class InstallationManager
     public function setAdministrator(FormInterface $form)
     {
         $user = ProviderFactory::getRepository(SecurityUser::class)->loadUserByUsernameOrEmail($form->get('username')->getData()) ?: new SecurityUser();
-        $person = $user->getPerson() ?? new Person();
+        $person = $user->getPerson() ?: new Person();
         $person->setTitle($form->get('title')->getData())
             ->setSurname($form->get('surname')->getData())
             ->setFirstName($form->get('firstName')->getData())
             ->setPreferredName($form->get('firstName')->getData())
             ->setStatus('Full')
+            ->setSecurityUser($user)
             ->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
         $encoder = new NativePasswordEncoder();
 
@@ -375,44 +349,49 @@ class InstallationManager
             ->setUsername($form->get('username')->getData())
             ->setPassword($password)
             ->setCanLogin(true)
+            ->setSuperUser(true)
             ->setPasswordForceReset(false)
             ->setSecurityRoles(['ROLE_SYSTEM_ADMIN']);
-        $contact = $person->getContact() ?? new Contact($person);
+        $contact = $person->getContact() ?: new Contact($person);
         $contact->setEmail($form->get('email')->getData());
-        $staff = $person->getStaff() ?? new Staff($person);
+        $staff = $person->getStaff() ?: new Staff($person);
         $staff->setViewCalendarSchool(true)
             ->setViewCalendarSpaceBooking(true)
             ->setType('Support')
             ->setJobTitle('System Administrator');
+        $pd = $person->getPersonalDocumentation() ?: new PersonalDocumentation($person);
         $em = ProviderFactory::getEntityManager();
+
         $em->persist($person);
         $em->flush();
         $settings = SettingFactory::getSettingManager();
-        $settings->setSetting('System','organisationAdministrator', $person);
-        $settings->setSetting('System','organisationDBA', $person);
-        $settings->setSetting('System','organisationAdmissions', $person);
-        $settings->setSetting('System','organisationHR', $person);
+        $settings->set('System','organisationAdministrator', $person);
+        $settings->set('System','organisationDBA', $person);
+        $settings->set('System','organisationAdmissions', $person);
+        $settings->set('System','organisationHR', $person);
 
     }
 
     /**
      * setSystemSettings
+     *
+     * 27/08/2020 09:05
      * @param FormInterface $form
      */
     public function setSystemSettings(FormInterface $form)
     {
         $settingProvider = SettingFactory::getSettingManager();
 
-        $settingProvider->setSetting('System', 'systemName', $form->get('systemName')->getData());
-        $settingProvider->setSetting('System', 'installType', $form->get('installType')->getData());
-        $settingProvider->setSetting('System', 'organisationName', $form->get('organisationName')->getData());
-        $settingProvider->setSetting('System', 'organisationAbbreviation', $form->get('organisationAbbreviation')->getData());
-        $settingProvider->setSetting('System', 'currency', $form->get('currency')->getData());
-        $settingProvider->setSetting('System', 'country', $form->get('country')->getData());
-        $settingProvider->setSetting('System', 'timezone', $form->get('timezone')->getData());
+        $settingProvider->set('System', 'systemName', $form->get('systemName')->getData());
+        $settingProvider->set('System', 'installType', $form->get('installType')->getData());
+        $settingProvider->set('System', 'organisationName', $form->get('organisationName')->getData());
+        $settingProvider->set('System', 'organisationAbbreviation', $form->get('organisationAbbreviation')->getData());
+        $settingProvider->set('System', 'currency', $form->get('currency')->getData());
+        $settingProvider->set('System', 'country', $form->get('country')->getData());
+        $settingProvider->set('System', 'timezone', $form->get('timezone')->getData());
 
         $scale = ProviderFactory::getRepository(Scale::class)->findOneBy(['abbreviation' => 'FLG']);
-        $settingProvider->setSetting('System', 'defaultAssessmentScale', $scale);
+        $settingProvider->set('System', 'defaultAssessmentScale', $scale);
 
         $config = $this->readParameterFile();
         $config['parameters']['installed'] = true;

@@ -28,26 +28,28 @@ class SecurityUserValidator extends ConstraintValidator
 {
     /**
      * validate
+     *
+     * 30/08/2020 08:26
      * @param mixed $value
      * @param Constraint $constraint
-     * 28/07/2020 09:36
      */
     public function validate($value, Constraint $constraint)
     {
         if (!$value instanceof \App\Modules\Security\Entity\SecurityUser && !$value->isCanLogin()) {
             $value->setUsername(null)
                 ->setSecurityRoles([]);
+            return;
         };
 
-        if (empty($value->getUsername())) {
-            $this->context->buildViolation('This value must bot be blank')
+        if (empty($value->getUsername()) && $value->isCanLogin()) {
+            $this->context->buildViolation('This value must not be blank')
                 ->atPath('username')
                 ->setCode(SecurityUser::USERNAME_ERROR)
                 ->addViolation();
         }
 
-        if (empty($value->getSecurityRoles())) {
-            $this->context->buildViolation('This value must bot be blank')
+        if (empty($value->getSecurityRoles()) && $value->isCanLogin()) {
+            $this->context->buildViolation('This value must not be blank')
                 ->atPath('securityRoles')
                 ->setCode(SecurityUser::SECURITY_ROLES_ERROR)
                 ->addViolation();

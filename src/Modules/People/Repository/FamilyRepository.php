@@ -123,4 +123,21 @@ class FamilyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * getDemonstrationFamilies
+     *
+     * 27/08/2020 10:52
+     * @return int|mixed|string
+     */
+    public function getDemonstrationFamilies()
+    {
+        return $this->createQueryBuilder('f', 'f.familySync')
+            ->select(['f','fm','cg','s'])
+            ->leftJoin('f.members','fm')
+            ->leftJoin('fm.careGiver', 'cg')
+            ->leftJoin('fm.student', 's')
+            ->getQuery()
+            ->getResult();
+    }
 }
