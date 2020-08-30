@@ -27,6 +27,7 @@ use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -173,6 +174,11 @@ class PageListener implements EventSubscriberInterface
      */
     public function saveSettings(TerminateEvent $event)
     {
+        if (!$this->getParameterBag()->has('install_date')) {
+            if ($event->getRequest()->hasSession()) $event->getRequest()->getSession()->invalidate(0);
+            $fs = new Filesystem();
+            $fs->remove(__DIR__ . '/../../var/cache');
+        }
         $manager = SettingFactory::getSettingManager();
         $manager->writeSettings();
     }

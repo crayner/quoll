@@ -77,7 +77,7 @@ class AcademicYearController extends AbstractPageController
         $this->getPageManager()->addPageStyle('css/core');
         return $this->render('school/calendar.html.twig', [
             'calendar' => $calendar,
-            'organisationName' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationName', 'Kookaburra'),
+            'organisationName' => SettingFactory::getSettingManager()->get('System', 'organisationName', 'Kookaburra'),
             'page' => $this->getPageManager(),
         ]);
     }
@@ -153,5 +153,4 @@ class AcademicYearController extends AbstractPageController
 
         return $this->list($pagination, $data);
     }
-
 }

@@ -14,7 +14,6 @@
  * Date: 28/04/2020
  * Time: 08:50
  */
-
 namespace App\Modules\System\Controller;
 
 use App\Controller\AbstractPageController;
@@ -26,16 +25,19 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DemonstrationController
  * @package App\Modules\System\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class DemonstrationController extends AbstractPageController
 {
     /**
      * load
+     *
+     * 30/08/2020 11:16
      * @param DemoDataManager $manager
      * @param string $table
-     * @return JsonResponse
      * @Route("/demonstration/load/{table}", name="demonstration_load")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function load(DemoDataManager $manager, string $table = '')
     {

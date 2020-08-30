@@ -27,6 +27,7 @@ use App\Modules\System\Form\Entity\MySQLSettings;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
@@ -38,6 +39,7 @@ use function apache_get_modules;
 /**
  * Class InstallationManager
  * @package App\Modules\System\Manager
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class InstallationManager
 {
@@ -214,14 +216,13 @@ class InstallationManager
      *
      * 19/08/2020 10:33
      * @param string $name
-     * @return string|bool
      */
-    protected function copyDistFile(string $name): string
+    protected function copyDistFile(string $name)
     {
+        $fs = new Filesystem();
         if (false === $this->getParameterPath(true, $name)) {
-            return copy($this->getParameterPath(false, $name).'.dist', $this->getParameterPath(false, $name));
+            $fs->copy($this->getParameterPath(false, $name).'.dist', $this->getParameterPath(false, $name));
         }
-        return false;
     }
 
     /**
@@ -237,12 +238,16 @@ class InstallationManager
 
     /**
      * writeParameterFile
+     *
+     * 30/08/2020 11:05
      * @param array $config
      */
     private function writeParameterFile(array $config)
     {
-        if ($this->getParameterPath())
-            file_put_contents($this->getParameterPath(), Yaml::dump($config, 8));
+        if ($this->getParameterPath()) {
+            $fs = new Filesystem();
+            $fs->dumpFile($this->getParameterPath(), Yaml::dump($config, 8));
+        }
     }
 
     /**
@@ -321,7 +326,6 @@ class InstallationManager
 
         $this->writeParameterFile($config);
 
-
         $this->getLogger()->notice('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.');
 
         $status->success('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.', [],'System');
@@ -359,7 +363,7 @@ class InstallationManager
             ->setViewCalendarSpaceBooking(true)
             ->setType('Support')
             ->setJobTitle('System Administrator');
-        $pd = $person->getPersonalDocumentation() ?: new PersonalDocumentation($person);
+        $person->getPersonalDocumentation() ?: new PersonalDocumentation($person);
         $em = ProviderFactory::getEntityManager();
 
         $em->persist($person);

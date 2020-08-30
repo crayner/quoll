@@ -3,7 +3,7 @@
 <div class="month">
     <div class="header">{{ month.name|trans }}</div>
     {% for day in calendar.daysOfWeek %}
-        <div class="day day-label">{{ day.abbreviation|trans }}</div>
+        <div class="day day-label">{{ day.abbreviation|default('')|trans }}</div>
     {% endfor %}
     {% set week = 1 %}
     {% for day in month.days %}

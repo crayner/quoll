@@ -296,14 +296,15 @@ class SettingManager
     }
 
     /**
-     * hasSetting
+     * has
+     *
+     * 30/08/2020 10:07
      * @param string $scope
      * @param string $name
      * @param bool $isEmpty
      * @return bool
-     * 5/07/2020 17:46
      */
-    public function hasSetting(string $scope, string $name, bool $isEmpty = false): bool
+    public function has(string $scope, string $name, bool $isEmpty = false): bool
     {
         if ($isEmpty) {
             if ($this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name)) {
@@ -314,12 +315,29 @@ class SettingManager
                         return !in_array($w['value'], [null, '']);
                         break;
                     default:
-                        $this->getLogger()->error('Missing hasSetting type work for '.$w['type']);
+                        $this->getLogger()->error('Missing has() type work for '.$w['type']);
                 }
             }
         } else {
             return $this->getSettings()->containsKey($scope) && $this->getSettings()->get($scope)->containsKey($name);
         }
+        return false;
+    }
+
+    /**
+     * hasSetting
+     *
+     * 30/08/2020 10:07
+     * @param string $scope
+     * @param string $name
+     * @param bool $isEmpty
+     * @dreprecated use has()
+     * @return bool
+     */
+    public function hasSetting(string $scope, string $name, bool $isEmpty = false): bool
+    {
+        trigger_deprecation('Quoll', '30 Aug/2020', 'Use has()');
+        return $this->has($scope,$name,$isEmpty);
     }
 
     /**

@@ -107,7 +107,7 @@ class AcademicYearHelper implements DemoDataInterface
             $year->setName($date->format('Y'))
                 ->setStatus('Upcoming')
                 ->setFirstDay(new DateTimeImmutable($date->format('Y') . '-01-01'))
-                ->setLastDay(new DateTimeImmutable($date->format('Y') . '-01-01'));
+                ->setLastDay(new DateTimeImmutable($date->format('Y') . '-12-31'));
             ProviderFactory::create(AcademicYear::class)->persistFlush($year);
         } catch (Exception | PDOException $e) {
         }

@@ -54,8 +54,8 @@ class DefaultContextEmail
     public function context(array $context): DefaultContextEmail
     {
         $constants = [
-            'system_name' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'systemName'),
-            'organisation_name' => SettingFactory::getSettingManager()->getSettingByScopeAsString('System', 'organisationName'),
+            'system_name' => SettingFactory::getSettingManager()->get('System', 'systemName'),
+            'organisation_name' => SettingFactory::getSettingManager()->get('System', 'organisationName'),
             'title' => 'Kookaburra',
         ];
         $this->getEmail()->context(array_merge($constants, $context));

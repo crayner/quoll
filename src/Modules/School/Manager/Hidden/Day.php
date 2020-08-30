@@ -1,9 +1,14 @@
 <?php
 namespace App\Modules\School\Manager\Hidden;
 
+use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\DaysOfWeek;
+use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
+use App\Modules\System\Manager\SettingManager;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -93,16 +98,16 @@ class Day
 
     /**
      * Day constructor.
-     * @param \DateTimeImmutable $date
-     * @param int $weeks
+     * @param DateTimeImmutable|null $date
+     * @param int|null $weeks
      * @param CalendarDisplayManager|null $manager
      */
-	public function __construct(?\DateTimeImmutable $date = null, ?int $weeks = null, CalendarDisplayManager $manager = null)
+	public function __construct(?DateTimeImmutable $date = null, ?int $weeks = null, CalendarDisplayManager $manager = null)
 	{
 		$this->settingManager = SettingFactory::getSettingManager();
 		$this->parameters     = [];
 		$this->manager = $manager;
-		if ($date instanceof \DateTimeImmutable) {
+		if ($date instanceof DateTimeImmutable) {
             $this->date = clone $date;
             $this->day = $date->format($this->getLocale()->getDateFormatPHP());
             $this->dayLong = $date->format($this->getLocale()->getDateFormatPHP());
@@ -112,7 +117,6 @@ class Day
         }
         $this->special = false;
         $this->closed = false;
-        $this->daysOfWeek = $this->getManager()->getDaysOfWeek();
 		$this->setWeekNumber($weeks);
 	}
 
@@ -202,28 +206,43 @@ class Day
     /**
      * isInYear
      *
-     * @param Year $year
+     * 30/08/2020 14:04
+     * @param string $year
      * @return bool
      */
-	public function isInYear(Year $year)
+	public function isInYear(string $year)
 	{
 		return $this->date->format('Y') == $year;
 	}
 
+    /**
+     * setParameter
+     *
+     * 30/08/2020 14:04
+     * @param $key
+     * @param $value
+     */
 	public function setParameter($key, $value)
 	{
 		$this->parameters[$key] = $value;
 	}
 
+    /**
+     * getParameter
+     *
+     * 30/08/2020 14:04
+     * @param $key
+     * @return mixed|null
+     */
 	public function getParameter($key)
 	{
 		return key_exists($key, $this->parameters) ? $this->parameters[$key] : null;
 	}
 
     /**
-     * @var boolean
+     * @var bool
      */
-	private $schoolDay;
+	private bool $schoolDay;
 
     /**
      * isSchoolDay
@@ -232,17 +251,18 @@ class Day
      */
 	public function isSchoolDay(): bool
 	{
-	    if (null !== $this->schoolDay)
+	    if (isset($this->schoolDay))
 	        return $this->schoolDay;
 	    if (null === $this->getDate())
 	        return $this->schoolDay = true;
-	    $dayOfWeek = $this->getDate()->format('D');
-	    $days = $this->getDaysOfWeek()->filter(function(DaysOfWeek $day) use ($dayOfWeek) {
-	        if ($day->getAbbreviation() === $dayOfWeek)
-	            return $day;
-        });
+	    $dayOfWeek = $this->getDate()->format('N');
+	    $day = null;
+	    foreach ($this->getDaysOfWeek() as $day) {
+	        if ($day->getSortOrder() === $dayOfWeek)
+	            break;
+        }
 
-		return $this->schoolDay = $days->first()->isSchoolDay();
+		return $this->schoolDay = $day ? $day->isSchoolDay() : false;
 	}
 
 	/**
@@ -345,17 +365,19 @@ class Day
 
     /**
      * getDaysOfWeek
+     *
+     * 30/08/2020 13:34
      * @return ArrayCollection
      */
     public function getDaysOfWeek(): ArrayCollection
     {
-        return $this->daysOfWeek;
+        return $this->getManager()->getDaysOfWeek();
     }
 
     /**
      * @return SettingManager
      */
-    public function getsettingManager(): SettingManager
+    public function getSettingManager(): SettingManager
     {
         return $this->settingManager;
     }
@@ -431,7 +453,7 @@ class Day
 
     /**
      * getLocale
-     * @return I18n
+     * @return Locale
      */
     private function getLocale()
     {

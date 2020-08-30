@@ -23,6 +23,8 @@ use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -65,14 +67,12 @@ class CalendarDisplayManager
         if ($this->firstDayofWeek === 7)
         {
             $this->lastDayofWeek  = 6;
-            $sunday = $this->getDaysOfWeek()->get('Sunday');
-            $this->getDaysOfWeek()->removeElement($sunday);
-            $this->daysOfWeek = new ArrayCollection(array_merge(['Sunday' => $sunday], $this->daysOfWeek->toArray()));
+            $daysOfWeek = $this->getDaysOfWeek()->toArray();
+            $sunday = array_pop($daysOfWeek);
+            array_unshift($daysOfWeek, $sunday);
+            $this->daysOfWeek = new ArrayCollection($daysOfWeek);
         } else {
             $this->lastDayofWeek  = 7;
-            $sunday = $this->getDaysOfWeek()->get('Sunday');
-            $this->getDaysOfWeek()->removeElement($sunday);
-            $this->daysOfWeek = new ArrayCollection(array_merge($this->daysOfWeek->toArray(), ['Sunday' => $sunday]));
         }
     }
 
@@ -105,9 +105,9 @@ class CalendarDisplayManager
     }
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      */
-    private $daysOfWeek;
+    private ArrayCollection $daysOfWeek;
 
     /**
      * @var Collection
@@ -115,12 +115,15 @@ class CalendarDisplayManager
     private $months;
 
     /**
-     * @return Collection
+     * getDaysOfWeek
+     *
+     * 30/08/2020 13:48
+     * @return ArrayCollection
      */
-    public function getDaysOfWeek(): Collection
+    public function getDaysOfWeek(): ArrayCollection
     {
-        if (empty($this->daysOfWeek))
-            $this->daysOfWeek = new ArrayCollection(ProviderFactory::getRepository(DaysOfWeek::class)->findAllByName([],['sequenceNumber' => 'ASC']));
+        if (!isset($this->daysOfWeek) || $this->daysOfWeek->count() === 0)
+            $this->daysOfWeek = new ArrayCollection(ProviderFactory::getRepository(DaysOfWeek::class)->findBy([],['sortOrder' => 'ASC']));
         return $this->daysOfWeek;
     }
 
@@ -133,7 +136,7 @@ class CalendarDisplayManager
     {
         $this->setAcademicYear($year);
         $start = clone $this->getAcademicYear()->getFirstDay();
-        if ($start->add(new \DateInterval('P1Y'))->sub(new \DateInterval('P1D'))->format('Y-m-d') !== $this->getAcademicYear()->getLastDay()->format('Y-m-d'))
+        if ($start->add(new DateInterval('P1Y'))->sub(new DateInterval('P1D'))->format('Y-m-d') !== $this->getAcademicYear()->getLastDay()->format('Y-m-d'))
             trigger_error(sprintf('The School Year MUST be a full calendar year, not "%s" to "%s"',$this->getAcademicYear()->getFirstDay()->format('Y-m-d'),$this->getAcademicYear()->getLastDay()->format('Y-m-d')), E_USER_ERROR);
 
         $start = clone $this->getAcademicYear()->getFirstDay();
@@ -147,7 +150,7 @@ class CalendarDisplayManager
                 $day->setSpecial(true, $this->getSpecialDayPrompt($day));
             }
             $this->addDayToMonth($day);
-            $start = clone $start->add(new \DateInterval('P1D'));
+            $start = clone $start->add(new DateInterval('P1D'));
             if (intval($start->format('N')) === $day->getFirstDayofWeek())
                 $week++;
         } while ($start <= $this->getAcademicYear()->getLastDay());
@@ -158,10 +161,10 @@ class CalendarDisplayManager
 
     /**
      * isTermBreak
-     * @param \DateTimeImmutable $date
+     * @param DateTimeImmutable $date
      * @return bool
      */
-    private function isTermBreak(\DateTimeImmutable $date): bool
+    private function isTermBreak(DateTimeImmutable $date): bool
     {
         foreach($this->getAcademicYear()->getTerms() as $term)
             if ($date->format('Y-m-d') >= $term->getFirstDay()->format('Y-m-d') && $date->format('Y-m-d') <= $term->getLastDay()->format('Y-m-d') )

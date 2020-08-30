@@ -771,7 +771,7 @@ class Activity extends AbstractEntity
      */
     public function getTranslatedProvider(): string
     {
-        return $this->getProvider() === 'External' ? TranslationHelper::translate('External', [], 'Activities') : SettingFactory::getSettingManager()->getSettingByScopeAsString('System','organisationAbbreviation');
+        return $this->getProvider() === 'External' ? TranslationHelper::translate('External', [], 'Activities') : SettingFactory::getSettingManager()->get('System','organisationAbbreviation');
     }
 
     /**
@@ -780,7 +780,7 @@ class Activity extends AbstractEntity
      */
     public function getAccess(): bool
     {
-        return in_array(SettingFactory::getSettingManager()->getSettingByScopeAsString('Activities', 'access'), ['View', 'Register']);
+        return in_array(SettingFactory::getSettingManager()->get('Activities', 'access'), ['View', 'Register']);
     }
 
     /**
