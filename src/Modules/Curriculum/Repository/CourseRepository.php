@@ -38,6 +38,10 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     /**
+     * findByPerson
+     *
+     * 31/08/2020 11:01
+     * @param Person $person
      * @return array
      */
     public function findByPerson(Person $person): array
@@ -74,14 +78,26 @@ class CourseRepository extends ServiceEntityRepository
             ->addOrderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
-    /*
-                    $sqlCourse = "SELECT gibbonCourse.* FROM gibbonCourse
-                        JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
-                        WHERE gibbonDepartmentID=:gibbonDepartmentID
-                        AND gibbonYearGroupIDList <> ''
-                        AND AcademicYearID=(SELECT AcademicYearID FROM gibbonAcademicYear WHERE status='Current')
-                        GROUP BY gibbonCourse.gibbonCourseID
-                        ORDER BY nameShort, name";
-    */
+    }
+
+    /**
+     * findCoursePagination
+     *
+     * 31/08/2020 11:46
+     * @return int|mixed|string
+     */
+    public function findCoursePagination()
+    {
+        return $this->createQueryBuilder('c')
+            ->select(['c','d','yg'])
+            ->leftJoin('c.department', 'd')
+            ->leftJoin('c.yearGroups', 'yg')
+            ->where('d.type = :learningArea')
+            ->setParameter('learningArea', 'Learning Area')
+            ->andWhere('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->orderBy('c.name')
+            ->getQuery()
+            ->getResult();
     }
 }

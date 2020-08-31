@@ -19,6 +19,7 @@ namespace App\Modules\System\Manager;
 use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
 use App\Manager\StatusManager;
+use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
@@ -101,6 +102,7 @@ class DemoDataManager
         'timetable_day' => TimetableDay::class,
         'timetable_period' => TimetablePeriod::class,
         'timetable_date' => TimetableDate::class,
+        'course' => Course::class,
     ];
 
     /**
@@ -401,9 +403,14 @@ class DemoDataManager
             if (is_string($rules['associated'][$propertyName]))
                 $rules['associated'][$propertyName] = ['entityName' => $rules['associated'][$propertyName]];
 
-            if ($associateRules['method']) {
+            if (key_exists('method', $associateRules)) {
                 return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value)->$associateRules['method']();
             }
+
+
+
+            dump($associateRules, $value);
+
             return $this->associatedEntities[$propertyName][$key] = ProviderFactory::getRepository($associateRules['entityName'])->findOneBy($value);
         }
     }

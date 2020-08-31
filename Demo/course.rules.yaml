@@ -1,0 +1,12 @@
+associated:
+    yearGroups:
+        entityName: 'App\Modules\School\Entity\YearGroup'
+        findBy: 'abbreviation'
+        useCollection: true
+    department:
+        entityName: 'App\Modules\Department\Entity\Department'
+        findBy: 'abbreviation'
+    academicYear:
+        entityName: 'App\Modules\School\Entity\AcademicYear'
+        findBy: 'status'
+

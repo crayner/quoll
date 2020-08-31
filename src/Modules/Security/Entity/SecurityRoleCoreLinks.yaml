@@ -4,7 +4,7 @@
     source:
         table: App\Modules\Security\Entity\SecurityRole
         findBy:
-           role: ROLE_STAFF
+            role: ROLE_STAFF
     target: childRole
 -
     findBy:
@@ -40,22 +40,6 @@
     target: childRole
 -
     findBy:
-        role: ROLE_TEACHER
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_ALLOWED_TO_SWITCH
-    target: childRole
--
-    findBy:
-        role: ROLE_TEACHER
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_STUDENT
-    target: childRole
--
-    findBy:
         role: ROLE_STUDENT
     source:
         table: App\Modules\Security\Entity\SecurityRole
@@ -76,15 +60,7 @@
     source:
         table: App\Modules\Security\Entity\SecurityRole
         findBy:
-            role: ROLE_SUPPORT
-    target: childRole
--
-    findBy:
-        role: ROLE_REGISTRAR
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_CARE_GIVER
+            role: ROLE_ALLOWED_TO_SWITCH
     target: childRole
 -
     findBy:
@@ -120,6 +96,14 @@
     target: childRole
 -
     findBy:
+        role: ROLE_MEDICAL
+    source:
+        table: App\Modules\Security\Entity\SecurityRole
+        findBy:
+            role: ROLE_STAFF
+    target: childRole
+-
+    findBy:
         role: ROLE_STAFF
     source:
         table: App\Modules\Security\Entity\SecurityRole
@@ -132,37 +116,5 @@
     source:
         table: App\Modules\Security\Entity\SecurityRole
         findBy:
-            role: ROLE_PRINCIPAL
-    target: childRole
--
-    findBy:
-        role: ROLE_SYSTEM_ADMIN
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_REGISTRAR
-    target: childRole
--
-    findBy:
-        role: ROLE_SYSTEM_ADMIN
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
             role: ROLE_MEDICAL
-    target: childRole
--
-    findBy:
-        role: ROLE_SYSTEM_ADMIN
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_LIBRARIAN
-    target: childRole
--
-    findBy:
-        role: ROLE_SYSTEM_ADMIN
-    source:
-        table: App\Modules\Security\Entity\SecurityRole
-        findBy:
-            role: ROLE_FINANCE
     target: childRole

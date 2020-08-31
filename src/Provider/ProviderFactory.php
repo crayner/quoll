@@ -137,23 +137,32 @@ class ProviderFactory
         // e.g. App\Modules\System\Entity\Module or Module
         $namespace = dirname($entityName);
         $entityName = basename($entityName);
+        $appDir = realpath(__DIR__ . '/../..');
 
         if (isset(self::$instances[$entityName])) {
             return self::$instances[$entityName];
         }
-//        file_put_contents(__DIR__ . '/../../var/log/create.log', json_encode(debug_backtrace()));
 
         $providerName = str_replace('Entity', 'Provider', $namespace) . '\\' . $entityName . 'Provider';
+
         if (class_exists($providerName)) {
             try {
                 return self::addInstance($entityName, new $providerName(self::$factory));
             } catch (\Exception $e) {
-                self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $namespace));
-//                throw $e;
+                    self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $providerName));
             }
         }
 
-        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $namespace));
+        $fileName = $appDir . substr($providerName, 3);
+        if (file_exists($fileName)) {
+            try {
+                require_once $fileName;
+                return self::addInstance($entityName, new $providerName(self::$factory));
+            } catch (\Exception $e) {
+                self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $fileName));
+            }
+        }
+        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $providerName));
     }
 
     /**

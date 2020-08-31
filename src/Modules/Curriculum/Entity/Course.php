@@ -14,11 +14,11 @@
 namespace App\Modules\Curriculum\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\Department\Entity\Department;
-use App\Modules\School\Validator as Validator;
+use App\Modules\School\Entity\YearGroup;
+use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,11 +32,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Curriculum\Repository\CourseRepository")
  * @ORM\Table(name="Course",
  *  indexes={
- *      @ORM\Index(name="academic_year",columns={"academic_year"}),
+ *     @ORM\Index(name="academic_year",columns={"academic_year"}),
  *     @ORM\Index(name="department",columns={"department"})},
  *  uniqueConstraints={
- *      @ORM\UniqueConstraint(name="name_year",columns={"academic_year","name"}),
- *      @ORM\UniqueConstraint(name="abbreviation_year",columns={"academic_year","abbreviation"})})
+ *     @ORM\UniqueConstraint(name="name_year",columns={"academic_year","name"}),
+ *     @ORM\UniqueConstraint(name="abbreviation_year",columns={"academic_year","abbreviation"})})
  * @UniqueEntity({"name","academicYear"})
  * @UniqueEntity({"abbreviation", "academicYear"})
  */
@@ -44,76 +44,76 @@ class Course extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
      * @ORM\JoinColumn(name="academic_year",referencedColumnName="id", nullable=false)
      */
-    private $academicYear;
+    private ?AcademicYear $academicYear;
 
     /**
      * @var Department|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Department\Entity\Department")
      * @ORM\JoinColumn(name="department",referencedColumnName="id",nullable=true)
      */
-    private $department;
+    private ?Department $department;
 
     /**
      * @var string|null
      * @ORM\Column(length=60)
      * @Assert\NotBlank
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=12)
      * @Assert\NotBlank
      */
-    private $abbreviation;
+    private string $abbreviation;
 
     /**
      * @var string|null
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"comment": "Should this course be included in curriculum maps and other summaries?", "default": "Y"})
-     * @Assert\Choice(callback="getBooleanList")
+     * @var bool
+     * @ORM\Column(type="boolean", options={"comment": "Should this course be included in curriculum maps and other summaries?", "default": 1})
      */
-    private $map = 'Y';
+    private bool $map = true;
 
     /**
-     * @var string|null
-     * @ORM\Column(name="year_group_list")
-     * @Validator\YearGroupList()
+     * @var Collection|YearGroup[]|null
+     * @ORM\ManyToMany(targetEntity="App\Modules\School\Entity\YearGroup")
+     * @ORM\JoinTable(name="CourseYearGroup",
+     *      joinColumns={@ORM\JoinColumn(name="course",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="year_group",referencedColumnName="id")}
+     *  )
      */
-    private $yearGroupList;
+    private Collection $yearGroups;
 
     /**
      * @var integer|null
      * @ORM\Column(type="smallint",name="order_by",nullable=true)
      */
-    private $orderBy;
+    private ?int $orderBy;
 
     /**
      * @var Collection|CourseClass[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClass", mappedBy="course")
      * @ORM\OrderBy({"name" = "ASC"})
      */
-    private $courseClasses;
+    private ?Collection $courseClasses;
 
     /**
      * Course constructor.
@@ -124,20 +124,24 @@ class Course extends AbstractEntity
     }
 
     /**
+     * getId
+     *
+     * 31/08/2020 10:27
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
-     * Id.
+     * setId
      *
-     * @param string|null $id
-     * @return Course
+     * 31/08/2020 10:29
+     * @param string $id
+     * @return $this
      */
-    public function setId(?string $id): Course
+    public function setId(string $id): Course
     {
         $this->id = $id;
         return $this;
@@ -188,28 +192,37 @@ class Course extends AbstractEntity
     }
 
     /**
-     * @param string|null $name
-     * @return Course
+     * setName
+     *
+     * 31/08/2020 10:29
+     * @param string $name
+     * @return $this
      */
-    public function setName(?string $name): Course
+    public function setName(string $name): Course
     {
         $this->name = $name;
         return $this;
     }
 
     /**
+     * getAbbreviation
+     *
+     * 31/08/2020 11:27
      * @return string|null
      */
     public function getAbbreviation(): ?string
     {
-        return $this->abbreviation;
+        return isset($this->abbreviation) ? $this->abbreviation : null;
     }
 
     /**
-     * @param string|null $abbreviation
-     * @return Course
+     * setAbbreviation
+     *
+     * 31/08/2020 10:30
+     * @param string $abbreviation
+     * @return $this
      */
-    public function setAbbreviation(?string $abbreviation): Course
+    public function setAbbreviation(string $abbreviation): Course
     {
         $this->abbreviation = $abbreviation;
         return $this;
@@ -234,38 +247,26 @@ class Course extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * getMap
+     *
+     * 31/08/2020 09:53
+     * @return bool
      */
-    public function getMap(): ?string
+    public function getMap(): bool
     {
-        return $this->map;
+        return (bool) $this->map;
     }
 
     /**
-     * @param string|null $map
+     * setMap
+     *
+     * 31/08/2020 09:53
+     * @param bool|null $map
      * @return Course
      */
-    public function setMap(?string $map): Course
+    public function setMap(?bool $map): Course
     {
-        $this->map = self::checkBoolean($map, 'Y');
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getYearGroupList(): ?string
-    {
-        return $this->yearGroupList;
-    }
-
-    /**
-     * @param string|null $yearGroupList
-     * @return Course
-     */
-    public function setYearGroupList(?string $yearGroupList): Course
-    {
-        $this->yearGroupList = $yearGroupList;
+        $this->map = (bool) $map;
         return $this;
     }
 
@@ -284,6 +285,50 @@ class Course extends AbstractEntity
     public function setOrderBy(?int $orderBy): Course
     {
         $this->orderBy = $orderBy;
+        return $this;
+    }
+
+    /**
+     * getYearGroups
+     *
+     * 31/08/2020 10:22
+     * @return Collection
+     */
+    public function getYearGroups(): Collection
+    {
+        if (!isset($this->yearGroups) || is_null($this->yearGroups)) $this->yearGroups = new ArrayCollection();
+
+        if ($this->yearGroups instanceof PersistentCollection) $this->yearGroups->initialize();
+
+        return $this->yearGroups;
+    }
+
+    /**
+     * setYearGroups
+     *
+     * 31/08/2020 10:30
+     * @param Collection $yearGroups
+     * @return $this
+     */
+    public function setYearGroups(Collection $yearGroups): Course
+    {
+        $this->yearGroups = $yearGroups;
+        return $this;
+    }
+
+    /**
+     * addYearGroup
+     *
+     * 31/08/2020 10:26
+     * @param YearGroup $yearGroup
+     * @return Course
+     */
+    public function addYearGroup(YearGroup $yearGroup): Course
+    {
+        if ($yearGroup === null || $this->getYearGroups()->contains($yearGroup)) return $this;
+
+        $this->yearGroups->add($yearGroup);
+
         return $this;
     }
 
@@ -319,7 +364,7 @@ class Course extends AbstractEntity
      */
     public function __toArray(array $ignore = []): array
     {
-        return EntityHelper::__toArray(Course::class, $this, $ignore);
+        return [];
     }
 
     /**
@@ -338,38 +383,40 @@ class Course extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'CoursePagination') return [
+            'name' => $this->getName(),
+            'id' => $this->getId(),
+            'abbreviation' => $this->getAbbreviation(),
+            'area' => $this->getDepartment()->getName(),
+            'yearGroups' => $this->getYearGroupAbbreviations(),
+            'classCount' => $this->getCourseClasses()->count() ?: '0',
+            'canDelete' => $this->canDelete(),
+        ];
         return [];
     }
 
-    public function create(): array
+    /**
+     * getYearGroupAbbreviations
+     *
+     * 31/08/2020 12:07
+     * @return string
+     */
+    public function getYearGroupAbbreviations(): string
     {
-        return ["CREATE TABLE `__prefix__Course` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `name` CHAR(60) NOT NULL,
-                    `abbreviation` CHAR(12) NOT NULL,
-                    `description` longtext,
-                    `map` CHAR(1) NOT NULL DEFAULT 'Y' COMMENT 'Should this course be included in curriculum maps and other summaries?',
-                    `year_group_list` text NOT NULL COMMENT '(DC2Type:simple_array)',
-                    `order_by` smallint DEFAULT NULL,
-                    `academic_year` CHAR(36) DEFAULT NULL,
-                    `department` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `name_year` (`academic_year`,`name`),
-                    UNIQUE KEY `name_short_year` (`academic_year`,`abbreviation`),
-                    KEY `department` (`department`),
-                    KEY `academic_year` (`academic_year`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
+        $result = [];
+        foreach ($this->getYearGroups() as $yg)  $result[] = $yg->getAbbreviation();
+
+        return implode(',', $result);
     }
 
-    public function foreignConstraints(): string
+    /**
+     * canDelete
+     *
+     * 31/08/2020 13:45
+     * @return bool
+     */
+    public function canDelete(): bool
     {
-        return 'ALTER TABLE `__prefix__Course`
-                    ADD CONSTRAINT FOREIGN KEY (`academic_year`) REFERENCES `__prefix__AcademicYear` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`department`) REFERENCES `__prefix__Department` (`id`);';
-    }
-
-    public static function getVersion(): string
-    {
-        return self::VERSION;
+        return $this->getCourseClasses()->count() === 0;
     }
 }

@@ -18,19 +18,21 @@ namespace App\Modules\Curriculum\Provider;
 
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Entity\Department;
+use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\AbstractProvider;
 
 /**
  * Class CourseProvider
- * @package App\Modules\Enrolment\Provider
+ * @package App\Modules\Curriculum\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class CourseProvider extends AbstractProvider
 {
-
     /**
      * @var string
      */
-    protected $entityName = Course::class;
+    protected string $entityName = Course::class;
 
     /**
      * getByDepartment
@@ -39,6 +41,6 @@ class CourseProvider extends AbstractProvider
      */
     public function getByDepartment(Department $department): array
     {
-        return $this->getRepository()->findByDepartment($department, $this->getSession()->get('academicYear'));
+        return $this->getRepository()->findByDepartment($department, AcademicYearHelper::getCurrentAcademicYear());
     }
 }

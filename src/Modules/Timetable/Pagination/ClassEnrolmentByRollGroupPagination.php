@@ -72,7 +72,7 @@ class ClassEnrolmentByRollGroupPagination extends AbstractPaginationManager
             if (is_null($p)) $p = $roll;
             $filter = new PaginationFilter();
             $filter->setName('Roll Group: ' . $roll->getName())
-                ->setLabel(['Roll Group: {name}', ['{name}' => $roll->getName()], 'People'])
+                ->setLabel(['Roll Group: {name}', ['{name}' => $roll->getName()], 'RollGroup'])
                 ->setValue($roll->getName())
                 ->setGroup('Roll Group')
                 ->setContentKey('rollGroupName');

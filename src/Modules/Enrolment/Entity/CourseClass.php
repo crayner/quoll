@@ -14,7 +14,6 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
@@ -22,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,69 +41,67 @@ class CourseClass extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private string $id;
 
     /**
-     * @var Course|null
+     * @var Course
      * @ORM\ManyToOne(targetEntity="App\Modules\Curriculum\Entity\Course", inversedBy="courseClasses")
      * @ORM\JoinColumn(name="course", referencedColumnName="id", nullable=true)
      */
-    private $course;
+    private Course $course;
 
     /**
-     * @var string|null
+     * @var string
      * @ORM\Column(length=30)
      * @Assert\NotBlank()
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var string|null
+     * @var string
      * @ORM\Column(length=8)
      * @Assert\NotBlank()
      */
-    private $abbreviation;
+    private string $abbreviation;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 1})
      * @Assert\Choice(callback="getBooleanList")
      */
-    private $reportable = 'Y';
+    private bool $reportable = true;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 1})
      * @Assert\Choice(callback="getBooleanList")
      */
-    private $attendance = 'Y';
+    private bool $attendance = true;
 
     /**
-     * @var Scale|null
+     * @var Scale
      * @ORM\ManyToOne(targetEntity="App\Modules\Assess\Entity\Scale")
      * @ORM\JoinColumn(name="scale", referencedColumnName="id")
      */
-    private $scale;
+    private Scale $scale;
 
     /**
      * @var Collection|CourseClassPerson[]|null
      * @ORM\OneToMany(targetEntity="CourseClassPerson", mappedBy="courseClass")
      */
-    private $courseClassPeople;
+    private Collection $courseClassPeople;
 
     /**
      * @var Collection|TimetablePeriodClass[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TimetablePeriodClass",mappedBy="courseClass")
      */
-    private $periodClasses;
+    private Collection $periodClasses;
 
     /**
      * CourseClass constructor.
@@ -119,16 +117,16 @@ class CourseClass extends AbstractEntity
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
      * Id.
      *
-     * @param string|null $id
+     * @param string $id
      * @return CourseClass
      */
-    public function setId(?string $id): CourseClass
+    public function setId(string $id): CourseClass
     {
         $this->id = $id;
         return $this;
@@ -143,10 +141,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param Course|null $course
+     * @param Course $course
      * @return CourseClass
      */
-    public function setCourse(?Course $course): CourseClass
+    public function setCourse(Course $course): CourseClass
     {
         $this->course = $course;
         return $this;
@@ -165,10 +163,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param string|null $name
+     * @param string $name
      * @return CourseClass
      */
-    public function setName(?string $name): CourseClass
+    public function setName(string $name): CourseClass
     {
         $this->name = $name;
         return $this;
@@ -187,56 +185,48 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param string|null $abbreviation
+     * @param string $abbreviation
      * @return CourseClass
      */
-    public function setAbbreviation(?string $abbreviation): CourseClass
+    public function setAbbreviation(string $abbreviation): CourseClass
     {
         $this->abbreviation = $abbreviation;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getReportable(): ?string
+    public function isReportable(): bool
     {
-        return $this->reportable;
+        return (bool)$this->reportable;
     }
 
     /**
-     * @param string|null $reportable
+     * @param bool $reportable
      * @return CourseClass
      */
-    public function setReportable(?string $reportable): CourseClass
+    public function setReportable(bool $reportable): CourseClass
     {
-        $this->reportable = self::checkBoolean($reportable, 'Y');
+        $this->reportable = $reportable;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAttendance(): bool
     {
-        return $this->getAttendance() === 'Y';
+        return (bool)$this->attendance;
     }
 
     /**
-     * @return string
-     */
-    public function getAttendance(): string
-    {
-        return $this->attendance = self::checkBoolean($this->attendance);
-    }
-
-    /**
-     * @param string|null $attendance
+     * @param bool $attendance
      * @return CourseClass
      */
-    public function setAttendance(?string $attendance): CourseClass
+    public function setAttendance(bool $attendance): CourseClass
     {
-        $this->attendance = self::checkBoolean($attendance, 'Y');
+        $this->attendance = $attendance;
         return $this;
     }
 
@@ -249,10 +239,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param Scale|null $scale
+     * @param Scale $scale
      * @return CourseClass
      */
-    public function setScale(?Scale $scale): CourseClass
+    public function setScale(Scale $scale): CourseClass
     {
         $this->scale = $scale;
         return $this;
@@ -274,10 +264,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param Collection|null $courseClassPeople
+     * @param Collection $courseClassPeople
      * @return CourseClass
      */
-    public function setCourseClassPeople(?Collection $courseClassPeople): CourseClass
+    public function setCourseClassPeople(Collection $courseClassPeople): CourseClass
     {
         $this->courseClassPeople = $courseClassPeople;
         return $this;
@@ -299,10 +289,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param Collection|null $periodClasses
+     * @param Collection $periodClasses
      * @return CourseClass
      */
-    public function setPeriodClasses(?Collection $periodClasses): CourseClass
+    public function setPeriodClasses(Collection $periodClasses): CourseClass
     {
         $this->periodClasses = $periodClasses;
         return $this;
@@ -311,15 +301,18 @@ class CourseClass extends AbstractEntity
     /**
      * @var Collection
      */
-    private $students;
+    private Collection $students;
 
     /**
      * getStudents
+     *
+     * 31/08/2020 14:01
      * @return Collection
+     * @throws Exception
      */
     public function getStudents(): Collection
     {
-        if (! $this->students instanceof Collection || $this->students->count() === 0)
+        if (!isset($this->students) || !$this->students instanceof Collection || $this->students->count() === 0)
         {
             $this->students = $this->getCourseClassPeople()->filter(function($entry) {
                 return $entry->getRole() === 'Student';
@@ -342,15 +335,18 @@ class CourseClass extends AbstractEntity
     /**
      * @var Collection
      */
-    private $staff;
+    private Collection $staff;
 
     /**
-     * getStudents
+     * getStaff
+     *
+     * 31/08/2020 14:01
      * @return Collection
+     * @throws Exception
      */
     public function getStaff(): Collection
     {
-        if (! $this->staff instanceof Collection || $this->staff->count() === 0)
+        if (!isset($this->staff) || !$this->staff instanceof Collection || $this->staff->count() === 0)
         {
             $this->staff = $this->getCourseClassPeople()->filter(function($entry) {
                 return in_array($entry->getRole(), ['Teacher','Assistant','Technician']);
@@ -367,16 +363,6 @@ class CourseClass extends AbstractEntity
         $this->staff  = new ArrayCollection(iterator_to_array($iterator, false));
 
         return $this->staff;
-    }
-
-    /**
-     * __toArray
-     * @param array $ignore
-     * @return array
-     */
-    public function __toArray(array $ignore = []): array
-    {
-        return [];
     }
 
     /**

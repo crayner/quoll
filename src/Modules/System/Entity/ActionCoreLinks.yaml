@@ -494,3 +494,19 @@
         findBy:
             name: People
     target: module
+-
+    findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Timetable
+    target: module
+-
+    findBy:
+        entryRoute: class_enrolment_by_roll_group
+    source:
+        table: App\Modules\System\Entity\Module
+        findBy:
+            name: Timetable
+    target: module

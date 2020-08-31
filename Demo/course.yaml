@@ -1,0 +1,1134 @@
+-
+    name: 'Year 10 Art'
+    abbreviation: 'AR10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 10 Chinese'
+    abbreviation: 'CN10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 10 Drama'
+    abbreviation: 'DR10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 10 Economics'
+    abbreviation: 'EC10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 10 English'
+    abbreviation: 'EN10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 10 Enrichment & Flow'
+    abbreviation: 'ENF10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 10 Environmental Management'
+    abbreviation: 'EV10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 10 History'
+    abbreviation: 'HI10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 10 Human Technologies'
+    abbreviation: 'HT10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 10 Japanese'
+    abbreviation: 'JP10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 10 Mathematics'
+    abbreviation: 'MA10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 10 Media Studies'
+    abbreviation: 'ME10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 10 Physical Education'
+    abbreviation: 'PE10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 10 Science'
+    abbreviation: 'SC10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 10 Self Study'
+    abbreviation: 'SS10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 10 Spanish'
+    abbreviation: 'SP10'
+    description: ''
+    map: true
+    yearGroups: [ 'Y10' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 11 Art'
+    abbreviation: 'AR11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 11 Chinese'
+    abbreviation: 'CN11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 11 Drama'
+    abbreviation: 'DR11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 11 Economics'
+    abbreviation: 'EC11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 11 English'
+    abbreviation: 'EN11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 11 Enrichment & Flow'
+    abbreviation: 'ENF11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 11 Environmental Management'
+    abbreviation: 'EV11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 11 History'
+    abbreviation: 'HI11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 11 Japanese'
+    abbreviation: 'JP11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 11 Mathematics'
+    abbreviation: 'MA11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 11 Media Studies'
+    abbreviation: 'ME11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 11 Physical Education'
+    abbreviation: 'PE11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 11 Science'
+    abbreviation: 'SC11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 11 Spanish'
+    abbreviation: 'SP11'
+    description: ''
+    map: true
+    yearGroups: [ 'Y11' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Biology (Higher)'
+    abbreviation: 'BIHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Biology (Standard)'
+    abbreviation: 'BISL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Chemistry (Higher)'
+    abbreviation: 'CHHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Chemistry (Standard)'
+    abbreviation: 'CHSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Chinese Language B (Higher)'
+    abbreviation: 'CNHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Chinese Language B (Standard)'
+    abbreviation: 'CNSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Economics (Higher)'
+    abbreviation: 'ECHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 12 English A (Higher)'
+    abbreviation: 'ENHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 12 English A (Standard)'
+    abbreviation: 'ENSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 12 Envir. Systems & Societies (Standard)'
+    abbreviation: 'ESSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Film Studies (Higher)'
+    abbreviation: 'FSHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 Film Studies (Standard)'
+    abbreviation: 'FSSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 History (Standard)'
+    abbreviation: 'HISL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 12 Pamoja Support'
+    abbreviation: 'PS12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Physical Education'
+    abbreviation: 'PE12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 12 Physics (Higher)'
+    abbreviation: 'PHHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Physics (Standard)'
+    abbreviation: 'PHSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 12 Psychology (Higher)'
+    abbreviation: 'PYHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 12 Self Study'
+    abbreviation: 'SS12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 12 Spanish B (Higher)'
+    abbreviation: 'SPHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Spanish B (Standard)'
+    abbreviation: 'SPSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Theatre Arts (Higher)'
+    abbreviation: 'TAHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 Theatre Arts (Standard)'
+    abbreviation: 'TASL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 Theory of Knowledge'
+    abbreviation: 'TOK12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 13 Biology (Higher)'
+    abbreviation: 'BIHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Biology (Standard)'
+    abbreviation: 'BISL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Chemistry (Higher)'
+    abbreviation: 'CHHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Chemistry (Standard)'
+    abbreviation: 'CHSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Chinese Language B (Higher)'
+    abbreviation: 'CNHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 13 Chinese Language B (Standard)'
+    abbreviation: 'CNSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 13 Economics (Higher)'
+    abbreviation: 'ECHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 13 English A (Higher)'
+    abbreviation: 'ENHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 13 English A (Standard)'
+    abbreviation: 'ENSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 13 Envir. Systems & Societies (Standard)'
+    abbreviation: 'ESSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Mathematics (Higher)'
+    abbreviation: 'MAHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 13 Mathematics (Standard)'
+    abbreviation: 'MASL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 13 Mathematics (Studies)'
+    abbreviation: 'MSSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 13 Pamoja Support'
+    abbreviation: 'PS13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 13 Physical Education'
+    abbreviation: 'PE13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 13 Physics (Higher)'
+    abbreviation: 'PHHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Physics (Standard)'
+    abbreviation: 'PHSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 13 Psychology (Higher)'
+    abbreviation: 'PYHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 13 Spanish B (Higher)'
+    abbreviation: 'SPHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 13 Theatre Arts (Higher)'
+    abbreviation: 'TAHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 13 Theatre Arts (Standard)'
+    abbreviation: 'TASL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 13 Theory of Knowledge'
+    abbreviation: 'TOK13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 7 Art'
+    abbreviation: 'AR07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 7 Big History'
+    abbreviation: 'BH07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 7 Chinese'
+    abbreviation: 'CN07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 7 English'
+    abbreviation: 'EN07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 7 Expressive Arts'
+    abbreviation: 'EX07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 7 Free Learning'
+    abbreviation: 'FL07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 7 Human Technologies'
+    abbreviation: 'HT07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 7 Japanese'
+    abbreviation: 'JP07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 7 Mathematics'
+    abbreviation: 'MA07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 7 Physical Education'
+    abbreviation: 'PE07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 7 Science'
+    abbreviation: 'SC07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 7 Spanish'
+    abbreviation: 'SP07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 8 Big History'
+    abbreviation: 'BH08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 8 Chinese'
+    abbreviation: 'CN08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 8 Digital Creativity & Visual Thinking'
+    abbreviation: 'DCVT08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 8 English'
+    abbreviation: 'EN08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 8 Expressive Arts'
+    abbreviation: 'EX08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 8 Free Learning'
+    abbreviation: 'FL08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 8 Human Technologies'
+    abbreviation: 'HT08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 8 Japanese'
+    abbreviation: 'JP08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 8 Mathematics'
+    abbreviation: 'MA08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 8 Physical Education'
+    abbreviation: 'PE08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 8 Science'
+    abbreviation: 'SC08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 8 Spanish'
+    abbreviation: 'SP08'
+    description: ''
+    map: true
+    yearGroups: [ 'Y08' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 9 Art'
+    abbreviation: 'AR09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 9 Chinese'
+    abbreviation: 'CN09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 9 English'
+    abbreviation: 'EN09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'ENG'
+-
+    name: 'Year 9 Expressive Arts'
+    abbreviation: 'EX09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 9 Free Learning'
+    abbreviation: 'FL09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 9 Human Technologies'
+    abbreviation: 'HT09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HT'
+-
+    name: 'Year 9 Humanities'
+    abbreviation: 'HU09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 9 Japanese'
+    abbreviation: 'JP09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 9 Mathematics'
+    abbreviation: 'MA09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 9 Media Studies'
+    abbreviation: 'ME09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 9 Physical Education'
+    abbreviation: 'PE09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'PE'
+-
+    name: 'Year 9 Science'
+    abbreviation: 'SC09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'SCI'
+-
+    name: 'Year 9 Spanish'
+    abbreviation: 'SP09'
+    description: ''
+    map: true
+    yearGroups: [ 'Y09' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 7 Chinese (Kingston Chinese Programme)'
+    abbreviation: 'CNK07'
+    description: ''
+    map: true
+    yearGroups: [ 'Y07' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Economics (Standard)'
+    abbreviation: 'ECSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 13 Film Studies (Higher)'
+    abbreviation: 'FSHL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 13 Film Studies (Standard)'
+    abbreviation: 'FSSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 History (Higher)'
+    abbreviation: 'HIHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 13 History (Standard)'
+    abbreviation: 'HISL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 12 Maths Analysis & Approaches (Higher)'
+    abbreviation: 'MAAHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 12 Maths Analysis & Approaches (Standard)'
+    abbreviation: 'MAASL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 12 Maths Applications & Interpretation (Standard)'
+    abbreviation: 'MAISL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'MA'
+-
+    name: 'Year 12 Psychology (Standard)'
+    abbreviation: 'PYSL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'HUM'
+-
+    name: 'Year 13 Spanish (Standard)'
+    abbreviation: 'SPSL13'
+    description: ''
+    map: true
+    yearGroups: [ 'Y13' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'LNG'
+-
+    name: 'Year 12 Visual Arts (Higher)'
+    abbreviation: 'VAHL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
+-
+    name: 'Year 12 Visual Arts (Standard) '
+    abbreviation: 'VASL12'
+    description: ''
+    map: true
+    yearGroups: [ 'Y12' ]
+    orderBy: 0
+    academicYear: 'Current'
+    department: 'TA'
