@@ -42,7 +42,6 @@ class DemonstrationController extends AbstractPageController
     public function load(DemoDataManager $manager, string $table = '')
     {
         $rotating = false;
-        $next = '';
         $session = $this->getRequest()->getSession();
         if ($table === '') {
             if ($session->has('demo_table')) $table = $session->get('demo_table');
@@ -64,6 +63,8 @@ class DemonstrationController extends AbstractPageController
                 }
                 if ($table === $q) $next = $table;
             }
+        } else {
+            $next = $table;
         }
         $manager->execute($table);
 
