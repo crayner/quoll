@@ -59,6 +59,12 @@ class DisplayType extends AbstractType
             $view->vars['value'] = $options['data'];
     }
 
+    /**
+     * configureOptions
+     *
+     * 31/08/2020 16:04
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('required', false);

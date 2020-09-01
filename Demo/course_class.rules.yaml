@@ -1,0 +1,4 @@
+associated:
+    course:
+        entityName: 'App\Modules\Curriculum\Entity\Course'
+        findBy: 'abbreviation'

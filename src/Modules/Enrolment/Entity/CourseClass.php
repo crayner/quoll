@@ -17,6 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
+use App\Util\StringHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -73,14 +74,12 @@ class CourseClass extends AbstractEntity
     /**
      * @var bool
      * @ORM\Column(type="boolean", options={"default": 1})
-     * @Assert\Choice(callback="getBooleanList")
      */
     private bool $reportable = true;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean", options={"default": 1})
-     * @Assert\Choice(callback="getBooleanList")
      */
     private bool $attendance = true;
 
@@ -308,7 +307,6 @@ class CourseClass extends AbstractEntity
      *
      * 31/08/2020 14:01
      * @return Collection
-     * @throws Exception
      */
     public function getStudents(): Collection
     {
@@ -319,14 +317,17 @@ class CourseClass extends AbstractEntity
             });
         }
 
-        $iterator = $this->students->getIterator();
-        $iterator->uasort(
-            function ($a, $b) {
-                return $a->getPerson()->getFullName() < $b->getPerson()->getFullName() ? -1 : 1 ;
-            }
-        );
+        try {
+            $iterator = $this->students->getIterator();
+            $iterator->uasort(
+                function ($a, $b) {
+                    return $a->getPerson()->getFullName() < $b->getPerson()->getFullName() ? -1 : 1 ;
+                }
+            );
+            $this->students  = new ArrayCollection(iterator_to_array($iterator, false));
+        } catch (Exception $e) {
+        }
 
-        $this->students  = new ArrayCollection(iterator_to_array($iterator, false));
 
 
         return $this->students;
@@ -391,6 +392,13 @@ class CourseClass extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
+        if ($name === 'CourseClassPagination') return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'abbreviation' => $this->getAbbreviation(),
+            'reportable' => StringHelper::getYesNo($this->isReportable()),
+            'participantCount' => $this->getStudents()->count() ?: '0',
+        ];
         return [];
     }
 }

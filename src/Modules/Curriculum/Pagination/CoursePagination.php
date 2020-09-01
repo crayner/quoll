@@ -14,7 +14,7 @@
  * Date: 31/08/2020
  * Time: 09:45
  */
-namespace App\Modules\Timetable\Pagination;
+namespace App\Modules\Curriculum\Pagination;
 
 use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
@@ -28,11 +28,17 @@ use App\Util\TranslationHelper;
 
 /**
  * Class CoursePagination
- * @package App\Modules\Timetable\Pagination
+ * @package App\Modules\Curriculum\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class CoursePagination extends AbstractPaginationManager
 {
+    /**
+     * execute
+     *
+     * 31/08/2020 16:15
+     * @return $this|PaginationInterface
+     */
     public function execute(): PaginationInterface
     {
         TranslationHelper::setDomain('Curriculum');
@@ -97,10 +103,10 @@ class CoursePagination extends AbstractPaginationManager
             )
         ;
         $action = new PaginationAction();
-        $row->addAction($action->setTitle('Edit')
+        $row->addAction($action->setTitle('Dleete')
                 ->setAClass('thickbox p-3 sm:p-0')
                 ->setColumnClass('column p-2 sm:p-3')
-                ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
+                ->setSpanClass('fas fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
                 ->setRoute('course_delete')
                 ->setDisplayWhen('canDelete')
                 ->setRouteParams(['course' => 'id'])
@@ -109,5 +115,4 @@ class CoursePagination extends AbstractPaginationManager
         $this->setRow($row);
         return $this;
     }
-
 }

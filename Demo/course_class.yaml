@@ -1,0 +1,1428 @@
+-
+    course: AR10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: CN10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN10
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: CN10
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: DR10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EC10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENF10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: ENF10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EV10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HI10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HT10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HT10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: JP10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ME10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: PE10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SC10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SS10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SP10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: AR11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: CN11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN11
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: DR11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EC11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENF11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENF11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EV11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HI11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: JP11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ME11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SP11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BIHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BISL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CHHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CHSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CNHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CNSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ECHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ESSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FSHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FSSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HISL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PS12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE12
+    name: 2
+    abbreviation: 2
+    reportable: false
+    attendance: true
+-
+    course: PE12
+    name: 1
+    abbreviation: 1
+    reportable: false
+    attendance: true
+-
+    course: PHHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PHSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PYHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SS12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SPHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SPSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TAHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TASL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TOK12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BIHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BISL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CHHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CHSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CNHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CNSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ECHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ENSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ESSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MAHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MASL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MSSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PS13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE13
+    name: 1
+    abbreviation: 1
+    reportable: false
+    attendance: true
+-
+    course: PHHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PHSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PYHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SPHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TAHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TASL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TOK13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: AR07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: AR07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: AR07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BH07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: BH07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: BH07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: CN07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN07
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: CN07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EX07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EX07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EX07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FL07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: FL07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: FL07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HT07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: HT07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HT07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: JP07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: PE07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: PE07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SC07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: SC07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SP07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: BH08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: BH08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: BH08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: CN08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN08
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: CN08
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: DCVT08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: DCVT08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: DCVT08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EX08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EX08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EX08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FL08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: FL08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: FL08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HT08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: HT08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HT08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: JP08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: PE08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: PE08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SC08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: SC08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SP08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: AR09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: CN09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CN09
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN09
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: CN09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EX09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FL09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: FL09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FL09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: HT09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HT09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HT09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: HU09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HU09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HU09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: JP09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: ME09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: PE09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: SC09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: SC09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SC09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: SP09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: AR07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: BH07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN11
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: CN11
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: CNK07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: CNSL12
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EC10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: ECSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: EN07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EN07
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: EN07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EN07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN08
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: EN08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EN08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EN09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EN09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EN09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN09
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: EN10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EN10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EN11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: EN11
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: EN11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: ENF10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: ENHL12
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: EX07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: FL07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: FSHL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: FSSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HIHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HISL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: HISL13
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: HT07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: HT10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MA07
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: MA07
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MA07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: MA07
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MA07
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: MA08
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: MA08
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MA08
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MA08
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: MA09
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: MA09
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MA09
+    name: 5
+    abbreviation: 5
+    reportable: true
+    attendance: true
+-
+    course: MA09
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MA09
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: MA10
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: MA10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MA10
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: MA11
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: MA11
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MA11
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: MAAHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MAASL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MAISL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: PE07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: PE10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: PYSL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: SC07
+    name: 4
+    abbreviation: 4
+    reportable: true
+    attendance: true
+-
+    course: SC10
+    name: 3
+    abbreviation: 3
+    reportable: true
+    attendance: true
+-
+    course: SPSL13
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: TOK12
+    name: 2
+    abbreviation: 2
+    reportable: true
+    attendance: true
+-
+    course: VAHL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: VASL12
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true
+-
+    course: MA10
+    name: 1
+    abbreviation: 1
+    reportable: true
+    attendance: true

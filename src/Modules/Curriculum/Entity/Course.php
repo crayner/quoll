@@ -18,7 +18,7 @@ use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\Department\Entity\Department;
 use App\Modules\School\Entity\YearGroup;
-use App\Provider\ProviderFactory;
+use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,8 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="academic_year",columns={"academic_year"}),
  *     @ORM\Index(name="department",columns={"department"})},
  *  uniqueConstraints={
- *     @ORM\UniqueConstraint(name="name_year",columns={"academic_year","name"}),
- *     @ORM\UniqueConstraint(name="abbreviation_year",columns={"academic_year","abbreviation"})})
+ *     @ORM\UniqueConstraint(name="name_year",columns={"name","academic_year"}),
+ *     @ORM\UniqueConstraint(name="abbreviation_year",columns={"abbreviation","academic_year"})})
  * @UniqueEntity({"name","academicYear"})
  * @UniqueEntity({"abbreviation", "academicYear"})
  */
@@ -99,6 +99,7 @@ class Course extends AbstractEntity
      *      joinColumns={@ORM\JoinColumn(name="course",referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_group",referencedColumnName="id")}
      *  )
+     * @Assert\Count(minMessage = "You must specify at least one year group.", min = 1)
      */
     private Collection $yearGroups;
 
@@ -120,7 +121,9 @@ class Course extends AbstractEntity
      */
     public function __construct()
     {
-        $this->courseClasses = new ArrayCollection();
+        $this->setCourseClasses(new ArrayCollection())
+            ->setAcademicYear(AcademicYearHelper::getCurrentAcademicYear(true))
+        ;
     }
 
     /**

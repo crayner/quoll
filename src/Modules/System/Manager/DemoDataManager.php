@@ -22,6 +22,7 @@ use App\Manager\StatusManager;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\People\Entity\Family;
@@ -103,6 +104,7 @@ class DemoDataManager
         'timetable_period' => TimetablePeriod::class,
         'timetable_date' => TimetableDate::class,
         'course' => Course::class,
+        'course_class' => CourseClass::class,
     ];
 
     /**
