@@ -1,4 +1,19 @@
 -
+    name: Curriculum
+    displayName: null
+    description: 'Manage Curriculum'
+    entryRoute: course_list
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+    type: Core
+    active: true
+    category: Learn
+    versionDate:
+        convertDate: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'https:://www.craigrayner.com'
+-
     name: Timetable
     displayName: null
     description: 'Allows people to view timetables'
@@ -240,3 +255,18 @@
         convertDate: '2020-04-01'
     author: 'Craig Rayner'
     url: 'https://www.craigrayner.com'
+-
+    name: Enrolment
+    displayName: null
+    description: 'Manage Enrolment'
+    entryRoute: course_list
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+    type: Core
+    active: true
+    category: People
+    versionDate:
+        convertDate: '2020-04-01'
+    author: 'Craig Rayner'
+    url: 'https:://www.craigrayner.com'

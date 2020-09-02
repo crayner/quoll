@@ -88,18 +88,17 @@ class PageListener implements EventSubscriberInterface
     /**
      * onRequest
      * @param RequestEvent $event
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      * 30/05/2020 15:48
      */
     public function onRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
 
-        $controller = explode('::', $request->attributes->get('_controller'));
 
-        $route = $request->attributes->get('_route');
+        $definition = $this->getPageManager()->getDefinition();
+        $route = $definition->getRoute();
+        $controller = $definition->getController();
+
 
         // Ignore Debug Screens
         if (preg_match("#(^(_(profiler|wdt|home))|css|img|build|js|login|logout|error|google|raw)#", $route) || $route === null) {

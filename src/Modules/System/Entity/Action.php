@@ -47,15 +47,15 @@ class Action extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var Module|null
      * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="actions")
-     * @ORM\JoinColumn(name="module",referencedColumnName="id",nullable=true)
+     * @ORM\JoinColumn(name="module",referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $module;
+    private Module $module;
 
     /**
      * @var string|null
@@ -118,11 +118,14 @@ class Action extends AbstractEntity
     private $securityRoles;
 
     /**
+     * getId
+     *
+     * 2/09/2020 09:05
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**

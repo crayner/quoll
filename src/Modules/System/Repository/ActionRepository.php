@@ -114,12 +114,15 @@ class ActionRepository extends ServiceEntityRepository
 
     /**
      * findHighestGroupedAction
-     * @param string $route
-     * @param Module $module
-     * @return bool
+     * @param string|null $route
+     * @param Module|null $module
+     * @return Action|null
+     * @throws \Exception
      */
-    public function findHighestGroupedAction(string $route, Module $module)
+    public function findHighestGroupedAction(?string $route, ?Module $module): ?Action
     {
+        if ($module === null || $route === null) return null;
+
         if ($route === 'student_view.php') {
             dump($route);
             throw new \Exception('This is the end.');
@@ -127,14 +130,13 @@ class ActionRepository extends ServiceEntityRepository
 
         $where = '(';
         $params = [];
-        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames(UserHelper::getCurrentUser()->getSecurityRoles() ?: []);
+        $roles = SecurityHelper::getHierarchy()->getReachableRoleNames(SecurityHelper::getCurrentUser()->getSecurityRoles() ?: []);
         foreach($roles as $q=>$role) {
             $where .= 'a.securityRoles LIKE :role' . $q . ' OR ';
             $params['role' . $q] = $role;
         }
         $where = rtrim($where, ' OR') . ')';
         $params['route'] = '%' . $route . '%';
-        $params['module'] = $module;
         $params['module'] = $module;
 
         try {

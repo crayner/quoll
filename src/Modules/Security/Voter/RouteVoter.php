@@ -36,12 +36,12 @@ class RouteVoter extends RoleHierarchyVoter
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
      * @var RequestStack
      */
-    private $stack;
+    private RequestStack $stack;
 
     /**
      * RouteVoter constructor.
@@ -67,18 +67,22 @@ class RouteVoter extends RoleHierarchyVoter
     {
         if (in_array('ROLE_ROUTE', $attributes))
         {
-            if ($token->getUser() instanceof SecurityUser && $token->getUser()->isSuperUser()) return VoterInterface::ACCESS_GRANTED;
+            $definition = $this->getRequest()->attributes->get('_definition');
+            $action = $definition->getAction();
+            $route = $definition->getRoute();
 
-            $action = $this->getRequest()->attributes->get('action');
-            $route = $this->getRequest()->attributes->get('_route');
-
-            if (!$action instanceof Action) {
-                $this->logger->warning(sprintf('The user "%s" attempted to access the route "%s" and was denied as the ACTION was not set correctly.',
-                    $token->getUser()->getPerson()->getFullNameReversed(),
-                    $route)
-                );
+            if (!$token->getUser() instanceof SecurityUser) {
+                $this->logger->error(sprintf('The user is not valid and attempted to access the route "%s" and was denied.', $route), [$action]);
                 return VoterInterface::ACCESS_DENIED;
             }
+
+            if (!$definition->isValidPage()) {
+                $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied.', $route), [$definition]);
+                return VoterInterface::ACCESS_DENIED;
+
+            }
+
+            if ($token->getUser() instanceof SecurityUser && $token->getUser()->isSuperUser()) return VoterInterface::ACCESS_GRANTED;
 
             if (count($action->getSecurityRoles()) === 0) {
                 $this->logger->debug('The Action has no restrictions.');
@@ -104,7 +108,7 @@ class RouteVoter extends RoleHierarchyVoter
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      * getRequest
@@ -112,7 +116,7 @@ class RouteVoter extends RoleHierarchyVoter
      */
     private function getRequest(): Request
     {
-        if (null === $this->request)
+        if (!isset($this->request))
             $this->request = $this->stack->getCurrentRequest();
         return $this->request;
     }

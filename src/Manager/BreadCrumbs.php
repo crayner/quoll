@@ -17,7 +17,7 @@
 namespace App\Manager;
 
 use App\Manager\Hidden\BreadCrumbItem;
-use App\Modules\System\Entity\Action;
+use App\Modules\System\Entity\PageDefinition;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,9 +51,9 @@ class BreadCrumbs
     private $domain;
 
     /**
-     * @var Action
+     * @var PageDefinition
      */
-    private $action;
+    private PageDefinition $definition;
 
     /**
      * @return BreadCrumbItem[]|ArrayCollection
@@ -116,12 +116,12 @@ class BreadCrumbs
     /**
      * add
      * @param array $module
-     * @param Action $action
+     * @param PageDefinition $definition
      * @return BreadCrumbItem[]|ArrayCollection
      */
-    public function create(array $module, Action $action)
+    public function create(array $module, PageDefinition $definition)
     {
-        $this->setAction($action);
+        $this->setDefinition($definition);
         $resolver = new OptionsResolver();
         $resolver->setRequired([
             'crumbs',
@@ -130,7 +130,7 @@ class BreadCrumbs
         ]);
         $resolver->setDefaults([
             'trans_params' => [],
-            'domain' => $this->getAction()->getModule()->getName(),
+            'domain' => $this->getDefinition()->getModuleName('messages'),
         ]);
 
         $module = $resolver->resolve($module);
@@ -144,7 +144,7 @@ class BreadCrumbs
         $this->setDomain($module['domain']);
 
         $item = new BreadCrumbItem();
-        $item->setName($this->getAction()->getModule()->getName())->setUri($this->getAction()->getModule()->getentryRoute())->setDomain($this->getDomain());
+        $item->setName($this->getDefinition()->getModuleName())->setUri($definition->getModuleEntryRoute())->setDomain($this->getDomain());
         $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
@@ -323,22 +323,25 @@ class BreadCrumbs
     }
 
     /**
-     * @return Action
+     * getDefinition
+     *
+     * 2/09/2020 08:41
+     * @return PageDefinition
      */
-    public function getAction(): Action
+    public function getDefinition(): PageDefinition
     {
-        return $this->action;
+        return $this->definition;
     }
 
     /**
-     * Action.
+     * PageDefinition.
      *
-     * @param Action $action
+     * @param PageDefinition $definition
      * @return BreadCrumbs
      */
-    public function setAction(Action $action): BreadCrumbs
+    public function setDefinition(PageDefinition $definition): BreadCrumbs
     {
-        $this->action = $action;
+        $this->definition = $definition;
         return $this;
     }
 }

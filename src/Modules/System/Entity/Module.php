@@ -121,10 +121,10 @@ class Module extends AbstractEntity
     private $url;
 
     /**
-     * @var Collection
+     * @var Collection|Action[]|null
      * @ORM\OneToMany(targetEntity="App\Modules\System\Entity\Action", mappedBy="module", orphanRemoval=true)
      */
-    private $actions;
+    private ?Collection $actions;
 
     /**
      * @var null|string

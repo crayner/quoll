@@ -380,6 +380,7 @@
     description: 'Allows management of all people database records.'
     routeList:
         arrayField:
+            - people_list
             - people_content_loader
             - person_add
             - person_edit
@@ -1081,13 +1082,16 @@
 -
     name: 'Courses and Classes'
     category: 'Courses and Classes'
-    description: ''
+    description: 'Mange links between courses and classes'
     routeList:
         arrayField:
             - course_list
             - course_edit
             - course_add
             - course_delete
+            - course_class_edit
+            - course_class_add
+            - course_class_delete
     entryRoute: course_list
     entrySidebar: true
     menuShow: true
@@ -1095,7 +1099,7 @@
     restriction: null
     securityRoles:
         arrayField:
-            - ROLE_PRINCIPAL
+            - ROLE_TEACHER
 -
     name: 'Class Enrolment by Roll Group'
     category: Reports

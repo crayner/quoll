@@ -51,11 +51,11 @@ class CourseClass extends AbstractEntity
     private string $id;
 
     /**
-     * @var Course
-     * @ORM\ManyToOne(targetEntity="App\Modules\Curriculum\Entity\Course", inversedBy="courseClasses")
-     * @ORM\JoinColumn(name="course", referencedColumnName="id", nullable=true)
+     * @var Course|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Curriculum\Entity\Course",inversedBy="courseClasses")
+     * @ORM\JoinColumn(name="course",referencedColumnName="id",nullable=false)
      */
-    private Course $course;
+    private ?Course $course;
 
     /**
      * @var string
@@ -104,10 +104,12 @@ class CourseClass extends AbstractEntity
 
     /**
      * CourseClass constructor.
+     * @param Course|null $course
      */
-    public function __construct()
+    public function __construct(?Course $course = null)
     {
         $this->setPeriodClasses(new ArrayCollection())
+            ->setCourse($course)
             ->setCourseClassPeople(new ArrayCollection());
     }
 
@@ -140,10 +142,10 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @param Course $course
+     * @param Course|null $course
      * @return CourseClass
      */
-    public function setCourse(Course $course): CourseClass
+    public function setCourse(?Course $course): CourseClass
     {
         $this->course = $course;
         return $this;
@@ -398,6 +400,7 @@ class CourseClass extends AbstractEntity
             'abbreviation' => $this->getAbbreviation(),
             'reportable' => StringHelper::getYesNo($this->isReportable()),
             'participantCount' => $this->getStudents()->count() ?: '0',
+            'course_id' => $this->getCourse()->getId(),
         ];
         return [];
     }

@@ -16,6 +16,8 @@
  */
 namespace App\Modules\School\Util;
 
+use App\Container\Panel;
+use App\Container\Section;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\System\Manager\DemoDataInterface;
 use App\Provider\ProviderFactory;
@@ -25,6 +27,10 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Driver\PDOException;
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class AcademicYearHelper
@@ -36,15 +42,22 @@ class AcademicYearHelper implements DemoDataInterface
     /**
      * @var RequestStack
      */
-    private static $stack;
+    private static RequestStack $stack;
+
+    /**
+     * @var Environment
+     */
+    private static Environment $twig;
 
     /**
      * AcademicYearHelper constructor.
      * @param RequestStack $stack
+     * @param Environment $twig
      */
-    public function __construct(RequestStack $stack)
+    public function __construct(RequestStack $stack, Environment $twig)
     {
         self::$stack = $stack;
+        self::$twig = $twig;
     }
 
     /**
@@ -111,5 +124,20 @@ class AcademicYearHelper implements DemoDataInterface
             ProviderFactory::create(AcademicYear::class)->persistFlush($year);
         } catch (Exception | PDOException $e) {
         }
+    }
+
+    /**
+     * academicYearWarning
+     *
+     * 1/09/2020 12:18
+     * @param Panel $panel
+     * @return Panel
+     */
+    public static function academicYearWarning(Panel $panel): Panel
+    {
+        try {
+            return $panel->addSection(new Section('html', self::$twig->render('school/academic_year_warning.html.twig')));
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {}
+        return $panel;
     }
 }

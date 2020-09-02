@@ -17,6 +17,7 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
+use App\Modules\System\Entity\PageDefinition;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
@@ -48,19 +49,14 @@ class SecurityHelper
     private static $checker;
 
     /**
-     * @var Module|null
-     */
-    private static $module;
-
-    /**
-     * @var Action|null
-     */
-    private static $action;
-
-    /**
      * @var RoleHierarchyInterface
      */
     private static $hierarchy;
+
+    /**
+     * @var PageDefinition
+     */
+    private static PageDefinition $definition;
 
     /**
      * @var TokenStorageInterface
@@ -88,6 +84,7 @@ class SecurityHelper
      * @param AuthorizationCheckerInterface $checker
      * @param TokenStorageInterface $storage
      * @param RoleHierarchyInterface $hierarchy
+     * @param PageDefinition $definition
      * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(
@@ -95,6 +92,7 @@ class SecurityHelper
         AuthorizationCheckerInterface $checker,
         TokenStorageInterface $storage,
         RoleHierarchyInterface $hierarchy,
+        PageDefinition $definition,
         UserPasswordEncoderInterface $encoder
     ) {
         self::$logger = $logger;
@@ -102,6 +100,7 @@ class SecurityHelper
         self::$hierarchy = $hierarchy;
         self::$storage = $storage;
         self::$encoder = $encoder;
+        self::$definition = $definition;
     }
 
     /**
@@ -123,7 +122,7 @@ class SecurityHelper
             return self::$highestGroupedActionList[$route];
         if ($user = self::getCurrentUser() === null)
             return self::$highestGroupedActionList[$route] = false;
-        $result = ProviderFactory::create(Action::class)->getRepository()->findHighestGroupedAction(self::getActionName($route), $module);
+        $result = ProviderFactory::create(Action::class)->getRepository()->findHighestGroupedAction(self::getActionName(), self::getModule());
         return self::$highestGroupedActionList[$route] = $result ?: false;
     }
 
@@ -166,97 +165,6 @@ class SecurityHelper
     }
 
     /**
-     * getModuleFromRoute
-     * @param string|null $route
-     * @return Module|null
-     */
-    public static function getModuleFromRoute(?string $route): ?Module
-    {
-        if (is_null($route))
-            return null;
-        self::getActionFromRoute($route);
-
-        return self::$module ?: null;
-    }
-
-    /**
-     * getModuleName
-     * @param string $route
-     * @return bool|string
-     */
-    public static function getModuleName(string $route)
-    {
-        if (strpos($route, '__'))
-        {
-            $module = explode('__', $route);
-            $module = explode('_', $module[0]);
-            foreach($module as $q=>$w)
-                $module[$q] = ucfirst($w);
-            return implode(' ', $module);
-        }
-        return substr(substr($route, 9), 0, strpos(substr($route, 9), '/'));
-    }
-
-    /**
-     * getActionName
-     * @param $route
-     * @return bool|string
-     */
-    public static function getActionName($route)
-    {
-        return substr($route, (10 + strlen(self::getModuleName($route))));
-    }
-
-    /**
-     * getModuleNameFromRoute
-     * @param string $route
-     * @return mixed
-     */
-    public static function getModuleNameFromRoute(string $route)
-    {
-        if (!self::$module instanceof Module) {
-            self::getActionFromRoute($route);
-        }
-        return self::$module ? self::$module->getName() : '';
-    }
-
-    /**
-     * @var array
-     */
-    private static $routeActions = [];
-
-    /**
-     * getActionFromRoute
-     * @param string $route
-     * @return Action|null
-     */
-    public static function getActionFromRoute(string $route): ?Action
-    {
-        if (!key_exists($route, self::$routeActions)) {
-            try {
-                self::$action = ProviderFactory::getRepository(Action::class)->findOneByRoute($route);
-                self::$routeActions[$route] = self::$action;
-            } catch (\PDOException | PDOException | DriverException $e) {
-                return null;
-            }
-        } else {
-            self::$action = self::$routeActions[$route];
-        }
-        self::$module = self::$action instanceof Action ? self::$action->getModule() : null;
-        return self::$routeActions[$route];
-    }
-
-    /**
-     * getActionNameFromRoute
-     * @param string $route
-     * @return string
-     */
-    public static function getActionNameFromRoute(string $route): string
-    {
-        return self::isActionAccessible($route) ? self::$action->getName() : '';
-    }
-
-    /**
      * isActionAccessible
      * @param string $route
      * @param string $sub
@@ -267,22 +175,12 @@ class SecurityHelper
     {
         if (null !== $logger)
             self::$logger = $logger;
-        if (self::checkActionReady($route) === false) {
-            self::$logger->warning(sprintf('No action was linked to the route "%s"', $route));
+        if (self::checkActionReady() === false) {
+            self::$logger->warning(sprintf('No action was linked to the route "%s"', self::getRoute()));
             return false;
         }
 
-        return self::isActionAccessibleToUser(self::$module,self::$action, $route, $sub);
-    }
-
-    /**
-     * checkActionReady
-     * @param string $route
-     * @return bool
-     */
-    public static function checkActionReady(string $route): bool
-    {
-        return self::getActionFromRoute($route) instanceof Action;
+        return self::isActionAccessibleToUser(self::getModule(),self::getAction(),$route,$sub);
     }
 
     /**
@@ -555,7 +453,7 @@ class SecurityHelper
         foreach ($roles as $role) {
 
             $accessAvailable = self::getHierarchy()->getReachableRoleNames([$role]);
-dump($role,$accessAvailable);
+
             foreach ($attributes as $attribute) {
                 if (in_array($attribute, $accessAvailable)) {
                     $result[] = $role;
@@ -594,5 +492,78 @@ dump($role,$accessAvailable);
             return true;
         }
         return SettingFactory::getSettingManager()->get('People', 'uniqueEmailAddress') || ParameterBagHelper::get('google_oauth');
+    }
+
+    /**
+     * @return PageDefinition
+     */
+    public static function getDefinition(): PageDefinition
+    {
+        return self::$definition;
+    }
+
+    /**
+     * getAction
+     *
+     * 1/09/2020 16:11
+     * @return Action
+     */
+    public static function getAction(): Action
+    {
+        return self::$definition->getAction();
+    }
+
+    /**
+     * getModule
+     *
+     * 1/09/2020 16:12
+     * @return Module
+     */
+    public static function getModule(): Module
+    {
+        return self::$definition->getModule();
+    }
+
+    /**
+     * getModuleName
+     *
+     * 2/09/2020 08:51
+     * @return string
+     */
+    public static function getModuleName(): string
+    {
+        return self::getDefinition()->getModule() ? self::getDefinition()->getModule()->getName() : '';
+    }
+
+    /**
+     * getActionName
+     * @param $route
+     * @return bool|string
+     */
+    public static function getActionName(): ?string
+    {
+        return self::getDefinition()->getActionName();
+    }
+
+    /**
+     * checkActionReady
+     *
+     * 2/09/2020 08:16
+     * @return bool
+     */
+    public static function checkActionReady(): bool
+    {
+        return self::getDefinition()->isValidPage();
+    }
+
+    /**
+     * getRoute
+     *
+     * 2/09/2020 08:21
+     * @return string
+     */
+    public static function getRoute(): string
+    {
+        return self::getDefinition()->getRoute();
     }
 }

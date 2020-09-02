@@ -24,6 +24,8 @@ use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Locale;
 use App\Modules\System\Entity\Module;
+use App\Modules\System\Entity\PageDefinition;
+use App\Modules\System\Exception\InvalidActionException;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
@@ -40,6 +42,7 @@ use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
+use PhpParser\Node\Expr\Throw_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,11 +95,6 @@ class PageManager
      * @var AuthorizationCheckerInterface
      */
     private $checker;
-
-    /**
-     * @var string|null
-     */
-    private $route;
 
     /**
      * @var string|null
@@ -184,6 +182,11 @@ class PageManager
     private $title;
 
     /**
+     * @var PageDefinition
+     */
+    private PageDefinition $definition;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -201,6 +204,7 @@ class PageManager
      * @param UrlGeneratorHelper $urlGeneratorHelper
      * @param LoggerInterface $logger
      * @param AcademicYearHelper $academicYearHelper
+     * @param PageDefinition $definition
      */
     public function __construct(
         RequestStack $stack,
@@ -218,7 +222,8 @@ class PageManager
         ImageHelper $imageHelper,
         UrlGeneratorHelper $urlGeneratorHelper,
         LoggerInterface $logger,
-        AcademicYearHelper $academicYearHelper
+        AcademicYearHelper $academicYearHelper,
+        PageDefinition $definition
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -234,6 +239,8 @@ class PageManager
         $this->moduleMenu = $moduleMenu;
         $this->logger = $logger;
         $this->setPageStyles(new ArrayCollection());
+        $definition->setRequest($this->getRequest());
+        $this->definition = $definition;
     }
 
     /**
@@ -245,11 +252,14 @@ class PageManager
     }
 
     /**
-     * @return Request
+     * getRequest
+     *
+     * 2/09/2020 10:39
+     * @return Request|null
      */
-    public function getRequest(): Request
+    public function getRequest(): ?Request
     {
-        if (null === $this->request)
+        if (!isset($this->request) || null === $this->request)
             $this->request = $this->getStack()->getCurrentRequest();
         return $this->request;
     }
@@ -257,18 +267,18 @@ class PageManager
     /**
      * @var SessionInterface
      */
-    private $session;
+    private SessionInterface $session;
 
     /**
      * @return bool
      */
     public function hasSession(): bool
     {
-        if (null === $this->session) {
+        if (!isset($this->session) || null === $this->session) {
             if ($this->getRequest() instanceof Request)
                 return $this->getRequest()->hasSession();
         }
-        return true;
+        return false;
     }
 
     /**
@@ -277,8 +287,8 @@ class PageManager
      */
     public function getSession(): ?SessionInterface
     {
-        if (null === $this->session && $this->getRequest() && $this->getRequest()->hasSession())
-            return $this->session = $this->getRequest()->getSession();
+        if ((!isset($this->session) || null === $this->session) && $this->getRequest() && $this->hasSession())
+            $this->session = $this->getRequest()->getSession();
         return $this->session;
     }
 
@@ -337,6 +347,7 @@ class PageManager
             $locale = new Locale();
             $locale->setCode('en_GB')->setRtl('N');
         }
+
         return [
             'pageHeader' => $this->getPageHeader(),
             'popup' => $this->isPopup(),
@@ -346,8 +357,8 @@ class PageManager
             'minorLinks' => $this->minorLinks->getContent(),
             'headerDetails' => $this->getHeaderDetails(),
             'route' => $this->getRoute(),
-            'action' => $this->getAction() ? $this->getAction()->toArray() : [],
-            'module' => $this->getModule() ? $this->getModule()->toArray() : [],
+            'action' => $this->getDefinition()->getActionArray(),
+            'module' => $this->getDefinition()->getModuleArray(),
             'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []) ?: '',
             'footer' => $this->getFooter(),
             'translations' => $this->getTranslations(),
@@ -367,32 +378,35 @@ class PageManager
 
     /**
      * getAction
+     *
+     * 1/09/2020 17:23
      * @return Action|null
      */
     private function getAction(): ?Action
     {
-        if (in_array($this->getRoute(), [null]))
-            return null;
-        return SecurityHelper::getActionFromRoute($this->getRoute());
+        return $this->getDefinition()->getAction();
     }
 
     /**
      * getModule
+     *
+     * 1/09/2020 17:22
      * @return Module|null
      */
     private function getModule(): ?Module
     {
-        return SecurityHelper::getModuleFromRoute($this->getRoute());
+        return $this->getDefinition()->getModule();
     }
 
     /**
+     * getRoute
+     *
+     * 1/09/2020 15:51
      * @return string|null
      */
     public function getRoute(): ?string
     {
-        if (null === $this->route)
-            $this->route = $this->getRequest()->get('_route');
-        return $this->route;
+        return $this->getDefinition()->getRoute();
     }
 
     /**
@@ -543,7 +557,7 @@ class PageManager
         $result['domain'] = $domain;
         $result['module'] = $moduleName;
 
-        $this->breadCrumbs->create($result, $this->getRequest()->attributes->get('action'));
+        $this->breadCrumbs->create($result, $this->getDefinition());
         return $this;
     }
 
@@ -614,81 +628,16 @@ class PageManager
         if ($this->hasSession()) {
             $this->format->setupFromSession($this->getSession());
         }
-        $this->getRequest()->attributes->set('module', false);
-        $this->getRequest()->attributes->set('action', false);
-        $route = $this->getRequest()->attributes->get('_route');
+        $this->getRequest()->attributes->set('_definition', $this->getDefinition());
+        $route = $this->getRoute();
+
         if (false === strpos($route, '_ignore_address') && null !== $route) {
-            $this->setModule();
+            $this->getModule();
         }
 
         $this->setModuleMenu();
 
         return $this;
-    }
-
-    /**
-     * setModule
-     * 9/06/2020 09:30
-     */
-    private function setModule()
-    {
-        $method = explode('::', $this->getRequest()->attributes->get('_controller'));
-        $controller = explode('\\', $this->getRequest()->attributes->get('_controller'));
-        $module = null;
-        if (in_array($method[1], ['urlRedirectAction'])) {
-            $module1 = null;
-            $action = null;
-            return;
-        } else if ($controller[0] === 'App' && $controller[1] === 'Modules' && $controller[3] === 'Controller')
-            $module = $this->getModuleName($controller[2]);
-        else {
-            $this->logger->error(sprintf('The page did not find a valid module for the route: %s', $this->getRequest()->attributes->get('_route')), [$controller]);
-            throw new MissingModuleException(implode('\\', $controller));
-        }
-
-        try {
-            if (! $this->getSession()->has('module') ||
-                ! $this->getSession()->get('module') instanceof Module ||
-                    $this->getSession()->get('module')->getName() !== $module) {
-                $moduleName = $module;
-                $module = ProviderFactory::getRepository(Module::class)->findOneByName($module);
-                if (!$module)
-                    $this->logger->error(sprintf('The page did not find a valid module for the module name: %s', $moduleName));
-
-                $this->getSession()->set('module', $module ?: false);
-            } else if ($this->getSession()->has('module') && $this->getSession()->get('module') instanceof Module)
-                $module = $this->getSession()->get('module');
-        } catch (DriverException $e) {
-            $module = null;
-        }
-        $this->getRequest()->attributes->set('module', $module ?: false);
-        if (null !== $module) {
-            $this->setAction($module);
-            SecurityHelper::setModule($module);
-        } else {
-            $this->setActionModuleByRoute();
-        }
-    }
-
-    /**
-     * setAction
-     * @param Module $module
-     */
-    private function setAction(Module $module)
-    {
-        $route = $this->getRequest()->attributes->get('_route');
-        $action = null;
-        if (!$this->getSession()->has('action') ||
-                !$this->getSession()->get('action') instanceof Action ||
-                    !in_array($route, $this->getSession()->get('action')->getrouteList())) {
-            $action = ProviderFactory::getRepository(Action::class)->findOneByModuleRoute($module, $route);
-            if (!$action)
-                $this->logger->error(sprintf('The action was not found for route %s',$route));
-            $this->getSession()->set('action', $action ?: false);
-        } else if ($this->getSession()->has('action') && $this->getSession()->get('action') instanceof Action)
-            $action = $this->getSession()->get('action');
-        $this->getRequest()->attributes->set('action', $action ?: false);
-        SecurityHelper::setAction($action);
     }
 
     /**
@@ -714,7 +663,6 @@ class PageManager
                 ]
             );
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            throw $e;
             $content = '<h1>Failed!</h1><p>'.$e->getMessage().'</p>';
         }
         return new Response($content);
@@ -865,7 +813,7 @@ class PageManager
      */
     private function setModuleMenu(): PageManager
     {
-        if (!$this->getModule() || !$this->getAction() || !$this->getAction()->isMenuShow())
+        if (!$this->getDefinition()->isValidPage() || !$this->getAction()->isMenuShow())
             return $this;
 
         $this->getModuleMenu()->setRequest($this->getRequest())->setChecker($this->getChecker())->execute();
@@ -1008,5 +956,13 @@ class PageManager
             SecurityHelper::setModule($action->getModule());
             $this->logger->debug(sprintf('The action %s was set by the route alone.', $action->getName()));
         }
+    }
+
+    /**
+     * @return PageDefinition
+     */
+    public function getDefinition(): PageDefinition
+    {
+        return $this->definition;
     }
 }

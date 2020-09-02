@@ -500,7 +500,7 @@
     source:
         table: App\Modules\System\Entity\Module
         findBy:
-            name: Timetable
+            name: Curriculum
     target: module
 -
     findBy:
