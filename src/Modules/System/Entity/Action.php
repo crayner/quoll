@@ -14,9 +14,7 @@
 namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\Security\Entity\SecurityRole;
-use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,10 +29,9 @@ use Symfony\Component\Yaml\Yaml;
  * @package App\Modules\System\Entity
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ActionRepository")
  * @ORM\Table(name="Action",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="module_restriction_name", columns={"name","restriction","module"}),
- *     @ORM\UniqueConstraint(name="entry_route_precedence",columns={"entry_route","precedence"})},
- *     indexes={@ORM\Index(name="module", columns={"module"})})
- * @UniqueEntity({"name","restriction","module"})
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="module_restriction_name", columns={"name","restriction"}),
+ *     @ORM\UniqueConstraint(name="entry_route_precedence",columns={"entry_route","precedence"})})
+ * @UniqueEntity({"name","restriction"})
  * @UniqueEntity({"entryRoute","precedence"})
  */
 class Action extends AbstractEntity
@@ -50,12 +47,11 @@ class Action extends AbstractEntity
     private string $id;
 
     /**
-     * @var Module|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\System\Entity\Module", inversedBy="actions")
-     * @ORM\JoinColumn(name="module",referencedColumnName="id")
-     * @Assert\NotBlank()
+     * @var Collection|Module[]|null
+     * @ORM\ManyToMany(targetEntity="App\Modules\System\Entity\Module", mappedBy="actions")
+     * @Assert\Count(min=1,minMessage="The action be part of one or more modules.")
      */
-    private Module $module;
+    private Collection $modules;
 
     /**
      * @var string|null
@@ -141,29 +137,61 @@ class Action extends AbstractEntity
     }
 
     /**
-     * @return Module|null
+     * getModules
+     *
+     * 2/09/2020 16:35
+     * @return Collection
      */
-    public function getModule(): ?Module
+    public function getModules(): Collection
     {
-        return $this->module;
+        if (!isset($this->modules)) $this->modules = new ArrayCollection();
+
+        if ($this->modules instanceof PersistentCollection) $this->modules->initialize();
+
+        return $this->modules;
     }
 
     /**
-     * @param Module|null $module
+     * setModules
+     *
+     * 2/09/2020 16:35
+     * @param Collection $modules
      * @return Action
      */
-    public function setModule(?Module $module): Action
+    public function setModules(Collection $modules): Action
     {
-        $this->module = $module;
+        $this->modules = $modules;
         return $this;
     }
 
     /**
+     * addModule
+     *
+     * 2/09/2020 16:35
+     * @param Module $module
+     * @param bool $reflect
+     * @return Action
+     */
+    public function addModule(Module $module, bool $reflect = true): Action
+    {
+        if ($this->getModules()->contains($module)) return $this;
+
+        if ($reflect) $module->addAction($this);
+
+        $this->modules->add($module);
+
+        return $this;
+    }
+
+    /**
+     * getName
+     *
+     * 2/09/2020 16:52
      * @return string|null
      */
     public function getName(): ?string
     {
-        return $this->name;
+        return isset($this->name) ? $this->name : null;
     }
 
     /**
@@ -218,13 +246,11 @@ class Action extends AbstractEntity
      * getTranslatedName
      * @return string|null
      */
-    public function getTranslatedName(): ?string
+    public function getTranslatedName(string $domain = 'messages'): ?string
     {
         if (null === $this->getName())
             return null;
-        $name = explode('_', $this->getName());
-        $domain = $this->getModule() ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
-        return TranslationHelper::translate($name[0], [], $domain);
+        return TranslationHelper::translate($this->getName(), [], $domain);
     }
 
     /**
@@ -404,19 +430,6 @@ class Action extends AbstractEntity
      */
     public function toArray(?string $name = NULL): array
     {
-        if ($name === 'module_menu') {
-            return [
-                'category' => $this->getCategory(),
-                'moduleName' => $this->getModule()->getName(),
-                'actionName' => $this->getFullName(),
-                'type' => $this->getModule()->getType(),
-                'precedence' => $this->getPrecedence(),
-                'moduleEntry' => $this->getModule()->getEntryRoute(),
-                'entryRoute' => $this->getentryRoute(),
-                'routeList' => $this->getRouteList(),
-                'name' => $this->getDisplayName(),
-            ];
-        }
         if ($name === 'actionPermissions') {
             $roles = implode(', ', $this->getSecurityRoles());
             return [

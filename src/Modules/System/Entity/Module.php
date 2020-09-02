@@ -14,7 +14,6 @@
 namespace App\Modules\System\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\Comms\Entity\NotificationEvent;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Util\TranslationHelper;
@@ -24,6 +23,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Yaml\Yaml;
@@ -122,7 +122,12 @@ class Module extends AbstractEntity
 
     /**
      * @var Collection|Action[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\System\Entity\Action", mappedBy="module", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Modules\System\Entity\Action", inversedBy="modules", orphanRemoval=true)
+     * @ORM\JoinTable(name="ModuleAction",
+     *      joinColumns={@ORM\JoinColumn(name="module",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="action",referencedColumnName="id")}
+     *  )
+     * @Assert\Count(min=1,minMessage="The module hold one or more actions.")
      */
     private ?Collection $actions;
 
@@ -433,15 +438,33 @@ class Module extends AbstractEntity
     }
 
     /**
+     * getActions
+     *
+     * 3/09/2020 07:46
+     * @param bool $sort
      * @return Collection
      */
-    public function getActions(): Collection
+    public function getActions(bool $sort = false): Collection
     {
         if (null === $this->actions)
             $this->actions = new ArrayCollection();
 
         if ($this->actions instanceof PersistentCollection)
             $this->actions->initialize();
+
+        if ($sort) {
+            try {
+                $iterator = $this->actions->getIterator();
+
+                $iterator->uasort(
+                    function (Action $a, Action $b) {
+                        return $a->getCategory().$a->getDisplayName() <= $b->getCategory().$b->getDisplayName() ? -1 : 1;
+                    }
+                );
+
+                $this->setActions(new ArrayCollection(iterator_to_array($iterator, false)));
+            } catch (Exception $e) {}
+        }
 
         return $this->actions ;
     }
@@ -455,6 +478,25 @@ class Module extends AbstractEntity
     public function setActions(Collection $actions): Module
     {
         $this->actions = $actions;
+        return $this;
+    }
+
+    /**
+     * addAction
+     *
+     * 2/09/2020 16:26
+     * @param Action $action
+     * @param bool $reflect
+     * @return Module
+     */
+    public function addAction(Action $action, bool $reflect = true): Module
+    {
+        if ($this->getActions()->contains($action)) return $this;
+
+        if ($reflect) $action->addMethod($this, false);
+
+        $this->actions->add($action);
+
         return $this;
     }
 

@@ -141,8 +141,9 @@ class ActionRepository extends ServiceEntityRepository
 
         try {
             return $this->createQueryBuilder('a')
+                ->leftJoin('a.modules', 'm')
                 ->where('a.routeList LIKE :route')
-                ->andWhere('a.module = :module')
+                ->andWhere('m = :module')
                 ->andWhere($where)
                 ->setParameters($params)
                 ->orderBy('a.precedence', 'DESC')
@@ -183,7 +184,7 @@ class ActionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->select(['a.name AS route','r.id as role','m.name AS moduleName', 'a.id', 'a.categoryPermissionStaff', 'a.categoryPermissionStudent', 'a.categoryPermissionParent', 'a.categoryPermissionOther'])
             ->leftJoin('a.roles', 'r')
-            ->leftJoin('a.module', 'm')
+            ->leftJoin('a.modules', 'm')
             ->orderBy('m.name', 'ASC')
             ->addOrderBy('a.name', 'ASC')
             ->getQuery()
@@ -197,7 +198,7 @@ class ActionRepository extends ServiceEntityRepository
     public function findModuleNameList(): array
     {
         return $this->createQueryBuilder('a')
-            ->leftJoin('a.module', 'm')
+            ->leftJoin('a.modules', 'm')
             ->groupBy('m.id')
             ->select(['m.name'])
             ->orderBy('m.name')
@@ -212,9 +213,9 @@ class ActionRepository extends ServiceEntityRepository
     public function findAllWithRolesAndModules()
     {
         return $this->createQueryBuilder('a')
-            ->select(['a','m', 'r'])
+            ->select(['a','m','r'])
             ->leftJoin('a.roles', 'r')
-            ->join('a.module', 'm')
+            ->join('a.modules', 'm')
             ->getQuery()
             ->getResult();
     }
@@ -227,7 +228,7 @@ class ActionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->select(['a','m'])
-            ->join('a.module', 'm')
+            ->join('a.modules', 'm')
             ->where('m.active = :yes')
             ->andWhere('a.menuShow = :yes')
             ->orderBy('a.name', 'ASC')
@@ -245,12 +246,12 @@ class ActionRepository extends ServiceEntityRepository
     public function findByModule(Module $module)
     {
         return $this->createQueryBuilder('a')
-            ->join('a.module', 'm')
+            ->leftJoin('a.modules', 'm')
             ->select(['a','m'])
             ->orderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
             ->addOrderBy('a.precedence', 'DESC')
-            ->where('a.module = :module')
+            ->where('m = :module')
             ->setParameter('module', $module)
             ->getQuery()
             ->getResult();

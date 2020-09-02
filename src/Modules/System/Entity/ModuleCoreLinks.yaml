@@ -1,0 +1,576 @@
+-
+    findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: course_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: timetable_calendar_map
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: timetable_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: class_enrolment_by_roll_group
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: security_role_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: staff_settings_people
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: action_permission_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: preferences
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: people_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: personal_photo_import
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: family_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: updater_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: address_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: phone_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: locality_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: custom_field_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_settings_people
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: people_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: people_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: format_name_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: system_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: third_party_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: system_check
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: string_manage
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: notification_events
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: display_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: demonstration_load
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: login
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: system_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: home
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: student_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: student_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_view
+            precedence: 3
+    target: action
+-
+    findBy:
+        entryRoute: staff_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: staff_view
+            precedence: 2
+    target: action
+-
+    findBy:
+        entryRoute: staff_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: staff_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: alert_level_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: attendance_code_configure
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: dashboard_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: special_day_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: scale_list_school
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: individual_need_config
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: facility_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: behaviour_configure
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: activity_configuration
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: planner_configure
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: academic_year_term_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: department_manage
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: roll_group_catalogue
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: house_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: resource_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: mark_book_configure
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: academic_year_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: year_group_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: days_of_the_week
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: academic_year_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: facility_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: mark_book_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: mark_book_view
+            precedence: 4
+    target: action
+-
+    findBy:
+        entryRoute: mark_book_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: mark_book_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: activity_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: activity_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: department_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: department_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: library_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: library_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: individual_need_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: individual_need_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: individual_need_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: individual_need_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: planner_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: planner_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: attendance_code_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: attendance_code_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: behaviour_settings
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: behaviour_settings
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: roll_group_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: roll_group_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: scale_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: scale_list
+            precedence: null
+    target: action

@@ -17,6 +17,7 @@ namespace App\Modules\System\Provider;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
+use App\Modules\System\Entity\PageDefinition;
 use App\Provider\AbstractProvider;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -116,14 +117,14 @@ class ActionProvider extends AbstractProvider
 
     /**
      * moduleMenuItems
-     * @param Module $module
-     * @param AuthorizationCheckerInterface $checker
+     *
+     * 2/09/2020 17:10
+     * @param PageDefinition $definition
      * @return array
      */
-    public function moduleMenuItems(Module $module): array
+    public function moduleMenuItems(PageDefinition $definition): array
     {
-        $result = $this->getRepository()->findByModule($module);
-
+        $result = $definition->getModule()->getActions(true);
         $categories = [];
         $precedence = [];
         foreach($result as $action)
@@ -132,12 +133,35 @@ class ActionProvider extends AbstractProvider
                 if ((key_exists($action->getDisplayName(), $precedence)
                         && $action->getPrecedence() > $precedence[$action->getDisplayName()])
                         || !key_exists($action->getDisplayName(), $precedence)) {
-                    $categories[$action->getCategory()][$action->getDisplayName()] = $action->toArray('module_menu');
+                    $categories[$action->getCategory()][$action->getDisplayName()] = $this->toActionArray($definition->getModule(), $action);
                     $precedence[$action->getDisplayName()] = $action->getPrecedence();
                 }
             }
         }
-
         return $categories;
+    }
+
+    /**
+     * toActionArray
+     *
+     * 3/09/2020 08:02
+     * @param Module $module
+     * @param Action $action
+     * @return array
+     */
+    private function toActionArray(Module $module, Action $action)
+    {
+        return [
+            'category' => $action->getCategory(),
+            'moduleName' => $module->getName(),
+            'actionName' => $action->getFullName(),
+            'type' => $module->getType(),
+            'precedence' => $action->getPrecedence(),
+            'moduleEntry' => $module->getEntryRoute(),
+            'entryRoute' => $action->getentryRoute(),
+            'routeList' => $action->getRouteList(),
+            'name' => $action->getDisplayName(),
+        ];
+
     }
 }

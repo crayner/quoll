@@ -1,8 +1,5 @@
-
 Add: Add
 Classes: Classes
-
-
 Participant Count: Participant Count
 Reportable: Reportable
 Course Name: Course Name
@@ -11,3 +8,4 @@ Reportable?: Reportable?
 Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
 Should this class show in reports?: Should this class show in reports?
 Track Attendance?: Track Attendance?
+Enrolment: Enrolment

@@ -23,10 +23,8 @@ detailstudentsorttype:
 2nd Tutor: 2nd Tutor
 3rd Educational Assistant: 3rd Educational Assistant
 3rd Tutor: 3rd Tutor
-
+'Roll Group: {name}': 'Roll Group: {name}'
 Academic Year: Academic Year
-
-
 Educational Assistant: Educational Assistant
 Main Tutor: Main Tutor
 Needs to be unique in the academic year.: Needs to be unique in the academic year.

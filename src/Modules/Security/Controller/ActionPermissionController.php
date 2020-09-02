@@ -136,29 +136,32 @@ class ActionPermissionController extends AbstractPageController
         file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreData.yaml', Yaml::dump($data, 5));
         file_put_contents(__DIR__ . '/../../Security/Entity/SecurityRoleCoreLinks.yaml', Yaml::dump($links, 5));
 
-        $links = [];
         $data = [];
         foreach(ProviderFactory::getRepository(Action::class)->findAll() as $action) {
             $entity = $action->toArray('buildContent');
             $data[] = $entity;
-            $item = [];
-            $item['findBy']['entryRoute'] = $action->getentryRoute();
-            $item['source']['table'] = Module::class;
-            $item['source']['findBy']['name'] = $action->getModule()->getName();
-            $item['target'] = 'module';
-            $links[] = $item;
         }
 
         file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreData.yaml', Yaml::dump($data, 5));
-        file_put_contents(__DIR__ . '/../../System/Entity/ActionCoreLinks.yaml', Yaml::dump($links, 5));
 
         $data = [];
+        $links = [];
         foreach(ProviderFactory::getRepository(Module::class)->findAll() as $module) {
             $entity = $module->toArray('buildContent');
             $data[] = $entity;
+            foreach ($module->getActions() as $action) {
+                $item = [];
+                $item['findBy']['entryRoute'] = $module->getEntryRoute();
+                $item['source']['table'] = Action::class;
+                $item['source']['findBy']['entryRoute'] = $action->getEntryRoute();
+                $item['source']['findBy']['precedence'] = $action->getPrecedence();
+                $item['target'] = 'action';
+                $links[] = $item;
+            }
         }
 
         file_put_contents(__DIR__ . '/../../System/Entity/ModuleCoreData.yaml', Yaml::dump($data, 5));
+        file_put_contents(__DIR__ . '/../../System/Entity/ModuleCoreLinks.yaml', Yaml::dump($links, 5));
 
         return '<li>Action, Modules and Security Role Data and Links</li>';
     }

@@ -241,7 +241,7 @@ class PageDefinition
     {
         return $this->validPage = $this->getModule()
             && $this->getAction()
-            && $this->getAction()->getModule() === $this->getModule()
+            && $this->getAction()->getModules()->contains($this->getModule())
             && in_array($this->getRoute(), $this->getAction()->getRouteList());
     }
 

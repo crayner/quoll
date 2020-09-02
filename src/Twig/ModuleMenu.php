@@ -68,6 +68,9 @@ class ModuleMenu implements SidebarContentInterface
 
     /**
      * execute
+     *
+     * 2/09/2020 17:14
+     * @return $this
      */
     public function execute(): ModuleMenu
     {
@@ -77,12 +80,12 @@ class ModuleMenu implements SidebarContentInterface
 
         $currentModule = $definition->getModule();
         if (CacheHelper::isStale('moduleMenu_'.$currentModule->getName())) {
-            $moduleMenuItems = ProviderFactory::create(Action::class)->moduleMenuItems($currentModule, $this->getChecker());
+            $moduleMenuItems = ProviderFactory::create(Action::class)->moduleMenuItems($definition);
             $menuItems = [];
             foreach ($moduleMenuItems as $category => &$items) {
                 foreach ($items as &$item) {
-                    $item['name'] = $this->translate($item['name'], [], $item['moduleName']);
-                    $item['active'] = $request->attributes->get('action') ? in_array($request->attributes->get('action')->getEntryRoute(), $item['routeList']) : false;
+                    $item['name'] = $this->translate($item['name'], [], $currentModule->getName());
+                    $item['active'] = in_array($definition->getAction()->getEntryRoute(), $item['routeList']);
                     $item['route'] = $item['entryRoute'];
                     $item['url'] = $this->checkURL($item);
                 }
