@@ -5,23 +5,21 @@ View Staff: View Staff
 A list of Substitution Types used at your school.: A list of Substitution Types used at your school.
 A list of posts carrying extra responsibilities.: A list of posts carrying extra responsibilities.
 A list of salary scale positions, from lowest to highest.: A list of salary scale positions, from lowest to highest.
-Abbreviation: Abbreviation
+
 Absence Approvers: Absence Approvers
 Active: Active
 Add Absence Type: Add Absence Type
 An optional list of reasons which are available when submitting this type of absence: An optional list of reasons which are available when submitting this type of absence
 Default HTML contents for the Job Opening Description field.: Default HTML contents for the Job Opening Description field.
-Delete: Delete
+
 Edit Absence Type: Edit Absence Type
-Edit: Edit
+
 Field Values: Field Values
 Full Day Absence: Full Day Absence
 Half Day Absence: Half Day Absence
 If enabled, absences of this type must be submitted for approval before they are accepted.: If enabled, absences of this type must be submitted for approval before they are accepted.
 Job Opening Description Template: Job Opening Description Template
 Must be unique. Leave as zero (0) to let the system correctly allocate a sequence.: Must be unique. Leave as zero (0) to let the system correctly allocate a sequence.
-Must be unique: Must be unique
-Name: Name
 Notification Groups: Notification Groups
 Notifications: Notifications
 Reasons: Reasons
@@ -34,7 +32,6 @@ Staff Absence Types: Staff Absence Types
 Staff Absence: Staff Absence
 Staff Coverage: Staff Coverage
 Staff Settings: Staff Settings
-Submit: Submit
 Substitute Types: Substitute Types
 The minumum number of hours for an absence to count as a full day (1.0): The minumum number of hours for an absence to count as a full day (1.0)
 The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0: The minumum number of hours for an absence to count as a half day (.5). Absences less than this count as 0
@@ -72,7 +69,6 @@ Max size of 1.5MB with a landscape ratio between 16:9 and 5:4: Max size of 1.5MB
 Personal Background Image: Personal Background Image
 Personal Calendar Feed: Personal Calendar Feed
 Personal Locale Override!: Personal Locale Override!
-Please select...: Please select...
 Qualification: Qualification
 School Details: School Details
 Staff Details: Staff Details
@@ -92,4 +88,4 @@ Personal Google Calendar ID: Personal Google Calendar ID
 Receive Email Notifications?: Receive Email Notifications?
 Search...: Search...
 Absence Settings: Absence Settings
-single: single
+

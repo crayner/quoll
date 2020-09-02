@@ -31,7 +31,6 @@ Action: Action
 Learn: Learn
 Required Data: Required Data
 Actions: Actions
-Submit: Submit
 Class: Class
 Classes: Classes
 Fast Finder: Fast Finder
@@ -52,7 +51,7 @@ Admin: Admin
 All / None: All / None
 All fields on all panels are saved together.: All fields on all panels are saved together.
 Close Message: Close Message
-Delete: Delete
+
 Errors on Tab: Errors on Tab
 File Delete: File Delete
 File Download: File Download
@@ -60,11 +59,11 @@ Installed: Installed
 Let me ponder your request: Let me ponder your request
 Open Link: Open Link
 Refresh List: Refresh List
-Return: Return
+
 The list has been refreshed.: The list has been refreshed.
 There are no records to display.: There are no records to display.
 Yes/No: Yes/No
-single: single
+
 Confirm Password: Confirm Password
 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.'
 Dr: Dr
@@ -125,10 +124,9 @@ Please check your email (address) for a successful test message.: Please check y
 The email setting where not tested as you do not have an email address recorded in your personal record.: The email setting where not tested as you do not have an email address recorded in your personal record.
 Absence Type: Absence Type
 List: List
-Must be unique: Must be unique
-Name: Name
-Abbreviation: Abbreviation
-'Please select...': 'Please select...'
+
+
+
 Assess: Assess
 Departments: Departments
 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'

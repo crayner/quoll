@@ -8,10 +8,9 @@ academicyear:
         past: Past
         upcoming: Upcoming
 Dates: Dates
-Delete: Delete
+
 Display: Display
-Edit: Edit
-Name: Name
+
 Sequence: Sequence
 Status: Status
 Edit Academic Year: Edit Academic Year
@@ -48,13 +47,11 @@ The first day must be before the last day.: The first day must be before the las
 The last day value is not valid.: The last day value is not valid.
 The school academic year should cover a whole year.: The school academic year should cover a whole year.
 The school academic year should not overlap another academic year.: The school academic year should not overlap another academic year.
-Abbreviation: Abbreviation
+
 Academic Year Terms: Academic Year Terms
 Add Academic Year Term: Add Academic Year Term
 Edit Academic Year Term: Edit Academic Year Term
 Must be unique in the Academic Year: Must be unique in the Academic Year
-Please select...: Please select...
-Submit: Submit
 'The dates overlap {name}: {first} - {last}': 'The dates overlap {name}: {first} - {last}'
 'The first day of the term is before the first day of the academic year (first_day).)': 'The first day of the term is before the first day of the academic year (first_day).)'
 'Academic Year: {value}': 'Academic Year: {value}'
@@ -95,7 +92,7 @@ Active: Active
 'Active: Yes': 'Active: Yes'
 Brief description of how scale is used.: Brief description of how scale is used.
 Descriptor: Descriptor
-Details: Details
+
 'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.': 'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.'
 Edit Scale ({name}): Edit Scale ({name})
 Grades: Grades
@@ -211,7 +208,7 @@ Moderate severity, requiring intermediate level of readiness, action, individual
 Behaviour Settings: Behaviour Settings
 Roll Groups: Roll Groups
 Add: Add
-Return: Return
+
 Scale Grade: Scale Grade
 Order: Order
 Rotate: Rotate

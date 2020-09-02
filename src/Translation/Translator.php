@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -42,16 +43,25 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
     /**
+     * @var array
+     */
+    private array $messages;
+
+    /**
      * trans
      * @param string $id
      * @param array $parameters
-     * @param string $domain
-     * @param string $locale
+     * @param string|null $domain
+     * @param string|null $locale
      * @return string
      * @throws \Exception
      */
-    public function trans($id, array $parameters = [], string $domain = null, string $locale = null)
+    public function trans($id, array $parameters = [], ?string $domain = null, ?string $locale = null)
     {
+        if (!isset($this->messages)) $this->messages = Yaml::parse(file_get_contents(__DIR__ . '/../../translations/messages.en_GB.yaml'));
+
+        if (key_exists($id, $this->messages)) $domain = 'messages';
+
         if (null === $domain)
             $domain = 'messages';
 

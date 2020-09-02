@@ -1,0 +1,13 @@
+
+Add: Add
+Classes: Classes
+
+
+Participant Count: Participant Count
+Reportable: Reportable
+Course Name: Course Name
+Must be unique for this course: Must be unique for this course
+Reportable?: Reportable?
+Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
+Should this class show in reports?: Should this class show in reports?
+Track Attendance?: Track Attendance?

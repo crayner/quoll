@@ -26,7 +26,6 @@ Confirm New Password: Confirm New Password
 Current Password: Current Password
 New Password: New Password
 Reset Password: Reset Password
-Submit: Submit
 role_route_error: 'The route "{route}" has not been entered into the Action table.'
 Your request failed due to incorrect current password.: Your request failed due to incorrect current password.
 The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
@@ -60,13 +59,12 @@ Your account has been successfully updated. You can now continue to use the syst
 Category: Category
 Child Security Roles: Child Security Roles
 Children: Children
-Delete: Delete
-Edit: Edit
+
+
 Future Years: Future Years
 Group roles.: Group roles.
 Label: Label
 Past Years: Past Years
-Please select...: Please select...
 Role Category: Role Category
 Role Label: Role Label
 Role: Role

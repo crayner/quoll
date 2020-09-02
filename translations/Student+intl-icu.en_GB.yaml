@@ -1,7 +1,6 @@
 Active: Active
-Delete: Delete
-Edit: Edit
-Name: Name
+
+
 Alerts: Alerts
 Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).: Agreements that students might be asked to sign in school (e.g. ICT Policy).
 Determines who to notify when a new student note is created.: Determines who to notify when a new student note is created.
@@ -18,7 +17,6 @@ Note Creation Notification: Note Creation Notification
 Should student notes be turned on?: Should student notes be turned on?
 Student Agreement Options: Student Agreement Options
 Student Notes: Student Notes
-Submit: Submit
 The extended version of the brief student profile includes contact information of parents.: The extended version of the brief student profile includes contact information of parents.
 The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.: The number of Behaviour concerns needed in the past 60 days to raise a high level alert on a student.
 The number of Behaviour concerns needed in the past 60 days to raise a low level alert on a student.: The number of Behaviour concerns needed in the past 60 days to raise a low level alert on a student.
@@ -33,7 +31,7 @@ student:
 Add Student Note Category: Add Student Note Category
 Edit Student Note Category: Edit Student Note Category
 HTML code to be inserted into blank note.: HTML code to be inserted into blank note.
-Must be unique: Must be unique
+
 Settings: Settings
 Student Settings: Student Settings
 Students: Students
@@ -51,7 +49,6 @@ Student Note Categories: Student Note Categories
 Graduation Year: Graduation Year
 Next School: Next School
 Personal Locale Override!: Personal Locale Override!
-Please select...: Please select...
 Previous School: Previous School
 Reason for Departure: Reason for Departure
 Student Details: Student Details

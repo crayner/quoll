@@ -14,7 +14,6 @@ Personal Theme: Personal Theme
 Receive Email Notifications?: Receive Email Notifications?
 Reset Password: Reset Password
 Settings: Settings
-Submit: Submit
 System Default: System Default
 Manage People: Manage People
 Address 1 Country: Address 1 Country
@@ -172,7 +171,6 @@ Phone 1: Phone 1
 Phone 2: Phone 2
 Phone 3: Phone 3
 Phone 4: Phone 4
-Please select...: Please select...
 'School Information: {name}': 'School Information: {name}'
 'System Access: {name}': 'System Access: {name}'
 Type, country code, number.: Type, country code, number.
@@ -188,7 +186,6 @@ Date: Date
 Delete Person: Delete Person
 Family: Family
 Full: Full
-Name: Name
 Photo: Photo
 'Use the {anchor}references{endAnchor} details to change your own password.': 'Use the {anchor}references{endAnchor} details to change your own password.'
 Add Person: Add Person
@@ -243,9 +240,9 @@ Contact by SMS?: Contact by SMS?
 Contact by phone call?: Contact by phone call?
 Data Access: Data Access
 Data Access?: Data Access?
-Delete: Delete
+
 Edit Family: Edit Family
-Edit: Edit
+
 Family Name: Family Name
 Formal Family Name: Formal Family Name
 General Information: General Information
@@ -509,7 +506,7 @@ Custom Fields: Custom Fields
 Assigned Roles: Assigned Roles
 Employment Details: {name}: Employment Details: {name}
 Employment: Employment
-Return: Return
+
 A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.: A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.
 A list of ethnicities available in system: A list of ethnicities available in system
 A list of nationalities available in system. If blank, system will default to list of countries: A list of nationalities available in system. If blank, system will default to list of countries

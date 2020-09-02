@@ -17,7 +17,6 @@ Payment: Payment
 Should activities be organised around dates (flexible) or terms (easy)?: Should activities be organised around dates (flexible) or terms (easy)?
 Should we hide the cost of activities provided by an outside agency from the Activities View?: Should we hide the cost of activities provided by an outside agency from the Activities View?
 Should we turn off the option to sign up for activities provided by an outside agency?: Should we turn off the option to sign up for activities provided by an outside agency?
-Submit: Submit
 System-wide access control: System-wide access control
 The most a student can sign up for in one term. Set to 0 for unlimited.: The most a student can sign up for in one term. Set to 0 for unlimited.
 activitysettingstype:

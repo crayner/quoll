@@ -1,5 +1,4 @@
-Abbreviation: Abbreviation
-Name: Name
+
 Timetable: Timetable
 Timetables in Academic Year {name}: Timetables in Academic Year {name}
 Timetables: Timetables
@@ -8,7 +7,6 @@ active: active
 Academic Year: Academic Year
 Active: Active
 Display Mode: Display Mode
-Submit: Submit
 This value is locked.: This value is locked.
 timetable:
     displaymode:
@@ -22,17 +20,16 @@ Add: Add
 Column Rows: Column Rows
 Column: Column
 Columns: Columns
-Delete: Delete
-Details: Details
+
+
 Edit Timetable Column Row {column}-{name}: Edit Timetable Column Row {column}-{name}
 Edit Timetable Column {name}: Edit Timetable Column {name}
 Edit Timetable {name}: Edit Timetable {name}
-Edit: Edit
+
 End Time: End Time
 Header Background Colour: Header Background Colour
 Header Text Colour: Header Text Colour
-Please select...: Please select...
-Return: Return
+
 Rows: Rows
 Start Time: Start Time
 Time: Time
@@ -73,7 +70,7 @@ Timetable Calendar Mapping: Timetable Calendar Mapping
 Timetable Content Instructions: Timetable Content Instructions
 Order: Order
 Timetable Calendar Map: Timetable Calendar Map
-single: single
+
 Link to Calendar Days: Link to Calendar Days
 Link to Week Days: Link to Week Days
 Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.: Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.
@@ -102,3 +99,5 @@ Courses and Classes: Courses and Classes
 Reports: Reports
 Roll Group: Roll Group
 Student: Student
+Add Course: Add Course
+Edit Course {name}: Edit Course {name}

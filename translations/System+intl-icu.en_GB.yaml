@@ -104,7 +104,6 @@ Session Duration: Session Duration
 Set the SMTP port number - likely to be 25, 465 or 587.: Set the SMTP port number - likely to be 25, 465 or 587.
 Set the hostname of the mail server.: Set the hostname of the mail server.
 Should payments be enabled across the system?: Should payments be enabled across the system?
-Submit: Submit
 Sunday: Sunday
 System Administrator: System Administrator
 System Name: System Name
@@ -140,9 +139,9 @@ Apache Modules: Apache Modules
 Case Sensitive: Case Sensitive
 Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.: Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.
 Database collation should be set to {collation}: Database collation should be set to {collation}
-Delete: Delete
+
 Edit String: Edit String
-Edit: Edit
+
 Enabled: Enabled
 File Permissions: File Permissions
 Files publicly writeable: Files publicly writeable
@@ -185,7 +184,6 @@ Active: Active
 Listening Count: Listening Count
 Main Menu Category Order: Main Menu Category Order
 Module: Module
-Name: Name
 Notification Events: Notification Events
 'The settings used here are cached and changes will not be reflected in the display configuration immediately.': 'The settings used here are cached and changes will not be reflected in the display configuration immediately.'
 database_build_warning: 'Once the correct settings for your database are verified, the database will be built when you click the "Proceed" button below. This is a process that can take minutes to complete.  Your patience is appreciated.'
@@ -250,7 +248,6 @@ Google Developer Key: Google Developer Key
 Google integration has been turned off.: Google integration has been turned off.
 Must be unique. System login name. Cannot be changed.: Must be unique. System login name. Cannot be changed.
 Password: Password
-Please select...: Please select...
 Surname: Surname
 System User Account: System User Account
 The link that points to the school's email system: The link that points to the school's email system
@@ -319,7 +316,7 @@ settinglists:
         development: Development
         production: Production
         testing: Testing
-single: single
+
 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.': 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.'
 Next Table: Next Table
 '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>': '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>'

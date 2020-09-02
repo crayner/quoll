@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -34,13 +35,17 @@ class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, L
     /**
      * @var TranslatorInterface
      */
-    private $translator;
-
+    private TranslatorInterface $translator;
 
     /**
      * @var RequestStack
      */
-    private $stack;
+    private RequestStack $stack;
+
+    /**
+     * @var array
+     */
+    private array $messages;
 
     /**
      * Translator constructor.
@@ -63,6 +68,10 @@ class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, L
      */
     public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null)
     {
+        if (!isset($this->messages)) $this->messages = Yaml::parse(file_get_contents(__DIR__ . '/../../translations/messages.en_GB.yaml'));
+
+        if (key_exists($id, $this->messages)) $domain = 'messages';
+
         if (null === $domain)
             $domain = 'messages';
 
