@@ -4,6 +4,15 @@
     source:
         table: App\Modules\System\Entity\Action
         findBy:
+            entryRoute: course_enrolment_by_class_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
             entryRoute: course_list
             precedence: null
     target: action
@@ -23,6 +32,24 @@
         table: App\Modules\System\Entity\Action
         findBy:
             entryRoute: timetable_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: course_enrolment_by_class_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: timetable_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: course_list
             precedence: null
     target: action
 -
@@ -572,5 +599,23 @@
         table: App\Modules\System\Entity\Action
         findBy:
             entryRoute: scale_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: enrolment_course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: course_enrolment_by_class_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: enrolment_course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: course_list
             precedence: null
     target: action

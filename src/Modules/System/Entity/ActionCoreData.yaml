@@ -1080,6 +1080,21 @@
             - ROLE_PRINCIPAL
             - ROLE_REGISTRAR
 -
+    name: 'Course Enrolment by Class'
+    category: 'Courses and Classes'
+    description: ''
+    routeList:
+        arrayField:
+            - course_enrolment_by_class_list
+    entryRoute: course_enrolment_by_class_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_HEAD_TEACHER
+-
     name: 'Courses and Classes'
     category: 'Courses and Classes'
     description: 'Mange links between courses and classes'

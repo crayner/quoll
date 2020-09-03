@@ -45,6 +45,7 @@ class CourseController extends AbstractPageController
      * 31/08/2020 09:49
      * @param CoursePagination $pagination
      * @Route("/course/list/",name="course_list")
+     * @Route("/course/list/",name="enrolment_course_list")
      * @return JsonResponse
      */
     public function list(CoursePagination $pagination)

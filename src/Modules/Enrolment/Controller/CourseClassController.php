@@ -14,7 +14,7 @@
  * Date: 31/08/2020
  * Time: 16:30
  */
-namespace App\Modules\Curriculum\Controller;
+namespace App\Modules\Enrolment\Controller;
 
 use App\Container\Container;
 use App\Container\Panel;

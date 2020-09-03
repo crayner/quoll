@@ -259,7 +259,7 @@
     name: Enrolment
     displayName: null
     description: 'Manage Enrolment'
-    entryRoute: course_list
+    entryRoute: enrolment_course_list
     securityRoles:
         arrayField:
             - ROLE_TEACHER

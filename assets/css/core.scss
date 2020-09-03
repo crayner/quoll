@@ -646,7 +646,19 @@ table.mini td {
 table.mini tr.head th {
     padding: 5px !important ;
 }
-
+.head-dark, .head-dark:hover {
+    background-color: rgb(235,235,235);
+}
+.head-light, .head-light:hover {
+    background-color: rgb(250,250,250);
+}
+.head-light th, .head-light th:hover {
+    background-color: rgb(250,250,250);
+    color: #444;
+}
+.head-dark th, .head-dark th:hover {
+    @apply text-gray-600;
+}
 table.blank,
 table.blank > tbody > tr {
     border: none !important ;
@@ -901,4 +913,8 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 }
 .info a:hover {
     @apply text-blue-900;
+}
+.sub-pagination-header {
+    border-bottom: 1px solid #444!important;
+    margin: 10px 0 0 0;
 }

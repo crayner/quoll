@@ -21,6 +21,7 @@ export default class PaginationApp extends Component {
         super(props)
         this.pageMax = props.pageMax
         this.row = props.row
+        this.group = props.group
         this.content = props.content
         this.filters = props.row.filters
         this.messages = props.functions.mergeTranslations(props.translations)
@@ -44,6 +45,8 @@ export default class PaginationApp extends Component {
         this.functions.loadNewPage = this.loadNewPage.bind(this)
         this.functions.displayInformation = this.displayInformation.bind(this)
         this.functions.dropEvent = this.dropEvent.bind(this)
+        this.functions.headerRow = this.headerRow.bind(this)
+        this.functions.sortColumn = this.sortColumn.bind(this)
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -602,6 +605,19 @@ export default class PaginationApp extends Component {
         })
     }
 
+    headerRow(show)
+    {
+        if (this.group.name === '' || show) {
+            return (
+                <thead>
+                    <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn}
+                           sortColumnDirection={this.state.sortDirection} />
+                </thead>
+            )
+        }
+        return null
+    }
+
     render () {
         this.storeFilter()
 
@@ -625,10 +641,8 @@ export default class PaginationApp extends Component {
                 </div>
                 <Messages messages={this.state.messages} translate={this.translate} />
                 <table className={'w-full striped'}>
-                    <thead>
-                        <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
-                    </thead>
-                    <PaginationContent row={this.row} content={this.state.results} functions={this.functions} draggableSort={this.draggableSort} />
+                    {this.headerRow(false)}
+                    <PaginationContent row={this.row} group={this.group} content={this.state.results} functions={this.functions} draggableSort={this.draggableSort} />
                 </table>
                 <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
                 <InformationDetail messages={this.messages} cancel={() => this.closeConfirm()} information={this.state.information} />
@@ -640,6 +654,7 @@ export default class PaginationApp extends Component {
 PaginationApp.propTypes = {
     pageMax: PropTypes.number.isRequired,
     row: PropTypes.object.isRequired,
+    group: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
     translations: PropTypes.object.isRequired,
     storeFilterURL: PropTypes.string,

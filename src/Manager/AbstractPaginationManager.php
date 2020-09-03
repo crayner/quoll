@@ -16,6 +16,7 @@
  */
 namespace App\Manager;
 
+use App\Manager\Hidden\PaginationGroup;
 use App\Manager\Hidden\PaginationRow;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
@@ -44,6 +45,11 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @var PaginationRow
      */
     private $row;
+
+    /**
+     * @var PaginationGroup
+     */
+    private PaginationGroup $group;
 
     /**
      * @var array
@@ -166,6 +172,27 @@ abstract class AbstractPaginationManager implements PaginationInterface
     }
 
     /**
+     * getGroup
+     *
+     * 3/09/2020 08:54
+     * @return PaginationGroup|null
+     */
+    public function getGroup(): ?PaginationGroup
+    {
+        return isset($this->group) ? $this->group : null;
+    }
+
+    /**
+     * @param PaginationGroup $group
+     * @return AbstractPaginationManager
+     */
+    public function setGroup(PaginationGroup $group): AbstractPaginationManager
+    {
+        $this->group = $group;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getContent(): array
@@ -258,6 +285,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         return [
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
+            'group' => $this->getGroup() ? $this->getGroup()->toArray() : ['name' => '', 'contentKey' => ''],
             'addElementRoute' => $this->getAddElementRoute(),
             'returnRoute' => $this->getReturnRoute(),
             'refreshRoute' => $this->getRefreshRoute(),

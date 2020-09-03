@@ -98,4 +98,34 @@ class CourseClassRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findCourseClassEnrolmentPagination
+     *
+     * 3/09/2020 08:42
+     * @return array
+     */
+    public function findCourseClassEnrolmentPagination(): array
+    {
+        return $this->createQueryBuilder('cc')
+            ->select(
+                [
+                    "CONCAT(c.abbreviation,' (',c.name,')') AS courseName",
+                    'cc.name',
+                    'cc.abbreviation',
+                    "'0' AS activeParticipants",
+                    "'0' AS expectedParticipants",
+                    "'0' As totalParticipants",
+                    'cc.id',
+                    'c.id AS course_id',
+                    'yg.name AS yearGroup',
+                ]
+            )
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('c.yearGroups', 'yg')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('cc.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

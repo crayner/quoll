@@ -38,7 +38,7 @@ export default function HeaderRow(props) {
         columns.push(<th className={'column width1 text-right'} key={'actions'}>{row.actionTitle}</th>)
     }
 
-    return (<tr className={'head text-xs'}>{columns}</tr>)
+    return (<tr className={'head text-xs head-dark'}>{columns}</tr>)
 }
 
 
