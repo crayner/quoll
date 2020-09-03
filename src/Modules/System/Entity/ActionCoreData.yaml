@@ -1082,10 +1082,12 @@
 -
     name: 'Course Enrolment by Class'
     category: 'Courses and Classes'
-    description: ''
+    description: 'Manage participants within a course class'
     routeList:
         arrayField:
             - course_enrolment_by_class_list
+            - course_class_enrolment_manage
+            - course_class_enrolment_delete
     entryRoute: course_enrolment_by_class_list
     entrySidebar: true
     menuShow: true

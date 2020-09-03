@@ -22,7 +22,10 @@ use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Pagination\CourseClassEnrolmentPagination;
+use App\Modules\Enrolment\Pagination\CourseClassParticipantPagination;
+use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -61,5 +64,46 @@ class ClassEnrolmentController extends AbstractPageController
                     ->addContainer($container)
                     ->getBuiltContainers(),
             ]);
+    }
+
+    /**
+     * edit
+     *
+     * 3/09/2020 11:53
+     * @param CourseClass $class
+     * @param CourseClassParticipantPagination $pagination
+     * @return JsonResponse
+     * @Route("/course/class/{class}/enrolment/manage/",name="course_class_enrolment_manage")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function edit(CourseClass $class, CourseClassParticipantPagination $pagination)
+    {
+        $pagination->setContent(ProviderFactory::create(CourseClassPerson::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
+            ->setPageMax(50);
+
+        $container = new Container();
+        $panel = new Panel('null', 'Enrolment', new Section('pagination', $pagination));
+        $container->addPanel(AcademicYearHelper::academicYearWarning($panel));
+
+        return $this->getPageManager()
+            ->createBreadcrumbs('Course Enrolment by Class')
+            ->render([
+                'containers' => $this->getContainerManager()
+                    ->addContainer($container)
+                    ->getBuiltContainers(),
+            ]);
+    }
+
+    /**
+     * edit
+     *
+     * 3/09/2020 11:53
+     * @param CourseClass $class
+     * @Route("/course/class/{class}/enrolment/{person}/delete/",name="course_class_enrolment_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function removeEnrolment(CourseClass $class, Person $person)
+    {
+
     }
 }

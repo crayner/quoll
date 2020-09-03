@@ -91,7 +91,7 @@ class SettingsType extends AbstractType
 
 
         $manager = SettingFactory::getSettingManager();
-        if (!$manager->hasSetting($setting['scope'], $setting['name'])) {
+        if (!$manager->has($setting['scope'], $setting['name'])) {
             throw new SettingNotFoundException($setting['scope'], $setting['name']);
         }
         $setting['value'] = $manager->get($setting['scope'], $setting['name']);

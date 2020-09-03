@@ -77,7 +77,7 @@ class MarkBookFeaturesSettingType extends AbstractType
                 ]
             )
         ;
-        if (SettingFactory::getSettingManager()->hasSetting('System', 'defaultAssessmentScale', true) ) {
+        if (SettingFactory::getSettingManager()->has('System', 'defaultAssessmentScale', true) ) {
             $builder
                 ->add('enableColumnWeightingDescription', ParagraphType::class,
                     [

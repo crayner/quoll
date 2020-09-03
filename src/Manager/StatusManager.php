@@ -98,8 +98,7 @@ class StatusManager
     public function __construct(SessionInterface $session)
     {
         $this->flashBag = $session->getFlashBag();
-        $this->setStatus('default')
-            ->setMessages(new ArrayCollection());
+        $this->resetStatus();
 
     }
 
@@ -553,5 +552,18 @@ class StatusManager
     public function getFirstMessageTranslated(): string
     {
         return $this->getFirstMessage() ? $this->getFirstMessage()->getTranslatedMessage(): '';
+    }
+
+    /**
+     * resetStatus
+     *
+     * 3/09/2020 14:50
+     * @return $this
+     */
+    public function resetStatus(): StatusManager
+    {
+        $this->setStatus('default')
+            ->setMessages(new ArrayCollection());
+        return $this;
     }
 }

@@ -23,6 +23,7 @@ use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\People\Entity\Family;
@@ -105,6 +106,7 @@ class DemoDataManager
         'timetable_date' => TimetableDate::class,
         'course' => Course::class,
         'course_class' => CourseClass::class,
+        'course_class_person' => CourseClassPerson::class,
     ];
 
     /**
@@ -184,6 +186,11 @@ class DemoDataManager
         $this->getLogger()->notice(sprintf('Loading %s file into %s', $name, $entityName));
         ini_set('max_execution_time', 60);
 
+        if (key_exists('call', $rules)) {
+            $this->getLogger()->notice(sprintf('%s records added to %s from a total of %s', $this->executeRuleCall($rules, $content), $entityName, strval(count($content))));
+            return;
+        }
+
         if (key_exists('call', $content)) {
             $implements = class_implements($content['call']['class']);
             if (in_array(DemoDataInterface::class, $implements)) {
@@ -239,7 +246,7 @@ class DemoDataManager
 
             if (($valid + $invalid) % 50 === 0 && ($valid + $invalid) !== 0) {
                 $this->flush(sprintf('50 (to %s) records pushed to the database for %s from %s', $valid, $entityName, strval(count($content))));
-                ini_set('max_execution_time', 10);
+                ini_set('max_execution_time', 60);
             }
         }
         if (($valid + $invalid) > 0) $this->getLogger()->notice('Count = ' . $valid . ' created in ' . get_class($entity));
@@ -271,6 +278,7 @@ class DemoDataManager
                 'properties' => [],
                 'defaults' => [],
                 'constants' => [],
+                'call' => null,
             ]
         );
         if (is_file($this->getDataPath() . $name . '.rules.yaml')) {
@@ -631,5 +639,20 @@ class DemoDataManager
     public function getMessages(): StatusManager
     {
         return $this->messages;
+    }
+
+    /**
+     * executeRuleCall
+     *
+     * 3/09/2020 14:39
+     * @param $rules
+     * @param $content
+     * @return int
+     */
+    private function executeRuleCall($rules, $content): int
+    {
+        $provider = ProviderFactory::create($rules['call']['entityName']);
+        $method = $rules['call']['method'];
+        return $provider->$method($content, $this->getLogger());
     }
 }

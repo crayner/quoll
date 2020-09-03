@@ -75,7 +75,7 @@ class HomeController extends AbstractPageController
         $login->setToken($this->get('security.csrf.token_manager')->getToken('authenticate'));
         $sidebar->addContent($login);
 
-        if (SettingFactory::getSettingManager()->getSetting('People', 'enablePublicRegistration'))
+        if (SettingFactory::getSettingManager()->get('People', 'enablePublicRegistration'))
             $sidebar->addContent(new Register())->setDocked();
 
         try {

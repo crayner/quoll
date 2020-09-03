@@ -13,10 +13,12 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
-use App\Modules\Curriculum\Entity\CourseClass;
-use App\Modules\Curriculum\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Entity\AcademicYear;
+use App\Util\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,56 +38,57 @@ class CourseClassPersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * findAccessibleClasses
-     * @param AcademicYear $year
-     * @param Person $person
-     * @return mixed
+     * findCourseClassParticipationNonStudent
+     *
+     * 3/09/2020 12:16
+     * @param CourseClass $class
+     * @return array
      */
-    public function findAccessibleClasses(AcademicYear $year, Person $person, string $classTitle)
+    public function findCourseClassParticipationNonStudent(CourseClass $class): array
     {
-        $result = $this->createQueryBuilder('ccp')
-            ->select([
-                "CONCAT('Cla-', cc.id) AS id",
-                "CONCAT('" . $classTitle . "', c.nameShort, '.', cc.nameShort) AS text",
-                'c.name AS search'
-            ])
-            ->join('ccp.courseClass', 'cc')
-            ->join('cc.course', 'c')
-            ->where('c.academicYear = :academicYear')
-            ->andWhere('ccp.person = :person')
-            ->orderBy('text')
-            ->setParameters(['academicYear' => $year, 'person' => $person])
+        return $this->createQueryBuilder('ccp')
+            ->select(
+                [
+                    'ccp.role',
+                    "CONCAT(".PersonNameManager::formatNameQuery('p', 'Staff', 'Reversed').") AS name",
+                    'c.email',
+                    'ccp.reportable',
+                ]
+            )
+            ->where('ccp.role <> :student')
+            ->setParameter('student', 'Student')
+            ->andWhere('ccp.courseClass = :course_class')
+            ->setParameter('course_class', $class)
+            ->leftJoin('ccp.person', 'p')
+            ->leftJoin('p.contact', 'c')
             ->getQuery()
             ->getResult();
-        return $result;
     }
 
     /**
-     * findStudentsInClass
+     * findCourseClassParticipationStudent
+     *
+     * 3/09/2020 12:17
      * @param CourseClass $class
-     * @param AcademicYear $schoolYear
-     * @param \DateTime $date
      * @return array
      */
-    public function findStudentsInClass(CourseClass $class, AcademicYear $schoolYear, \DateTime $date): array
+    public function findCourseClassParticipationStudent(CourseClass $class): array
     {
         return $this->createQueryBuilder('ccp')
-            ->select(['ccp.role','p.surname','p.preferredName','p.email','p.studentID','rg.nameShort AS rollGroup'])
-            ->join('ccp.person', 'p')
-            ->join('p.studentEnrolments', 'se')
-            ->join('se.rollGroup', 'rg')
-            ->where('ccp.courseClass = :courseClass')
-            ->andWhere('p.status = :full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->andWhere('se.academicYear = :academicYear')
-            ->setParameter('courseClass', $class)
-            ->setParameter('full', 'Full')
-            ->setParameter('academicYear', $schoolYear)
-            ->setParameter('today', $date)
-            ->orderBy('ccp.role')
-            ->addOrderBy('p.surname')
-            ->addOrderBy('p.preferredName')
+            ->select(
+                [
+                    'ccp.role',
+                    "CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS name",
+                    'c.email',
+                    'ccp.reportable',
+                ]
+            )
+            ->where('ccp.role = :student')
+            ->setParameter('student', 'Student')
+            ->andWhere('ccp.courseClass = :course_class')
+            ->setParameter('course_class', $class)
+            ->leftJoin('ccp.person', 'p')
+            ->leftJoin('p.contact', 'c')
             ->getQuery()
             ->getResult();
     }

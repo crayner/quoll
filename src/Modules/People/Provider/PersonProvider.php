@@ -66,8 +66,8 @@ class PersonProvider extends AbstractProvider
         $raw = $form->get('passwordNew')->getData();
         $user = new SecurityUser($person);
         SecurityHelper::encodeAndSetPassword($user, $raw);
-        $person->setStatus(SettingFactory::getSettingManager()->getSettingByScope('People', 'publicRegistrationDefaultStatus'));
-        $role = SettingFactory::getSettingManager()->getSettingByScope('People', 'publicRegistrationDefaultRole');
+        $person->setStatus(SettingFactory::getSettingManager()->get('People', 'publicRegistrationDefaultStatus'));
+        $role = SettingFactory::getSettingManager()->get('People', 'publicRegistrationDefaultRole');
         $person->setSecurityRoles([$role]);
 
         foreach($form->get('fields')->getData() as $key=>$value)

@@ -72,9 +72,9 @@ class StudentManager
             $results = ProviderFactory::getRepository(MarkBookEntry::class)->findAttainmentOrEffortConcerns($student, AcademicYearHelper::getCurrentAcademicYear());
 
             $settingProvider = SettingFactory::getSettingManager();
-            $academicAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertLowThreshold');
-            $academicAlertMediumThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertMediumThreshold');
-            $academicAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'academicAlertHighThreshold');
+            $academicAlertLowThreshold = $settingProvider->get('Students', 'academicAlertLowThreshold');
+            $academicAlertMediumThreshold = $settingProvider->get('Students', 'academicAlertMediumThreshold');
+            $academicAlertHighThreshold = $settingProvider->get('Students', 'academicAlertHighThreshold');
 
             if (count($results) >= $academicAlertHighThreshold) {
                 $alertName = 'Low';
@@ -107,9 +107,9 @@ class StudentManager
 
             $results = ProviderFactory::getRepository(Behaviour::class)->findNegativeInLast60Days($student);
 
-            $behaviourAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertLowThreshold');
-            $behaviourAlertMediumThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertMediumThreshold');
-            $behaviourAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertHighThreshold');
+            $behaviourAlertLowThreshold = $settingProvider->get('Students', 'behaviourAlertLowThreshold');
+            $behaviourAlertMediumThreshold = $settingProvider->get('Students', 'behaviourAlertMediumThreshold');
+            $behaviourAlertHighThreshold = $settingProvider->get('Students', 'behaviourAlertHighThreshold');
 
             if (count($results) >= $behaviourAlertHighThreshold) {
                 $alertName = 'Low';

@@ -14,7 +14,6 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Manager\Traits\BooleanList;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -35,65 +34,67 @@ class CourseClassPerson extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
-    use BooleanList;
-
     /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="CourseClass", inversedBy="courseClassPeople")
-     * @ORM\JoinColumn(name="course_class", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="course_class",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
-    private $courseClass;
+    private ?CourseClass $courseClass;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var string|null
      * @ORM\Column(length=16)
-     * @Assert\NotBlank()
-     * @Assert\Choice({"Student","Teacher","Assistant","Technician","Parent","Student - Left","Teacher - Left"})
+     * @Assert\Choice(callback="getRoleList")
      */
-    private $role = '';
+    private string $role;
 
     /**
      * @var array
      */
-    private static $roleList = ['Student','Teacher','Assistant','Technician','Parent','Student - Left','Teacher - Left'];
+    private static array $roleList = ['Student','Teacher','Assistant','Technician','Volunteer','Student - Left','Teacher - Left'];
 
     /**
-     * @var string|null
-     * @ORM\Column(length=1, options={"default": "Y"})
-     * @Assert\Choice({"Y","N"})
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $reportable = 'Y';
+    private bool $reportable = true;
 
     /**
+     * getId
+     *
+     * 3/09/2020 11:23
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
-     * Id.
+     * setId
      *
+     * 3/09/2020 11:23
      * @param string|null $id
-     * @return CourseClassPerson
+     * @return $this
      */
     public function setId(?string $id): CourseClassPerson
     {
@@ -138,38 +139,41 @@ class CourseClassPerson extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getRole(): ?string
+    public function getRole(): string
     {
         return $this->role;
     }
 
     /**
-     * @param string|null $role
+     * setRole
+     *
+     * 3/09/2020 11:24
+     * @param string $role
      * @return CourseClassPerson
      */
-    public function setRole(?string $role): CourseClassPerson
+    public function setRole(string $role): CourseClassPerson
     {
         $this->role = in_array($role, self::getRoleList()) ? $role : '';
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return bool
      */
-    public function getReportable(): ?string
+    public function isReportable(): bool
     {
         return $this->reportable;
     }
 
     /**
-     * @param string|null $reportable
+     * @param bool $reportable
      * @return CourseClassPerson
      */
-    public function setReportable(?string $reportable): CourseClassPerson
+    public function setReportable(bool $reportable): CourseClassPerson
     {
-        $this->reportable = self::checkBoolean($reportable, 'Y');
+        $this->reportable = $reportable;
         return $this;
     }
 
@@ -198,45 +202,5 @@ class CourseClassPerson extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [];
-    }
-
-    /**
-     * create
-     * @return string
-     */
-    public function create(): array
-    {
-        return ["CREATE TABLE `__prefix__CourseClassPerson` (
-                    `id` CHAR(36) NOT NULL COMMENT '(DC2Type:guid)',
-                    `role` CHAR(16) NOT NULL,
-                    `reportable` CHAR(1) NOT NULL DEFAULT 'Y',
-                    `course_class` CHAR(36) DEFAULT NULL,
-                    `person` CHAR(36) DEFAULT NULL,
-                    PRIMARY KEY (`id`),
-                    UNIQUE KEY `courseClassPerson` (`course_class`,`person`),
-                    KEY `person` (`person`),
-                    KEY `course_class` (`course_class`),
-                    KEY `person_role` (`person`,`role`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"];
-    }
-
-    /**
-     * foreignConstraints
-     * @return string
-     */
-    public function foreignConstraints(): string
-    {
-        return "ALTER TABLE `__prefix__CourseClassPerson`
-                    ADD CONSTRAINT FOREIGN KEY (`course_class`) REFERENCES `__prefix__CourseClass` (`id`),
-                    ADD CONSTRAINT FOREIGN KEY (`person`) REFERENCES `__prefix__Person` (`id`);";
-    }
-
-    /**
-     * getVersion
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return self::VERSION;
     }
 }

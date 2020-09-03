@@ -217,7 +217,7 @@ class SettingManager
      */
     public function set(string $scope, string $name, $value): self
     {
-        if (!$this->hasSetting($scope,$name)) {
+        if (!$this->has($scope,$name)) {
             throw new SettingNotFoundException($scope, $name);
         }
 
@@ -325,37 +325,6 @@ class SettingManager
     }
 
     /**
-     * hasSetting
-     *
-     * 30/08/2020 10:07
-     * @param string $scope
-     * @param string $name
-     * @param bool $isEmpty
-     * @dreprecated use has()
-     * @return bool
-     */
-    public function hasSetting(string $scope, string $name, bool $isEmpty = false): bool
-    {
-        trigger_deprecation('Quoll', '30 Aug/2020', 'Use has()');
-        return $this->has($scope,$name,$isEmpty);
-    }
-
-    /**
-     * getSetting
-     * @param string $scope
-     * @param string $name
-     * @param null $default
-     * @return array|bool|int|object|string|null
-     * @throws Exception
-     * 22/07/2020 11:15
-     * @deprecated Use get(string $scope, string $name, $default = null)
-     */
-    public function getSetting(string $scope, string $name, $default = null)
-    {
-        return $this->get($scope,$name,$default);
-    }
-
-    /**
      * get
      * @param string $scope
      * @param string $name
@@ -365,7 +334,7 @@ class SettingManager
      */
     public function get(string $scope, string $name, $default = null)
     {
-        if (!$this->hasSetting($scope, $name)) {
+        if (!$this->has($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
         }
 
@@ -439,7 +408,7 @@ class SettingManager
      */
     public function getSettingType(string $scope, string $name)
     {
-        if (!$this->hasSetting($scope, $name)) {
+        if (!$this->has($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
         }
 
@@ -457,7 +426,7 @@ class SettingManager
      */
     public function getSettingClass(string $scope, string $name): ?string
     {
-        if (!$this->hasSetting($scope, $name)) {
+        if (!$this->has($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
         }
 
@@ -476,7 +445,7 @@ class SettingManager
      */
     public function getSettingMethod(string $scope, string $name): ?string
     {
-        if (!$this->hasSetting($scope, $name)) {
+        if (!$this->has($scope, $name)) {
             throw new SettingNotFoundException($scope, $name);
         }
 

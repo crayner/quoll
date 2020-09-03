@@ -57,10 +57,10 @@ class MinorLinks implements ContentInterface
         $person = $this->getPerson();
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
-            if (SettingFactory::getSettingManager()->hasSetting('System', 'webLink', true)) {
+            if (SettingFactory::getSettingManager()->has('System', 'webLink', true)) {
                 $links[] = [
-                    'url' => SettingFactory::getSettingManager()->getSetting('System', 'webLink'),
-                    'text' => SettingFactory::getSettingManager()->getSetting('System', 'organisationAbbreviation', 'Quoll'),
+                    'url' => SettingFactory::getSettingManager()->get('System', 'webLink'),
+                    'text' => SettingFactory::getSettingManager()->get('System', 'organisationAbbreviation', 'Quoll'),
                     'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
@@ -111,19 +111,19 @@ class MinorLinks implements ContentInterface
                 'url' => UrlGeneratorHelper::getUrl('preferences'),
                 'translation_domain' => 'People',
             ];
-            if ($provider->hasSetting('System','emailLink', true)) {
+            if ($provider->has('System','emailLink', true)) {
                 $links[] = [
                     'class' => 'link-white',
                     'text' => TranslationHelper::translate('Email', [], 'People'),
-                    'url' => $provider->getSetting('System','emailLink'),
+                    'url' => $provider->get('System','emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
                 ];
             }
-            if ($provider->hasSetting('System','webLink', true)) {
+            if ($provider->has('System','webLink', true)) {
                 $links[] = [
-                    'url' => $provider->getSetting('System','webLink'),
-                    'text' => $provider->getSetting('System', 'organisationAbbreviation'),
+                    'url' => $provider->get('System','webLink'),
+                    'text' => $provider->get('System', 'organisationAbbreviation'),
                     'translation_domain' => 'School',
                     'target' => '_blank',
                     'class' => 'link-white',

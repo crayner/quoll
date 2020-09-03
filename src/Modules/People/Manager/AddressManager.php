@@ -52,7 +52,7 @@ class AddressManager
     public function __construct(ParameterBagInterface $bag)
     {
         $this->bag = $bag;
-        $this->country = SettingFactory::getSettingManager()->getSetting('System', 'country');
+        $this->country = SettingFactory::getSettingManager()->get('System', 'country');
     }
 
     /**

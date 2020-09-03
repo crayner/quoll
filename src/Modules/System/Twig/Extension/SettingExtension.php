@@ -50,7 +50,7 @@ class SettingExtension extends AbstractExtension
      */
     public function getSettingByScope(string $scope, string $name, bool $returnRow = false)
     {
-        return SettingFactory::getSettingManager()->getSettingByScope($scope, $name, $returnRow);
+        return SettingFactory::getSettingManager()->get($scope, $name, $returnRow);
     }
 
     /**

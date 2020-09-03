@@ -101,18 +101,8 @@ class CourseClassEnrolmentPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('course_class_edit')
-            ->setRouteParams(['class' => 'id', 'course' => 'course_id'])
-        );
-
-        $action = new PaginationAction();
-        $row->addAction($action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
-            ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('course_class_delete')
-            ->setDisplayWhen('canDelete')
-            ->setRouteParams(['class' => 'id', 'course' => 'course_id'])
+            ->setRoute('course_class_enrolment_manage')
+            ->setRouteParams(['class' => 'id'])
         );
 
         foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $yg) {
