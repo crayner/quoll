@@ -149,4 +149,26 @@ abstract class AbstractPageController extends AbstractController
             ]
         );
     }
+
+    /**
+     * isPostContent
+     *
+     * 4/09/2020 10:35
+     * @return bool
+     */
+    protected function isPostContent(): bool
+    {
+        return $this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '';
+    }
+
+    /**
+     * jsonDecode
+     *
+     * 4/09/2020 10:34
+     * @return array
+     */
+    protected function jsonDecode(): array
+    {
+        return json_decode($this->getRequest()->getContent(), true);
+    }
 }

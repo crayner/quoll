@@ -138,7 +138,7 @@ class CourseClass extends AbstractEntity
      */
     public function getCourse(): ?Course
     {
-        return $this->course;
+        return isset($this->course) ? $this->course : null;
     }
 
     /**
@@ -403,5 +403,27 @@ class CourseClass extends AbstractEntity
             'course_id' => $this->getCourse()->getId(),
         ];
         return [];
+    }
+
+    /**
+     * getAbbreviatedName
+     *
+     * 4/09/2020 09:23
+     * @return string
+     */
+    public function getAbbreviatedName(): string
+    {
+        return $this->getCourse() ? $this->getCourse()->getAbbreviation() . '.' . ($this->getAbbreviation() ?: '?') : '????.' . ($this->getAbbreviation() ?: '?');
+    }
+
+    /**
+     * getFullName
+     *
+     * 4/09/2020 09:23
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
     }
 }

@@ -47,9 +47,7 @@ class CourseClassPersonProvider extends AbstractProvider
     public function findCourseClassParticipationPagination(CourseClass $class): array
     {
         $result = $this->getRepository()->findCourseClassParticipationNonStudent($class);
-        $result = array_merge($result, $this->getRepository()->findCourseClassParticipationStudent($class));
-
-        return $result;
+        return array_merge($result, $this->getRepository()->findCourseClassParticipationStudent($class));
     }
 
     /**
@@ -139,5 +137,17 @@ class CourseClassPersonProvider extends AbstractProvider
             return $flushCount;
         }
         return $count;
+    }
+
+    /**
+     * canDelete
+     *
+     * 4/09/2020 09:33
+     * @return bool
+     * @todo Build reasons to not remove enrolment
+     */
+    public function canDelete(): bool
+    {
+        return true;
     }
 }

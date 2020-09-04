@@ -19,6 +19,7 @@ namespace App\Modules\People\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\People\Validator\StaffStudent;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
@@ -1016,4 +1017,21 @@ class Person extends AbstractEntity
         return $this->formatName($style);
     }
 
+    /**
+     * getFullNameReversedWithRollGroup
+     *
+     * 4/09/2020 12:02
+     * @return string
+     */
+    public function getFullNameReversedWithRollGroup(): string
+    {
+        if ($this->isStudent()) {
+            foreach ($this->getStudent()->getStudentEnrolments() as $se) {
+                if ($se->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) {
+                    return '('.$se->getRollGroup()->getAbbreviation() . ') ' . $this->formatName('Reversed', 'Student');
+                }
+            }
+        }
+        return $this->getFullNameReversed();
+    }
 }

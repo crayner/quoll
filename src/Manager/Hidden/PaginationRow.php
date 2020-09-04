@@ -126,7 +126,7 @@ class PaginationRow
     /**
      * Add Action.
      *
-     * @param array $actions
+     * @param PaginationAction $action
      * @return PaginationRow
      */
     public function addAction(PaginationAction $action): PaginationRow
@@ -159,7 +159,7 @@ class PaginationRow
     /**
      * Add Filter.
      *
-     * @param array $actions
+     * @param PaginationFilter $filter
      * @return PaginationRow
      */
     public function addFilter(PaginationFilter $filter): PaginationRow

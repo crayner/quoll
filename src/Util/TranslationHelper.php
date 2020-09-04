@@ -100,13 +100,20 @@ class TranslationHelper
      * translate
      * @param string|null $id
      * @param array $params
-     * @param string|null $domain
+     * @param string|bool|null $domain
      * @return string|null
      */
-    public static function translate(?string $id, array $params = [], ?string $domain = null): ?string
+    public static function translate(?string $id, array $params = [], $domain = null): ?string
     {
         if (null === self::$translator || null === $id)
             return $id;
+        if (false === $domain) {
+            foreach ($params as $key => $value)
+            {
+                $id = str_replace($key, $value, $id);
+            }
+            return $id;
+        }
         return self::$translator->trans($id, $params, str_replace(' ', '', $domain ?: self::getDomain()));
     }
 

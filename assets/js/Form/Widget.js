@@ -298,7 +298,7 @@ export default function Widget(props) {
     if (form.type === 'display') {
         return (
             <div {...wrapper_attr}>
-                {form.value}
+                <strong className={'text-lg'}>{form.value}</strong>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

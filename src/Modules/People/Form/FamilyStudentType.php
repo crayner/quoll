@@ -82,7 +82,7 @@ class FamilyStudentType extends AbstractType
                 ->add('personName', DisplayType::class,
                     [
                         'label' => "Student's Name",
-                        'help' => 'This value cannot be changed',
+                        'help' => 'This value cannot be changed.',
                         'data' => $options['data']->getStudent()->getFullName('Standard'),
                         'mapped' => false,
                     ]

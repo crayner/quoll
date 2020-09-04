@@ -52,7 +52,10 @@ class CourseClassPersonRepository extends ServiceEntityRepository
                     'ccp.role',
                     "CONCAT(".PersonNameManager::formatNameQuery('p', 'Staff', 'Reversed').") AS name",
                     'c.email',
-                    'ccp.reportable',
+                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'ccp.id',
+                    'cc.id AS course_class_id',
+                    'course.id AS course_id'
                 ]
             )
             ->where('ccp.role <> :student')
@@ -60,7 +63,11 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->andWhere('ccp.courseClass = :course_class')
             ->setParameter('course_class', $class)
             ->leftJoin('ccp.person', 'p')
+            ->leftJoin('ccp.courseClass', 'cc')
             ->leftJoin('p.contact', 'c')
+            ->leftJoin('cc.course', 'course')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName','ASC')
             ->getQuery()
             ->getResult();
     }
@@ -80,7 +87,10 @@ class CourseClassPersonRepository extends ServiceEntityRepository
                     'ccp.role',
                     "CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS name",
                     'c.email',
-                    'ccp.reportable',
+                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'ccp.id',
+                    'cc.id AS course_class_id',
+                    'course.id AS course_id'
                 ]
             )
             ->where('ccp.role = :student')
@@ -88,7 +98,11 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->andWhere('ccp.courseClass = :course_class')
             ->setParameter('course_class', $class)
             ->leftJoin('ccp.person', 'p')
+            ->leftJoin('ccp.courseClass', 'cc')
             ->leftJoin('p.contact', 'c')
+            ->leftJoin('cc.course', 'course')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName','ASC')
             ->getQuery()
             ->getResult();
     }

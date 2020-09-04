@@ -211,10 +211,12 @@ class AcademicYear extends AbstractEntity
 
     /**
      * isEqualTo
-     * @param $entity
+     *
+     * 4/09/2020 12:15
+     * @param AcademicYear $entity
      * @return bool
      */
-    public function isEqualTo($entity): bool
+    public function isEqualTo(AcademicYear $entity): bool
     {
         if ($this->getId() !== $entity->getId())
             return false;
@@ -222,10 +224,10 @@ class AcademicYear extends AbstractEntity
         if ($this->getName() !== $entity->getName())
             return false;
 
-        if ($this->getFirstDay() !== $entity->getFirstDay())
+        if ($this->getFirstDay() === null || $entity->getFirstDay() === null || $this->getFirstDay()->format('Ymd') !== $entity->getFirstDay()->format('Ymd'))
             return false;
 
-        if ($this->getLastDay() !== $entity->getLastDay())
+        if ($this->getLastDay() === null || $entity->getLastDay() === null || $this->getLastDay()->format('Ymd') !== $entity->getLastDay()->format('Ymd'))
             return false;
 
         return true;

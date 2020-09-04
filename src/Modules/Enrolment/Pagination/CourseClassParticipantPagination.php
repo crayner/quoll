@@ -61,7 +61,7 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
 
         $column = new PaginationColumn();
         $column->setLabel('Reportable')
-            ->setContentKey('expectedParticipants')
+            ->setContentKey('reportable')
             ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
         $row->addColumn($column);
 
@@ -70,8 +70,8 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('course_class_edit')
-            ->setRouteParams(['class' => 'id', 'course' => 'course_id'])
+            ->setRoute('course_class_enrolment_edit')
+            ->setRouteParams(['class' => 'course_class_id', 'person' => 'id'])
         );
 
         $action = new PaginationAction();
@@ -80,8 +80,8 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('course_class_enrolment_delete')
-            ->setDisplayWhen('canDelete')
-            ->setRouteParams(['class' => 'id', 'person' => 'person_id'])
+            ->setOnClick('areYouSure')
+            ->setRouteParams(['class' => 'course_class_id', 'person' => 'id'])
         );
         $this->setRow($row);
 

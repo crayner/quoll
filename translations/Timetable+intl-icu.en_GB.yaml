@@ -16,16 +16,12 @@ timetable:
 Add Timetable Column: Add Timetable Column
 Add Timetable Day: Add Timetable Day
 Add Timetable: Add Timetable
-Add: Add
 Column Rows: Column Rows
 Column: Column
 Columns: Columns
-
-
 Edit Timetable Column Row {column}-{name}: Edit Timetable Column Row {column}-{name}
 Edit Timetable Column {name}: Edit Timetable Column {name}
 Edit Timetable {name}: Edit Timetable {name}
-
 End Time: End Time
 Header Background Colour: Header Background Colour
 Header Text Colour: Header Text Colour
@@ -101,3 +97,4 @@ Roll Group: Roll Group
 Student: Student
 Add Course: Add Course
 Edit Course {name}: Edit Course {name}
+Course Enrolment by Class: Course Enrolment by Class

@@ -58,7 +58,8 @@ class CourseClassRepository extends ServiceEntityRepository
             )
             ->leftJoin('cc.course', 'c')
             ->leftJoin('c.yearGroups', 'yg')
-            ->orderBy('c.name', 'ASC')
+            ->orderBy('yg.sortOrder', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
             ->addOrderBy('cc.name', 'ASC')
             ->getQuery()
             ->getResult();

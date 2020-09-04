@@ -14,6 +14,7 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\Enrolment\Validator\ClassPerson;
 use App\Modules\People\Entity\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -29,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="person", columns={"person"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="course_class_person",columns={ "course_class", "person"})})
  * @UniqueEntity({"person","courseClass"})
+ * @ClassPerson()
  */
 class CourseClassPerson extends AbstractEntity
 {
@@ -76,7 +78,16 @@ class CourseClassPerson extends AbstractEntity
      * @var bool
      * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private bool $reportable = true;
+    private bool $reportable;
+
+    /**
+     * CourseClassPerson constructor.
+     * @param CourseClass|null $courseClass
+     */
+    public function __construct(?CourseClass $courseClass = null)
+    {
+        $this->setCourseClass($courseClass);
+    }
 
     /**
      * getId
@@ -164,7 +175,7 @@ class CourseClassPerson extends AbstractEntity
      */
     public function isReportable(): bool
     {
-        return $this->reportable;
+        return $this->reportable = isset($this->reportable) ? $this->reportable : $this->getCourseClass()->isReportable();
     }
 
     /**

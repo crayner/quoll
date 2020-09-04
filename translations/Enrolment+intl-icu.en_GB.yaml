@@ -1,4 +1,3 @@
-Add: Add
 Classes: Classes
 Participant Count: Participant Count
 Reportable: Reportable
@@ -9,3 +8,24 @@ Should this class allow attendance to be taken?: Should this class allow attenda
 Should this class show in reports?: Should this class show in reports?
 Track Attendance?: Track Attendance?
 Enrolment: Enrolment
+Course Enrolment by Class: Course Enrolment by Class
+Courses and Classes: Courses and Classes
+Participants: Participants
+Year Group: Year Group
+Class Role: Class Role
+Course Class: Course Class
+Edit Enrolment: Edit Enrolment
+Email: Email
+Manage {name} Enrolment: Manage {name} Enrolment
+Participant: Participant
+Remove: Remove
+Role: Role
+courseclassperson:
+    role:
+        assistant: Assistant
+        student - left: Student - Left
+        student: Student
+        teacher - left: Teacher - Left
+        teacher: Teacher
+        technician: Technician
+        volunteer: Volunteer

@@ -90,7 +90,7 @@ class FamilyCareGiverType extends AbstractType
                 ->add('familyName', DisplayType::class,
                     [
                         'label' => 'Family Name',
-                        'help' => 'This value cannot be changed',
+                        'help' => 'This value cannot be changed.',
                         'data' => $options['data']->getFamily()->getName(),
                         'mapped' => false,
                     ]
@@ -98,7 +98,7 @@ class FamilyCareGiverType extends AbstractType
                 ->add('personName', DisplayType::class,
                     [
                         'label' => "Care Giver's Name",
-                        'help' => 'This value cannot be changed',
+                        'help' => 'This value cannot be changed.',
                         'data' => $options['data']->getCareGiver()->getPerson()->formatName('Formal'),
                         'mapped' => false,
                     ]
@@ -119,7 +119,7 @@ class FamilyCareGiverType extends AbstractType
                 ->add('familyName', DisplayType::class,
                     [
                         'label' => 'Family Name',
-                        'help' => 'This value cannot be changed',
+                        'help' => 'This value cannot be changed.',
                         'data' => $options['data']->getFamily()->getName(),
                         'visible_values' => ['showCareGiverAdd'],
                         'visible_parent' => 'family_care_giver_showHideForm',

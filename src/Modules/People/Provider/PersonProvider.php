@@ -15,6 +15,7 @@
 
 namespace App\Modules\People\Provider;
 
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
 use App\Modules\People\Entity\CareGiver;
@@ -186,9 +187,6 @@ class PersonProvider extends AbstractProvider
         $people = array_merge($this->getRepository(Staff::class)->findCurrentStaffAsArray(),$people);
         $people = array_merge($this->getRepository(CareGiver::class)->findCurrentCareGiversAsArray(),$people);
 
-
-        dump($people[100],$people[700],$people[1000]);
-
         uasort($people, function($a, $b) {
             return $a['data'] < $b['data'] ? -1 : 1;
         });
@@ -214,5 +212,27 @@ class PersonProvider extends AbstractProvider
     public function getPaginationContent(): array
     {
         return $this->getRepository()->getPaginationContent();
+    }
+
+    /**
+     * getEnrolmentListByClass
+     *
+     * 4/09/2020 12:01
+     * @param CourseClass $class
+     * @return array
+     */
+    public function getEnrolmentListByClass(CourseClass $class): array
+    {
+        $result = $this->getRepository()->getStudentsByYearGroupQuery($class->getCourse()->getYearGroups())
+            ->select(['p','s','pd','c','se','rg'])
+            ->leftJoin('se.rollGroup', 'rg')
+            ->orderBy('rg.name', 'ASC')
+            ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
+        return array_merge($result, $this->getRepository()->getStaffQuery()
+            ->getQuery()
+            ->getResult());
     }
 }

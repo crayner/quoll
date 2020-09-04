@@ -27,6 +27,7 @@ use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -350,6 +351,108 @@ class PersonRepository extends ServiceEntityRepository
             ->andWhere('p.staff IS NULL')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
-
     }
+
+    /**
+     * getStaffQuery
+     *
+     * 4/09/2020 11:21
+     * @param string $status
+     * @return QueryBuilder
+     */
+    public function getStaffQuery(string $status = 'Full'): QueryBuilder
+    {
+        try {
+            $today = new \DateTimeImmutable(date('Y-m-d'));
+        } catch (\Exception $e) {
+            $today = null;
+        }
+        $this->setParams([])
+            ->addParam('status', $status)
+            ->addParam('today', $today);
+
+        return $this->getAllStaffQuery()
+            ->andWhere('p.status = :status')
+            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
+            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
+            ->setParameters($this->getParams())
+            ;
+    }
+
+    /**
+     * getAllStaffQuery
+     *
+     * 4/09/2020 11:21
+     * @return QueryBuilder
+     */
+    public function getAllStaffQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['p','s','pd','c'])
+            ->where('p.staff IS NOT NULL')
+            ->leftJoin('p.staff', 's')
+            ->leftJoin('p.personalDocumentation', 'pd')
+            ->leftJoin('p.contact', 'c')
+            ->orderBy('p.surname')
+            ->addOrderBy('p.firstName')
+       ;
+    }
+
+    /**
+     * getStudentsByYearGroupQuery
+     *
+     * 4/09/2020 11:32
+     * @param Collection $yearGroups
+     * @return QueryBuilder
+     */
+    public function getStudentsByYearGroupQuery(Collection $yearGroups): QueryBuilder
+    {
+        $query = $this->getStudentQuery()
+            ->leftJoin('s.studentEnrolments','se')
+            ->leftJoin('se.yearGroup', 'yg')
+            ->andWhere('se.academicYear = :currentAcademicYear')
+            ->setParameter('currentAcademicYear', AcademicYearHelper::getCurrentAcademicYear())
+        ;
+        $where = [];
+        foreach ($yearGroups->toArray() as $q=>$yg) {
+            $query->setParameter('yearGroup'.$q, $yg);
+            $where[] = 'se.yearGroup = :yearGroup'.$q;
+        }
+        $query->andWhere('('.implode(' OR ', $where).')');
+        return $query;
+    }
+
+    /**
+     * findAllStudentQuery
+     *
+     * 4/09/2020 11:29
+     * @param string $status
+     * @return QueryBuilder
+     */
+    public function getStudentQuery(string $status = '%'): QueryBuilder
+    {
+        return $this->getAllStudentsQuery()
+            ->andWhere('p.status LIKE :status')
+            ->setParameter('status', $status);
+    }
+
+    /**
+     * getAllStudentsQuery
+     *
+     * 4/09/2020 11:29
+     * @return QueryBuilder
+     */
+    public function getAllStudentsQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['s','p','pd','c','cd'])
+            ->where('p.student IS NOT NULL')
+            ->leftJoin('p.student', 's')
+            ->leftJoin('p.personalDocumentation', 'pd')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('s.customData', 'cd')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', 'ASC');
+    }
+
 }

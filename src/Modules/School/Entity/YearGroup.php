@@ -45,30 +45,30 @@ class YearGroup extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private string $id;
 
     /**
      * @var string|null
      * @ORM\Column(length=15)
      * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=4,name="abbreviation")
      * @Assert\NotBlank()
      */
-    private $abbreviation;
+    private ?string $abbreviation;
 
     /**
-     * @var integer
+     * @var int|null
      * @ORM\Column(type="smallint")
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=999)
     ")
      */
-    private $sortOrder;
+    private ?int $sortOrder;
 
     /**
      * @var Staff|null
@@ -76,14 +76,14 @@ class YearGroup extends AbstractEntity
      * @ORM\JoinColumn(name="head_of_year",referencedColumnName="id")
      * @Assert\Valid
      */
-    private $headOfYear;
+    private ?Staff $headOfYear;
 
     /**
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**

@@ -305,7 +305,6 @@ Religions: Religions
 Residency Status: Residency Status
 Should privacy options be turned on across the system?: Should privacy options be turned on across the system?
 Should users be allowed to set their own personal backgrounds?: Should users be allowed to set their own personal backgrounds?
-This value cannot be changed: This value cannot be changed
 Unique Email Address: Unique Email Address
 People Data Options: People Data Options
 Student Settings: Student Settings
@@ -626,7 +625,6 @@ This citizenship will be used by the school if/when required.: This citizenship 
 '{National} Visa Expiry Date': '{National} Visa Expiry Date'
 Required Data: Required Data
 Add Care Giver: Add Care Giver
-Add: Add
 "Any part of a care giver's name...": "Any part of a care giver's name..."
 "Any part of a student's name...": "Any part of a student's name..."
 'Edit Family: {name}': 'Edit Family: {name}'

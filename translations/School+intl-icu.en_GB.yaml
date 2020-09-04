@@ -113,7 +113,6 @@ Mark Book Settings: Mark Book Settings
 Must be unique for this Scale: Must be unique for this Scale
 Preselects this option when using this scale in appropriate contexts.: Preselects this option when using this scale in appropriate contexts.
 Scale: Scale
-This value cannot be changed.: This value cannot be changed.
 Configure: Configure
 Features: Features
 Groupings: Groupings
@@ -207,8 +206,6 @@ Low severity, requiring little to no readiness, action, individual support or di
 Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.: Moderate severity, requiring intermediate level of readiness, action, individual support or differentiation.
 Behaviour Settings: Behaviour Settings
 Roll Groups: Roll Groups
-Add: Add
-
 Scale Grade: Scale Grade
 Order: Order
 Rotate: Rotate
