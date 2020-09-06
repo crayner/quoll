@@ -65,7 +65,7 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="securityUser",cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -157,8 +157,8 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      */
     public function __construct(?Person $person = null)
     {
-        if ($person) $person->reflectSecurityUser($this);
         $this->setSecurityRoles([])
+            ->setPerson($person)
             ->setCanLogin(false);
     }
 
@@ -181,6 +181,9 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
+     * getPerson
+     *
+     * 6/09/2020 07:35
      * @return Person|null
      */
     public function getPerson(): ?Person
@@ -192,10 +195,10 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
      * setPerson
      *
      * 29/08/2020 10:51
-     * @param Person $person
+     * @param Person|null $person
      * @return $this
      */
-    public function setPerson(Person $person): SecurityUser
+    public function setPerson(?Person $person): SecurityUser
     {
         $this->person = $person;
         return $this;

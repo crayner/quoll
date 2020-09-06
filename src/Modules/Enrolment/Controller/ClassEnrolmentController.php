@@ -23,10 +23,13 @@ use App\Controller\AbstractPageController;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Form\CourseClassPersonType;
+use App\Modules\Enrolment\Form\MultipleCourseClassPersonType;
 use App\Modules\Enrolment\Pagination\CourseClassEnrolmentPagination;
 use App\Modules\Enrolment\Pagination\CourseClassParticipantPagination;
+use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,9 +84,35 @@ class ClassEnrolmentController extends AbstractPageController
             ->setAddElementRoute($this->generateUrl('course_class_enrolment_add', ['class' => $class->getId()]))
             ->setPageMax(50);
 
+        $form = $this->createForm(MultipleCourseClassPersonType::class, $class, ['action' => $this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()])]);
+
+        if ($this->isPostContent()) {
+            $form->submit($content = $this->jsonDecode());
+            if ($form->isValid()) {
+                foreach ($content['people'] as $id) {
+                    $person = ProviderFactory::getRepository(Person::class)->find($id);
+                    if ($person instanceof Person) {
+                        $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassPerson($class);
+                        $ccp->setPerson($person)
+                            ->setReportable($class->isReportable())
+                            ->setRole($content['role']);
+                        ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                    }
+                }
+                ProviderFactory::create(CourseClassPerson::class)->flush();
+            } else {
+                $this->getStatusManager()->invalidInputs();
+            }
+            $this->getStatusManager()->setReDirect($this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()]), true);
+            return $this->getStatusManager()->toJsonResponse();
+        }
+
         $container = new Container();
-        $panel = new Panel('null', 'Enrolment', new Section('pagination', $pagination));
-        $container->addPanel(AcademicYearHelper::academicYearWarning($panel));
+        $panel = new Panel('null', 'Enrolment', new Section('form', 'single'));
+        $panel->addSection(new Section('html', '<h3>'.TranslationHelper::translate('Participants', [], 'Enrolment').'</h3>'));
+        $panel->addSection(new Section('pagination', $pagination));
+        $container->addPanel(AcademicYearHelper::academicYearWarning($panel))
+        ->addForm('single', $form->createView());
 
         return $this->getPageManager()
             ->createBreadcrumbs(['Manage {name} Enrolment', ['{name}' => $class->getAbbreviatedName()], 'Enrolment'],

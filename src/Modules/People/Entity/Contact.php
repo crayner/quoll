@@ -53,12 +53,12 @@ class Contact extends AbstractEntity
     private $id;
 
     /**
-     * @var Person
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="contact")
+     * @var Person|null
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var string|null
@@ -135,7 +135,7 @@ class Contact extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        if ($person) $person->reflectContact($this);
+        $this->setPerson($person);
     }
 
     /**
@@ -165,9 +165,11 @@ class Contact extends AbstractEntity
     }
 
     /**
+     * setPerson
+     *
+     * 6/09/2020 07:58
      * @param Person $person
-     * @param bool $reflect
-     * @return Contact
+     * @return $this
      */
     public function setPerson(Person $person): Contact
     {

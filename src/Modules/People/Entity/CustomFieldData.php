@@ -20,6 +20,7 @@ use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,13 +33,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     uniqueConstraints={@ORM\UniqueConstraint(name="staff_field",columns={"staff","custom_field"}),
  *      @ORM\UniqueConstraint(name="student_field",columns={"student","custom_field"}),
  *      @ORM\UniqueConstraint(name="care_giver_field",columns={"care_giver","custom_field"})},
- *     indexes={@ORM\Index(name="staff",columns={"staff"}),
- *      @ORM\Index(name="field",columns={"custom_field"}),
- *      @ORM\Index(name="student",columns={"student"}),
- *      @ORM\Index(name="care_giver",columns={"care_giver"})})
+ *     indexes={@ORM\Index(name="student",columns={"student"}),
+ *      @ORM\Index(name="staff",columns={"staff"}),
+ *      @ORM\Index(name="custom_field",columns={"custom_field"}),
+ *      @ORM\Index(name="care_giver",columns={"care_giver"})}
+ *     )
  * @UniqueEntity({"customField","staff"})
- * @UniqueEntity({"customField","student"})
  * @UniqueEntity({"customField","careGiver"})
+ * @UniqueEntity({"customField","student"})
  */
 class CustomFieldData extends AbstractEntity
 {
@@ -69,10 +71,10 @@ class CustomFieldData extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="customData")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student")
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=true)
      */
-    private $student;
+    private ?Collection $student;
 
     /**
      * @var CareGiver|null
@@ -110,7 +112,7 @@ class CustomFieldData extends AbstractEntity
     public function __construct(?EntityInterface $member = null, ?CustomField $customField = null)
     {
         if ($member instanceof Staff) $this->staff = $member;
-        if ($member instanceof Student) $this->student = $member;
+
         if ($member instanceof CareGiver) $this->careGiver = $member;
         $this->customField = $customField;
     }

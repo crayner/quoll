@@ -29,3 +29,4 @@ courseclassperson:
         teacher: Teacher
         technician: Technician
         volunteer: Volunteer
+'"{name}" must not be assigned as a "{role}".': '"{name}" must not be assigned as a "{role}".'

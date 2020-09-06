@@ -58,8 +58,8 @@ class CourseClassPersonRepository extends ServiceEntityRepository
                     'course.id AS course_id'
                 ]
             )
-            ->where('ccp.role <> :student')
-            ->setParameter('student', 'Student')
+            ->where('ccp.role NOT LIKE :student')
+            ->setParameter('student', 'Student%')
             ->andWhere('ccp.courseClass = :course_class')
             ->setParameter('course_class', $class)
             ->leftJoin('ccp.person', 'p')
@@ -93,8 +93,8 @@ class CourseClassPersonRepository extends ServiceEntityRepository
                     'course.id AS course_id'
                 ]
             )
-            ->where('ccp.role = :student')
-            ->setParameter('student', 'Student')
+            ->where('ccp.role LIKE :student')
+            ->setParameter('student', 'Student%')
             ->andWhere('ccp.courseClass = :course_class')
             ->setParameter('course_class', $class)
             ->leftJoin('ccp.person', 'p')

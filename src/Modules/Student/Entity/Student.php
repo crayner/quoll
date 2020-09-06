@@ -66,7 +66,7 @@ class Student extends AbstractEntity
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="student")
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      */
     private ?Person $person = null;
@@ -84,8 +84,8 @@ class Student extends AbstractEntity
     private ?array $studentAgreements;
 
     /**
-     * @var StudentEnrolment[]|Collection||null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="student")
+     * @var Collection|StudentEnrolment[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment",mappedBy="student")
      */
     private ?Collection $studentEnrolments;
 
@@ -160,10 +160,9 @@ class Student extends AbstractEntity
     private ?Collection $memberOfFamilies = null;
 
     /**
-     * @var Collection|CustomFieldData[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\People\Entity\CustomFieldData",mappedBy="student",cascade={"all"},orphanRemoval=true,fetch="EXTRA_LAZY")
+     * @var Collection|null
      */
-    private ?Collection $customData = null;
+    private ?Collection $customData;
 
     /**
      * Contact constructor.
@@ -171,8 +170,7 @@ class Student extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        if ($person) $person->reflectStudent($this);
-        $this->setCustomData(new ArrayCollection());
+        $this->setPerson($person);
     }
 
     /**
@@ -567,7 +565,7 @@ class Student extends AbstractEntity
      */
     public function getCustomData(): Collection
     {
-        if ($this->customData === null) $this->customData = new ArrayCollection();
+        if (!isset($this->customData)) $this->customData = new ArrayCollection();
 
         if ($this->customData instanceof PersistentCollection) $this->customData->initialize();
 

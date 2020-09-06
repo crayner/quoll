@@ -445,12 +445,11 @@ class PersonRepository extends ServiceEntityRepository
     public function getAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('p')
-            ->select(['s','p','pd','c','cd'])
+            ->select(['s','p','pd','c'])
             ->where('p.student IS NOT NULL')
             ->leftJoin('p.student', 's')
             ->leftJoin('p.personalDocumentation', 'pd')
             ->leftJoin('p.contact', 'c')
-            ->leftJoin('s.customData', 'cd')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }

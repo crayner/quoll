@@ -50,7 +50,7 @@ class CareGiver extends AbstractEntity
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="careGiver",cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",cascade={"persist"})
      * @ORM\JoinColumn(name="person",referencedColumnName="id")
      * @Assert\NotBlank()
      */

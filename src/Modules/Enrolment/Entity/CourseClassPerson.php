@@ -49,7 +49,6 @@ class CourseClassPerson extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="CourseClass", inversedBy="courseClassPeople")
      * @ORM\JoinColumn(name="course_class",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
-     * @Assert\NotNull()
      */
     private ?CourseClass $courseClass;
 
@@ -58,8 +57,7 @@ class CourseClassPerson extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
-     * @Assert\NotNull()
-     */
+    */
     private ?Person $person;
 
     /**

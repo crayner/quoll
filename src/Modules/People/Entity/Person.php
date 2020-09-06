@@ -24,6 +24,7 @@ use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -51,7 +52,6 @@ use Symfony\Component\Validator\Constraints as ASSERT;
  * @UniqueEntity("personalDocumentation")
  * @UniqueEntity("careGiver")
  * @StaffStudent()
- * @ORM\HasLifecycleCallbacks()
  */
 class Person extends AbstractEntity
 {
@@ -73,61 +73,50 @@ class Person extends AbstractEntity
     private $title;
 
     /**
-     * @var array
+     * @var string|null
+     * @ORM\Column(length=60)
+     * @ASSERT\NotBlank()
      */
-    private static $titleList = [
-        'Ms',
-        'Miss',
-        'Mr',
-        'Mrs',
-        'Dr',
-    ];
+    private ?string $surname;
 
     /**
      * @var string|null
      * @ORM\Column(length=60)
      * @ASSERT\NotBlank()
      */
-    private $surname;
+    private ?string $firstName;
 
     /**
      * @var string|null
      * @ORM\Column(length=60)
      * @ASSERT\NotBlank()
      */
-    private $firstName;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=60)
-     * @ASSERT\NotBlank()
-     */
-    private $preferredName;
+    private ?string $preferredName;
 
     /**
      * @var string|null
      * @ORM\Column(length=150,nullable=true)
      * @ASSERT\NotBlank()
      */
-    private $officialName;
+    private ?string $officialName;
 
     /**
      * @var string|null
      * @ORM\Column(length=60,name="name_in_characters",nullable=true)
      */
-    private $nameInCharacters;
+    private ?string $nameInCharacters;
 
     /**
      * @var string|null
      * @ORM\Column(length=16,options={"default": "Unspecified"})
      * @ASSERT\Choice(callback="getGenderAssert")
      */
-    private $gender = 'Unspecified';
+    private string $gender = 'Unspecified';
 
     /**
      * @var array
      */
-    private static $genderList = [
+    private static array $genderList = [
         'Female' => 'F',
         'Male' => 'M',
         'Other' => 'Other',
@@ -139,12 +128,12 @@ class Person extends AbstractEntity
      * @ORM\Column(length=16, options={"default": "Full"})
      * @ASSERT\Choice(callback="getStatusList")
      */
-    private $status = 'Full';
+    private string $status = 'Full';
 
     /**
      * @var array
      */
-    private static $statusList = [
+    private static array $statusList = [
         'Full',
         'Expected',
         'Left',
@@ -153,45 +142,45 @@ class Person extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="student",nullable=true)
      */
-    private $student;
+    private ?Student $student = null;
 
     /**
      * @var CareGiver|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\CareGiver",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\CareGiver",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="care_giver",referencedColumnName="id")
      */
-    private $careGiver;
+    private ?CareGiver $careGiver = null;
 
     /**
-     * @var Contact|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @var Contact
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="contact",referencedColumnName="id")
      */
-    private $contact;
+    private Contact $contact;
 
     /**
      * @var PersonalDocumentation|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="personal_documentation",referencedColumnName="id")
      */
-    private $personalDocumentation;
+    private ?PersonalDocumentation $personalDocumentation = null;
 
     /**
      * @var Staff|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="staff",referencedColumnName="id")
      */
-    private $staff;
+    private ?Staff $staff = null;
 
     /**
      * @var SecurityUser|null
-     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",mappedBy="person",cascade={"all"},orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="security_user",referencedColumnName="id")
      */
-    private $securityUser;
+    private ?SecurityUser $securityUser = null;
 
     /**
      * Person constructor.
@@ -256,7 +245,7 @@ class Person extends AbstractEntity
      */
     public function getTitle(): ?string
     {
-        return $this->title = in_array(rtrim($this->title,'.'), self::$titleList) ? rtrim($this->title,'.') : '';
+        return $this->title = in_array(rtrim($this->title,'.'), self::getTitleList()) ? rtrim($this->title,'.') : '';
     }
 
     /**
@@ -431,30 +420,34 @@ class Person extends AbstractEntity
 
     /**
      * getTitleList
+     *
+     * 6/09/2020 07:40
      * @param bool $forChoice
-     * @return array|string[]
-     * 25/07/2020 12:27
+     * @return array
      */
     public static function getTitleList(bool $forChoice = false): array
     {
+        $titleList = SettingFactory::getSettingManager()->get('People', 'titleList');
+
         if ($forChoice)
         {
-            $choice = [];
-            foreach(self::$titleList as $name)
-                $choice[$name] = $name;
-            return $choice;
+            $choices = [];
+            foreach($titleList as $name)
+                $choices[$name] = $name;
+            return $choices;
         }
-        return self::$titleList;
+        return $titleList;
     }
 
     /**
      * getTitleListNull
+     *
+     * 6/09/2020 07:43
      * @return array
-     * 28/07/2020 14:35
      */
     public static function getTitleListNull(): array
     {
-        return array_merge(self::$titleList, [null,'']);
+        return array_merge(SettingFactory::getSettingManager()->get('People', 'titleList'), [null,'']);
     }
 
     /**
@@ -593,172 +586,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * isStudent
-     * @return bool
-     * 10/06/2020 11:59
-     */
-    public function isStudent(): bool
-    {
-        return $this->getStudent() instanceof Student;
-    }
-
-    /**
-     * @return Student|null
-     */
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    /**
-     * setStudent
-     *
-     * 29/08/2020 09:41
-     * @param Student|null $student
-     * @return $this
-     */
-    public function setStudent(?Student $student): Person
-    {
-        if (null !== $student && null === $student->getPerson()) return $this->reflectStudent($student);
-        $this->student = $student;
-        return $this;
-    }
-
-    /**
-     * reflectStudent
-     *
-     * 29/08/2020 12:14
-     * @param Student $student
-     * @return Person
-     */
-    public function reflectStudent(Student $student): Person
-    {
-        $this->student = $student->setPerson($this);
-        return $this;
-    }
-
-    /**
-     * isCareGiver
-     * @return bool
-     * 10/06/2020 11:59
-     */
-    public function isCareGiver(): bool
-    {
-        return $this->getCareGiver() instanceof CareGiver;
-    }
-
-    /**
-     * @return CareGiver|null
-     */
-    public function getCareGiver(): ?CareGiver
-    {
-        return $this->careGiver;
-    }
-
-    /**
-     * setCareGiver
-     *
-     * 29/08/2020 09:44
-     * @param CareGiver|null $careGiver
-     * @return $this
-     */
-    public function setCareGiver(?CareGiver $careGiver): Person
-    {
-        if (null !== $careGiver && null === $careGiver->getPerson()) return $this->reflectCareGiver($careGiver);
-        $this->careGiver = $careGiver;
-        return $this;
-    }
-
-    /**
-     * reflectCareGiver
-     *
-     * 29/08/2020 09:44
-     * @param CareGiver $careGiver
-     * @return Person
-     */
-    public function reflectCareGiver(CareGiver $careGiver): Person
-    {
-        $this->careGiver = $careGiver->setPerson($this);
-        return $this;
-    }
-
-    /**
-     * @return Contact
-     */
-    public function getContact(): Contact
-    {
-        if ($this->contact->getPerson() === null) {
-            $this->contact->setPerson($this);
-        }
-        return $this->contact;
-    }
-
-    /**
-     * setContact
-     *
-     * 29/08/2020 10:06
-     * @param Contact $contact
-     * @return $this
-     */
-    public function setContact(Contact $contact): Person
-    {
-        if (null === $contact->getPerson()) return $this->reflectContact($contact);
-        $this->contact = $contact;
-        return $this;
-    }
-
-    /**
-     * reflectContact
-     *
-     * 24/08/2020 11:30
-     * @param Contact $contact
-     * @return Person
-     */
-    public function reflectContact(Contact $contact): Person
-    {
-        $this->contact = $contact->setPerson($this);
-        return $this;
-    }
-
-    /**
-     * getPersonalDocumentation
-     *
-     * 22/08/2020 11:06
-     * @return PersonalDocumentation
-     */
-    public function getPersonalDocumentation(): PersonalDocumentation
-    {
-        return $this->personalDocumentation = $this->personalDocumentation ?: new PersonalDocumentation($this);
-    }
-
-    /**
-     * setPersonalDocumentation
-     *
-     * 22/08/2020 11:13
-     * @param PersonalDocumentation $personalDocumentation
-     * @return Person
-     */
-    public function setPersonalDocumentation(PersonalDocumentation $personalDocumentation): Person
-    {
-        if (null === $personalDocumentation->getPerson()) return $this->reflectPersonalDocumentation($personalDocumentation);
-        $this->personalDocumentation = $personalDocumentation;
-        return $this;
-    }
-
-    /**
-     * reflectPersonalDocumentation
-     *
-     * 29/08/2020 10:07
-     * @param PersonalDocumentation $personalDocumentation
-     * @return Person
-     */
-    public function reflectPersonalDocumentation(PersonalDocumentation $personalDocumentation): Person
-    {
-        $this->personalDocumentation = $personalDocumentation->setPerson($this);
-        return $this;
-    }
-
-    /**
      * isTeacher
      * @return bool
      * 18/06/2020 15:25
@@ -819,54 +646,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * isStaff
-     * @return bool
-     * 2/07/2020 09:17
-     */
-    public function isStaff(): bool
-    {
-        return $this->getStaff() instanceof Staff;
-    }
-
-    /**
-     * getStaff
-     *
-     * 29/08/2020 09:32
-     * @return Staff|null
-     */
-    public function getStaff(): ?Staff
-    {
-        return $this->staff;
-    }
-
-    /**
-     * setStaff
-     *
-     * 29/08/2020 09:32
-     * @param Staff|null $staff
-     * @return $this
-     */
-    public function setStaff(?Staff $staff): Person
-    {
-        if (null !== $staff && null === $staff->getPerson()) return $this->reflectStaff($staff);
-        $this->staff = $staff;
-        return $this;
-    }
-
-    /**
-     * reflectStaff
-     *
-     * 29/08/2020 12:15
-     * @param Staff $staff
-     * @return Person
-     */
-    public function reflectStaff(Staff $staff): Person
-    {
-        $this->staff = $staff->setPerson($this);
-        return $this;
-    }
-
-    /**
      * isSecurityUser
      * @return bool
      * 2/07/2020 09:17
@@ -874,42 +653,6 @@ class Person extends AbstractEntity
     public function isSecurityUser(): bool
     {
         return $this->getSecurityUser() instanceof SecurityUser;
-    }
-
-    /**
-     * @return SecurityUser|null
-     */
-    public function getSecurityUser(): ?SecurityUser
-    {
-        return $this->securityUser;
-    }
-
-    /**
-     * setSecurityUser
-     *
-     * 29/08/2020 10:44
-     * @param SecurityUser|null $securityUser
-     * @return $this
-     */
-    public function setSecurityUser(?SecurityUser $securityUser): Person
-    {
-        if (null !== $securityUser && null === $securityUser->getPerson()) return $this->reflectSecurityUser($securityUser);
-        $this->securityUser = $securityUser;
-        return $this;
-    }
-
-    /**
-     * reflectSecurityUser
-     *
-     * 30/08/2020 08:07
-     * @param SecurityUser $securityUser
-     * @return $this
-     */
-    public function reflectSecurityUser(SecurityUser $securityUser): Person
-    {
-        $securityUser->setPerson($this);
-        $this->securityUser = $securityUser;
-        return $this;
     }
 
     /**
@@ -962,29 +705,6 @@ class Person extends AbstractEntity
     }
 
     /**
-     * createContact
-     * 21/07/2020 08:53
-     * @ORM\PostLoad()
-     * @ORM\PrePersist()
-     */
-    public function createContactDocumentation()
-    {
-        if ($this->getContact() === null) {
-            $contact = new Contact($this);
-            ProviderFactory::getEntityManager()->persist($contact);
-        }
-        if ($this->getPersonalDocumentation() === null) {
-            $documentation = new PersonalDocumentation($this);
-            ProviderFactory::getEntityManager()->persist($documentation);
-        }
-        if ($this->getSecurityUser() === null) {
-            $user = new SecurityUser($this);
-            $user->setCanLogin(false);
-            ProviderFactory::getEntityManager()->persist($user);
-        }
-    }
-
-    /**
      * getInitial
      * @return string
      * 25/07/2020 12:21
@@ -1034,4 +754,158 @@ class Person extends AbstractEntity
         }
         return $this->getFullNameReversed();
     }
+
+    /**
+     * isStudent
+     *
+     * 6/09/2020 07:53
+     * @return bool
+     */
+    public function isStudent(): bool
+    {
+        return $this->getStudent() instanceof Student;
+    }
+
+    /**
+     * getStudent
+     *
+     * 6/09/2020 09:05
+     * @return Student|null
+     */
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student|null $student
+     * @return Person
+     */
+    public function setStudent(?Student $student): Person
+    {
+        $this->student = $student;
+        return $this;
+    }
+
+    /**
+     * isCareGiver
+     *
+     * 6/09/2020 08:25
+     * @return bool
+     */
+    public function isCareGiver(): bool
+    {
+        return $this->getCareGiver() instanceof CareGiver;
+    }
+
+    /**
+     * @return CareGiver|null
+     */
+    public function getCareGiver(): ?CareGiver
+    {
+        return $this->careGiver;
+    }
+
+    /**
+     * @param CareGiver|null $careGiver
+     * @return Person
+     */
+    public function setCareGiver(?CareGiver $careGiver): Person
+    {
+        $this->careGiver = $careGiver;
+        return $this;
+    }
+
+    /**
+     * getContact
+     *
+     * 6/09/2020 08:00
+     * @return Contact|null
+     */
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param Contact|null $contact
+     * @return Person
+     */
+    public function setContact(?Contact $contact): Person
+    {
+        $this->contact = $contact;
+        return $this;
+    }
+
+    /**
+     * getPersonalDocumentation
+     *
+     * 6/09/2020 09:05
+     * @return PersonalDocumentation|null
+     */
+    public function getPersonalDocumentation(): ?PersonalDocumentation
+    {
+        return $this->personalDocumentation;
+    }
+
+    /**
+     * setPersonalDocumentation
+     *
+     * 6/09/2020 07:35
+     * @param PersonalDocumentation|null $personalDocumentation
+     * @return $this
+     */
+    public function setPersonalDocumentation(?PersonalDocumentation $personalDocumentation): Person
+    {
+        $this->personalDocumentation = $personalDocumentation;
+        return $this;
+    }
+
+    /**
+     * isStaff
+     *
+     * 6/09/2020 07:54
+     * @return bool
+     */
+    public function isStaff(): bool
+    {
+        return $this->getStaff() instanceof Staff;
+    }
+
+    /**
+     * @return Staff|null
+     */
+    public function getStaff(): ?Staff
+    {
+        return $this->staff;
+    }
+
+    /**
+     * @param Staff|null $staff
+     * @return Person
+     */
+    public function setStaff(?Staff $staff): Person
+    {
+        $this->staff = $staff;
+        return $this;
+    }
+
+    /**
+     * @return SecurityUser|null
+     */
+    public function getSecurityUser(): ?SecurityUser
+    {
+        return $this->securityUser;
+    }
+
+    /**
+     * @param SecurityUser|null $securityUser
+     * @return Person
+     */
+    public function setSecurityUser(?SecurityUser $securityUser): Person
+    {
+        $this->securityUser = $securityUser;
+        return $this;
+    }
+
 }

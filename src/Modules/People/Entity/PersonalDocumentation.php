@@ -50,7 +50,7 @@ class PersonalDocumentation extends AbstractEntity
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",inversedBy="personalDocumentation", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",cascade={"persist"})
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -241,7 +241,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        if ($person !== null) $person->reflectPersonalDocumentation($this);
+        $this->setPerson($person);
     }
 
     /**
@@ -274,10 +274,10 @@ class PersonalDocumentation extends AbstractEntity
     }
 
     /**
-     * @param Person $person
+     * @param Person|null $person
      * @return PersonalDocumentation
      */
-    public function setPerson(Person $person): PersonalDocumentation
+    public function setPerson(?Person $person): PersonalDocumentation
     {
         $this->person = $person;
         return $this;

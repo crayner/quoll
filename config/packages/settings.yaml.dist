@@ -317,6 +317,14 @@ parameters:
                 value: craig@craigrayner.com
                 type: string
         People:
+            titleList:
+                value:
+                    - 'Mr'
+                    - 'Mrs'
+                    - Ms
+                    - Dr
+                    - Miss
+                type: array
             departureReasons:
                 value: null
                 type: string

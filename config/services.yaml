@@ -176,8 +176,3 @@ services:
         calls:
             - [ setMessages, ['@App\Manager\StatusManager'] ]
 
-    App\Modules\People\Listener\PersonListener:
-        tags:
-            - { name: 'doctrine.event_listener', event: 'prePersist' }
-            - { name: 'doctrine.event_listener', event: 'preUpdate' }
-
