@@ -171,6 +171,7 @@ abstract class AbstractProvider implements EntityProviderInterface
      * @param $id
      * @param bool $flush
      * @return EntityInterface|null
+     * @throws Exception
      */
     public function delete($id, bool $flush = true): ?EntityInterface
     {
