@@ -48,7 +48,7 @@ class CourseClass extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private string $id;
+    private ?string $id;
 
     /**
      * @var Course|null
@@ -118,7 +118,7 @@ class CourseClass extends AbstractEntity
      */
     public function getId(): ?string
     {
-        return isset($this->id) ? $this->id : null;
+        return $this->id = isset($this->id) ? $this->id : null;
     }
 
     /**

@@ -11,3 +11,4 @@ Return: Return
 Must be unique: Must be unique
 This value cannot be changed.: This value cannot be changed.
 Add: Add
+'This action will result in multiple changes to the database that may not be corrected easily. Do you wish to proceed?': 'This action will result in multiple changes to the database that may not be corrected easily. Do you wish to proceed?'

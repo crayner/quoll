@@ -328,6 +328,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Items rows can be ordered by dragging onto another item, inserting above that item when dropped.', [], 'messages');
         TranslationHelper::addTranslation('When dropping an item, ensure that the entire row is selected.', [], 'messages');
         TranslationHelper::addTranslation('Loading', [], 'messages');
+        TranslationHelper::addTranslation('Select action...', [], 'messages');
+        TranslationHelper::addTranslation('Selected Row Action', [], 'messages');
+        TranslationHelper::addTranslation('This action will result in multiple changes to the database that may not be corrected easily. Do you wish to proceed?', [], 'messages');
         return TranslationHelper::getTranslations();
     }
 

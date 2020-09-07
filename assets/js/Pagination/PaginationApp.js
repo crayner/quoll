@@ -13,8 +13,8 @@ import {fetchJson} from "../component/fetchJson"
 import {openUrl} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 import { isEmpty } from '../component/isEmpty'
-import Parser from 'html-react-parser'
 import RollGroupStudents from './Special/RollGroupStudents'
+import SelectedRowForm from './SelectedRowForm'
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -47,13 +47,18 @@ export default class PaginationApp extends Component {
         this.functions.dropEvent = this.dropEvent.bind(this)
         this.functions.headerRow = this.headerRow.bind(this)
         this.functions.sortColumn = this.sortColumn.bind(this)
+        this.functions.toggleAll = this.toggleAll.bind(this)
+        this.functions.toggleSelectedRow = this.toggleSelectedRow.bind(this)
+        this.functions.manageSelectedRowAction = this.manageSelectedRowAction.bind(this)
+        this.functions.deleteItem = this.deleteItem.bind(this)
+        this.functions.callSelectedRowAction = this.callSelectedRowAction.bind(this)
+
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
         this.lastPage = this.lastPage.bind(this)
         this.prevPage = this.prevPage.bind(this)
         this.nextPage = this.nextPage.bind(this)
-        this.deleteItem = this.deleteItem.bind(this)
         this.closeConfirm = this.closeConfirm.bind(this)
         this.adjustPageSize = this.adjustPageSize.bind(this)
         this.changeFilter = this.changeFilter.bind(this)
@@ -76,6 +81,13 @@ export default class PaginationApp extends Component {
             filter: [],
             search: '',
             messages: [],
+            selectAllRows: false,
+            rowsSelected: false,
+            waiting: false,
+            confirmOptions: {
+                function: 'deleteItem',
+                options: {path: this.path}
+            }
         }
     }
 
@@ -192,7 +204,8 @@ export default class PaginationApp extends Component {
         })
     }
 
-    deleteItem(path) {
+    deleteItem(options) {
+        let path = options.path
         this.setState({
             confirm: false
         })
@@ -470,6 +483,7 @@ export default class PaginationApp extends Component {
             })
             content = filtered
         }
+        console.log(content)
         return content
     }
 
@@ -581,7 +595,7 @@ export default class PaginationApp extends Component {
     }
 
     searchFilter() {
-        if (this.search)
+        if (this.search || this.state.rowsSelected)
             return ''
         if (Object.keys(this.filters).length > 0)
             return ''
@@ -610,12 +624,112 @@ export default class PaginationApp extends Component {
         if (this.group.name === '' || show) {
             return (
                 <thead>
-                    <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn}
-                           sortColumnDirection={this.state.sortDirection} />
+                    <HeaderRow
+                        row={this.row}
+                        sortColumn={this.sortColumn}
+                        sortColumnName={this.state.sortColumn}
+                        sortColumnDirection={this.state.sortDirection}
+                        functions={this.functions}
+                        selectAllRows={this.state.selectAllRows} />
                 </thead>
             )
         }
         return null
+    }
+
+    toggleAll() {
+        const x = !this.state.selectAllRows
+        let content = Object.keys(this.state.filteredContent).map(index => {
+            let row = this.state.filteredContent[index]
+            row.selected = x
+            return row
+        })
+
+        this.setState({
+            selectAllRows: x,
+            rowsSelected: x,
+            filteredContent: content,
+        })
+    }
+
+    toggleSelectedRow(contentRow) {
+        contentRow.selected = !contentRow.selected
+        let rowsSelected = false
+        let content = Object.keys(this.state.filteredContent).map(index => {
+            let row = this.state.filteredContent[index]
+            if (row.id === contentRow.id) {
+                if (contentRow.selected) rowsSelected = true
+                return contentRow
+            }
+            if (row.selected) rowsSelected = true
+            return row
+        })
+
+        this.setState({
+            filteredContent: content,
+            rowsSelected: rowsSelected,
+        })
+    }
+
+    manageSelectedRowAction(event) {
+        let data = []
+        Object.keys(this.state.filteredContent).map(index => {
+            let item = this.state.filteredContent[index]
+            if (item.selected) {
+                data.push(item)
+            }
+        })
+        let body = {
+            selected: data,
+            _token: this.row.token,
+        }
+        let url = event.target.value
+
+        this.setState({
+            confirm: true,
+            confirmOptions: {
+                function: 'callSelectedRowAction',
+                options: {url: url, body: body}
+            },
+        })
+    }
+
+    callSelectedRowAction(options) {
+        this.setState({
+            waiting: true,
+        })
+        fetchJson(
+            options['url'],
+            { method: 'POST', body: JSON.stringify(options['body']) },
+            false
+        ).then(data => {
+            if (data.status === 'redirect') window.open(data.redirect, '_self')
+
+            let content = Object.keys(this.state.filteredContent).map(index => {
+                let item = this.state.filteredContent[index]
+                item.selected = false
+                return item
+            })
+            this.setState({
+                messages: data.errors,
+                filteredContent: content,
+                selectAllRows: false,
+                rowsSelected: false,
+                waiting: false,
+                confirmOptions: {
+                    function: 'deleteItem',
+                    options: {path: this.path}
+                },
+            })
+        })
+    }
+
+    doIt() {
+        this.setState({
+            confirm: false,
+        })
+        let options = {...this.state.confirmOptions}
+        return this.functions[options.function](options.options)
     }
 
     render () {
@@ -627,12 +741,18 @@ export default class PaginationApp extends Component {
             }
         }
 
+        let selectedRowForm = null
+        if (this.row.selectRow && this.state.rowsSelected) {
+            selectedRowForm = (<SelectedRowForm functions={this.functions} row={this.row} messages={this.messages} />)
+        }
+
         return (
             <div className={'paginationApp'}>
                 <table className={'noIntBorder fullWidth relative'} style={{display: this.searchFilter()}}>
                     <tbody>
                         <PaginationSearch search={this.search} messages={this.messages} clearSearch={this.clearSearch} changeSearch={this.changeSearch} searchValue={this.state.search} />
                         <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} defaultFilters={this.defaultFilter !== null} />
+                        {selectedRowForm}
                     </tbody>
                 </table>
                 <div className={'text-xs text-gray-600 text-left paginationControls'}>
@@ -640,11 +760,12 @@ export default class PaginationApp extends Component {
                     <span className={'float-right'}>{this.buildControl()}</span>
                 </div>
                 <Messages messages={this.state.messages} translate={this.translate} />
+                {this.state.waiting ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 <table className={'w-full striped'}>
                     {this.headerRow(false)}
-                    <PaginationContent row={this.row} group={this.group} content={this.state.results} functions={this.functions} draggableSort={this.draggableSort} />
+                    <PaginationContent row={this.row} group={this.group} content={this.state.results} functions={this.functions} draggableSort={this.draggableSort} selectAllRows={this.state.selectAllRows} />
                 </table>
-                <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
+                <AreYouSureDialog messages={this.messages} doit={() => this.doIt()} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
                 <InformationDetail messages={this.messages} cancel={() => this.closeConfirm()} information={this.state.information} />
             </div>
         )

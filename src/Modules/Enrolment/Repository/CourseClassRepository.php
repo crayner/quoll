@@ -14,8 +14,6 @@
 namespace App\Modules\Enrolment\Repository;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\People\Entity\Person;
-use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,10 +32,11 @@ class CourseClassRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CourseClass::class);
     }
+
     /**
      * findCourseClassEnrolmentPagination
      *
-     * 3/09/2020 08:42
+     * 7/09/2020 09:24
      * @return array
      */
     public function findCourseClassEnrolmentPagination(): array
@@ -61,6 +60,37 @@ class CourseClassRepository extends ServiceEntityRepository
             ->orderBy('yg.sortOrder', 'ASC')
             ->addOrderBy('c.name', 'ASC')
             ->addOrderBy('cc.name', 'ASC')
+            ->where('c.academicYear = :year')
+            ->setParameter('year', AcademicYearHelper::getCurrentAcademicYear())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findByAcademicYear
+     *
+     * 7/09/2020 09:24
+     * @param CourseClass $class
+     * @return int|mixed|string
+     */
+    public function findByAcademicYearYearGroups(CourseClass $class)
+    {
+        $where = [];
+        $params = [];
+        foreach ($class->getCourse()->getYearGroups() as $q=>$yg) {
+            $where[] = 'yg.id = :yg'.$q;
+            $params['yg'.$q] = $yg->getId();
+        }
+        $params['year'] = AcademicYearHelper::getCurrentAcademicYear();
+        return $this->createQueryBuilder('cc')
+            ->select(['cc','c'])
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('c.yearGroups', 'yg')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('cc.name', 'ASC')
+            ->where('c.academicYear = :year')
+            ->andWhere('(' . implode(' OR ', $where) . ')')
+            ->setParameters($params)
             ->getQuery()
             ->getResult();
     }

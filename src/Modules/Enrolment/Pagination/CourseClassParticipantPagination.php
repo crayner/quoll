@@ -20,7 +20,10 @@ use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
+use App\Manager\Hidden\PaginationSelectAction;
 use App\Manager\PaginationInterface;
+use App\Modules\Enrolment\Entity\CourseClass;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 
 /**
@@ -30,6 +33,16 @@ use App\Util\TranslationHelper;
  */
 class CourseClassParticipantPagination extends AbstractPaginationManager
 {
+    /**
+     * @var CourseClass
+     */
+    private CourseClass $courseClass;
+
+    /**
+     * @var string
+     */
+    private string $token;
+
     /**
      * execute
      *
@@ -85,6 +98,69 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
         );
         $this->setRow($row);
 
+        $action = new PaginationAction();
+        $select = new PaginationSelectAction();
+        $action->addSectionAction($select->setRoute('course_class_enrolment_mark_as_left')
+            ->setRouteParams(['class' => $this->getCourseClass()->getId()])
+            ->setPrompt('Mark as left')
+        );
+        $select = new PaginationSelectAction();
+        $action->addSectionAction($select->setRoute('course_class_enrolment_remove_from_class')
+            ->setRouteParams(['class' => $this->getCourseClass()->getId()])
+            ->setPrompt('Remove from class')
+        );
+        foreach (ProviderFactory::getRepository(CourseClass::class)->findByAcademicYearYearGroups($this->getCourseClass()) as $item) {
+            $select = new PaginationSelectAction();
+            $action->addSectionAction($select->setRoute('course_class_enrolment_copy_to_class')
+                ->setRouteParams(['class' => $item->getId()])
+                ->setPrompt('Copy to class "{name}"')
+                ->setPromptParams(['{name}' => $item->getFullName()])
+            );
+        }
+
+        $row->addAction($action
+            ->setTitle('Select Row')
+            ->setRoute('home')
+            ->setSelectRow());
+
+        $this->setRow($row->setToken($this->getToken()));
+
+        return $this;
+    }
+
+    /**
+     * @return CourseClass
+     */
+    public function getCourseClass(): CourseClass
+    {
+        return $this->courseClass;
+    }
+
+    /**
+     * @param CourseClass $courseClass
+     * @return CourseClassParticipantPagination
+     */
+    public function setCourseClass(CourseClass $courseClass): CourseClassParticipantPagination
+    {
+        $this->courseClass = $courseClass;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     * @return CourseClassParticipantPagination
+     */
+    public function setToken(string $token): CourseClassParticipantPagination
+    {
+        $this->token = $token;
         return $this;
     }
 }

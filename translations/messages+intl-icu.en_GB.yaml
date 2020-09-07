@@ -124,9 +124,6 @@ Please check your email (address) for a successful test message.: Please check y
 The email setting where not tested as you do not have an email address recorded in your personal record.: The email setting where not tested as you do not have an email address recorded in your personal record.
 Absence Type: Absence Type
 List: List
-
-
-
 Assess: Assess
 Departments: Departments
 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'
@@ -140,3 +137,5 @@ Edit care_giver: Edit care_giver
 Search...: Search...
 Sort By: Sort By
 TO DO: TO DO
+Select action...: Select action...
+Selected Row Action: Selected Row Action

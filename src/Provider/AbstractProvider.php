@@ -168,10 +168,13 @@ abstract class AbstractProvider implements EntityProviderInterface
     /**
      * delete
      *
+     * 7/09/2020 14:36
      * @param $id
+     * @param bool $flush
      * @return EntityInterface|null
+     * @throws Exception
      */
-    public function delete($id): ?EntityInterface
+    public function delete($id, bool $flush = true): ?EntityInterface
     {
         if ($id === 'ignore') return $this->getEntity();
         if ($id instanceof $this->entityName) {
@@ -180,14 +183,18 @@ abstract class AbstractProvider implements EntityProviderInterface
         } else
             $entity = $this->find($id);
         if (empty($entity)) {
+            $this->getMessageManager()->invalidInputs();
             return null;
         }
+        $this->setEntity($entity);
 
         if (method_exists($this, 'canDelete')) {
             if ($this->canDelete($entity)) {
                 $this->getEntityManager()->remove($entity);
-                $this->getEntityManager()->flush();
-                $this->getMessageManager()->success();
+                if ($flush) {
+                    $this->getEntityManager()->flush();
+                    $this->getMessageManager()->success();
+                }
                 $this->entity = null;
                 return $entity;
             } else {
@@ -197,8 +204,10 @@ abstract class AbstractProvider implements EntityProviderInterface
         } elseif (method_exists($entity, 'canDelete')) {
             if ($entity->canDelete()) {
                 $this->getEntityManager()->remove($entity);
-                $this->getEntityManager()->flush();
-                $this->getMessageManager()->success();
+                if ($flush) {
+                    $this->getEntityManager()->flush();
+                    $this->getMessageManager()->success();
+                }
                 $this->entity = null;
                 return $entity;
             } else {
@@ -207,8 +216,10 @@ abstract class AbstractProvider implements EntityProviderInterface
             }
         } else {
             $this->getEntityManager()->remove($entity);
-            $this->getEntityManager()->flush();
-            $this->getMessageManager()->success();
+            if ($flush) {
+                $this->getEntityManager()->flush();
+                $this->getMessageManager()->success();
+            }
             $this->entity = null;
             return $entity;
         }
