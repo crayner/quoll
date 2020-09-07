@@ -18,6 +18,7 @@
 namespace App\Manager\Hidden;
 
 use App\Manager\AbstractPaginationManager;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class PaginationAction
@@ -71,6 +72,16 @@ class PaginationAction
     private $options;
 
     /**
+     * @var bool
+     */
+    private $selectRow = false;
+
+    /**
+     * @var ArrayCollection
+     */
+    private ArrayCollection $sectionActions;
+
+    /**
      * PaginationAction constructor.
      */
     public function __construct()
@@ -83,7 +94,7 @@ class PaginationAction
      */
     public function getRoute(): array
     {
-        return $this->route;
+        return $this->route = isset($this->route) ? $this->route : ['url' => 'home'];
     }
 
     /**
@@ -120,11 +131,14 @@ class PaginationAction
     }
 
     /**
+     * getTitle
+     *
+     * 7/09/2020 14:43
      * @return string
      */
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->title = isset($this->title) ? $this->title : '';
     }
 
     /**
@@ -164,7 +178,7 @@ class PaginationAction
      */
     public function getSpanClass(): string
     {
-        return $this->spanClass;
+        return $this->spanClass = $this->spanClass ?: '';
     }
 
     /**
@@ -192,6 +206,8 @@ class PaginationAction
            'onClick' => $this->getOnClick(),
            'displayWhen' => $this->getDisplayWhen(),
            'options' => $this->getOptions(),
+           'selectRow' => $this->isSelectRow(),
+           'selectActions' => $this->getSectionActionsArray(),
        ];
     }
 
@@ -277,5 +293,74 @@ class PaginationAction
     {
         $this->options = $options;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSelectRow(): bool
+    {
+        return $this->selectRow;
+    }
+
+    /**
+     * @param bool $selectRow
+     * @return PaginationAction
+     */
+    public function setSelectRow(bool $selectRow = true): PaginationAction
+    {
+        $this->selectRow = $selectRow;
+        return $this;
+    }
+
+    /**
+     * getSectionActions
+     *
+     * 7/09/2020 09:07
+     * @return ArrayCollection
+     */
+    public function getSectionActions()
+    {
+        return $this->sectionActions = isset($this->sectionActions) ? $this->sectionActions : new ArrayCollection();
+    }
+
+    /**
+     * @param ArrayCollection $sectionActions
+     * @return PaginationAction
+     */
+    public function setSectionActions(ArrayCollection $sectionActions): PaginationAction
+    {
+        $this->sectionActions = $sectionActions;
+        return $this;
+    }
+
+    /**
+     * addSectionAction
+     *
+     * 7/09/2020 09:05
+     * @param PaginationSelectAction $sectionAction
+     * @return $this
+     */
+    public function addSectionAction(PaginationSelectAction $sectionAction): PaginationAction
+    {
+        if ($this->getSectionActions()->contains($sectionAction)) return $this;
+
+        $this->sectionActions->add($sectionAction);
+        return $this;
+    }
+
+    /**
+     * getSectionActions
+     *
+     * 7/09/2020 09:07
+     * @return ArrayCollection
+     */
+    public function getSectionActionsArray(): array
+    {
+        $result = [];
+        foreach ($this->getSectionActions() as $sectionAction) {
+            $result[] = $sectionAction->toArray();
+        }
+        return $result;
     }
 }

@@ -70,6 +70,16 @@ class PaginationRow
     private string $refreshPrompt = 'Refresh';
 
     /**
+     * @var bool
+     */
+    private bool $selectRow = false;
+
+    /**
+     * @var string
+     */
+    private string $token;
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -124,15 +134,18 @@ class PaginationRow
     }
 
     /**
-     * Add Action.
+     * addAction
      *
+     * 6/09/2020 15:02
      * @param PaginationAction $action
-     * @return PaginationRow
+     * @return $this
      */
     public function addAction(PaginationAction $action): PaginationRow
     {
         if (!$this->getActions()->contains($action))
             $this->actions->add($action);
+        if ($action->isSelectRow())
+            $this->setSelectRow();
         return $this;
     }
 
@@ -199,6 +212,8 @@ class PaginationRow
             'defaultFilter' => $this->getDefaultFilter(),
             'special' => $this->getSpecial(),
             'highlight' => $this->getHighlight(),
+            'selectRow' => $this->isSelectRow(),
+            'token' => $this->getToken(),
         ];
     }
 
@@ -362,6 +377,48 @@ class PaginationRow
     public function setRefreshPrompt(string $refreshPrompt): PaginationRow
     {
         $this->refreshPrompt = $refreshPrompt;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSelectRow(): bool
+    {
+        return $this->selectRow;
+    }
+
+    /**
+     * setSelectRow
+     *
+     * 6/09/2020 15:00
+     * @param bool $selectRow
+     * @return $this
+     */
+    public function setSelectRow(bool $selectRow = true): PaginationRow
+    {
+        $this->selectRow = $selectRow;
+        return $this;
+    }
+
+    /**
+     * getToken
+     *
+     * 7/09/2020 11:16
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return isset($this->token) ? $this->token : '';
+    }
+
+    /**
+     * @param string $token
+     * @return PaginationRow
+     */
+    public function setToken(string $token): PaginationRow
+    {
+        $this->token = $token;
         return $this;
     }
 }

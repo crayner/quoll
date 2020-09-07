@@ -86,33 +86,45 @@ export default function ContentRow(props) {
         columns.push(<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )
     })
     // add Actions column
+    let selectAction = null
     let actions = Object.keys(row.actions).map(actionKey => {
         let action = row.actions[actionKey]
-        rowContent.options = action.options
-        if (action.displayWhen === '' || rowContent[action.displayWhen] === true || rowContent[action.displayWhen] === 'Y') {
-            if (action.onClick === '') {
-                return (
-                    <a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass}
-                       key={actionKey}
-                       title={action.title}><span className={action.spanClass} /></a>)
-            }
-            if (action.onClick === false) {
-                return (
-                    <a href={rowContent.actions[actionKey].url} className={action.aClass}
-                       key={actionKey}
-                       title={action.title}><span className={action.spanClass} /></a>)
-            }
+        if (!action.selectRow) {
+            rowContent.options = action.options
+            if (action.displayWhen === '' || rowContent[action.displayWhen] === true || rowContent[action.displayWhen] === 'Y') {
+                if (action.onClick === '') {
+                    return (
+                        <a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass}
+                           key={actionKey}
+                           title={action.title}><span className={action.spanClass}/></a>)
+                }
+                if (action.onClick === false) {
+                    return (
+                        <a href={rowContent.actions[actionKey].url} className={action.aClass}
+                           key={actionKey}
+                           title={action.title}><span className={action.spanClass}/></a>)
+                }
 
-            return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey],rowContent)}
-                       className={action.aClass} key={actionKey} title={action.title}>
-                <span className={action.spanClass} /></a>)
+                return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey], rowContent)}
+                           className={action.aClass} key={actionKey} title={action.title}>
+                    <span className={action.spanClass}/></a>)
+            }
+        } else {
+            selectAction = {...action}
         }
     })
+
+    let selectedRow = null
+    if (row.selectRow) {
+        selectedRow = (<div className={'float-right pl-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
+    }
+
     if (row.actions.length > 0) {
         columns.push(<td key={'actions'}>
-            <div
-                className="float-right group-hover:flex sm:flex">
-                {actions}
+            <div className={'w-full'}>
+                <div className={'float-right'}>{selectedRow}
+                    {actions}
+                </div>
             </div>
         </td>)
     }

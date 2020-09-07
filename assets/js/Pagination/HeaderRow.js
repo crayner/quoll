@@ -9,6 +9,8 @@ export default function HeaderRow(props) {
         sortColumn,
         sortColumnName,
         sortColumnDirection,
+        functions,
+        selectAllRows
     } = props
 
     let columns = []
@@ -34,8 +36,17 @@ export default function HeaderRow(props) {
         columns.push(<th className={headerClass} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{search}{sort}{column.label}{help}</th>)
     })
 
+    let selectRow = null
+    if (row.selectRow) {
+        selectRow = (<div className={'float-right pl-1'}><input type={'checkBox'} checked={selectAllRows} onChange={() => functions.toggleAll()} /></div>)
+    }
+
     if (row.actions.length > 0) {
-        columns.push(<th className={'column width1 text-right'} key={'actions'}>{row.actionTitle}</th>)
+        columns.push(<th className={'column width1 text-right'} key={'actions'}>
+            <div className={'w-full'}>
+                <div className={'w-full float-right'}>{selectRow}{row.actionTitle}</div>
+            </div>
+        </th>)
     }
 
     return (<tr className={'head text-xs head-dark'}>{columns}</tr>)
@@ -44,10 +55,12 @@ export default function HeaderRow(props) {
 
 HeaderRow.propTypes = {
     row: PropTypes.object.isRequired,
+    functions: PropTypes.object.isRequired,
     sortColumn: PropTypes.func.isRequired,
     sortColumnName: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.array,
     ]).isRequired,
     sortColumnDirection: PropTypes.string.isRequired,
+    selectAllRows: PropTypes.bool.isRequired,
 }

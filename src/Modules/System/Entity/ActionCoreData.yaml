@@ -1088,6 +1088,11 @@
             - course_enrolment_by_class_list
             - course_class_enrolment_manage
             - course_class_enrolment_delete
+            - course_class_enrolment_edit
+            - course_class_enrolment_add
+            - course_class_enrolment_copy_to_class
+            - course_class_enrolment_mark_as_left
+            - course_class_enrolment_remove_from_class
     entryRoute: course_enrolment_by_class_list
     entrySidebar: true
     menuShow: true

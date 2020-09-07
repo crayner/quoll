@@ -11,7 +11,7 @@ export default function PaginationGroup(props) {
         group,
         content,
         functions,
-        draggableSort,
+        selectAllRows,
     } = props
 
     let result = []
@@ -28,7 +28,7 @@ export default function PaginationGroup(props) {
                 </th>
             </tr>)
             result.push(<HeaderRow row={row} sortColumn={functions.sortColumn} sortColumnName={''}
-                                                       sortColumnDirection={''} key={loop++}/>)
+                                                       sortColumnDirection={''} key={loop++} functions={functions} selectAllRows={selectAllRows} />)
         }
 
         result.push(<ContentRow {...props} rowKey={rowKey} key={loop++} />)
@@ -42,6 +42,6 @@ PaginationGroup.propTypes = {
     group: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
     functions: PropTypes.object.isRequired,
-    draggableSort: PropTypes.bool.isRequired,
+    selectAllRows: PropTypes.bool.isRequired,
 }
 

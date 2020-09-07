@@ -16,8 +16,12 @@
  */
 namespace App\Modules\Student\Controller;
 
+use App\Container\Container;
 use App\Container\ContainerManager;
+use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,13 +33,25 @@ class StudentController extends AbstractPageController
     /**
      * view
      * @Route("/student/view/", name="student_view")
+     * @IsGranted("ROLE_ROUTE")
      * @param ContainerManager $manager
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function view(ContainerManager $manager)
+    public function view()
     {
-        $manager->setContent('<h3>View Students</h3>');
-        return $this->getPageManager()->createBreadcrumbs('View Students')
-            ->render(['containers' => $manager->getBuiltContainers()]);
+        $container = new Container();
+        $panel = new Panel('null', 'Student', new Section('html', $this->renderView('components/todo.html.twig')));
+        $container->addPanel($panel);
+
+        return $this->getPageManager()
+            ->createBreadcrumbs('View Students')
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->addContainer($container)
+                        ->getBuiltContainers(),
+                ]
+            )
+        ;
     }
 }

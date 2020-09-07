@@ -20,6 +20,7 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
+use App\Manager\StatusManager;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Form\CourseClassPersonType;
@@ -33,6 +34,8 @@ use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class ClassEnrolmentController
@@ -74,13 +77,16 @@ class ClassEnrolmentController extends AbstractPageController
      * 3/09/2020 11:53
      * @param CourseClass $class
      * @param CourseClassParticipantPagination $pagination
+     * @param CsrfTokenManagerInterface $csrfTokenManager
      * @return JsonResponse
      * @Route("/course/class/{class}/enrolment/manage/",name="course_class_enrolment_manage")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function manage(CourseClass $class, CourseClassParticipantPagination $pagination)
+    public function manage(CourseClass $class, CourseClassParticipantPagination $pagination, CsrfTokenManagerInterface $csrfTokenManager)
     {
-        $pagination->setContent(ProviderFactory::create(CourseClassPerson::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
+        $pagination->setCourseClass($class)
+            ->setToken($csrfTokenManager->getToken('course_class_enrolment_copy'))
+            ->setContent(ProviderFactory::create(CourseClassPerson::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
             ->setAddElementRoute($this->generateUrl('course_class_enrolment_add', ['class' => $class->getId()]))
             ->setPageMax(50);
 
@@ -132,19 +138,20 @@ class ClassEnrolmentController extends AbstractPageController
     /**
      * remove
      *
-     * 4/09/2020 09:41
+     * 7/09/2020 16:24
      * @param CourseClass $class
      * @param CourseClassPerson $person
      * @param CourseClassParticipantPagination $pagination
+     * @param CsrfTokenManagerInterface $csrfTokenManager
      * @Route("/course/class/{class}/enrolment/{person}/delete/",name="course_class_enrolment_delete")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function remove(CourseClass $class, CourseClassPerson $person, CourseClassParticipantPagination $pagination)
+    public function remove(CourseClass $class, CourseClassPerson $person, CourseClassParticipantPagination $pagination, CsrfTokenManagerInterface $csrfTokenManager)
     {
         ProviderFactory::create(CourseClassPerson::class)->delete($person);
 
-        return $this->manage($class, $pagination);
+        return $this->manage($class, $pagination, $csrfTokenManager);
     }
 
     /**
@@ -205,5 +212,113 @@ class ClassEnrolmentController extends AbstractPageController
                         ->getBuiltContainers(),
                 ]
             );
+    }
+
+    /**
+     * copyToClass
+     *
+     * 7/09/2020 11:14
+     * @param CourseClass $class
+     * @param ValidatorInterface $validator
+     * @Route("/course/class/{class}/enrolment/copy/to/class/",name="course_class_enrolment_copy_to_class")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function copyToClass(CourseClass $class, ValidatorInterface $validator)
+    {
+        $content = $this->jsonDecode();
+        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+            $update = 0;
+            $insert = 0;
+            foreach ($content['selected'] as $participant) {
+                $person = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id'])->getPerson();
+                $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['person' => $person, 'courseClass' => $class]) ?: new CourseClassPerson($class);
+                $id = $ccp->getId();
+                $ccp->setPerson($person)
+                    ->setRole($participant['role']);
+                $ccp->isReportable();
+                $errors = $validator->validate($ccp);
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
+                    dump($ccp);
+                    return  $this->getStatusManager()->toJsonResponse();
+                }
+                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp,false);
+                $x = $ccp->getId() === $id ? $update++ : $insert++;
+            }
+            ProviderFactory::create(CourseClassPerson::class)->flush();
+            if ($this->isStatusSuccess()) {
+                $this->getStatusManager()->info('Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}', ['{name}' => $class->getFullName(), '{modified}' => $update, '{added}' => $insert],'Enrolment');
+            }
+        } else {
+            $this->getStatusManager()->error(StatusManager::INVALID_TOKEN);
+        }
+        return $this->getStatusManager()->toJsonResponse();
+    }
+
+    /**
+     * markAsLeft
+     *
+     * 7/09/2020 14:02
+     * @param CourseClass $class
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     * @Route("/course/class/{class}/enrolment/mark/as/left/",name="course_class_enrolment_mark_as_left")
+     * @return JsonResponse
+     */
+    public function markAsLeft(CourseClass $class, ValidatorInterface $validator)
+    {
+        $content = $this->jsonDecode();
+        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+            foreach ($content['selected'] as $participant) {
+                $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id']);
+                if (strpos($ccp->getRole(), 'Student') === 0) {
+                    $ccp->setRole('Student - Left');
+                } else {
+                    $ccp->setRole('Teacher - Left');
+                }
+                $errors = $validator->validate($ccp);
+                if (count($errors) > 0) {
+                    foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
+                    return  $this->getStatusManager()->toJsonResponse();
+                }
+                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp,false);
+            }
+            ProviderFactory::create(CourseClassPerson::class)->flush();
+            if ($this->isStatusSuccess()) {
+                $this->getStatusManager()->info('Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}', ['{name}' => $class->getFullName(), '{modified}' => count($content['selected']), '{added}' => 0],'Enrolment');
+            }
+            $this->getStatusManager()->setReDirect($this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()]), true);
+        } else {
+            $this->getStatusManager()->error(StatusManager::INVALID_TOKEN);
+        }
+        return $this->getStatusManager()->toJsonResponse();
+    }
+
+    /**
+     * markAsLeft
+     *
+     * 7/09/2020 14:02
+     * @param CourseClass $class
+     * @return JsonResponse
+     * @Route("/course/class/{class}/enrolment/remove/from/class/",name="course_class_enrolment_remove_from_class")
+     * @return JsonResponse
+     */
+    public function removeFromClass(CourseClass $class)
+    {
+        $content = $this->jsonDecode();
+        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+            foreach ($content['selected'] as $q=>$participant) {
+                ProviderFactory::create(CourseClassPerson::class)->delete($participant['id'], false);
+            }
+            ProviderFactory::create(CourseClassPerson::class)->flush();
+            if ($this->isStatusSuccess()) {
+                $this->getStatusManager()->info('Course Class participants were removed from "{name}". Removed Participant Count: {removed}', ['{name}' => $class->getFullName(), '{removed}' => count($content['selected'])],'Enrolment');
+            }
+            $this->getStatusManager()->setReDirect($this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()]), true);
+        } else {
+            $this->getStatusManager()->error(StatusManager::INVALID_TOKEN);
+        }
+        return $this->getStatusManager()->toJsonResponse();
     }
 }
