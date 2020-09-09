@@ -1,9 +1,1 @@
-associated:
-    family:
-        entityName: 'App\Modules\People\Entity\Family'
-        findBy: familySync
-        preLoad: getDemonstrationFamilies
-    careGiver:
-        entityName: 'App\Modules\People\Entity\CareGiver'
-        findBy: username
-        preLoad: getDemonstrationCareGivers
+call: { entityName: 'App\Modules\People\Entity\FamilyMemberCareGiver', method: 'loadDemonstrationData' }

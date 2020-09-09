@@ -16,12 +16,20 @@
  */
 namespace App\Modules\People\Provider;
 
+use App\Modules\People\Entity\CareGiver;
+use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
+use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
+use App\Modules\Student\Entity\Student;
 use App\Provider\AbstractProvider;
+use App\Provider\ProviderFactory;
 use App\Util\ErrorMessageHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class FamilyMemberAdultProvider
@@ -78,4 +86,53 @@ class FamilyMemberCareGiverProvider extends AbstractProvider
         return $parent ? $this->getRepository()->findStudentsOfParent($parent) : [];
     }
 
+    /**
+     * loadDemonstrationData
+     *
+     * 9/09/2020 10:13
+     * @param array $content
+     * @param LoggerInterface $logger
+     * @param ValidatorInterface $validator
+     * @return int
+     */
+    public function loadDemonstrationData(array $content, LoggerInterface $logger, ValidatorInterface $validator): int
+    {
+        $valid = 0;
+        $invalid = 0;
+        $entities = new ArrayCollection();
+
+        foreach ($content as $item) {
+            $family = $entities->containsKey($item['family']) ? $entities->get($item['family']) : $this->getRepository(Family::class)->findOneBy(['familySync' => $item['family']]);
+            $careGiver = $this->getRepository(CareGiver::class)->findOneByUsername($item['careGiver']);
+            $fm = new FamilyMemberCareGiver($family);
+            $fm->setCareGiver($careGiver);
+            foreach ($item as $name=>$value) {
+                if (in_array($name, ['careGiver','family'])) continue;
+                $method = 'set' . ucfirst($name);
+                $fm->$method($value);
+            }
+
+            $validatorList = $validator->validate($fm);
+            if (count($validatorList) === 0) {
+                ProviderFactory::create(Person::class)->persistFlush($fm, false);
+                if (!$this->getMessageManager()->isStatusSuccess()) {
+                    $this->getLogger()->error('Something when wrong with persist:' . $this->getMessageManager()->getLastMessageTranslated());
+                    $invalid++;
+                } else {
+                    $valid++;
+                }
+            } else {
+                $this->getLogger()->warning(sprintf('An entity failed validation for %s', FamilyMemberCareGiver::class), [$item, $fm, $validatorList->__toString()]);
+                $invalid++;
+            }
+
+            if (($valid + $invalid) % 50 === 0) {
+                $this->flush();
+                $logger->notice(sprintf('50 (to %s) records pushed to the database for %s from %s', strval($valid), FamilyMemberCareGiver::class, strval(count($content))));
+                ini_set('max_execution_time', 60);
+            }
+        }
+        $this->flush();
+        return $valid;
+    }
 }

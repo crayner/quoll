@@ -19,6 +19,7 @@ namespace App\Modules\People\Repository;
 use App\Modules\People\Entity\Address;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Person;
+use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -26,6 +27,7 @@ use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NoResultException;
@@ -118,22 +120,25 @@ class PersonRepository extends ServiceEntityRepository
      * findStaffForFastFinder
      * @param string $staffTitle
      * @return array|null
-     * @throws \Exception
      */
     public function findStaffForFastFinder(string $staffTitle): ?array
     {
-        $this->getStaffSearch();
-        $this->addParam('full', 'Full')
-            ->addParam('today', new \DateTimeImmutable(date('Y-m-d')));
+        try {
+            $this->addParam('full', 'Full')
+                ->addParam('today', new DateTimeImmutable(date('Y-m-d')));
+        } catch (\Exception $e) {
+        }
         return $this->createQueryBuilder('p')
-            ->select(["CONCAT('".$staffTitle . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(p.username, ' ', p.email) AS search"])
-            ->leftJoin('p.securityRoles', 'r')
+            ->select(["CONCAT('".$staffTitle . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(su.username, ' ', c.email) AS search"])
             ->distinct()
+            ->leftJoin('p.securityUser', 'su')
+            ->leftJoin('p.contact', 'c')
+            ->leftJoin('p.staff', 's')
             ->where('p.status = :full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
+            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
+            ->andWhere('p.staff IS NOT NULL')
             ->orderBy('text')
-            ->andWhere($this->getWhere())
             ->setParameters($this->getParams())
             ->getQuery()
             ->getResult();
@@ -150,17 +155,22 @@ class PersonRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select([
-                "CONCAT('".$studentTitle."', p.surname, ', ', p.preferredName, ' (', rg.name, ', ', p.studentIdentifier, ')') AS text",
-                "CONCAT(p.username, ' ', p.firstName, ' ', p.email) AS search",
+                "CONCAT('".$studentTitle."',". PersonNameManager::formatNameQuery('p', 'Student', 'Reversed') . ", ' (', rg.name, ', ', s.studentIdentifier, ')') AS text",
+                "CONCAT(su.username, ' ', p.firstName, ' ', c.email) AS search",
                 "CONCAT('Stu-', p.id) AS id",
             ])
-            ->join('p.studentEnrolments', 'se')
+            ->leftJoin('p.student', 's')
+            ->leftJoin('p.securityUser', 'su')
+            ->leftJoin('p.contact', 'c')
+            ->distinct()
+            ->join('s.studentEnrolments', 'se')
             ->join('se.rollGroup', 'rg')
             ->where('rg.academicYear = :academicYear')
             ->andWhere('p.status = :full')
-            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
-            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->setParameters(['today' => new \DateTime(date('Y-m-d')), 'academicYear' => $academicYear, 'full' => 'Full'])
+            ->andWhere('(s.dateStart IS NULL OR s.dateStart <= :today)')
+            ->andWhere('(s.dateEnd IS NULL OR s.dateEnd >= :today)')
+            ->andWhere('p.student IS NOT NULL')
+            ->setParameters(['today' => new DateTimeImmutable(date('Y-m-d')), 'academicYear' => $academicYear, 'full' => 'Full'])
             ->orderBy('text')
             ->getQuery()
             ->getResult();
@@ -174,7 +184,7 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findByRoles(array $roles = [], string $status = 'Full')
     {
-        $today = new \DateTimeImmutable(date('Y-m-d'));
+        $today = new DateTimeImmutable(date('Y-m-d'));
         $this->getRoleSearch($roles)
             ->addParam('status', $status);
         return $this->createQueryBuilder('p')
@@ -231,7 +241,6 @@ class PersonRepository extends ServiceEntityRepository
      */
     public function findOthers(): array
     {
-        $this->getStaffSearch();
         $where = trim($this->getWhere(), ')') . ' OR p.securityRoles LIKE :careGiver OR p.securityRoles LIKE :student)';
         $this->addParam('careGiver', '%ROLE_CARE_GIVER%')
             ->addParam('student', '%ROLE_STUDENT%');
@@ -363,7 +372,7 @@ class PersonRepository extends ServiceEntityRepository
     public function getStaffQuery(string $status = 'Full'): QueryBuilder
     {
         try {
-            $today = new \DateTimeImmutable(date('Y-m-d'));
+            $today = new DateTimeImmutable(date('Y-m-d'));
         } catch (\Exception $e) {
             $today = null;
         }

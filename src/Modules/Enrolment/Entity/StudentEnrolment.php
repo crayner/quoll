@@ -43,7 +43,7 @@ class StudentEnrolment extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
      * @var Student|null
@@ -51,7 +51,7 @@ class StudentEnrolment extends AbstractEntity
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $student;
+    private ?Student $student;
 
     /**
      * @var AcademicYear|null
@@ -60,7 +60,7 @@ class StudentEnrolment extends AbstractEntity
      * @Assert\NotBlank()
      *
      */
-    private $academicYear;
+    private ?AcademicYear $academicYear;
 
     /**
      * @var YearGroup|null
@@ -68,7 +68,7 @@ class StudentEnrolment extends AbstractEntity
      * @ORM\JoinColumn(name="year_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $yearGroup;
+    private ?YearGroup $yearGroup;
 
     /**
      * @var RollGroup|null
@@ -76,21 +76,21 @@ class StudentEnrolment extends AbstractEntity
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $rollGroup;
+    private ?RollGroup $rollGroup;
 
     /**
-     * @var integer|null
+     * @var integer
      * @ORM\Column(type="smallint",nullable=true)
      * @Assert\Range(min=1,max=99)
      */
-    private $rollOrder;
+    private int $rollOrder;
 
     /**
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
@@ -178,18 +178,21 @@ class StudentEnrolment extends AbstractEntity
     }
 
     /**
-     * @return int|null
+     * getRollOrder
+     *
+     * 8/09/2020 09:27
+     * @return int
      */
-    public function getRollOrder(): ?int
+    public function getRollOrder(): int
     {
-        return $this->rollOrder;
+        return $this->rollOrder = isset($this->rollOrder) ? $this->rollOrder : 0;
     }
 
     /**
-     * @param int|null $rollOrder
+     * @param int $rollOrder
      * @return StudentEnrolment
      */
-    public function setRollOrder(?int $rollOrder): StudentEnrolment
+    public function setRollOrder(int $rollOrder): StudentEnrolment
     {
         $this->rollOrder = $rollOrder;
         return $this;

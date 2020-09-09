@@ -122,7 +122,7 @@ class Module extends AbstractEntity
 
     /**
      * @var Collection|Action[]|null
-     * @ORM\ManyToMany(targetEntity="App\Modules\System\Entity\Action", inversedBy="modules", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Modules\System\Entity\Action",inversedBy="modules",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinTable(name="ModuleAction",
      *      joinColumns={@ORM\JoinColumn(name="module",referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="action",referencedColumnName="id")}
@@ -493,7 +493,7 @@ class Module extends AbstractEntity
     {
         if ($this->getActions()->contains($action)) return $this;
 
-        if ($reflect) $action->addMethod($this, false);
+        if ($reflect) $action->addModule($this, false);
 
         $this->actions->add($action);
 
@@ -615,5 +615,15 @@ class Module extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/ModuleCoreData.yaml'));
+    }
+
+    /**
+     * coreData
+     * @return array
+     * 12/06/2020 10:49
+     */
+    public function coreDataLinks(): array
+    {
+        return Yaml::parse(file_get_contents(__DIR__ . '/ModuleCoreLinks.yaml'));
     }
 }

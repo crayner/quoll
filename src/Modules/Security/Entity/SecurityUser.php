@@ -205,11 +205,14 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
+     * getUsername
+     *
+     * 9/09/2020 08:56
      * @return string|null
      */
     public function getUsername(): ?string
     {
-        return $this->username;
+        return $this->username = isset($this->username) ? $this->username : null;
     }
 
     /**

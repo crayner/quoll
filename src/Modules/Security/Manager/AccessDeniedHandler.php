@@ -13,12 +13,13 @@
  */
 namespace App\Modules\Security\Manager;
 
+use App\Manager\StatusManager;
 use App\Modules\System\Entity\Action;
 use App\Provider\ProviderFactory;
-use App\Util\ErrorMessageHelper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authorization\AccessDeniedHandlerInterface;
 
@@ -32,7 +33,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
      * handle
      * @param Request $request
      * @param AccessDeniedException $accessDeniedException
-     * @return JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
+     * @return JsonResponse|RedirectResponse|Response|null
      */
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
@@ -51,7 +52,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             }
         }
 
-        $request->getSession()->getFlashBag()->add('warning', ErrorMessageHelper::getInvalidInputsMessage([]));
+        $request->getSession()->getFlashBag()->add('warning', StatusManager::NO_ACCESS);
         return new RedirectResponse('/home/');
     }
 }

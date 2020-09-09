@@ -14,14 +14,18 @@
  * Date: 1/09/2020
  * Time: 15:37
  */
-namespace App\Modules\System\Entity;
+namespace App\Manager;
 
+use App\Modules\System\Entity\Action;
+use App\Modules\System\Entity\Module;
 use App\Provider\ProviderFactory;
+use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PageDefinition
- * @package App\Modules\System\Entity
+ * @package App\Entity
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class PageDefinition
@@ -50,11 +54,6 @@ class PageDefinition
      * @var Request|null
      */
     private ?Request $request;
-
-    /**
-     * @var bool
-     */
-    private bool $validPage = false;
 
     /**
      * getAction
@@ -109,7 +108,11 @@ class PageDefinition
     public function setModule(): PageDefinition
     {
         if (!isset($this->module)) {
-            $this->module = ProviderFactory::getRepository(Module::class)->findOneBy(['name' => $this->getControllerModuleName()]);
+            try {
+                $this->module = ProviderFactory::getRepository(Module::class)->findOneBy(['name' => $this->getControllerModuleName()]);
+            } catch ( ConnectionException | TableNotFoundException $e) {
+                $this->module = null;
+            }
         }
         return $this;
     }
@@ -237,9 +240,9 @@ class PageDefinition
      * 2/09/2020 09:24
      * @return bool
      */
-    public function isValidPage():bool
+    public function isValidPage(): bool
     {
-        return $this->validPage = $this->getModule()
+        return $this->getModule()
             && $this->getAction()
             && $this->getAction()->getModules()->contains($this->getModule())
             && in_array($this->getRoute(), $this->getAction()->getRouteList());
@@ -265,5 +268,21 @@ class PageDefinition
     public function getActionName(): ?string
     {
         return $this->getAction() ? $this->getAction()->getName() : null;
+    }
+
+    /**
+     * toArray
+     *
+     * 8/09/2020 14:43
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'action' => $this->getAction() ? $this->getAction()->toArray() : 'empty',
+            'module' => $this->getModule() ? $this->getModule()->toArray() : 'empty',
+            'route' => $this->getRoute(),
+            'valid' => $this->isValidPage(),
+        ];
     }
 }

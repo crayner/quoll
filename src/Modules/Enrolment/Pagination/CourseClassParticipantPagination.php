@@ -96,7 +96,6 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setOnClick('areYouSure')
             ->setRouteParams(['class' => 'course_class_id', 'person' => 'id'])
         );
-        $this->setRow($row);
 
         $action = new PaginationAction();
         $select = new PaginationSelectAction();

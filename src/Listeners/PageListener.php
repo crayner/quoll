@@ -17,16 +17,14 @@
 namespace App\Listeners;
 
 use App\Manager\PageManager;
-use App\Modules\School\Entity\YearGroup;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Manager\SettingFactory;
-use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
-use App\Util\CacheHelper;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -175,8 +173,21 @@ class PageListener implements EventSubscriberInterface
     {
         if (!$this->getParameterBag()->has('install_date')) {
             if ($event->getRequest()->hasSession()) $event->getRequest()->getSession()->invalidate(0);
-            $fs = new Filesystem();
-            $fs->remove(__DIR__ . '/../../var/cache');
+            if (key_exists('APP_ENV', $_SERVER) && $_SERVER['APP_ENV'] === 'prod') {
+                $fs = new Filesystem();
+                $x = false;
+                $y = 0;
+                while (!$x) {
+                    try {
+                        $fs->remove(__DIR__ . '/../../var/cache');
+                        $x = true;
+                    } catch (IOException $e) {
+                        $x = false;
+                        sleep(1);
+                        if ($y++ > 10) $x = true;
+                    }
+                }
+            }
         }
         $manager = SettingFactory::getSettingManager();
         $manager->writeSettings();

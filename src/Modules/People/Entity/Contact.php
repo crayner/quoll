@@ -103,7 +103,7 @@ class Contact extends AbstractEntity
      *     @ORM\JoinColumn(name="phone",referencedColumnName="id")}
      * )
      */
-    private $additionalPhones;
+    private ?Collection $additionalPhones;
 
     /**
      * @var string|null
@@ -135,7 +135,9 @@ class Contact extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        $this->setPerson($person)
+            ->setAdditionalPhones(new ArrayCollection())
+        ;
     }
 
     /**
@@ -168,10 +170,10 @@ class Contact extends AbstractEntity
      * setPerson
      *
      * 6/09/2020 07:58
-     * @param Person $person
+     * @param Person|null $person
      * @return $this
      */
-    public function setPerson(Person $person): Contact
+    public function setPerson(?Person $person): Contact
     {
         $this->person = $person;
         return $this;

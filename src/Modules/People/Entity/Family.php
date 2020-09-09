@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Family extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
-/**
+    /**
      * @var string|null
      * @ORM\Id()
      * @ORM\Column(type="guid")

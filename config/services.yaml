@@ -126,6 +126,10 @@ services:
         arguments:
             $logger: '@monolog.logger.security'
 
+    App\Modules\Security\Voter\ActionVoter:
+        arguments:
+            $logger: '@monolog.logger.security'
+
     App\Modules\Security\Util\SecurityHelper:
         calls:
             - [ setLogger, ['@monolog.logger.security'] ]

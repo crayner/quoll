@@ -65,7 +65,7 @@ class FamilyMember extends AbstractEntity
 
     /**
      * @var Family|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Family", inversedBy="members")
+     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Family",inversedBy="members")
      * @ORM\JoinColumn(name="family",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */

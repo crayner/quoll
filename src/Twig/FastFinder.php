@@ -14,18 +14,15 @@
  * Date: 29/07/2019
  * Time: 15:36
  */
-
 namespace App\Twig;
 
-use App\Modules\Curriculum\Entity\CourseClass;
-use App\Modules\Curriculum\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Enrolment\Entity\StudentEnrolment;
-use App\Modules\People\Entity\FamilyAdult;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\Security\Entity\Role;
-use App\Modules\Security\Provider\RoleProvider;
+use App\Modules\Security\Util\ActionVoterSubject;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
@@ -59,15 +56,20 @@ class FastFinder implements ContentInterface
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY'))
             return;
 
-        $highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view');
+        $plannerView = new ActionVoterSubject('planner_view');
+        $staffView = new ActionVoterSubject('staff_view');
+        $studentView = new ActionVoterSubject('student_view');
+        SecurityHelper::isGranted('ROLE_ACTION', $plannerView);
+        SecurityHelper::isGranted('ROLE_ACTION', $studentView);
+        SecurityHelper::isGranted('ROLE_ACTION', $staffView);
         $person = SecurityHelper::getCurrentUser()->getPerson();;
         $this->addAttribute('roleCategory', $person->getHumanisedRole());
 
         $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
         $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')
-            .(SecurityHelper::isActionAccessible('planner_view') && $highestActionClass !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
-            .(SecurityHelper::isActionAccessible('student_view') ? ', '.$this->translate('Students', [], 'messages') : '')
-            .(SecurityHelper::isActionAccessible('staff_view') ? ', '.$this->translate('Staff', [], 'messages') : ''));
+            .($plannerView->isActionAccessible() && $plannerView->getHighestGroupedAction() !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
+            .($studentView->isActionAccessible() ? ', '.$this->translate('Students', [], 'messages') : '')
+            .($staffView->isActionAccessible() ? ', '.$this->translate('Staff', [], 'messages') : ''));
         $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
         $this->addAttribute('themeName', $this->getSession()->get('theme'));
         $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
@@ -75,10 +77,10 @@ class FastFinder implements ContentInterface
 
         $actions = $this->getFastFinderActions();
 
-        $classes = $this->accessibleClasses();
+        $classes = $this->accessibleClasses($plannerView);
 
-        $staff = $this->accessibleStaff();
-        $students = $this->accessibleStudents();
+        $staff = $this->accessibleStaff($staffView);
+        $students = $this->accessibleStudents($studentView);
         $fastFindChoices = [];
         $fastFindChoices[] = ['title' => $this->translate('Actions'), 'suggestions' => $actions, 'prefix' => $this->translate('Action')];
         $fastFindChoices[] = ['title' => $this->translate('Classes'), 'suggestions' => $classes, 'prefix' => $this->translate('Class')];
@@ -112,18 +114,17 @@ class FastFinder implements ContentInterface
      * accessibleClasses
      * @throws \Exception
      */
-    public function accessibleClasses()
+    public function accessibleClasses(ActionVoterSubject $plannerView)
     {
         $classes = [];
         if (CacheHelper::isStale('fastFinderClasses')) {
             $classIsAccessible = false;
-            if (SecurityHelper::isActionAccessible('planner_view') && ($highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view'))->getRestriction() !== 'viewMyChildrenClasses') {
+            if ($plannerView->isActionAccessible() && $plannerView->getHighestGroupedAction() !== 'viewMyChildrenClasses') {
                 $classIsAccessible = true;
             }
             // CLASSES
             if ($classIsAccessible) {
-                $highestActionClass = SecurityHelper::getHighestGroupedAction('planner_view');
-                if ($highestActionClass === 'viewEditAllClasses' || $highestActionClass === 'viewAllEditMyClasses') {
+                if ($plannerView->getHighestGroupedAction() === 'viewEditAllClasses' || $plannerView->getHighestGroupedAction() === 'viewAllEditMyClasses') {
                     $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('academicYear'), '');
                 } else {
                     $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('academicYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
@@ -141,15 +142,13 @@ class FastFinder implements ContentInterface
      * @return mixed
      * @throws \Exception
      */
-    public function accessibleStaff()
+    public function accessibleStaff(ActionVoterSubject $staffView)
     {
         $staff = [];
         if (CacheHelper::isStale('fastFinderStaff'))
         {
             // STAFF
-            $staffIsAccessible = SecurityHelper::isActionAccessible('staff_view');
-
-            if ($staffIsAccessible) {
+            if ($staffView->isActionAccessible()) {
                 $staff = ProviderFactory::getRepository(Person::class)->findStaffForFastFinder('');
                 CacheHelper::setCacheValue('fastFinderStaff', $staff);
             }
@@ -164,18 +163,16 @@ class FastFinder implements ContentInterface
      * @return mixed
      * @throws \Exception
      */
-    public function accessibleStudents()
+    public function accessibleStudents(ActionVoterSubject $studentView)
     {
         // STUDENTS
         $students = [];
         if (CacheHelper::isStale('fastFinderStudents')) {
-            $studentIsAccessible = SecurityHelper::isActionAccessible('student_view');
-            if ($studentIsAccessible) {
-                $highestActionStudent = SecurityHelper::getHighestGroupedAction('student_view') ? SecurityHelper::getHighestGroupedAction('student_view')->getRestriction() : null;
-                if ($highestActionStudent === 'myChildren') {
+            if ($studentView->isActionAccessible()) {
+                if ($studentView->getHighestGroupedAction() === 'myChildren') {
                     $students = ProviderFactory::getRepository(FamilyMemberCareGiver::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
-                } elseif ($highestActionStudent == 'View Student Profile_my') {
-                    $person = ProviderFactory::getRepository(Person::class)->find(2761);
+                } elseif ($studentView->getHighestGroupedAction() == 'View Student Profile_my') {
+                    $person = SecurityHelper::getCurrentUser()->getPerson();
                     $students = [];
                     $student = [];
                     $student['id'] = 'Stu-' . $person->getId();

@@ -32,6 +32,15 @@ class SpecialDayValidator extends ConstraintValidator
         if (!$value instanceof AcademicYearSpecialDay)
             return;
 
+        if ($value->getAcademicYear() === null) {
+            $this->context->buildViolation('The academic year must be specified.')
+                ->atPath('academicYear')
+                ->setCode(SpecialDay::INVALID_SPECIAL_DAY_ERROR)
+                ->setTranslationDomain($constraint->transDomain)
+                ->addViolation();
+            return;
+        }
+
         if ($value->getDate() < $value->getAcademicYear()->getFirstDay() || $value->getDate() > $value->getAcademicYear()->getLastDay())
             $this->context->buildViolation('The date must be in the specified academic year.')
                 ->atPath('date')

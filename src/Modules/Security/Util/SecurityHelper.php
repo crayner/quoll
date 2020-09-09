@@ -17,13 +17,12 @@ use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\PageDefinition;
+use App\Manager\PageDefinition;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Exception\DriverException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -176,8 +175,7 @@ class SecurityHelper
         if (null !== $logger)
             self::$logger = $logger;
         if (self::checkActionReady() === false) {
-            self::$logger->warning(sprintf('No action was linked to the route "%s"', self::getRoute()));
-            return false;
+            self::$logger->warning(sprintf('No action was linked to the route "%s"', self::getRoute()), self::getDefinition()->toArray());
         }
 
         return self::isActionAccessibleToUser(self::getModule(),self::getAction(),$route,$sub);
@@ -302,14 +300,14 @@ class SecurityHelper
      * @return bool
      * 11/06/2020 12:04
      */
-    public static function isGranted($roles): bool
+    public static function isGranted($roles, $subject = null): bool
     {
         if (is_string($roles)) {
             $roles = [$roles];
         }
 
         foreach($roles as $role) {
-            if (self::$checker->isGranted($role)) return true;
+            if (self::$checker->isGranted($role, $subject)) return true;
         }
         return false;
     }

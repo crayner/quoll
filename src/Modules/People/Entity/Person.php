@@ -25,7 +25,6 @@ use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Modules\System\Manager\SettingFactory;
-use App\Provider\ProviderFactory;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -81,14 +80,14 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=60)
+     * @ORM\Column(length=60,nullable=false)
      * @ASSERT\NotBlank()
      */
     private ?string $firstName;
 
     /**
      * @var string|null
-     * @ORM\Column(length=60)
+     * @ORM\Column(length=60, nullable=false)
      * @ASSERT\NotBlank()
      */
     private ?string $preferredName;
@@ -144,6 +143,7 @@ class Person extends AbstractEntity
      * @var Student|null
      * @ORM\OneToOne(targetEntity="App\Modules\Student\Entity\Student",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="student",nullable=true)
+     * @ASSERT\Valid()
      */
     private ?Student $student = null;
 
@@ -151,6 +151,7 @@ class Person extends AbstractEntity
      * @var CareGiver|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\CareGiver",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="care_giver",referencedColumnName="id")
+     * @ASSERT\Valid()
      */
     private ?CareGiver $careGiver = null;
 
@@ -158,6 +159,8 @@ class Person extends AbstractEntity
      * @var Contact
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Contact",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="contact",referencedColumnName="id")
+     * @ASSERT\NotBlank()
+     * @ASSERT\Valid()
      */
     private Contact $contact;
 
@@ -165,6 +168,8 @@ class Person extends AbstractEntity
      * @var PersonalDocumentation|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\PersonalDocumentation",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="personal_documentation",referencedColumnName="id")
+     * @ASSERT\NotBlank()
+     * @ASSERT\Valid()
      */
     private ?PersonalDocumentation $personalDocumentation = null;
 
@@ -172,13 +177,16 @@ class Person extends AbstractEntity
      * @var Staff|null
      * @ORM\OneToOne(targetEntity="App\Modules\Staff\Entity\Staff",cascade={"all"},orphanRemoval=true)
      * @ORM\JoinColumn(name="staff",referencedColumnName="id")
+     * @ASSERT\Valid()
      */
     private ?Staff $staff = null;
 
     /**
      * @var SecurityUser|null
      * @ORM\OneToOne(targetEntity="App\Modules\Security\Entity\SecurityUser",cascade={"all"},orphanRemoval=true)
-     * @ORM\JoinColumn(name="security_user",referencedColumnName="id")
+     * @ORM\JoinColumn(name="security_user",referencedColumnName="id",nullable=false)
+     * @ASSERT\NotBlank()
+     * @ASSERT\Valid()
      */
     private ?SecurityUser $securityUser = null;
 
@@ -259,11 +267,14 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @return null|string
+     * getSurname
+     *
+     * 9/09/2020 08:59
+     * @return string|null
      */
     public function getSurname(): ?string
     {
-        return $this->surname;
+        return $this->surname = isset($this->surname) ? $this->surname : null;
     }
 
     /**
@@ -282,7 +293,7 @@ class Person extends AbstractEntity
      */
     public function getFirstName(): ?string
     {
-        return $this->firstName;
+        return $this->firstName = isset($this->firstName) ? $this->firstName : null;
     }
 
     /**
@@ -304,7 +315,7 @@ class Person extends AbstractEntity
      */
     public function getPreferredName(): ?string
     {
-        return $this->preferredName;
+        return $this->preferredName = isset($this->preferredName) ? $this->preferredName : null;
     }
 
     /**
@@ -323,11 +334,14 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @return null|string
+     * getOfficialName
+     *
+     * 9/09/2020 08:57
+     * @return string|null
      */
     public function getOfficialName(): ?string
     {
-        return $this->officialName;
+        return $this->officialName = isset($this->officialName) ? $this->officialName : null;
     }
 
     /**

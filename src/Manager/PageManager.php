@@ -16,7 +16,6 @@
  */
 namespace App\Manager;
 
-use App\Exception\MissingModuleException;
 use App\Manager\Traits\IPTrait;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\SecurityUser;
@@ -24,8 +23,6 @@ use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Locale;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\PageDefinition;
-use App\Modules\System\Exception\InvalidActionException;
 use App\Modules\System\Util\LocaleHelper;
 use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
@@ -42,7 +39,6 @@ use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
-use PhpParser\Node\Expr\Throw_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

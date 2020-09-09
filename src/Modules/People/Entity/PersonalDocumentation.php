@@ -241,6 +241,7 @@ class PersonalDocumentation extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
+        if ($person) $person->setPersonalDocumentation($this);
         $this->setPerson($person);
     }
 

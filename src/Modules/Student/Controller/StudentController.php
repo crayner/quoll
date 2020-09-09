@@ -17,25 +17,27 @@
 namespace App\Modules\Student\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class StudentController
  * @package App\Modules\Student\Controller
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class StudentController extends AbstractPageController
 {
     /**
      * view
+     *
+     * 8/09/2020 09:15
      * @Route("/student/view/", name="student_view")
      * @IsGranted("ROLE_ROUTE")
-     * @param ContainerManager $manager
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function view()
     {

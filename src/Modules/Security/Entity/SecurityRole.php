@@ -323,9 +323,9 @@ class SecurityRole extends AbstractEntity
                 'role' => $this->getRole(),
                 'label' => $this->getLabel(),
                 'category' => $this->getCategory(),
-                'allow_future_years' => $this->isAllowFutureYears(),
-                'allow_past_years' => $this->isAllowPastYears(),
-                'allow_login' => $this->isAllowLogin(),
+                'allowFutureYears' => $this->isAllowFutureYears(),
+                'allowPastYears' => $this->isAllowPastYears(),
+                'allowLogin' => $this->isAllowLogin(),
             ];
         }
         return [

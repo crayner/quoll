@@ -182,8 +182,9 @@ class Staff extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        if ($person) $person->reflectStaff($this);
+        if ($person) $person->setStaff($this);
         $this->setCustomData(new ArrayCollection())
+            ->setPerson($person)
             ->setType('Other');
     }
 

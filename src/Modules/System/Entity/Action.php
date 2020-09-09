@@ -30,8 +30,10 @@ use Symfony\Component\Yaml\Yaml;
  * @ORM\Entity(repositoryClass="App\Modules\System\Repository\ActionRepository")
  * @ORM\Table(name="Action",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="module_restriction_name", columns={"name","restriction"}),
- *     @ORM\UniqueConstraint(name="entry_route_precedence",columns={"entry_route","precedence"})})
+ *     @ORM\UniqueConstraint(name="entry_route_precedence",columns={"entry_route","precedence"}),
+ *     @ORM\UniqueConstraint(name="entry_route_restriction",columns={"entry_route","restriction"})})
  * @UniqueEntity({"name","restriction"})
+ * @UniqueEntity({"entryRoute","restriction"})
  * @UniqueEntity({"entryRoute","precedence"})
  */
 class Action extends AbstractEntity
@@ -488,15 +490,5 @@ class Action extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/ActionCoreData.yaml'));
-    }
-
-    /**
-     * coreDataLinks
-     * @return mixed
-     * 12/06/2020 10:16
-     */
-    public function coreDataLinks()
-    {
-        return Yaml::parse(file_get_contents(__DIR__ . '/ActionCoreLinks.yaml'));
     }
 }

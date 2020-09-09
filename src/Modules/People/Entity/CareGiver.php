@@ -51,7 +51,7 @@ class CareGiver extends AbstractEntity
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person",cascade={"persist"})
-     * @ORM\JoinColumn(name="person",referencedColumnName="id")
+     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private ?Person $person = null;
@@ -92,9 +92,12 @@ class CareGiver extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        if ($person !== null) $person->reflectCareGiver($this);
-        $this->setVehicleRegistration(true);
-        $this->setReceiveNotificationEmails(true);
+        if ($person !== null) $person->setCareGiver($this);
+        $this->setVehicleRegistration(true)
+            ->setPerson($person)
+            ->setCustomData(new ArrayCollection())
+            ->setMemberOfFamilies(new ArrayCollection())
+            ->setReceiveNotificationEmails(true);
     }
 
     /**

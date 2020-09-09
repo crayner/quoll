@@ -67,7 +67,7 @@ class Student extends AbstractEntity
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
-     * @ORM\JoinColumn(name="person",referencedColumnName="id")
+     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      */
     private ?Person $person = null;
 
@@ -170,7 +170,12 @@ class Student extends AbstractEntity
      */
     public function __construct(?Person $person = null)
     {
-        $this->setPerson($person);
+        if ($person) $person->setStudent($this);
+        $this->setPerson($person)
+            ->setMemberOfFamilies(new ArrayCollection())
+            ->setCustomData(new ArrayCollection())
+            ->setStudentEnrolments(new ArrayCollection())
+        ;
     }
 
     /**

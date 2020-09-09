@@ -1,9 +1,1 @@
-associated:
-    family:
-        entityName: 'App\Modules\People\Entity\Family'
-        findBy: familySync
-        preLoad: getDemonstrationFamilies
-    student:
-        entityName: 'App\Modules\Student\Entity\Student'
-        findBy: username
-        preLoad: getDemonstrationStudents
+call: { entityName: 'App\Modules\People\Entity\FamilyMemberStudent', method: 'loadDemonstrationData' }

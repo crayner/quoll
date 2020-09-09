@@ -88,7 +88,7 @@ class DemoDataManager
         'house' => House::class,
         'department' => Department::class,
         'person' => Person::class,
-        'person2' => Person::class,
+        'person_more' => Person::class,
         'department_staff' => DepartmentStaff::class,
         'family' => Family::class,
         'family_student' => FamilyMemberStudent::class,
@@ -183,10 +183,11 @@ class DemoDataManager
         $this->associatedEntities = [];
         $this->rules = [];
         $rules = $this->getEntityRules($name);
+
         $this->getLogger()->notice(sprintf('Loading %s file into %s', $name, $entityName));
         ini_set('max_execution_time', 60);
 
-        if (key_exists('call', $rules)) {
+        if ($rules['call'] !== null) {
             $this->getLogger()->notice(sprintf('%s records added to %s from a total of %s', $this->executeRuleCall($rules, $content), $entityName, strval(count($content))));
             return;
         }
@@ -644,7 +645,7 @@ class DemoDataManager
     /**
      * executeRuleCall
      *
-     * 3/09/2020 14:39
+     * 9/09/2020 08:55
      * @param $rules
      * @param $content
      * @return int
@@ -653,6 +654,6 @@ class DemoDataManager
     {
         $provider = ProviderFactory::create($rules['call']['entityName']);
         $method = $rules['call']['method'];
-        return $provider->$method($content, $this->getLogger());
+        return $provider->$method($content, $this->getLogger(), $this->validator);
     }
 }

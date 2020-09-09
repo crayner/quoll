@@ -69,7 +69,7 @@ class AcademicYearHelper implements DemoDataInterface
     public static function getCurrentAcademicYear(bool $refresh = false)
     {
         $session = self::$stack->getCurrentRequest()->getSession();
-        if ($session->has('academicYear')) {
+        if ($session->has('academicYear') && $session->get('academicYear') !== null) {
             if ($refresh) {
                 $current =  ProviderFactory::getRepository(AcademicYear::class)->find($session->get('academicYear')->getId());
                 $session->set('academicYear', $current);

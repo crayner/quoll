@@ -30,3 +30,14 @@ courseclassperson:
         technician: Technician
         volunteer: Volunteer
 '"{name}" must not be assigned as a "{role}".': '"{name}" must not be assigned as a "{role}".'
+Admissions: Admissions
+'Copy to class "{name}"': 'Copy to class "{name}"'
+'Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}': 'Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}'
+'Course Class participants were removed from "{name}". Removed Participant Count: {removed}': 'Course Class participants were removed from "{name}". Removed Participant Count: {removed}'
+Mark as left: Mark as left
+Remove from class: Remove from class
+Roll Group: Roll Group
+Search for...: Search for...
+Select Row: Select Row
+Student Enrolment: Student Enrolment
+Student: Student

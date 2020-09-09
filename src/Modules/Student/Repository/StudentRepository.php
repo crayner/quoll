@@ -29,7 +29,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
  * Class StudentRepository
@@ -222,5 +221,27 @@ class StudentRepository extends ServiceEntityRepository
         $items = [];
         foreach ($result as $w) $items[$w->getPerson()->getSecurityUser()->getUsername()] = $w;
         return $items;
+    }
+
+    /**
+     * findOneByUsername
+     *
+     * 9/09/2020 10:34
+     * @param string $username
+     * @return Student|null
+     */
+    public function findOneByUsername(string $username): ?Student
+    {
+        try {
+            return $this->createQueryBuilder('s')
+                ->leftJoin('s.person', 'p')
+                ->leftJoin('p.securityUser', 'su')
+                ->where('su.username = :username')
+                ->setParameter('username', $username)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 }

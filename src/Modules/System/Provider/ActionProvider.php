@@ -17,7 +17,7 @@ namespace App\Modules\System\Provider;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\System\Entity\Action;
 use App\Modules\System\Entity\Module;
-use App\Modules\System\Entity\PageDefinition;
+use App\Manager\PageDefinition;
 use App\Provider\AbstractProvider;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

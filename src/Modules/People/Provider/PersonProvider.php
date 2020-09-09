@@ -12,35 +12,27 @@
  * Date: 1/07/2019
  * Time: 09:47
  */
-
 namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
-use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
 use App\Modules\People\Entity\CareGiver;
-use App\Modules\People\Entity\FamilyMemberCareGiver;
-use App\Modules\People\Entity\FamilyMemberStudent;
-use App\Modules\People\Entity\Phone;
-use App\Modules\School\Entity\House;
-use App\Modules\RollGroup\Entity\RollGroup;
-use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\People\Entity\Contact;
+use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\Comms\Entity\NotificationEvent;
+use App\Modules\School\Entity\House;
+use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\People\Entity\Person;
-use App\Modules\Security\Manager\SecurityUser;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
-use App\Util\ImageHelper;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class PersonProvider
@@ -234,5 +226,119 @@ class PersonProvider extends AbstractProvider
         return array_merge($result, $this->getRepository()->getStaffQuery()
             ->getQuery()
             ->getResult());
+    }
+
+    /**
+     * loadDemonstrationData
+     *
+     * 9/09/2020 08:09
+     * @param array $content
+     * @param LoggerInterface $logger
+     */
+    public function loadDemonstrationData(array $content, LoggerInterface $logger, ValidatorInterface $validator)
+    {
+        $entities = new ArrayCollection();
+        $valid = 0;
+        $invalid = 0;
+        foreach ($content as $item) {
+            $person = new Person();
+            $person->setContact(new Contact($person))
+                ->setPersonalDocumentation(new PersonalDocumentation($person))
+                ->setSecurityUser(new SecurityUser($person))
+            ;
+            if (key_exists('staff', $item)) $person->setStaff(new Staff($person));
+            if (key_exists('student', $item)) $person->setStudent(new Student($person));
+            if (key_exists('careGiver', $item)) $person->setCareGiver(new CareGiver($person));
+
+            foreach ($item as $name => $value) {
+                $method = 'set' . ucfirst($name);
+                switch ($name) {
+                    case 'staff':
+                        foreach ($value as $q=>$w) {
+                            $method = 'set' . ucfirst($q);
+                            if ($q === 'house') {
+                                if (!$entities->containsKey($w['entityName'])) $entities->set($w['entityName'], new ArrayCollection());
+                                if (!$entities->get($w['entityName'])->containsKey($w['value'])) {
+                                    $entities->get($w['entityName'])->set($w['value'], ProviderFactory::getRepository(House::class)
+                                        ->findOneBy(['abbreviation' => $w['value']]));
+                                }
+                                $person->getStaff()->setHouse($entities->get($w['entityName'])->get($w['value']));
+                            } else {
+                                $person->getStaff()->$method($w);
+                            }
+                        }
+                        break;
+                    case 'student':
+                        foreach ($value as $q=>$w) {
+                            $method = 'set' . ucfirst($q);
+                            if ($q === 'house') {
+                                if (!$entities->containsKey($w['entityName'])) $entities->set($w['entityName'], new ArrayCollection());
+                                if (!$entities->get($w['entityName'])->containsKey($w['value'])) {
+                                    $entities->get($w['entityName'])->set($w['value'], ProviderFactory::getRepository(House::class)
+                                        ->findOneBy(['abbreviation' => $w['value']]));
+                                }
+                                $person->getStudent()->setHouse($entities->get($w['entityName'])->get($w['value']));
+                            } else {
+                                $person->getStudent()->$method($w);
+                            }
+                        }
+                        break;
+                    case 'contact':
+                        foreach ($value as $q=>$w) {
+                            $method = 'set' . ucfirst($q);
+                            $person->getContact()->$method($w);
+                        }
+                        break;
+                    case 'careGiver':
+                        foreach ($value as $q=>$w) {
+                            $method = 'set' . ucfirst($q);
+                            $person->getCareGiver()->$method($w);
+                        }
+                        break;
+                    case 'securityUser':
+                        foreach ($value as $q=>$w) {
+                            $method = 'set' . ucfirst($q);
+                            $person->getSecurityUser()->$method($w);
+                        }
+                        break;
+                    case 'personalDocumentation':
+                        foreach ($value as $q=>$w) {
+                            if ($q === 'dob') {
+                                try {
+                                    $w = new \DateTimeImmutable($w['datetimeimmutable']);
+                                } catch (\Exception $e) {
+                                    $w = null;
+                                }
+                            }
+                            $method = 'set' . ucfirst($q);
+                            $person->getPersonalDocumentation()->$method($w);
+                        }
+                        break;
+                    default:
+                        $person->$method($value);
+                }
+            }
+            $validatorList = $validator->validate($person);
+            if (count($validatorList) === 0) {
+                ProviderFactory::create(Person::class)->persistFlush($person, false);
+                if (!$this->getMessageManager()->isStatusSuccess()) {
+                    $this->getLogger()->error('Something when wrong with persist:' . $this->getMessageManager()->getLastMessageTranslated());
+                    $invalid++;
+                } else {
+                    $valid++;
+                }
+            } else {
+                $this->getLogger()->warning(sprintf('An entity failed validation for %s', Person::class), [$item, $person, $validatorList->__toString()]);
+                $invalid++;
+            }
+
+            if (($valid + $invalid) % 50 === 0) {
+                $this->flush();
+                $logger->notice(sprintf('50 (to %s) records pushed to the database for %s from %s', strval($valid), Person::class, strval(count($content))));
+                ini_set('max_execution_time', 60);
+            }
+        }
+        $this->flush();
+        return $valid;
     }
 }

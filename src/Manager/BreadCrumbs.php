@@ -17,7 +17,7 @@
 namespace App\Manager;
 
 use App\Manager\Hidden\BreadCrumbItem;
-use App\Modules\System\Entity\PageDefinition;
+use App\Manager\PageDefinition;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;

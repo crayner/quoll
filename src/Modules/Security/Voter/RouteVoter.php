@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Security\Voter;
 
+use App\Manager\PageDefinition;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
 use Psr\Log\LoggerInterface;
@@ -44,15 +45,21 @@ class RouteVoter extends RoleHierarchyVoter
     private RequestStack $stack;
 
     /**
+     * @var PageDefinition
+     */
+    private PageDefinition $definition;
+
+    /**
      * RouteVoter constructor.
      * @param LoggerInterface $logger
      * @param RequestStack $stack
      * @param RoleHierarchyInterface $roleHierarchy
      */
-    public function __construct(LoggerInterface $logger, RequestStack $stack, RoleHierarchyInterface $roleHierarchy)
+    public function __construct(LoggerInterface $logger, RequestStack $stack, RoleHierarchyInterface $roleHierarchy, PageDefinition $definition)
     {
         $this->logger = $logger;
         $this->stack = $stack;
+        $this->definition = $definition;
         parent::__construct($roleHierarchy);
     }
 
@@ -67,17 +74,18 @@ class RouteVoter extends RoleHierarchyVoter
     {
         if (in_array('ROLE_ROUTE', $attributes))
         {
-            $definition = $this->getRequest()->attributes->get('_definition');
-            $action = $definition->getAction();
-            $route = $definition->getRoute();
+            $action = $this->definition->getAction();
+            $route = $this->definition->getRoute();
+            $this->logger->debug(sprintf('Checking out route "%s".', $route));
 
             if (!$token->getUser() instanceof SecurityUser) {
                 $this->logger->error(sprintf('The user is not valid and attempted to access the route "%s" and was denied.', $route), [$action]);
                 return VoterInterface::ACCESS_DENIED;
             }
 
-            if (!$definition->isValidPage()) {
-                $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied.', $route), [$definition]);
+            if (!$this->definition->isValidPage()) {
+                dump($this);
+                $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied.', $route), [$this->definition]);
                 return VoterInterface::ACCESS_DENIED;
 
             }

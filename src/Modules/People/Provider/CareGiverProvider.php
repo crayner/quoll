@@ -18,6 +18,7 @@ namespace App\Modules\People\Provider;
 
 use App\Modules\People\Entity\CareGiver;
 use App\Provider\AbstractProvider;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class ParentContactProvider
@@ -29,5 +30,5 @@ class CareGiverProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = CareGiver::class;
+    protected string $entityName = CareGiver::class;
 }

@@ -21,6 +21,7 @@ use App\Modules\People\Manager\PersonNameManager;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -106,4 +107,25 @@ class CareGiverRepository extends ServiceEntityRepository
         return $items;
     }
 
+    /**
+     * findOneByUsername
+     *
+     * 9/09/2020 10:34
+     * @param string $username
+     * @return CareGiver|null
+     */
+    public function findOneByUsername(string $username): ?CareGiver
+    {
+        try {
+            return $this->createQueryBuilder('cg')
+                ->leftJoin('cg.person', 'p')
+                ->leftJoin('p.securityUser', 'su')
+                ->where('su.username = :username')
+                ->setParameter('username', $username)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
+    }
 }
