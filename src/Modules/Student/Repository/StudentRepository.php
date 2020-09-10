@@ -25,6 +25,7 @@ use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -244,4 +245,43 @@ class StudentRepository extends ServiceEntityRepository
             return null;
         }
     }
+
+    /**
+     * getStudentEnrolmentPaginationContent
+     *
+     * 8/09/2020 09:52
+     * @return int|mixed|string
+     */
+    public function getStudentEnrolmentPaginationContent()
+    {
+        $result = $this->createQueryBuilder('s', 's.id')
+            ->select(["CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS student", "'' as rollOrder","'' AS rollGroup", "'' AS yearGroup", 's.id', 'p.id AS person_id',"'null' As enrolment"])
+            ->leftJoin('s.person', 'p')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->where('p.status in (:status)')
+            ->setParameter('status', ['Full', 'Expected'], Connection::PARAM_STR_ARRAY)
+            ->getQuery()
+            ->getResult();
+
+        $result = array_values(array_merge($result, $this->createQueryBuilder('s', 's.id')
+            ->leftJoin('s.studentEnrolments', 'se')
+            ->leftJoin('s.person', 'p')
+            ->leftJoin('se.yearGroup', 'yg')
+            ->leftJoin('se.rollGroup', 'rg')
+            ->where('se.academicYear = :currentYear')
+            ->andWhere('p.status in (:status)')
+            ->setParameter('currentYear', AcademicYearHelper::getCurrentAcademicYear())
+            ->setParameter('status', ['Full', 'Expected'], Connection::PARAM_STR_ARRAY)
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->select(["CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS student",'se.rollOrder','rg.name AS rollGroup', 'yg.name AS yearGroup', 's.id', 'p.id AS person_id', 'se.id AS enrolment'])
+            ->getQuery()
+            ->getResult()));
+        foreach ($result AS $q=>$w)
+            $result[$q]['canDelete'] = $w['enrolment'] !== 'null';
+
+        return $result;
+    }
+
 }

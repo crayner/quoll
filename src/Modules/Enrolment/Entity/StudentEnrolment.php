@@ -18,7 +18,9 @@ use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -79,11 +81,22 @@ class StudentEnrolment extends AbstractEntity
     private ?RollGroup $rollGroup;
 
     /**
-     * @var integer
+     * @var integer|null
      * @ORM\Column(type="smallint",nullable=true)
      * @Assert\Range(min=1,max=99)
      */
-    private int $rollOrder;
+    private ?int $rollOrder;
+
+    /**
+     * StudentEnrolment constructor.
+     * @param Student|null $student
+     */
+    public function __construct(?Student $student = null)
+    {
+        $this->setStudent($student)
+            ->setAcademicYear(AcademicYearHelper::getCurrentAcademicYear());
+    }
+
 
     /**
      * @return string|null
@@ -181,11 +194,11 @@ class StudentEnrolment extends AbstractEntity
      * getRollOrder
      *
      * 8/09/2020 09:27
-     * @return int
+     * @return int|null
      */
-    public function getRollOrder(): int
+    public function getRollOrder(): ?int
     {
-        return $this->rollOrder = isset($this->rollOrder) ? $this->rollOrder : 0;
+        return $this->rollOrder = isset($this->rollOrder) ? $this->rollOrder : null;
     }
 
     /**
@@ -194,7 +207,7 @@ class StudentEnrolment extends AbstractEntity
      */
     public function setRollOrder(int $rollOrder): StudentEnrolment
     {
-        $this->rollOrder = $rollOrder;
+        $this->rollOrder = $rollOrder > 0 ? intval($rollOrder) : null;
         return $this;
     }
 
@@ -216,5 +229,33 @@ class StudentEnrolment extends AbstractEntity
     public function toArray(?string $name = null): array
     {
         return [];
+    }
+
+    /**
+     * canDelete
+     *
+     * 10/09/2020 09:35
+     * @return bool
+     */
+    public function canDelete(): bool
+    {
+        return ProviderFactory::create(StudentEnrolment::class)->canDelete($this);
+    }
+
+    /**
+     * __toString
+     *
+     * 10/09/2020 11:18
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $string = '';
+        if ($this->getRollGroup()) $string = '('.$this->getRollGroup()->getName().') ';
+        if ($this->getStudent()) $string .= $this->getStudent()->getFullName();
+
+        $string .= ' - ' . $this->getId() ?: 'Unknown Student Enrolment';
+
+        return trim($string, ' -:');
     }
 }

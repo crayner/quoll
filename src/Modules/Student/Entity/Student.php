@@ -679,4 +679,19 @@ class Student extends AbstractEntity
 
         return substr($this->getId(), 0, 20);
     }
+
+    /**
+     * getStudentHistory
+     *
+     * 9/09/2020 13:46
+     * @return string
+     */
+    public function getStudentHistory(): string
+    {
+        $result = [];
+        foreach ($this->getStudentEnrolments() as $se) {
+            $result[] = $se->getAcademicYear()->getName() . ': ' . $se->getRollGroup()->getName();
+        }
+        return implode(", \n<br />", $result);
+    }
 }

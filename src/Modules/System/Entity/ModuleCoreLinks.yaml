@@ -18,6 +18,15 @@
     target: action
 -
     findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_enrolment_list
+            precedence: null
+    target: action
+-
+    findBy:
         entryRoute: timetable_list
     source:
         table: App\Modules\System\Entity\Action
@@ -294,6 +303,15 @@
         findBy:
             entryRoute: student_view
             precedence: 3
+    target: action
+-
+    findBy:
+        entryRoute: student_view
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_enrolment_list
+            precedence: null
     target: action
 -
     findBy:
@@ -617,5 +635,14 @@
         table: App\Modules\System\Entity\Action
         findBy:
             entryRoute: course_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: enrolment_course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_enrolment_list
             precedence: null
     target: action

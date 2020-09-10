@@ -144,26 +144,4 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
             return 0;
         }
     }
-
-    /**
-     * getStudentEnrolmentPaginationContent
-     *
-     * 8/09/2020 09:52
-     * @return int|mixed|string
-     */
-    public function getStudentEnrolmentPaginationContent()
-    {
-        return $this->createQueryBuilder('se')
-            ->leftJoin('se.student', 's')
-            ->leftJoin('s.person', 'p')
-            ->leftJoin('se.yearGroup', 'yg')
-            ->leftJoin('se.rollGroup', 'rg')
-            ->where('se.academicYear = :currentYear')
-            ->setParameter('currentYear', AcademicYearHelper::getCurrentAcademicYear())
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.preferredName', 'ASC')
-            ->select(["CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS student",'se.rollOrder','rg.name AS rollGroup', 'yg.name AS yearGroup', 'se.id', 'p.id AS person_id'])
-            ->getQuery()
-            ->getResult();
-    }
 }

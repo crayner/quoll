@@ -171,9 +171,9 @@ export default class PaginationApp extends Component {
     }
 
     areYouSure(path) {
-        this.path = path
         this.setState({
             confirm: true,
+            confirmOptions: {function: 'deleteItem', options: {path: path, target: '_self'}}
         })
     }
 
@@ -205,9 +205,11 @@ export default class PaginationApp extends Component {
     }
 
     deleteItem(options) {
+        console.log(options)
         let path = options.path
         this.setState({
-            confirm: false
+            confirm: false,
+            confirmOptions: {},
         })
         this.functions.getContent(path,'_self')
     }
@@ -216,6 +218,7 @@ export default class PaginationApp extends Component {
         this.path = ''
         this.setState({
             confirm: false,
+            confirmOptions: {},
             information: false
         })
     }
@@ -483,7 +486,6 @@ export default class PaginationApp extends Component {
             })
             content = filtered
         }
-        console.log(content)
         return content
     }
 
@@ -725,10 +727,17 @@ export default class PaginationApp extends Component {
     }
 
     doIt() {
+        let options = {...this.state.confirmOptions}
         this.setState({
             confirm: false,
+            confirmOptions: {}
         })
-        let options = {...this.state.confirmOptions}
+        if (this.path !== '') {
+            options.path = this.path
+            options.function = 'deleteItem'
+            options.options = {}
+            this.path = ''
+        }
         return this.functions[options.function](options.options)
     }
 

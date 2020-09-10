@@ -1137,3 +1137,20 @@
     securityRoles:
         arrayField:
             - ROLE_PRINCIPAL
+-
+    name: 'Student Enrolment'
+    category: Admissions
+    description: 'Roll Group Enrolment'
+    routeList:
+        arrayField:
+            - student_enrolment_list
+            - student_enrolment_edit
+            - student_enrolment_delete
+    entryRoute: student_enrolment_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_PRINCIPAL

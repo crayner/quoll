@@ -28,5 +28,16 @@ class StudentEnrolmentProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = StudentEnrolment::class;
+    protected string $entityName = StudentEnrolment::class;
+
+    /**
+     * canDelete
+     *
+     * 10/09/2020 09:36
+     * @return bool
+     */
+    public function canDelete(): bool
+    {
+        return false;
+    }
 }
