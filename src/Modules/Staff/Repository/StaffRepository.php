@@ -16,6 +16,7 @@ namespace App\Modules\Staff\Repository;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Repository\PersonRepository;
 use App\Modules\School\Entity\House;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -168,4 +169,22 @@ class StaffRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * mergeStaffIndividualEnrolmentPagination
+     *
+     * 10/09/2020 14:04
+     * @return array
+     */
+    public function mergeStaffIndividualEnrolmentPagination(): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Person::class, 'p', 'p.id')
+            ->select(['p.id', "'Staff' AS role", 's.type AS category'])
+            ->leftJoin('p.staff', 's')
+            ->where('p.staff IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

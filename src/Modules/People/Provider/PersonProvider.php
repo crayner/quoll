@@ -15,6 +15,7 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\PersonalDocumentation;
@@ -340,5 +341,33 @@ class PersonProvider extends AbstractProvider
         }
         $this->flush();
         return $valid;
+    }
+
+    /**
+     * getIndividualEnrolmentPaginationContent
+     *
+     * 10/09/2020 14:07
+     * @return array
+     */
+    public function getIndividualEnrolmentPaginationContent(): array
+    {
+        $result = $this->getRepository()->findStaffAndStudents('Full');
+        $result = array_merge($result, $this->getRepository()->findStaffAndStudents('Expected'));
+        foreach ($this->getRepository(Staff::class)->mergeStaffIndividualEnrolmentPagination() as $id=>$item) {
+            if (key_exists($id, $result)) {
+                $result[$id] = array_merge($item,$result[$id]);
+            }
+        }
+        foreach ($this->getRepository(Student::class)->mergeStudentIndividualEnrolmentPagination() as $id=>$item) {
+            if (key_exists($id, $result)) {
+                $result[$id] = array_merge($item,$result[$id]);
+            }
+        }
+
+        uasort($result, function($a,$b) {
+            return $a['name'] > $b['name'] ? 1 : -1;
+        });
+dump($result);
+        return array_values($result);
     }
 }

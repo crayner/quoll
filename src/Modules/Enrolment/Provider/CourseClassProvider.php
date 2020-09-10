@@ -18,6 +18,7 @@ namespace App\Modules\Enrolment\Provider;
 
 use App\Modules\Department\Twig\MyClasses;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Manager\SecurityUser;
@@ -55,5 +56,36 @@ class CourseClassProvider extends AbstractProvider
         }
 
         return $result ?: [];
+    }
+
+    /**
+     * getCourseClassEnrolmentPaginationContent
+     *
+     * 10/09/2020 13:00
+     * @return array
+     */
+    public function getCourseClassEnrolmentPaginationContent(): array
+    {
+        $result = $this->getRepository()->findCourseClassEnrolmentPagination();
+        $active = $this->getRepository(CourseClass::class)->countParticipants('Full');
+        $expected = $this->getRepository(CourseClass::class)->countParticipants('Expected');
+        $total = $this->getRepository(CourseClass::class)->countParticipants();
+        foreach ($active as $id=>$value) {
+            if (key_exists($id, $result)) {
+                $result[$id]['activeParticipants'] = $value['participants'];
+            }
+        }
+        foreach ($expected as $id=>$value) {
+            if (key_exists($id, $result)) {
+                $result[$id]['expectedParticipants'] = $value['participants'];
+            }
+        }
+        foreach ($total as $id=>$value) {
+            if (key_exists($id, $result)) {
+                $result[$id]['totalParticipants'] = $value['participants'];
+            }
+        }
+
+        return array_values($result);
     }
 }

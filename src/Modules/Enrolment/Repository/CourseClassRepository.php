@@ -41,7 +41,7 @@ class CourseClassRepository extends ServiceEntityRepository
      */
     public function findCourseClassEnrolmentPagination(): array
     {
-        return $this->createQueryBuilder('cc')
+        return $this->createQueryBuilder('cc', 'cc.id')
             ->select(
                 [
                     "CONCAT(c.abbreviation,' (',c.name,')') AS courseName",
@@ -94,4 +94,19 @@ class CourseClassRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countParticipants(string $status = '%'): array
+    {
+        return $this->createQueryBuilder('cc', 'cc.id')
+            ->select(['COUNT(ccp.id) AS participants','cc.id'])
+            ->leftJoin('cc.courseClassPeople', 'ccp')
+            ->leftJoin('ccp.person', 'p')
+            ->where('p.student IS NOT NULL')
+            ->andWhere('p.status LIKE :full')
+            ->setParameter('full', $status)
+            ->groupBy('cc.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

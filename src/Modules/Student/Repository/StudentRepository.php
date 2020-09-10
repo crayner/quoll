@@ -284,4 +284,25 @@ class StudentRepository extends ServiceEntityRepository
         return $result;
     }
 
+    /**
+     * mergeStudentIndividualEnrolmentPagination
+     *
+     * 10/09/2020 14:00
+     * @return int|mixed|string
+     */
+    public function mergeStudentIndividualEnrolmentPagination(): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Person::class, 'p', 'p.id')
+            ->select(['p.id','rg.name AS rollGroup', 'yg.name AS yearGroup', "'Student' AS role"])
+            ->leftJoin('p.student', 's')
+            ->join('s.studentEnrolments', 'se')
+            ->where('se.academicYear = :current')
+            ->andWhere('p.student IS NOT NULL')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->leftJoin('se.rollGroup', 'rg')
+            ->leftJoin('se.yearGroup', 'yg')
+            ->getQuery()
+            ->getResult();
+    }
 }

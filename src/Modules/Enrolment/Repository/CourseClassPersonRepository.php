@@ -18,6 +18,7 @@ use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Util\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

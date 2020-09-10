@@ -463,4 +463,22 @@ class PersonRepository extends ServiceEntityRepository
             ->addOrderBy('p.firstName', 'ASC');
     }
 
+    /**
+     * findStaffAndStudents
+     *
+     * 10/09/2020 13:48
+     * @param string $status
+     * @return array
+     */
+    public function findStaffAndStudents(string $status = '%'): array
+    {
+        return $this->createQueryBuilder('p', 'p.id')
+            ->select(['p.id', "CONCAT(".PersonNameManager::formatNameQuery('p', 'General', 'Reversed').") AS name"])
+            ->orderBy('name', 'ASC')
+            ->where('p.status LIKE :status')
+            ->andWhere('(p.staff IS NOT NULL OR p.student IS NOT NULL)')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
+    }
 }

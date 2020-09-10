@@ -11,8 +11,8 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 8/09/2020
- * Time: 09:18
+ * Date: 10/09/2020
+ * Time: 13:28
  */
 namespace App\Modules\Enrolment\Pagination;
 
@@ -29,11 +29,11 @@ use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 
 /**
- * Class StudentEnrolmentPagination
+ * Class IndividualEnrolmentPagination
  * @package App\Modules\Enrolment\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class StudentEnrolmentPagination extends AbstractPaginationManager
+class IndividualEnrolmentPagination extends AbstractPaginationManager
 {
     public function execute(): PaginationInterface
     {
@@ -41,10 +41,17 @@ class StudentEnrolmentPagination extends AbstractPaginationManager
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
-        $column->setLabel('Student')
-            ->setContentKey('student')
+        $column->setLabel('Name')
+            ->setContentKey('name')
             ->setSearch()
             ->setSort()
+            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Role')
+            ->setHelp('Category')
+            ->setContentKey(['role','category'])
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -68,19 +75,8 @@ class StudentEnrolmentPagination extends AbstractPaginationManager
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('student_enrolment_edit')
-            ->setRouteParams(['student' => 'id'])
-        );
-
-        $action = new PaginationAction();
-        $row->addAction($action->setTitle('Remove')
-            ->setAClass('thickbox p-3 sm:p-0')
-            ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('student_enrolment_delete')
-            ->setDisplayWhen('canDelete')
-            ->setOnClick('areYouSure')
-            ->setRouteParams(['enrolment' => 'enrolment'])
+            ->setRoute('individual_enrolment_manage')
+            ->setRouteParams(['person' => 'id'])
         );
 
         foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $yg)

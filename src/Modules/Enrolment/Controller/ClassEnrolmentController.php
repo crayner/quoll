@@ -55,7 +55,7 @@ class ClassEnrolmentController extends AbstractPageController
      */
     public function list(CourseClassEnrolmentPagination $pagination)
     {
-        $pagination->setContent(ProviderFactory::getRepository(CourseClass::class)->findCourseClassEnrolmentPagination(),'CourseClassEnrolmentPagination')
+        $pagination->setContent(ProviderFactory::create(CourseClass::class)->getCourseClassEnrolmentPaginationContent(),'CourseClassEnrolmentPagination')
             ->setPageMax(50);
 
         $container = new Container();
