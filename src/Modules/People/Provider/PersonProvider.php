@@ -202,9 +202,9 @@ class PersonProvider extends AbstractProvider
      * getPaginationContent
      * @return array
      */
-    public function getPaginationContent(): array
+    public function getPeoplePaginationContent(): array
     {
-        return $this->getRepository()->getPaginationContent();
+        return $this->getRepository()->getPeoplePaginationContent();
     }
 
     /**
@@ -367,7 +367,12 @@ class PersonProvider extends AbstractProvider
         uasort($result, function($a,$b) {
             return $a['name'] > $b['name'] ? 1 : -1;
         });
-dump($result);
+
+        foreach ($result as $q=>$w) {
+            if (!key_exists('role', $w))
+                $result[$q]['role'] = 'Student';
+        }
+
         return array_values($result);
     }
 }

@@ -258,10 +258,12 @@ class PersonRepository extends ServiceEntityRepository
     }
 
     /**
-     * getPaginationContent
+     * getPeoplePaginationContent
+     *
+     * 10/09/2020 15:39
      * @return array
      */
-    public function getPaginationContent(): array
+    public function getPeoplePaginationContent(): array
     {
         $students = ProviderFactory::getRepository(Student::class)->getAllStudentsQuery()
             ->select(["COALESCE(d.personalImage, '/build/static/DefaultPerson.png') AS photo", "CONCAT(p.surname, ': ', p.preferredName) AS fullName",'p.id','p.status','f.name AS family','f.id As family_id',"COALESCE(u.username, '') AS username", "'Student' AS role", 'u.canLogin','p.id'])

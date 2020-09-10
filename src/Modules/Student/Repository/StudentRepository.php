@@ -193,11 +193,10 @@ class StudentRepository extends ServiceEntityRepository
     public function getAllStudentsQuery(): QueryBuilder
     {
         return $this->createQueryBuilder('s')
-            ->select(['s','p','pd','c','cd'])
+            ->select(['s','p','pd','c'])
             ->leftJoin('s.person', 'p')
             ->leftJoin('p.personalDocumentation', 'pd')
             ->leftJoin('p.contact', 'c')
-            ->leftJoin('s.customData', 'cd')
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.firstName', 'ASC');
     }
@@ -210,13 +209,12 @@ class StudentRepository extends ServiceEntityRepository
      */
     public function getDemonstrationStudents(): array
     {
-        $result = $this->createQueryBuilder('st')
-            ->select(['st','p','s','cd','c'])
-            ->leftJoin('st.person', 'p')
-            ->leftJoin('p.securityUser', 's')
+        $result = $this->createQueryBuilder('s')
+            ->select(['s','p','su','c'])
+            ->leftJoin('s.person', 'p')
+            ->leftJoin('p.securityUser', 'su')
             ->leftJoin('p.contact', 'c')
-            ->leftJoin('st.customData', 'cd')
-            ->where('s.username IS NOT NULL')
+            ->where('su.username IS NOT NULL')
             ->getQuery()
             ->getResult();
         $items = [];
@@ -294,9 +292,9 @@ class StudentRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Person::class, 'p', 'p.id')
-            ->select(['p.id','rg.name AS rollGroup', 'yg.name AS yearGroup', "'Student' AS role"])
+            ->select(['p.id',"COALESCE(rg.name, '') AS rollGroup", "COALESCE(yg.name,'') AS yearGroup", "'Student' AS role"])
             ->leftJoin('p.student', 's')
-            ->join('s.studentEnrolments', 'se')
+            ->leftJoin('s.studentEnrolments', 'se')
             ->where('se.academicYear = :current')
             ->andWhere('p.student IS NOT NULL')
             ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())

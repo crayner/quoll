@@ -85,7 +85,7 @@ class PeopleController extends AbstractPageController
     public function manageContent(PeoplePagination $pagination)
     {
         try {
-            $content = ProviderFactory::create(Person::class)->getPaginationContent();
+            $content = ProviderFactory::create(Person::class)->getPeoplePaginationContent();
 
             $pagination->setContent($content);
             return new JsonResponse(['content' => $pagination->getContent(), 'pageMax' => $pagination->getPageMax(), 'status' => 'success'], 200);
