@@ -58,7 +58,7 @@ class IndividualEnrolmentController extends AbstractPageController
 
         return $this->getPageManager()
             ->createBreadcrumbs('Individual Enrolment')
-            ->setUrl($this->generateUrl('student_enrolment_list'))
+            ->setUrl($this->generateUrl('individual_enrolment_list'))
             ->setMessages($this->getStatusManager()->getMessageArray())
             ->render([
                 'containers' => $this->getContainerManager()

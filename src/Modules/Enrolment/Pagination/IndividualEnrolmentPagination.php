@@ -64,9 +64,8 @@ class IndividualEnrolmentPagination extends AbstractPaginationManager
 
         $column = new PaginationColumn();
         $column->setLabel('Roll Group')
-            ->setHelp('Roll Order')
             ->setSort()
-            ->setContentKey(['rollGroup', 'rollOrder'])
+            ->setContentKey(['rollGroup'])
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -79,13 +78,30 @@ class IndividualEnrolmentPagination extends AbstractPaginationManager
             ->setRouteParams(['person' => 'id'])
         );
 
+        $filter = new PaginationFilter();
+        $row->addFilter($filter->setName('Student')
+            ->setValue('Student')
+            ->setGroup('Role')
+            ->setContentKey('role')
+        );
+
+        $filter = new PaginationFilter();
+        $row->addFilter($filter->setName('Staff')
+            ->setValue('Staff')
+            ->setGroup('Role')
+            ->setContentKey('role')
+        );
+
+
         foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $yg)
         {
             $filter = new PaginationFilter();
             $row->addFilter($filter->setName($yg->getName())
+                ->setLabel(['{name}', ['{name}' => $yg->getName()], 'messages'])
                 ->setValue($yg->getName())
                 ->setGroup('Year Group')
                 ->setContentKey('yearGroup')
+                ->setExactMatch()
             );
         }
 
@@ -93,8 +109,10 @@ class IndividualEnrolmentPagination extends AbstractPaginationManager
         {
             $filter = new PaginationFilter();
             $row->addFilter($filter->setName($rg->getName())
+                ->setLabel(['{name}', ['{name}' => $rg->getName()], 'messages'])
                 ->setValue($rg->getName())
                 ->setGroup('Roll Group')
+                ->setExactMatch()
                 ->setContentKey('rollGroup')
             );
         }

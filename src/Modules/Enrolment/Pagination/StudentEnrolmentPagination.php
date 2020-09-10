@@ -87,6 +87,7 @@ class StudentEnrolmentPagination extends AbstractPaginationManager
         {
             $filter = new PaginationFilter();
             $row->addFilter($filter->setName($yg->getName())
+                ->setLabel(['{name}', ['{name}' => $yg->getName()], 'messages'])
                 ->setValue($yg->getName())
                 ->setGroup('Year Group')
                 ->setContentKey('yearGroup')
@@ -97,6 +98,7 @@ class StudentEnrolmentPagination extends AbstractPaginationManager
         {
             $filter = new PaginationFilter();
             $row->addFilter($filter->setName($rg->getName())
+                ->setLabel(['{name}', ['{name}' => $rg->getName()], 'messages'])
                 ->setValue($rg->getName())
                 ->setGroup('Roll Group')
                 ->setContentKey('rollGroup')

@@ -42,3 +42,10 @@ Select Row: Select Row
 Student Enrolment: Student Enrolment
 Student: Student
 'To appear on this list, students must have a status of "Full" or "Expected"': 'To appear on this list, students must have a status of "Full" or "Expected"'
+'To appear on this list, students or staff must have a status of "Full" or "Expected"': 'To appear on this list, students or staff must have a status of "Full" or "Expected"'
+Course Enrolment by Person: Course Enrolment by Person
+Edit Student Enrolment: Edit Student Enrolment
+Individual Enrolment: Individual Enrolment
+Roll Order: Roll Order
+Staff: Staff
+Student History: Student History
