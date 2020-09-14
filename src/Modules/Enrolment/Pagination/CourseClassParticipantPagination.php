@@ -39,11 +39,6 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
     private CourseClass $courseClass;
 
     /**
-     * @var string
-     */
-    private string $token;
-
-    /**
      * execute
      *
      * 3/09/2020 11:58
@@ -142,24 +137,6 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
     public function setCourseClass(CourseClass $courseClass): CourseClassParticipantPagination
     {
         $this->courseClass = $courseClass;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getToken(): string
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param string $token
-     * @return CourseClassParticipantPagination
-     */
-    public function setToken(string $token): CourseClassParticipantPagination
-    {
-        $this->token = $token;
         return $this;
     }
 }

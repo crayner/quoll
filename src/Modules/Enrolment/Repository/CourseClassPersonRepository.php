@@ -111,7 +111,7 @@ class CourseClassPersonRepository extends ServiceEntityRepository
     /**
      * findIndividualClassEnrolmentContent
      *
-     * 11/09/2020 15:15
+     * 14/09/2020 13:53
      * @param Person $person
      * @return array
      */
@@ -126,7 +126,8 @@ class CourseClassPersonRepository extends ServiceEntityRepository
                     "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
                     'ccp.id',
                     'cc.id AS course_class_id',
-                    'c.id AS course_id'
+                    'c.id AS course_id',
+                    'p.id AS person_id'
                 ]
             )
             ->where('ccp.person = :person')

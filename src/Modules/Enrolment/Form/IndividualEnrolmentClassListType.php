@@ -21,7 +21,6 @@ use App\Form\Type\ReactFormType;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Manager\Hidden\IndividualEnrolment;
 use App\Provider\ProviderFactory;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

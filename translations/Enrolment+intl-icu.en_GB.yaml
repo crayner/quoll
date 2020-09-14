@@ -66,3 +66,15 @@ Course: Course
 Current Enrolment: Current Enrolment
 Current: Current
 Edit Class Participant: Edit Class Participant
+individual_enrolment_selected_remove: >-
+    {count, plural,
+        =0      {No changes made.}
+        one     {"{name}" was removed from one class.}
+        other   {"{name}" was removed from # classes.}
+    }
+individual_enrolment_selected_mark_as_left: >-
+    {count, plural,
+        =0      {No changes made.}
+        one     {"{name}" was marked as left from one class.}
+        other   {"{name}" was marked as left from # classes.}
+    }

@@ -82,10 +82,10 @@ class ClassEnrolmentController extends AbstractPageController
      * @Route("/course/class/{class}/enrolment/manage/",name="course_class_enrolment_manage")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function manage(CourseClass $class, CourseClassParticipantPagination $pagination, CsrfTokenManagerInterface $csrfTokenManager)
+    public function manage(CourseClass $class, CourseClassParticipantPagination $pagination,  CsrfTokenManagerInterface $csrfTokenManager)
     {
         $pagination->setCourseClass($class)
-            ->setToken($csrfTokenManager->getToken('course_class_enrolment_copy'))
+            ->setToken($csrfTokenManager)
             ->setContent(ProviderFactory::create(CourseClassPerson::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
             ->setAddElementRoute($this->generateUrl('course_class_enrolment_add', ['class' => $class->getId()]))
             ->setPageMax(50);
@@ -259,17 +259,18 @@ class ClassEnrolmentController extends AbstractPageController
     /**
      * markAsLeft
      *
-     * 7/09/2020 14:02
+     * 14/09/2020 13:46
      * @param CourseClass $class
      * @param ValidatorInterface $validator
-     * @return JsonResponse
+     * @param CourseClassParticipantPagination $pagination
      * @Route("/course/class/{class}/enrolment/mark/as/left/",name="course_class_enrolment_mark_as_left")
+     * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function markAsLeft(CourseClass $class, ValidatorInterface $validator)
+    public function markAsLeft(CourseClass $class, ValidatorInterface $validator, CourseClassParticipantPagination $pagination)
     {
         $content = $this->jsonDecode();
-        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+        if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $participant) {
                 $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id']);
                 if (strpos($ccp->getRole(), 'Student') === 0) {
@@ -296,18 +297,19 @@ class ClassEnrolmentController extends AbstractPageController
     }
 
     /**
-     * markAsLeft
+     * removeFromClass
      *
-     * 7/09/2020 14:02
+     * 14/09/2020 13:46
      * @param CourseClass $class
-     * @return JsonResponse
+     * @param CourseClassParticipantPagination $pagination
      * @Route("/course/class/{class}/enrolment/remove/from/class/",name="course_class_enrolment_remove_from_class")
+     * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function removeFromClass(CourseClass $class)
+    public function removeFromClass(CourseClass $class, CourseClassParticipantPagination $pagination)
     {
         $content = $this->jsonDecode();
-        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+        if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $q=>$participant) {
                 ProviderFactory::create(CourseClassPerson::class)->delete($participant['id'], false);
             }

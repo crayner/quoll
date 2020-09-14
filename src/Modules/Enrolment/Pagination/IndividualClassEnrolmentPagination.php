@@ -20,6 +20,7 @@ use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
+use App\Manager\Hidden\PaginationSelectAction;
 use App\Manager\PaginationInterface;
 use App\Util\TranslationHelper;
 
@@ -77,6 +78,25 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('individual_enrolment_remove')
             ->setRouteParams(['ccp' => 'id'])
+        );
+
+
+        $action = new PaginationAction();
+        $select = new PaginationSelectAction();
+        $action->addSectionAction($select->setRoute('individual_enrolment_remove_selected')
+            ->setRouteParams(['person' => 'person_id'])
+            ->setPrompt('Remove from class')
+        );
+        $select = new PaginationSelectAction();
+        $action->addSectionAction($select->setRoute('individual_enrolment_mark_selected_as_left')
+            ->setRouteParams(['person' => 'person_id'])
+            ->setPrompt('Mark as left"')
+        );
+
+        $row->addAction($action
+            ->setTitle('Select Row')
+            ->setRoute('home')
+            ->setSelectRow()
         );
 
         $this->setRow($row);

@@ -24,11 +24,13 @@ use App\Util\StringHelper;
 use App\Util\TranslationHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Class AbstractPaginationManager
@@ -120,6 +122,11 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @var null|string
      */
     private $preContent;
+
+    /**
+     * @var string
+     */
+    private string $token;
 
     /**
      * AbstractPaginationManager constructor.
@@ -278,10 +285,13 @@ abstract class AbstractPaginationManager implements PaginationInterface
 
     /**
      * toArray
+     *
+     * 14/09/2020 14:28
      * @return array
      */
     final public function toArray(): array
     {
+        $this->getRow()->setToken($this->getToken());
         return [
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
@@ -712,5 +722,37 @@ abstract class AbstractPaginationManager implements PaginationInterface
     {
         $this->preContent = $preContent;
         return $this;
+    }
+
+    /**
+     * getToken
+     *
+     * 14/09/2020 13:39
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token = isset($this->token) ? $this->token : '';
+    }
+
+    /**
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @return AbstractPaginationManager
+     */
+    public function setToken(CsrfTokenManagerInterface  $csrfTokenManager): AbstractPaginationManager
+    {
+        $this->token = $csrfTokenManager->getToken($this->getPaginationTokenName());
+        return $this;
+    }
+
+    /**
+     * getPaginationTokenName
+     *
+     * 14/09/2020 13:38
+     * @return string
+     */
+    public function getPaginationTokenName(): string
+    {
+        return StringUtil::fqcnToBlockPrefix(static::class) ?: '';
     }
 }
