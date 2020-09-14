@@ -27,10 +27,10 @@ export default function SelectedRowForm(props) {
     options.unshift(<option key={loop++}>{messages['Select action...']}</option>)
 
     return (<tr className={'flex flex-col sm:flex-row justify-between content-center p-0'}>
-        <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0">
+        <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0 select-action">
             <label htmlFor="select_row_action">{messages['Selected Row Action']}</label>
         </td>
-        <td className={'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0'}>
+        <td className={'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 select-action'}>
             <div className={'flex-1 relative'}>
                 <select id={'select_row_action'} onChange={(e) => functions.manageSelectedRowAction(e)} className={'w-full'} >{options}</select>
             </div>
