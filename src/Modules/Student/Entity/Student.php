@@ -25,6 +25,7 @@ use App\Modules\People\Entity\Additional\SchoolCommonFields;
 use App\Modules\People\Util\CustomDataHandler;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\ApplicationForm;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\System\Entity\Theme;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -693,5 +694,19 @@ class Student extends AbstractEntity
             $result[] = $se->getAcademicYear()->getName() . ': ' . $se->getRollGroup()->getName();
         }
         return implode(", \n<br />", $result);
+    }
+
+    /**
+     * getCurrentEnrolment
+     *
+     * 11/09/2020 08:41
+     * @return StudentEnrolment|null
+     */
+    public function getCurrentEnrolment(): ?StudentEnrolment
+    {
+        $se = $this->getStudentEnrolments()->filter(function($w) {
+            if ($w->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) return $w;
+        });
+        return $se->count() === 1 ? $se->first() : null;
     }
 }

@@ -83,12 +83,13 @@ class CoursePagination extends AbstractPaginationManager
         ;
         $row->addColumn($column);
 
-        foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $w) {
+        foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $yg) {
             $filter = new PaginationFilter();
             $row->addFilter(
-                $filter->setName($w->getName())
+                $filter->setName($yg->getName())
+                    ->setLabel(['{name}', ['{name}' => $yg->getName()], 'School'])
                     ->setContentKey('yearGroups')
-                    ->setValue($w->getAbbreviation())
+                    ->setValue($yg->getAbbreviation())
                     ->setGroup('Year Group')
             );
         }

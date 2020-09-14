@@ -107,4 +107,38 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findIndividualClassEnrolmentContent
+     *
+     * 11/09/2020 15:15
+     * @param Person $person
+     * @return array
+     */
+    public function findIndividualClassEnrolmentContent(Person $person): array
+    {
+        return $this->createQueryBuilder('ccp')
+            ->select(
+                [
+                    'ccp.role',
+                    "CONCAT(c.abbreviation,'.',cc.abbreviation) AS classCode",
+                    'c.name AS course',
+                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'ccp.id',
+                    'cc.id AS course_class_id',
+                    'c.id AS course_id'
+                ]
+            )
+            ->where('ccp.person = :person')
+            ->setParameter('person', $person)
+            ->andWhere('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->leftJoin('ccp.person', 'p')
+            ->leftJoin('ccp.courseClass', 'cc')
+            ->leftJoin('cc.course', 'c')
+            ->orderBy('c.abbreviation', 'ASC')
+            ->addOrderBy('cc.abbreviation','ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

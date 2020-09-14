@@ -16,8 +16,10 @@ namespace App\Modules\Enrolment\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
+use App\Modules\People\Entity\Person;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
 use App\Util\StringHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -425,5 +427,51 @@ class CourseClass extends AbstractEntity
     public function getFullName(): string
     {
         return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
+    }
+
+    /**
+     * getClassNameWithCount
+     *
+     * 11/09/2020 09:07
+     * @return string
+     */
+    public function getClassNameWithCount(): string
+    {
+        $result = $this->getAbbreviatedName();
+        $result .= $this->getTeacher() ? ' - ' . $this->getTeacher()->formatName('Initial','Staff') : '';
+        $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getStudentCount()], 'Enrolment');
+        return $result;
+    }
+
+    /**
+     * getTeacher
+     *
+     * 11/09/2020 09:44
+     * @return Person|null
+     */
+    public function getTeacher(): ?Person
+    {
+        $w = $this->getCourseClassPeople()->filter(function(CourseClassPerson $item) {
+            if ($item->getRole() === 'Teacher') return $item;
+        });
+        $person = null;
+        if ($w->count() > 0) {
+            $person = $w->first()->getPerson();
+        }
+        return $person;
+    }
+
+    /**
+     * getStudentCount
+     *
+     * 11/09/2020 09:47
+     * @return int
+     */
+    public function getStudentCount(): int
+    {
+        $w = $this->getCourseClassPeople()->filter(function(CourseClassPerson $item) {
+            if ($item->getRole() === 'Student') return $item;
+        });
+        return $w->count();
     }
 }

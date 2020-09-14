@@ -47,7 +47,6 @@ The first day must be before the last day.: The first day must be before the las
 The last day value is not valid.: The last day value is not valid.
 The school academic year should cover a whole year.: The school academic year should cover a whole year.
 The school academic year should not overlap another academic year.: The school academic year should not overlap another academic year.
-
 Academic Year Terms: Academic Year Terms
 Add Academic Year Term: Add Academic Year Term
 Edit Academic Year Term: Edit Academic Year Term
@@ -92,7 +91,6 @@ Active: Active
 'Active: Yes': 'Active: Yes'
 Brief description of how scale is used.: Brief description of how scale is used.
 Descriptor: Descriptor
-
 'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.': 'Does this scale use only numeric grades? Note, grade "Incomplete" is exempt.'
 Edit Scale ({name}): Edit Scale ({name})
 Grades: Grades

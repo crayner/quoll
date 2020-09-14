@@ -1,6 +1,4 @@
 Active: Active
-
-
 Alerts: Alerts
 Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).: Agreements that students might be asked to sign in school (e.g. ICT Policy).
 Determines who to notify when a new student note is created.: Determines who to notify when a new student note is created.
@@ -31,7 +29,6 @@ student:
 Add Student Note Category: Add Student Note Category
 Edit Student Note Category: Edit Student Note Category
 HTML code to be inserted into blank note.: HTML code to be inserted into blank note.
-
 Settings: Settings
 Student Settings: Student Settings
 Students: Students

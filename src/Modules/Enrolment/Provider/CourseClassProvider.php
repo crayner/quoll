@@ -88,4 +88,27 @@ class CourseClassProvider extends AbstractProvider
 
         return array_values($result);
     }
+
+    /**
+     * getIndividualClassChoices
+     *
+     * 11/09/2020 09:05
+     * @param Person $person
+     * @return array
+     */
+    public function getIndividualClassChoices(Person $person): array
+    {
+        if ($person->isStudent()) {
+            $result['-- --Enrolable Classes-- --'] = $this->getRepository()->findEnrolableClasses($person);
+            $c = $this->getRepository()->findClassesByCurrentAcademicYear();
+            foreach ($result['-- --Enrolable Classes-- --'] as $q=>$w) {
+                if (key_exists($q, $c)) unset($c[$q]);
+            }
+            $result['-- --Enrolable Classes-- --'] = array_values($result['-- --Enrolable Classes-- --']);
+            $result['-- --All Classes-- --'] = array_values($c);
+        } else {
+            $result = array_values($this->getRepository()->findClassesByCurrentAcademicYear());
+        }
+        return $result;
+    }
 }

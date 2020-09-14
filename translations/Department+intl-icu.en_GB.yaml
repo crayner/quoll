@@ -1,12 +1,9 @@
-
 Add Department: Add Department
 Administration: Administration
 Blurb: Blurb
-
 Department Access: Department Access
 Department: Department
 Departments: Departments
-
 General: General
 Learning Area: Learning Area
 List: List
@@ -26,7 +23,6 @@ department:
 Edit Department: Edit Department
 None: None
 Current Staff: Current Staff
-
 Role: Role
 Use Control, Command and/or Shift to select multiple.: Use Control, Command and/or Shift to select multiple.
 departmentstaff:

@@ -42,8 +42,6 @@ Students: Students
 'Total Student Enrolment:': 'Total Student Enrolment:'
 'Your session expired, so you were automatically logged out of the system.': 'Your session expired, so you were automatically logged out of the system.'
 'Your session is about to expire: you will be logged out shortly.': 'Your session is about to expire: you will be logged out shortly.'
-' ': ' '
-'': ''
 '* denotes a required field': '* denotes a required field'
 Add Element to List: Add Element to List
 Add: Add
@@ -51,7 +49,6 @@ Admin: Admin
 All / None: All / None
 All fields on all panels are saved together.: All fields on all panels are saved together.
 Close Message: Close Message
-
 Errors on Tab: Errors on Tab
 File Delete: File Delete
 File Download: File Download
@@ -59,11 +56,9 @@ Installed: Installed
 Let me ponder your request: Let me ponder your request
 Open Link: Open Link
 Refresh List: Refresh List
-
 The list has been refreshed.: The list has been refreshed.
 There are no records to display.: There are no records to display.
 Yes/No: Yes/No
-
 Confirm Password: Confirm Password
 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.'
 Dr: Dr

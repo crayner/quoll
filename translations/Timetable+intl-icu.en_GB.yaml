@@ -1,4 +1,3 @@
-
 Timetable: Timetable
 Timetables in Academic Year {name}: Timetables in Academic Year {name}
 Timetables: Timetables
@@ -25,7 +24,6 @@ Edit Timetable {name}: Edit Timetable {name}
 End Time: End Time
 Header Background Colour: Header Background Colour
 Header Text Colour: Header Text Colour
-
 Rows: Rows
 Start Time: Start Time
 Time: Time
@@ -66,7 +64,6 @@ Timetable Calendar Mapping: Timetable Calendar Mapping
 Timetable Content Instructions: Timetable Content Instructions
 Order: Order
 Timetable Calendar Map: Timetable Calendar Map
-
 Link to Calendar Days: Link to Calendar Days
 Link to Week Days: Link to Week Days
 Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.: Select calendar days to limit this timetable day to those calendar days.  If no days of the week are selected, then the timetable day is free to select any calendar day.
@@ -98,3 +95,4 @@ Student: Student
 Add Course: Add Course
 Edit Course {name}: Edit Course {name}
 Course Enrolment by Class: Course Enrolment by Class
+Individual Enrolment: Individual Enrolment

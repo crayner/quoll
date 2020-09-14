@@ -316,7 +316,6 @@ settinglists:
         development: Development
         production: Production
         testing: Testing
-
 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.': 'Full details can be found in the installation-{date}.log file in the /var/log directory. Each table can take up to a minute to fully load, so your patience is appreciated.'
 Next Table: Next Table
 '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>': '<strong>{table}</strong> was completed.  The next table to load is <strong>{next}</strong>'

@@ -240,9 +240,7 @@ Contact by SMS?: Contact by SMS?
 Contact by phone call?: Contact by phone call?
 Data Access: Data Access
 Data Access?: Data Access?
-
 Edit Family: Edit Family
-
 Family Name: Family Name
 Formal Family Name: Formal Family Name
 General Information: General Information
@@ -505,7 +503,6 @@ Custom Fields: Custom Fields
 Assigned Roles: Assigned Roles
 Employment Details: {name}: Employment Details: {name}
 Employment: Employment
-
 A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.: A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.
 A list of ethnicities available in system: A list of ethnicities available in system
 A list of nationalities available in system. If blank, system will default to list of countries: A list of nationalities available in system. If blank, system will default to list of countries

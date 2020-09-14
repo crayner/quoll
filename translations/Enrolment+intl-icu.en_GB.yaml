@@ -49,3 +49,20 @@ Individual Enrolment: Individual Enrolment
 Roll Order: Roll Order
 Staff: Staff
 Student History: Student History
+count_students: >-
+    {count, plural,
+        =0    {No Students}
+        one   {# student}
+        other {# students}
+    }
+count records where updated.: >-
+    {count, plural,
+        one     {One record was updated}
+        other   {# records where updated}
+    }
+Add Classes: Add Classes
+Class Code: Class Code
+Course: Course
+Current Enrolment: Current Enrolment
+Current: Current
+Edit Class Participant: Edit Class Participant

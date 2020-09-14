@@ -14,6 +14,8 @@
 namespace App\Modules\Enrolment\Repository;
 
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\People\Entity\Person;
+use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -95,6 +97,13 @@ class CourseClassRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * countParticipants
+     *
+     * 11/09/2020 08:53
+     * @param string $status
+     * @return array
+     */
     public function countParticipants(string $status = '%'): array
     {
         return $this->createQueryBuilder('cc', 'cc.id')
@@ -109,4 +118,59 @@ class CourseClassRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * findEnrolableClasses
+     *
+     * 11/09/2020 08:27
+     * @param Person $person
+     * @return array
+     */
+    public function findEnrolableClasses(Person $person): array
+    {
+        if ($person->isStudent()) {
+            $se = $person->getStudent()->getCurrentEnrolment();
+            $yg = $se ? $se->getYearGroup() : null;
+        } else {
+            $yg = null;
+        }
+        $query = $this->createQueryBuilder('cc', 'cc.id')
+            ->select(['cc','c','ccp','p'])
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('cc.courseClassPeople', 'ccp')
+            ->leftJoin('ccp.person', 'p')
+            ->where('c.academicYear = :current')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('cc.name', 'ASC')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear());
+
+        if ($yg instanceof YearGroup) {
+            $yg->getId();
+            $query
+                ->leftJoin('c.yearGroups', 'yg')
+                ->andWhere('yg.id = :yearGroup')
+                ->setParameter('yearGroup', $yg->getId());
+        }
+        return $query
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findClassesByCurrentAcademicYear
+     *
+     * 11/09/2020 08:55
+     * @return array
+     */
+    public function findClassesByCurrentAcademicYear(): array
+    {
+        return $this->createQueryBuilder('cc', 'cc.id')
+            ->select(['cc','c','ccp','p'])
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('cc.courseClassPeople', 'ccp')
+            ->leftJoin('ccp.person', 'p')
+            ->where('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -62,7 +62,7 @@ class CourseClassPerson extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=16)
+     * @ORM\Column(length=16,nullable=false)
      * @Assert\Choice(callback="getRoleList")
      */
     private string $role;
@@ -187,11 +187,38 @@ class CourseClassPerson extends AbstractEntity
     }
 
     /**
+     * mirrorReportable
+     *
+     * Will mirror the class reportable stattus to the individual.
+     * 12/09/2020 09:16
+     * @return $this
+     */
+    public function mirrorReportable(): CourseClassPerson
+    {
+        $this->reportable = !isset($this->reportable) ? $this->getCourseClass()->isReportable() : $this->reportable;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public static function getRoleList(): array
     {
         return self::$roleList;
+    }
+
+    /**
+     * getRoleListCurrent
+     *
+     * 11/09/2020 07:51
+     * @return array|string[]
+     */
+    public static function getRoleListCurrent(): array
+    {
+        $roleList = self::$roleList;
+        unset($roleList[array_search('Student - Left', $roleList)],$roleList[array_search('Teacher - Left', $roleList)]);
+
+        return array_values($roleList);
     }
 
     /**

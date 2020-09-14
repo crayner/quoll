@@ -55,7 +55,7 @@ class Course extends AbstractEntity
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year",referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
      */
     private ?AcademicYear $academicYear;
 
