@@ -135,24 +135,4 @@ class RollGroupRepository extends ServiceEntityRepository
             return 0;
         }
     }
-
-    /**
-     * findClassEnrolmentBy
-     *
-     * 31/08/2020 09:14
-     * @return array
-     */
-    public function findClassEnrolmentBy(): array
-    {
-        return $this->createQueryBuilder('r')
-            ->leftJoin('r.studentEnrolments', 'se')
-            ->leftJoin('se.student', 's')
-            ->leftJoin('s.person', 'p')
-            ->select(['r.name AS rollGroupName', "CONCAT(".PersonNameManager::formatNameQuery('p','Student','Reversed').") AS studentName", '0 AS classCount'])
-            ->orderBy('r.name','ASC')
-            ->addOrderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
 }

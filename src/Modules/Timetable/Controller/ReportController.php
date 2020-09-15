@@ -18,6 +18,7 @@ namespace App\Modules\Timetable\Controller;
 
 use App\Controller\AbstractPageController;
 use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\Student\Entity\Student;
 use App\Modules\Timetable\Pagination\ClassEnrolmentByRollGroupPagination;
 use App\Provider\ProviderFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -42,7 +43,7 @@ class ReportController extends AbstractPageController
      */
     public function classEnrolmentByRollGroup(ClassEnrolmentByRollGroupPagination $pagination)
     {
-        $pagination->setContent(ProviderFactory::getRepository(RollGroup::class)->findClassEnrolmentBy())
+        $pagination->setContent(ProviderFactory::create(Student::class)->getClassEnrolmentByRollGroupPaginationContent())
             ->setPageMax(50)
         ;
 

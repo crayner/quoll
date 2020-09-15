@@ -303,4 +303,34 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findClassEnrolmentByRollGroup
+     *
+     * 15/09/2020 09:30
+     * @return array
+     */
+    public function findClassEnrolmentByRollGroup(): array
+    {
+        return $this->createQueryBuilder('s', 's.id')
+            ->leftJoin('s.studentEnrolments', 'se')
+            ->leftJoin('se.rollGroup', 'r')
+            ->leftJoin('s.person', 'p')
+            ->select(
+                [
+                    'r.name AS rollGroupName',
+                    "CONCAT(".PersonNameManager::formatNameQuery('p','Student','Reversed').") AS studentName",
+                    '0 AS classCount',
+                    's.id'
+                ]
+            )
+            ->orderBy('r.name','ASC')
+            ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', 'ASC')
+            ->where('se.rollGroup IS NOT NULL')
+            ->andWhere('se.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->getQuery()
+            ->getResult();
+    }
 }

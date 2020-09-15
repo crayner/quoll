@@ -142,4 +142,28 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    /**
+     * countClassEnrolmentPerStudent
+     *
+     * 15/09/2020 09:30
+     * @return array
+     */
+    public function countClassEnrolmentByRollGroup(): array
+    {
+        return $this->createQueryBuilder('ccp')
+            ->leftJoin('ccp.person', 'p')
+            ->leftJoin('ccp.courseClass', 'cc')
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('p.student', 's')
+            ->groupBy('p.student')
+            ->where('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->andWhere('p.student IS NOT NULL')
+            ->select(['COUNT(ccp.id) AS classCount', 's.id'])
+            ->getQuery()
+            ->getResult();
+    }
+
 }

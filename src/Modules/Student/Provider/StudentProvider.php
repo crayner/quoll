@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Student\Provider;
 
+use App\Modules\Enrolment\Entity\CourseClassPerson;
 use App\Modules\Student\Entity\Student;
 use App\Provider\AbstractProvider;
 
@@ -29,5 +30,27 @@ class StudentProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = Student::class;
+    protected string $entityName = Student::class;
+
+
+    /**
+     * findClassEnrolmentBy
+     *
+     * 31/08/2020 09:14
+     * @return array
+     */
+    public function getClassEnrolmentByRollGroupPaginationContent(): array
+    {
+        $result = $this->getRepository()->findClassEnrolmentByRollGroup();
+
+        foreach ($this->getRepository(CourseClassPerson::class)->countClassEnrolmentByRollGroup() as $w) {
+            $id = $w['id'];
+            if (key_exists($id, $result)) {
+                $result[$id]['classCount'] = $w['classCount'];
+            }
+        }
+
+        return array_values($result);
+    }
+
 }
