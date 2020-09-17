@@ -263,7 +263,7 @@ class StudentRepository extends ServiceEntityRepository
             ->getResult();
 
         $result = array_values(array_merge($result, $this->createQueryBuilder('s', 's.id')
-            ->leftJoin('s.studentEnrolments', 'se')
+            ->leftJoin('s.studentRollGroups', 'se')
             ->leftJoin('s.person', 'p')
             ->leftJoin('se.yearGroup', 'yg')
             ->leftJoin('se.rollGroup', 'rg')
