@@ -14,10 +14,9 @@
 namespace App\Modules\Enrolment\Repository;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PersonNameManager;
-use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Util\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,7 +26,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class CourseClassPersonRepository
  * @package App\Modules\Enrolment\Repository
  */
-class CourseClassPersonRepository extends ServiceEntityRepository
+class CourseClassStudentRepository extends ServiceEntityRepository
 {
     /**
      * CourseClassPersonRepository constructor.
@@ -35,7 +34,7 @@ class CourseClassPersonRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CourseClassPerson::class);
+        parent::__construct($registry, CourseClassStudent::class);
     }
 
     /**

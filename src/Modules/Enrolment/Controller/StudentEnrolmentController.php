@@ -20,7 +20,7 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\Enrolment\Form\StudentEnrolmentType;
 use App\Modules\Enrolment\Pagination\StudentEnrolmentPagination;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -78,7 +78,7 @@ class StudentEnrolmentController extends AbstractPageController
      */
     public function edit(Student $student)
     {
-        $se = ProviderFactory::getRepository(StudentEnrolment::class)->findOneByStudent($student) ?: new StudentEnrolment($student);
+        $se = ProviderFactory::getRepository(StudentRollGroup::class)->findOneByStudent($student) ?: new StudentRollGroup($student);
         $se->setStudent($student)
             ->setAcademicYear(AcademicYearHelper::getCurrentAcademicYear());
 
@@ -88,7 +88,7 @@ class StudentEnrolmentController extends AbstractPageController
             $content = $this->jsonDecode();
             $form->submit($content);
             if ($form->isValid()) {
-                ProviderFactory::create(StudentEnrolment::class)->persistFlush($se);
+                ProviderFactory::create(StudentRollGroup::class)->persistFlush($se);
             } else {
                 $this->getStatusManager()->invalidInputs();
             }
@@ -121,15 +121,15 @@ class StudentEnrolmentController extends AbstractPageController
      * delete
      *
      * 10/09/2020 09:33
-     * @param StudentEnrolment $enrolment
+     * @param StudentRollGroup $enrolment
      * @param StudentEnrolmentPagination $pagination
      * @Route("/student/enrolment/{enrolment}/delete/",name="student_enrolment_delete")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function delete(StudentEnrolment $enrolment, StudentEnrolmentPagination $pagination)
+    public function delete(StudentRollGroup $enrolment, StudentEnrolmentPagination $pagination)
     {
-        ProviderFactory::create(StudentEnrolment::class)->delete($enrolment);
+        ProviderFactory::create(StudentRollGroup::class)->delete($enrolment);
 
         return $this->list($pagination);
     }

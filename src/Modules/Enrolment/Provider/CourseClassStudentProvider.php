@@ -18,8 +18,9 @@ namespace App\Modules\Enrolment\Provider;
 
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Student\Entity\Student;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use Psr\Log\LoggerInterface;
@@ -29,13 +30,13 @@ use Symfony\Component\Validator\Validation;
  * Class CourseClassPersonProvider
  * @package App\Modules\Enrolment\Provider
  */
-class CourseClassPersonProvider extends AbstractProvider
+class CourseClassStudentProvider extends AbstractProvider
 {
 
     /**
      * @var string
      */
-    protected string $entityName = CourseClassPerson::class;
+    protected string $entityName = CourseClassStudent::class;
 
     /**
      * findCourseClassParticipationPagination
@@ -61,23 +62,23 @@ class CourseClassPersonProvider extends AbstractProvider
     public function loader(array $data, LoggerInterface $logger): int
     {
         $count = 0;
-        $users = [];
+        $students = [];
         $classes = [];
         $courses[] = [];
         $validator = Validation::createValidator();
         $flushCount = 0;
         foreach ($data as $q=>$item) {
-            $ccp = new CourseClassPerson();
+            $ccp = new CourseClassStudent();
             if (!key_exists('username', $item)) continue;
             if (!key_exists('class', $item)) continue;
 
-            if (!key_exists($item['username'], $users)) {
-                $users[$item['username']] = ProviderFactory::getRepository(SecurityUser::class)->findOneBy(['username' => $item['username']]);
+            if (!key_exists($item['username'], $students)) {
+                $students[$item['username']] = ProviderFactory::getRepository(Student::class)->findOneByUsername($item['username']);
             }
-            $person = key_exists($item['username'], $users) && $users[$item['username']] ? $users[$item['username']]->getPerson() : null;
+            $student = key_exists($item['username'], $students) && $students[$item['username']] ? $students[$item['username']] : null;
 
             if (!key_exists($item['class']['course'], $courses))
-                $courses[$item['class']['course']] = ProviderFactory::getRepository(Course::class)->findOneBy(['name' => $item['class']['course']]);
+                $courses[$item['class']['course']] = ProviderFactory::getRepository(Course::class)->findOneBy(['abbreviation' => $item['class']['course']]);
 
             $course = $courses[$item['class']['course']];
             $class = null;
@@ -91,22 +92,21 @@ class CourseClassPersonProvider extends AbstractProvider
             }
             $class = $classes[$key];
 
-            $ccp->setRole($item['role'])
-                ->setReportable($item['reportable'])
-                ->setPerson($person)
+            $ccp->setReportable($item['reportable'])
+                ->setStudent($student)
                 ->setCourseClass($class)
             ;
 
             $errors = $validator->validate($ccp);
-            if ($person === null) {
-                $logger->error(sprintf('A person was not found for username "%s"',$item['username']));
+            if ($student === null) {
+                $logger->error(sprintf('A student was not found for username "%s"',$item['username']));
             } else if (count($errors) > 0) {
                 foreach ($errors as $error) {
                     $logger->error($error->getMessage());
                 }
             } else {
                 $this->getMessageManager()->resetStatus();
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
                 if (!$this->getMessageManager()->isStatusSuccess()) {
                     foreach ($this->getMessageManager()->getMessageArray() as $message) {
                         $logger->error($message['message']);
@@ -115,7 +115,7 @@ class CourseClassPersonProvider extends AbstractProvider
                 }
                 if (++$count % 50 === 0) {
                     $this->getMessageManager()->resetStatus();
-                    ProviderFactory::create(CourseClassPerson::class)->flush();
+                    ProviderFactory::create(CourseClassStudent::class)->flush();
                     if (!$this->getMessageManager()->isStatusSuccess()) {
                         foreach ($this->getMessageManager()->getMessageArray() as $message) {
                             $logger->error($message['message']);
@@ -129,7 +129,7 @@ class CourseClassPersonProvider extends AbstractProvider
             }
         }
         $this->getMessageManager()->resetStatus();
-        ProviderFactory::create(CourseClassPerson::class)->flush();
+        ProviderFactory::create(CourseClassStudent::class)->flush();
         if (!$this->getMessageManager()->isStatusSuccess()) {
             foreach ($this->getMessageManager()->getMessageArray() as $message) {
                 $logger->error($message['message']);

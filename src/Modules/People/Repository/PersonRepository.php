@@ -163,7 +163,7 @@ class PersonRepository extends ServiceEntityRepository
             ->leftJoin('p.securityUser', 'su')
             ->leftJoin('p.contact', 'c')
             ->distinct()
-            ->join('s.studentEnrolments', 'se')
+            ->join('s.studentRollGroups', 'se')
             ->join('se.rollGroup', 'rg')
             ->where('rg.academicYear = :academicYear')
             ->andWhere('p.status = :full')

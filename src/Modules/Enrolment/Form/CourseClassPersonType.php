@@ -23,7 +23,7 @@ use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
@@ -137,7 +137,7 @@ class CourseClassPersonType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Enrolment',
-                'data_class' => CourseClassPerson::class,
+                'data_class' => CourseClassStudent::class,
             ]
         );
     }

@@ -17,7 +17,7 @@
 namespace App\Modules\Student\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\People\Entity\CustomFieldData;
 use App\Modules\People\Entity\FamilyMemberStudent;
 use App\Modules\People\Entity\Person;
@@ -85,10 +85,10 @@ class Student extends AbstractEntity
     private ?array $studentAgreements;
 
     /**
-     * @var Collection|StudentEnrolment[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment",mappedBy="student")
+     * @var Collection|StudentRollGroup[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentRollGroup",mappedBy="student")
      */
-    private ?Collection $studentEnrolments;
+    private ?Collection $studentRollGroups;
 
     /**
      * @var string|null
@@ -175,7 +175,7 @@ class Student extends AbstractEntity
         $this->setPerson($person)
             ->setMemberOfFamilies(new ArrayCollection())
             ->setCustomData(new ArrayCollection())
-            ->setStudentEnrolments(new ArrayCollection())
+            ->setStudentRollGroups(new ArrayCollection())
         ;
     }
 
@@ -265,27 +265,27 @@ class Student extends AbstractEntity
     }
 
     /**
-     * getStudentEnrolments
+     * getStudentRollGroups
      * @return Collection|null
      */
-    public function getStudentEnrolments(): ?Collection
+    public function getStudentRollGroups(): ?Collection
     {
-        if (null === $this->studentEnrolments) $this->studentEnrolments = new ArrayCollection();
+        if (null === $this->studentRollGroups) $this->studentRollGroups = new ArrayCollection();
 
-        if ($this->studentEnrolments instanceof PersistentCollection) $this->studentEnrolments->initialize();
+        if ($this->studentRollGroups instanceof PersistentCollection) $this->studentRollGroups->initialize();
 
-        return $this->studentEnrolments;
+        return $this->studentRollGroups;
     }
 
     /**
-     * StudentEnrolments.
+     * StudentRollGroups.
      *
-     * @param StudentEnrolment[]|Collection $studentEnrolments
+     * @param StudentRollGroup[]|Collection $studentRollGroups
      * @return Student
      */
-    public function setStudentEnrolments(Collection $studentEnrolments): Student
+    public function setStudentRollGroups(Collection $studentRollGroups): Student
     {
-        $this->studentEnrolments = $studentEnrolments;
+        $this->studentRollGroups = $studentRollGroups;
         return $this;
     }
 
@@ -690,7 +690,7 @@ class Student extends AbstractEntity
     public function getStudentHistory(): string
     {
         $result = [];
-        foreach ($this->getStudentEnrolments() as $se) {
+        foreach ($this->getStudentRollGroups() as $se) {
             $result[] = $se->getAcademicYear()->getName() . ': ' . $se->getRollGroup()->getName();
         }
         return implode(", \n<br />", $result);
@@ -700,11 +700,11 @@ class Student extends AbstractEntity
      * getCurrentEnrolment
      *
      * 11/09/2020 08:41
-     * @return StudentEnrolment|null
+     * @return StudentRollGroup|null
      */
-    public function getCurrentEnrolment(): ?StudentEnrolment
+    public function getCurrentEnrolment(): ?StudentRollGroup
     {
-        $se = $this->getStudentEnrolments()->filter(function($w) {
+        $se = $this->getStudentRollGroups()->filter(function($w) {
             if ($w->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) return $w;
         });
         return $se->count() === 1 ? $se->first() : null;

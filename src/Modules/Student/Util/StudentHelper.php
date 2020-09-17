@@ -58,7 +58,7 @@ class StudentHelper
 
 
         $se = null;
-        foreach($student->getStudentEnrolments() as $enrolment)
+        foreach($student->getStudentRollGroups() as $enrolment)
         {
             if ($enrolment->getAcademicYear()->getId() === AcademicYearHelper::getCurrentAcademicYear()->getId()) {
                 $se = $enrolment;

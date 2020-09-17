@@ -187,4 +187,25 @@ class StaffRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * findOneByUsername
+     *
+     * 9/09/2020 10:34
+     * @param string $username
+     * @return Staff|null
+     */
+    public function findOneByUsername(string $username): ?Staff
+    {
+        try {
+            return $this->createQueryBuilder('s')
+                ->leftJoin('s.person', 'p')
+                ->leftJoin('p.securityUser', 'su')
+                ->where('su.username = :username')
+                ->setParameter('username', $username)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
+    }
 }

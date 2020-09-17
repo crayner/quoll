@@ -15,7 +15,7 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Exception\MissingClassException;
 use App\Exception\MissingEntityException;
 use App\Provider\AbstractProvider;
@@ -99,7 +99,7 @@ class AcademicYearProvider extends AbstractProvider
         if ($year->getTerms()->count() > 0) {
             return false;
         }
-        if ($this->getRepository(StudentEnrolment::class)->countEnrolmentsByAcademicYear($year) > 0) {
+        if ($this->getRepository(StudentRollGroup::class)->countEnrolmentsByAcademicYear($year) > 0) {
             return false;
         }
         return true;

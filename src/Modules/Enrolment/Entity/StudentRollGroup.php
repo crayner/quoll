@@ -14,7 +14,6 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
@@ -27,15 +26,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class StudentEnrolment
  * @package App\Modules\Enrolment\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentEnrolmentRepository")
- * @ORM\Table(name="StudentEnrolment",
+ * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentRollGroupRepository")
+ * @ORM\Table(name="StudentRollGroup",
  *     indexes={@ORM\Index(name="academic_year", columns={"academic_year"}),
  *     @ORM\Index(name="year_group", columns={"year_group"}),
  *     @ORM\Index(name="student", columns={"student"}),
  *     @ORM\Index(name="roll_group", columns={"roll_group"}),
  *     @ORM\Index(name="student_academic_year", columns={"student","academic_year"})})
  */
-class StudentEnrolment extends AbstractEntity
+class StudentRollGroup extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -49,7 +48,7 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @var Student|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student",inversedBy="studentRollGroups")
      * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -74,7 +73,7 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup",inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup",inversedBy="studentRollGroups")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
@@ -110,9 +109,9 @@ class StudentEnrolment extends AbstractEntity
      * Id.
      *
      * @param string|null $id
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setId(?string $id): StudentEnrolment
+    public function setId(?string $id): StudentRollGroup
     {
         $this->id = $id;
         return $this;
@@ -128,9 +127,9 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @param Student|null $student
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setStudent(?Student $student): StudentEnrolment
+    public function setStudent(?Student $student): StudentRollGroup
     {
         $this->student = $student;
         return $this;
@@ -146,9 +145,9 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @param AcademicYear|null $academicYear
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setAcademicYear(?AcademicYear $academicYear): StudentEnrolment
+    public function setAcademicYear(?AcademicYear $academicYear): StudentRollGroup
     {
         $this->academicYear = $academicYear;
         return $this;
@@ -164,9 +163,9 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @param YearGroup|null $yearGroup
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setYearGroup(?YearGroup $yearGroup): StudentEnrolment
+    public function setYearGroup(?YearGroup $yearGroup): StudentRollGroup
     {
         $this->yearGroup = $yearGroup;
         return $this;
@@ -182,9 +181,9 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @param RollGroup|null $rollGroup
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setRollGroup(?RollGroup $rollGroup): StudentEnrolment
+    public function setRollGroup(?RollGroup $rollGroup): StudentRollGroup
     {
         $this->rollGroup = $rollGroup;
         return $this;
@@ -203,9 +202,9 @@ class StudentEnrolment extends AbstractEntity
 
     /**
      * @param int $rollOrder
-     * @return StudentEnrolment
+     * @return StudentRollGroup
      */
-    public function setRollOrder(int $rollOrder): StudentEnrolment
+    public function setRollOrder(int $rollOrder): StudentRollGroup
     {
         $this->rollOrder = $rollOrder > 0 ? intval($rollOrder) : null;
         return $this;
@@ -239,7 +238,7 @@ class StudentEnrolment extends AbstractEntity
      */
     public function canDelete(): bool
     {
-        return ProviderFactory::create(StudentEnrolment::class)->canDelete($this);
+        return ProviderFactory::create(StudentRollGroup::class)->canDelete($this);
     }
 
     /**

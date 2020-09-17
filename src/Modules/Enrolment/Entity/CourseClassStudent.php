@@ -14,8 +14,7 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\Enrolment\Validator\ClassPerson;
-use App\Modules\People\Entity\Person;
+use App\Modules\Student\Entity\Student;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,16 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class CourseClassPerson
  * @package App\Modules\Enrolment\Entity
- * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseClassPersonRepository")
- * @ORM\Table(name="CourseClassPerson",
+ * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\CourseClassStudentRepository")
+ * @ORM\Table(name="CourseClassStudent",
  *     indexes={@ORM\Index(name="course_class", columns={"course_class"}),
- *     @ORM\Index(name="person_role", columns={"person", "role"}),
- *     @ORM\Index(name="person", columns={"person"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="course_class_person",columns={ "course_class", "person"})})
- * @UniqueEntity({"person","courseClass"})
- * @ClassPerson()
+ *     @ORM\Index(name="student", columns={"student"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="course_class_student",columns={ "course_class", "student"})})
+ * @UniqueEntity({"student","courseClass"})
  */
-class CourseClassPerson extends AbstractEntity
+class CourseClassStudent extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -53,24 +50,12 @@ class CourseClassPerson extends AbstractEntity
     private ?CourseClass $courseClass;
 
     /**
-     * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\People\Entity\Person")
-     * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
+     * @var Student|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Student\Entity\Student")
+     * @ORM\JoinColumn(name="student",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
     */
-    private ?Person $person;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=16,nullable=false)
-     * @Assert\Choice(callback="getRoleList")
-     */
-    private string $role;
-
-    /**
-     * @var array
-     */
-    private static array $roleList = ['Student','Teacher','Assistant','Technician','Volunteer','Student - Left','Teacher - Left'];
+    private ?Student $student;
 
     /**
      * @var bool
@@ -105,7 +90,7 @@ class CourseClassPerson extends AbstractEntity
      * @param string|null $id
      * @return $this
      */
-    public function setId(?string $id): CourseClassPerson
+    public function setId(?string $id): CourseClassStudent
     {
         $this->id = $id;
         return $this;
@@ -121,50 +106,29 @@ class CourseClassPerson extends AbstractEntity
 
     /**
      * @param CourseClass|null $courseClass
-     * @return CourseClassPerson
+     * @return CourseClassStudent
      */
-    public function setCourseClass(?CourseClass $courseClass): CourseClassPerson
+    public function setCourseClass(?CourseClass $courseClass): CourseClassStudent
     {
         $this->courseClass = $courseClass;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * @return Student|null
      */
-    public function getPerson(): ?Person
+    public function getStudent(): ?Student
     {
-        return $this->person;
+        return $this->student;
     }
 
     /**
-     * @param Person|null $person
-     * @return CourseClassPerson
+     * @param Student|null $student
+     * @return CourseClassStudent
      */
-    public function setPerson(?Person $person): CourseClassPerson
+    public function setStudent(?Student $student): CourseClassStudent
     {
-        $this->person = $person;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    /**
-     * setRole
-     *
-     * 3/09/2020 11:24
-     * @param string $role
-     * @return CourseClassPerson
-     */
-    public function setRole(string $role): CourseClassPerson
-    {
-        $this->role = in_array($role, self::getRoleList()) ? $role : '';
+        $this->student = $student;
         return $this;
     }
 
@@ -178,9 +142,9 @@ class CourseClassPerson extends AbstractEntity
 
     /**
      * @param bool $reportable
-     * @return CourseClassPerson
+     * @return CourseClassStudent
      */
-    public function setReportable(bool $reportable): CourseClassPerson
+    public function setReportable(bool $reportable): CourseClassStudent
     {
         $this->reportable = $reportable;
         return $this;
@@ -193,32 +157,10 @@ class CourseClassPerson extends AbstractEntity
      * 12/09/2020 09:16
      * @return $this
      */
-    public function mirrorReportable(): CourseClassPerson
+    public function mirrorReportable(): CourseClassStudent
     {
         $this->reportable = !isset($this->reportable) ? $this->getCourseClass()->isReportable() : $this->reportable;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getRoleList(): array
-    {
-        return self::$roleList;
-    }
-
-    /**
-     * getRoleListCurrent
-     *
-     * 11/09/2020 07:51
-     * @return array|string[]
-     */
-    public static function getRoleListCurrent(): array
-    {
-        $roleList = self::$roleList;
-        unset($roleList[array_search('Student - Left', $roleList)],$roleList[array_search('Teacher - Left', $roleList)]);
-
-        return array_values($roleList);
     }
 
     /**
@@ -227,7 +169,7 @@ class CourseClassPerson extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getCourseClass()->courseClassName(true) . ': ' . $this->getPerson()->formatName();
+        return $this->getCourseClass()->courseClassName(true) . ': ' . $this->getStudent()->getFullName();
     }
 
     /**

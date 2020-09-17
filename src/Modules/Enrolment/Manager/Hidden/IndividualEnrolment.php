@@ -17,7 +17,7 @@
 namespace App\Modules\Enrolment\Manager\Hidden;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -102,6 +102,6 @@ class IndividualEnrolment
      */
     public static function getRoleList(): array
     {
-        return CourseClassPerson::getRoleListCurrent();
+        return CourseClassStudent::getRoleListCurrent();
     }
 }

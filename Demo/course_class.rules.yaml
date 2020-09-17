@@ -1,4 +1,3 @@
-associated:
-    course:
-        entityName: 'App\Modules\Curriculum\Entity\Course'
-        findBy: 'abbreviation'
+call:
+    entityName: 'App\Modules\Enrolment\Entity\CourseClass'
+    method: loader

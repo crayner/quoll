@@ -22,7 +22,7 @@ use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\Enrolment\Form\CourseClassPersonType;
 use App\Modules\Enrolment\Form\IndividualEnrolmentClassListType;
 use App\Modules\Enrolment\Manager\Hidden\IndividualEnrolment;
@@ -91,7 +91,7 @@ class IndividualEnrolmentController extends AbstractPageController
     {
         $form = $this->createForm(IndividualEnrolmentClassListType::class, new IndividualEnrolment(), ['action' => $this->generateUrl('individual_enrolment_manage', ['person' => $person->getId()]), 'person' => $person]);
 
-        $pagination->setContent(ProviderFactory::getRepository(CourseClassPerson::class)->findIndividualClassEnrolmentContent($person))
+        $pagination->setContent(ProviderFactory::getRepository(CourseClassStudent::class)->findIndividualClassEnrolmentContent($person))
             ->setToken($csrfTokenManager);
 
         if ($this->isPostContent()) {
@@ -101,14 +101,14 @@ class IndividualEnrolmentController extends AbstractPageController
                 foreach ($content['classes'] as $id) {
                     $class = ProviderFactory::getRepository(CourseClass::class)->find($id);
                     if ($class) {
-                        $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassPerson($class);
+                        $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassStudent($class);
                         $ccp->setPerson($person)
                             ->setRole($content['role'])
                             ->mirrorReportable();
-                        ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                        ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
                     }
                 }
-                ProviderFactory::create(CourseClassPerson::class)->flush();
+                ProviderFactory::create(CourseClassStudent::class)->flush();
                 if ($this->isStatusSuccess()) {
                     $this->getStatusManager()->info('count records where updated.',['count' => count($content['classes'])],'Enrolment');
                     $this->getStatusManager()->setReDirect( $this->generateUrl('individual_enrolment_manage', ['person' => $person->getId()]), true);
@@ -155,12 +155,12 @@ class IndividualEnrolmentController extends AbstractPageController
      * individualParticipationEdit
      *
      * 11/09/2020 15:32
-     * @param CourseClassPerson $ccp
+     * @param CourseClassStudent $ccp
      * @Route("/individual/enrolment/{ccp}/edit/",name="individual_enrolment_edit")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function individualParticipationEdit(CourseClassPerson $ccp)
+    public function individualParticipationEdit(CourseClassStudent $ccp)
     {
         $form = $this->createForm(CourseClassPersonType::class, $ccp, ['action' => $this->generateUrl('individual_enrolment_edit', ['ccp' => $ccp->getId()])]);
 
@@ -168,7 +168,7 @@ class IndividualEnrolmentController extends AbstractPageController
             $content = $this->jsonDecode();
             $form->submit($content);
             if ($form->isValid()) {
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp);
             } else {
                 $this->getStatusManager()->invalidInputs();
             }
@@ -206,15 +206,15 @@ class IndividualEnrolmentController extends AbstractPageController
      *
      * 14/09/2020 09:52
      * @param IndividualClassEnrolmentPagination $pagination
-     * @param CourseClassPerson $ccp
+     * @param CourseClassStudent $ccp
      * @Route("/individual/enrolment/{ccp}/remove/",name="individual_enrolment_remove")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function removeIndividualParticipant(IndividualClassEnrolmentPagination $pagination, CourseClassPerson $ccp)
+    public function removeIndividualParticipant(IndividualClassEnrolmentPagination $pagination, CourseClassStudent $ccp)
     {
         $person = $ccp->getPerson();
-        ProviderFactory::create(CourseClassPerson::class)->delete($ccp);
+        ProviderFactory::create(CourseClassStudent::class)->delete($ccp);
 
         return $this->manageIndividualEnrolment($person, $pagination);
     }
@@ -235,11 +235,11 @@ class IndividualEnrolmentController extends AbstractPageController
         if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $q=>$participant) {
                 if (!$person) {
-                    $person = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id'])->getPerson();
+                    $person = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id'])->getPerson();
                 }
-                ProviderFactory::create(CourseClassPerson::class)->delete($participant['id'], false);
+                ProviderFactory::create(CourseClassStudent::class)->delete($participant['id'], false);
             }
-            ProviderFactory::create(CourseClassPerson::class)->flush();
+            ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
                 $this->getStatusManager()->info('individual_enrolment_selected_remove', ['name' => $person->getFullName(), 'count' => count($content['selected'])],'Enrolment');
             }
@@ -264,16 +264,16 @@ class IndividualEnrolmentController extends AbstractPageController
         $content = $this->jsonDecode();
         if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $q=>$participant) {
-                $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id']);
+                $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id']);
                 if (strpos($ccp->getRole(), 'Student') === 0) {
                     $ccp->setRole('Student - Left');
                 } else {
                     $ccp->setRole('Teacher - Left');
                 }
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
                 $person = $ccp->getPerson();
             }
-            ProviderFactory::create(CourseClassPerson::class)->flush();
+            ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
                 $this->getStatusManager()->info('individual_enrolment_selected_mark_as_left', ['name' => $person->getFullName(), 'count' => count($content['selected'])],'Enrolment');
             }

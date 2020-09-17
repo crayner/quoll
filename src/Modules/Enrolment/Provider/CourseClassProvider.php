@@ -16,25 +16,32 @@
  */
 namespace App\Modules\Enrolment\Provider;
 
+use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Twig\MyClasses;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassTutor;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\AbstractProvider;
+use App\Provider\ProviderFactory;
 use App\Twig\SidebarContent;
+use App\Util\TranslationHelper;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class CourseClassProvider
  * @package App\Modules\Enrolment\Provider
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class CourseClassProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected $entityName = CourseClass::class;
+    protected string $entityName = CourseClass::class;
 
     /**
      * getMyClasses
@@ -92,23 +99,94 @@ class CourseClassProvider extends AbstractProvider
     /**
      * getIndividualClassChoices
      *
-     * 11/09/2020 09:05
+     * 15/09/2020 15:12
      * @param Person $person
      * @return array
      */
     public function getIndividualClassChoices(Person $person): array
     {
         if ($person->isStudent()) {
-            $result['-- --Enrolable Classes-- --'] = $this->getRepository()->findEnrolableClasses($person);
+            $x = $this->getRepository()->findEnrolableClasses($person);
             $c = $this->getRepository()->findClassesByCurrentAcademicYear();
-            foreach ($result['-- --Enrolable Classes-- --'] as $q=>$w) {
+/**            foreach ($x as $q=>$w) {
                 if (key_exists($q, $c)) unset($c[$q]);
             }
-            $result['-- --Enrolable Classes-- --'] = array_values($result['-- --Enrolable Classes-- --']);
-            $result['-- --All Classes-- --'] = array_values($c);
+   */         $result['-- --'.TranslationHelper::translate('Enrolable Classes', [], 'Enrolment').'-- --'] = array_values($x);
+            $result['-- --'.TranslationHelper::translate('All Classes', [], 'Enrolment').'-- --'] = array_values($c);
         } else {
             $result = array_values($this->getRepository()->findClassesByCurrentAcademicYear());
         }
         return $result;
+    }
+
+    /**
+     * loader
+     *
+     * 16/09/2020 13:58
+     * @param array $content
+     * @param LoggerInterface $logger
+     * @param ValidatorInterface $validator
+     * @return int
+     * @throws \Exception
+     */
+    public function loader(array $content, LoggerInterface $logger, ValidatorInterface $validator): int
+    {
+        $courses = [];
+        $tutors = [];
+        $valid = 0;
+        $classes = [];
+        foreach ($content as $w) {
+            $courses[$w['course']] = key_exists($w['course'], $courses) ? $courses[$w['course']] : ProviderFactory::getRepository(Course::class)->findOneBy(['abbreviation' => $w['course']]);
+            if ($courses[$w['course']] === null) {
+                $logger->error(sprintf('A course was not found for course abbreviation of "%s"', $w['course']));
+                continue;
+            }
+            $class = new CourseClass($courses[$w['course']]);
+            $class->setName($w['name'])
+                ->setAbbreviation($w['abbreviation'])
+                ->setCourse($courses[$w['course']])
+                ->setReportable($w['reportable'])
+                ->setAttendance($w['attendance']);
+            if (key_exists('tutors', $w)) {
+                foreach ($w['tutors'] as $username) {
+                    $tutors[$username] = key_exists($username, $tutors) ? $tutors[$username] : ProviderFactory::getRepository(Staff::class)->findOneByUsername($username);
+                    if ($tutors[$username] === null) {
+                        $logger->error(sprintf('A person was not found for username "%s"', $username));
+                    } else {
+                        $tutor = new CourseClassTutor($class);
+                        if (key_exists($class->getFullName(), $classes)) {
+                            $tutor->setSortOrder(++$classes[$class->getFullName()]);
+                        } else {
+                            $classes[$class->getFullName()] = 1;
+                            $tutor->setSortOrder(1);
+                        }
+                        $tutor->setStaff($tutors[$username]);
+                        $class->addTutor($tutor);
+                    }
+                }
+            }
+            ProviderFactory::create(CourseClass::class)->persistFlush($class, false);
+            if (++$valid % 50 === 0) {
+                $this->getMessageManager()->resetStatus();
+                ProviderFactory::create(CourseClass::class)->flush();
+                if (!$this->getMessageManager()->isStatusSuccess()) {
+                    foreach ($this->getMessageManager()->getMessageArray() as $message) {
+                        $logger->error($message['message']);
+                    }
+                    return $valid;
+                }
+                $logger->notice(sprintf('50 (to %s) records pushed to the database for %s from %s', $valid, $this->getEntityName(), strval(count($content))));
+                ini_set('max_execution_time', 10);
+            }
+        }
+        $this->getMessageManager()->resetStatus();
+        ProviderFactory::create(CourseClass::class)->flush();
+        if (!$this->getMessageManager()->isStatusSuccess()) {
+            foreach ($this->getMessageManager()->getMessageArray() as $message) {
+                $logger->error($message['message']);
+            }
+            return $valid;
+        }
+        return $valid;
     }
 }

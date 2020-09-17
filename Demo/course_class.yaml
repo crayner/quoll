@@ -4,84 +4,112 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 374
 -
     course: CN10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: CN10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 140
 -
     course: CN10
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: CN10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: CN10
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 2347
 -
     course: DR10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: EC10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
 -
     course: ENF10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: ENF10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: EV10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
 -
     course: HI10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: HT10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: HT10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: JP10
     name: 1
@@ -94,30 +122,40 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: PE10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: PE10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 373
 -
     course: SC10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: SC10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: SS10
     name: 1
@@ -130,66 +168,90 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: AR11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 374
 -
     course: CN11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: CN11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2347
 -
     course: CN11
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: DR11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: EC11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
 -
     course: ENF11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2363
+        - 373
 -
     course: ENF11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 374
+        - 1110
 -
     course: EV11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
 -
     course: HI11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: JP11
     name: 1
@@ -202,120 +264,163 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - craigray
 -
     course: PE11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: PE11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 119
 -
     course: SC11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: SC11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: SP11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
+        - 144
 -
     course: BIHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: BISL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
 -
     course: CHHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: CHSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: CNHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: CNSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: ECHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
 -
     course: ENHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1502
+        - 2562
 -
     course: ENSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: ESSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
+        - 124
 -
     course: FSHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: FSSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: HISL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: PS12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: PE12
     name: 2
@@ -334,138 +439,185 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: PHSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: PYHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2096
 -
     course: SS12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 151
 -
     course: SPHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: SPSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: TAHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: TASL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: TOK12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: BIHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: BISL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: CHHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: CHSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: CNHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2347
 -
     course: CNSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: ECHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
 -
     course: ENHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 867
 -
     course: ENSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: ESSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
+        - 124
 -
     course: MAHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 120
 -
     course: MASL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MSSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: PS13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: PE13
     name: 1
@@ -478,24 +630,32 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: PHSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: PYHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: SPHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: TAHL13
     name: 1
@@ -514,54 +674,72 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: AR07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: AR07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: AR07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: BH07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: BH07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: BH07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1110
 -
     course: CN07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 140
 -
     course: CN07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: CN07
     name: 5
@@ -574,66 +752,88 @@
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: CN07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: EX07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: EX07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: EX07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: FL07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - craigray
 -
     course: FL07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - craigray
 -
     course: FL07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - craigray
 -
     course: HT07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: HT07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 373
 -
     course: HT07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1110
 -
     course: JP07
     name: 1
@@ -646,162 +846,221 @@
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 373
+        - 1104
 -
     course: PE07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 373
+        - 1104
 -
     course: PE07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 373
 -
     course: SC07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1104
 -
     course: SC07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1117
 -
     course: SC07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: SP07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
+        - 144
 -
     course: BH08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2733
 -
     course: BH08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2733
 -
     course: BH08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1110
 -
     course: CN08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2347
 -
     course: CN08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: CN08
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 140
 -
     course: CN08
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: CN08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: DCVT08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: DCVT08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: DCVT08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: EX08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: EX08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: EX08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: FL08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2733
 -
     course: FL08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1502
+        - 2562
+        - 2363
 -
     course: FL08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2733
 -
     course: HT08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: HT08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: HT08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1110
 -
     course: JP08
     name: 1
@@ -814,138 +1073,189 @@
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 373
+        - 1104
 -
     course: PE08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1104
 -
     course: PE08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: SC08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: SC08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 589
+        - 2134
 -
     course: SC08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 589
 -
     course: SP08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
+        - 144
 -
     course: AR09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: CN09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 198
 -
     course: CN09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: CN09
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 140
 -
     course: CN09
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: CN09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2347
 -
     course: EX09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: FL09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 119
 -
     course: FL09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1502
+        - 2562
 -
     course: FL09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 119
 -
     course: HT09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: HT09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: HT09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 373
 -
     course: HU09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: HU09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
+        - 2722
 -
     course: HU09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: JP09
     name: 1
@@ -958,471 +1268,636 @@
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 375
 -
     course: PE09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: PE09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 119
 -
     course: PE09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: SC09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2326
 -
     course: SC09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 870
 -
     course: SC09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: SP09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: AR07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 2363
 -
     course: BH07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: CN11
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 140
 -
     course: CN11
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 869
 -
     course: CNK07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 140
+        - 2347
 -
     course: CNSL12
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1119
 -
     course: EC10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2722
 -
     course: ECSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 124
 -
     course: EN07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: EN07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: EN07
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 373
 -
     course: EN07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 151
 -
     course: EN07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2562
 -
     course: EN08
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 867
 -
     course: EN08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1502
+        - 2562
 -
     course: EN08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: EN08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 151
 -
     course: EN09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: EN09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2562
 -
     course: EN09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: EN09
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 867
 -
     course: EN10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1778
 -
     course: EN10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: EN10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: EN11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1502
+        - 2562
 -
     course: EN11
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 867
 -
     course: EN11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: ENF10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 374
+        - 119
 -
     course: ENHL12
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 867
 -
     course: EX07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1506
 -
     course: FL07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - craigray
 -
     course: FSHL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: FSSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1776
 -
     course: HIHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: HISL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: HISL13
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 2027
 -
     course: HT07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: HT10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 1123
 -
     course: MA07
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: MA07
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1104
 -
     course: MA07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1601
 -
     course: MA07
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 120
 -
     course: MA07
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MA08
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MA08
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1104
 -
     course: MA08
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: MA08
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1117
+        - 1601
 -
     course: MA09
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1117
 -
     course: MA09
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: MA09
     name: 5
     abbreviation: 5
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MA09
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1104
 -
     course: MA09
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 1601
 -
     course: MA10
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MA10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 120
 -
     course: MA10
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 866
+        - 1601
 -
     course: MA11
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 120
 -
     course: MA11
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1117
 -
     course: MA11
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2732
 -
     course: MAAHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 120
 -
     course: MAASL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: MAISL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 866
 -
     course: PE07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 373
+        - 1104
 -
     course: PE10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 119
 -
     course: PYSL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 2096
 -
     course: SC07
     name: 4
     abbreviation: 4
     reportable: true
     attendance: true
+    tutors:
+        - 2134
 -
     course: SC10
     name: 3
     abbreviation: 3
     reportable: true
     attendance: true
+    tutors:
+        - 2026
 -
     course: SPSL13
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 144
 -
     course: TOK12
     name: 2
     abbreviation: 2
     reportable: true
     attendance: true
+    tutors:
+        - 1777
 -
     course: VAHL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 374
 -
     course: VASL12
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 374
 -
     course: MA10
     name: 1
     abbreviation: 1
     reportable: true
     attendance: true
+    tutors:
+        - 1117

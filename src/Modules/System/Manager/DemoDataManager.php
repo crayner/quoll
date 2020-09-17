@@ -23,8 +23,8 @@ use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\IndividualNeed\Entity\INDescriptor;
 use App\Modules\People\Entity\Family;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
@@ -95,7 +95,7 @@ class DemoDataManager
         'family_care_giver' => FamilyMemberCareGiver::class,
         'facility' => Facility::class,
         'roll_group' => RollGroup::class,
-        'student_enrolment' => StudentEnrolment::class,
+        'student_roll_group' => StudentRollGroup::class,
         'indescriptor' => INDescriptor::class,
         'academic_year' => AcademicYear::class,
         'academic_year_term' => AcademicYearTerm::class,
@@ -106,7 +106,7 @@ class DemoDataManager
         'timetable_date' => TimetableDate::class,
         'course' => Course::class,
         'course_class' => CourseClass::class,
-        'course_class_person' => CourseClassPerson::class,
+        'course_class_student' => CourseClassStudent::class,
     ];
 
     /**

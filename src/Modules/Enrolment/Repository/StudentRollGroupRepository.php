@@ -13,7 +13,7 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Entity\AcademicYear;
@@ -29,7 +29,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * Class StudentEnrolmentRepository
  * @package App\Modules\Enrolment\Repository
  */
-class StudentEnrolmentRepository extends ServiceEntityRepository
+class StudentRollGroupRepository extends ServiceEntityRepository
 {
     /**
      * StudentEnrolmentRepository constructor.
@@ -37,7 +37,7 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, StudentEnrolment::class);
+        parent::__construct($registry, StudentRollGroup::class);
     }
 
     /**

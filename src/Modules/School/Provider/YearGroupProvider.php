@@ -17,7 +17,7 @@
 
 namespace App\Modules\School\Provider;
 
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Provider\AbstractProvider;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -109,7 +109,7 @@ class YearGroupProvider extends AbstractProvider
      */
     public function canDelete(YearGroup $year): bool
     {
-        return $this->getRepository(StudentEnrolment::class)->countEnrolmentsByYearGroup($year) === 0;
+        return $this->getRepository(StudentRollGroup::class)->countEnrolmentsByYearGroup($year) === 0;
     }
 
     /**

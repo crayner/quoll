@@ -22,7 +22,7 @@ use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\Enrolment\Form\CourseClassPersonType;
 use App\Modules\Enrolment\Form\MultipleCourseClassPersonType;
 use App\Modules\Enrolment\Pagination\CourseClassEnrolmentPagination;
@@ -86,7 +86,7 @@ class ClassEnrolmentController extends AbstractPageController
     {
         $pagination->setCourseClass($class)
             ->setToken($csrfTokenManager)
-            ->setContent(ProviderFactory::create(CourseClassPerson::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
+            ->setContent(ProviderFactory::create(CourseClassStudent::class)->findCourseClassParticipationPagination($class),'CourseClassParticipationPagination')
             ->setAddElementRoute($this->generateUrl('course_class_enrolment_add', ['class' => $class->getId()]))
             ->setPageMax(50);
 
@@ -98,14 +98,14 @@ class ClassEnrolmentController extends AbstractPageController
                 foreach ($content['people'] as $id) {
                     $person = ProviderFactory::getRepository(Person::class)->find($id);
                     if ($person instanceof Person) {
-                        $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassPerson($class);
+                        $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassStudent($class);
                         $ccp->setPerson($person)
                             ->setReportable($class->isReportable())
                             ->setRole($content['role']);
-                        ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                        ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
                     }
                 }
-                ProviderFactory::create(CourseClassPerson::class)->flush();
+                ProviderFactory::create(CourseClassStudent::class)->flush();
             } else {
                 $this->getStatusManager()->invalidInputs();
             }
@@ -140,16 +140,16 @@ class ClassEnrolmentController extends AbstractPageController
      *
      * 7/09/2020 16:24
      * @param CourseClass $class
-     * @param CourseClassPerson $person
+     * @param CourseClassStudent $person
      * @param CourseClassParticipantPagination $pagination
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @Route("/course/class/{class}/enrolment/{person}/delete/",name="course_class_enrolment_delete")
      * @IsGranted("ROLE_ROUTE")
      * @return JsonResponse
      */
-    public function remove(CourseClass $class, CourseClassPerson $person, CourseClassParticipantPagination $pagination, CsrfTokenManagerInterface $csrfTokenManager)
+    public function remove(CourseClass $class, CourseClassStudent $person, CourseClassParticipantPagination $pagination, CsrfTokenManagerInterface $csrfTokenManager)
     {
-        ProviderFactory::create(CourseClassPerson::class)->delete($person);
+        ProviderFactory::create(CourseClassStudent::class)->delete($person);
 
         return $this->manage($class, $pagination, $csrfTokenManager);
     }
@@ -159,16 +159,16 @@ class ClassEnrolmentController extends AbstractPageController
      *
      * 3/09/2020 11:53
      * @param CourseClass $class
-     * @param CourseClassPerson|null $person
+     * @param CourseClassStudent|null $person
      * @Route("/course/class/{class}/enrolment/{person}/edit/",name="course_class_enrolment_edit")
      * @Route("/course/class/{class}/enrolment/add/",name="course_class_enrolment_add")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function edit(CourseClass $class, ?CourseClassPerson $person = null)
+    public function edit(CourseClass $class, ?CourseClassStudent $person = null)
     {
         if (null === $person) {
             $action = $this->generateUrl('course_class_enrolment_add', ['class' => $class->getId()]);
-            $person = new CourseClassPerson($class);
+            $person = new CourseClassStudent($class);
         } else {
             $action = $this->generateUrl('course_class_enrolment_edit', ['class' => $class->getId(), 'person' => $person->getId()]);
         }
@@ -180,7 +180,7 @@ class ClassEnrolmentController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 $id = $person->getId();
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($person);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($person);
                 if ($id !== $person->getId()) {
                     $this->getStatusManager()->setReDirect($this->generateUrl('course_class_enrolment_edit', ['class' => $class->getId(), 'person' => $person->getId()]), true);
                 }
@@ -231,8 +231,8 @@ class ClassEnrolmentController extends AbstractPageController
             $update = 0;
             $insert = 0;
             foreach ($content['selected'] as $participant) {
-                $person = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id'])->getPerson();
-                $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['person' => $person, 'courseClass' => $class]) ?: new CourseClassPerson($class);
+                $person = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id'])->getPerson();
+                $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['person' => $person, 'courseClass' => $class]) ?: new CourseClassStudent($class);
                 $id = $ccp->getId();
                 $ccp->setPerson($person)
                     ->setRole($participant['role']);
@@ -243,10 +243,10 @@ class ClassEnrolmentController extends AbstractPageController
                     dump($ccp);
                     return  $this->getStatusManager()->toJsonResponse();
                 }
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp,false);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp,false);
                 $x = $ccp->getId() === $id ? $update++ : $insert++;
             }
-            ProviderFactory::create(CourseClassPerson::class)->flush();
+            ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
                 $this->getStatusManager()->info('Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}', ['{name}' => $class->getFullName(), '{modified}' => $update, '{added}' => $insert],'Enrolment');
             }
@@ -272,7 +272,7 @@ class ClassEnrolmentController extends AbstractPageController
         $content = $this->jsonDecode();
         if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $participant) {
-                $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->find($participant['id']);
+                $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id']);
                 if (strpos($ccp->getRole(), 'Student') === 0) {
                     $ccp->setRole('Student - Left');
                 } else {
@@ -283,9 +283,9 @@ class ClassEnrolmentController extends AbstractPageController
                     foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
                     return  $this->getStatusManager()->toJsonResponse();
                 }
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp,false);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp,false);
             }
-            ProviderFactory::create(CourseClassPerson::class)->flush();
+            ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
                 $this->getStatusManager()->info('Course Class participants were modified for "{name}". Modified: {modified}, Added: {added}', ['{name}' => $class->getFullName(), '{modified}' => count($content['selected']), '{added}' => 0],'Enrolment');
             }
@@ -311,9 +311,9 @@ class ClassEnrolmentController extends AbstractPageController
         $content = $this->jsonDecode();
         if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             foreach ($content['selected'] as $q=>$participant) {
-                ProviderFactory::create(CourseClassPerson::class)->delete($participant['id'], false);
+                ProviderFactory::create(CourseClassStudent::class)->delete($participant['id'], false);
             }
-            ProviderFactory::create(CourseClassPerson::class)->flush();
+            ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
                 $this->getStatusManager()->info('Course Class participants were removed from "{name}". Removed Participant Count: {removed}', ['{name}' => $class->getFullName(), '{removed}' => count($content['selected'])],'Enrolment');
             }

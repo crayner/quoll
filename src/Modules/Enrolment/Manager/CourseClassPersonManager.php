@@ -18,7 +18,7 @@ namespace App\Modules\Enrolment\Manager;
 
 use App\Manager\StatusManager;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -75,21 +75,21 @@ class CourseClassPersonManager
         $valid = 0;
         foreach ($content['people'] as $id) {
             $person = ProviderFactory::getRepository(Person::class)->find($id);
-            $ccp = ProviderFactory::getRepository(CourseClassPerson::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassPerson($class);
+            $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['courseClass' => $class, 'person' => $person]) ?: new CourseClassStudent($class);
             $ccp->setPerson($person)
                 ->setCourseClass($class)
                 ->setReportable($class->isReportable())
                 ->setRole($content['role']);
             $errors = $this->validator->validate($ccp);
             if (count($errors) === 0) {
-                ProviderFactory::create(CourseClassPerson::class)->persistFlush($ccp, false);
+                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
                 dump($ccp, $this->getStatusManager());
                 $valid++;
             } else {
                 foreach($errors as $error) $this->getStatusManager()->error($error->getMessage());
             }
         }
-        if ($valid > 0) ProviderFactory::create(CourseClassPerson::class)->flush();
+        if ($valid > 0) ProviderFactory::create(CourseClassStudent::class)->flush();
         dump($this->getStatusManager());
     }
 

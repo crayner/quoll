@@ -19,7 +19,7 @@ namespace App\Modules\Enrolment\Form;
 use App\Form\Type\DisplayType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\YearGroup;
@@ -134,7 +134,7 @@ class StudentEnrolmentType extends AbstractType
             ->setDefaults(
                 [
                     'translation_domain' => 'Enrolment',
-                    'data_class' => StudentEnrolment::class,
+                    'data_class' => StudentRollGroup::class,
                 ]
             )
         ;

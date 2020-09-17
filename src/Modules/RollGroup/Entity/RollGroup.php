@@ -15,6 +15,7 @@ namespace App\Modules\RollGroup\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\EntityGlobals;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
@@ -99,35 +100,35 @@ class RollGroup extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor2",referencedColumnName="id",nullable=true)
      */
-    private  $tutor2;
+    private ?Staff $tutor2;
 
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="tutor3",referencedColumnName="id",nullable=true)
      */
-    private $tutor3;
+    private ?Staff $tutor3;
 
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant1",referencedColumnName="id",nullable=true)
      */
-    private $assistant;
+    private ?Staff $assistant;
 
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant2",referencedColumnName="id",nullable=true)
      */
-    private $assistant2;
+    private ?Staff $assistant2;
 
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
      * @ORM\JoinColumn(name="assistant3",referencedColumnName="id",nullable=true)
      */
-    private $assistant3;
+    private ?Staff $assistant3;
 
     /**
      * @var Facility|null
@@ -135,14 +136,14 @@ class RollGroup extends AbstractEntity
      * @ORM\JoinColumn(name="facility", referencedColumnName="id",nullable=true)
      * @Assert\NotBlank()
      */
-    private $facility;
+    private ?Facility $facility;
 
     /**
      * @var RollGroup|null
      * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup")
      * @ORM\JoinColumn(name="next_roll_group", referencedColumnName="id",nullable=true)
      */
-    private $nextRollGroup;
+    private ?RollGroup $nextRollGroup = null;
 
     /**
      * @var bool
@@ -158,17 +159,17 @@ class RollGroup extends AbstractEntity
     private $website;
 
     /**
-     * @var Collection|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentEnrolment", mappedBy="rollGroup")
+     * @var Collection|StudentRollGroup[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\StudentRollGroup", mappedBy="rollGroup")
      */
-    private $studentEnrolments;
+    private ?Collection $studentRollGroups;
 
     /**
      * RollGroup constructor.
      */
     public function __construct()
     {
-        $this->studentEnrolments = new ArrayCollection();
+        $this->setStudentRollGroups(new ArrayCollection());
     }
 
     /**
@@ -434,20 +435,20 @@ class RollGroup extends AbstractEntity
     }
 
     /**
-     * getStudentEnrolments
+     * getStudentRollGroups
      * @param string|null $sortBy
      * @return Collection
      */
-    public function getStudentEnrolments(?string $sortBy = ''): Collection
+    public function getStudentRollGroups(?string $sortBy = ''): Collection
     {
-        if (empty($this->studentEnrolments))
-            $this->studentEnrolments = new ArrayCollection();
+        if (empty($this->studentRollGroups))
+            $this->studentRollGroups = new ArrayCollection();
 
-        if ($this->studentEnrolments instanceof PersistentCollection)
-            $this->studentEnrolments->initialize();
+        if ($this->studentRollGroups instanceof PersistentCollection)
+            $this->studentRollGroups->initialize();
 
         if ('' !== $sortBy) {
-            $iterator = $this->studentEnrolments->getIterator();
+            $iterator = $this->studentRollGroups->getIterator();
             $iterator->uasort(
                 function ($a, $b) use ($sortBy) {
                     if (!$a->getStaff() instanceof Staff || !$b->getStaff() instanceof Staff)
@@ -466,20 +467,20 @@ class RollGroup extends AbstractEntity
                 }
             );
 
-            $this->studentEnrolments = new ArrayCollection(iterator_to_array($iterator, false));
+            $this->studentRollGroups = new ArrayCollection(iterator_to_array($iterator, false));
         }
 
 
-        return $this->studentEnrolments;
+        return $this->studentRollGroups;
     }
 
     /**
-     * @param Collection|null $studentEnrolments
+     * @param Collection|null $studentRollGroups
      * @return RollGroup
      */
-    public function setStudentEnrolments(?Collection $studentEnrolments): RollGroup
+    public function setStudentRollGroups(?Collection $studentRollGroups): RollGroup
     {
-        $this->studentEnrolments = $studentEnrolments;
+        $this->studentRollGroups = $studentRollGroups;
         return $this;
     }
 
@@ -528,7 +529,7 @@ class RollGroup extends AbstractEntity
      */
     public function getStudentCount(): int
     {
-        return $this->getStudentEnrolments() ? count($this->getStudentEnrolments()) : 0;
+        return $this->getStudentRollGroups() ? count($this->getStudentRollGroups()) : 0;
     }
 
     /**
@@ -563,7 +564,7 @@ class RollGroup extends AbstractEntity
             'tutors' => $this->getFormatTutors(),
             'location' => $this->getFacilityName(),
             'website' => $this->getWebsite(),
-            'students' => $this->getStudentEnrolments()->count() ?: TranslationHelper::translate('None'),
+            'students' => $this->getStudentRollGroups()->count() ?: TranslationHelper::translate('None'),
             'canDelete' => $this->canDelete(),
         ];
     }

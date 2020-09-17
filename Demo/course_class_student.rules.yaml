@@ -1,0 +1,3 @@
+call:
+    entityName: 'App\Modules\Enrolment\Entity\CourseClassStudent'
+    method: loader

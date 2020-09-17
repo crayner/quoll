@@ -16,19 +16,19 @@
  */
 namespace App\Modules\Enrolment\Provider;
 
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Provider\AbstractProvider;
 
 /**
  * Class StudentEnrolmentProvider
  * @package App\Modules\Enrolment\Provider
  */
-class StudentEnrolmentProvider extends AbstractProvider
+class StudentRollGroupProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected string $entityName = StudentEnrolment::class;
+    protected string $entityName = StudentRollGroup::class;
 
     /**
      * canDelete

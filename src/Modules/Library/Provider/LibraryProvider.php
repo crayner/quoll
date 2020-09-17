@@ -17,6 +17,7 @@
 namespace App\Modules\Library\Provider;
 
 use App\Manager\EntityInterface;
+use App\Manager\StatusManager;
 use App\Modules\Library\Entity\Library;
 use App\Modules\People\Entity\Person;
 use App\Provider\AbstractProvider;
@@ -32,7 +33,7 @@ class LibraryProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = Library::class;
+    protected string $entityName = Library::class;
 
     /**
      * findPeopleFormIdentifierReport
@@ -61,23 +62,24 @@ class LibraryProvider extends AbstractProvider
 
     /**
      * persistFlush
+     *
+     * 16/09/2020 17:23
      * @param EntityInterface $entity
-     * @param array $data
      * @param bool $flush
-     * @return array
-     * 8/06/2020 10:27
+     * @return StatusManager
      */
-    public function persistFlush(EntityInterface $entity, array $data = [], bool $flush = true): array
+    public function persistFlush(EntityInterface $entity,  bool $flush = true): StatusManager
     {
         if ($entity->isMain()) {
             $main = $this->findOneBy(['main' => true]);
             if ($main) {
                 if ($main->getId() !== $entity->getId()) {
                     $main->setMain(false);
-                    $data = parent::persistFlush($main, $data, false);
+                    parent::persistFlush($main, false);
                 }
             }
         }
-        return parent::persistFlush($entity, $data, $flush);
+        parent::persistFlush($entity, $flush);
+        return $this->getMessageManager();
     }
 }

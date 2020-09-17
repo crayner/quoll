@@ -19,7 +19,7 @@ namespace App\Modules\Enrolment\Form;
 use App\Form\Type\EnumType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -69,7 +69,7 @@ class MultipleCourseClassPersonType extends AbstractType
                 [
                     'label' => 'Role',
                     'choice_list_method' => 'getRoleList',
-                    'choice_list_class' => CourseClassPerson::class,
+                    'choice_list_class' => CourseClassStudent::class,
                     'choice_list_prefix' => 'courseclassperson.role',
                     'placeholder' => 'Please select...',
                     'mapped' => false,

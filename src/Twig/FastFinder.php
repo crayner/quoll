@@ -17,8 +17,8 @@
 namespace App\Twig;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
-use App\Modules\Enrolment\Entity\StudentEnrolment;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -70,7 +70,7 @@ class FastFinder implements ContentInterface
             .($plannerView->isActionAccessible() && $plannerView->getHighestGroupedAction() !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
             .($studentView->isActionAccessible() ? ', '.$this->translate('Students', [], 'messages') : '')
             .($staffView->isActionAccessible() ? ', '.$this->translate('Staff', [], 'messages') : ''));
-        $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
+        $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentRollGroup::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
         $this->addAttribute('themeName', $this->getSession()->get('theme'));
         $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
         $this->addAttribute('trans_close', $this->translate('Close', [], 'messages'));
@@ -127,7 +127,7 @@ class FastFinder implements ContentInterface
                 if ($plannerView->getHighestGroupedAction() === 'viewEditAllClasses' || $plannerView->getHighestGroupedAction() === 'viewAllEditMyClasses') {
                     $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('academicYear'), '');
                 } else {
-                    $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('academicYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
+                    $classes = ProviderFactory::getRepository(CourseClassStudent::class)->findAccessibleClasses($this->getSession()->get('academicYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
                 }
             }
             CacheHelper::setCacheValue('fastFinderClasses', $classes ?: []);

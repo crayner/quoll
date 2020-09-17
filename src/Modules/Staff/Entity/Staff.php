@@ -86,7 +86,7 @@ class Staff extends AbstractEntity
      * @var string|null
      * @ORM\Column(length=100,nullable=true)
      */
-    private $jobTitle;
+    private ?string $jobTitle;
 
     /**
      * @var bool|null

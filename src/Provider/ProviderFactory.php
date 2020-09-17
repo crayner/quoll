@@ -18,10 +18,13 @@ use App\Manager\StatusManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -35,7 +38,7 @@ class ProviderFactory
     /**
      * @var EntityManagerInterface
      */
-    private static $entityManager;
+    private static EntityManagerInterface $entityManager;
 
     /**
      * @var StatusManager
@@ -45,64 +48,66 @@ class ProviderFactory
     /**
      * @var AuthorizationCheckerInterface
      */
-    private static $authorizationChecker;
+    private static AuthorizationCheckerInterface $authorizationChecker;
 
     /**
-     * @var RouterInterface
+     * @var Router
      */
-    private static $router;
+    private static Router $router;
 
     /**
      * @var array
      */
-    private static $instances;
+    private static array $instances;
 
     /**
      * @var ProviderFactory
      */
-    private static $factory;
+    private static ProviderFactory $factory;
 
     /**
      * @var RequestStack
      */
-    private static $stack;
+    private static RequestStack $stack;
 
     /**
      * @var ParameterBagInterface
      */
-    private static $parameterBag;
+    private static ParameterBagInterface $parameterBag;
 
     /**
      * @var LoggerInterface
      */
-    private static $logger;
+    private static LoggerInterface $logger;
+
+    /**
+     * @var ContainerInterface
+     */
+    private static ContainerInterface $container;
 
     /**
      * ProviderFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param StatusManager $messageManager
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param RouterInterface $router
-     * @param RequestStack $stack
      * @param ParameterBagInterface $parameterBag
+     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         StatusManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        RouterInterface $router,
-        RequestStack $stack,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        ContainerInterface $container
     )  {
+        self::$container = $container;
         self::$entityManager = $entityManager;
         self::$messageManager = $messageManager;
         self::$authorizationChecker = $authorizationChecker;
-        self::$router = $router;
+        self::$router = $container->has('router') ? $container->get('router'): null;
         self::$factory = $this;
-        self::$stack = $stack;
+        self::$stack = $container->has('request_stack') ? $container->get('request_stack'): null;
         self::$parameterBag = $parameterBag;
-
-//        file_put_contents(__DIR__ . '/../../var/log/construct.log', json_encode(debug_backtrace()));
      }
 
     /**
@@ -137,7 +142,6 @@ class ProviderFactory
         // e.g. App\Modules\System\Entity\Module or Module
         $namespace = dirname($entityName);
         $entityName = basename($entityName);
-        $appDir = realpath(__DIR__ . '/../..');
 
         if (isset(self::$instances[$entityName])) {
             return self::$instances[$entityName];
@@ -145,22 +149,15 @@ class ProviderFactory
 
         $providerName = str_replace('Entity', 'Provider', $namespace) . '\\' . $entityName . 'Provider';
 
-        if (class_exists($providerName)) {
+        if (!self::getContainer()->has($providerName)) {
             try {
-                return self::addInstance($entityName, new $providerName(self::$factory));
+                self::getContainer()->set($providerName, new $providerName(self::$factory));
+                return self::addInstance($entityName, self::getContainer()->get($providerName));
             } catch (\Exception $e) {
-                    self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $providerName));
+                self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $providerName));
             }
-        }
-
-        $fileName = $appDir . substr($providerName, 3);
-        if (file_exists($fileName)) {
-            try {
-                require_once $fileName;
-                return self::addInstance($entityName, new $providerName(self::$factory));
-            } catch (\Exception $e) {
-                self::getLogger()->error(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $fileName));
-            }
+        } else {
+            return self::addInstance($entityName, self::getContainer()->get($providerName));
         }
         throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available. The namespace used was %s', $entityName, $providerName));
     }
@@ -280,5 +277,13 @@ class ProviderFactory
     public static function setLogger(LoggerInterface $logger): void
     {
         self::$logger = $logger;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public static function getContainer(): ContainerInterface
+    {
+        return self::$container;
     }
 }

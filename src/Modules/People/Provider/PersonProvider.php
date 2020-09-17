@@ -15,7 +15,7 @@
 namespace App\Modules\People\Provider;
 
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\CareGiver;
 use App\Modules\People\Entity\Contact;
 use App\Modules\People\Entity\PersonalDocumentation;

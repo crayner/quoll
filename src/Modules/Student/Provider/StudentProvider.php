@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Student\Provider;
 
-use App\Modules\Enrolment\Entity\CourseClassPerson;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\Student\Entity\Student;
 use App\Provider\AbstractProvider;
 
@@ -43,7 +43,7 @@ class StudentProvider extends AbstractProvider
     {
         $result = $this->getRepository()->findClassEnrolmentByRollGroup();
 
-        foreach ($this->getRepository(CourseClassPerson::class)->countClassEnrolmentByRollGroup() as $w) {
+        foreach ($this->getRepository(CourseClassStudent::class)->countClassEnrolmentByRollGroup() as $w) {
             $id = $w['id'];
             if (key_exists($id, $result)) {
                 $result[$id]['classCount'] = $w['classCount'];

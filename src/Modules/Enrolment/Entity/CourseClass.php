@@ -17,6 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
 use App\Util\StringHelper;
 use App\Util\TranslationHelper;
@@ -93,8 +94,8 @@ class CourseClass extends AbstractEntity
     private Scale $scale;
 
     /**
-     * @var Collection|CourseClassPerson[]|null
-     * @ORM\OneToMany(targetEntity="CourseClassPerson", mappedBy="courseClass")
+     * @var Collection|CourseClassStudent[]|null
+     * @ORM\OneToMany(targetEntity="CourseClassStudent", mappedBy="courseClass")
      */
     private Collection $courseClassPeople;
 
@@ -105,6 +106,13 @@ class CourseClass extends AbstractEntity
     private Collection $periodClasses;
 
     /**
+     * @var Collection|CourseClassTutor[]|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClassTutor",cascade={"all"},mappedBy="courseClass",orphanRemoval=true)
+     * @ORM\OrderBy({"sortOrder" = "DESC"})
+     */
+    private ?Collection $tutors;
+
+    /**
      * CourseClass constructor.
      * @param Course|null $course
      */
@@ -112,6 +120,7 @@ class CourseClass extends AbstractEntity
     {
         $this->setPeriodClasses(new ArrayCollection())
             ->setCourse($course)
+            ->setTutors(new ArrayCollection())
             ->setCourseClassPeople(new ArrayCollection());
     }
 
@@ -302,6 +311,47 @@ class CourseClass extends AbstractEntity
     }
 
     /**
+     * getTutors
+     *
+     * 16/09/2020 10:49
+     * @return Collection|CourseClassTutor[]|null
+     */
+    public function getTutors(): Collection
+    {
+        if (!isset($this->tutors)) $this->tutors = new ArrayCollection();
+
+        if ($this->tutors instanceof PersistentCollection) $this->tutors->initialize();
+
+        return $this->tutors;
+    }
+
+    /**
+     * @param Staff[]|Collection|null $tutors
+     * @return CourseClass
+     */
+    public function setTutors(?Collection $tutors)
+    {
+        $this->tutors = $tutors;
+        return $this;
+    }
+
+    /**
+     * addTutor
+     *
+     * 16/09/2020 10:51
+     * @param CourseClassTutor $tutor
+     * @return CourseClass
+     */
+    public function addTutor(CourseClassTutor $tutor): CourseClass
+    {
+        if ($this->getTutors()->contains($tutor)) return $this;
+
+        $this->tutors->add($tutor);
+
+        return $this;
+    }
+
+    /**
      * @var Collection
      */
     private Collection $students;
@@ -451,7 +501,7 @@ class CourseClass extends AbstractEntity
      */
     public function getTeacher(): ?Person
     {
-        $w = $this->getCourseClassPeople()->filter(function(CourseClassPerson $item) {
+        $w = $this->getCourseClassPeople()->filter(function(CourseClassStudent $item) {
             if ($item->getRole() === 'Teacher') return $item;
         });
         $person = null;
@@ -469,7 +519,7 @@ class CourseClass extends AbstractEntity
      */
     public function getStudentCount(): int
     {
-        $w = $this->getCourseClassPeople()->filter(function(CourseClassPerson $item) {
+        $w = $this->getCourseClassPeople()->filter(function(CourseClassStudent $item) {
             if ($item->getRole() === 'Student') return $item;
         });
         return $w->count();
