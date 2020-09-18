@@ -19,6 +19,8 @@ namespace App\Modules\Enrolment\Provider;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassStudent;
+use App\Modules\Enrolment\Entity\CourseClassTutor;
+use App\Modules\People\Entity\Person;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\Student\Entity\Student;
 use App\Provider\AbstractProvider;
@@ -149,5 +151,12 @@ class CourseClassStudentProvider extends AbstractProvider
     public function canDelete(): bool
     {
         return true;
+    }
+
+    public function getIndividualClassEnrolmentContent(Person $person): array
+    {
+        if ($person->isStudent())
+            return $this->getRepository()->findIndividualClassEnrolmentContent($person->getStudent());
+        return $this->getRepository(CourseClassTutor::class)->findIndividualClassEnrolmentContent($person->getStaff());
     }
 }

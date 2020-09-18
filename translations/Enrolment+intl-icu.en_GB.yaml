@@ -78,3 +78,13 @@ individual_enrolment_selected_mark_as_left: >-
         one     {"{name}" was marked as left from one class.}
         other   {"{name}" was marked as left from # classes.}
     }
+enrolable_classes: >-
+    {count, plural,
+        =0      {{course}.{class} - {tutor}: No Students}
+        one     {{course}.{class} - {tutor}: One Student}
+        other   {{course}.{class} - {tutor}: # Students}
+    }
+No Teacher Assigned: No Teacher Assigned
+All other CLasses: All Other Classes
+Enrolable Classes: Enrolable Classes
+

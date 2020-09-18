@@ -23,7 +23,7 @@ use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassStudent;
-use App\Modules\Enrolment\Form\CourseClassPersonType;
+use App\Modules\Enrolment\Form\CourseClassStudentType;
 use App\Modules\Enrolment\Form\MultipleCourseClassPersonType;
 use App\Modules\Enrolment\Pagination\CourseClassEnrolmentPagination;
 use App\Modules\Enrolment\Pagination\CourseClassParticipantPagination;
@@ -173,7 +173,7 @@ class ClassEnrolmentController extends AbstractPageController
             $action = $this->generateUrl('course_class_enrolment_edit', ['class' => $class->getId(), 'person' => $person->getId()]);
         }
 
-        $form = $this->createForm(CourseClassPersonType::class, $person, ['action' => $action]);
+        $form = $this->createForm(CourseClassStudentType::class, $person, ['action' => $action]);
 
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();

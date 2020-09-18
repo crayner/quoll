@@ -130,46 +130,54 @@ class CourseClassRepository extends ServiceEntityRepository
         if ($person->isStudent()) {
             $se = $person->getStudent()->getCurrentEnrolment();
             $yg = $se ? $se->getYearGroup() : null;
+            $query = $this->createQueryBuilder('cc', 'cc.id')
+                ->select(['cc','c','ccs','s','t'])
+                ->leftJoin('cc.course', 'c')
+                ->leftJoin('cc.tutors', 't')
+                ->leftJoin('cc.courseClassStudents', 'ccs')
+                ->leftJoin('ccs.student', 's')
+                ->leftJoin('c.yearGroups', 'yg')
+                ->where('c.academicYear = :current')
+                ->orderBy('yg.sortOrder', 'ASC')
+                ->addOrderBy('c.name', 'ASC')
+                ->addOrderBy('cc.name', 'ASC')
+                ->addOrderBy('t.sortOrder', 'ASC')
+                ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear());
+
+            if ($yg instanceof YearGroup) {
+                $yg->getId();
+                $query
+                    ->andWhere('yg.id = :yearGroup')
+                    ->setParameter('yearGroup', $yg->getId());
+            }
+            return $query
+                ->getQuery()
+                ->getResult();
         } else {
             $yg = null;
         }
-        $query = $this->createQueryBuilder('cc', 'cc.id')
-            ->select(['cc','c','ccp','p'])
-            ->leftJoin('cc.course', 'c')
-            ->leftJoin('cc.courseClassPeople', 'ccp')
-            ->leftJoin('ccp.person', 'p')
-            ->where('c.academicYear = :current')
-            ->orderBy('c.name', 'ASC')
-            ->addOrderBy('cc.name', 'ASC')
-            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear());
-
-        if ($yg instanceof YearGroup) {
-            $yg->getId();
-            $query
-                ->leftJoin('c.yearGroups', 'yg')
-                ->andWhere('yg.id = :yearGroup')
-                ->setParameter('yearGroup', $yg->getId());
-        }
-        return $query
-            ->getQuery()
-            ->getResult();
     }
 
     /**
      * findClassesByCurrentAcademicYear
      *
-     * 11/09/2020 08:55
+     * 17/09/2020 10:51
      * @return array
      */
     public function findClassesByCurrentAcademicYear(): array
     {
         return $this->createQueryBuilder('cc', 'cc.id')
-            ->select(['cc','c','ccp','p'])
+            ->select(['cc','c','ccs','s','t'])
             ->leftJoin('cc.course', 'c')
-            ->leftJoin('cc.courseClassPeople', 'ccp')
-            ->leftJoin('ccp.person', 'p')
+            ->leftJoin('cc.courseClassStudents', 'ccs')
+            ->leftJoin('ccs.student', 's')
+            ->leftJoin('cc.tutors', 't')
+            ->leftJoin('c.yearGroups', 'yg')
             ->where('c.academicYear = :current')
             ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->orderBy('yg.sortOrder', 'ASC')
+            ->addOrderBy('c.abbreviation')
+            ->addOrderBy('cc.abbreviation')
             ->getQuery()
             ->getResult();
     }

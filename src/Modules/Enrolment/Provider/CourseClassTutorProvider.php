@@ -17,6 +17,7 @@
 namespace App\Modules\Enrolment\Provider;
 
 use App\Modules\Enrolment\Entity\CourseClassTutor;
+use App\Modules\Staff\Entity\Staff;
 use App\Provider\AbstractProvider;
 
 /**

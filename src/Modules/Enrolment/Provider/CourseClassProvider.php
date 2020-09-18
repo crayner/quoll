@@ -106,13 +106,33 @@ class CourseClassProvider extends AbstractProvider
     public function getIndividualClassChoices(Person $person): array
     {
         if ($person->isStudent()) {
-            $x = $this->getRepository()->findEnrolableClasses($person);
-            $c = $this->getRepository()->findClassesByCurrentAcademicYear();
-/**            foreach ($x as $q=>$w) {
-                if (key_exists($q, $c)) unset($c[$q]);
+            $x = [];
+            dump($this->getRepository()->findEnrolableClasses($person));
+            foreach ($this->getRepository()->findEnrolableClasses($person) as $class) {
+                $x[$class->getId()] = TranslationHelper::translate('enrolable_classes',
+                    [
+                        'course' => $class->getCourse()->getAbbreviation(),
+                        'class' => $class->getAbbreviation(),
+                        'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
+                        'count' => $class->getCourseClassStudents()->count(),
+                    ], 'Enrolment');
             }
-   */         $result['-- --'.TranslationHelper::translate('Enrolable Classes', [], 'Enrolment').'-- --'] = array_values($x);
-            $result['-- --'.TranslationHelper::translate('All Classes', [], 'Enrolment').'-- --'] = array_values($c);
+            $c = [];
+            foreach ($this->getRepository()->findClassesByCurrentAcademicYear() as $class) {
+                if (!key_exists($class->getId(), $x)) {
+                    $c[$class->getId()] = TranslationHelper::translate(
+                        'enrolable_classes',
+                        [
+                            'course' => $class->getCourse()->getAbbreviation(),
+                            'class' => $class->getAbbreviation(),
+                            'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
+                            'count' => $class->getCourseClassStudents()->count(),
+                        ],
+                        'Enrolment');
+                }
+            }
+            $result['-- --'.TranslationHelper::translate('Enrolable Classes', [], 'Enrolment').'-- --'] = array_flip($x);
+            $result['-- --'.TranslationHelper::translate('All other Classes', [], 'Enrolment').'-- --'] = array_flip($c);
         } else {
             $result = array_values($this->getRepository()->findClassesByCurrentAcademicYear());
         }

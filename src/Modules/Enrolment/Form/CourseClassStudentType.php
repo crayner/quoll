@@ -25,6 +25,7 @@ use App\Form\Type\ToggleType;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
+use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -36,7 +37,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package App\Modules\Enrolment\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class CourseClassPersonType extends AbstractType
+class CourseClassStudentType extends AbstractType
 {
     /**
      * buildForm
@@ -82,7 +83,7 @@ class CourseClassPersonType extends AbstractType
         ;
         if ($options['data']->getid() === null) {
             $builder
-                ->add('person', AutoSuggestEntityType::class,
+                ->add('student', AutoSuggestEntityType::class,
                     [
                         'class' => Person::class,
                         'label' => 'Participant',
@@ -94,16 +95,23 @@ class CourseClassPersonType extends AbstractType
             ;
         } else {
             $builder
-                ->add('person', HiddenEntityType::class,
+                ->add('student', HiddenEntityType::class,
                     [
-                        'class' => Person::class,
+                        'class' => Student::class,
                     ]
                 )
                 ->add('personName', DisplayType::class,
                     [
                         'label' => 'Participant',
                         'help' => 'This value cannot be changed.',
-                        'data' => $options['data']->getPerson()->getFullNameReversed(),
+                        'data' => $options['data']->getStudent()->getFullNameReversed(),
+                        'mapped' => false,
+                    ]
+                )
+                ->add('role', DisplayType::class,
+                    [
+                        'label' => 'Role',
+                        'data' => 'Student',
                         'mapped' => false,
                     ]
                 )
@@ -112,12 +120,6 @@ class CourseClassPersonType extends AbstractType
         }
 
         $builder
-            ->add('role', EnumType::class,
-                [
-                    'label' => 'Role',
-                    'placeholder' => 'Please select...',
-                ]
-            )
             ->add('reportable', ToggleType::class,
                 [
                     'label' => 'Reportable',

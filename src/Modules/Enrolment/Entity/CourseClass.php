@@ -97,7 +97,7 @@ class CourseClass extends AbstractEntity
      * @var Collection|CourseClassStudent[]|null
      * @ORM\OneToMany(targetEntity="CourseClassStudent", mappedBy="courseClass")
      */
-    private Collection $courseClassPeople;
+    private Collection $courseClassStudents;
 
     /**
      * @var Collection|TimetablePeriodClass[]|null
@@ -121,7 +121,7 @@ class CourseClass extends AbstractEntity
         $this->setPeriodClasses(new ArrayCollection())
             ->setCourse($course)
             ->setTutors(new ArrayCollection())
-            ->setCourseClassPeople(new ArrayCollection());
+            ->setCourseClassStudents(new ArrayCollection());
     }
 
     /**
@@ -261,27 +261,27 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * getCourseClassPeople
+     * getCourseClassStudents
      * @return Collection|null
      */
-    public function getCourseClassPeople(): ?Collection
+    public function getCourseClassStudents(): ?Collection
     {
-        if (empty($this->courseClassPeople))
-            $this->courseClassPeople = new ArrayCollection();
+        if (empty($this->courseClassStudents))
+            $this->courseClassStudents = new ArrayCollection();
 
-        if ($this->courseClassPeople instanceof PersistentCollection)
-            $this->courseClassPeople->initialize();
+        if ($this->courseClassStudents instanceof PersistentCollection)
+            $this->courseClassStudents->initialize();
 
-        return $this->courseClassPeople;
+        return $this->courseClassStudents;
     }
 
     /**
-     * @param Collection $courseClassPeople
+     * @param Collection $courseClassStudents
      * @return CourseClass
      */
-    public function setCourseClassPeople(Collection $courseClassPeople): CourseClass
+    public function setCourseClassStudents(Collection $courseClassStudents): CourseClass
     {
-        $this->courseClassPeople = $courseClassPeople;
+        $this->courseClassStudents = $courseClassStudents;
         return $this;
     }
 
@@ -352,91 +352,12 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * @var Collection
-     */
-    private Collection $students;
-
-    /**
-     * getStudents
-     *
-     * 31/08/2020 14:01
-     * @return Collection
-     */
-    public function getStudents(): Collection
-    {
-        if (!isset($this->students) || !$this->students instanceof Collection || $this->students->count() === 0)
-        {
-            $this->students = $this->getCourseClassPeople()->filter(function($entry) {
-                return $entry->getRole() === 'Student';
-            });
-        }
-
-        try {
-            $iterator = $this->students->getIterator();
-            $iterator->uasort(
-                function ($a, $b) {
-                    return $a->getPerson()->getFullName() < $b->getPerson()->getFullName() ? -1 : 1 ;
-                }
-            );
-            $this->students  = new ArrayCollection(iterator_to_array($iterator, false));
-        } catch (Exception $e) {
-        }
-
-
-
-        return $this->students;
-    }
-
-    /**
-     * @var Collection
-     */
-    private Collection $staff;
-
-    /**
-     * getStaff
-     *
-     * 31/08/2020 14:01
-     * @return Collection
-     * @throws Exception
-     */
-    public function getStaff(): Collection
-    {
-        if (!isset($this->staff) || !$this->staff instanceof Collection || $this->staff->count() === 0)
-        {
-            $this->staff = $this->getCourseClassPeople()->filter(function($entry) {
-                return in_array($entry->getRole(), ['Teacher','Assistant','Technician']);
-            });
-        }
-
-        $iterator = $this->staff->getIterator();
-        $iterator->uasort(
-            function ($a, $b) {
-                return $a->getPerson()->getFullName() < $b->getPerson()->getFullName() ? -1 : 1 ;
-            }
-        );
-
-        $this->staff  = new ArrayCollection(iterator_to_array($iterator, false));
-
-        return $this->staff;
-    }
-
-    /**
-     * courseClassName
-     * @param bool $short
-     * @return string
-     */
-    public function courseClassName(bool $short = false): string
-    {
-        return $short ? $this->getCourse()->getAbbreviation() . '.' . $this->getAbbreviation() : $this->getCourse()->getName() . '.' . $this->getName();
-    }
-
-    /**
      * __toString
      * @return string
      */
     public function __toString(): string
     {
-        return $this->courseClassName(true);
+        return $this->getFullName();
     }
 
     /**
@@ -451,7 +372,7 @@ class CourseClass extends AbstractEntity
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
             'reportable' => StringHelper::getYesNo($this->isReportable()),
-            'participantCount' => $this->getStudents()->count() ?: '0',
+            'participantCount' => $this->getCourseClassStudents()->count(),
             'course_id' => $this->getCourse()->getId(),
         ];
         return [];
@@ -478,7 +399,6 @@ class CourseClass extends AbstractEntity
     {
         return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
     }
-
     /**
      * getClassNameWithCount
      *
@@ -488,40 +408,8 @@ class CourseClass extends AbstractEntity
     public function getClassNameWithCount(): string
     {
         $result = $this->getAbbreviatedName();
-        $result .= $this->getTeacher() ? ' - ' . $this->getTeacher()->formatName('Initial','Staff') : '';
-        $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getStudentCount()], 'Enrolment');
+        $result .= $this->getTutors()->first() ? ' - ' . $this->getTutors()->first()->getStaff()->getFullName('Initial') : ' - '.TranslationHelper::translate('No Teacher Assigned',[],'Enrolment');
+        $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getCourseClassStudents()->count()], 'Enrolment');
         return $result;
-    }
-
-    /**
-     * getTeacher
-     *
-     * 11/09/2020 09:44
-     * @return Person|null
-     */
-    public function getTeacher(): ?Person
-    {
-        $w = $this->getCourseClassPeople()->filter(function(CourseClassStudent $item) {
-            if ($item->getRole() === 'Teacher') return $item;
-        });
-        $person = null;
-        if ($w->count() > 0) {
-            $person = $w->first()->getPerson();
-        }
-        return $person;
-    }
-
-    /**
-     * getStudentCount
-     *
-     * 11/09/2020 09:47
-     * @return int
-     */
-    public function getStudentCount(): int
-    {
-        $w = $this->getCourseClassPeople()->filter(function(CourseClassStudent $item) {
-            if ($item->getRole() === 'Student') return $item;
-        });
-        return $w->count();
     }
 }

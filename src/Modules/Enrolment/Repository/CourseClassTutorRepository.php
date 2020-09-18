@@ -18,6 +18,9 @@ namespace App\Modules\Enrolment\Repository;
 
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Entity\CourseClassTutor;
+use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Staff\Entity\Staff;
+use App\Util\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -61,5 +64,42 @@ class CourseClassTutorRepository extends ServiceEntityRepository
         } catch (NoResultException | NonUniqueResultException $e) {
             return 1;
         }
+    }
+
+    /**
+     * findIndividualClassEnrolmentContent
+     *
+     * 17/09/2020 11:20
+     * @param Staff $staff
+     * @return array
+     */
+    public function findIndividualClassEnrolmentContent(Staff $staff): array
+    {
+        return $this->createQueryBuilder('cct')
+            ->select(
+                [
+                    "CONCAT(c.abbreviation,'.',cc.abbreviation) AS classCode",
+                    'c.name AS course',
+                    "CASE WHEN cct.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'cct.id',
+                    'cc.id AS course_class_id',
+                    'c.id AS course_id',
+                    's.id AS student_id',
+                    'p.id AS person_id',
+                    's.type AS role'
+                ]
+            )
+            ->where('cct.staff = :staff')
+            ->setParameter('staff', $staff)
+            ->andWhere('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->leftJoin('cct.staff', 's')
+            ->leftJoin('s.person', 'p')
+            ->leftJoin('cct.courseClass', 'cc')
+            ->leftJoin('cc.course', 'c')
+            ->orderBy('c.abbreviation', 'ASC')
+            ->addOrderBy('cc.abbreviation','ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

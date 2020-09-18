@@ -18,6 +18,7 @@ use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Student\Entity\Student;
 use App\Util\StringHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -110,38 +111,39 @@ class CourseClassStudentRepository extends ServiceEntityRepository
     /**
      * findIndividualClassEnrolmentContent
      *
-     * 14/09/2020 13:53
-     * @param Person $person
+     * 17/09/2020 11:04
+     * @param Student $student
      * @return array
      */
-    public function findIndividualClassEnrolmentContent(Person $person): array
+    public function findIndividualClassEnrolmentContent(Student $student): array
     {
-        return $this->createQueryBuilder('ccp')
+        return $this->createQueryBuilder('ccs')
             ->select(
                 [
-                    'ccp.role',
+                    "'Student' AS role",
                     "CONCAT(c.abbreviation,'.',cc.abbreviation) AS classCode",
                     'c.name AS course',
-                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
-                    'ccp.id',
+                    "CASE WHEN ccs.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'ccs.id',
                     'cc.id AS course_class_id',
                     'c.id AS course_id',
+                    's.id AS student_id',
                     'p.id AS person_id'
                 ]
             )
-            ->where('ccp.person = :person')
-            ->setParameter('person', $person)
+            ->where('ccs.student = :student')
+            ->setParameter('student', $student)
             ->andWhere('c.academicYear = :current')
             ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
-            ->leftJoin('ccp.person', 'p')
-            ->leftJoin('ccp.courseClass', 'cc')
+            ->leftJoin('ccs.student', 's')
+            ->leftJoin('ccs.courseClass', 'cc')
             ->leftJoin('cc.course', 'c')
+            ->leftJoin('s.person', 'p')
             ->orderBy('c.abbreviation', 'ASC')
             ->addOrderBy('cc.abbreviation','ASC')
             ->getQuery()
             ->getResult();
     }
-
 
     /**
      * countClassEnrolmentPerStudent

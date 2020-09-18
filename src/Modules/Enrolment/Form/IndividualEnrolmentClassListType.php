@@ -16,19 +16,17 @@
  */
 namespace App\Modules\Enrolment\Form;
 
-use App\Form\Type\EnumType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Manager\Hidden\IndividualEnrolment;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class IndividualEnrolmentClassListType
@@ -40,11 +38,9 @@ class IndividualEnrolmentClassListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('classes', EntityType::class,
+            ->add('classes', ChoiceType::class,
                 [
-                    'class' => CourseClass::class,
                     'label' => 'Classes',
-                    'choice_label' => 'getClassNameWithCount',
                     'help' => 'Use Control, Command and/or Shift to select multiple.',
                     'attr' => [
                         'size' => 8,
@@ -53,18 +49,6 @@ class IndividualEnrolmentClassListType extends AbstractType
                     'choices' => ProviderFactory::create(CourseClass::class)->getIndividualClassChoices($options['person']),
                     'constraints' => [
                         new Count(['min' => 1]),
-                    ],
-                ]
-            )
-            ->add('role', EnumType::class,
-                [
-                    'label' => 'Role',
-                    'choice_list_prefix' => 'courseclassperson.role',
-                    'placeholder' => 'Please select...',
-                    'data' => $options['person']->isStudent() ? 'Student' : 'Teacher',
-                    'constraints' => [
-                        new Choice(['choices' => IndividualEnrolment::getRoleList()]),
-                        new NotBlank(),
                     ],
                 ]
             )

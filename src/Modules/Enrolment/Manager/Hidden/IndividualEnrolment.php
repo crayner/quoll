@@ -29,79 +29,27 @@ use Doctrine\Common\Collections\Collection;
 class IndividualEnrolment
 {
     /**
-     * @var Collection
+     * @var array
      */
-    private Collection $classes;
+    private array $classes = [];
 
     /**
-     * @var string
+     * @return array
      */
-    private string $role;
-
-    /**
-     * getClasses
-     *
-     * 11/09/2020 07:58
-     * @return Collection
-     */
-    public function getClasses(): Collection
+    public function getClasses(): array
     {
-        if (!isset($this->classes)) $this->classes = new ArrayCollection();
         return $this->classes;
     }
 
     /**
-     * @param Collection $classes
+     * @param array $classes
      * @return IndividualEnrolment
      */
-    public function setClasses(Collection $classes): IndividualEnrolment
+    public function setClasses(array $classes): IndividualEnrolment
     {
         $this->classes = $classes;
         return $this;
     }
 
-    /**
-     * addClass
-     *
-     * 11/09/2020 08:00
-     * @param CourseClass $class
-     * @return $this
-     */
-    public function addClass(CourseClass $class): IndividualEnrolment
-    {
-        if ($this->getClasses()->contains($class)) return $this;
 
-        $this->classes->add($class);
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param string $role
-     * @return IndividualEnrolment
-     */
-    public function setRole(string $role): IndividualEnrolment
-    {
-        $this->role = $role;
-        return $this;
-    }
-
-    /**
-     * getRoleList
-     *
-     * 11/09/2020 07:57
-     * @return array
-     */
-    public static function getRoleList(): array
-    {
-        return CourseClassStudent::getRoleListCurrent();
-    }
 }

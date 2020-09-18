@@ -35,7 +35,7 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
      * execute
      *
      * 14/09/2020 09:51
-     * @return $this|PaginationInterface
+     * @return PaginationInterface
      */
     public function execute(): PaginationInterface
     {
@@ -68,7 +68,7 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('individual_enrolment_edit')
-            ->setRouteParams(['ccp' => 'id'])
+            ->setRouteParams(['class' => 'course_class_id', 'person' => 'person_id'])
         );
 
         $action = new PaginationAction();
@@ -77,7 +77,7 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('individual_enrolment_remove')
-            ->setRouteParams(['ccp' => 'id'])
+            ->setRouteParams(['class' => 'course_class_id','person' => 'person_id'])
         );
 
 

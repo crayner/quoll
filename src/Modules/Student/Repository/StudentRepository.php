@@ -294,7 +294,7 @@ class StudentRepository extends ServiceEntityRepository
             ->from(Person::class, 'p', 'p.id')
             ->select(['p.id',"COALESCE(rg.name, '') AS rollGroup", "COALESCE(yg.name,'') AS yearGroup", "'Student' AS role"])
             ->leftJoin('p.student', 's')
-            ->leftJoin('s.studentEnrolments', 'se')
+            ->leftJoin('s.studentRollGroups', 'se')
             ->where('se.academicYear = :current')
             ->andWhere('p.student IS NOT NULL')
             ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())

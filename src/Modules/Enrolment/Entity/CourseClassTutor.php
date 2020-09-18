@@ -79,6 +79,7 @@ class CourseClassTutor extends AbstractEntity
     public function __construct(?CourseClass $courseClass = null)
     {
         $this->setCourseClass($courseClass);
+        if (null !== $courseClass) $courseClass->addTutor($this);
     }
 
     /**
