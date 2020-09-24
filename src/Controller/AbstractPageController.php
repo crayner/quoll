@@ -171,4 +171,16 @@ abstract class AbstractPageController extends AbstractController
     {
         return json_decode($this->getRequest()->getContent(), true);
     }
+
+    /**
+     * isRoute
+     *
+     * 23/09/2020 12:40
+     * @param string $routeName
+     * @return bool
+     */
+    protected function isRoute(string $routeName): bool
+    {
+        return $routeName === $this->getRequest()->attributes->get('_route');
+    }
 }

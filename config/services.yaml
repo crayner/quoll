@@ -48,8 +48,9 @@ services:
             - { name: 'container.preload', class: 'App\Util\TranslationHelper' }
 
     App\Util\CacheHelper:
-        arguments:
-            $caching: '%caching%'
+        calls:
+            - [ setCaching, ['%caching%'] ]
+            - [ setSession, ['@session'] ]
         tags:
             - { name: 'container.preload', class: 'App\Util\CacheHelper' }
 

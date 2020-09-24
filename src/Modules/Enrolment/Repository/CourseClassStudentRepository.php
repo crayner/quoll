@@ -20,6 +20,7 @@ use App\Modules\People\Manager\PersonNameManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
 use App\Util\StringHelper;
+use App\Util\TranslationHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,41 +40,6 @@ class CourseClassStudentRepository extends ServiceEntityRepository
     }
 
     /**
-     * findCourseClassParticipationNonStudent
-     *
-     * 3/09/2020 12:16
-     * @param CourseClass $class
-     * @return array
-     */
-    public function findCourseClassParticipationNonStudent(CourseClass $class): array
-    {
-        return $this->createQueryBuilder('ccp')
-            ->select(
-                [
-                    'ccp.role',
-                    "CONCAT(".PersonNameManager::formatNameQuery('p', 'Staff', 'Reversed').") AS name",
-                    'c.email',
-                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
-                    'ccp.id',
-                    'cc.id AS course_class_id',
-                    'course.id AS course_id'
-                ]
-            )
-            ->where('ccp.role NOT LIKE :student')
-            ->setParameter('student', 'Student%')
-            ->andWhere('ccp.courseClass = :course_class')
-            ->setParameter('course_class', $class)
-            ->leftJoin('ccp.person', 'p')
-            ->leftJoin('ccp.courseClass', 'cc')
-            ->leftJoin('p.contact', 'c')
-            ->leftJoin('cc.course', 'course')
-            ->orderBy('p.surname', 'ASC')
-            ->addOrderBy('p.firstName','ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * findCourseClassParticipationStudent
      *
      * 3/09/2020 12:17
@@ -82,24 +48,24 @@ class CourseClassStudentRepository extends ServiceEntityRepository
      */
     public function findCourseClassParticipationStudent(CourseClass $class): array
     {
-        return $this->createQueryBuilder('ccp')
+        return $this->createQueryBuilder('ccs')
             ->select(
                 [
-                    'ccp.role',
+                    "'Student' AS role",
                     "CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS name",
                     'c.email',
-                    "CASE WHEN ccp.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
-                    'ccp.id',
+                    "CASE WHEN ccs.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    'ccs.id',
                     'cc.id AS course_class_id',
-                    'course.id AS course_id'
+                    'course.id AS course_id',
+                    'p.id AS person_id'
                 ]
             )
-            ->where('ccp.role LIKE :student')
-            ->setParameter('student', 'Student%')
-            ->andWhere('ccp.courseClass = :course_class')
+            ->where('ccs.courseClass = :course_class')
             ->setParameter('course_class', $class)
-            ->leftJoin('ccp.person', 'p')
-            ->leftJoin('ccp.courseClass', 'cc')
+            ->leftJoin('ccs.student', 's')
+            ->leftJoin('s.person', 'p')
+            ->leftJoin('ccs.courseClass', 'cc')
             ->leftJoin('p.contact', 'c')
             ->leftJoin('cc.course', 'course')
             ->orderBy('p.surname', 'ASC')
@@ -120,15 +86,13 @@ class CourseClassStudentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ccs')
             ->select(
                 [
-                    "'Student' AS role",
                     "CONCAT(c.abbreviation,'.',cc.abbreviation) AS classCode",
                     'c.name AS course',
-                    "CASE WHEN ccs.reportable = 1 THEN '".StringHelper::getYesNo(true)."' ELSE '".StringHelper::getYesNo(false)."' END AS reportable",
+                    "CASE WHEN ccs.reportable = 1 THEN '" . StringHelper::getYesNo(true) . "' ELSE '" . StringHelper::getYesNo(false) . "' END AS reportable",
                     'ccs.id',
                     'cc.id AS course_class_id',
-                    'c.id AS course_id',
-                    's.id AS student_id',
-                    'p.id AS person_id'
+                    'p.id AS person_id',
+                    "CASE WHEN p.status = 'Left' OR (s.dateEnd < '" . date('Y-m-d') . " AND s.dateEnd IS NOT NULL') THEN CONCAT('Student',' - " . TranslationHelper::translate('person.status.left', [], 'People') . "') ELSE 'Student' END AS role",
                 ]
             )
             ->where('ccs.student = :student')

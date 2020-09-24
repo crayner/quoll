@@ -41,6 +41,7 @@ Enable Smart Workflow Help?: Enable Smart Workflow Help?
 List: List
 staff:
     type:
+        '': ''
         other: Other
         support: Support
         teaching: Teaching
@@ -88,4 +89,3 @@ Personal Google Calendar ID: Personal Google Calendar ID
 Receive Email Notifications?: Receive Email Notifications?
 Search...: Search...
 Absence Settings: Absence Settings
-

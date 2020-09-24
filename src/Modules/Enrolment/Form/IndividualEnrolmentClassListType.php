@@ -20,7 +20,6 @@ use App\Form\Type\ReactFormType;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Enrolment\Manager\Hidden\IndividualEnrolment;
 use App\Provider\ProviderFactory;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -46,7 +45,8 @@ class IndividualEnrolmentClassListType extends AbstractType
                         'size' => 8,
                     ],
                     'multiple' => true,
-                    'choices' => ProviderFactory::create(CourseClass::class)->getIndividualClassChoices($options['person']),
+                    'choices' => ProviderFactory::create(CourseClass::class)->getIndividualClassChoices(),
+                    'preferred_choices' => ProviderFactory::create(CourseClass::class)->getPreferredIndividualClassChoices($options['person']),
                     'constraints' => [
                         new Count(['min' => 1]),
                     ],

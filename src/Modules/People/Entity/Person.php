@@ -760,7 +760,7 @@ class Person extends AbstractEntity
     public function getFullNameReversedWithRollGroup(): string
     {
         if ($this->isStudent()) {
-            foreach ($this->getStudent()->getStudentEnrolments() as $se) {
+            foreach ($this->getStudent()->getStudentRollGroups() as $se) {
                 if ($se->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) {
                     return '('.$se->getRollGroup()->getAbbreviation() . ') ' . $this->formatName('Reversed', 'Student');
                 }

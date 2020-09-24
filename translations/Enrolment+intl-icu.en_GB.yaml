@@ -87,4 +87,12 @@ enrolable_classes: >-
 No Teacher Assigned: No Teacher Assigned
 All other CLasses: All Other Classes
 Enrolable Classes: Enrolable Classes
-
+All Classes: All Classes
+All other Classes: All other Classes
+Tutor: Tutor
+Tutors: Tutors
+Defaults to type of the selected staff member.: Defaults to type of the selected staff member.
+Edit Class {name}: Edit Class {name}
+Edit Course {name}: Edit Course {name}
+Edit Tutor of Class: Edit Tutor of Class
+Add Tutor: Add Tutor

@@ -73,21 +73,3 @@ PaginationContent.propTypes = {
     functions: PropTypes.object.isRequired,
     draggableSort: PropTypes.bool.isRequired,
 }
-
-function toggleColour(e, on) {
-    e.preventDefault()
-    if (on && e.target.parentNode.classList.contains('dropTarget'))
-        return
-    if (!on && !e.target.parentNode.classList.contains('dropTarget'))
-        return
-    e.target.parentNode.classList.toggle('dropTarget')
-    e.target.parentNode.classList.toggle('bg-green-200')
-}
-
-function allowDrop(e) {
-    e.preventDefault()
-}
-
-function drag(e) {
-    e.dataTransfer.setData('text', e.target.id)
-}

@@ -33,8 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\Index(name="staff",columns={"staff"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="course_class_staff",columns={"course_class","staff"}),
  *     @ORM\UniqueConstraint(name="course_class_sort_order",columns={"course_class","sort_order"})})
- * @UniqueEntity({"staff","courseClass"})
- * @UniqueEntity({"sortOrder","courseClass"})
+ * @UniqueEntity({"staff","courseClass"},message="This staff member is already attached to this class.")
+ * @UniqueEntity({"sortOrder","courseClass"},message="This sort order is already attached to this class.")
  * @ORM\HasLifecycleCallbacks()
  */
 class CourseClassTutor extends AbstractEntity
@@ -52,7 +52,7 @@ class CourseClassTutor extends AbstractEntity
     /**
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Enrolment\Entity\CourseClass",inversedBy="tutors")
-     * @ORM\JoinColumn(name="course_class",referencedColumnName="id")
+     * @ORM\JoinColumn(name="course_class",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private ?CourseClass $courseClass;
@@ -60,10 +60,17 @@ class CourseClassTutor extends AbstractEntity
     /**
      * @var Staff|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
-     * @ORM\JoinColumn(name="staff",referencedColumnName="id")
+     * @ORM\JoinColumn(name="staff",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
     private ?Staff $staff;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=20,nullable=true)
+     * @Assert\Choice(callback="getRoleList")
+     */
+    private ?string $role = null;
 
     /**
      * @var int
@@ -79,7 +86,10 @@ class CourseClassTutor extends AbstractEntity
     public function __construct(?CourseClass $courseClass = null)
     {
         $this->setCourseClass($courseClass);
-        if (null !== $courseClass) $courseClass->addTutor($this);
+        if (null !== $courseClass) {
+            $courseClass->addTutor($this);
+            $this->setSortOrder(ProviderFactory::getRepository(CourseClassTutor::class)->nextSortOrder($courseClass));
+        }
     }
 
     /**
@@ -87,7 +97,7 @@ class CourseClassTutor extends AbstractEntity
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return $this->id = isset($this->id) ? $this->id : null;
     }
 
     /**
@@ -137,6 +147,39 @@ class CourseClassTutor extends AbstractEntity
     }
 
     /**
+     * getRole
+     *
+     * 21/09/2020 11:24
+     * @return string|null
+     */
+    public function getRole(): ?string
+    {
+        if (!isset($this->role) || is_null($this->role) || $this->role === '') return $this->getStaff()->getType();
+        return $this->role;
+    }
+
+    /**
+     * @param string|null $role
+     * @return CourseClassTutor
+     */
+    public function setRole(?string $role): CourseClassTutor
+    {
+        $this->role = $role === '' || $this->getStaff()->getType() === $role ? null : $role;
+        return $this;
+    }
+
+    /**
+     * getRoleList
+     *
+     * 18/09/2020 12:36
+     * @return array
+     */
+    public static function getRoleList(): array
+    {
+        return array_merge([null,''],Staff::getTypeList());
+    }
+
+    /**
      * @return int
      * @ORM\PrePersist()
      */
@@ -156,8 +199,22 @@ class CourseClassTutor extends AbstractEntity
         return $this;
     }
 
+    /**
+     * toArray
+     *
+     * 21/09/2020 10:23
+     * @param string|null $name
+     * @return array
+     */
     public function toArray(?string $name = null): array
     {
-        // TODO: Implement toArray() method.
+        return [
+            'tutor' => $this->getStaff()->getFullName(),
+            'type' => $this->getStaff()->getType(),
+            'sortOrder' => $this->getSortOrder(),
+            'id' => $this->getId(),
+            'course_class_id' => $this->getCourseClass()->getId(),
+            'canDelete' => true,
+        ];
     }
 }

@@ -120,7 +120,7 @@ export default function ContentRow(props) {
     }
 
     if (row.actions.length > 0) {
-        columns.push(<td key={'actions'}>
+        columns.push(<td key={'actions'} className={'column width1 text-right'}>
             <div className={'w-full'}>
                 <div className={'float-right'}>{selectedRow}
                     {actions}
@@ -163,3 +163,20 @@ ContentRow.propTypes = {
     rowKey: PropTypes.string.isRequired,
 }
 
+function toggleColour(e, on) {
+    e.preventDefault()
+    if (on && e.target.parentNode.classList.contains('dropTarget'))
+        return
+    if (!on && !e.target.parentNode.classList.contains('dropTarget'))
+        return
+    e.target.parentNode.classList.toggle('dropTarget')
+    e.target.parentNode.classList.toggle('bg-green-200')
+}
+
+function allowDrop(e) {
+    e.preventDefault()
+}
+
+function drag(e) {
+    e.dataTransfer.setData('text', e.target.id)
+}

@@ -292,7 +292,7 @@ class StudentRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Person::class, 'p', 'p.id')
-            ->select(['p.id',"COALESCE(rg.name, '') AS rollGroup", "COALESCE(yg.name,'') AS yearGroup", "'Student' AS role"])
+            ->select(['p.id',"COALESCE(rg.name, '') AS rollGroup", "COALESCE(yg.name,'') AS yearGroup", "'Student' AS role", 'p.status', 's.dateEnd'])
             ->leftJoin('p.student', 's')
             ->leftJoin('s.studentRollGroups', 'se')
             ->where('se.academicYear = :current')

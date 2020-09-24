@@ -22,6 +22,7 @@ use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\Hidden\PaginationSelectAction;
 use App\Manager\PaginationInterface;
+use App\Modules\People\Entity\Person;
 use App\Util\TranslationHelper;
 
 /**
@@ -31,6 +32,11 @@ use App\Util\TranslationHelper;
  */
 class IndividualClassEnrolmentPagination extends AbstractPaginationManager
 {
+    /**
+     * @var Person
+     */
+    private Person $person;
+
     /**
      * execute
      *
@@ -57,10 +63,12 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
             ->setContentKey('role')
             ->setClass('column relative pr-4 cursor-pointer widthAuto'));
 
-        $column = new PaginationColumn();
-        $row->addColumn($column->setLabel('Reportable')
-            ->setContentKey('reportable')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre'));
+        if ($this->getPerson()->isStudent()) {
+            $column = new PaginationColumn();
+            $row->addColumn($column->setLabel('Reportable')
+                ->setContentKey('reportable')
+                ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre'));
+        }
 
         $action = new PaginationAction();
         $row->addAction($action->setTitle('Edit')
@@ -84,13 +92,7 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
         $action = new PaginationAction();
         $select = new PaginationSelectAction();
         $action->addSectionAction($select->setRoute('individual_enrolment_remove_selected')
-            ->setRouteParams(['person' => 'person_id'])
             ->setPrompt('Remove from class')
-        );
-        $select = new PaginationSelectAction();
-        $action->addSectionAction($select->setRoute('individual_enrolment_mark_selected_as_left')
-            ->setRouteParams(['person' => 'person_id'])
-            ->setPrompt('Mark as left"')
         );
 
         $row->addAction($action
@@ -100,6 +102,24 @@ class IndividualClassEnrolmentPagination extends AbstractPaginationManager
         );
 
         $this->setRow($row);
+        return $this;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson(): Person
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person $person
+     * @return IndividualClassEnrolmentPagination
+     */
+    public function setPerson(Person $person): IndividualClassEnrolmentPagination
+    {
+        $this->person = $person;
         return $this;
     }
 }

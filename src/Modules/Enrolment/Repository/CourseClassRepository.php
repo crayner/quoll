@@ -98,20 +98,20 @@ class CourseClassRepository extends ServiceEntityRepository
     }
 
     /**
-     * countParticipants
+     * countStudentParticipants
      *
-     * 11/09/2020 08:53
+     * 20/09/2020 08:58
      * @param string $status
      * @return array
      */
-    public function countParticipants(string $status = '%'): array
+    public function countStudentParticipants(string $status = '%'): array
     {
         return $this->createQueryBuilder('cc', 'cc.id')
-            ->select(['COUNT(ccp.id) AS participants','cc.id'])
-            ->leftJoin('cc.courseClassPeople', 'ccp')
-            ->leftJoin('ccp.person', 'p')
-            ->where('p.student IS NOT NULL')
-            ->andWhere('p.status LIKE :full')
+            ->select(['COUNT(ccs.id) AS participants','cc.id'])
+            ->leftJoin('cc.courseClassStudents', 'ccs')
+            ->leftJoin('ccs.student', 's')
+            ->leftJoin('s.person','p')
+            ->where('p.status LIKE :full')
             ->setParameter('full', $status)
             ->groupBy('cc.id')
             ->getQuery()

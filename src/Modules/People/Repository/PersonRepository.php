@@ -30,6 +30,7 @@ use App\Util\TranslationHelper;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -412,14 +413,14 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * getStudentsByYearGroupQuery
      *
-     * 4/09/2020 11:32
+     * 20/09/2020 09:20
      * @param Collection $yearGroups
      * @return QueryBuilder
      */
     public function getStudentsByYearGroupQuery(Collection $yearGroups): QueryBuilder
     {
         $query = $this->getStudentQuery()
-            ->leftJoin('s.studentEnrolments','se')
+            ->leftJoin('s.studentRollGroups','se')
             ->leftJoin('se.yearGroup', 'yg')
             ->andWhere('se.academicYear = :currentAcademicYear')
             ->setParameter('currentAcademicYear', AcademicYearHelper::getCurrentAcademicYear())
@@ -469,17 +470,18 @@ class PersonRepository extends ServiceEntityRepository
      * findStaffAndStudents
      *
      * 10/09/2020 13:48
-     * @param string $status
+     * @param array|null $status
      * @return array
      */
-    public function findStaffAndStudents(string $status = '%'): array
+    public function findStaffAndStudents(?array $status = null): array
     {
+        if ($status === null) $status = Person::getStatusList();
         return $this->createQueryBuilder('p', 'p.id')
-            ->select(['p.id', "CONCAT(".PersonNameManager::formatNameQuery('p', 'General', 'Reversed').") AS name"])
+            ->select(['p.id', "CONCAT(" . PersonNameManager::formatNameQuery('p', 'General', 'Reversed') . ") AS name"])
             ->orderBy('name', 'ASC')
-            ->where('p.status LIKE :status')
+            ->where('p.status IN (:status)')
             ->andWhere('(p.staff IS NOT NULL OR p.student IS NOT NULL)')
-            ->setParameter('status', $status)
+            ->setParameter('status', $status, Connection::PARAM_STR_ARRAY)
             ->getQuery()
             ->getResult();
     }

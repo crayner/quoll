@@ -574,14 +574,14 @@ abstract class AbstractProvider implements EntityProviderInterface
 
     /**
      * persist
+     *
+     * 18/09/2020 12:52
      * @param EntityInterface $entity
-     * @param array $data
-     * @return StatusManager 10/08/2020 08:56
-     * 10/08/2020 08:56
+     * @return StatusManager
      */
-    public function persist(EntityInterface $entity, array $data = []): StatusManager
+    public function persist(EntityInterface $entity): StatusManager
     {
-        return $this->persistFlush($entity, $data, false);
+        return $this->persistFlush($entity,false);
     }
 
     /**

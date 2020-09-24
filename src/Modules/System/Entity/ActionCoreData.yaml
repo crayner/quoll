@@ -1091,7 +1091,6 @@
             - course_class_enrolment_edit
             - course_class_enrolment_add
             - course_class_enrolment_copy_to_class
-            - course_class_enrolment_mark_as_left
             - course_class_enrolment_remove_from_class
     entryRoute: course_enrolment_by_class_list
     entrySidebar: true
@@ -1114,6 +1113,10 @@
             - course_class_edit
             - course_class_add
             - course_class_delete
+            - course_class_tutor_edit
+            - course_class_tutor_add
+            - course_class_tutor_remove
+            - course_class_tutor_sort
     entryRoute: course_list
     entrySidebar: true
     menuShow: true
@@ -1137,6 +1140,25 @@
     securityRoles:
         arrayField:
             - ROLE_PRINCIPAL
+-
+    name: 'Individual Enrolment'
+    category: 'Courses and Classes'
+    description: 'Manage individual in Course Classes'
+    routeList:
+        arrayField:
+            - individual_enrolment_list
+            - individual_enrolment_manage
+            - individual_enrolment_edit
+            - individual_enrolment_remove
+            - individual_enrolment_remove_selected
+    entryRoute: individual_enrolment_list
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_HEAD_TEACHER
 -
     name: 'Student Enrolment'
     category: Admissions

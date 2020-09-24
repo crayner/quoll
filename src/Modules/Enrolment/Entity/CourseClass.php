@@ -16,16 +16,16 @@ namespace App\Modules\Enrolment\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
-use App\Modules\People\Entity\Person;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
+use App\Provider\ProviderFactory;
+use App\Util\CacheHelper;
 use App\Util\StringHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="abbreviation_course",columns={ "abbreviation", "course"})})
  * @UniqueEntity({"name","course"})
  * @UniqueEntity({"abbreviation","course"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class CourseClass extends AbstractEntity
 {
@@ -107,7 +108,7 @@ class CourseClass extends AbstractEntity
 
     /**
      * @var Collection|CourseClassTutor[]|null
-     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClassTutor",cascade={"all"},mappedBy="courseClass",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Modules\Enrolment\Entity\CourseClassTutor",cascade={"persist","remove"},mappedBy="courseClass")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
     private ?Collection $tutors;
@@ -322,6 +323,16 @@ class CourseClass extends AbstractEntity
 
         if ($this->tutors instanceof PersistentCollection) $this->tutors->initialize();
 
+        $iterator = $this->tutors->getIterator();
+
+        $iterator->uasort(
+            function (CourseClassTutor $a, CourseClassTutor $b) {
+                return $a->getSortOrder() <= $b->getSortOrder() ? -1 : 1;
+            }
+        );
+
+        $this->setTutors(new ArrayCollection(iterator_to_array($iterator, false)));
+
         return $this->tutors;
     }
 
@@ -374,6 +385,7 @@ class CourseClass extends AbstractEntity
             'reportable' => StringHelper::getYesNo($this->isReportable()),
             'participantCount' => $this->getCourseClassStudents()->count(),
             'course_id' => $this->getCourse()->getId(),
+            'canDelete' => $this->canDelete(),
         ];
         return [];
     }
@@ -411,5 +423,30 @@ class CourseClass extends AbstractEntity
         $result .= $this->getTutors()->first() ? ' - ' . $this->getTutors()->first()->getStaff()->getFullName('Initial') : ' - '.TranslationHelper::translate('No Teacher Assigned',[],'Enrolment');
         $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getCourseClassStudents()->count()], 'Enrolment');
         return $result;
+    }
+
+    /**
+     * canDelete
+     *
+     * 23/09/2020 12:52
+     * @return bool
+     */
+    public function canDelete(): bool
+    {
+        return ProviderFactory::create(CourseClass::class)->canDelete($this);
+    }
+
+    /**
+     * clearCache
+     *
+     * 24/09/2020 09:19
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     * @ORM\PostRemove()
+     */
+    public function clearCache()
+    {
+        CacheHelper::clearCacheValue('course_class_choices');
+        CacheHelper::setCacheDirty('course_class_choices');
     }
 }

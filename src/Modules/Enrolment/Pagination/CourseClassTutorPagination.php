@@ -11,81 +11,76 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 12/01/2020
- * Time: 16:34
+ * Date: 19/09/2020
+ * Time: 10:09
  */
-namespace App\Modules\Assess\Pagination;
+namespace App\Modules\Enrolment\Pagination;
 
+use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
 use App\Util\TranslationHelper;
 
 /**
- * Class ScaleGradePagination
- * @package App\Modules\Assess\Pagination
+ * Class CourseClassTutorPagination
+ * @package App\Modules\Enrolment\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class ScaleGradePagination extends AbstractPaginationManager
+class CourseClassTutorPagination extends AbstractPaginationManager
 {
-    /**
-     * execute
-     * @return PaginationInterface
-     */
     public function execute(): PaginationInterface
     {
-        TranslationHelper::setDomain('Assess');
+        TranslationHelper::setDomain('Enrolment');
         $row = new PaginationRow();
-        $this->setTargetElement('scaleGradePaginationContent');
 
         $column = new PaginationColumn();
-        $column->setLabel('Value')
-            ->setSort(true)
-            ->setContentKey('value')
+        $column->setLabel('Tutor')
+            ->setSearch()
+            ->setContentKey('tutor')
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Descriptor')
-            ->setContentKey('descriptor')
+        $column->setLabel('Role')
+            ->setContentKey('type')
+            ->setSearch()
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Is Default?')
-            ->setContentKey('default')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto text-center');
+        $column->setLabel('Sort Order')
+            ->setContentKey('sortOrder')
+            ->setClass('column relative pr-4 cursor-pointer width-1/8 text-centre')
+        ;
         $row->addColumn($column);
 
         $action = new PaginationAction();
-        $action->setTitle('Edit')
+        $row->addAction($action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
-            ->setRoute('scale_grade_edit')
-            ->setRouteParams(['grade' => 'id', 'scale' => 'scaleId']);
-        $row->addAction($action);
+            ->setRoute('course_class_tutor_edit')
+            ->setRouteParams(['tutor' => 'id', 'class' => 'course_class_id'])
+        );
 
         $action = new PaginationAction();
-        $action->setTitle('Delete')
+        $row->addAction($action->setTitle('Delete')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
-            ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
-            ->setRoute('scale_grade_delete')
+            ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
+            ->setRoute('course_class_tutor_remove')
             ->setDisplayWhen('canDelete')
-            ->setOnClick('areYouSure')
-            ->setRouteParams(['grade' => 'id', 'scale' => 'scaleId']);
-        $row->addAction($action);
+            ->setRouteParams(['tutor' => 'id', 'class' => 'course_class_id'])
+        );
 
-        $this
-            ->setRow($row)
-            ->setDraggableRoute('scale_grade_sort');
-
-        $row->setAddElement(['Add Scale Grade', [], 'School']);
+        $this->setRow($row)
+            ->setDraggableRoute('course_class_tutor_sort')
+        ;
         return $this;
     }
 }

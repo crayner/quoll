@@ -65,19 +65,6 @@ class MultipleCourseClassPersonType extends AbstractType
                     ],
                 ]
             )
-            ->add('role', EnumType::class,
-                [
-                    'label' => 'Role',
-                    'choice_list_method' => 'getRoleList',
-                    'choice_list_class' => CourseClassStudent::class,
-                    'choice_list_prefix' => 'courseclassperson.role',
-                    'placeholder' => 'Please select...',
-                    'mapped' => false,
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
             ->add('submit', SubmitType::class);
     }
 

@@ -18,25 +18,26 @@ namespace App\Modules\Enrolment\Form;
 
 use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\DisplayType;
+use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
-use App\Form\Type\ToggleType;
 use App\Modules\Enrolment\Entity\CourseClass;
-use App\Modules\Enrolment\Entity\CourseClassStudent;
+use App\Modules\Enrolment\Entity\CourseClassTutor;
 use App\Modules\People\Entity\Person;
-use App\Modules\Student\Entity\Student;
-use App\Provider\ProviderFactory;
+use App\Modules\Staff\Entity\Staff;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CourseClassStudentType
+ * Class CourseClassStaffType
  * @package App\Modules\Enrolment\Form
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class CourseClassStudentType extends AbstractType
+class CourseClassTutorType extends AbstractType
 {
     /**
      * buildForm
@@ -82,36 +83,57 @@ class CourseClassStudentType extends AbstractType
         ;
         if ($options['data']->getid() === null) {
             $builder
-                ->add('student', AutoSuggestEntityType::class,
+                ->add('staff', AutoSuggestEntityType::class,
                     [
-                        'class' => Person::class,
+                        'class' => Staff::class,
                         'label' => 'Participant',
-                        'choice_label' => 'getFullNameReversedWithRollGroup',
+                        'choice_label' => 'getFullNameReversed',
                         'placeholder' => 'Search for...',
-                        'choices' => ProviderFactory::create(Person::class)->getEnrolmentListByClass($options['data']->getCourseClass()),
+                        'query_builder' => function(EntityRepository $er) {
+                            return $er->createQueryBuilder('s')
+                                ->select(['s','p'])
+                                ->leftJoin('s.person', 'p')
+                                ->where('p.status IN (:statusList)')
+                                ->setParameter('statusList', ['Full','Expected'], Connection::PARAM_STR_ARRAY)
+                                ->orderBy('p.surname','ASC')
+                                ->addOrderBy('p.firstName','ASC')
+                            ;
+                        },
                     ]
                 )
+                ->add('role', EnumType::class,
+                    [
+                        'label' => 'Role',
+                        'help' => 'Defaults to type of the selected staff member.',
+                        'required' => false,
+                        'choice_list_prefix' => 'staff.type',
+                        'choice_translation_domain' => 'Staff',
+                    ],
+                )
+
             ;
         } else {
             $builder
-                ->add('student', HiddenEntityType::class,
+                ->add('staff', HiddenEntityType::class,
                     [
-                        'class' => Student::class,
+                        'class' => Staff::class,
                     ]
                 )
                 ->add('personName', DisplayType::class,
                     [
                         'label' => 'Participant',
                         'help' => 'This value cannot be changed.',
-                        'data' => $options['data']->getStudent()->getFullNameReversed(),
+                        'data' => $options['data']->getStaff()->getFullNameReversed(),
                         'mapped' => false,
                     ]
                 )
-                ->add('role', DisplayType::class,
+                ->add('role', EnumType::class, 
                     [
                         'label' => 'Role',
-                        'data' => 'Student',
-                        'mapped' => false,
+                        'help' => 'Defaults to type of the selected staff member.',
+                        'required' => false,
+                        'choice_list_prefix' => 'staff.type',
+                        'choice_translation_domain' => 'Staff',
                     ]
                 )
             ;
@@ -119,11 +141,6 @@ class CourseClassStudentType extends AbstractType
         }
 
         $builder
-            ->add('reportable', ToggleType::class,
-                [
-                    'label' => 'Reportable',
-                ]
-            )
             ->add('submit', SubmitType::class);
     }
 
@@ -138,7 +155,7 @@ class CourseClassStudentType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Enrolment',
-                'data_class' => CourseClassStudent::class,
+                'data_class' => CourseClassTutor::class,
             ]
         );
     }

@@ -33,6 +33,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CourseClassType extends AbstractType
 {
+    /**
+     * buildForm
+     *
+     * 19/09/2020 10:02
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

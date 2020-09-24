@@ -41,19 +41,6 @@ class CourseClassStudentProvider extends AbstractProvider
     protected string $entityName = CourseClassStudent::class;
 
     /**
-     * findCourseClassParticipationPagination
-     *
-     * 3/09/2020 12:12
-     * @param CourseClass $class
-     * @return array
-     */
-    public function findCourseClassParticipationPagination(CourseClass $class): array
-    {
-        $result = $this->getRepository()->findCourseClassParticipationNonStudent($class);
-        return array_merge($result, $this->getRepository()->findCourseClassParticipationStudent($class));
-    }
-
-    /**
      * loader
      *
      * 3/09/2020 13:40
@@ -153,6 +140,13 @@ class CourseClassStudentProvider extends AbstractProvider
         return true;
     }
 
+    /**
+     * getIndividualClassEnrolmentContent
+     *
+     * 18/09/2020 12:26
+     * @param Person $person
+     * @return array
+     */
     public function getIndividualClassEnrolmentContent(Person $person): array
     {
         if ($person->isStudent())

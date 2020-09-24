@@ -303,7 +303,7 @@ class FamilyController extends AbstractPageController
         $manager
             ->setSortField('contactPriority')
             ->setFindBy(['family' => $source->getFamily(), 'student' => null])
-            ->setIndexColumns(['contact_priority','family'])
+            ->setIndexColumns(['contactPriority','family'])
             ->setIndexName('family_contact_priority')
             ->setTableName('FamilyMember')
             ->execute($source,$target,$pagination)

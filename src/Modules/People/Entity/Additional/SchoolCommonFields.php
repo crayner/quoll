@@ -20,6 +20,7 @@ use App\Manager\EntityInterface;
 use App\Modules\School\Entity\House;
 use App\Util\ImageHelper;
 use App\Validator\ReactImage;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,13 +30,13 @@ use Doctrine\ORM\Mapping as ORM;
 trait SchoolCommonFields
 {
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $dateStart;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $dateEnd;
@@ -72,7 +73,7 @@ trait SchoolCommonFields
     private $personalBackground;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      * @ORM\Column(type="date_immutable",nullable=true)
      */
     private $messengerLastBubble;
@@ -97,36 +98,36 @@ trait SchoolCommonFields
     private $receiveNotificationEmails = true;
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getDateStart(): ?\DateTimeImmutable
+    public function getDateStart(): ?DateTimeImmutable
     {
         return $this->dateStart;
     }
 
     /**
-     * @param \DateTimeImmutable|null $dateStart
+     * @param DateTimeImmutable|null $dateStart
      * @return $this|EntityInterface
      */
-    public function setDateStart(?\DateTimeImmutable $dateStart): EntityInterface
+    public function setDateStart(?DateTimeImmutable $dateStart): EntityInterface
     {
         $this->dateStart = $dateStart;
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getDateEnd(): ?\DateTimeImmutable
+    public function getDateEnd(): ?DateTimeImmutable
     {
         return $this->dateEnd;
     }
 
     /**
-     * @param \DateTimeImmutable|null $dateEnd
+     * @param DateTimeImmutable|null $dateEnd
      * @return $this|EntityInterface
      */
-    public function setDateEnd(?\DateTimeImmutable $dateEnd): EntityInterface
+    public function setDateEnd(?DateTimeImmutable $dateEnd): EntityInterface
     {
         $this->dateEnd = $dateEnd;
         return $this;
@@ -218,18 +219,18 @@ trait SchoolCommonFields
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    public function getMessengerLastBubble(): ?\DateTimeImmutable
+    public function getMessengerLastBubble(): ?DateTimeImmutable
     {
         return $this->messengerLastBubble;
     }
 
     /**
-     * @param \DateTimeImmutable|null $messengerLastBubble
+     * @param DateTimeImmutable|null $messengerLastBubble
      * @return $this|EntityInterface
      */
-    public function setMessengerLastBubble(?\DateTimeImmutable $messengerLastBubble): EntityInterface
+    public function setMessengerLastBubble(?DateTimeImmutable $messengerLastBubble): EntityInterface
     {
         $this->messengerLastBubble = $messengerLastBubble;
         return $this;

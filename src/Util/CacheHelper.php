@@ -14,29 +14,36 @@
  * Date: 1/08/2019
  * Time: 14:10
  */
-
 namespace App\Util;
 
-
+use App\Manager\ParameterFileManager;
+use DateTimeImmutable;
+use Exception;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class CacheHelper
+ * @package App\Util
+ * @author Craig Rayner <craig@craigrayner.com>
+ *
+ * All intervals expressed in this class are measured in minutes.
+ */
 class CacheHelper
 {
     /**
      * @var bool
      */
-    private static $caching;
+    private static bool $caching = true;
 
     /**
      * @var SessionInterface
      */
-    private static $session;
+    private static SessionInterface $session;
 
     /**
-     * CacheHelper constructor.
      * @param bool $caching
      */
-    public function __construct(bool $caching)
+    public static function setCaching(bool $caching): void
     {
         self::$caching = $caching;
     }
@@ -46,7 +53,7 @@ class CacheHelper
      */
     public static function getSession(): ?SessionInterface
     {
-        return self::$session;
+        return isset(self::$session) ? self::$session : null;
     }
 
     /**
@@ -66,16 +73,15 @@ class CacheHelper
      */
     public static function isStale(string $name, int $interval = 10): bool
     {
-        if (!self::isCaching()) {
-            return true;
-        }
+        if (!self::isCaching() || !self::$session->has($name)) return true;
+
         try {
-            $interval = $interval + rand(0, $interval) - intval($interval / 2);
-            $cacheTime = self::getSession()->get(self::getCacheName($name), null);
-            if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp()) {
+            $cacheTime = self::getSession()->get(self::getCacheName($name));
+            if (null === $cacheTime || $cacheTime->getTimestamp() < self::intervalDateTime($interval)->getTimestamp() || self::isDirty($name, $cacheTime)) {
+                self::clearCacheValue($name);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         return false;
     }
@@ -83,12 +89,13 @@ class CacheHelper
     /**
      * intervalDateTime
      * @param int $interval
-     * @return \DateTimeImmutable
-     * @throws \Exception
+     * @return DateTimeImmutable
+     * @throws Exception
      */
-    public static function intervalDateTime(int $interval): \DateTimeImmutable
+    public static function intervalDateTime(int $interval): DateTimeImmutable
     {
-        return new \DateTimeImmutable('- ' . strval($interval * 30 + rand(0, $interval * 60)) . ' Seconds');
+        // Convert to seconds and randomly set interval to 0.5 * $interval + rand(zero to interval) as a date time immutable
+        return new DateTimeImmutable('- ' . strval($interval * 30 + rand(0, $interval * 60)) . ' Seconds');
     }
 
     /**
@@ -102,8 +109,8 @@ class CacheHelper
         if (self::isCaching()) {
             self::getSession()->set($name, $content);
             try {
-                self::getSession()->set(self::getCacheName($name), new \DateTimeImmutable('+ ' . $interval . ' Minutes'));
-            } catch (\Exception $e) {
+                self::getSession()->set(self::getCacheName($name), new DateTimeImmutable('+ ' . $interval . ' Minutes'));
+            } catch (Exception $e) {
                 self::getSession()->remove(self::getCacheName($name));
             }
         }
@@ -112,11 +119,12 @@ class CacheHelper
     /**
      * getCacheValue
      * @param string $name
+     * @param int $interval
      * @return mixed
      */
-    public static function getCacheValue(string $name)
+    public static function getCacheValue(string $name, int $interval = 10)
     {
-        if (self::isCaching())
+        if (self::isCaching() && !self::isStale($name, $interval))
             return self::getSession()->has($name) ? self::getSession()->get($name) : null;
         return null;
     }
@@ -136,8 +144,8 @@ class CacheHelper
     public static function clearCacheValue(string $name)
     {
         if (self::getSession()) {
-            self::getSession()->clear($name);
-            self::getSession()->clear(self::getCacheName($name));
+            self::getSession()->remove($name);
+            self::getSession()->remove(self::getCacheName($name));
         }
     }
 
@@ -149,5 +157,37 @@ class CacheHelper
     private static function getCacheName(string $name): string
     {
         return $name . '_cacheTime';
+    }
+
+    /**
+     * isDirty
+     *
+     * 24/09/2020 09:42
+     * @param string $name
+     * @param DateTimeImmutable $cacheTime
+     * @return bool
+     */
+    private static function isDirty(string $name, DateTimeImmutable $cacheTime): bool
+    {
+        $config = ParameterFileManager::readParameterFile();
+
+        if (!key_exists('cache_dirty', $config['parameters'])) return false;
+        if (!key_exists($name, $config['parameters']['cache_dirty'])) return false;
+
+        return $cacheTime->setTimestamp() < $config['parameters']['cache_dirty']->getTimestamp();
+    }
+
+    /**
+     * setCacheDirty
+     *
+     * 24/09/2020 09:34
+     * @param string $name
+     */
+    public static function setCacheDirty(string $name)
+    {
+        $config = ParameterFileManager::readParameterFile();
+        if (!key_exists('cache_dirty', $config['parameters'])) $config['parameters']['cache_dirty'] = [];
+        $config['parameters']['cache_dirty'][$name] = new DateTimeImmutable('now');
+        ParameterFileManager::writeParameterFile($config);
     }
 }

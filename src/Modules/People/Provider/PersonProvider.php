@@ -351,27 +351,23 @@ class PersonProvider extends AbstractProvider
      */
     public function getIndividualEnrolmentPaginationContent(): array
     {
-        $result = $this->getRepository()->findStaffAndStudents('Full');
-        $result = array_merge($result, $this->getRepository()->findStaffAndStudents('Expected'));
+        $result = $this->getRepository()->findStaffAndStudents(['Full','Expected','Left']);
         foreach ($this->getRepository(Staff::class)->mergeStaffIndividualEnrolmentPagination() as $id=>$item) {
             if (key_exists($id, $result)) {
                 $result[$id] = array_merge($item,$result[$id]);
+                if ($item['status'] === 'Left' || ($item['dateEnd'] !== null && $item['dateEnd']->format('Y-m-d') < date('Y-m-d'))) $result[$id]['role'] .= ' - Left';
             }
         }
         foreach ($this->getRepository(Student::class)->mergeStudentIndividualEnrolmentPagination() as $id=>$item) {
             if (key_exists($id, $result)) {
                 $result[$id] = array_merge($item,$result[$id]);
+                if ($item['status'] === 'Left' || ($item['dateEnd'] !== null && $item['dateEnd']->format('Y-m-d') < date('Y-m-d'))) $result[$id]['role'] .= ' - Left';
             }
         }
 
         uasort($result, function($a,$b) {
             return $a['name'] > $b['name'] ? 1 : -1;
         });
-
-        foreach ($result as $q=>$w) {
-            if (!key_exists('role', $w))
-                $result[$q]['role'] = 'Student';
-        }
 
         return array_values($result);
     }

@@ -121,7 +121,7 @@ class CourseController extends AbstractPageController
                 ->addPanel(AcademicYearHelper::academicYearWarning($panel));
 
             $pagination->setContent($course->getCourseClasses()->toArray(), 'CourseClassPagination')
-                ->setAddElementRoute($this->generateUrl('course_class_add', ['course' => $course->getId()]));
+                ->setAddElementRoute($this->generateUrl('course_class_add', ['course' => $course->getId()]), 'Add Course Class');
             $panel = new Panel('Classes', 'Enrolment', new Section('pagination', $pagination));
             $container->addPanel(AcademicYearHelper::academicYearWarning($panel));
             $this->getContainerManager()->setAddElementRoute($this->generateUrl('course_add'));

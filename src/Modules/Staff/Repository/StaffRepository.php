@@ -180,7 +180,7 @@ class StaffRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Person::class, 'p', 'p.id')
-            ->select(['p.id', "'Staff' AS role", 's.type AS category',"'' AS rollGroup","'' AS yearGroup"])
+            ->select(['p.id', "'Staff' AS role", 's.type AS category',"'' AS rollGroup","'' AS yearGroup",'p.status','s.dateEnd'])
             ->leftJoin('p.staff', 's')
             ->where('p.staff IS NOT NULL')
             ->getQuery()

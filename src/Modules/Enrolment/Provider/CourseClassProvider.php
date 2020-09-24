@@ -19,6 +19,7 @@ namespace App\Modules\Enrolment\Provider;
 use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Department\Twig\MyClasses;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\Enrolment\Entity\CourseClassStudent;
 use App\Modules\Enrolment\Entity\CourseClassTutor;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Util\AcademicYearHelper;
@@ -27,6 +28,7 @@ use App\Modules\Staff\Entity\Staff;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContent;
+use App\Util\CacheHelper;
 use App\Util\TranslationHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -74,9 +76,9 @@ class CourseClassProvider extends AbstractProvider
     public function getCourseClassEnrolmentPaginationContent(): array
     {
         $result = $this->getRepository()->findCourseClassEnrolmentPagination();
-        $active = $this->getRepository(CourseClass::class)->countParticipants('Full');
-        $expected = $this->getRepository(CourseClass::class)->countParticipants('Expected');
-        $total = $this->getRepository(CourseClass::class)->countParticipants();
+        $active = $this->getRepository(CourseClass::class)->countStudentParticipants('Full');
+        $expected = $this->getRepository(CourseClass::class)->countStudentParticipants('Expected');
+        $total = $this->getRepository(CourseClass::class)->countStudentParticipants();
         foreach ($active as $id=>$value) {
             if (key_exists($id, $result)) {
                 $result[$id]['activeParticipants'] = $value['participants'];
@@ -103,11 +105,10 @@ class CourseClassProvider extends AbstractProvider
      * @param Person $person
      * @return array
      */
-    public function getIndividualClassChoices(Person $person): array
+    public function getPreferredIndividualClassChoices(Person $person): array
     {
         if ($person->isStudent()) {
             $x = [];
-            dump($this->getRepository()->findEnrolableClasses($person));
             foreach ($this->getRepository()->findEnrolableClasses($person) as $class) {
                 $x[$class->getId()] = TranslationHelper::translate('enrolable_classes',
                     [
@@ -117,25 +118,37 @@ class CourseClassProvider extends AbstractProvider
                         'count' => $class->getCourseClassStudents()->count(),
                     ], 'Enrolment');
             }
-            $c = [];
-            foreach ($this->getRepository()->findClassesByCurrentAcademicYear() as $class) {
-                if (!key_exists($class->getId(), $x)) {
-                    $c[$class->getId()] = TranslationHelper::translate(
-                        'enrolable_classes',
-                        [
-                            'course' => $class->getCourse()->getAbbreviation(),
-                            'class' => $class->getAbbreviation(),
-                            'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
-                            'count' => $class->getCourseClassStudents()->count(),
-                        ],
-                        'Enrolment');
-                }
-            }
-            $result['-- --'.TranslationHelper::translate('Enrolable Classes', [], 'Enrolment').'-- --'] = array_flip($x);
-            $result['-- --'.TranslationHelper::translate('All other Classes', [], 'Enrolment').'-- --'] = array_flip($c);
+            $result = array_flip($x);
         } else {
-            $result = array_values($this->getRepository()->findClassesByCurrentAcademicYear());
+            $result = [];
         }
+        return $result;
+    }
+
+    /**
+     * getIndividualClassChoices
+     *
+     * 23/09/2020 09:20
+     * @return array
+     */
+    public function getIndividualClassChoices(): array
+    {
+        if (($result = CacheHelper::getCacheValue('course_class_choices', 30)) !== null) return $result;
+        $result = [];
+        foreach ($this->getRepository()->findClassesByCurrentAcademicYear() as $class) {
+            $result[$class->getId()] = TranslationHelper::translate(
+                'enrolable_classes',
+                [
+                    'course' => $class->getCourse()->getAbbreviation(),
+                    'class' => $class->getAbbreviation(),
+                    'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
+                    'count' => $class->getCourseClassStudents()->count(),
+                ],
+                'Enrolment');
+        }
+        $result = array_flip($result);
+
+        CacheHelper::setCacheValue('course_class_choices', $result);
         return $result;
     }
 
@@ -208,5 +221,42 @@ class CourseClassProvider extends AbstractProvider
             return $valid;
         }
         return $valid;
+    }
+
+    /**
+     * findCourseClassParticipationPagination
+     *
+     * 20/09/2020 09:32
+     * @param CourseClass $class
+     * @return array
+     */
+    public function findCourseClassParticipationPagination(CourseClass $class): array
+    {
+        $result = [];
+        foreach ($class->getTutors() as $tutor) {
+            $result[] = [
+                'role' => $tutor->getStaff()->getType(),
+                'name' => $tutor->getStaff()->getFullNameReversed(),
+                'email' => $tutor->getStaff()->getPerson()->getContact()->getEmail(),
+                'reportable' => '-',
+                'id' => $tutor->getId(),
+                'course_class_id' => $class->getId(),
+                'course_id' => $class->getCourse()->getId(),
+                'person_id' => $tutor->getStaff()->getPerson()->getId(),
+            ];
+        }
+        return array_merge($result, $this->getRepository(CourseClassStudent::class)->findCourseClassParticipationStudent($class));
+    }
+
+    /**
+     * canDelete
+     *
+     * 23/09/2020 12:52
+     * @param CourseClass $class
+     * @return bool
+     */
+    public function canDelete(CourseClass $class): bool
+    {
+        return $class->getPeriodClasses()->count() + $class->getCourseClassStudents()->count() === 0;
     }
 }

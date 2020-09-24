@@ -390,7 +390,7 @@ class ContainerManager
      * @param bool $hideSingleFormWarning
      * @return ContainerManager
      */
-    public function setHideSingleFormWarning(bool $hideSingleFormWarning): ContainerManager
+    public function setHideSingleFormWarning(bool $hideSingleFormWarning = true): ContainerManager
     {
         $this->hideSingleFormWarning = $hideSingleFormWarning;
         return $this;

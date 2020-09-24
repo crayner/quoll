@@ -79,7 +79,7 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('course_class_enrolment_edit')
-            ->setRouteParams(['class' => 'course_class_id', 'person' => 'id'])
+            ->setRouteParams(['class' => 'course_class_id', 'person' => 'person_id'])
         );
 
         $action = new PaginationAction();
@@ -89,15 +89,10 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('course_class_enrolment_delete')
             ->setOnClick('areYouSure')
-            ->setRouteParams(['class' => 'course_class_id', 'person' => 'id'])
+            ->setRouteParams(['class' => 'course_class_id', 'person' => 'person_id'])
         );
 
         $action = new PaginationAction();
-        $select = new PaginationSelectAction();
-        $action->addSectionAction($select->setRoute('course_class_enrolment_mark_as_left')
-            ->setRouteParams(['class' => $this->getCourseClass()->getId()])
-            ->setPrompt('Mark as left')
-        );
         $select = new PaginationSelectAction();
         $action->addSectionAction($select->setRoute('course_class_enrolment_remove_from_class')
             ->setRouteParams(['class' => $this->getCourseClass()->getId()])
