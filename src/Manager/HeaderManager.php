@@ -16,6 +16,8 @@
  */
 namespace App\Manager;
 
+use App\Manager\Hidden\WarningItem;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Twig\MainMenu;
 use App\Util\ImageHelper;
 use App\Util\TranslationHelper;
@@ -79,6 +81,7 @@ class HeaderManager
             'organisationLogo' => ImageHelper::getLogoImage(),
             'menu' => $this->getMainMenu(),
             'translations' => TranslationHelper::getTranslations(),
+            'warnings' => self::getWarnings(),
         ];
     }
 
@@ -130,5 +133,25 @@ class HeaderManager
         TranslationHelper::addTranslation('Home', [], 'messages');
         TranslationHelper::addTranslation('Kookaburra', [], 'messages');
         return $this;
+    }
+
+    /**
+     * getWarnings
+     *
+     * 25/09/2020 15:53
+     * @return array
+     */
+    public static function getWarnings(): array
+    {
+        $result = [];
+        if (AcademicYearHelper::getCurrentAcademicYear()->getStatus() !== 'Current') {
+            $warning = new WarningItem();
+            $result['academicYear'] = $warning->setTitle(TranslationHelper::translate('The academic year {name} is not the current academic year.', ['{name}' => AcademicYearHelper::getCurrentAcademicYear()->getName()], 'School'))
+                ->setLabel(TranslationHelper::translate('Academic Year: {name}', ['{name}' => AcademicYearHelper::getCurrentAcademicYear()->getName()], 'School'))
+                ->setLink(UrlGeneratorHelper::getUrl('preferences'))
+                ->toArray()
+            ;
+        }
+        return $result;
     }
 }
