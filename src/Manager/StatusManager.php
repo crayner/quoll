@@ -33,7 +33,7 @@ class StatusManager
 
     const SUCCESS = 'return.success.0';
 
-    const INVALID_TOKEN = 'return.error.crsf';
+    const INVALID_TOKEN = 'return.error.csrf';
 
     const FILE_TRANSFER = 'return.error.file_transfer';
 

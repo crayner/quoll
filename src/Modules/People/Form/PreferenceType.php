@@ -19,10 +19,13 @@ namespace App\Modules\People\Form;
 
 use App\Modules\People\Form\Subscriber\PreferenceStaffSubscriber;
 use App\Modules\People\Util\UserHelper;
+use App\Modules\School\Entity\AcademicYear;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\System\Entity\Locale;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\System\Entity\Theme;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use App\Modules\People\Entity\Person;
 use App\Form\Transform\ToggleTransformer;
@@ -58,28 +61,7 @@ class PreferenceType extends AbstractType
                     'label' => 'Settings',
                 ]
             )
- /*            */
         ;
- /*
-        $builder
-            ->add('theme', EntityType::class,
-                [
-                    'label' => 'Personal Theme',
-                    'class' => Theme::class,
-                    'choice_label' => 'name',
-                    'help' => 'Override the system theme.',
-                    'placeholder' => 'System Default',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('t')
-                            ->where('t.active = :yes')
-                            ->setParameter('yes', 'Y')
-                            ->orderBy('t.name', 'ASC')
-                            ;
-                    },
-                    'required' => false,
-                ]
-            )
-        ; */
         if ($options['data'] instanceof Person && $options['data']->isStaff()) {
             $builder
                 ->add('staff', PreferenceStaffType::class,
@@ -101,6 +83,33 @@ class PreferenceType extends AbstractType
                 )
                 ->add('securityUser', PreferenceSecurityType::class, ['data' => $options['data']->getSecurityUser()])
             ;
+        }
+        if ($options['data'] instanceof Person && $options['data']->getSecurityUser()->isAllowedYearSwitch()) {
+            $su = $options['data']->getSecurityUser();
+            $yearTypes = ['Current'];
+            if ($su->isAllowedFutureYears()) $yearTypes[] = 'Upcoming';
+            if ($su->isAllowedPastYears()) $yearTypes[] = 'Past';
+            $data = AcademicYearHelper::getCurrentAcademicYear()->getStatus() === 'Current' ? null : AcademicYearHelper::getCurrentAcademicYear(true);
+            $builder->add('academicYear', EntityType::class,
+                    [
+                        'label' => 'Work in another Academic Year',
+                        'class' => AcademicYear::class,
+                        'choice_label' => 'name',
+                        'placeholder' => 'Work in the current Academic Year',
+                        'data' => $data,
+                        'query_builder' => function (EntityRepository $er) use ($yearTypes) {
+                            return $er->createQueryBuilder('ay')
+                                ->orderBy('ay.firstDay','ASC')
+                                ->addOrderBy('ay.name', 'ASC')
+                                ->where('ay.status in (:status)')
+                                ->setParameter('status', $yearTypes, Connection::PARAM_STR_ARRAY)
+                            ;
+                        },
+                        'mapped' => false,
+                    ]
+                )
+            ;
+
         }
         $builder
             ->add('submit', SubmitType::class)

@@ -27,6 +27,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Driver\PDOException;
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -139,5 +140,32 @@ class AcademicYearHelper implements DemoDataInterface
             return $panel->addSection(new Section('html', self::$twig->render('school/academic_year_warning.html.twig')));
         } catch (LoaderError | RuntimeError | SyntaxError $e) {}
         return $panel;
+    }
+
+    /**
+     * setCurrentYear
+     *
+     * 24/09/2020 15:04
+     * @param string $id
+     */
+    public function setCurrentYear(string $id)
+    {
+        $current = self::getCurrentAcademicYear();
+        if ($current->getId() === $id) return;
+
+        $new = empty($id) ? ProviderFactory::getRepository(AcademicYear::class)->findOneBy(['status' => 'Current']) : ProviderFactory::getRepository(AcademicYear::class)->find($id);
+
+        if ($new instanceof AcademicYear) self::getSession()->set('academicYear', $new);
+    }
+
+    /**
+     * getSession
+     *
+     * 24/09/2020 15:09
+     * @return SessionInterface
+     */
+    private static function getSession(): SessionInterface
+    {
+        return self::$stack->getCurrentRequest()->getSession();
     }
 }

@@ -18,7 +18,6 @@ use App\Modules\Curriculum\Entity\Course;
 use App\Modules\Assess\Entity\Scale;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
-use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
 use App\Util\StringHelper;
 use App\Util\TranslationHelper;
@@ -433,7 +432,7 @@ class CourseClass extends AbstractEntity
      */
     public function canDelete(): bool
     {
-        return ProviderFactory::create(CourseClass::class)->canDelete($this);
+        return $this->getPeriodClasses()->count() + $this->getCourseClassStudents()->count() + $this->getTutors()->count() === 0;
     }
 
     /**

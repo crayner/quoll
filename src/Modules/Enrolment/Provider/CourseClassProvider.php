@@ -247,16 +247,4 @@ class CourseClassProvider extends AbstractProvider
         }
         return array_merge($result, $this->getRepository(CourseClassStudent::class)->findCourseClassParticipationStudent($class));
     }
-
-    /**
-     * canDelete
-     *
-     * 23/09/2020 12:52
-     * @param CourseClass $class
-     * @return bool
-     */
-    public function canDelete(CourseClass $class): bool
-    {
-        return $class->getPeriodClasses()->count() + $class->getCourseClassStudents()->count() === 0;
-    }
 }

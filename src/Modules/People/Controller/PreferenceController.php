@@ -24,6 +24,7 @@ use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\People\Entity\Person;
 use App\Modules\People\Form\PreferenceType;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Form\Entity\ResetPassword;
 use App\Modules\Security\Form\ResetPasswordType;
 use App\Modules\Security\Manager\PasswordManager;
@@ -99,10 +100,12 @@ class PreferenceController extends AbstractPageController
             ]
         );
 
-        if ($request->getContent() !== '' && $tabName === 'Settings') {
-            $settingsForm->submit(json_decode($request->getContent(), true));
+        if ($this->isPostContent() && $tabName === 'Settings') {
+            $content = $this->jsonDecode();
+            $settingsForm->submit($content);
             if ($settingsForm->isValid()) {
                 ProviderFactory::create(Person::class)->persistFlush($person);
+                AcademicYearHelper::setCurrentYear($content['academicYear']);
                 $settingsForm = $this->createForm(PreferenceType::class, $person,
                     [
                         'action' => $this->generateUrl('preferences', ['tabName' => 'Settings']),

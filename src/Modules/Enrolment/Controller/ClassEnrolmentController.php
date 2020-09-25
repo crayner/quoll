@@ -108,6 +108,7 @@ class ClassEnrolmentController extends AbstractPageController
                     if ($person instanceof Person && $person->isStaff()) {
                         $tutor = ProviderFactory::getRepository(CourseClassTutor::class)->findOneBy(['courseClass' => $class, 'staff' => $person->getStaff()]) ?: new CourseClassTutor($class);
                         $tutor->setStaff($person->getStaff());
+                        dump($tutor);
                         ProviderFactory::create(CourseClassTutor::class)->persistFlush($tutor, false);
                     }
                 }
@@ -248,31 +249,45 @@ class ClassEnrolmentController extends AbstractPageController
      * 7/09/2020 11:14
      * @param CourseClass $class
      * @param ValidatorInterface $validator
+     * @param CourseClassParticipantPagination $pagination
+     * @return JsonResponse
      * @Route("/course/class/{class}/enrolment/copy/to/class/",name="course_class_enrolment_copy_to_class")
      * @IsGranted("ROLE_ROUTE")
-     * @return JsonResponse
      */
-    public function copyToClass(CourseClass $class, ValidatorInterface $validator)
+    public function copyToClass(CourseClass $class, ValidatorInterface $validator, CourseClassParticipantPagination $pagination)
     {
         $content = $this->jsonDecode();
-        if ($this->isCsrfTokenValid('course_class_enrolment_copy', $content['_token'])) {
+        if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
             $update = 0;
             $insert = 0;
             foreach ($content['selected'] as $participant) {
-                $person = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id'])->getPerson();
-                $ccp = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['person' => $person, 'courseClass' => $class]) ?: new CourseClassStudent($class);
-                $id = $ccp->getId();
-                $ccp->setPerson($person)
-                    ->setRole($participant['role']);
-                $ccp->isReportable();
-                $errors = $validator->validate($ccp);
-                if (count($errors) > 0) {
-                    foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
-                    dump($ccp);
-                    return  $this->getStatusManager()->toJsonResponse();
+                $w = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id']) ?: ProviderFactory::getRepository(CourseClassTutor::class)->find($participant['id']);
+                if ($w instanceof CourseClassTutor) {
+                    $staff = $w->getStaff();
+                    $tutor = ProviderFactory::getRepository(CourseClassTutor::class)->findOneBy(['staff' => $staff, 'courseClass' => $class]) ?: new CourseClassTutor($class);
+                    $id = $tutor->getId();
+                    $tutor->setStaff($staff);
+                    $errors = $validator->validate($tutor);
+                    if (count($errors) > 0) {
+                        foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
+                        return $this->getStatusManager()->toJsonResponse();
+                    }
+                    ProviderFactory::create(CourseClassTutor::class)->persist($tutor);
+                    $tutor->getId() === $id ? $update++ : $insert++;
+                } else if ($w instanceof CourseClassStudent) {
+                    $student = $w->getStudent();
+                    $ccs = ProviderFactory::getRepository(CourseClassStudent::class)->findOneBy(['student' => $student, 'courseClass' => $class]) ?: new CourseClassStudent($class);
+                    $id = $ccs->getId();
+                    $ccs->setStudent($student);
+                    $ccs->isReportable();
+                    $errors = $validator->validate($ccs);
+                    if (count($errors) > 0) {
+                        foreach ($errors as $error) $this->getStatusManager()->error($error->getMessage(), [], false);
+                        return $this->getStatusManager()->toJsonResponse();
+                    }
+                    ProviderFactory::create(CourseClassStudent::class)->persist($ccs);
+                    $ccs->getId() === $id ? $update++ : $insert++;
                 }
-                ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp,false);
-                $x = $ccp->getId() === $id ? $update++ : $insert++;
             }
             ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
@@ -298,12 +313,20 @@ class ClassEnrolmentController extends AbstractPageController
     {
         $content = $this->jsonDecode();
         if ($this->isCsrfTokenValid($pagination->getPaginationTokenName(), $content['_token'])) {
+            $failure = 0;
             foreach ($content['selected'] as $q=>$participant) {
-                ProviderFactory::create(CourseClassStudent::class)->delete($participant['id'], false);
+                $w = ProviderFactory::getRepository(CourseClassStudent::class)->find($participant['id']) ?: ProviderFactory::getRepository(CourseClassTutor::class)->find($participant['id']);
+                if ($w instanceof CourseClassStudent) {
+                    ProviderFactory::create(CourseClassStudent::class)->delete($w, false);
+                } else if ($w instanceof CourseClassTutor) {
+                    ProviderFactory::create(CourseClassTutor::class)->delete($w, false);
+                } else {
+                    $failure++;
+                }
             }
             ProviderFactory::create(CourseClassStudent::class)->flush();
             if ($this->isStatusSuccess()) {
-                $this->getStatusManager()->info('Course Class participants were removed from "{name}". Removed Participant Count: {removed}', ['{name}' => $class->getFullName(), '{removed}' => count($content['selected'])],'Enrolment');
+                $this->getStatusManager()->info('Course Class participants were removed from "{name}". Removed Participant Count: {removed}', ['{name}' => $class->getFullName(), '{removed}' => count($content['selected']) - $failure],'Enrolment');
             }
             $this->getStatusManager()->setReDirect($this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()]), true);
         } else {

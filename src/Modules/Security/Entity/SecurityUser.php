@@ -687,4 +687,58 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
         
         return true;
     }
+
+    /**
+     * isAllowedYearSwitch
+     *
+     * 24/09/2020 14:37
+     * @return bool
+     */
+    public function isAllowedYearSwitch(): bool
+    {
+        if ($this->isSuperUser()) return true;
+
+        foreach ($this->getSecurityRoles() as $role) {
+            $role = ProviderFactory::getRepository(SecurityRole::class)->findOneBy(['role' => $role]);
+            if ($role->isAllowFutureYears() || $role->isAllowPastYears()) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * isAllowedFutureYears
+     *
+     * 24/09/2020 14:48
+     * @return bool
+     */
+    public function isAllowedFutureYears(): bool
+    {
+        if ($this->isSuperUser()) return true;
+
+        foreach ($this->getSecurityRoles() as $role) {
+            $role = ProviderFactory::getRepository(SecurityRole::class)->findOneBy(['role' => $role]);
+            if ($role->isAllowFutureYears()) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * isAllowedYearSwitch
+     *
+     * 24/09/2020 14:37
+     * @return bool
+     */
+    public function isAllowedPastYears(): bool
+    {
+        if ($this->isSuperUser()) return true;
+
+        foreach ($this->getSecurityRoles() as $role) {
+            $role = ProviderFactory::getRepository(SecurityRole::class)->findOneBy(['role' => $role]);
+            if ($role->isAllowPastYears()) return true;
+        }
+
+        return false;
+    }
 }
