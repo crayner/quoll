@@ -29,3 +29,4 @@ yarn-error.log
 /config/packages/role_hierarchy.yaml
 /config/packages/quoll_*.yaml
 /config/packages/*quoll.yaml
+/src/.preload.php
