@@ -39,7 +39,7 @@ export default function SideBarContent(props) {
         } else if (item.name !== 'Module Menu' && item.content !== '') {
             let x = Parser(item.content)
             if (typeof x._owner === 'object') {
-                result.push(<div className={"column-no-break"} key={item.name}>x</div>)
+                result.push(<div className={"column-no-break"} key={item.name}>{x}</div>)
                 return
             }
             let y = x.filter(item => {

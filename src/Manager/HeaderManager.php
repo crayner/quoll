@@ -81,7 +81,6 @@ class HeaderManager
             'organisationLogo' => ImageHelper::getLogoImage(),
             'menu' => $this->getMainMenu(),
             'translations' => TranslationHelper::getTranslations(),
-            'warnings' => self::getWarnings(),
         ];
     }
 

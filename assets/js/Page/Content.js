@@ -23,7 +23,8 @@ export default function Content(props) {
         messages,
         pageHeader,
         special,
-        popup
+        popup,
+        warning
     } = props
 
     const state = contentState({
@@ -100,6 +101,10 @@ export default function Content(props) {
 
         if (!popup)
             result.push(<Sidebar key={'sidebar'} functions={functions} {...state} key={w++} />)
+
+        if (warning !== false) {
+            state.contentAttr.className += ' ' + warning + 'Border'
+        }
 
         result.push(<div {...state.contentAttr} key={'content'}>
             {x}
@@ -190,6 +195,10 @@ Content.propTypes = {
     pageHeader: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array,
+    ]),
+    warning: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
     ]),
     popup: PropTypes.bool.isRequired,
 }

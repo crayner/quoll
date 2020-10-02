@@ -16,9 +16,22 @@
  */
 namespace App\Manager\Hidden;
 
+use App\Twig\SidebarContentInterface;
+use App\Twig\SidebarContentTrait;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class WarningItem
+/**
+ * Class WarningItem
+ * @package App\Manager\Hidden
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
+class WarningItem implements SidebarContentInterface
 {
+    use SidebarContentTrait;
+
     /**
      * @var string
      */
@@ -38,6 +51,16 @@ class WarningItem
      * @var string
      */
     private string $link;
+
+    /**
+     * @var string
+     */
+    private $position = 'top';
+
+    /**
+     * @var int
+     */
+    private $priority = 1;
 
     /**
      * @return string|null
@@ -122,10 +145,35 @@ class WarningItem
     public function toArray(): array
     {
         return [
-            'label' => $this->getLabel(),
-            'title' => $this->getTitle(),
-            'level' => $this->getLevel(),
-            'link' => $this->getLink(),
+            'content' => $this->render([]),
         ];
+    }
+
+    /**
+     * render
+     *
+     * 2/10/2020 08:21
+     * @param array $options
+     * @return string
+     */
+    public function render(array $options): string
+    {
+        try {
+            return $this->getTwig()->render('components/warning,html.twig', [
+                'warning' => $this,
+            ]);
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {}
+        return '';
+    }
+
+    /**
+     * getName
+     *
+     * 2/10/2020 08:07
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'warnings';
     }
 }

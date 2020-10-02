@@ -1,0 +1,7 @@
+<div class="{{ warning.level }}">
+    {% if warning.link is not same as('') %}
+        <a href="{{ warning.link }}" title="{{ warning.title }}">{{ warning.label }}</a>
+    {% else %}
+        <span title="{{ warning.title }}">{{ warning.label }}</span>
+    {% endif %}
+</div>

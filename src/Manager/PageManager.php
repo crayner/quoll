@@ -183,6 +183,11 @@ class PageManager
     private PageDefinition $definition;
 
     /**
+     * @var WarningManager
+     */
+    private WarningManager $warningManager;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -201,6 +206,7 @@ class PageManager
      * @param LoggerInterface $logger
      * @param AcademicYearHelper $academicYearHelper
      * @param PageDefinition $definition
+     * @param WarningManager $warningManager
      */
     public function __construct(
         RequestStack $stack,
@@ -219,7 +225,8 @@ class PageManager
         UrlGeneratorHelper $urlGeneratorHelper,
         LoggerInterface $logger,
         AcademicYearHelper $academicYearHelper,
-        PageDefinition $definition
+        PageDefinition $definition,
+        WarningManager $warningManager
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -234,7 +241,8 @@ class PageManager
         $this->storage = $storage;
         $this->moduleMenu = $moduleMenu;
         $this->logger = $logger;
-        $this->setPageStyles(new ArrayCollection());
+        $this->setPageStyles(new ArrayCollection())
+            ->setWarningManager($warningManager);
         $definition->setRequest($this->getRequest());
         $this->definition = $definition;
     }
@@ -344,6 +352,8 @@ class PageManager
             $locale->setCode('en_GB')->setRtl('N');
         }
 
+        $this->getWarningManager()->getWarnings();
+
         return [
             'pageHeader' => $this->getPageHeader(),
             'popup' => $this->isPopup(),
@@ -359,6 +369,7 @@ class PageManager
             'footer' => $this->getFooter(),
             'translations' => $this->getTranslations(),
             'messages' => $this->getMessages(),
+            'warning' => $this->getWarningManager()->getStatus(),
         ];
     }
 
@@ -466,12 +477,15 @@ class PageManager
                 'url' => $this->getUrl(),
                 'popup' => $this->isPopup(),
                 'redirect' => null,
+                'warning' => $this->getWarningManager()->getStatus(),
             ]
         );
 
         $resolver->setAllowedTypes('redirect', ['null','string']);
 
         $options = $resolver->resolve($options);
+
+        $this->getWarningManager()->getWarnings();
 
         if ($this->getPageHeader() === []) {
             $crumbs = isset($this->getBreadCrumbs()['breadCrumbs']) ? $this->getBreadCrumbs()['breadCrumbs'] : [];
@@ -815,6 +829,7 @@ class PageManager
         $this->getModuleMenu()->setRequest($this->getRequest())->setChecker($this->getChecker())->execute();
 
         $this->getSidebar()->addContent($this->getModuleMenu());
+        $this->getWarningManager()->getWarnings();
 
         return $this;
     }
@@ -960,5 +975,23 @@ class PageManager
     public function getDefinition(): PageDefinition
     {
         return $this->definition;
+    }
+
+    /**
+     * @return WarningManager
+     */
+    public function getWarningManager(): WarningManager
+    {
+        return $this->warningManager;
+    }
+
+    /**
+     * @param WarningManager $warningManager
+     * @return PageManager
+     */
+    public function setWarningManager(WarningManager $warningManager): PageManager
+    {
+        $this->warningManager = $warningManager;
+        return $this;
     }
 }

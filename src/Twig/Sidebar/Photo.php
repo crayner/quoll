@@ -14,7 +14,6 @@
  * Date: 9/11/2019
  * Time: 16:11
  */
-
 namespace App\Twig\Sidebar;
 
 use App\Manager\EntityInterface;
@@ -26,6 +25,11 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+/**
+ * Class Photo
+ * @package App\Twig\Sidebar
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class Photo implements SidebarContentInterface
 {
     use SidebarContentTrait;

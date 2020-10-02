@@ -922,3 +922,9 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     background-color: #3333EE!important;
     color: white;
 }
+.warningBorder {
+    border: 5px solid #D45602;
+}
+.errorBorder {
+    border: 5px solid #C53030;
+}

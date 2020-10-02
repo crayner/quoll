@@ -77,13 +77,7 @@ class PreferenceController extends AbstractPageController
             } else {
                 $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
-            return $this->generateJsonResponse(
-                [
-                    'form' => $this->getContainerManager()
-                        ->singlePanel($passwordForm->createView())
-                        ->getFormFromContainer(),
-                ]
-            );
+            return $this->singleForm($passwordForm);
         }
 
 
@@ -105,7 +99,9 @@ class PreferenceController extends AbstractPageController
             $settingsForm->submit($content);
             if ($settingsForm->isValid()) {
                 ProviderFactory::create(Person::class)->persistFlush($person);
-                AcademicYearHelper::setCurrentYear($content['academicYear']);
+                 if (AcademicYearHelper::setCurrentYear($content['academicYear'])) {
+                     $this->getStatusManager()->setReDirect($this->generateUrl('preferences'), true);
+                 }
                 $settingsForm = $this->createForm(PreferenceType::class, $person,
                     [
                         'action' => $this->generateUrl('preferences', ['tabName' => 'Settings']),
@@ -115,13 +111,7 @@ class PreferenceController extends AbstractPageController
             } else {
                 $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
-            return $this->generateJsonResponse(
-                [
-                    'form' => $this->getContainerManager()
-                        ->singlePanel($settingsForm->createView())
-                        ->getFormFromContainer(),
-                ]
-            );
+            return $this->singleForm($settingsForm);
         }
 
         $settingsPanel = new Panel('Preferences', 'People', new Section('form','Preferences'));

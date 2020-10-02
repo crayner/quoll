@@ -54,6 +54,7 @@ export default class PageApp extends Component {
             title: this.action.name,
             pageHeader: props.pageHeader,
             messages: props.messages,
+            warning: props.warning,
         }
     }
 
@@ -203,7 +204,8 @@ export default class PageApp extends Component {
             pagination: {},
             containers: {},
             special: {},
-            pageHeader: {}
+            pageHeader: {},
+            warning: false
         })
         fetchJson(
             url,
@@ -219,7 +221,8 @@ export default class PageApp extends Component {
                 special: data.special,
                 title: data.title,
                 messages: this.state.messages.concat(data.messages),
-                pageHeader: data.pageHeader
+                pageHeader: data.pageHeader,
+                warning: data.warning
             })
             if (data.url.includes('?path=') > 0) {
                 data.url = data.url.slice(0,data.url.includes('?path=') + 3)

@@ -147,15 +147,20 @@ class AcademicYearHelper implements DemoDataInterface
      *
      * 24/09/2020 15:04
      * @param string $id
+     * @return bool
      */
-    public function setCurrentYear(string $id)
+    public function setCurrentYear(string $id): bool
     {
         $current = self::getCurrentAcademicYear();
-        if ($current->getId() === $id) return;
+        if ($current->getId() === $id) return false;
 
         $new = empty($id) ? ProviderFactory::getRepository(AcademicYear::class)->findOneBy(['status' => 'Current']) : ProviderFactory::getRepository(AcademicYear::class)->find($id);
 
+        if ($new instanceof AcademicYear && $current->getId() === $new->getId()) return false;
+
         if ($new instanceof AcademicYear) self::getSession()->set('academicYear', $new);
+
+        return true;
     }
 
     /**
