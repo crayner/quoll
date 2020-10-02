@@ -97,6 +97,7 @@ class PreferenceType extends AbstractType
                         'choice_label' => 'name',
                         'placeholder' => 'Work in the current Academic Year',
                         'data' => $data,
+                        'translation_domain' => 'School',
                         'query_builder' => function (EntityRepository $er) use ($yearTypes) {
                             return $er->createQueryBuilder('ay')
                                 ->orderBy('ay.firstDay','ASC')

@@ -211,3 +211,8 @@ Academic Year Restriction: Academic Year Restriction
 'This page is restricted to changes within the academic year which you are currently accessing.  You can change the current academic year (if permitted) in your{anchor}preferences.</a>': 'This page is restricted to changes within the academic year which you are currently accessing.  You can change the current academic year (if permitted) in your{anchor}preferences.</a>'
 'You are accessing the current academic year: {name}.': 'You are accessing the current academic year: {name}.'
 Year Group: Year Group
+Work in another Academic Year: Work in another Academic Year
+Work in the current Academic Year: Work in the current Academic Year
+'Academic Year: {name}': 'Academic Year: {name}'
+The academic year {name} is not the current academic year.: The academic year {name} is not the current academic year.
+'You are accessing a future academic year: {name}.': 'You are accessing a future academic year: {name}.'

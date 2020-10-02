@@ -922,9 +922,29 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     background-color: #3333EE!important;
     color: white;
 }
+@keyframes warningBorder {
+    from { @apply border-orange-300 }
+    to { @apply border-orange-700  }
+}
 .warningBorder {
-    border: 5px solid #D45602;
+    animation-name: warningBorder;
+    animation-direction: alternate;
+    animation-delay: 0.5s;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    border-width: 7px;
+    border-style: solid;
+}
+@keyframes errorBorder {
+    from { @apply border-red-300 }
+    to { @apply border-red-700  }
 }
 .errorBorder {
-    border: 5px solid #C53030;
+    animation-name: errorBorder;
+    animation-direction: alternate;
+    animation-delay: 0.5s;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    border-width: 7px;
+    border-style: solid;
 }
