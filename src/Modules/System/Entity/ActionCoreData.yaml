@@ -1160,6 +1160,21 @@
         arrayField:
             - ROLE_HEAD_TEACHER
 -
+    name: 'Attendance by Class'
+    category: 'Take Attendance'
+    description: 'Take attendance by class on date'
+    routeList:
+        arrayField:
+            - attendance_by_class
+    entryRoute: attendance_by_class
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+-
     name: 'Student Enrolment'
     category: Admissions
     description: 'Roll Group Enrolment'

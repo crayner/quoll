@@ -14,11 +14,9 @@ Attendance CLI: Attendance CLI
 CLI: CLI
 Code: Code
 Context: Context
-
 Direction: Direction
 'Direction: In': 'Direction: In'
 'Direction: Out': 'Direction: Out'
-
 Enable Notifications by Class: Enable Notifications by Class
 Enable Notifications by Roll Group: Enable Notifications by Roll Group
 Registration: Registration
@@ -53,7 +51,8 @@ Allow Future Use: Allow Future Use
 Attendance  Code Settings: Attendance  Code Settings
 Available to Roles: Available to Roles
 Can this code be used in Set Future Absence?: Can this code be used in Set Future Absence?
-
+Attendance by Class: Attendance by Class
+Take Attendance: Take Attendance
 Reportable: Reportable
 attendancecode:
     direction:

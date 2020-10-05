@@ -5,7 +5,7 @@
     <h3>{{ 'My Classes'|trans }}</h3>
     <ul style="list-style: none;">
         {% for class in classes.classes %}
-            <li><a href="{{ path('course_class_details', {department: 0, course: class.course.id, class: class.id}) }}">{{ class.courseClassName(true)}}</a></li>
+            <li><a href="{{ path('course_class_edit', {course: class.course.id, class: class.id, tabName: 'Details'}) }}">{{ class.getAbbreviatedName()}}</a></li>
         {% endfor %}
     </ul>
 </div>

@@ -70,7 +70,7 @@ class ManageController extends AbstractPageController
         ProviderFactory::create(CourseClass::class)->getMyClasses($this->getUser(), $sidebar);
         $manager = $this->getContainerManager();
 
-        if ($this->getRequest()->getContent() !== '') {
+        if ($this->isPostContent()) {
             try {
                 SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
             } catch (\Exception $e) {
@@ -87,9 +87,11 @@ class ManageController extends AbstractPageController
 
         $container = new Container($tabName);
         $panel = new Panel('Settings', 'Department', new Section('form','Settings'));
-        $container->addForm('Settings', $form->createView())->addPanel($panel);
+        $container->addForm('Settings', $form->createView())
+            ->addPanel($panel);
         $content = ProviderFactory::getRepository(Department::class)->findBy([], ['name' => 'ASC']);
-        $pagination->setContent($content)->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
+        $pagination->setContent($content)
+            ->setAddElementRoute($this->generateUrl('department_add'), 'Add Department');
         $panel = new Panel('List', 'Department', new Section('pagination', $pagination));
         $container->addPanel($panel);
         $manager->addContainer($container);

@@ -53,15 +53,15 @@ class CourseClassProvider extends AbstractProvider
      */
     public function getMyClasses($person, ?SidebarContent $sidebar = null): array
     {
-        $result = [];
+        $result = null;
         if ($person instanceof SecurityUser)
-            $result = $this->getRepository()->findByAcademicYearPerson(AcademicYearHelper::getCurrentAcademicYear(), $person->getPerson());
+            $result = $this->getRepository()->findByAcademicYearPerson($person->getPerson());
         elseif ($person instanceof Person)
-            $result = $this->getRepository()->findByAcademicYearPerson(AcademicYearHelper::getCurrentAcademicYear(), $person);
+            $result = $this->getRepository()->findByAcademicYearPerson($person);
 
         if (count($result) > 0 && null !== $sidebar) {
-            $myClasses = new MyClasses();
-            $sidebar->addContent($myClasses->setClasses($result));
+            $myClasses = new MyClasses($result);
+            $sidebar->addContent($myClasses);
         }
 
         return $result ?: [];

@@ -14,7 +14,6 @@
 namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\Department\Entity\DepartmentStaff;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Department

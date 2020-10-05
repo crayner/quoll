@@ -13,6 +13,7 @@
  */
 namespace App\Modules\Enrolment\Repository;
 
+use App\Modules\Department\Entity\Department;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\YearGroup;
@@ -178,6 +179,82 @@ class CourseClassRepository extends ServiceEntityRepository
             ->orderBy('yg.sortOrder', 'ASC')
             ->addOrderBy('c.abbreviation')
             ->addOrderBy('cc.abbreviation')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findByAcademicYearPerson
+     *
+     * 3/10/2020 07:52
+     * @param Person $person
+     * @return array
+     */
+    public function findByAcademicYearPerson(Person $person): array
+    {
+        if ($person->isStudent()) {
+            return $this->createQueryBuilder('cc')
+                ->select(['cc','c','ccs'])
+                ->leftJoin('cc.course','c')
+                ->leftJoin('cc.courseClassStudents','ccs')
+                ->where('c.academicYear = :current')
+                ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+                ->andWhere('ccs.student = :student')
+                ->setParameter('student',$person->getStudent())
+                ->orderBy('c.abbreviation','ASC')
+                ->addOrderBy('cc.name','ASC')
+                ->getQuery()
+                ->getResult();
+        }
+        return $this->createQueryBuilder('cc')
+            ->select(['cc','c'])
+            ->leftJoin('cc.course','c')
+            ->leftJoin('cc.tutors', 't')
+            ->where('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ->andWhere('t.staff = :tutor')
+            ->setParameter('tutor',$person->getStaff())
+            ->orderBy('c.abbreviation','ASC')
+            ->addOrderBy('cc.name','ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findByDepartment
+     *
+     * 4/10/2020 17:24
+     * @param Department $department
+     * @return array
+     */
+    public function findByDepartment(Department $department): array
+    {
+        return $this->createQueryBuilder('cc')
+            ->select(['cc','c'])
+            ->leftJoin('cc.course', 'c')
+            ->where('c.department = :department')
+            ->andWhere('c.academicYear = :current')
+            ->setParameters(['department' => $department, 'current' => AcademicYearHelper::getCurrentAcademicYear()])
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findByYearGroup
+     *
+     * 4/10/2020 17:39
+     * @param YearGroup $yearGroup
+     * @return array
+     */
+    public function findByYearGroup(YearGroup $yearGroup): array
+    {
+        return $this->createQueryBuilder('cc')
+            ->select(['cc','c'])
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('c.yearGroups', 'yg')
+            ->where('yg.id = :year_group')
+            ->andWhere('c.academicYear = :current')
+            ->setParameters(['year_group' => $yearGroup->getId(), 'current' => AcademicYearHelper::getCurrentAcademicYear()])
             ->getQuery()
             ->getResult();
     }

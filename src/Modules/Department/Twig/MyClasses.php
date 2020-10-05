@@ -34,17 +34,26 @@ class MyClasses implements SidebarContentInterface
     /**
      * @var array
      */
-    private $classes;
+    private array $classes = [];
 
     /**
      * @var string
      */
-    private $name = 'My Classes';
+    private string $name = 'My Classes';
 
     /**
      * @var string
      */
-    private $position = 'top';
+    private string $position = 'top';
+
+    /**
+     * MyClasses constructor.
+     * @param array $classes
+     */
+    public function __construct(array $classes = [])
+    {
+        $this->classes = $classes;
+    }
 
     /**
      * render
@@ -56,9 +65,8 @@ class MyClasses implements SidebarContentInterface
     {
         try {
             return $this->setContent($this->getTwig()->render('department/sidebar/my_classes.html.twig', ['classes' => $this]))->getContent();
-        } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            return '';
-        }
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {}
+        return '';
     }
 
     /**
@@ -87,7 +95,6 @@ class MyClasses implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        $this->render([]);
-        return ['content' => $this->getContent()];
+        return ['content' => $this->render([])];
     }
 }

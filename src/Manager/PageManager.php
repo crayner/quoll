@@ -545,6 +545,8 @@ class PageManager
 
     /**
      * createBreadcrumbs
+     *
+     * Will set the title
      * @param string|array $title
      * @param array $crumbs
      * @return PageManager
@@ -568,6 +570,7 @@ class PageManager
         $result['module'] = $moduleName;
 
         $this->breadCrumbs->create($result, $this->getDefinition());
+        if ($this->title === null) $this->setTitle($result['title']);
         return $this;
     }
 

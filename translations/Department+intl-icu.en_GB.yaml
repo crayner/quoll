@@ -38,6 +38,7 @@ departmentstaff:
         'learning area': 'Learning Area'
         administration: Administration
 Add Department Staff: Add Department Staff
+My Classes: My Classes
 Add Staff to Department: Add Staff to Department
 Change Role: Change Role
 Edit Department Staff Role: Edit Department Staff Role
@@ -46,3 +47,14 @@ Type a name...: Type a name...
 Value locked.: Value locked.
 'Edit Department: {name}': 'Edit Department: {name}'
 Staff: Staff
+Access to Course Classes: Access to Course Classes
+Add Head Teacher: Add Head Teacher
+Add all classes within this department to this person: Add all classes within this department to this person
+Add all classes within this year group to this person: Add all classes within this year group to this person
+Class Count: Class Count
+Edit Head Teacher: Edit Head Teacher
+Head Teacher: Head Teacher
+Manage Head Teachers: Manage Head Teachers
+Refresh Department Staff: Refresh Department Staff
+Title: Title
+Year Group: Year Group
