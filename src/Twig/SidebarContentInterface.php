@@ -14,10 +14,13 @@
  * Date: 8/11/2019
  * Time: 11:51
  */
-
 namespace App\Twig;
 
-
+/**
+ * Interface SidebarContentInterface
+ * @package App\Twig
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 interface SidebarContentInterface
 {
     /**

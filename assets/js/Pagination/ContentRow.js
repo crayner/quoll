@@ -122,7 +122,7 @@ export default function ContentRow(props) {
     if (row.actions.length > 0) {
         columns.push(<td key={'actions'} className={'column width1 text-right'}>
             <div className={'w-full'}>
-                <div className={'float-right'}>{selectedRow}
+                <div className={'float-right flex'}>{selectedRow}
                     {actions}
                 </div>
             </div>

@@ -9,12 +9,13 @@ export default function SideBarControl(props) {
         content,
         state,
         functions,
+        positionList,
     } = props
 
     return (<div>
         <button {...state.buttonAttr} onClick={() => functions.onSetSidebarOpen('open')}>
             <span className={'fas fa-bars fa-fw fa-2x'}/></button>
-        <SideBarContent content={content} functions={functions} {...state} />
+        <SideBarContent content={content} functions={functions} positionList={positionList} {...state} />
     </div>)
 }
 

@@ -14,7 +14,6 @@
  * Date: 8/11/2019
  * Time: 11:56
  */
-
 namespace App\Twig;
 
 use Twig\Environment;
@@ -22,6 +21,7 @@ use Twig\Environment;
 /**
  * Trait SidebarContentTrait
  * @package App\Twig
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 trait SidebarContentTrait
 {
@@ -62,7 +62,7 @@ trait SidebarContentTrait
     {
         if (! property_exists($this, 'priority'))
             return 50;
-        return $this->priority;
+        return $this->priority > 100 ? 100 : ($this->priority < 1 ? 1 : $this->priority);
     }
 
     /**

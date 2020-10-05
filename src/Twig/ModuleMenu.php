@@ -39,32 +39,32 @@ class ModuleMenu implements SidebarContentInterface
     /**
      * @var string
      */
-    private $domain;
+    private string $domain;
 
     /**
      * @var boolean
      */
-    private $showSidebar = true;
+    private bool $showSidebar = true;
 
     /**
      * @var ArrayCollection
      */
-    private $attributes;
+    private ArrayCollection $attributes;
 
     /**
      * @var string
      */
-    private $name = 'Module Menu';
+    private string $name = 'Module Menu';
 
     /**
      * @var string
      */
-    private $position = 'middle';
+    private string $position = 'middle';
 
     /**
      * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      * execute

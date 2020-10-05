@@ -11,17 +11,19 @@ export default function SideBarContent(props) {
         content,
         sidebarContentAttr,
         functions,
+        positionList,
     } = props
 
-
     let sortedContent = {}
-    for(let i=1; i<100; i++) {
-        Object.keys(content).map(name => {
-            let item = content[name]
-            if (item.priority === i)
-                sortedContent[name] = item
-        })
-    }
+    positionList.map(position => {
+        for (let i = 1; i < 100; i++) {
+            Object.keys(content).map(name => {
+                let item = content[name]
+                if (item.priority === i && item.position === position)
+                    sortedContent[name] = item
+            })
+        }
+    })
 
     let result = []
     let counter = 0
@@ -62,4 +64,8 @@ SideBarContent.propTypes = {
     ]).isRequired,
     sidebarContentAttr: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
+    positionList: PropTypes.array,
+}
+SideBarContent.defaultProps = {
+    positionList: ['top','middle','bottom']
 }

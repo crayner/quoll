@@ -34,6 +34,7 @@ export default function Content(props) {
         content: typeof sidebar.content !== 'undefined' ? sidebar.content : {},
         docked: typeof sidebar.docked === 'boolean' ? sidebar.docked: false,
         minimised: typeof sidebar.minimised === 'boolean' ? sidebar.minimised : false,
+        positionList: typeof sidebar.positionList === 'array' ? sidebar.positionList : ['top','middle','bottom'],
     })
     
     function buildContent() {

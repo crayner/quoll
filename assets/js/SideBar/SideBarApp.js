@@ -11,7 +11,8 @@ export default function SideBar(props) {
         width,
         functions,
         sidebarOpen,
-        height
+        height,
+        positionList,
     } = props
 
     function getState()
@@ -21,6 +22,7 @@ export default function SideBar(props) {
             sidebarOpen: sidebarOpen,
             screenWidth: width,
             height: height,
+            positionList: positionList,
             content: content
         }
 
