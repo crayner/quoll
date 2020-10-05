@@ -416,6 +416,17 @@ class Person extends AbstractEntity
      */
     public function isSystemAdmin(): bool
     {
+        return $this->hasRole('ROLE_SYSTEM_ADMIN');
+    }
+
+    /**
+     * isSuperUser
+     *
+     * 5/10/2020 14:51
+     * @return bool
+     */
+    public function isSuperUser(): bool
+    {
         return $this->getSecurityUser()->isSuperUser();
     }
 
@@ -606,7 +617,7 @@ class Person extends AbstractEntity
      */
     public function isTeacher(): bool
     {
-        return $this->hasRole('ROLE_TEACHER');
+        return $this->isStaff() && ($this->getStaff()->getType() === 'Teaching' || $this->hasRole('ROLE_TEACHER'));
     }
 
     /**
@@ -616,7 +627,7 @@ class Person extends AbstractEntity
      */
     public function isRegistrar(): bool
     {
-        return $this->hasRole('ROLE_REGISTRAR');
+        return $this->isStaff() && $this->hasRole('ROLE_REGISTRAR');
     }
 
     /**
@@ -626,7 +637,7 @@ class Person extends AbstractEntity
      */
     public function isSupport(): bool
     {
-        return $this->hasRole('ROLE_SUPPORT');
+        return $this->isStaff() && $this->hasRole('ROLE_SUPPORT');
     }
 
     /**
@@ -636,7 +647,7 @@ class Person extends AbstractEntity
      */
     public function isPrincipal(): bool
     {
-        return $this->hasRole('ROLE_PRINCIPAL');
+        return $this->isStaff() && $this->hasRole('ROLE_PRINCIPAL');
     }
 
     /**
@@ -646,7 +657,7 @@ class Person extends AbstractEntity
      */
     public function isHeadTeacher(): bool
     {
-        return $this->hasRole('ROLE_HEAD_TEACHER');
+        return $this->isStaff() && $this->hasRole('ROLE_HEAD_TEACHER');
     }
 
     /**

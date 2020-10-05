@@ -19,6 +19,7 @@ namespace App\Modules\Department\Provider;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\HeadTeacher;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\YearGroup;
 use App\Provider\AbstractProvider;
 
@@ -61,6 +62,7 @@ class HeadTeacherProvider extends AbstractProvider
         foreach ($this->getRepository(CourseClass::class)->findByYearGroup($yearGroup) as $class) {
             $headTeacher->addClass($class);
         }
+        foreach ($this->getRepository(RollGroup::class)->findByYearGroup($yearGroup))
         $this->persistFlush($headTeacher);
     }
 }

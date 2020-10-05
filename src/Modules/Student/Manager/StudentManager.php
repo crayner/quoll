@@ -17,6 +17,8 @@
 namespace App\Modules\Student\Manager;
 
 use App\Modules\Behaviour\Entity\Behaviour;
+use App\Modules\Department\Entity\HeadTeacher;
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\IndividualNeed\Entity\INPersonDescriptor;
 use App\Modules\MarkBook\Entity\MarkBookEntry;
 use App\Modules\Medical\Entity\PersonMedical;
@@ -228,9 +230,32 @@ class StudentManager
      */
     public static function getStudentsOfStaff(Person $staff): array
     {
-        if ($staff->isSystemAdmin() || $staff->isRegistrar() || $staff->isPrincipal()) {
+        if (!$staff->isStaff()) return [];
+        if ($staff->isSystemAdmin() || $staff->isRegistrar() || $staff->isPrincipal() || $staff->isSuperUser()) {
             return ProviderFactory::getRepository(Person::class)->findAllStudents();
         }
-        return [];
+
+        $results = [];
+        if ($staff->isHeadTeacher()) {
+            $ht = ProviderFactory::getRepository(HeadTeacher::class)->findOneByTeacher($staff->getStaff());
+            if ($ht) {
+                foreach ($ht->getClasses() as $class) {
+                    foreach ($class->getCourseClassStudents() as $student) {
+                        $result[] = $student->getPerson();
+                    }
+                }
+            }
+        }
+
+        if ($staff->isTeacher()) {
+            foreach (ProviderFactory::getRepository(CourseClass::class)->findByTutor($staff->getStaff()) as $class) {
+                foreach ($class->getCourseClassStudents() as $student) {
+                    $result[] = $student->getPerson();
+                }
+            }
+        }
+
+        array_unique($results);
+        return $results;
     }
 }

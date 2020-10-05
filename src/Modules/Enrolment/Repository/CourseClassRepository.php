@@ -18,6 +18,7 @@ use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\People\Entity\Person;
 use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -255,6 +256,27 @@ class CourseClassRepository extends ServiceEntityRepository
             ->where('yg.id = :year_group')
             ->andWhere('c.academicYear = :current')
             ->setParameters(['year_group' => $yearGroup->getId(), 'current' => AcademicYearHelper::getCurrentAcademicYear()])
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findByTutor
+     *
+     * 5/10/2020 15:07
+     * @param Staff $staff
+     * @return array
+     */
+    public function findByTutor(Staff $staff): array
+    {
+        return $this->createQueryBuilder('cc')
+            ->leftJoin('cc.course', 'c')
+            ->leftJoin('cc.tutors', 't')
+            ->where('c.academicYear = :current')
+            ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(),'tutor' => $staff])
+            ->andWhere('t.staff = :tutor')
+            ->groupBy('cc.id')
+            ->andWhere()
             ->getQuery()
             ->getResult();
     }

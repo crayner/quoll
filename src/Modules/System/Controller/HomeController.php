@@ -23,6 +23,7 @@ use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Register;
+use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -56,6 +57,7 @@ class HomeController extends AbstractPageController
         }
 
         $pageManager = $this->getPageManager();
+        $pageManager->setTitle(TranslationHelper::translate('Personal Page', [], 'System'));
         $request = $pageManager->getRequest();
 
         if ($request->getContentType() !== 'json')

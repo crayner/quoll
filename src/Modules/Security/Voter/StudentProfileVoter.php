@@ -14,14 +14,17 @@
  * Date: 18/06/2020
  * Time: 14:53
  */
-
 namespace App\Modules\Security\Voter;
-
 
 use App\Modules\People\Entity\Person;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
+/**
+ * Class StudentProfileVoter
+ * @package App\Modules\Security\Voter
+ * @author Craig Rayner <craig@craigrayner.com>
+ */
 class StudentProfileVoter extends StudentVoter
 {
     /**
@@ -34,7 +37,7 @@ class StudentProfileVoter extends StudentVoter
      */
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (in_array('ROLE_STUDENT_PROFILE', $attributes)) {
+        if ($this->supports($subject, $attributes)) {
             return parent::vote($token,$subject,$attributes);
         }
         return VoterInterface::ACCESS_ABSTAIN;

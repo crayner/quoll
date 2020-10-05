@@ -18,6 +18,7 @@ namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\CourseClass;
+use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\Staff\Entity\Staff;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -70,6 +71,16 @@ class HeadTeacher extends AbstractEntity
      *  )
      */
     private Collection $classes;
+
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="App\Modules\RollGroup\Entity\RollGroup")
+     * @ORM\JoinTable(name="HeadTeacherRollGroup",
+     *      joinColumns={@ORM\JoinColumn(name="head_teacher",referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="roll_group",referencedColumnName="id")}
+     *  )
+     */
+    private Collection $rollGroups;
 
     /**
      * @return string|null
@@ -162,6 +173,47 @@ class HeadTeacher extends AbstractEntity
         if ($this->getClasses()->contains($class)) return $this;
 
         $this->classes->add($class);
+
+        return $this;
+    }
+
+    /**
+     * getRollGroups
+     *
+     * 5/10/2020 15:19
+     * @return Collection
+     */
+    public function getRollGroups(): Collection
+    {
+        if (!isset($this->rollGroups)) $this->rollGroups = new ArrayCollection();
+
+        if ($this->rollGroups instanceof PersistentCollection) $this->rollGroups->initialize();
+
+        return $this->rollGroups;
+    }
+
+    /**
+     * @param Collection $rollGroups
+     * @return HeadTeacher
+     */
+    public function setRollGroups(Collection $rollGroups): HeadTeacher
+    {
+        $this->rollGroups = $rollGroups;
+        return $this;
+    }
+
+    /**
+     * addRollGroup
+     *
+     * 5/10/2020 15:18
+     * @param RollGroup $rollGroup
+     * @return HeadTeacher
+     */
+    public function addRollGroup(RollGroup $rollGroup): HeadTeacher
+    {
+        if ($this->getRollGroups()->contains($rollGroup)) return $this;
+
+        $this->rollGroups->add($rollGroup);
 
         return $this;
     }

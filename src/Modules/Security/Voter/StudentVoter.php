@@ -18,8 +18,8 @@ namespace App\Modules\Security\Voter;
 
 use App\Modules\People\Entity\FamilyMemberCareGiver;
 use App\Modules\People\Entity\Person;
-use App\Modules\People\Util\UserHelper;
-use App\Modules\Security\Manager\SecurityUser;
+use App\Modules\Security\Entity\SecurityUser;
+use App\Modules\Student\Entity\Student;
 use App\Modules\Student\Manager\StudentManager;
 use App\Provider\ProviderFactory;
 use Psr\Log\LoggerInterface;
@@ -50,7 +50,7 @@ class StudentVoter extends RoleHierarchyVoter
     /**
      * @var SecurityUser|null
      */
-    private static $securityUser;
+    private static SecurityUser $securityUser;
 
     /**
      * StudentVoter constructor.
@@ -75,7 +75,7 @@ class StudentVoter extends RoleHierarchyVoter
      */
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if ($this->supports()) {
+        if ($this->supports($subject, $attributes)) {
             if (($vote = parent::vote($token, $subject, ['ROLE_ROUTE'])) === VoterInterface::ACCESS_GRANTED) {
                 self::$securityUser = $token->getUser();
                 return $vote;
@@ -128,67 +128,78 @@ class StudentVoter extends RoleHierarchyVoter
         return self::getSecurityUser()->getPerson();
     }
 
-
     /**
      * supports
+     *
+     * 5/10/2020 15:21
+     * @param $subject
+     * @param array $attributes
      * @return bool
-     * 18/06/2020 14:54
      */
-    public function supports(): bool
+    public function supports($subject, array $attributes): bool
     {
-        if ($this instanceof StudentProfileVoter) {
-            return true;
-        }
-        return false;
+        return $this instanceof StudentProfileVoter && $subject instanceof Student && array_intersect($attributes, ['ALLOWED_STUDENT_VIEW', 'ALLOWED_STUDENT_EDIT']);
     }
 
     /**
-     * @var string|null
+     * @var array
      */
-    private static $studentProfileAccess;
+    private static array $studentList;
 
     /**
-     * studentProfileAccess
-     * @return string|null
-     * 18/06/2020 15:03
+     * getStudentList
+     *
+     * 5/10/2020 14:28
+     * @return array
      */
-    public static function getStudentProfileAccess(): ?string
-    {
-        if (self::$studentProfileAccess === null) {
-            if (self::getPerson()->isStudent()) {
-                self::$studentProfileAccess = 'My';
-            }
-            if (self::getPerson()->isCareGiver()) {
-                self::$studentProfileAccess = 'Parent';
-            }
-            if (self::getPerson()->isTeacher() || self::getPerson()->isSupport()) {
-                self::$studentProfileAccess = 'Staff';
-            }
-        }
-
-        return self::$studentProfileAccess;
-    }
-
-    /**
-     * @var array|null
-     */
-    private static $studentList;
-
     public static function getStudentList(): array
     {
-        if (self::$studentList === null) {
+        if (!isset(self::$studentList)) {
             self::$studentList = [];
-            if (self::getStudentProfileAccess() === 'My') {
+            if (self::isStudent()) {
                 self::$studentList[] = self::getPerson();
             }
-            if (self::getStudentProfileAccess() === 'Parent') {
+            if (self::isCareGiver()) {
                 self::$studentList = array_merge(self::$studentList, ProviderFactory::create(FamilyMemberCareGiver::class)->getStudentsOfParent(self::getPerson()));
             }
-            if (self::getStudentProfileAccess() === 'Staff') {
+            if (self::isTeacher()()) {
                 self::$studentList = array_merge(self::$studentList, StudentManager::getStudentsOfStaff(self::$securityUser->getPerson()));
             }
             array_unique(self::$studentList);
         }
-        return self::$studentList ?? [];
+        return self::$studentList;
+    }
+
+    /**
+     * isStudent
+     *
+     * 5/10/2020 14:41
+     * @return bool
+     */
+    public static function isStudent(): bool
+    {
+        return self::getPerson()->isStudent();
+    }
+
+    /**
+     * isCareGiver
+     *
+     * 5/10/2020 14:46
+     * @return bool
+     */
+    public static function isCareGiver(): bool
+    {
+        return self::getPerson()->isCareGiver();
+    }
+
+    /**
+     * isTeacher
+     *
+     * 5/10/2020 14:42
+     * @return bool
+     */
+    public static function isTeacher(): bool
+    {
+        return self::getPerson()->isTeacher();
     }
 }

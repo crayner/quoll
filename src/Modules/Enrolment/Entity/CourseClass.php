@@ -97,7 +97,7 @@ class CourseClass extends AbstractEntity
      * @var Collection|CourseClassStudent[]|null
      * @ORM\OneToMany(targetEntity="CourseClassStudent", mappedBy="courseClass")
      */
-    private Collection $courseClassStudents;
+    private Collection $students;
 
     /**
      * @var Collection|TimetablePeriodClass[]|null
@@ -261,27 +261,32 @@ class CourseClass extends AbstractEntity
     }
 
     /**
-     * getCourseClassStudents
+     * getStudents
+     *
+     * 5/10/2020 15:05
      * @return Collection|null
      */
-    public function getCourseClassStudents(): ?Collection
+    public function getStudents(): ?Collection
     {
-        if (empty($this->courseClassStudents))
-            $this->courseClassStudents = new ArrayCollection();
+        if (empty($this->students))
+            $this->students = new ArrayCollection();
 
-        if ($this->courseClassStudents instanceof PersistentCollection)
-            $this->courseClassStudents->initialize();
+        if ($this->students instanceof PersistentCollection)
+            $this->students->initialize();
 
-        return $this->courseClassStudents;
+        return $this->students;
     }
 
     /**
-     * @param Collection $courseClassStudents
-     * @return CourseClass
+     * setStudents
+     *
+     * 5/10/2020 15:05
+     * @param Collection $students
+     * @return $this
      */
-    public function setCourseClassStudents(Collection $courseClassStudents): CourseClass
+    public function setStudents(Collection $students): CourseClass
     {
-        $this->courseClassStudents = $courseClassStudents;
+        $this->students = $students;
         return $this;
     }
 
