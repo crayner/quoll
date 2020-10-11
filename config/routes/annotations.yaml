@@ -2,18 +2,22 @@ controllers:
     resource: ../../src/Controller/
     type: annotation
     schemes: [ 'https' ]
+    host: '%host%'
 
 kernel:
     resource: ../../src/Kernel.php
     type: annotation
     schemes: [ 'https' ]
+    host: '%host%'
 
 security_no_prefix:
     resource: ../../src/Modules/Security/ControllerNoPrefix/
     type: annotation
     schemes: [ 'https' ]
+    host: '%host%'
 
 quoll_routes:
     resource: .
     type: quoll
     schemes: [ 'https' ]
+    host: '%host%'

@@ -73,6 +73,12 @@ class CourseClassParticipantPagination extends AbstractPaginationManager
             ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
         $row->addColumn($column);
 
+        $column = new PaginationColumn();
+        $column->setLabel('Status')
+            ->setContentKey('status')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
+        $row->addColumn($column);
+
         $action = new PaginationAction();
         $row->addAction($action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')

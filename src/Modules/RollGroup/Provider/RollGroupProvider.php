@@ -34,11 +34,13 @@ class RollGroupProvider extends AbstractProvider
 
     /**
      * canDelete
+     *
+     * 6/10/2020 15:41
      * @param RollGroup $roll
      * @return bool
      */
     public function canDelete(RollGroup $roll): bool
     {
-        return $roll->getStudentEnrolments()->count() === 0;
+        return $roll->getStudentRollGroups()->count() === 0;
     }
 }

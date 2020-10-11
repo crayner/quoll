@@ -19,6 +19,7 @@ namespace App\Modules\Security\Voter;
 use App\Manager\PageDefinition;
 use App\Modules\Security\Entity\SecurityUser;
 use App\Modules\System\Entity\Action;
+use App\Modules\System\Exception\InvalidActionException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -54,6 +55,7 @@ class RouteVoter extends RoleHierarchyVoter
      * @param LoggerInterface $logger
      * @param RequestStack $stack
      * @param RoleHierarchyInterface $roleHierarchy
+     * @param PageDefinition $definition
      */
     public function __construct(LoggerInterface $logger, RequestStack $stack, RoleHierarchyInterface $roleHierarchy, PageDefinition $definition)
     {
@@ -74,8 +76,10 @@ class RouteVoter extends RoleHierarchyVoter
     {
         if (in_array('ROLE_ROUTE', $attributes))
         {
+            if ($this->definition->getAction() === null || $this->definition->getModule() === null) $this->definition->setAction();
             $action = $this->definition->getAction();
             $route = $this->definition->getRoute();
+
             $this->logger->debug(sprintf('Checking out route "%s".', $route));
 
             if (!$token->getUser() instanceof SecurityUser) {
@@ -84,8 +88,7 @@ class RouteVoter extends RoleHierarchyVoter
             }
 
             if (!$this->definition->isValidPage()) {
-                dump($this);
-                $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied.', $route), [$this->definition]);
+                $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied as the page definition is not valid.', $route), [$this->definition]);
                 return VoterInterface::ACCESS_DENIED;
 
             }

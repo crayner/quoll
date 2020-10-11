@@ -75,6 +75,7 @@ class PageDefinition
      */
     public function setAction(): PageDefinition
     {
+        if (null === $this->getModule()) $this->setModule();
         if (!isset($this->action) && $this->getModule() !== null) {
             foreach ($this->getModule()->getActions() as $action) {
                 if (in_array($this->getRoute(), $action->getRouteList())) {
@@ -194,7 +195,7 @@ class PageDefinition
     private function getControllerModuleName(): string
     {
         $controller = explode('\\', $this->getController());
-        return $controller[2];
+        return trim(implode(' ', preg_split('/(?=[A-Z])/',$controller[2])));
     }
 
     /**

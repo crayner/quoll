@@ -67,17 +67,6 @@ class YearGroupType extends AbstractType
                     'data' => intval($options['data']->getSortOrder()) > 0 ? $options['data']->getSortOrder() : YearGroup::getNextSortOrder(),
                 ]
             )
-            ->add('headOfYear', EntityType::class,
-                [
-                    'label' => 'Head of Year',
-                    'required' => false,
-                    'class' => Staff::class,
-                    'choice_label' => 'fullNameReversed',
-                    'placeholder' => ' ',
-                    'choice_translation_domain' => false,
-                    'query_builder' => $repository->getStaffQuery(),
-                ]
-            )
             ->add('submit', SubmitType::class)
         ;
     }

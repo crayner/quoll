@@ -109,6 +109,8 @@ class StudentRollGroupRepository extends ServiceEntityRepository
 
     /**
      * countEnrolmentsByAcademicYear
+     *
+     * 6/10/2020 15:06
      * @param AcademicYear $year
      * @return int
      */
@@ -117,7 +119,8 @@ class StudentRollGroupRepository extends ServiceEntityRepository
         try {
             return intval($this->createQueryBuilder('se')
                 ->select('COUNT(se.id)')
-                ->where('se.academicYear = :year')
+                ->leftJoin('se.rollGroup', 'rg')
+                ->where('rg.academicYear = :year')
                 ->setParameter('year', $year)
                 ->getQuery()
                 ->getSingleScalarResult());
@@ -128,6 +131,8 @@ class StudentRollGroupRepository extends ServiceEntityRepository
 
     /**
      * countEnrolmentsByYearGroup
+     *
+     * 6/10/2020 15:06
      * @param YearGroup $year
      * @return int
      */
@@ -136,7 +141,8 @@ class StudentRollGroupRepository extends ServiceEntityRepository
         try {
             return intval($this->createQueryBuilder('se')
                 ->select('COUNT(se.id)')
-                ->where('se.yearGroup = :year')
+                ->leftJoin('se.rollGroup', 'rg')
+                ->where('rg.yearGroup = :year')
                 ->setParameter('year', $year)
                 ->getQuery()
                 ->getSingleScalarResult());

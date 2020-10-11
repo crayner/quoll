@@ -20,6 +20,7 @@ use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -102,20 +103,23 @@ class CourseClassRepository extends ServiceEntityRepository
     /**
      * countStudentParticipants
      *
-     * 20/09/2020 08:58
-     * @param string $status
+     * 11/10/2020 10:09
+     * @param array $status
      * @return array
      */
-    public function countStudentParticipants(string $status = '%'): array
+    public function countStudentParticipants(array $status = []): array
     {
-        return $this->createQueryBuilder('cc', 'cc.id')
+
+        $query = $this->createQueryBuilder('cc', 'cc.id')
             ->select(['COUNT(ccs.id) AS participants','cc.id'])
-            ->leftJoin('cc.courseClassStudents', 'ccs')
+            ->leftJoin('cc.students', 'ccs')
             ->leftJoin('ccs.student', 's')
-            ->leftJoin('s.person','p')
-            ->where('p.status LIKE :full')
-            ->setParameter('full', $status)
-            ->groupBy('cc.id')
+            ->leftJoin('s.person','p');
+        if (!empty($status)) {
+            $query->where('p.status IN (:full)')
+                ->setParameter('full', $status, Connection::PARAM_STR_ARRAY);
+        }
+        return $query->groupBy('cc.id')
             ->getQuery()
             ->getResult();
     }
@@ -131,12 +135,12 @@ class CourseClassRepository extends ServiceEntityRepository
     {
         if ($person->isStudent()) {
             $se = $person->getStudent()->getCurrentEnrolment();
-            $yg = $se ? $se->getYearGroup() : null;
+            $yg = $se && $se->getRollGroup() ? $se->getRollGroup()->getYearGroup() : null;
             $query = $this->createQueryBuilder('cc', 'cc.id')
                 ->select(['cc','c','ccs','s','t'])
                 ->leftJoin('cc.course', 'c')
                 ->leftJoin('cc.tutors', 't')
-                ->leftJoin('cc.courseClassStudents', 'ccs')
+                ->leftJoin('cc.students', 'ccs')
                 ->leftJoin('ccs.student', 's')
                 ->leftJoin('c.yearGroups', 'yg')
                 ->where('c.academicYear = :current')
@@ -163,7 +167,7 @@ class CourseClassRepository extends ServiceEntityRepository
     /**
      * findClassesByCurrentAcademicYear
      *
-     * 17/09/2020 10:51
+     * 7/10/2020 16:10
      * @return array
      */
     public function findClassesByCurrentAcademicYear(): array
@@ -171,7 +175,7 @@ class CourseClassRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('cc', 'cc.id')
             ->select(['cc','c','ccs','s','t'])
             ->leftJoin('cc.course', 'c')
-            ->leftJoin('cc.courseClassStudents', 'ccs')
+            ->leftJoin('cc.students', 'ccs')
             ->leftJoin('ccs.student', 's')
             ->leftJoin('cc.tutors', 't')
             ->leftJoin('c.yearGroups', 'yg')

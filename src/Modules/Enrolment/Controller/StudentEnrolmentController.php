@@ -79,8 +79,7 @@ class StudentEnrolmentController extends AbstractPageController
     public function edit(Student $student)
     {
         $se = ProviderFactory::getRepository(StudentRollGroup::class)->findOneByStudent($student) ?: new StudentRollGroup($student);
-        $se->setStudent($student)
-            ->setAcademicYear(AcademicYearHelper::getCurrentAcademicYear());
+        $se->setStudent($student);
 
         $form = $this->createForm(StudentEnrolmentType::class, $se, ['action' => $this->generateUrl('student_enrolment_edit', ['student' => $student->getId()])]);
 

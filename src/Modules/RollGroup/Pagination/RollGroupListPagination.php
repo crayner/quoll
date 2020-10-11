@@ -19,9 +19,12 @@ namespace App\Modules\RollGroup\Pagination;
 use App\Manager\AbstractPaginationManager;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
+use App\Manager\Hidden\PaginationFilter;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
+use App\Modules\School\Entity\YearGroup;
 use App\Modules\Security\Entity\SecurityUser;
+use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -45,6 +48,14 @@ class RollGroupListPagination  extends AbstractPaginationManager
         $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey(['name'])
+            ->setSort()
+            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Year Group')
+            ->setContentKey(['yearGroup'])
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto');
         $row->addColumn($column);
 
@@ -93,6 +104,16 @@ class RollGroupListPagination  extends AbstractPaginationManager
         $row->addAction($action);
 
         $action = new PaginationAction();
+        $action->setTitle('Copy to Next Year')
+            ->setAClass('thickbox p-3 sm:p-0')
+            ->setColumnClass('column p-2 sm:p-3')
+            ->setSpanClass('far fa-copy fa-fw fa-1-5x text-gray-800 hover:text-green-500')
+            ->setRoute('roll_group_duplicate')
+            ->setDisplayWhen('canDuplicate')
+            ->setRouteParams(['rollGroup' => 'id']);
+        $row->addAction($action);
+
+        $action = new PaginationAction();
         $action->setTitle('Delete')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
@@ -101,6 +122,17 @@ class RollGroupListPagination  extends AbstractPaginationManager
             ->setDisplayWhen('canDelete')
             ->setRouteParams(['rollGroup' => 'id']);
         $row->addAction($action);
+
+        foreach (ProviderFactory::getRepository(YearGroup::class)->findBy([],['sortOrder' => 'ASC']) as $yg) {
+            $filter = new PaginationFilter();
+            $row->addFilter(
+                $filter->setName($yg->getName())
+                    ->setLabel(['{name}', ['{name}' => $yg->getName()], 'School'])
+                    ->setContentKey('yearGroup')
+                    ->setValue($yg->getName())
+                    ->setGroup('Year Group')
+            );
+        }
 
         $this->setRow($row);
 

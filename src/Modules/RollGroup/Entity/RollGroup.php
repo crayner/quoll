@@ -16,6 +16,9 @@ namespace App\Modules\RollGroup\Entity;
 use App\Manager\AbstractEntity;
 use App\Manager\Traits\EntityGlobals;
 use App\Modules\Enrolment\Entity\StudentRollGroup;
+use App\Modules\School\Entity\YearGroup;
+use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Entity\Facility;
@@ -69,14 +72,22 @@ class RollGroup extends AbstractEntity
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id",nullable=false)
      */
     private ?AcademicYear $academicYear;
+
+    /**
+     * @var YearGroup|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\YearGroup")
+     * @ORM\JoinColumn(name="year_group",referencedColumnName="id")
+     */
+    private ?YearGroup $yearGroup;
 
     /**
      * @var string|null
      * @ORM\Column(length=10)
      * @Assert\NotBlank()
+     * @Assert\Length(max=10)
      */
     private ?string $name;
 
@@ -84,6 +95,7 @@ class RollGroup extends AbstractEntity
      * @var string|null
      * @ORM\Column(length=5, name="abbreviation")
      * @Assert\NotBlank()
+     * @Assert\Length(max=5)
      */
     private ?string $abbreviation;
 
@@ -155,6 +167,7 @@ class RollGroup extends AbstractEntity
      * @var string|null
      * @ORM\Column(nullable=true,length=191)
      * @Assert\Url()
+     * @Assert\Length(max=191)
      */
     private $website;
 
@@ -207,6 +220,24 @@ class RollGroup extends AbstractEntity
     public function setAcademicYear(?AcademicYear $academicYear): RollGroup
     {
         $this->academicYear = $academicYear;
+        return $this;
+    }
+
+    /**
+     * @return YearGroup|null
+     */
+    public function getYearGroup(): ?YearGroup
+    {
+        return isset($this->yearGroup) ? $this->yearGroup : null;
+    }
+
+    /**
+     * @param YearGroup|null $yearGroup
+     * @return RollGroup
+     */
+    public function setYearGroup(YearGroup $yearGroup): RollGroup
+    {
+        $this->yearGroup = $yearGroup;
         return $this;
     }
 
@@ -379,7 +410,7 @@ class RollGroup extends AbstractEntity
      */
     public function getNextRollGroup(): ?RollGroup
     {
-        return $this->nextRollGroup;
+        return isset($this->nextRollGroup) ? $this->nextRollGroup : null;
     }
 
     /**
@@ -566,6 +597,8 @@ class RollGroup extends AbstractEntity
             'website' => $this->getWebsite(),
             'students' => $this->getStudentRollGroups()->count() ?: TranslationHelper::translate('None'),
             'canDelete' => $this->canDelete(),
+            'yearGroup' => $this->getYearGroup() ? $this->getYearGroup()->getName() : '',
+            'canDuplicate' => $this->canDuplicate(),
         ];
     }
 
@@ -577,5 +610,16 @@ class RollGroup extends AbstractEntity
     public function canDelete(): bool
     {
         return ProviderFactory::create(RollGroup::class)->canDelete($this);
+    }
+
+    /**
+     * canDuplicate
+     *
+     * 10/10/2020 09:04
+     * @return bool
+     */
+    public function canDuplicate(): bool
+    {
+        return AcademicYearHelper::isCurrentYear() && AcademicYearHelper::hasNextYear() && $this->getNextRollGroup() === null && SecurityHelper::getCurrentUser()->isAllowedFutureYears();
     }
 }

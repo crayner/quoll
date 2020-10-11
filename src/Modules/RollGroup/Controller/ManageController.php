@@ -16,7 +16,9 @@
  */
 namespace App\Modules\RollGroup\Controller;
 
-use App\Container\ContainerManager;
+use App\Container\Container;
+use App\Container\Panel;
+use App\Container\Section;
 use App\Controller\AbstractPageController;
 use App\Manager\StatusManager;
 use App\Modules\RollGroup\Entity\RollGroup;
@@ -59,19 +61,19 @@ class ManageController extends AbstractPageController
             ->setContent($rollGroups);
 
         $pageHeader = new PageHeader('Roll Groups');
-        $pageHeader->setContent(TranslationHelper::translate('This page shows all roll groups in the current academic year.', [], 'Roll Group'))
+        $pageHeader->setContent(TranslationHelper::translate('This page shows all roll groups in the currently selected academic year.', [], 'Roll Group'))
             ->setContentAttr(['className' => 'info']);
+
+        $container = new Container();
+        $panel = new Panel('RollGroupList', 'RollGroup', new Section('pagination', $pagination));
+        $container->addPanel(AcademicYearHelper::academicYearWarning($panel));
 
         return $this->getPageManager()
             ->setMessages($this->getStatusManager()->getMessageArray())
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs('Roll Groups')
             ->setUrl($this->generateUrl('roll_group_list'))
-            ->render(
-                [
-                    'pagination' => $pagination->toArray(),
-                ]
-            );
+            ->renderContainer($container);
     }
 
     /**
@@ -119,8 +121,7 @@ class ManageController extends AbstractPageController
                 $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);
             }
 
-            $manager->singlePanel($form->createView());
-            return $this->getStatusManager()->toJsonResponse(['form' => $manager->getFormFromContainer()]);
+            return $this->singleForm($form);
         }
 
         $manager->setReturnRoute($this->generateUrl('roll_group_list'))
@@ -150,5 +151,66 @@ class ManageController extends AbstractPageController
             ->delete($rollGroup);
 
         return $this->list($pagination);
+    }
+
+    /**
+     * duplicate
+     *
+     * 9/10/2020 10:15
+     * @param RollGroup $rollGroup
+     * @param RollGroupListPagination $pagination
+     * @Route("/roll/group/{rollGroup}/duplicate/",name="roll_group_duplicate")
+     * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
+     */
+    public function duplicate(RollGroup $rollGroup, RollGroupListPagination $pagination)
+    {
+        if (!$rollGroup->canDuplicate()) {
+            $this->getStatusManager()->warning('The Roll Group "{name}" is not available to copy to the next academic year.  Clear the "Next Roll Group" if set to allow this function.', ['{name}' => $rollGroup->getName()], 'RollGroup');
+            $this->getStatusManager()->setReDirect($this->generateUrl('roll_group_list'), true);
+            return $this->list($pagination);
+        }
+
+        $rg = new RollGroup();
+        $rg->setAcademicYear(AcademicYearHelper::getNextAcademicYear())
+            ->setYearGroup($rollGroup->getYearGroup()->getNextYearGroup())
+            ->setTutor($rollGroup->getTutor())
+            ->setTutor2($rollGroup->getTutor2())
+            ->setTutor3($rollGroup->getTutor3())
+            ->setAssistant($rollGroup->getAssistant())
+            ->setAssistant2($rollGroup->getAssistant2())
+            ->setAssistant3($rollGroup->getAssistant3())
+            ->setFacility($rollGroup->getFacility())
+            ->setAttendance($rollGroup->isAttendance())
+            ->setWebsite($rollGroup->getWebsite())
+            ->setName(TranslationHelper::translate('Copy', [], 'RollGroup') . ' ' . $rollGroup->getName())
+            ->setAbbreviation(TranslationHelper::translate('Copy', [], 'RollGroup') . ' ' . $rollGroup->getAbbreviation())
+        ;
+
+        $form = $this->createForm(RollGroupType::class, $rg, ['action' => $this->generateUrl('roll_group_duplicate', ['rollGroup' => $rollGroup->getId()])]);
+
+        if ($this->isPostContent()) {
+            $content = $this->jsonDecode();
+            $form->submit($content);
+            if ($form->isValid()) {
+                $rollGroup->setNextRollGroup($rg);
+                ProviderFactory::create(RollGroup::class)->persist($rg);
+                ProviderFactory::create(RollGroup::class)->persistFlush($rollGroup);
+                $this->getStatusManager()->setReDirect($this->generateUrl('roll_group_list'), true);
+            } else {
+                $this->getStatusManager()->invalidInputs();
+            }
+            return $this->singleForm($form);
+        }
+
+        return $this->getPageManager()
+            ->createBreadcrumbs('Copy Roll Group')
+            ->render(
+                [
+                    'containers' => $this->getContainerManager()
+                        ->singlePanel($form)
+                        ->getBuiltContainers()
+                ]
+            );
     }
 }

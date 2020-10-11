@@ -124,7 +124,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string|null
-     * @ORM\Column(length=16, options={"default": "Full"})
+     * @ORM\Column(length=16, options={"default": "Pending Approval"})
      * @ASSERT\Choice(callback="getStatusList")
      */
     private string $status = 'Full';
@@ -772,7 +772,7 @@ class Person extends AbstractEntity
     {
         if ($this->isStudent()) {
             foreach ($this->getStudent()->getStudentRollGroups() as $se) {
-                if ($se->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) {
+                if ($se->getRollGroup()->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) {
                     return '('.$se->getRollGroup()->getAbbreviation() . ') ' . $this->formatName('Reversed', 'Student');
                 }
             }

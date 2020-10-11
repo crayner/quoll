@@ -25,6 +25,8 @@ use DateInterval;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -64,7 +66,7 @@ class AcademicYearHelper implements DemoDataInterface
     /**
      * getCurrentAcademicYear
      * @param bool $refresh
-     * @return AcademicYear|mixed
+     * @return AcademicYear|null
      * 26/06/2020 08:58
      */
     public static function getCurrentAcademicYear(bool $refresh = false)
@@ -78,18 +80,27 @@ class AcademicYearHelper implements DemoDataInterface
             }
             return $session->get('academicYear');
         }
-        $current = ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
-        if (null === $current) {
+        try {
+            $current = ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
+            if (null === $current) {
+                $current = new AcademicYear();
+                $current->setName(date('Y'))
+                    ->setFirstDay(new DateTimeImmutable(date('Y-01-01')))
+                    ->setLastDay(new DateTimeImmutable(date('Y-12-31')))
+                    ->setStatus('Current');
+                ProviderFactory::getEntityManager()->persist($current);
+                ProviderFactory::getEntityManager()->flush();
+            }
+            $session->set("academicYear", $current);
+        } catch (TableNotFoundException | ConnectionException $e) {
             $current = new AcademicYear();
             $current->setName(date('Y'))
                 ->setFirstDay(new DateTimeImmutable(date('Y-01-01')))
                 ->setLastDay(new DateTimeImmutable(date('Y-12-31')))
-                ->setStatus('Current')
-            ;
-            ProviderFactory::getEntityManager()->persist($current);
-            ProviderFactory::getEntityManager()->flush();
+                ->setStatus('Current');
+            return $current;
         }
-        $session->set("academicYear", $current);
+
         return $current;
     }
 
@@ -97,7 +108,6 @@ class AcademicYearHelper implements DemoDataInterface
      * getNextAcademicYear
      * @param AcademicYear|null $year
      * @return mixed
-     * @throws Exception
      */
     public static function getNextAcademicYear(?AcademicYear $year = null)
     {
@@ -172,5 +182,31 @@ class AcademicYearHelper implements DemoDataInterface
     private static function getSession(): SessionInterface
     {
         return self::$stack->getCurrentRequest()->getSession();
+    }
+
+    /**
+     * isCurrentYear
+     *
+     * 9/10/2020 10:31
+     * @return bool
+     */
+    public static function isCurrentYear(): bool
+    {
+        return self::getCurrentAcademicYear() && self::getCurrentAcademicYear()->getStatus() === 'Current';
+    }
+
+    /**
+     * hasNextYear
+     *
+     * 9/10/2020 10:32
+     * @return bool
+     */
+    public static function hasNextYear(): bool
+    {
+        try {
+            return self::getNextAcademicYear() instanceof AcademicYear;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

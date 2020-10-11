@@ -1,5 +1,6 @@
 framework:
-    secret: '%env(APP_SECRET)%'
+    # It is recommended that you set APP_ENV and APP_SECRET in your Apache or Nginx configuration
+    secret: '%secret%'
     #csrf_protection: true
     #http_method_override: true
 

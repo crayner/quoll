@@ -2,7 +2,7 @@ Roll Group: Roll Group
 Roll Groups: Roll Groups
 Room: Room
 Students: Students
-This page shows all roll groups in the current academic year.: This page shows all roll groups in the current academic year.
+This page shows all roll groups in the currently selected academic year.: This page shows all roll groups in the currently selected academic year.
 Tutors: Tutors
 View Roll Groups: View Roll Groups
 View: View
@@ -43,3 +43,7 @@ rollOrder: Roll Order
 View Roll Group {name}: View Roll Group {name}
 Class Count: Class Count
 Student: Student
+Once set, the year group cannot be changed.: Once set, the year group cannot be changed.
+RollGroupList: Roll Group List
+Year Group: Year Group
+Copy to Next Year: Copy to Next Year

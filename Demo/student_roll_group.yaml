@@ -1,1645 +1,1194 @@
 -
-    student: '2756'
-    academicYear: Current
-    yearGroup: 6
+    student: '1367'
+    rollGroup: '11.1'
+-
+    student: '1867'
+    rollGroup: '11.3'
+-
+    student: '2380'
+    rollGroup: '11.3'
+-
+    student: '913'
+    rollGroup: '13.1'
+-
+    student: '1019'
+    rollGroup: '13.1'
+-
+    student: '2490'
+    rollGroup: '11.2'
+-
+    student: '1358'
+    rollGroup: '11.1'
+-
+    student: '964'
+    rollGroup: '13.1'
+-
+    student: '2729'
+    rollGroup: '11.3'
+-
+    student: '1585'
+    rollGroup: '11.2'
+-
+    student: '1352'
+    rollGroup: '11.1'
+-
+    student: '1430'
+    rollGroup: '11.2'
+-
+    student: '905'
+    rollGroup: '13.1'
+-
+    student: '1191'
     rollGroup: '12.1'
 -
-    student: '2771'
-    academicYear: Current
-    yearGroup: 6
+    student: '2084'
+    rollGroup: '11.2'
+-
+    student: '1377'
+    rollGroup: '11.2'
+-
+    student: '2398'
+    rollGroup: '11.3'
+-
+    student: '1364'
+    rollGroup: '11.3'
+-
+    student: '1178'
     rollGroup: '12.1'
 -
-    student: '2750'
-    academicYear: Current
-    yearGroup: 6
+    student: '1393'
+    rollGroup: '11.1'
+-
+    student: '2357'
+    rollGroup: '11.1'
+-
+    student: '1416'
+    rollGroup: '11.1'
+-
+    student: '1440'
+    rollGroup: '11.2'
+-
+    student: '1160'
     rollGroup: '12.1'
 -
-    student: '2753'
-    academicYear: Current
-    yearGroup: 6
+    student: '2444'
+    rollGroup: '11.2'
+-
+    student: '922'
+    rollGroup: '13.1'
+-
+    student: '1492'
+    rollGroup: '11.2'
+-
+    student: '1465'
+    rollGroup: '11.1'
+-
+    student: '2407'
+    rollGroup: '11.1'
+-
+    student: '1214'
     rollGroup: '12.1'
 -
     student: '2120'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1200'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1680'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1193'
-    academicYear: Current
-    yearGroup: 6
-    rollGroup: '12.2'
--
-    student: '2747'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1259'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1233'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1548'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1814'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1254'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1528'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1201'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '2090'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '1242'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '2103'
-    academicYear: Current
-    yearGroup: 6
-    rollGroup: '12.2'
--
-    student: '2772'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '2505'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2283'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2511'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2193'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2537'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2212'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2374'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2323'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2364'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2333'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2233'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2243'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2216'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2330'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2514'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2215'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2340'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2169'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2498'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2302'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2517'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '2371'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2190'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2334'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2236'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2520'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2150'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2239'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2501'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2523'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2178'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2206'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2271'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2420'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2175'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2253'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2383'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2360'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2166'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2535'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2529'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.2'
 -
     student: '2247'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2194'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2172'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2293'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '2250'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '2277'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2319'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2508'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2504'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2200'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2545'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2231'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2160'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2203'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2296'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '2299'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '2348'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2163'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '2526'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2187'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2469'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2695'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.2'
 -
     student: '2450'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2459'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2611'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2679'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2447'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2683'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2760'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2614'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2485'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2472'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2610'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2636'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2627'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2754'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2615'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2601'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2746'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2482'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2715'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2430'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2657'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2460'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2630'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2621'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2692'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2607'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2633'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2426'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2652'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2699'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2642'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2453'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2702'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2743'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2645'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2476'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2663'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2651'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2563'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2696'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.2'
 -
     student: '2749'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2580'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2624'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2654'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2666'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2466'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2686'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2726'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2586'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2639'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2473'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2433'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2711'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2436'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2479'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2427'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2689'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2708'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2670'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2576'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2566'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2618'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2573'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2592'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2583'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2705'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2660'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
+    student: '2286'
+    rollGroup: '11.2'
+-
     student: '2598'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2589'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2604'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2425'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2676'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2595'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2700'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2463'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2648'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2761'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2714'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2680'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.4'
 -
     student: '2570'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.3'
 -
     student: '2770'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2577'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2757'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2225'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2764'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2567'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2456'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2667'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2740'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.2'
 -
     student: '2274'
-    academicYear: Current
-    yearGroup: 1
-    rollGroup: '07.1'
+    rollGroup: '07.4'
 -
     student: '2752'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2767'
-    academicYear: Current
-    yearGroup: 1
     rollGroup: '07.1'
 -
     student: '2033'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2022'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1677'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2404'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2079'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1819'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2113'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2386'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2081'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1977'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1974'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1591'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1744'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2505'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '07.1'
 -
     student: '1617'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
-    student: '2608'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '1891'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1207'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.2'
 -
     student: '2123'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2093'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1263'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.1'
 -
     student: '1878'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2541'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2037'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1970'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2135'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2035'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1918'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1686'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2327'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2389'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1901'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1700'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1779'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1882'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1739'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
-    student: '2452'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '2265'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '1992'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1934'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2116'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1879'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1657'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1801'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2019'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2548'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2514'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2517'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2511'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2087'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1831'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2268'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '09.1'
 -
     student: '1928'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1925'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2495'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
-    student: '2492'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
-    student: '2547'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '1667'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1937'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1791'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1986'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1913'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2673'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1885'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2006'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '1753'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2009'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.1'
 -
     student: '2076'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1616'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2611'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '2401'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1960'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '1983'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '1905'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1888'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1721'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
-    student: '2759'
-    academicYear: Current
-    yearGroup: 6
-    rollGroup: '12.1'
--
-    student: '2474'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '2395'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '1796'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2156'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2029'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2262'
-    academicYear: Current
-    yearGroup: 2
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2719'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2060'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2066'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2000'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2441'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1222'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.1'
 -
     student: '1870'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.2'
 -
     student: '1921'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2129'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1773'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1761'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2109'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.1'
 -
     student: '2723'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2555'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1603'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1946'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1914'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2309'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1955'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
-    student: '2502'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '2141'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2063'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2491'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1897'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2508'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '1995'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1904'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1609'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1730'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2184'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '1848'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2056'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '2737'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1627'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1600'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1894'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2012'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1645'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1915'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1980'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '2532'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1639'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1642'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '2482'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '1924'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1182'
-    academicYear: Current
-    yearGroup: 6
     rollGroup: '12.1'
 -
     student: '2232'
-    academicYear: Current
-    yearGroup: 2
     rollGroup: '08.1'
 -
     student: '1706'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2040'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1654'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1828'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1911'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1858'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2280'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1735'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '1898'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1964'
-    academicYear: Current
-    yearGroup: 3
     rollGroup: '09.2'
 -
     student: '1931'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
--
-    student: '2605'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
+    rollGroup: '09.3'
 -
     student: '1713'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
-    student: '2597'
-    academicYear: Current
-    yearGroup: 7
-    rollGroup: '13.1'
--
     student: '1989'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1593'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1864'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
 -
     student: '1612'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2097'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.1'
 -
     student: '1628'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '1621'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.3'
 -
     student: '2488'
-    academicYear: Current
-    yearGroup: 4
     rollGroup: '10.2'
 -
     student: '2392'
-    academicYear: Current
-    yearGroup: 7
     rollGroup: '13.1'
 -
     student: '1875'
-    academicYear: Current
-    yearGroup: 3
-    rollGroup: '09.1'
+    rollGroup: '09.3'
+-
+    student: '1538'
+    rollGroup: '11.1'
+-
+    student: '2138'
+    rollGroup: '12.1'
+-
+    student: '928'
+    rollGroup: '13.1'
+-
+    student: '1374'
+    rollGroup: '11.2'
+-
+    student: '1022'
+    rollGroup: '13.1'
+-
+    student: '1154'
+    rollGroup: '12.2'
+-
+    student: '1399'
+    rollGroup: '11.3'
+-
+    student: '1483'
+    rollGroup: '11.3'
+-
+    student: '1424'
+    rollGroup: '11.1'
+-
+    student: '2306'
+    rollGroup: '11.2'
+-
+    student: '1355'
+    rollGroup: '11.1'
+-
+    student: '2316'
+    rollGroup: '11.2'
+-
+    student: '1845'
+    rollGroup: '11.1'
+-
+    student: '876'
+    rollGroup: '13.1'
+-
+    student: '1427'
+    rollGroup: '11.2'
+-
+    student: '1486'
+    rollGroup: '11.1'
+-
+    student: '1396'
+    rollGroup: '11.3'
+-
+    student: '1520'
+    rollGroup: '11.1'
+-
+    student: '1163'
+    rollGroup: '12.1'
+-
+    student: '1179'
+    rollGroup: '12.2'
+-
+    student: '1157'
+    rollGroup: '12.1'
+-
+    student: '1631'
+    rollGroup: '11.3'
+-
+    student: '1166'
+    rollGroup: '12.1'
+-
+    student: '1388'
+    rollGroup: '11.3'
+-
+    student: '1400'
+    rollGroup: '11.3'
+-
+    student: '1710'
+    rollGroup: '11.3'
+-
+    student: '1257'
+    rollGroup: '12.1'
+-
+    student: '1477'
+    rollGroup: '11.2'
+-
+    student: '1226'
+    rollGroup: '12.1'
+-
+    student: '2145'
+    rollGroup: '12.1'
+-
+    student: '934'
+    rollGroup: '13.1'
+-
+    student: '897'
+    rollGroup: '13.1'
+-
+    student: '1571'
+    rollGroup: '11.3'
+-
+    student: '1016'
+    rollGroup: '13.1'
+-
+    student: '937'
+    rollGroup: '13.1'
+-
+    student: '1410'
+    rollGroup: '11.2'
+-
+    student: '1245'
+    rollGroup: '12.2'
+-
+    student: '1008'
+    rollGroup: '13.1'
+-
+    student: '931'
+    rollGroup: '13.1'
+-
+    student: '1445'
+    rollGroup: '11.3'
+-
+    student: '1275'
+    rollGroup: '12.1'
+-
+    student: '1276'
+    rollGroup: '12.1'
+-
+    student: '1391'
+    rollGroup: '11.2'
+-
+    student: '1403'
+    rollGroup: '11.3'
+-
+    student: '1204'
+    rollGroup: '12.1'
+-
+    student: '2100'
+    rollGroup: '12.1'
+-
+    student: '1507'
+    rollGroup: '11.3'
+-
+    student: '925'
+    rollGroup: '07.1'
+-
+    student: '1692'
+    rollGroup: '11.1'
+-
+    student: '2411'
+    rollGroup: '12.1'
+-
+    student: '1251'
+    rollGroup: '12.1'
+-
+    student: '1471'
+    rollGroup: '11.1'
+-
+    student: '1236'
+    rollGroup: '12.1'

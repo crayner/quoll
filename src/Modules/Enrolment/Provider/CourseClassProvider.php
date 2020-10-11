@@ -76,9 +76,9 @@ class CourseClassProvider extends AbstractProvider
     public function getCourseClassEnrolmentPaginationContent(): array
     {
         $result = $this->getRepository()->findCourseClassEnrolmentPagination();
-        $active = $this->getRepository(CourseClass::class)->countStudentParticipants('Full');
-        $expected = $this->getRepository(CourseClass::class)->countStudentParticipants('Expected');
-        $total = $this->getRepository(CourseClass::class)->countStudentParticipants();
+        $active = $this->getRepository(CourseClass::class)->countStudentParticipants(['Full']);
+        $expected = $this->getRepository(CourseClass::class)->countStudentParticipants(['Expected']);
+        $total = $this->getRepository(CourseClass::class)->countStudentParticipants([]);
         foreach ($active as $id=>$value) {
             if (key_exists($id, $result)) {
                 $result[$id]['activeParticipants'] = $value['participants'];
@@ -115,7 +115,7 @@ class CourseClassProvider extends AbstractProvider
                         'course' => $class->getCourse()->getAbbreviation(),
                         'class' => $class->getAbbreviation(),
                         'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
-                        'count' => $class->getCourseClassStudents()->count(),
+                        'count' => $class->getStudents()->count(),
                     ], 'Enrolment');
             }
             $result = array_flip($x);
@@ -142,7 +142,7 @@ class CourseClassProvider extends AbstractProvider
                     'course' => $class->getCourse()->getAbbreviation(),
                     'class' => $class->getAbbreviation(),
                     'tutor' => $class->getTutors()->first() ? $class->getTutors()->first()->getStaff()->getFullName('Initial') : TranslationHelper::translate('No Teacher Assigned', [], 'Enrolment'),
-                    'count' => $class->getCourseClassStudents()->count(),
+                    'count' => $class->getStudents()->count(),
                 ],
                 'Enrolment');
         }
@@ -243,6 +243,7 @@ class CourseClassProvider extends AbstractProvider
                 'course_class_id' => $class->getId(),
                 'course_id' => $class->getCourse()->getId(),
                 'person_id' => $tutor->getStaff()->getPerson()->getId(),
+                'status' => $tutor->getStaff()->getPerson()->getStatus(),
             ];
         }
         return array_merge($result, $this->getRepository(CourseClassStudent::class)->findCourseClassParticipationStudent($class));

@@ -421,14 +421,15 @@ class PersonRepository extends ServiceEntityRepository
     {
         $query = $this->getStudentQuery()
             ->leftJoin('s.studentRollGroups','se')
-            ->leftJoin('se.yearGroup', 'yg')
-            ->andWhere('se.academicYear = :currentAcademicYear')
+            ->leftJoin('se.rollGroup', 'rg')
+            ->leftJoin('rg.yearGroup','yg')
+            ->andWhere('rg.academicYear = :currentAcademicYear')
             ->setParameter('currentAcademicYear', AcademicYearHelper::getCurrentAcademicYear())
         ;
         $where = [];
         foreach ($yearGroups->toArray() as $q=>$yg) {
             $query->setParameter('yearGroup'.$q, $yg);
-            $where[] = 'se.yearGroup = :yearGroup'.$q;
+            $where[] = 'rg.yearGroup = :yearGroup'.$q;
         }
         $query->andWhere('('.implode(' OR ', $where).')');
         return $query;

@@ -3,12 +3,6 @@ associated:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
         method: getStudent
-    academicYear:
-        entityName: 'App\Modules\School\Entity\AcademicYear'
-        findBy: status
-    yearGroup:
-        entityName: 'App\Modules\School\Entity\YearGroup'
-        findBy: sortOrder
     rollGroup:
         entityName: 'App\Modules\RollGroup\Entity\RollGroup'
         findBy: abbreviation

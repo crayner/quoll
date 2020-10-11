@@ -691,7 +691,7 @@ class Student extends AbstractEntity
     {
         $result = [];
         foreach ($this->getStudentRollGroups() as $se) {
-            $result[] = $se->getAcademicYear()->getName() . ': ' . $se->getRollGroup()->getName();
+            $result[] = $se->getRollGroup()->getAcademicYear()->getName() . ': ' . $se->getRollGroup()->getName();
         }
         return implode(", \n<br />", $result);
     }
@@ -705,7 +705,7 @@ class Student extends AbstractEntity
     public function getCurrentEnrolment(): ?StudentRollGroup
     {
         $se = $this->getStudentRollGroups()->filter(function($w) {
-            if ($w->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) return $w;
+            if ($w->getRollGroup()->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) return $w;
         });
         return $se->count() === 1 ? $se->first() : null;
     }

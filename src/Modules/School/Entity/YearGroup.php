@@ -29,8 +29,7 @@ use Symfony\Component\Yaml\Yaml;
  * @ORM\Table(name="YearGroup",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),
  *     @ORM\UniqueConstraint(name="abbreviation", columns={"abbreviation"}),
- *     @ORM\UniqueConstraint(name="sort_order", columns={"sort_order"})},
- *     indexes={@ORM\Index(name="head_of_year", columns={"head_of_year"})})
+ *     @ORM\UniqueConstraint(name="sort_order", columns={"sort_order"})})
  * @UniqueEntity({"name"})
  * @UniqueEntity({"abbreviation"})
  * @UniqueEntity({"sortOrder"})
@@ -69,14 +68,6 @@ class YearGroup extends AbstractEntity
     ")
      */
     private ?int $sortOrder;
-
-    /**
-     * @var Staff|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
-     * @ORM\JoinColumn(name="head_of_year",referencedColumnName="id")
-     * @Assert\Valid
-     */
-    private ?Staff $headOfYear;
 
     /**
      * @return string|null
@@ -135,11 +126,14 @@ class YearGroup extends AbstractEntity
     }
 
     /**
+     * getSortOrder
+     *
+     * 6/10/2020 15:12
      * @return int
      */
     public function getSortOrder(): int
     {
-        return intval($this->sortOrder);
+        return isset($this->sortOrder) ? intval($this->sortOrder) : self::getNextSortOrder();
     }
 
     /**
@@ -149,24 +143,6 @@ class YearGroup extends AbstractEntity
     public function setSortOrder(int $sortOrder): YearGroup
     {
         $this->sortOrder = $sortOrder;
-        return $this;
-    }
-
-    /**
-     * @return Staff|null
-     */
-    public function getHeadOfYear(): ?Staff
-    {
-        return $this->headOfYear;
-    }
-
-    /**
-     * @param Staff|null $headOfYear
-     * @return YearGroup
-     */
-    public function setHeadOfYear(?Staff $headOfYear): YearGroup
-    {
-        $this->headOfYear = $headOfYear;
         return $this;
     }
 
@@ -191,14 +167,12 @@ class YearGroup extends AbstractEntity
                 $this->getId(),
                 $this->getName(),
                 $this->getAbbreviation(),
-                $this->getHeadOfYear() ? $this->getHeadOfYear()->getFullName() : '',
             ];
         }
         return [
             'name' => $this->getName(),
             'abbr' => $this->getAbbreviation(),
             'canDelete' => $this->canDelete(),
-            'head' => $this->getHeadOfYear() ? $this->getHeadOfYear()->getFullName() : '',
             'sortOrder' => $this->getSortOrder(),
         ];
     }
@@ -229,5 +203,28 @@ class YearGroup extends AbstractEntity
     public static function getNextSortOrder(): int
     {
         return ProviderFactory::getRepository(YearGroup::class)->findNextSortOrder();
+    }
+
+    /**
+     * getNextYearGroup
+     *
+     * 10/10/2020 09:24
+     * @return YearGroup|null
+     */
+    public function getNextYearGroup(): ?YearGroup
+    {
+        return ProviderFactory::getRepository(YearGroup::class)->findNextYearGroup($this);
+    }
+
+    /**
+     * isEqualTo
+     *
+     * 10/10/2020 09:32
+     * @param YearGroup $yearGroup
+     * @return bool
+     */
+    public function isEqualTo(YearGroup $yearGroup): bool
+    {
+        return $yearGroup->getId() === $this->getId();
     }
 }

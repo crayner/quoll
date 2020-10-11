@@ -217,8 +217,7 @@ class PersonProvider extends AbstractProvider
     public function getEnrolmentListByClass(CourseClass $class): array
     {
         $result = $this->getRepository()->getStudentsByYearGroupQuery($class->getCourse()->getYearGroups())
-            ->select(['p','s','pd','c','se','rg'])
-            ->leftJoin('se.rollGroup', 'rg')
+            ->select(['p','s','pd','c','se','rg','yg'])
             ->orderBy('rg.name', 'ASC')
             ->addOrderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')

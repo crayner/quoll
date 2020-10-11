@@ -23,6 +23,7 @@ use App\Form\Type\ToggleType;
 use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\Facility;
+use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Staff\Entity\Staff;
 use App\Provider\ProviderFactory;
@@ -58,6 +59,20 @@ class RollGroupType extends AbstractType
                     'help' => 'This value cannot be changed.',
                     'mapped' => false,
                     'data' => $options['data']->getAcademicYear()->getName(),
+                ]
+            )
+            ->add('yearGroup', EntityType::class,
+                [
+                    'label' => 'Year Group',
+                    'help' => 'Once set, the year group cannot be changed.',
+                    'class' => YearGroup::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'Please select...',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('yg')
+                            ->orderBy('yg.sortOrder');
+                    },
+                    'disabled' => $options['data']->getYearGroup() ? true : false,
                 ]
             )
             ->add('name', TextType::class,

@@ -135,4 +135,7 @@ TO DO: TO DO
 Select action...: Select action...
 Selected Row Action: Selected Row Action
 This value should not be blank.: This value should not be blank.
-'{name}': '{name}'
+An error has occurred. This could mean a number of different things, but generally indicates that you have a misspelt address, or are trying to access a page that you are not permitted to access.: An error has occurred. This could mean a number of different things, but generally indicates that you have a misspelt address, or are trying to access a page that you are not permitted to access.
+If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.: If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.
+Oh no!: Oh no!
+'Something has gone wrong: the quolls are in the hen house!': 'Something has gone wrong: the quolls are in the hen house!'

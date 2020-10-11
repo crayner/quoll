@@ -53,7 +53,7 @@ class HeadTeacherProvider extends AbstractProvider
     /**
      * addYearGroupClasses
      *
-     * 4/10/2020 17:36
+     * 6/10/2020 14:58
      * @param YearGroup $yearGroup
      * @param HeadTeacher $headTeacher
      */
@@ -62,7 +62,9 @@ class HeadTeacherProvider extends AbstractProvider
         foreach ($this->getRepository(CourseClass::class)->findByYearGroup($yearGroup) as $class) {
             $headTeacher->addClass($class);
         }
-        foreach ($this->getRepository(RollGroup::class)->findByYearGroup($yearGroup))
+        foreach ($this->getRepository(RollGroup::class)->findByYearGroup($yearGroup) as $rollGroup) {
+            $headTeacher->addRollGroup($rollGroup);
+        }
         $this->persistFlush($headTeacher);
     }
 }

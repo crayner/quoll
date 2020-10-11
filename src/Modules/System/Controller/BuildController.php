@@ -16,14 +16,14 @@
  */
 namespace App\Modules\System\Controller;
 
-use App\Modules\People\Entity\Person;
+use App\Modules\Enrolment\Entity\StudentRollGroup;
 use App\Modules\Security\Controller\ActionPermissionController;
-use App\Modules\Security\Entity\SecurityUser;
 use App\Provider\ProviderFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class BuildController
@@ -44,6 +44,20 @@ class BuildController extends AbstractController
         $content = "<h3>Yes Built!!!</h3><ul>";
         $content .= ActionPermissionController::writeSecurityLinks();
 
+        $this->doStuff();
+
         return new Response($content.'</ul><p><a href="/">Return</a></p>');
+    }
+
+    private function doStuff()
+    {
+       $result = [];
+        foreach (ProviderFactory::getRepository(StudentRollGroup::class)->findAll() as $se) {
+            $x = [];
+            $x['student'] = $se->getStudent()->getPerson()->getSecurityUser()->getUsername();
+            $x['rollGroup'] = $se->getRollGroup()->getAbbreviation();
+            $result[] = $x;
+        }
+        file_put_contents(__DIR__ . '/../../../../Demo/student_roll_group.yaml', Yaml::dump($result, 8));
     }
 }

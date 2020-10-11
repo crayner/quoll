@@ -1039,6 +1039,7 @@
             - roll_group_add
             - roll_group_edit
             - roll_group_delete
+            - roll_group_duplicate
     entryRoute: roll_group_list
     entrySidebar: true
     menuShow: true

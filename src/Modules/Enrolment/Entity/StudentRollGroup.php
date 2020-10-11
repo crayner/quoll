@@ -14,13 +14,12 @@
 namespace App\Modules\Enrolment\Entity;
 
 use App\Manager\AbstractEntity;
-use App\Modules\School\Entity\AcademicYear;
 use App\Modules\RollGroup\Entity\RollGroup;
-use App\Modules\School\Entity\YearGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,11 +27,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Modules\Enrolment\Entity
  * @ORM\Entity(repositoryClass="App\Modules\Enrolment\Repository\StudentRollGroupRepository")
  * @ORM\Table(name="StudentRollGroup",
- *     indexes={@ORM\Index(name="academic_year", columns={"academic_year"}),
- *     @ORM\Index(name="year_group", columns={"year_group"}),
- *     @ORM\Index(name="student", columns={"student"}),
- *     @ORM\Index(name="roll_group", columns={"roll_group"}),
- *     @ORM\Index(name="student_academic_year", columns={"student","academic_year"})})
+ *     indexes={@ORM\Index(name="student", columns={"student"}),
+ *     @ORM\Index(name="roll_group", columns={"roll_group"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="student_roll_group",columns={"student","roll_group","roll_order"})}
+ *    )
+ * @UniqueEntity({"student","rollGroup","rollOrder"})
  */
 class StudentRollGroup extends AbstractEntity
 {
@@ -55,23 +54,6 @@ class StudentRollGroup extends AbstractEntity
     private ?Student $student;
 
     /**
-     * @var AcademicYear|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year",referencedColumnName="id",nullable=false)
-     * @Assert\NotBlank()
-     *
-     */
-    private ?AcademicYear $academicYear;
-
-    /**
-     * @var YearGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\YearGroup")
-     * @ORM\JoinColumn(name="year_group",referencedColumnName="id",nullable=false)
-     * @Assert\NotBlank()
-     */
-    private ?YearGroup $yearGroup;
-
-    /**
      * @var RollGroup|null
      * @ORM\ManyToOne(targetEntity="App\Modules\RollGroup\Entity\RollGroup",inversedBy="studentRollGroups")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=false)
@@ -92,10 +74,8 @@ class StudentRollGroup extends AbstractEntity
      */
     public function __construct(?Student $student = null)
     {
-        $this->setStudent($student)
-            ->setAcademicYear(AcademicYearHelper::getCurrentAcademicYear());
+        $this->setStudent($student);
     }
-
 
     /**
      * @return string|null
@@ -132,42 +112,6 @@ class StudentRollGroup extends AbstractEntity
     public function setStudent(?Student $student): StudentRollGroup
     {
         $this->student = $student;
-        return $this;
-    }
-
-    /**
-     * @return AcademicYear|null
-     */
-    public function getAcademicYear(): ?AcademicYear
-    {
-        return $this->academicYear;
-    }
-
-    /**
-     * @param AcademicYear|null $academicYear
-     * @return StudentRollGroup
-     */
-    public function setAcademicYear(?AcademicYear $academicYear): StudentRollGroup
-    {
-        $this->academicYear = $academicYear;
-        return $this;
-    }
-
-    /**
-     * @return YearGroup|null
-     */
-    public function getYearGroup(): ?YearGroup
-    {
-        return $this->yearGroup;
-    }
-
-    /**
-     * @param YearGroup|null $yearGroup
-     * @return StudentRollGroup
-     */
-    public function setYearGroup(?YearGroup $yearGroup): StudentRollGroup
-    {
-        $this->yearGroup = $yearGroup;
         return $this;
     }
 

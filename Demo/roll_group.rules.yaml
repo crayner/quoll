@@ -17,4 +17,6 @@ associated:
         entityName: 'App\Modules\Security\Entity\SecurityUser'
         findBy: username
         method: getStaff
-
+    yearGroup:
+        entityName: 'App\Modules\School\Entity\YearGroup'
+        findBy: abbreviation

@@ -58,7 +58,8 @@ class CourseClassStudentRepository extends ServiceEntityRepository
                     'ccs.id',
                     'cc.id AS course_class_id',
                     'course.id AS course_id',
-                    'p.id AS person_id'
+                    'p.id AS person_id',
+                    'p.status'
                 ]
             )
             ->where('ccs.courseClass = :course_class')

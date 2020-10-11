@@ -21,10 +21,8 @@ use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ContainerManager
@@ -170,15 +168,18 @@ class ContainerManager
     /**
      * @var array|null
      */
-    private $builtContainers;
+    private ?array $builtContainers;
 
     /**
+     * getBuiltContainers
+     *
+     * 9/10/2020 09:40
      * @param bool $refresh
      * @return array|null
      */
     public function getBuiltContainers(bool $refresh = false): ?array
     {
-        if (null === $this->builtContainers || [] === $this->builtContainers || $refresh)
+        if (!isset($this->builtContainers) || null === $this->builtContainers || [] === $this->builtContainers || $refresh)
             $this->buildContainers();
         return $this->builtContainers;
     }
@@ -225,7 +226,11 @@ class ContainerManager
     }
 
     /**
-     * @return null|string
+     * getTranslationDomain
+     *
+     * 9/10/2020 09:36
+     * @param array $trans
+     * @return string|null
      */
     public function getTranslationDomain(array $trans = []): ?string
     {
@@ -233,10 +238,11 @@ class ContainerManager
     }
 
     /**
-     * TranslationDomain.
+     * setTranslationDomain
      *
-     * @param string $translationDomain
-     * @return ContainerManager
+     * 9/10/2020 09:36
+     * @param string|null $translationDomain
+     * @return $this
      */
     public function setTranslationDomain(?string $translationDomain): ContainerManager
     {

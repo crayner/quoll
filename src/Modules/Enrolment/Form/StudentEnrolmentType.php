@@ -55,12 +55,7 @@ class StudentEnrolmentType extends AbstractType
                     'mapped' => false,
                     'label' => 'Academic Year',
                     'translation_domain' => 'School',
-                    'data' => $options['data']->getAcademicYear()->getName(),
-                ]
-            )
-            ->add('academicYear', HiddenEntityType::class,
-                [
-                    'class' => AcademicYear::class,
+                    'data' => AcademicYearHelper::getCurrentAcademicYear()->getName(),
                 ]
             )
             ->add('studentName', DisplayType::class,
@@ -74,20 +69,6 @@ class StudentEnrolmentType extends AbstractType
             ->add('student', HiddenEntityType::class,
                 [
                     'class' => Student::class,
-                ]
-            )
-            ->add('yearGroup', EntityType::class,
-                [
-                    'label' => 'Year Group',
-                    'translation_domain' => 'School',
-                    'choice_label' => 'name',
-                    'placeholder' => 'Please select...',
-                    'class' => YearGroup::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('yg')
-                            ->orderBy('yg.sortOrder', 'ASC')
-                        ;
-                    },
                 ]
             )
             ->add('rollGroup', EntityType::class,

@@ -16,6 +16,8 @@
  */
 namespace App\Manager;
 
+use App\Container\Container;
+use App\Container\ContainerManager;
 use App\Manager\Traits\IPTrait;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Entity\SecurityUser;
@@ -188,6 +190,11 @@ class PageManager
     private WarningManager $warningManager;
 
     /**
+     * @var ContainerManager
+     */
+    private ContainerManager $containerManager;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -207,6 +214,7 @@ class PageManager
      * @param AcademicYearHelper $academicYearHelper
      * @param PageDefinition $definition
      * @param WarningManager $warningManager
+     * @param ContainerManager $containerManager
      */
     public function __construct(
         RequestStack $stack,
@@ -226,7 +234,8 @@ class PageManager
         LoggerInterface $logger,
         AcademicYearHelper $academicYearHelper,
         PageDefinition $definition,
-        WarningManager $warningManager
+        WarningManager $warningManager,
+        ContainerManager $containerManager
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -245,6 +254,7 @@ class PageManager
             ->setWarningManager($warningManager);
         $definition->setRequest($this->getRequest());
         $this->definition = $definition;
+        $this->containerManager = $containerManager;
     }
 
     /**
@@ -649,7 +659,7 @@ class PageManager
         }
 
         $this->setModuleMenu();
-
+        TranslationHelper::setDomain($this->getModule() ? $this->getModule()->getName() : 'messages');
         return $this;
     }
 
@@ -676,7 +686,7 @@ class PageManager
                 ]
             );
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            $content = '<h1>Failed!</h1><p>'.$e->getMessage().'</p>';
+            $content = $this->twig->render('error/base_response_error.html.twig', ['dumpError' => $e]);
         }
         return new Response($content);
     }
@@ -996,5 +1006,27 @@ class PageManager
     {
         $this->warningManager = $warningManager;
         return $this;
+    }
+
+    /**
+     * renderContainer
+     *
+     * 9/10/2020 08:55
+     * @param Container $container
+     * @param array $options
+     * @return JsonResponse
+     */
+    public function renderContainer(Container $container, array $options = []): JsonResponse
+    {
+        $this->getContainerManager()->addContainer($container);
+        return $this->render(array_merge($options, ['containers' => $this->getContainerManager()->getBuiltContainers()]));
+    }
+
+    /**
+     * @return ContainerManager
+     */
+    public function getContainerManager(): ContainerManager
+    {
+        return $this->containerManager;
     }
 }

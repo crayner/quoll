@@ -26,6 +26,7 @@ use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -63,7 +64,7 @@ class CourseClassTutorRepository extends ServiceEntityRepository
                     ->select('s.sortOrder')
                     ->getQuery()
                     ->getSingleScalarResult()) + 1;
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException | ORMInvalidArgumentException $e) {
             return 1;
         }
     }

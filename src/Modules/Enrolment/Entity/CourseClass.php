@@ -121,7 +121,7 @@ class CourseClass extends AbstractEntity
         $this->setPeriodClasses(new ArrayCollection())
             ->setCourse($course)
             ->setTutors(new ArrayCollection())
-            ->setCourseClassStudents(new ArrayCollection());
+            ->setStudents(new ArrayCollection());
     }
 
     /**
@@ -377,6 +377,8 @@ class CourseClass extends AbstractEntity
 
     /**
      * toArray
+     *
+     * 7/10/2020 16:04
      * @param string|null $name
      * @return array
      */
@@ -387,7 +389,7 @@ class CourseClass extends AbstractEntity
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
             'reportable' => StringHelper::getYesNo($this->isReportable()),
-            'participantCount' => $this->getCourseClassStudents()->count(),
+            'participantCount' => $this->getStudents()->count(),
             'course_id' => $this->getCourse()->getId(),
             'canDelete' => $this->canDelete(),
         ];
@@ -415,29 +417,30 @@ class CourseClass extends AbstractEntity
     {
         return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
     }
+
     /**
      * getClassNameWithCount
      *
-     * 11/09/2020 09:07
+     * 7/10/2020 16:04
      * @return string
      */
     public function getClassNameWithCount(): string
     {
         $result = $this->getAbbreviatedName();
         $result .= $this->getTutors()->first() ? ' - ' . $this->getTutors()->first()->getStaff()->getFullName('Initial') : ' - '.TranslationHelper::translate('No Teacher Assigned',[],'Enrolment');
-        $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getCourseClassStudents()->count()], 'Enrolment');
+        $result .= ' - ' . TranslationHelper::translate('count_students', ['count' => $this->getStudents()->count()], 'Enrolment');
         return $result;
     }
 
     /**
      * canDelete
      *
-     * 23/09/2020 12:52
+     * 7/10/2020 16:04
      * @return bool
      */
     public function canDelete(): bool
     {
-        return $this->getPeriodClasses()->count() + $this->getCourseClassStudents()->count() + $this->getTutors()->count() === 0;
+        return $this->getPeriodClasses()->count() + $this->getStudents()->count() + $this->getTutors()->count() === 0;
     }
 
     /**

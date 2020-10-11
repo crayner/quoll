@@ -16,6 +16,7 @@ namespace App\Modules\School\Repository;
 use App\Modules\School\Entity\YearGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -112,8 +113,30 @@ class YearGroupRepository extends ServiceEntityRepository
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getSingleScalarResult()) + 1;
-        } catch (\PDOException | PDOException | NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException $e) {
             return 1;
+        }
+    }
+
+    /**
+     * findNextYearGroup
+     *
+     * 10/10/2020 09:39
+     * @param YearGroup $yearGroup
+     * @return YearGroup|null
+     */
+    public function findNextYearGroup(YearGroup $yearGroup): ?YearGroup
+    {
+        try {
+            return $this->createQueryBuilder('yg')
+                ->setMaxResults(1)
+                ->where('yg.sortOrder > :currentOrder')
+                ->orderBy('yg.sortOrder', 'ASC')
+                ->setParameter('currentOrder', $yearGroup->getSortOrder())
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
         }
     }
 }

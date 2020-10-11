@@ -1,5 +1,7 @@
 parameters:
-    guid: 'Generate a Secret Code Here'
+    # It is recommended that you set APP_ENV and APP_SECRET in your Apache or Nginx configuration
+    secret: '%env(APP_SECRET)%-2020-10-10'
+    guid: '%env(APP_SECRET)%'
     installed: false
     databaseServer: ~
     databaseUsername: ~
@@ -9,6 +11,7 @@ parameters:
     databasePrefix: ''
     caching: true  # No caching if false
     absoluteURL: ~
+    host: 'ANY'
     timezone: UTC
     locale: en_GB
     mailer_dsn: 'smtp://null'

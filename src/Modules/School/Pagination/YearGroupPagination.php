@@ -36,17 +36,10 @@ class YearGroupPagination extends AbstractPaginationManager
         $row = new PaginationRow();
 
         $column = new PaginationColumn();
-        $column->setLabel('Order')
-            ->setContentKey('sortOrder')
-            ->setSort()
-            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
-        ;
-        $row->addColumn($column);
-        $column = new PaginationColumn();
         $column->setLabel('Name')
             ->setContentKey('name')
             ->setSort()
-            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto')
         ;
         $row->addColumn($column);
 
@@ -59,8 +52,9 @@ class YearGroupPagination extends AbstractPaginationManager
         $row->addColumn($column);
 
         $column = new PaginationColumn();
-        $column->setLabel('Head of Year')
-            ->setContentKey('head')
+        $column->setLabel('Order')
+            ->setContentKey('sortOrder')
+            ->setSort()
             ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
         ;
         $row->addColumn($column);

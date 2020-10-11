@@ -116,14 +116,14 @@ export default function ContentRow(props) {
 
     let selectedRow = null
     if (row.selectRow) {
-        selectedRow = (<div className={'float-right pl-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
+        selectedRow = (<div className={'float-right pl-1 mt-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
     }
 
     if (row.actions.length > 0) {
         columns.push(<td key={'actions'} className={'column width1 text-right'}>
             <div className={'w-full'}>
-                <div className={'float-right flex'}>{selectedRow}
-                    {actions}
+                <div className={'float-right flex'}>
+                    {actions}{selectedRow}
                 </div>
             </div>
         </td>)

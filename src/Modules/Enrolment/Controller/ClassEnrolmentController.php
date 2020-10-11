@@ -108,7 +108,6 @@ class ClassEnrolmentController extends AbstractPageController
                     if ($person instanceof Person && $person->isStaff()) {
                         $tutor = ProviderFactory::getRepository(CourseClassTutor::class)->findOneBy(['courseClass' => $class, 'staff' => $person->getStaff()]) ?: new CourseClassTutor($class);
                         $tutor->setStaff($person->getStaff());
-                        dump($tutor);
                         ProviderFactory::create(CourseClassTutor::class)->persistFlush($tutor, false);
                     }
                 }
@@ -137,6 +136,7 @@ class ClassEnrolmentController extends AbstractPageController
             ->setUrl($this->generateUrl('course_class_enrolment_manage', ['class' => $class->getId()]))
             ->render([
                 'containers' => $this->getContainerManager()
+                    ->setReturnRoute($this->generateUrl('course_enrolment_by_class_list'))
                     ->addContainer($container)
                     ->getBuiltContainers(),
             ]);
