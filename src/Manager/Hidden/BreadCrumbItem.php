@@ -17,6 +17,8 @@
 
 namespace App\Manager\Hidden;
 
+use App\Util\TranslationHelper;
+use InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,27 +30,32 @@ class BreadCrumbItem
     /**
      * @var null|string
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var null|string
      */
-    private $uri;
+    private ?string $uri;
 
     /**
      * @var array
      */
-    private $uri_params = [];
+    private array $uri_params = [];
 
     /**
      * @var array
      */
-    private $trans_params = [];
+    private array $trans_params = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $domain;
+    private ?string $domain;
+
+    /**
+     * @var bool
+     */
+    private bool $translated = false;
 
     /**
      * BreadCrumbItem constructor.
@@ -68,33 +75,45 @@ class BreadCrumbItem
                 'domain' => 'messages',
             ]);
 
-            if (isset($crumb['params'])) {
-                $crumb['uri_params'] = $crumb['params'];
-                unset($crumb['params']);
-                trigger_error('The params option has been replaced by the uri_params option.', E_USER_DEPRECATED);
-            }
             $crumb = $resolver->resolve($crumb);
 
-            $this->setDomain($crumb['domain'])->setName($crumb['name'])->setUri($crumb['uri'])->setTransParams($crumb['trans_params'])->setUriParams($crumb['uri_params']);
+            $this->setDomain($crumb['domain'])
+                ->setName($crumb['name'])
+                ->setUri($crumb['uri'])
+                ->setTranslated(false)
+                ->setTransParams($crumb['trans_params'])
+                ->setUriParams($crumb['uri_params']);
         }
     }
 
     /**
+     * getName
+     *
+     * 12/10/2020 13:17
      * @return string|null
      */
     public function getName(): ?string
     {
-        return $this->name;
+        if ($this->isTranslated()) return $this->name;
+
+        $this->setTranslated(true);
+        return $this->name = TranslationHelper::translate($this->name, $this->getTransParams(), $this->getDomain());
     }
 
     /**
      * Name.
      *
-     * @param string|null $name
+     * @param string|array|null $name
      * @return BreadCrumbItem
      */
-    public function setName(?string $name): BreadCrumbItem
+    public function setName($name): BreadCrumbItem
     {
+        if (is_array($name) && count($name) === 3) {
+            $this->setDomain($name[2]);
+            $this->setTransParams($name[1]);
+            $name = $name[0];
+        }
+        if (is_array($name)) throw new InvalidArgumentException('The name must be a string or and array with 3 parts.');
         $this->name = $name;
         return $this;
     }
@@ -176,6 +195,24 @@ class BreadCrumbItem
     public function setDomain(string $domain): BreadCrumbItem
     {
         $this->domain = $domain;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTranslated(): bool
+    {
+        return $this->translated;
+    }
+
+    /**
+     * @param bool $translated
+     * @return BreadCrumbItem
+     */
+    public function setTranslated(bool $translated): BreadCrumbItem
+    {
+        $this->translated = $translated;
         return $this;
     }
 }

@@ -258,7 +258,7 @@ class StudentRepository extends ServiceEntityRepository
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->where('p.status in (:status)')
-            ->setParameter('status', ['Full','Expected','Left'], Connection::PARAM_STR_ARRAY)
+            ->setParameter('status', ['Full','Expected'], Connection::PARAM_STR_ARRAY)
             ->getQuery()
             ->getResult();
 
@@ -270,7 +270,7 @@ class StudentRepository extends ServiceEntityRepository
             ->where('rg.academicYear = :currentYear')
             ->andWhere('p.status in (:status)')
             ->setParameter('currentYear', AcademicYearHelper::getCurrentAcademicYear())
-            ->setParameter('status', ['Full','Expected','Left'], Connection::PARAM_STR_ARRAY)
+            ->setParameter('status', ['Full','Expected'], Connection::PARAM_STR_ARRAY)
             ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->select(["CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS student",'se.rollOrder','rg.name AS rollGroup', 'yg.name AS yearGroup', 's.id', 'p.id AS person_id', 'se.id AS enrolment',
@@ -278,7 +278,7 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()));
         foreach ($result AS $q=>$w)
-            $result[$q]['canDelete'] = $w['enrolment'] !== 'null';
+            $result[$q]['canDelete'] = $w['enrolment'] === 'null';
 
         return $result;
     }

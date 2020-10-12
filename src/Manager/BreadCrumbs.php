@@ -94,17 +94,21 @@ class BreadCrumbs
     }
 
     /**
-     * @return mixed
+     * getTitle
+     *
+     * 12/10/2020 13:26
+     * @return string|null
      */
     public function getTitle()
     {
-        return $this->title;
+        if (is_array($this->title) && count($this->title) === 3) return TranslationHelper::translate($this->title[0],$this->title[1],$this->title[2]);
+        return TranslationHelper::translate((string)$this->title,[],$this->getDomain());
     }
 
     /**
      * Title.
      *
-     * @param mixed $title
+     * @param string|array $title
      * @return BreadCrumbs
      */
     public function setTitle($title)
@@ -144,7 +148,9 @@ class BreadCrumbs
         $this->setDomain($module['domain']);
 
         $item = new BreadCrumbItem();
-        $item->setName($this->getDefinition()->getModuleName())->setUri($definition->getModuleEntryRoute())->setDomain($this->getDomain());
+        $item->setName($this->getDefinition()->getModuleName())
+            ->setUri($definition->getModuleEntryRoute())
+            ->setDomain($this->getDomain());
         $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
@@ -154,7 +160,11 @@ class BreadCrumbs
         }
 
         $item = new BreadCrumbItem();
-        $item->setName($this->getTitle())->setUri(null)->setTransParams($this->getTransParams())->setDomain($this->getDomain());
+        $item->setName($this->getTitle())
+            ->setTranslated(true)
+            ->setUri(null)
+            ->setTransParams($this->getTransParams())
+            ->setDomain($this->getDomain());
         $this->addItem($item);
 
         return $this->getItems();
@@ -307,6 +317,8 @@ class BreadCrumbs
 
     /**
      * toArray
+     *
+     * 12/10/2020 10:40
      * @return array
      */
     public function toArray(): array
@@ -314,7 +326,7 @@ class BreadCrumbs
         $result = [];
         foreach($this->getItems() as $item) {
             $crumb = [];
-            $crumb['name'] = TranslationHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());
+            $crumb['name'] = $item->getName();
 
             $crumb['url'] = $item->getUri() ? UrlGeneratorHelper::getUrl($item->getUri(), $item->getUriParams(), true) : '';
             $result[$item->getName()] = $crumb;

@@ -147,11 +147,12 @@ class IndividualEnrolmentController extends AbstractPageController
         return $this->getPageManager()
             ->setMessages($this->getStatusManager()->getMessageArray())
             ->setUrl($this->generateUrl('individual_enrolment_manage', ['person' => $person->getId()]))
+            ->setTitle(['Individual Enrolment {name}', ['{name}' => $person->getFullName()], 'Enrolment'])
             ->createBreadcrumbs(
                 [
                     '{name}',
                     ['{name}' => $person->getFullName()],
-                    'messages'
+                    'Enrolment'
                 ],
                 [
                     ['uri' => 'individual_enrolment_list', 'name' => 'Individual Enrolment']

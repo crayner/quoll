@@ -175,9 +175,14 @@ class PageManager
     private $pageScripts;
 
     /**
-     * @var string|null
+     * @var string|array
      */
-    private $title;
+    private $title = '';
+
+    /**
+     * @var string
+     */
+    private string $domain = '';
 
     /**
      * @var PageDefinition
@@ -519,27 +524,26 @@ class PageManager
 
     /**
      * getTitle
-     * @return string|null
+     *
+     * 12/10/2020 09:58
+     * @return string
      */
-    private function getTitle()
+    private function getTitle(): string
     {
-        if (null === $this->title) {
-            $this->title = 'messages';
-            if ($this->getRequest()->attributes->has('_route_params')) {
-                $x = $this->getRequest()->attributes->get('_route_params');
-                if (!key_exists('module', $x))
-                    return '';
-                $this->title = ucfirst($x['module']);
-            }
+        if ($this->title === '' && isset($this->getBreadCrumbs()['title'])) {
+            $this->title = $this->getBreadCrumbs()['title'];
         }
-        return TranslationHelper::translate($this->title, [], str_replace(' ', '', $this->title));
+        if (is_array($this->title) && count($this->title) === 3) return TranslationHelper::translate($this->title[0], $this->title[1], $this->title[2]);
+        $domain = $this->getModule() ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
+
+        return TranslationHelper::translate($this->title, [], $domain);
     }
 
     /**
-     * @param string|null $title
+     * @param string|array $title
      * @return PageManager
      */
-    public function setTitle(?string $title): PageManager
+    public function setTitle($title): PageManager
     {
         $this->title = $title;
         return $this;
@@ -564,23 +568,27 @@ class PageManager
     public function createBreadcrumbs($title, array $crumbs = []): PageManager
     {
         $result = [];
-        if (is_array($title))
+        if (is_array($title) && count($title) === 3)
         {
             $params = $title[1];
+            $domain = $title[2];
             $title = $title[0];
+        } else if (is_array($title) && count($title) === 2) {
+                $params = $title[1];
+                $domain = $this->getModule() instanceof Module ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
+                $title = $title[0];
         } else {
             $params = [];
+            $domain = $this->getModule() instanceof Module ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
         }
 
-        $moduleName = $this->getModule() ? $this->getModule()->getName() : '';
-        $domain = $moduleName === '' ? null : str_replace(' ','',$moduleName);
-        $result['title'] = TranslationHelper::translate($title, $params, $domain);
+        $result['title'] = [$title, $params, $domain];
         $result['crumbs'] = $crumbs;
         $result['domain'] = $domain;
-        $result['module'] = $moduleName;
+        $result['module'] = $this->getModule() ? $this->getModule()->getName() : '';
 
         $this->breadCrumbs->create($result, $this->getDefinition());
-        if ($this->title === null) $this->setTitle($result['title']);
+        if ($this->title === null) $this->setTitle([$title,$params,$domain]);
         return $this;
     }
 
@@ -1028,5 +1036,16 @@ class PageManager
     public function getContainerManager(): ContainerManager
     {
         return $this->containerManager;
+    }
+
+    /**
+     * getDomain
+     *
+     * 12/10/2020 09:49
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain = $this->domain !== '' ? $this->domain : 'messages';
     }
 }

@@ -48,6 +48,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
     private array $messages;
 
     /**
+     * @var array
+     */
+    private array $domains;
+
+    /**
      * trans
      * @param string $id
      * @param array $parameters
@@ -75,6 +80,10 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
         if (intval($id) > 0 || is_int($id)) {
             return $id;
+        }
+
+        if (!in_array($domain, $this->getDomains($locale))) {
+            throw new \RuntimeException('The catalogue does not contain the domain: ' . $domain);
         }
 
         // Change translation domain to 'messages' if a translation can't be found in the
@@ -275,4 +284,18 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
         $this->translator = $translator;
         $this->stack  = $stack;
     }
+
+    /**
+     * getDomains
+     *
+     * 12/10/2020 09:44
+     * @param string|null $locale
+     * @return array
+     */
+    public function getDomains(?string $locale = null): array
+    {
+        return $this->domains = isset($this->domains) ? $this->domains : $this->getCatalogue($locale)->getDomains();
+    }
+
+
 }

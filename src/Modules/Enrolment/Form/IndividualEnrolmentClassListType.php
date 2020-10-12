@@ -50,6 +50,7 @@ class IndividualEnrolmentClassListType extends AbstractType
                     'constraints' => [
                         new Count(['min' => 1]),
                     ],
+                    'translation_domain' => false,
                 ]
             )
             ->add('submit', SubmitType::class);
