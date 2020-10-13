@@ -114,7 +114,8 @@ class TranslationHelper
             }
             return $id;
         }
-        return self::$translator->trans($id, $params, str_replace(' ', '', $domain ?: self::getDomain()));
+        $domain = str_replace(' ', '', $domain ?: self::getDomain());
+        return self::$translator->trans($id, $params, $domain);
     }
 
     /**
@@ -122,7 +123,7 @@ class TranslationHelper
      */
     public static function getDomain(): string
     {
-        return self::$domain ?: 'messages';
+        return self::$domain;
     }
 
     /**
@@ -130,7 +131,8 @@ class TranslationHelper
      */
     public static function setDomain(string $domain): void
     {
-        self::$domain = $domain;
+        if ($domain !== 'messages')
+            self::$domain = $domain;
     }
 
     /**

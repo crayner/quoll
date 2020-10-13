@@ -27,10 +27,10 @@ class PaginationFilter
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var string
+     * @var string|array
      */
     private $label;
 
@@ -42,22 +42,27 @@ class PaginationFilter
     /**
      * @var string
      */
-    private $contentKey;
+    private string $contentKey;
 
     /**
      * @var string|null
      */
-    private $group;
+    private string $group;
 
     /**
      * @var bool
      */
-    private $defaultFilter = false;
+    private bool $defaultFilter = false;
 
     /**
      * @var bool
      */
-    private $softMatch = true;
+    private bool $softMatch = true;
+
+    /**
+     * @var bool
+     */
+    private bool $translated = false;
 
     /**
      * @return string
@@ -80,10 +85,23 @@ class PaginationFilter
     }
 
     /**
-     * @return string|array
+     * getLabel
+     *
+     * 12/10/2020 13:55
+     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
+        if ($this->isTranslated()) return $this->label;
+
+        if (isset($this->label) && is_array($this->label)) {
+            $this->label = TranslationHelper::translate($this->label[0],$this->label[1],$this->label[2]);
+        }
+
+        if (!isset($this->label)) $this->label = TranslationHelper::translate($this->name);
+
+        $this->setTranslated(true);
+
         return $this->label;
     }
 
@@ -169,10 +187,7 @@ class PaginationFilter
         $x = [];
         foreach($result as $q=>$w)
             $x[str_replace("\x00App\Manager\Hidden\PaginationFilter\x00", '', $q)] = $w;
-        if (is_array($x['label']))
-            $x['label'] = TranslationHelper::translate($x['label'][0],$x['label'][1],$x['label'][2]);
-        else
-            $x['label'] = TranslationHelper::translate($x['label'] ?: $x['name']);
+        $x['label'] = $this->getLabel();
         $x['group'] = $x['group'] ? TranslationHelper::translate($x['group']) : null;
         return $x;
     }
@@ -224,4 +239,23 @@ class PaginationFilter
     {
         return $this->setSoftMatch(false);
     }
+
+    /**
+     * @return bool
+     */
+    public function isTranslated(): bool
+    {
+        return $this->translated;
+    }
+
+    /**
+     * @param bool $translated
+     * @return PaginationFilter
+     */
+    public function setTranslated(bool $translated): PaginationFilter
+    {
+        $this->translated = $translated;
+        return $this;
+    }
+
 }

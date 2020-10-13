@@ -19,7 +19,6 @@ namespace App\Translation;
 use App\Modules\System\Entity\StringReplacement;
 use App\Provider\ProviderFactory;
 use App\Util\CacheHelper;
-use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Driver\PDOException;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -42,10 +40,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
-    /**
-     * @var array
-     */
-    private array $messages;
+    use FallbackDomainTrait;
 
     /**
      * @var array
@@ -54,22 +49,15 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * trans
-     * @param string $id
+     * @param string|null $id
      * @param array $parameters
      * @param string|null $domain
      * @param string|null $locale
      * @return string
      * @throws \Exception
      */
-    public function trans($id, array $parameters = [], ?string $domain = null, ?string $locale = null)
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null)
     {
-        if (!isset($this->messages)) $this->messages = Yaml::parse(file_get_contents(__DIR__ . '/../../translations/messages.en_GB.yaml'));
-
-        if (key_exists($id, $this->messages)) $domain = 'messages';
-
-        if (null === $domain)
-            $domain = 'messages';
-
         if (null === $id || '' === $id)
             return '';
 
@@ -78,19 +66,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
         $id = trim($id);
 
-        if (intval($id) > 0 || is_int($id)) {
+        if (intval($id) > 0 || is_int($id) || $id === 0) {
             return $id;
         }
 
-        if (!in_array($domain, $this->getDomains($locale))) {
-            throw new \RuntimeException('The catalogue does not contain the domain: ' . $domain);
-        }
-
-        // Change translation domain to 'messages' if a translation can't be found in the
-        // current domain
-        if ('messages' !== $domain && false === $this->getCatalogue($locale)->has((string) $id, $domain)) {
-            $domain = 'messages';
-        }
+        $domain = $this->getFallBackDomain($id, $domain, $locale);
 
         $id = $this->translator->trans($id, $parameters, $domain, $locale);
 

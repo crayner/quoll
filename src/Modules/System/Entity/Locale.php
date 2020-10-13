@@ -387,7 +387,7 @@ class Locale extends AbstractEntity
             $result .= ', ' . TranslationHelper::translate('Default');
 
         if ($this->isInstalled())
-            $result .= ', '.TranslationHelper::translate('Installed');
+            $result .= ', '.TranslationHelper::translate('Installed',[],'messages');
 
         $result = trim($result,', ');
 

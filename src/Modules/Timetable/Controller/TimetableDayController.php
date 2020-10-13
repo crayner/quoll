@@ -105,7 +105,11 @@ class TimetableDayController extends AbstractPageController
         }
 
         return $this->getPageManager()
-            ->createBreadcrumbs($timetableDay->getId() === null ? 'Add Timetable Day' : ['Edit Timetable Day ({name})', ['{name}' => $timetableDay->getName()], 'Timetable'])
+            ->createBreadcrumbs($timetableDay->getId() === null ? 'Add Timetable Day' : ['Edit Timetable Day ({name})', ['{name}' => $timetableDay->getName()], 'Timetable'],
+                [
+                    ['uri' => 'timetable_edit', 'name' => 'Edit Timetable {name}','trans_params' => ['{name}' => $timetable->getName()], 'uri_params' => ['timetable' => $timetable->getId(), 'tabName' => 'Timetable Days']]
+                ]
+            )
             ->render(
                 [
                     'containers' => $this->getContainerManager()

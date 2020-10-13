@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -30,8 +29,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * This class is used to decorate the Logger Translator
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
+class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
+    use FallbackDomainTrait;
+
     /**
      * @var TranslatorInterface
      */
@@ -43,11 +44,6 @@ class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, L
     private RequestStack $stack;
 
     /**
-     * @var array
-     */
-    private array $messages;
-
-    /**
      * Translator constructor.
      * @param TranslatorInterface $translator
      * @param RequestStack $stack
@@ -57,24 +53,17 @@ class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, L
         $this->translator = $translator;
         $this->stack  = $stack;
     }
+
     /**
      * trans
      * @param string|null $id
      * @param array $parameters
-     * @param string $domain
-     * @param string $locale
+     * @param string|null $domain
+     * @param string|null $locale
      * @return string
-     * @throws \Exception
      */
     public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null)
     {
-        if (!isset($this->messages)) $this->messages = Yaml::parse(file_get_contents(__DIR__ . '/../../translations/messages.en_GB.yaml'));
-
-        if (key_exists($id, $this->messages)) $domain = 'messages';
-
-        if (null === $domain)
-            $domain = 'messages';
-
         if (null === $id || '' === $id)
             return '';
 
@@ -86,6 +75,8 @@ class LoggerTranslator implements TranslatorInterface, TranslatorBagInterface, L
         if (intval($id) > 0 || is_int($id) || $id === '0') {
             return $id;
         }
+
+        $domain = $this->getFallBackDomain($id, $domain, $locale);
 
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

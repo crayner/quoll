@@ -58,7 +58,7 @@ class TimetablePeriodController extends AbstractPageController
         } else {
             $action = $this->generateUrl('timetable_day_period_edit', ['timetableDay' => $timetableDay->getId(), 'timetablePeriod' => $timetablePeriod->getId()]);
         }
-dump($action,$timetablePeriod,$timetableDay);
+
         $form = $this->createForm(TimetablePeriodType::class, $timetablePeriod, ['action' => $action]);
 
         if ($this->getRequest()->getContent() !== '') {
@@ -84,8 +84,24 @@ dump($action,$timetablePeriod,$timetableDay);
 
         if ($timetableDay->getId() !== null) $this->getContainerManager()->setAddElementRoute($this->generateUrl('timetable_day_period_add', ['timetableDay' => $timetableDay->getId()]));
 
+        $timetable = $timetableDay->getTimetable();
         return $this->getPageManager()
-            ->createBreadcrumbs($timetablePeriod->getId() === null ? ['Add Timetable Period in {day}', ['{day}' => $timetableDay->getName()]] : ['Edit Timetable Period in {day} - {name}', ['{name}' => $timetablePeriod->getName(),'{day}' => $timetableDay->getName()]])
+            ->createBreadcrumbs($timetablePeriod->getId() === null ? ['Add Timetable Period in {day}', ['{day}' => $timetableDay->getName()]] : ['Edit Timetable Period in {day} - {name}', ['{name}' => $timetablePeriod->getName(),'{day}' => $timetableDay->getName()]],
+                [
+                    [
+                        'uri' => 'timetable_edit',
+                        'name' => 'Edit Timetable {name}',
+                        'trans_params' => ['{name}' => $timetable->getName()],
+                        'uri_params' => ['timetable' => $timetable->getId(), 'tabName' => 'Timetable Days']
+                    ],
+                    [
+                        'name' => 'Edit Timetable Day ({name})',
+                        'trans_params' => ['{name}' => $timetableDay->getName()],
+                        'uri' => 'timetable_day_edit',
+                        'uri_params' => ['timetable' => $timetable->getId(), 'timetableDay' => $timetableDay->getId(), 'tabName' => 'Periods']
+                    ]
+                ]
+            )
             ->render(
                 [
                     'containers' => $this->getContainerManager()->getBuiltContainers()

@@ -39,9 +39,13 @@ services:
 
     App\Translation\Translator:
         decorates: translator
+        tags:
+            - { name: 'container.preload', class: 'App\Util\TranslationHelper' }
 
-    App\Translation\LoggerTranslator:
+    App\Translation\LoggingTranslator:
         decorates: translator.logging
+        tags:
+            - { name: 'container.preload', class: 'App\Util\TranslationHelper' }
 
     App\Util\TranslationHelper:
         tags:
@@ -74,6 +78,8 @@ services:
     App\Manager\PageManager:
         arguments:
             $logger: '@monolog.logger.page'
+        tags:
+            - { name: 'container.preload', class: 'App\Util\CacheHelper' }
 
     App\Modules\Security\Manager\RoleHierarchy:
         decorates: 'security.role_hierarchy'
@@ -180,4 +186,3 @@ services:
     App\Manager\EntitySortManager:
         calls:
             - [ setMessages, ['@App\Manager\StatusManager'] ]
-

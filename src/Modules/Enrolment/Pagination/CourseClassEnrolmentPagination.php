@@ -109,6 +109,7 @@ class CourseClassEnrolmentPagination extends AbstractPaginationManager
             $filter = new PaginationFilter();
             $row->addFilter($filter->setGroup('Year Group')
                 ->setName($yg->getName())
+                ->setLabel(['{name}', ['{name}' => $yg->getName()], 'messages'])
                 ->setContentKey('yearGroup')
                 ->setValue($yg->getName())
             );

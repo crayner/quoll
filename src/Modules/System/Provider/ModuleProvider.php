@@ -32,12 +32,12 @@ class ModuleProvider extends AbstractProvider
     /**
      * @var string
      */
-    protected $entityName = Module::class;
+    protected string $entityName = Module::class;
 
     /**
      * @var array|null
      */
-    private $mainMenu;
+    private ?array $mainMenu;
 
     /**
      * buildFastFinder
@@ -85,7 +85,7 @@ class ModuleProvider extends AbstractProvider
      */
     public function buildMainMenu(SecurityUser $user): array
     {
-        if (null === $this->mainMenu) {
+        if (!isset($this->mainMenu)) {
             if (CacheHelper::isStale('mainMenu', 30)) {
                 $this->mainMenu = $this->getRepository()->findBy(['active' => 'Y'], ['category' => 'ASC', 'name' => 'ASC']);
                 CacheHelper::setCacheValue('mainMenu', $this->mainMenu, 30);

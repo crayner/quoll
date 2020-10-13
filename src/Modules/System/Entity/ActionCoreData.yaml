@@ -48,7 +48,8 @@
             - timetable_delete
             - timetable_add
             - timetable_day_add
-            - timetable_day_edit.timetable_day_sort
+            - timetable_day_edit
+            - timetable_day_sort
             - timetable_day_delete
             - timetable_day_period_duplicate
             - timetable_day_period_edit

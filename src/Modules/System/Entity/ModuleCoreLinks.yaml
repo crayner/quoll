@@ -18,6 +18,24 @@
     target: action
 -
     findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: individual_enrolment_list
+            precedence: null
+    target: action
+-
+    findBy:
+        entryRoute: course_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: student_enrolment_list
+            precedence: null
+    target: action
+-
+    findBy:
         entryRoute: timetable_list
     source:
         table: App\Modules\System\Entity\Action

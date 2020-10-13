@@ -61,7 +61,7 @@ class MainMenu implements ContentInterface
                 foreach(SettingFactory::getSettingManager()->get('System', 'mainMenuCategoryOrder') as $category) {
                     foreach ($items as $w) {
                         if ($w['category'] === $category) {
-                            $catTran = TranslationHelper::translate($category);
+                            $catTran = TranslationHelper::translate($category, [], 'messages');
                             if (!key_exists($catTran, $menuMainItems)) {
                                 $menuMainItems[$catTran] = [];
                             }

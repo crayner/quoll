@@ -33,38 +33,38 @@ class PageDefinition
     /**
      * @var Action|null
      */
-    private ?Action $action;
+    private ?Action $action = null;
 
     /**
      * @var Module|null
      */
-    private ?Module $module;
+    private ?Module $module = null;
 
     /**
      * @var string|null
      */
-    private ?string $route;
+    private ?string $route = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $controller;
+    private ?string $controller = null;
 
     /**
      * @var Request|null
      */
-    private ?Request $request;
+    private ?Request $request = null;
 
     /**
      * getAction
      *
-     * 2/09/2020 08:46
+     * 13/10/2020 10:21
      * @return Action|null
      */
     public function getAction(): ?Action
     {
-        if (!isset($this->action)) $this->setAction();
-        return isset($this->action) ? $this->action : null;
+        if (!$this->action) $this->setAction();
+       return $this->action;
     }
 
     /**
@@ -76,7 +76,8 @@ class PageDefinition
     public function setAction(): PageDefinition
     {
         if (null === $this->getModule()) $this->setModule();
-        if (!isset($this->action) && $this->getModule() !== null) {
+
+        if ($this->getModule() !== null) {
             foreach ($this->getModule()->getActions() as $action) {
                 if (in_array($this->getRoute(), $action->getRouteList())) {
                     $this->action = $action;
@@ -90,13 +91,12 @@ class PageDefinition
     /**
      * getModule
      *
-     * 2/09/2020 08:46
+     * 13/10/2020 10:20
      * @return Module|null
      */
     public function getModule(): ?Module
     {
-        if (!isset($this->module)) $this->setModule();
-
+        if (!$this->module) $this->setModule();
         return $this->module;
     }
 
@@ -138,7 +138,7 @@ class PageDefinition
      */
     public function getRoute(): ?string
     {
-        return $this->route = isset($this->route) ? $this->route : $this->getRequest()->attributes->get('_route');
+        return $this->route = $this->route ?: $this->getRequest()->attributes->get('_route');
     }
 
     /**
@@ -149,17 +149,7 @@ class PageDefinition
      */
     public function getController(): string
     {
-        return $this->controller = isset($this->controller) ? $this->controller : (string)$this->getRequest()->attributes->get('_controller');
-    }
-
-    /**
-     * @param string $controller
-     * @return PageDefinition
-     */
-    public function setController(string $controller): PageDefinition
-    {
-        $this->controller = $controller;
-        return $this;
+        return $this->controller = $this->controller ?: (string)$this->getRequest()->attributes->get('_controller');
     }
 
     /**

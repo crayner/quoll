@@ -18,6 +18,7 @@
 namespace App\Manager\Hidden;
 
 use App\Manager\AbstractPaginationManager;
+use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -34,12 +35,12 @@ class PaginationAction
     /**
      * @var array
      */
-    private $route_params = [];
+    private array $route_params = [];
 
     /**
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string
@@ -62,9 +63,9 @@ class PaginationAction
     private $onClick = '';
 
     /**
-     * @var null|string
+     * @var string
      */
-    private $displayWhen;
+    private string $displayWhen = '';
 
     /**
      * @var array|string|null
@@ -74,7 +75,12 @@ class PaginationAction
     /**
      * @var bool
      */
-    private $selectRow = false;
+    private bool $selectRow = false;
+
+    /**
+     * @var string
+     */
+    private string $domain;
 
     /**
      * @var ArrayCollection
@@ -83,10 +89,14 @@ class PaginationAction
 
     /**
      * PaginationAction constructor.
+     *
+     * 13/10/2020 11:06
+     * @param string $domain
      */
-    public function __construct()
+    public function __construct(string $domain = 'messages')
     {
         $this->setAClass('thickbox p-3 sm:p-0');
+        $this->setDomain($domain);
     }
 
     /**
@@ -195,13 +205,16 @@ class PaginationAction
 
     /**
      * toArray
+     *
+     * 13/10/2020 11:24
      * @return array
      */
-    public function toArray() {
+    public function toArray(): array
+    {
        return [
            'spanClass' => $this->getSpanClass(),
            'aClass' => $this->getAClass(),
-           'title' => $this->getTitle(),
+           'title' => TranslationHelper::translate($this->getTitle(), [], $this->getDomain()),
            'columnClass' => $this->getColumnClass(),
            'onClick' => $this->getOnClick(),
            'displayWhen' => $this->getDisplayWhen(),
@@ -256,7 +269,10 @@ class PaginationAction
     }
 
     /**
-     * @return bool
+     * getDisplayWhen
+     *
+     * 13/10/2020 10:56
+     * @return string
      */
     public function getDisplayWhen(): string
     {
@@ -266,7 +282,7 @@ class PaginationAction
     /**
      * DisplayWhen.
      *
-     * @param bool $displayWhen
+     * @param string $displayWhen
      * @return PaginationAction
      */
     public function setDisplayWhen(?string $displayWhen): PaginationAction
@@ -350,10 +366,10 @@ class PaginationAction
     }
 
     /**
-     * getSectionActions
+     * getSectionActionsArray
      *
-     * 7/09/2020 09:07
-     * @return ArrayCollection
+     * 13/10/2020 10:57
+     * @return array
      */
     public function getSectionActionsArray(): array
     {
@@ -362,5 +378,28 @@ class PaginationAction
             $result[] = $sectionAction->toArray();
         }
         return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain;
+    }
+
+    /**
+     * setDomain
+     *
+     * 13/10/2020 11:01
+     * @param string|null $domain
+     * @return $this
+     */
+    public function setDomain(string $domain = 'messages'): PaginationAction
+    {
+        if ($domain === 'messages') $domain = TranslationHelper::getDomain();
+
+        $this->domain =$domain;
+        return $this;
     }
 }

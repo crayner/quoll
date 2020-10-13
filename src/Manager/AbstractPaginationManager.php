@@ -234,7 +234,6 @@ abstract class AbstractPaginationManager implements PaginationInterface
 
             foreach($this->getRow()->getActions() as $action)
             {
-                $action->setTitle(TranslationHelper::translate($action->getTitle()));
                 $params = [];
                 foreach($action->getRouteParams() as $name=>$contentName)
                 {

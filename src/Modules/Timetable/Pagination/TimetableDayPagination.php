@@ -77,7 +77,7 @@ class TimetableDayPagination extends AbstractPaginationManager
         ;
         $row->addColumn($column);
 
-        $action = new PaginationAction();
+        $action = new PaginationAction('Timetable');
         $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
@@ -86,7 +86,7 @@ class TimetableDayPagination extends AbstractPaginationManager
             ->setRouteParams(['timetableDay' => 'id','timetable' => 'timetable']);
         $row->addAction($action);
 
-        $action = new PaginationAction();
+        $action = new PaginationAction('Timetable');
         $action->setTitle('Copy Periods')
             ->setAClass('thickbox p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')

@@ -539,19 +539,19 @@ class Module extends AbstractEntity
     {
         if (null === $this->status) {
             if ($this->getType() === 'Core') {
-                $this->status = TranslationHelper::translate('Installed');
+                $this->status = TranslationHelper::translate('Installed', [], 'messages');
             } else {
                 if (false === is_dir($this->getModuleDir() . '/' . str_replace(' ', '-', strtolower($this->getName()))))
                 {
-                    $this->status = TranslationHelper::translate('Not Installed');
+                    $this->status = TranslationHelper::translate('Not Installed', [], 'messages');
                 } else {
                     $installed = $this->getUpgradeLogs()->filter(function($log) {
                         return $log->getVersionDate() === 'Installation';
                     });
                     if ($this->getUpgradeLogs()->count() === 0 || $installed->count() === 0)
-                        $this->status = TranslationHelper::translate('Not Installed');
+                        $this->status = TranslationHelper::translate('Not Installed', [], 'messages');
                     else
-                        $this->status = TranslationHelper::translate('Installed');
+                        $this->status = TranslationHelper::translate('Installed', [], 'messages');
                 }
             }
         }
