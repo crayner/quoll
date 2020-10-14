@@ -290,7 +290,8 @@ class TimetablePeriod extends AbstractEntity
             'abbreviation' => $this->getAbbreviation(),
             'time' => $this->getTimeStartName() . ' - ' . $this->getTimeEndName(),
             'type' => $this->getType(),
-            'canDelete' => true,
+            'canDelete' => $this->canDelete(),
+            'classes' => (string) $this->getPeriodClasses()->count(),
         ];
     }
 
@@ -312,5 +313,16 @@ class TimetablePeriod extends AbstractEntity
     public function getTimeEndName(): string
     {
         return $this->getTimeEnd() ? $this->getTimeEnd()->format('H:i') : '23:59';
+    }
+
+    /**
+     * canDelete
+     *
+     * 13/10/2020 15:48
+     * @return bool
+     */
+    public function canDelete(): bool
+    {
+        return $this->getPeriodClasses()->count() === 0;
     }
 }

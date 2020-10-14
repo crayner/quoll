@@ -415,7 +415,7 @@ class CourseClass extends AbstractEntity
      */
     public function getFullName(): string
     {
-        return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
+        return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') . ' (' . $this->getAbbreviatedName() . ')' : '????.' . ($this->getName() ?: '?');
     }
 
     /**
@@ -455,5 +455,21 @@ class CourseClass extends AbstractEntity
     {
         CacheHelper::clearCacheValue('course_class_choices');
         CacheHelper::setCacheDirty('course_class_choices');
+    }
+
+    /**
+     * getTutorNames
+     *
+     * 13/10/2020 16:05
+     * @return array
+     */
+    public function getTutorNames(): array
+    {
+        $result = [];
+        foreach ($this->getTutors() as $tutor)
+        {
+            $result[] = $tutor->getStaff()->getFullName('Formal');
+        }
+        return $result;
     }
 }

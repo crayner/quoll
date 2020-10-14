@@ -56,6 +56,9 @@
             - timetable_day_period_add
             - timetable_day_period_delete
             - timetable_day_period_remove_all
+            - timetable_day_period_classes_manage
+            - timetable_day_period_class_add
+            - timetable_day_period_class_edit
     entryRoute: timetable_list
     entrySidebar: true
     menuShow: true

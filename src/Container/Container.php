@@ -18,8 +18,10 @@
 namespace App\Container;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use TypeError;
 
 /**
  * Class Container
@@ -306,11 +308,13 @@ class Container
     /**
      * addForm
      * @param string $name
-     * @param FormView $form
+     * @param FormView|Form $form
      * @return Container
      */
-    public function addForm(string $name, FormView $form): Container
+    public function addForm(string $name, $form): Container
     {
+        if ($form instanceof Form) $form = $form->createView();
+        if (!$form instanceof FormView) throw new TypeError(sprintf('The property $form must be a "Symfony\Component\Form\Form" or "Symfony\Component\Form\FormView." A "%s" was supplied.', getType($form) === 'object' ? get_class($form) : getType($form)));
         $this->getForms()->set($name, $form->vars['toArray']);
         return $this;
     }

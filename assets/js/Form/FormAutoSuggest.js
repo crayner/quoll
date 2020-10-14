@@ -130,7 +130,7 @@ export default function FormAutoSuggest(props) {
             <div className="z-10 rounded border border-solid border-gray-300 w-full">
                 <a data-toggle={form.id + '_auto_suggest'} className="float-right text-xs underline xs:hidden text-gray-600"
                    href="#" onClick={() => toggleAutoSuggestList()}><span className={'far fa-times-circle fa-fw'} title={'Close'}/></a>
-                <div className="w-full sm:py-2">
+                <div className="w-full">
                     <div {...wrapper_attr}>
                         <Autosuggest
                             id={form.id}

@@ -183,4 +183,16 @@ abstract class AbstractPageController extends AbstractController
     {
         return $routeName === $this->getRequest()->attributes->get('_route');
     }
+
+    /**
+     * submitForm
+     *
+     * 14/10/2020 10:26
+     * @param FormInterface $form
+     */
+    protected function submitForm(FormInterface $form)
+    {
+        $form->submit($this->jsonDecode());
+        if (!$form->isValid()) $this->getStatusManager()->invalidInputs();
+    }
 }

@@ -63,6 +63,13 @@ class TimetablePeriodPagination extends AbstractPaginationManager
         ;
         $row->addColumn($column);
 
+        $column = new PaginationColumn();
+        $column->setLabel('Classes')
+            ->setContentKey('classes')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre')
+        ;
+        $row->addColumn($column);
+
         $action = new PaginationAction();
         $action->setTitle('Edit')
             ->setAClass('thickbox p-3 sm:p-0')
@@ -70,6 +77,15 @@ class TimetablePeriodPagination extends AbstractPaginationManager
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('timetable_day_period_edit')
             ->setRouteParams(['timetableDay' => 'timetableDay', 'timetablePeriod' => 'id']);
+        $row->addAction($action);
+
+        $action = new PaginationAction();
+        $action->setTitle('Manage Classes in Period')
+            ->setAClass('thickbox p-3 sm:p-0')
+            ->setColumnClass('column p-2 sm:p-3')
+            ->setSpanClass('fas fa-pen-fancy fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
+            ->setRoute('timetable_day_period_classes_manage')
+            ->setRouteParams(['period' => 'id']);
         $row->addAction($action);
 
         $action = new PaginationAction();

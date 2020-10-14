@@ -17,6 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\Facility;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class timetableDayRowClass
@@ -39,35 +40,49 @@ class TimetablePeriodClass extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
      * @var TimetablePeriod|null
      * @ORM\ManyToOne(targetEntity="TimetablePeriod",inversedBy="periodClasses")
-     * @ORM\JoinColumn(name="period",referencedColumnName="id")
+     * @ORM\JoinColumn(name="period",referencedColumnName="id",nullable=false)
+     * @Assert\NotBlank()
      */
-    private $period;
+    private ?TimetablePeriod $period;
 
     /**
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="App\Modules\Enrolment\Entity\CourseClass",inversedBy="periodClasses")
-     * @ORM\JoinColumn(name="course_class",referencedColumnName="id")
+     * @ORM\JoinColumn(name="course_class",referencedColumnName="id",nullable=false)
+     * @Assert\NotBlank()
      */
-    private $courseClass;
+    private ?CourseClass $courseClass;
 
     /**
      * @var Facility|null
      * @ORM\ManyToOne(targetEntity="App\Modules\School\Entity\Facility")
-     * @ORM\JoinColumn(name="facility", referencedColumnName="id")
+     * @ORM\JoinColumn(name="facility", referencedColumnName="id",nullable=false)
+     * @Assert\NotBlank()
      */
-    private $facility;
+    private ?Facility $facility;
+
+    /**
+     * TimetablePeriodClass constructor.
+     *
+     * 13/10/2020 16:29
+     * @param TimetablePeriod|null $period
+     */
+    public function __construct(?TimetablePeriod $period = null)
+    {
+        $this->setPeriod($period);
+    }
 
     /**
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**
@@ -87,7 +102,7 @@ class TimetablePeriodClass extends AbstractEntity
      */
     public function getPeriod(): ?TimetablePeriod
     {
-        return $this->period;
+        return isset($this->period) ? $this->period : null;
     }
 
     /**
@@ -105,7 +120,7 @@ class TimetablePeriodClass extends AbstractEntity
      */
     public function getCourseClass(): ?CourseClass
     {
-        return $this->courseClass;
+        return isset($this->courseClass) ? $this->courseClass : null;
     }
 
     /**
@@ -123,7 +138,7 @@ class TimetablePeriodClass extends AbstractEntity
      */
     public function getFacility(): ?Facility
     {
-        return $this->facility;
+        return isset($this->facility) ? $this->facility : null;
     }
 
     /**
@@ -147,6 +162,11 @@ class TimetablePeriodClass extends AbstractEntity
     {
         return [
             'id' => $this->getId(),
+            'tutors' => implode(",\n<br />", $this->getCourseClass()->getTutorNames()),
+            'name' => $this->getCourseClass()->getFullName(),
+            'abbreviation' => $this->getCourseClass()->getAbbreviatedName(),
+            'location' => $this->getFacility()->getName(),
+            'period' => $this->getPeriod()->getId(),
         ];
     }
 }
