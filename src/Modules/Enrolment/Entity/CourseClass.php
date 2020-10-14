@@ -410,12 +410,14 @@ class CourseClass extends AbstractEntity
     /**
      * getFullName
      *
-     * 4/09/2020 09:23
+     * 14/10/2020 16:26
+     * @param bool $withAbbr
      * @return string
      */
-    public function getFullName(): string
+    public function getFullName(bool $withAbbr = true): string
     {
-        return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') . ' (' . $this->getAbbreviatedName() . ')' : '????.' . ($this->getName() ?: '?');
+        if ($withAbbr) return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') . ' (' . $this->getAbbreviatedName() . ')' : '????.' . ($this->getName() ?: '?');
+        return $this->getCourse() ? $this->getCourse()->getName() . '.' . ($this->getName() ?: '?') : '????.' . ($this->getName() ?: '?');
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -283,5 +284,21 @@ class CourseClassRepository extends ServiceEntityRepository
             ->andWhere()
             ->getQuery()
             ->getResult();
+    }
+
+    public function findOneByCourseAbbreviationClassName(string $courseName,string $className)
+    {
+        try {
+            return $this->createQueryBuilder('cc')
+                ->where('cc.name = :className')
+                ->leftJoin('cc.course', 'c')
+                ->andWhere('c.academicYear = :current')
+                ->andWhere('c.abbreviation = :courseName')
+                ->setParameters(['className' => $className, 'current' => AcademicYearHelper::getCurrentAcademicYear(), 'courseName' => $courseName])
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 }

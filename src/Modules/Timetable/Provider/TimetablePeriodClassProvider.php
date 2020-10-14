@@ -18,7 +18,10 @@ namespace App\Modules\Timetable\Provider;
 
 use App\Modules\Timetable\Entity\TimetablePeriod;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
+use App\Modules\Timetable\Util\TimetableDemoData;
 use App\Provider\AbstractProvider;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class TimetablePeriodClassProvider
@@ -56,5 +59,19 @@ class TimetablePeriodClassProvider extends AbstractProvider
             unset($result[$key]);
         }
         return empty($result) ? [''] : $result;
+    }
+
+
+    /**
+     * createTimetablePeriodClass
+     *
+     * 14/10/2020 14:20
+     * @param array $content
+     * @param LoggerInterface $logger
+     * @param ValidatorInterface $validator
+     */
+    public static function createTimetablePeriodClass(array $content, LoggerInterface $logger, ValidatorInterface $validator)
+    {
+        return TimetableDemoData::createTimetablePeriodClass($content, $logger, $validator);
     }
 }

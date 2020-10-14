@@ -40,6 +40,7 @@ use App\Modules\Timetable\Entity\Timetable;
 use App\Modules\Timetable\Entity\TimetableDate;
 use App\Modules\Timetable\Entity\TimetableDay;
 use App\Modules\Timetable\Entity\TimetablePeriod;
+use App\Modules\Timetable\Entity\TimetablePeriodClass;
 use App\Modules\Timetable\Util\TimetableDemoData;
 use App\Provider\ProviderFactory;
 use DateTimeImmutable;
@@ -107,6 +108,7 @@ class DemoDataManager
         'course' => Course::class,
         'course_class' => CourseClass::class,
         'course_class_student' => CourseClassStudent::class,
+        'timetable_period_class' => TimetablePeriodClass::class,
     ];
 
     /**
@@ -645,12 +647,12 @@ class DemoDataManager
     /**
      * executeRuleCall
      *
-     * 9/09/2020 08:55
-     * @param $rules
-     * @param $content
+     * 14/10/2020 15:14
+     * @param array $rules
+     * @param array $content
      * @return int
      */
-    private function executeRuleCall($rules, $content): int
+    private function executeRuleCall(array $rules, array $content): int
     {
         $provider = ProviderFactory::create($rules['call']['entityName']);
         $method = $rules['call']['method'];

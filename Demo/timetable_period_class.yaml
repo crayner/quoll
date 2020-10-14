@@ -1,0 +1,6678 @@
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: AR07
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 2
+    course: AR07
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 2
+    course: AR07
+    facility: C107
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 3
+    course: AR07
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 3
+    course: AR07
+    facility: C107
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 4
+    course: AR07
+    facility: C107
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 4
+    course: AR07
+    facility: C107
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: AR09
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: AR09
+    facility: C107
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: AR09
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: AR09
+    facility: C107
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: AR09
+    facility: C107
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: AR10
+    facility: D100
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: AR10
+    facility: D100
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: AR10
+    facility: D100
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: AR10
+    facility: D100
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: AR10
+    facility: D100
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: AR11
+    facility: D100
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: AR11
+    facility: D100
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: AR11
+    facility: D100
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: AR11
+    facility: D100
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: AR11
+    facility: D100
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: BH07
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: BH07
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: BH07
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: BH07
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: BH07
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Friday Red'
+    class: 2
+    course: BH07
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 2
+    course: BH07
+    facility: C304
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 2
+    course: BH07
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 2
+    course: BH07
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: BH07
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 3
+    course: BH07
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 3
+    course: BH07
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 3
+    course: BH07
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 3
+    course: BH07
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 3
+    course: BH07
+    facility: C304
+-
+    day: 'Friday Red'
+    class: 4
+    course: BH07
+    facility: C304
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 4
+    course: BH07
+    facility: C304
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 4
+    course: BH07
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 4
+    course: BH07
+    facility: C304
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 4
+    course: BH07
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: BH08
+    facility: C305
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: BH08
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: BH08
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: BH08
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: BH08
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: BH08
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 2
+    course: BH08
+    facility: C306
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 2
+    course: BH08
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 2
+    course: BH08
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 2
+    course: BH08
+    facility: C108
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: BH08
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 3
+    course: BH08
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 3
+    course: BH08
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 3
+    course: BH08
+    facility: C306
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 3
+    course: BH08
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 3
+    course: BH08
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 3
+    course: BH08
+    facility: C306
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: BIHL13
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: BIHL13
+    facility: C307
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: BISL12
+    facility: D004
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: BISL12
+    facility: D004
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: BISL12
+    facility: D004
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: BISL12
+    facility: D004
+-
+    day: 'Friday Red'
+    class: 1
+    course: BISL13
+    facility: C307
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: BISL13
+    facility: C307
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: BISL13
+    facility: C307
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: CHHL12
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CHHL12
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: CHHL12
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: CHHL12
+    facility: C303
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: CHHL13
+    facility: C303
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CHHL13
+    facility: C303
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: CHSL12
+    facility: C303
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: CHSL12
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: CHSL13
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: CHSL13
+    facility: C303
+-
+    day: 'Friday Red'
+    class: 1
+    course: CN07
+    facility: D102
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: CN07
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: CN07
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: CN07
+    facility: D102
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: CN07
+    facility: D102
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CN07
+    facility: D102
+-
+    day: 'Friday Red'
+    class: 2
+    course: CN07
+    facility: D103
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: CN07
+    facility: D103
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 2
+    course: CN07
+    facility: D103
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 2
+    course: CN07
+    facility: D103
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 2
+    course: CN07
+    facility: D103
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 2
+    course: CN07
+    facility: D103
+-
+    day: 'Friday Red'
+    class: 3
+    course: CN07
+    facility: D002
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 3
+    course: CN07
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 3
+    course: CN07
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 3
+    course: CN07
+    facility: D002
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 3
+    course: CN07
+    facility: D002
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 3
+    course: CN07
+    facility: D002
+-
+    day: 'Friday Red'
+    class: 4
+    course: CN07
+    facility: D104
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 4
+    course: CN07
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 4
+    course: CN07
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 4
+    course: CN07
+    facility: D104
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 4
+    course: CN07
+    facility: D104
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 4
+    course: CN07
+    facility: D104
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: CN08
+    facility: D102
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 2
+    course: CN08
+    facility: D101
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 3
+    course: CN08
+    facility: D002
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 4
+    course: CN08
+    facility: D104
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 5
+    course: CN08
+    facility: D103
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 5
+    course: CN08
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 5
+    course: CN08
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 5
+    course: CN08
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 5
+    course: CN08
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 5
+    course: CN08
+    facility: D103
+-
+    day: 'Friday Red'
+    class: 1
+    course: CN09
+    facility: D002
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: CN09
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: CN09
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: CN09
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: CN09
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: CN09
+    facility: D002
+-
+    day: 'Friday Red'
+    class: 2
+    course: CN09
+    facility: D104
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: CN09
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 2
+    course: CN09
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 2
+    course: CN09
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 2
+    course: CN09
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 2
+    course: CN09
+    facility: D104
+-
+    day: 'Friday Red'
+    class: 3
+    course: CN09
+    facility: D101
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 3
+    course: CN09
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 3
+    course: CN09
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 3
+    course: CN09
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 3
+    course: CN09
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 3
+    course: CN09
+    facility: D101
+-
+    day: 'Friday Red'
+    class: 4
+    course: CN09
+    facility: D103
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 4
+    course: CN09
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 4
+    course: CN09
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 4
+    course: CN09
+    facility: D103
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 4
+    course: CN09
+    facility: D103
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 4
+    course: CN09
+    facility: D103
+-
+    day: 'Friday Red'
+    class: 5
+    course: CN09
+    facility: D102
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 5
+    course: CN09
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 5
+    course: CN09
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 5
+    course: CN09
+    facility: D102
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 5
+    course: CN09
+    facility: D102
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 5
+    course: CN09
+    facility: D102
+-
+    day: 'Friday Red'
+    class: 1
+    course: CN10
+    facility: D103
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: CN10
+    facility: D103
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: CN10
+    facility: D103
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: CN10
+    facility: D103
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: CN10
+    facility: D103
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: CN10
+    facility: D103
+-
+    day: 'Friday Red'
+    class: 2
+    course: CN10
+    facility: D002
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 2
+    course: CN10
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 2
+    course: CN10
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 2
+    course: CN10
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: CN10
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: CN10
+    facility: D002
+-
+    day: 'Friday Red'
+    class: 3
+    course: CN10
+    facility: D104
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 3
+    course: CN10
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 3
+    course: CN10
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 3
+    course: CN10
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 3
+    course: CN10
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 3
+    course: CN10
+    facility: D104
+-
+    day: 'Friday Red'
+    class: 4
+    course: CN10
+    facility: D102
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 4
+    course: CN10
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 4
+    course: CN10
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 4
+    course: CN10
+    facility: D102
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 4
+    course: CN10
+    facility: D102
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 4
+    course: CN10
+    facility: D102
+-
+    day: 'Friday Red'
+    class: 5
+    course: CN10
+    facility: D101
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 5
+    course: CN10
+    facility: D101
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 5
+    course: CN10
+    facility: D101
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 5
+    course: CN10
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 5
+    course: CN10
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 5
+    course: CN10
+    facility: D101
+-
+    day: 'Friday Red'
+    class: 1
+    course: CN11
+    facility: D101
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: CN11
+    facility: D101
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: CN11
+    facility: D101
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: CN11
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: CN11
+    facility: D101
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: CN11
+    facility: D101
+-
+    day: 'Friday Red'
+    class: 2
+    course: CN11
+    facility: D104
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 2
+    course: CN11
+    facility: D104
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 2
+    course: CN11
+    facility: D104
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 2
+    course: CN11
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 2
+    course: CN11
+    facility: D104
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 2
+    course: CN11
+    facility: D104
+-
+    day: 'Friday Red'
+    class: 3
+    course: CN11
+    facility: D102
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 3
+    course: CN11
+    facility: D102
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 3
+    course: CN11
+    facility: D102
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 3
+    course: CN11
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 3
+    course: CN11
+    facility: D102
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 3
+    course: CN11
+    facility: D102
+-
+    day: 'Friday Red'
+    class: 4
+    course: CN11
+    facility: D103
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 4
+    course: CN11
+    facility: D103
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 4
+    course: CN11
+    facility: D103
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 4
+    course: CN11
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 4
+    course: CN11
+    facility: D103
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 4
+    course: CN11
+    facility: D103
+-
+    day: 'Friday Red'
+    class: 5
+    course: CN11
+    facility: D002
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 5
+    course: CN11
+    facility: D002
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 5
+    course: CN11
+    facility: D002
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 5
+    course: CN11
+    facility: D002
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    day: 'Friday Red'
+    class: 1
+    course: CNK07
+    facility: D101
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: CNK07
+    facility: D101
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: CNK07
+    facility: D103
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: CNK07
+    facility: D103
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: CNK07
+    facility: D101
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: CNK07
+    facility: D101
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: CNK07
+    facility: D101
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: CNK07
+    facility: D101
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: CNSL12
+    facility: D104
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: CNSL12
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: CNSL12
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: CNSL12
+    facility: D104
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 2
+    course: CNSL12
+    facility: D102
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 2
+    course: CNSL12
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: CNSL12
+    facility: D102
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: CNSL12
+    facility: D102
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: CNSL13
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: CNSL13
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: CNSL13
+    facility: D104
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: DCVT08
+    facility: C107
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: DCVT08
+    facility: C107
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue'
+    class: 2
+    course: DCVT08
+    facility: C107
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: DR10
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: DR10
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: DR10
+    facility: C208
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: DR10
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: DR10
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: DR11
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: DR11
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: DR11
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: DR11
+    facility: C208
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: DR11
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: EC10
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: EC10
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: EC10
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: EC10
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: EC10
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 2
+    course: EC10
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: EC10
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 2
+    course: EC10
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 2
+    course: EC10
+    facility: C304
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 2
+    course: EC10
+    facility: C304
+-
+    day: 'Friday Red'
+    class: 1
+    course: EC11
+    facility: C306
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: EC11
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: EC11
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: EC11
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: EC11
+    facility: C306
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: ECHL12
+    facility: C306
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: ECHL12
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: ECHL12
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ECHL12
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: ECHL13
+    facility: C306
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: ECHL13
+    facility: C306
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: ECHL13
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ECHL13
+    facility: C306
+-
+    day: 'Friday Red'
+    class: 1
+    course: ECSL12
+    facility: C306
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: ECSL12
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: ECSL12
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: ECSL12
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 4
+    course: EN07
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: EN07
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 5
+    course: EN07
+    facility: C206A
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 3
+    course: EN07
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: EN07
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: EN07
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: EN07
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: EN07
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: EN07
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: EN07
+    facility: C101
+-
+    day: 'Friday Red'
+    class: 4
+    course: EN08
+    facility: C103
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 4
+    course: EN08
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 4
+    course: EN08
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 4
+    course: EN08
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 4
+    course: EN08
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 4
+    course: EN08
+    facility: C103
+-
+    day: 'Friday Red'
+    class: 1
+    course: EN08
+    facility: C101
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: EN08
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: EN08
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: EN08
+    facility: C101
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: EN08
+    facility: C101
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: EN08
+    facility: C101
+-
+    day: 'Friday Red'
+    class: 2
+    course: EN08
+    facility: C102
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 2
+    course: EN08
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 2
+    course: EN08
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 2
+    course: EN08
+    facility: C102
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 2
+    course: EN08
+    facility: C102
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 2
+    course: EN08
+    facility: C102
+-
+    day: 'Friday Red'
+    class: 3
+    course: EN08
+    facility: C204
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 3
+    course: EN08
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 3
+    course: EN08
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 3
+    course: EN08
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 3
+    course: EN08
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 3
+    course: EN08
+    facility: C204
+-
+    day: 'Friday Red'
+    class: 2
+    course: EN09
+    facility: C106
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 2
+    course: EN09
+    facility: C106
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 2
+    course: EN09
+    facility: C106
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 2
+    course: EN09
+    facility: C106
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 2
+    course: EN09
+    facility: C106
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 2
+    course: EN09
+    facility: C106
+-
+    day: 'Friday Red'
+    class: 3
+    course: EN09
+    facility: C101
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 3
+    course: EN09
+    facility: C101
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 3
+    course: EN09
+    facility: C101
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 3
+    course: EN09
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 3
+    course: EN09
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 3
+    course: EN09
+    facility: C101
+-
+    day: 'Friday Red'
+    class: 1
+    course: EN09
+    facility: C102
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: EN09
+    facility: C102
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: EN09
+    facility: C102
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: EN09
+    facility: C102
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: EN09
+    facility: C102
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: EN09
+    facility: C102
+-
+    day: 'Friday Red'
+    class: 4
+    course: EN09
+    facility: C103
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 4
+    course: EN09
+    facility: C103
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 4
+    course: EN09
+    facility: C103
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 4
+    course: EN09
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 4
+    course: EN09
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 4
+    course: EN09
+    facility: C103
+-
+    day: 'Friday Red'
+    class: 3
+    course: EN10
+    facility: C106
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 3
+    course: EN10
+    facility: C106
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 3
+    course: EN10
+    facility: C106
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 3
+    course: EN10
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 3
+    course: EN10
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 3
+    course: EN10
+    facility: C106
+-
+    day: 'Friday Red'
+    class: 1
+    course: EN10
+    facility: C102
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: EN10
+    facility: C102
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: EN10
+    facility: C102
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: EN10
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: EN10
+    facility: C102
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: EN10
+    facility: C102
+-
+    day: 'Friday Red'
+    class: 2
+    course: EN10
+    facility: C105
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 2
+    course: EN10
+    facility: C105
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 2
+    course: EN10
+    facility: C105
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 2
+    course: EN10
+    facility: C105
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 2
+    course: EN10
+    facility: C105
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 2
+    course: EN10
+    facility: C105
+-
+    day: 'Friday Red'
+    class: 1
+    course: EN11
+    facility: C101
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: EN11
+    facility: C101
+-
+    day: 'Friday Red'
+    class: 3
+    course: EN11
+    facility: C103
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 3
+    course: EN11
+    facility: C103
+-
+    day: 'Friday Red'
+    class: 2
+    course: EN11
+    facility: C105
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 2
+    course: EN11
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: ENF10
+    facility: C107
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: ENF10
+    facility: C107
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: ENF10
+    facility: C107
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: ENF10
+    facility: C107
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 2
+    course: ENF10
+    facility: C203
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 2
+    course: ENF10
+    facility: C106
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 2
+    course: ENF10
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 2
+    course: ENF10
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 3
+    course: ENF10
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 3
+    course: ENF10
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 3
+    course: ENF10
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 3
+    course: ENF10
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: ENF11
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: ENF11
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ENF11
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ENF11
+    facility: C101
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: ENF11
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 2
+    course: ENF11
+    facility: C103
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: ENF11
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 2
+    course: ENF11
+    facility: C103
+-
+    day: 'Friday Red'
+    class: 1
+    course: ENHL12
+    facility: C101
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    day: 'Friday Red'
+    class: 2
+    course: ENHL12
+    facility: C103
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: ENSL12
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: ENSL12
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: ENSL12
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ENSL12
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: ENSL13
+    facility: C102
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: ENSL13
+    facility: C102
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: ESSL12
+    facility: C306
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: ESSL12
+    facility: D004
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: ESSL12
+    facility: D004
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: ESSL13
+    facility: D004
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: ESSL13
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: EV10
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: EV10
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: EV10
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: EV10
+    facility: D004
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: EV10
+    facility: D004
+-
+    day: 'Friday Red'
+    class: 1
+    course: EV11
+    facility: D004
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: EV11
+    facility: D004
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: EV11
+    facility: D004
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: EV11
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: EV11
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: EX07
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: EX07
+    facility: C208
+-
+    day: 'Friday Red'
+    class: 2
+    course: EX07
+    facility: C208
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 2
+    course: EX07
+    facility: C208
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 2
+    course: EX07
+    facility: C208
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 3
+    course: EX07
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 3
+    course: EX07
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 4
+    course: EX07
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 4
+    course: EX07
+    facility: B003
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 4
+    course: EX07
+    facility: B003
+-
+    day: 'Friday Red'
+    class: 1
+    course: EX08
+    facility: B003
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: EX08
+    facility: B003
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: EX08
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: EX08
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: EX08
+    facility: B003
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 2
+    course: EX08
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 2
+    course: EX08
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 2
+    course: EX08
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 3
+    course: EX08
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 3
+    course: EX08
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: EX09
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: EX09
+    facility: C208
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: EX09
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: EX09
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: EX09
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: FL07
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: FL07
+    facility: C108
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: FL07
+    facility: C108
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 2
+    course: FL07
+    facility: C108
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 2
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: FL07
+    facility: C108
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 2
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 3
+    course: FL07
+    facility: C108
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 3
+    course: FL07
+    facility: C108
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 3
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 3
+    course: FL07
+    facility: C108
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 4
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 4
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 4
+    course: FL07
+    facility: C108
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 4
+    course: FL07
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: FL08
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 2
+    course: FL08
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 2
+    course: FL08
+    facility: C105
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 3
+    course: FL08
+    facility: C306
+-
+    day: 'Friday Red'
+    class: 1
+    course: FL09
+    facility: C101
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: FL09
+    facility: C101
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: FL09
+    facility: C106
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 2
+    course: FL09
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 3
+    course: FL09
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 3
+    course: FL09
+    facility: C304
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: FSHL12
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: FSHL12
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: FSHL12
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: FSHL12
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: FSHL13
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: FSHL13
+    facility: C104
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: FSSL12
+    facility: C104
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: FSSL12
+    facility: C104
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: FSSL12
+    facility: C104
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: FSSL12
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: FSSL13
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: FSSL13
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: FSSL13
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: HI10
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: HI10
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: HI10
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: HI10
+    facility: C309
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: HI10
+    facility: C309
+-
+    day: 'Friday Red'
+    class: 1
+    course: HI11
+    facility: C309
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: HI11
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: HI11
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: HI11
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: HI11
+    facility: C309
+-
+    day: 'Friday Red'
+    class: 1
+    course: HIHL12
+    facility: C309
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: HIHL12
+    facility: C309
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: HIHL12
+    facility: C309
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: HIHL12
+    facility: C309
+-
+    day: 'Friday Red'
+    class: 1
+    course: HISL12
+    facility: C309
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: HISL12
+    facility: C309
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: HISL12
+    facility: C309
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: HISL12
+    facility: C309
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: HISL13
+    facility: C309
+-
+    day: 'Friday Red'
+    class: 2
+    course: HISL13
+    facility: C309
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: HT07
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: HT07
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: HT07
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: HT07
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 2
+    course: HT07
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 2
+    course: HT07
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 2
+    course: HT07
+    facility: B003
+-
+    day: 'Friday Red'
+    class: 3
+    course: HT07
+    facility: C106
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 3
+    course: HT07
+    facility: C106
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 3
+    course: HT07
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 3
+    course: HT07
+    facility: C106
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 4
+    course: HT07
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 4
+    course: HT07
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 4
+    course: HT07
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: HT08
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: HT08
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: HT08
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: HT08
+    facility: C305
+-
+    day: 'Friday Red'
+    class: 2
+    course: HT08
+    facility: C106
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: HT08
+    facility: C106
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 2
+    course: HT08
+    facility: C106
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 2
+    course: HT08
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 3
+    course: HT08
+    facility: C105
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 3
+    course: HT08
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 3
+    course: HT08
+    facility: C105
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: HT09
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: HT09
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: HT09
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: HT09
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 2
+    course: HT09
+    facility: C208
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: HT09
+    facility: C208
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: HT09
+    facility: C208
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: HT09
+    facility: C208
+-
+    day: 'Friday Red'
+    class: 3
+    course: HT09
+    facility: C108
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 3
+    course: HT09
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 3
+    course: HT09
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 3
+    course: HT09
+    facility: C108
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: HT10
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: HT10
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: HT10
+    facility: B003
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: HT10
+    facility: B003
+-
+    day: 'Friday Red'
+    class: 3
+    course: HT10
+    facility: C105
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 3
+    course: HT10
+    facility: C105
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: HU09
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: HU09
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: HU09
+    facility: C306
+-
+    day: 'Friday Red'
+    class: 2
+    course: HU09
+    facility: C304
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: HU09
+    facility: C304
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 2
+    course: HU09
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 2
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 2
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 2
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 3
+    course: HU09
+    facility: C304
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 3
+    course: HU09
+    facility: C304
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 3
+    course: HU09
+    facility: C304
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 3
+    course: HU09
+    facility: C304
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 3
+    course: HU09
+    facility: C304
+-
+    day: 'Friday Red'
+    class: 1
+    course: JP07
+    facility: C206B
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: JP07
+    facility: C206B
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: JP07
+    facility: C206B
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: JP07
+    facility: C206B
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: JP07
+    facility: C206B
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: JP07
+    facility: C206B
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: JP08
+    facility: C206B
+-
+    day: 'Friday Red'
+    class: 1
+    course: JP09
+    facility: C206B
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: JP09
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: JP09
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: JP09
+    facility: C206B
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: JP09
+    facility: C206B
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: JP09
+    facility: C206B
+-
+    day: 'Friday Red'
+    class: 1
+    course: JP10
+    facility: C206B
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: JP10
+    facility: C206B
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: JP10
+    facility: C206B
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: JP10
+    facility: C206B
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: JP10
+    facility: C206B
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: JP10
+    facility: C206B
+-
+    day: 'Friday Red'
+    class: 1
+    course: JP11
+    facility: C206B
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: JP11
+    facility: C206B
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: JP11
+    facility: C206B
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: JP11
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: JP11
+    facility: C206B
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: JP11
+    facility: C206B
+-
+    day: 'Friday Red'
+    class: 2
+    course: MA07
+    facility: C203
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: MA07
+    facility: C203
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 2
+    course: MA07
+    facility: C203
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 2
+    course: MA07
+    facility: C203
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 2
+    course: MA07
+    facility: C203
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 2
+    course: MA07
+    facility: C203
+-
+    day: 'Friday Red'
+    class: 1
+    course: MA07
+    facility: C204
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: MA07
+    facility: C204
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: MA07
+    facility: C204
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: MA07
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: MA07
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MA07
+    facility: C204
+-
+    day: 'Friday Red'
+    class: 4
+    course: MA07
+    facility: C202
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 4
+    course: MA07
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 4
+    course: MA07
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 4
+    course: MA07
+    facility: C202
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 4
+    course: MA07
+    facility: C202
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 4
+    course: MA07
+    facility: C202
+-
+    day: 'Friday Red'
+    class: 3
+    course: MA07
+    facility: C201
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 3
+    course: MA07
+    facility: C201
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 3
+    course: MA07
+    facility: C201
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 3
+    course: MA07
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 3
+    course: MA07
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 3
+    course: MA07
+    facility: C201
+-
+    day: 'Friday Red'
+    class: 5
+    course: MA07
+    facility: C205
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 5
+    course: MA07
+    facility: C205
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 5
+    course: MA07
+    facility: C205
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 5
+    course: MA07
+    facility: C205
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 5
+    course: MA07
+    facility: C205
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 5
+    course: MA07
+    facility: C205
+-
+    day: 'Friday Red'
+    class: 4
+    course: MA08
+    facility: C205
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 4
+    course: MA08
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 4
+    course: MA08
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 4
+    course: MA08
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 4
+    course: MA08
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 4
+    course: MA08
+    facility: C205
+-
+    day: 'Friday Red'
+    class: 1
+    course: MA08
+    facility: C204
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: MA08
+    facility: C204
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: MA08
+    facility: C204
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: MA08
+    facility: C204
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: MA08
+    facility: C204
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MA08
+    facility: C204
+-
+    day: 'Friday Red'
+    class: 3
+    course: MA08
+    facility: C203
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 3
+    course: MA08
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 3
+    course: MA08
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 3
+    course: MA08
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 3
+    course: MA08
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 3
+    course: MA08
+    facility: C203
+-
+    day: 'Friday Red'
+    class: 2
+    course: MA08
+    facility: C202
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 2
+    course: MA08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 2
+    course: MA08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: MA08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: MA08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: MA08
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 2
+    course: MA09
+    facility: C201
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 3
+    course: MA09
+    facility: C203
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 5
+    course: MA09
+    facility: C205
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MA09
+    facility: C204
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 4
+    course: MA09
+    facility: C202
+-
+    day: 'Friday Red'
+    class: 4
+    course: MA10
+    facility: C205
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 4
+    course: MA10
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 4
+    course: MA10
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 4
+    course: MA10
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 4
+    course: MA10
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 4
+    course: MA10
+    facility: C205
+-
+    day: 'Friday Red'
+    class: 3
+    course: MA10
+    facility: C201
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 3
+    course: MA10
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 3
+    course: MA10
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 3
+    course: MA10
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 3
+    course: MA10
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 3
+    course: MA10
+    facility: C201
+-
+    day: 'Friday Red'
+    class: 2
+    course: MA10
+    facility: C203
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: MA10
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 2
+    course: MA10
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 2
+    course: MA10
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 2
+    course: MA10
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 2
+    course: MA10
+    facility: C203
+-
+    day: 'Friday Red'
+    class: 2
+    course: MA11
+    facility: C201
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 2
+    course: MA11
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 2
+    course: MA11
+    facility: C201
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 2
+    course: MA11
+    facility: C201
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 2
+    course: MA11
+    facility: C201
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 2
+    course: MA11
+    facility: C201
+-
+    day: 'Friday Red'
+    class: 1
+    course: MA11
+    facility: C202
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: MA11
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: MA11
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: MA11
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: MA11
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MA11
+    facility: C202
+-
+    day: 'Friday Red'
+    class: 3
+    course: MA11
+    facility: C205
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 3
+    course: MA11
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 3
+    course: MA11
+    facility: C205
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 3
+    course: MA11
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 3
+    course: MA11
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 3
+    course: MA11
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: MAASL12
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: MAASL12
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: MAASL12
+    facility: C203
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: MAASL12
+    facility: C203
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: MAHL13
+    facility: C206A
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: MAHL13
+    facility: C206A
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MAHL13
+    facility: C201
+-
+    day: 'Friday Red'
+    class: 1
+    course: MAISL12
+    facility: C203
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: MAISL12
+    facility: C203
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: MAISL12
+    facility: C203
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MAISL12
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MASL13
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MASL13
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: ME09
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: ME09
+    facility: B003
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: ME09
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: ME09
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ME09
+    facility: B003
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: ME10
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: ME10
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: ME10
+    facility: B003
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: ME10
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: ME10
+    facility: B003
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: ME11
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: ME11
+    facility: C108
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: ME11
+    facility: C108
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: ME11
+    facility: C108
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: ME11
+    facility: C108
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MSSL13
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: MSSL13
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: MSSL13
+    facility: C203
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: PE07
+    facility: Court
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: PE07
+    facility: Court
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 2
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 2
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 2
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 3
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 3
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 3
+    course: PE07
+    facility: Court
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 3
+    course: PE07
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 4
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 4
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 4
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 4
+    course: PE07
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: PE08
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: PE08
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: PE08
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: PE08
+    facility: Court
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 2
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 2
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 2
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 3
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 3
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 3
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 3
+    course: PE08
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: PE09
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: PE09
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: PE09
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: PE09
+    facility: Court
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: PE09
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 2
+    course: PE09
+    facility: Court
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 2
+    course: PE09
+    facility: Court
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 2
+    course: PE09
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: PE09
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 3
+    course: PE09
+    facility: Court
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 3
+    course: PE09
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 3
+    course: PE09
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 3
+    course: PE09
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 3
+    course: PE09
+    facility: Court
+-
+    day: 'Friday Red'
+    class: 1
+    course: PE10
+    facility: Hall
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: PE10
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: PE10
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: PE10
+    facility: Hall
+-
+    day: 'Friday Red'
+    class: 2
+    course: PE10
+    facility: Court
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 2
+    course: PE10
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 2
+    course: PE10
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 2
+    course: PE10
+    facility: Hall
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 3
+    course: PE10
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 3
+    course: PE10
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 3
+    course: PE10
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 3
+    course: PE10
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: PE11
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: PE11
+    facility: Hall
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: PE11
+    facility: Hall
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 2
+    course: PE11
+    facility: Court
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 2
+    course: PE11
+    facility: Court
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 2
+    course: PE11
+    facility: Court
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: PHHL12
+    facility: C301
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: PHHL12
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: PHHL12
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: PHHL12
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: PHHL13
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: PHHL13
+    facility: C301
+-
+    day: 'Friday Red'
+    class: 1
+    course: PHSL12
+    facility: C301
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: PHSL12
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: PHSL12
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: PHSL12
+    facility: C301
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: PHSL13
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: PHSL13
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: PHSL13
+    facility: C301
+-
+    day: 'Friday Red'
+    class: 1
+    course: PS12
+    facility: D105
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: PS12
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: PS13
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: PYHL12
+    facility: C305
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: PYHL12
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: PYHL12
+    facility: C305
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: PYHL12
+    facility: C305
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: PYSL12
+    facility: C305
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: PYSL12
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: PYSL12
+    facility: C305
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: PYSL12
+    facility: C305
+-
+    day: 'Friday Red'
+    class: 1
+    course: SC07
+    facility: C307
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: SC07
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: SC07
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: SC07
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: SC07
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SC07
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 2
+    course: SC07
+    facility: C202
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 2
+    course: SC07
+    facility: C202
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 2
+    course: SC07
+    facility: C202
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 2
+    course: SC07
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: SC07
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: SC07
+    facility: C202
+-
+    day: 'Friday Red'
+    class: 3
+    course: SC07
+    facility: C204
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 3
+    course: SC07
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 3
+    course: SC07
+    facility: C204
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 3
+    course: SC07
+    facility: D004
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 3
+    course: SC07
+    facility: D004
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 3
+    course: SC07
+    facility: C204
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 4
+    course: SC07
+    facility: C307
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 4
+    course: SC07
+    facility: C306
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 4
+    course: SC07
+    facility: C203
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 4
+    course: SC07
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 4
+    course: SC07
+    facility: D004
+-
+    day: 'Friday Red'
+    class: 1
+    course: SC08
+    facility: D004
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: SC08
+    facility: D004
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: SC08
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: SC08
+    facility: D004
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: SC08
+    facility: D004
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SC08
+    facility: D004
+-
+    day: 'Friday Red'
+    class: 2
+    course: SC08
+    facility: D004
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 2
+    course: SC08
+    facility: D004
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 2
+    course: SC08
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 2
+    course: SC08
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 2
+    course: SC08
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 2
+    course: SC08
+    facility: D002
+-
+    day: 'Friday Red'
+    class: 3
+    course: SC08
+    facility: C204
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 3
+    course: SC08
+    facility: C204
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 3
+    course: SC08
+    facility: D004
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 3
+    course: SC08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 3
+    course: SC08
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 3
+    course: SC08
+    facility: C202
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: SC09
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: SC09
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: SC09
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: SC09
+    facility: C307
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SC09
+    facility: C307
+-
+    day: 'Friday Red'
+    class: 2
+    course: SC09
+    facility: C301
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 2
+    course: SC09
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 2
+    course: SC09
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 2
+    course: SC09
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 2
+    course: SC09
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 2
+    course: SC09
+    facility: C301
+-
+    day: 'Friday Red'
+    class: 3
+    course: SC09
+    facility: C303
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 3
+    course: SC09
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 3
+    course: SC09
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 3
+    course: SC09
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Wednesday Red'
+    class: 3
+    course: SC09
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Wednesday Blue'
+    class: 3
+    course: SC09
+    facility: C303
+-
+    day: 'Friday Red'
+    class: 1
+    course: SC10
+    facility: C307
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SC10
+    facility: C307
+-
+    day: 'Friday Red'
+    class: 2
+    course: SC10
+    facility: C301
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 2
+    course: SC10
+    facility: C301
+-
+    day: 'Friday Red'
+    class: 3
+    course: SC10
+    facility: C303
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 3
+    course: SC10
+    facility: C303
+-
+    day: 'Friday Red'
+    class: 1
+    course: SC11
+    facility: C301
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SC11
+    facility: C301
+-
+    day: 'Friday Red'
+    class: 2
+    course: SC11
+    facility: C303
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 2
+    course: SC11
+    facility: C303
+-
+    day: 'Friday Red'
+    class: 1
+    course: SP07
+    facility: C104
+    period: 'Period 5'
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: SP07
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: SP07
+    facility: D105
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: SP07
+    facility: D105
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: SP07
+    facility: C104
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SP07
+    facility: C104
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: SP08
+    facility: C104
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: SP08
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: SP08
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SP08
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: SP08
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SP08
+    facility: D105
+-
+    day: 'Friday Red'
+    class: 1
+    course: SP09
+    facility: C104
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: SP09
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Monday Red'
+    class: 1
+    course: SP09
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Monday Blue'
+    class: 1
+    course: SP09
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: SP09
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: SP09
+    facility: C104
+-
+    day: 'Friday Red'
+    class: 1
+    course: SP10
+    facility: C104
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Friday Blue'
+    class: 1
+    course: SP10
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Monday Red'
+    class: 1
+    course: SP10
+    facility: C104
+-
+    period: 'Period 1'
+    day: 'Monday Blue'
+    class: 1
+    course: SP10
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: SP10
+    facility: C104
+-
+    period: 'Period 2'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SP10
+    facility: C104
+-
+    day: 'Friday Red'
+    class: 1
+    course: SP11
+    facility: D105
+    period: 'Period 1'
+-
+    period: 'Period 1'
+    day: 'Friday Blue'
+    class: 1
+    course: SP11
+    facility: D105
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: SP11
+    facility: D105
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: SP11
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: SP11
+    facility: C104
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: SP11
+    facility: C104
+-
+    period: 'Period 4'
+    day: 'Monday Red'
+    class: 1
+    course: SPHL12
+    facility: D105
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 1
+    course: SPHL12
+    facility: D105
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: SPHL12
+    facility: D105
+-
+    period: 'Period 1'
+    day: 'Wednesday Blue'
+    class: 1
+    course: SPHL12
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: SPHL13
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SPHL13
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: SPSL12
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: SPSL12
+    facility: D105
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: SPSL12
+    facility: D105
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SPSL12
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: SPSL13
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Monday Red'
+    class: 1
+    course: SPSL13
+    facility: D105
+-
+    period: 'Period 2'
+    day: 'Monday Blue'
+    class: 1
+    course: SPSL13
+    facility: D105
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: SS12
+    facility: C106
+-
+    period: 'Period 2'
+    day: 'Tuesday Red'
+    class: 1
+    course: TAHL12
+    facility: C208
+-
+    period: 'Period 2'
+    day: 'Tuesday Blue '
+    class: 1
+    course: TAHL12
+    facility: C208
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: TAHL12
+    facility: C208
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: TAHL12
+    facility: C208
+-
+    period: 'Period 5'
+    day: 'Monday Red'
+    class: 1
+    course: TASL12
+    facility: C208
+-
+    period: 'Period 5'
+    day: 'Monday Blue'
+    class: 1
+    course: TASL12
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: TASL12
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: TASL12
+    facility: C208
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 1
+    course: TOK12
+    facility: C309
+-
+    day: 'Friday Red'
+    class: 2
+    course: TOK12
+    facility: C102
+    period: 'Period 4'
+-
+    period: 'Period 4'
+    day: 'Friday Blue'
+    class: 2
+    course: TOK12
+    facility: C102
+-
+    period: 'Period 4'
+    day: 'Tuesday Red'
+    class: 1
+    course: TOK13
+    facility: C102
+-
+    period: 'Period 4'
+    day: 'Tuesday Blue '
+    class: 1
+    course: TOK13
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Wednesday Red'
+    class: 1
+    course: TOK13
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Wednesday Blue'
+    class: 1
+    course: TOK13
+    facility: C102
+-
+    period: 'Period 5'
+    day: 'Friday Red'
+    class: 1
+    course: VAHL12
+    facility: D100
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: VAHL12
+    facility: D100
+-
+    period: 'Period 3'
+    day: 'Tuesday Blue '
+    class: 1
+    course: VAHL12
+    facility: D100
+-
+    day: 'Friday Red'
+    class: 1
+    course: VASL12
+    facility: D100
+    period: 'Period 2'
+-
+    period: 'Period 2'
+    day: 'Friday Blue'
+    class: 1
+    course: VASL12
+    facility: D100
+-
+    period: 'Period 1'
+    day: 'Thursday Red'
+    class: 1
+    course: VASL12
+    facility: D100
+-
+    period: 'Period 1'
+    day: 'Thursday Blue'
+    class: 1
+    course: VASL12
+    facility: D100
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: MASL13
+    facility: C205
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: MASL13
+    facility: C205
+-
+    period: 'Period 2'
+    day: 'Friday Red'
+    class: 1
+    course: CNSL13
+    facility: D104
+-
+    period: 'Period 2'
+    day: 'Friday Red'
+    class: 1
+    course: CNHL13
+    facility: D101
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: CHSL12
+    facility: C303
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: CHHL12
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: CHSL13
+    facility: C303
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: CHSL13
+    facility: C303
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: ENSL13
+    facility: C102
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: ENSL13
+    facility: C102
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: SS12
+    facility: C106
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: ENHL12
+    facility: C101
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: CNHL12
+    facility: D002
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: ENHL13
+    facility: C103
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 2
+    course: ENHL12
+    facility: C103
+-
+    period: 'Period 2'
+    day: 'Friday Red'
+    class: 1
+    course: SPSL12
+    facility: D105
+-
+    day: 'Friday Red'
+    class: 1
+    course: PS13
+    facility: D105
+    period: 'Period 3'
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: ESSL13
+    facility: C306
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: ESSL13
+    facility: C306
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: ECHL13
+    facility: C306
+-
+    day: 'Friday Red'
+    class: 1
+    course: ESSL12
+    facility: C306
+    period: 'Period 2'
+-
+    day: 'Friday Red'
+    class: 1
+    course: ECHL13
+    facility: C306
+    period: 'Period 4'
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: VAHL12
+    facility: D100
+-
+    day: 'Friday Red'
+    class: 1
+    course: PHSL13
+    facility: C301
+    period: 'Period 3'
+-
+    day: 'Friday Red'
+    class: 1
+    course: TOK12
+    facility: C309
+    period: 'Period 4'
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: PYHL13
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: HISL13
+    facility: C309
+-
+    period: 'Period 3'
+    day: 'Tuesday Red'
+    class: 1
+    course: MSSL13
+    facility: C203
+-
+    day: 'Friday Red'
+    class: 1
+    course: FSSL13
+    facility: C104
+    period: 'Period 1'
+-
+    day: 'Friday Red'
+    class: 1
+    course: BIHL12
+    facility: C307
+    period: 'Period 1'
+-
+    period: 'Period 2'
+    day: 'Wednesday Red'
+    class: 1
+    course: BISL13
+    facility: C307
+-
+    period: 'Period 5'
+    day: 'Thursday Red'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    period: 'Period 5'
+    day: 'Thursday Blue'
+    class: 1
+    course: BIHL12
+    facility: C307
+-
+    day: 'Friday Red'
+    class: 1
+    course: MAAHL12
+    facility: C201
+    period: 'Period 3'
+-
+    period: 'Period 2'
+    day: 'Thursday Red'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 2'
+    day: 'Thursday Blue'
+    class: 1
+    course: MAAHL12
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Wednesday Red'
+    class: 1
+    course: MAHL13
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Thursday Blue'
+    class: 1
+    course: MAHL13
+    facility: C201
+-
+    period: 'Period 4'
+    day: 'Thursday Red'
+    class: 1
+    course: MAHL13
+    facility: C201
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 3
+    course: FL08
+    facility: C105
+-
+    period: 'Period 4'
+    day: 'Monday Blue'
+    class: 3
+    course: HT08
+    facility: C105
+-
+    period: 'Period 1'
+    day: 'Tuesday Red'
+    class: 1
+    course: MA10
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Thursday Red'
+    class: 1
+    course: MA10
+    facility: C202
+-
+    day: 'Friday Red'
+    class: 1
+    period: 'Period 5'
+    course: MA10
+    facility: C202
+-
+    period: 'Period 1'
+    day: 'Tuesday Blue '
+    class: 1
+    course: MA10
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 1
+    course: MA10
+    facility: C202
+-
+    period: 'Period 5'
+    day: 'Friday Blue'
+    class: 1
+    course: MA10
+    facility: C202
+-
+    period: 'Period 3'
+    day: 'Thursday Blue'
+    class: 3
+    course: EX08
+    facility: B003
+-
+    period: 'Period 4'
+    day: 'Friday Red'
+    class: 3
+    course: DCVT08
+    facility: C107

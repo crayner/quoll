@@ -14,9 +14,11 @@
 namespace App\Modules\Timetable\Repository;
 
 use App\Modules\People\Entity\Person;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Timetable\Entity\TimetablePeriod;
 use App\Modules\Timetable\Entity\TimetableDay;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -67,5 +69,30 @@ class TimetablePeriodRepository extends ServiceEntityRepository
             $result = $query->getResult();
 
         return $result;
+    }
+
+    /**
+     * findOneByPeriodNameDayName
+     *
+     * 14/10/2020 14:39
+     * @param string $periodName
+     * @param string $dayName
+     * @return TimetablePeriod|null
+     */
+    public function findOneByPeriodNameDayName(string $periodName, string $dayName): ?TimetablePeriod
+    {
+        try {
+            return $this->createQueryBuilder('tp')
+                ->leftJoin('tp.timetableDay', 'td')
+                ->leftJoin('td.timetable', 't')
+                ->where('td.name = :dayName')
+                ->andWhere('tp.name = :periodName')
+                ->andWhere('t.academicYear = :current')
+                ->setParameters(['dayName' => $dayName, 'periodName' => $periodName, 'current' => AcademicYearHelper::getCurrentAcademicYear()])
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 }

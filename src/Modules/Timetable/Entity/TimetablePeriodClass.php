@@ -17,6 +17,7 @@ use App\Manager\AbstractEntity;
 use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Entity\Facility;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,8 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="course_class", columns={"course_class"}),
  *     @ORM\Index(name="facility", columns={"facility"}),
  *     @ORM\Index(name="period", columns={"period"})
- * })
+ * },
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="period_class",columns={"period","course_class"})}
+ *     )
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity({"period","courseClass"})
  */
 class TimetablePeriodClass extends AbstractEntity
 {
@@ -163,7 +167,7 @@ class TimetablePeriodClass extends AbstractEntity
         return [
             'id' => $this->getId(),
             'tutors' => implode(",\n<br />", $this->getCourseClass()->getTutorNames()),
-            'name' => $this->getCourseClass()->getFullName(),
+            'name' => $this->getCourseClass()->getFullName(false),
             'abbreviation' => $this->getCourseClass()->getAbbreviatedName(),
             'location' => $this->getFacility()->getName(),
             'period' => $this->getPeriod()->getId(),
