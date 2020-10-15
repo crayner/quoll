@@ -1,5 +1,8 @@
 {% trans_default_domain 'Timetable' %}
-
+{% if period.type in ['Pastoral','Service','Break','Other'] %}
+    {% set periodType = 'period.' ~ period.type|lower %}
+    <div class="warning">{{ periodType|trans }}</div>
+{% endif %}
 <div class="flex flex-wrap rounded border bg-gray-100 mb-3">
     <div class="w-full p-2 border-b -mb-px sm:w-1/2 lg:w-1/3" style="">
         <span class="block text-sm text-gray-700 font-bold mb-1">{{ 'Timetable'|trans }}</span>

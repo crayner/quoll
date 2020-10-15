@@ -14,6 +14,8 @@
 namespace App\Modules\Timetable\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\RollGroup\Entity\RollGroup;
+use App\Provider\ProviderFactory;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -94,7 +96,7 @@ class TimetablePeriod extends AbstractEntity
     /**
      * @var array
      */
-    private static $typeList = ['Lesson','Pastoral','Sport','Break','Service','Other'];
+    private static array $typeList = ['Lesson','Pastoral','Sport','Break','Service','Other'];
 
     /**
      * @var Collection|TimetablePeriodClass[]|null
@@ -291,7 +293,7 @@ class TimetablePeriod extends AbstractEntity
             'time' => $this->getTimeStartName() . ' - ' . $this->getTimeEndName(),
             'type' => $this->getType(),
             'canDelete' => $this->canDelete(),
-            'classes' => (string) $this->getPeriodClasses()->count(),
+            'classes' => strval(intval($this->getPeriodClasses()->count()) + intval(ProviderFactory::create(RollGroup::class)->countForPeriod($this))),
         ];
     }
 

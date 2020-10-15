@@ -95,7 +95,7 @@ class PaginationAction
      */
     public function __construct(string $domain = 'messages')
     {
-        $this->setAClass('thickbox p-3 sm:p-0');
+        $this->setAClass('p-3 sm:p-0');
         $this->setDomain($domain);
     }
 

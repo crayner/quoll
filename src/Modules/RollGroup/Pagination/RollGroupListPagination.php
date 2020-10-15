@@ -87,7 +87,7 @@ class RollGroupListPagination  extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('View')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-search-plus fa-fw fa-1-5x text-gray-800 hover:text-orange-500')
             ->setRoute('roll_group_detail')
@@ -96,7 +96,7 @@ class RollGroupListPagination  extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Edit')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('roll_group_edit')
@@ -105,7 +105,7 @@ class RollGroupListPagination  extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Copy to Next Year')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('far fa-copy fa-fw fa-1-5x text-gray-800 hover:text-green-500')
             ->setRoute('roll_group_duplicate')
@@ -115,7 +115,7 @@ class RollGroupListPagination  extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('roll_group_delete')

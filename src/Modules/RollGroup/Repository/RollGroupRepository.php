@@ -135,4 +135,25 @@ class RollGroupRepository extends ServiceEntityRepository
             return 0;
         }
     }
+
+    /**
+     * countByAcademicYear
+     *
+     * 15/10/2020 08:35
+     * @param AcademicYear $year
+     * @return int
+     */
+    public function countByAcademicYear(AcademicYear $year): int
+    {
+        try {
+            return intval($this->createQueryBuilder('rg')
+                ->where('rg.academicYear = :current')
+                ->setParameter('current', $year)
+                ->select('COUNT(rg.id)')
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

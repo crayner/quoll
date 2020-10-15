@@ -85,7 +85,7 @@ class NotificationEventPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Edit')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('notification_edit')

@@ -84,7 +84,7 @@ class StringReplacementPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('p-2 sm:p-3')
             ->setSpanClass('fas fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('string_delete')

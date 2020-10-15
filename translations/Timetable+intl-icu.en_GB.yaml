@@ -97,3 +97,17 @@ Edit Course {name}: Edit Course {name}
 Course Enrolment by Class: Course Enrolment by Class
 Individual Enrolment: Individual Enrolment
 Remove All Periods: Remove all Periods
+period:
+    pastoral: 'The period selected is a "pastoral" period, and Roll Groups will be applied to this period.'
+    break: 'The period selected is a "break" period.'
+    service: 'The period selected is a "service" period.'
+    other: 'The period selected is an "other" period.'
+Class: Class
+Classes: Classes
+Day: Day
+Location: Location
+Manage Classes in Period: Manage Classes in Period
+Period: Period
+Tutors: Tutors
+Add Class: Add Class
+Add Class in Period: Add Class in Period

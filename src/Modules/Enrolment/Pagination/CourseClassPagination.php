@@ -67,7 +67,7 @@ class CourseClassPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $row->addAction($action->setTitle('Edit')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('course_class_edit')
@@ -76,7 +76,7 @@ class CourseClassPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $row->addAction($action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('course_class_delete')

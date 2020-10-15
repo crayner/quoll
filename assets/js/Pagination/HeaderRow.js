@@ -38,13 +38,13 @@ export default function HeaderRow(props) {
 
     let selectRow = null
     if (row.selectRow) {
-        selectRow = (<div className={'float-right pl-1'}><input type={'checkBox'} checked={selectAllRows} onChange={() => functions.toggleAll()} /></div>)
+        selectRow = (<div className={'pl-1'}><input type={'checkBox'} checked={selectAllRows} onChange={() => functions.toggleAll()} /></div>)
     }
 
     if (row.actions.length > 0) {
-        columns.push(<th className={'column width1 text-right'} key={'actions'}>
-            <div className={'w-full'}>
-                <div className={'w-full float-right'}>{selectRow}{row.actionTitle}</div>
+        columns.push(<th className={'column relative width1'} key={'actions'}>
+            <div className={'flex'}>
+                {row.actionTitle}{selectRow}
             </div>
         </th>)
     }

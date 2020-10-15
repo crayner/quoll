@@ -79,7 +79,7 @@ class TimetableDayPagination extends AbstractPaginationManager
 
         $action = new PaginationAction('Timetable');
         $action->setTitle('Edit')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-edit fa-fw fa-1-5x text-gray-800 hover:text-indigo-500')
             ->setRoute('timetable_day_edit')
@@ -88,7 +88,7 @@ class TimetableDayPagination extends AbstractPaginationManager
 
         $action = new PaginationAction('Timetable');
         $action->setTitle('Copy Periods')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('far fa-clone fa-fw fa-1-5x text-gray-800 hover:text-orange-500')
             ->setRoute('timetable_day_period_duplicate')
@@ -98,7 +98,7 @@ class TimetableDayPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Remove All Periods')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('fas fa-eraser fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('timetable_day_period_remove_all')
@@ -108,7 +108,7 @@ class TimetableDayPagination extends AbstractPaginationManager
 
         $action = new PaginationAction();
         $action->setTitle('Delete')
-            ->setAClass('thickbox p-3 sm:p-0')
+            ->setAClass('p-3 sm:p-0')
             ->setColumnClass('column p-2 sm:p-3')
             ->setSpanClass('far fa-trash-alt fa-fw fa-1-5x text-gray-800 hover:text-red-500')
             ->setRoute('timetable_day_delete')

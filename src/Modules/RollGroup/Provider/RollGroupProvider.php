@@ -17,6 +17,7 @@
 namespace App\Modules\RollGroup\Provider;
 
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\Timetable\Entity\TimetablePeriod;
 use App\Provider\AbstractProvider;
 use App\Modules\RollGroup\Entity\RollGroup;
 
@@ -42,5 +43,19 @@ class RollGroupProvider extends AbstractProvider
     public function canDelete(RollGroup $roll): bool
     {
         return $roll->getStudentRollGroups()->count() === 0;
+    }
+
+    /**
+     * countForPeriod
+     *
+     * 15/10/2020 08:29
+     * @param TimetablePeriod $period
+     * @return int
+     */
+    public function countForPeriod(TimetablePeriod $period): int
+    {
+        if ($period->getType() !== 'Pastoral') return 0;
+
+        return $this->getRepository()->countByAcademicYear($period->getTimetableDay()->getTimetable()->getAcademicYear());
     }
 }

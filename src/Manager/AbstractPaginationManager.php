@@ -327,6 +327,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Filter', [], 'messages');
         TranslationHelper::addTranslation('Delete', [], 'messages');
         TranslationHelper::addTranslation('All', [], 'messages');
+        TranslationHelper::addTranslation('Disabled', [], 'messages');
         TranslationHelper::addTranslation('Clear', [], 'messages');
         TranslationHelper::addTranslation('Search for', [], 'messages');
         TranslationHelper::addTranslation('Filter Select', [], 'messages');

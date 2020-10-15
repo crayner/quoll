@@ -87,27 +87,31 @@ export default function ContentRow(props) {
     })
     // add Actions column
     let selectAction = null
-    let actions = Object.keys(row.actions).map(actionKey => {
+    let actions = []
+    Object.keys(row.actions).map(actionKey => {
         let action = row.actions[actionKey]
         if (!action.selectRow) {
             rowContent.options = action.options
             if (action.displayWhen === '' || rowContent[action.displayWhen] === true || rowContent[action.displayWhen] === 'Y') {
                 if (action.onClick === '') {
-                    return (
-                        <a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass}
+                    actions.push(<a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass}
                            key={actionKey}
                            title={action.title}><span className={action.spanClass}/></a>)
+                    return
                 }
                 if (action.onClick === false) {
-                    return (
-                        <a href={rowContent.actions[actionKey].url} className={action.aClass}
+                    actions.push(<a href={rowContent.actions[actionKey].url} className={action.aClass}
                            key={actionKey}
                            title={action.title}><span className={action.spanClass}/></a>)
+                    return
                 }
 
-                return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey], rowContent)}
+                actions.push(<a onClick={() => functions[action.onClick](rowContent.actions[actionKey], rowContent)}
                            className={action.aClass} key={actionKey} title={action.title}>
                     <span className={action.spanClass}/></a>)
+            } else {
+                const spanClass = action.spanClass.replace('text-gray-800','text-transparent').replace(/hover:text-(\w.*)-500/g, 'hover:text-white').trim()
+                actions.push(<span title={functions.translate('Disabled')} className={spanClass} key={actionKey} />)
             }
         } else {
             selectAction = {...action}
@@ -116,15 +120,13 @@ export default function ContentRow(props) {
 
     let selectedRow = null
     if (row.selectRow) {
-        selectedRow = (<div className={'float-right pl-1 mt-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
+        selectedRow = (<div className={'pl-1 mt-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
     }
 
     if (row.actions.length > 0) {
-        columns.push(<td key={'actions'} className={'column width1 text-right'}>
-            <div className={'w-full'}>
-                <div className={'float-right flex'}>
-                    {actions}{selectedRow}
-                </div>
+        columns.push(<td key={'actions'} className={'column relative width1'}>
+            <div className={'flex'}>
+                {actions}{selectedRow}
             </div>
         </td>)
     }
