@@ -47,23 +47,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class AttendanceController extends AbstractPageController
 {
     /**
-     * manage
-     * @param ContainerManager $manager
+     * list
+     *
+     * 17/10/2020 10:19
      * @param AttendanceCodePagination $pagination
      * @param string $tabName
-     * @return mixed
      * @Route("/attendance/code/list/{tabName}",name="attendance_code_list")
      * @Route("/attendance/code/list/{tabName}",name="attendance_code_configure")
      * @Route("/attendance/code/{code}/delete/", name="attendance_code_delete")
      * @IsGranted("ROLE_ROUTE")
-     * 12/06/2020 13:44
+     * @return JsonResponse
      */
-    public function list(ContainerManager $manager, AttendanceCodePagination $pagination, string $tabName = 'Code')
+    public function list(AttendanceCodePagination $pagination, string $tabName = 'Code')
     {
         SettingFactory::getSettingManager()->getSettingsByScope('Attendance');
 
-        if ($this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '') {
-            return $this->saveSettings($tabName, $manager);
+        if ($this->isPostContent()) {
+            return $this->saveSettings($tabName, $this->getContainerManager());
         }
 
         $container = new Container($tabName);
@@ -95,33 +95,28 @@ class AttendanceController extends AbstractPageController
         $container->addForm('CLI', $form->createView())
             ->addPanel($panel);
 
-        $manager->addContainer($container->setSelectedPanel($tabName));
-        return $this->getPageManager()->createBreadcrumbs('Alert Levels', [])
-            ->render(['containers' => $manager->getBuiltContainers()]);
+        return $this->getPageManager()
+            ->createBreadcrumbs('Alert Levels', [])
+            ->render(['containers' => $this->getContainerManager()
+                ->addContainer($container->setSelectedPanel($tabName))
+                ->getBuiltContainers()]);
     }
 
     /**
      * saveSettings
+     *
+     * 17/10/2020 10:28
      * @param string $tabName
      * @param ContainerManager $manager
      * @return JsonResponse
-     * 13/06/2020 08:25
      */
     private function saveSettings(string $tabName, ContainerManager $manager)
     {
         $form = $this->getForm($tabName);
 
-        SettingFactory::getSettingManager()->handleSettingsForm($form,$this->getRequest());
-        $data['status'] = SettingFactory::getSettingManager()->getStatus();
-        $data['errors'] = SettingFactory::getSettingManager()->getErrors();
-        if ($data['status'] === 'success') {
-            $form = $this->getForm($tabName);
-        }
+        SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
 
-        $manager->singlePanel($form->createView());
-        $data['form'] = $manager->getFormFromContainer();
-
-        return new JsonResponse($data);
+        return $this->singleForm($form);
     }
 
     /**

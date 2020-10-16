@@ -19,6 +19,7 @@ namespace App\Modules\Attendance\Form;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\System\Form\SettingsType;
@@ -52,6 +53,11 @@ class AttendanceContextType extends AbstractType
             ->add('settings', SettingsType::class,
                 [
                     'settings' => [
+                        [
+                            'scope' => 'Attendance',
+                            'name' => 'dailyAttendanceTimes',
+                            'entry_type' => SimpleArrayType::class,
+                        ],
                         [
                             'scope' => 'Attendance',
                             'name' => 'countClassAsSchool',

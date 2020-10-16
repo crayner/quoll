@@ -1044,6 +1044,9 @@ parameters:
                 value: null
                 type: string
         Attendance:
+            dailyAttendanceTimes:
+                type: array
+                value: []
             attendanceReasons:
                 value:
                     - Pending
