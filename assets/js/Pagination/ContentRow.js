@@ -120,7 +120,16 @@ export default function ContentRow(props) {
 
     let selectedRow = null
     if (row.selectRow) {
-        selectedRow = (<div className={'pl-1 mt-1'}><input type={'checkBox'} checked={rowContent.selected} onChange={() => functions.toggleSelectedRow(rowContent)} /></div>)
+        if (typeof rowContent.selected === 'undefined') {
+            rowContent.selected = false
+        }
+        if (rowContent.selected === true) {
+            selectedRow = (<a onClick={() => functions.toggleSelectedRow(rowContent)} className={'p-3 sm:p-0'}
+                   title={functions.translate('Toggle Selection')}><span className={'far fa-check-circle fa-fw fa-1-5x text-teal-800 hover:text-gray-500'}/></a>)
+        } else {
+            selectedRow = (<a onClick={() => functions.toggleSelectedRow(rowContent)} className={'p-3 sm:p-0'}
+                   title={functions.translate('Toggle Selection')}><span className={'far fa-circle fa-fw fa-1-5x text-gray-800 hover:text-teal-500'}/></a>)
+        }
     }
 
     if (row.actions.length > 0) {

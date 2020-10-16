@@ -38,7 +38,13 @@ export default function HeaderRow(props) {
 
     let selectRow = null
     if (row.selectRow) {
-        selectRow = (<div className={'pl-1'}><input type={'checkBox'} checked={selectAllRows} onChange={() => functions.toggleAll()} /></div>)
+        if (selectAllRows === true) {
+            selectRow = (<a onClick={() => functions.toggleAll()} style={{marginTop: '-5px'}}
+                            title={functions.translate('Deselect All')}><span className={'pl-1 far fa-check-circle fa-fw fa-1-5x text-teal-800 hover:text-gray-500'}/></a>)
+        } else {
+            selectRow = (<a onClick={() => functions.toggleAll()} style={{marginTop: '-5px'}}
+                            title={functions.translate('Select All')}><span className={'pl-1 far fa-circle fa-fw fa-1-5x text-gray-700 hover:text-teal-500'}/></a>)
+        }
     }
 
     if (row.actions.length > 0) {

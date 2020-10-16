@@ -340,6 +340,9 @@ abstract class AbstractPaginationManager implements PaginationInterface
         TranslationHelper::addTranslation('Loading', [], 'messages');
         TranslationHelper::addTranslation('Select action...', [], 'messages');
         TranslationHelper::addTranslation('Selected Row Action', [], 'messages');
+        TranslationHelper::addTranslation('Toggle Selection', [], 'messages');
+        TranslationHelper::addTranslation('Deselect All', [], 'messages');
+        TranslationHelper::addTranslation('Select All', [], 'messages');
         TranslationHelper::addTranslation('This action will result in multiple changes to the database that may not be corrected easily. Do you wish to proceed?', [], 'messages');
         return TranslationHelper::getTranslations();
     }
