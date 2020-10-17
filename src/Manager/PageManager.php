@@ -525,16 +525,19 @@ class PageManager
     /**
      * getTitle
      *
-     * 12/10/2020 09:58
+     * 18/10/2020 09:00
      * @return string
      */
     private function getTitle(): string
     {
-        if ($this->title === '' && isset($this->getBreadCrumbs()['title'])) {
+        if (($this->title === '' || $this->title === []) && isset($this->getBreadCrumbs()['title'])) {
             $this->title = $this->getBreadCrumbs()['title'];
         }
+
         if (is_array($this->title) && count($this->title) === 3) return TranslationHelper::translate($this->title[0], $this->title[1], $this->title[2]);
+
         $domain = $this->getModule() ? str_replace(' ', '', $this->getModule()->getName()) : 'messages';
+        if (is_array($this->title) && count($this->title) === 2) return TranslationHelper::translate($this->title[0], $this->title[1], $domain);
 
         return TranslationHelper::translate($this->title, [], $domain);
     }
@@ -545,6 +548,7 @@ class PageManager
      */
     public function setTitle($title): PageManager
     {
+        dump($title);
         $this->title = $title;
         return $this;
     }
@@ -588,7 +592,7 @@ class PageManager
         $result['module'] = $this->getModule() ? $this->getModule()->getName() : '';
 
         $this->breadCrumbs->create($result, $this->getDefinition());
-        if ($this->title === null) $this->setTitle([$title,$params,$domain]);
+        if (empty($this->title)) $this->setTitle([$title,$params,$domain]);
         return $this;
     }
 
@@ -1047,5 +1051,16 @@ class PageManager
     public function getDomain(): string
     {
         return $this->domain = $this->domain !== '' ? $this->domain : 'messages';
+    }
+
+    /**
+     * getTwig
+     *
+     * 16/10/2020 14:16
+     * @return Environment
+     */
+    public function getTwig(): Environment
+    {
+        return $this->twig;
     }
 }
