@@ -20,18 +20,20 @@ export default function Panel(props) {
     Object.keys(panel.sections).map(sectionKey => {
         const section = panel.sections[sectionKey]
         if (section.style === 'form') {
-            sections.push(<SectionForm {...props} singlePanel={singlePanel} section={section} key={sectionKey}/>)
+            sections.push(<section className={'panel_section'}><SectionForm {...props} singlePanel={singlePanel} section={section} key={sectionKey}/></section>)
         } else if (section.style === 'pagination') {
             const pagination = section.content
-            sections.push(<PaginationApp {...props} {...pagination} key={sectionKey} />)
+            sections.push(<section className={'panel_section'}><PaginationApp {...props} {...pagination} key={sectionKey} /></section>)
         } else if (section.style === 'html') {
-            sections.push(Parser(section.content))
+            sections.push(<section className={'panel_section'}>{Parser(section.content)}</section>)
         } else if (section.style === 'special') {
             const special = section.content
-            sections.push(<SpecialApp {...special} {...props} name={section.content.name} key={sectionKey} />)
+            sections.push(<section className={'panel_section'}><SpecialApp {...special} {...props} name={section.content.name} key={sectionKey} /></section>)
         } else {
             console.log(props,section)
-            console.error('Section style [' + section.style + '] is not defined.')
+            const error = 'Section style [' + section.style + '] is not defined.'
+            console.error(error)
+            sections.push(<section className={'panel_section'}>{error}</section>)
         }
     })
 

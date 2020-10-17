@@ -951,3 +951,11 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     border-width: 7px;
     border-style: solid;
 }
+.panel_section + .panel_section {
+    border-top-color: gray;
+    border-top-style: dotted;
+    border-top-width: 2px;
+}
+.panel_section {
+    clear: both;
+}

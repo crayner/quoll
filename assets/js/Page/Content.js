@@ -77,7 +77,7 @@ export default function Content(props) {
         if (popup) {
             x.push(<a className={'close-button gray ml-3'} onClick={() => window.close()}
                       title={functions.translate('Close')} key={w++}>
-                <span className={'fas fa-times-circle fa-fw text-gray-800 hover:text-green-500'}></span>
+                <span className={'fas fa-times-circle fa-fw text-gray-800 hover:text-green-500'} />
             </a>)
         }
 
