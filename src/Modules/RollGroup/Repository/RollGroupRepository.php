@@ -44,7 +44,10 @@ class RollGroupRepository extends ServiceEntityRepository
 
     /**
      * findByTutor
+     *
+     * 18/10/2020 09:56
      * @param Person $tutor
+     * @param AcademicYear|null $schoolYear
      * @return array
      */
     public function findByTutor(Person $tutor, ?AcademicYear $schoolYear): array

@@ -18,8 +18,12 @@ namespace App\Modules\School\Util;
 
 use App\Container\Panel;
 use App\Container\Section;
+use App\Manager\Hidden\WarningItem;
+use App\Manager\PageManager;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\System\Manager\DemoDataInterface;
+use App\Modules\System\Manager\SettingFactory;
+use App\Modules\Timetable\Manager\Hidden\Day;
 use App\Provider\ProviderFactory;
 use DateInterval;
 use DateTime;
@@ -37,31 +41,17 @@ use Twig\Error\SyntaxError;
 
 /**
  * Class AcademicYearHelper
+ *
+ * 3/09/2019 10:01
  * @package App\Modules\School\Util
  * @author Craig Rayner <craig@craigrayner.com>
  */
 class AcademicYearHelper implements DemoDataInterface
 {
     /**
-     * @var RequestStack
+     * @var PageManager 
      */
-    private static RequestStack $stack;
-
-    /**
-     * @var Environment
-     */
-    private static Environment $twig;
-
-    /**
-     * AcademicYearHelper constructor.
-     * @param RequestStack $stack
-     * @param Environment $twig
-     */
-    public function __construct(RequestStack $stack, Environment $twig)
-    {
-        self::$stack = $stack;
-        self::$twig = $twig;
-    }
+    private static PageManager $pageManager;
 
     /**
      * getCurrentAcademicYear
@@ -71,7 +61,7 @@ class AcademicYearHelper implements DemoDataInterface
      */
     public static function getCurrentAcademicYear(bool $refresh = false)
     {
-        $session = self::$stack->getCurrentRequest()->getSession();
+        $session = self::getStack()->getCurrentRequest()->getSession();
         if ($session->has('academicYear') && $session->get('academicYear') !== null) {
             if ($refresh) {
                 $current =  ProviderFactory::getRepository(AcademicYear::class)->find($session->get('academicYear')->getId());
@@ -147,7 +137,16 @@ class AcademicYearHelper implements DemoDataInterface
     public static function academicYearWarning(Panel $panel): Panel
     {
         try {
-            return $panel->addSection(new Section('html', self::$twig->render('school/academic_year_warning.html.twig')));
+            $warning = new WarningItem();
+            $warning
+                ->setPriority(75)
+                ->setContent(self::getTwig()->render('school/academic_year_sidebar_warning.html.twig'))
+                ->setPosition('bottom')
+            ;
+            self::getPageManager()
+                ->getSidebar()
+                ->addContent($warning);
+            return $panel->addSection(new Section('html', self::getTwig()->render('school/academic_year_warning.html.twig')));
         } catch (LoaderError | RuntimeError | SyntaxError $e) {}
         return $panel;
     }
@@ -181,7 +180,7 @@ class AcademicYearHelper implements DemoDataInterface
      */
     private static function getSession(): SessionInterface
     {
-        return self::$stack->getCurrentRequest()->getSession();
+        return self::getStack()->getCurrentRequest()->getSession();
     }
 
     /**
@@ -208,5 +207,89 @@ class AcademicYearHelper implements DemoDataInterface
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * PageManager
+     *
+     * 16/10/2020 14:14
+     * @return PageManager
+     */
+    public static function getPageManager(): PageManager
+    {
+        return self::$pageManager;
+    }
+
+    /**
+     * @param PageManager $pageManager
+     */
+    public static function setPageManager(PageManager $pageManager): void
+    {
+        self::$pageManager = $pageManager;
+    }
+
+    /**
+     * getStack
+     *
+     * 16/10/2020 14:14
+     * @return RequestStack
+     */
+    private static function getStack(): RequestStack
+    {
+        return self::getPageManager()->getStack();
+    }
+
+    /**
+     * getTwig
+     *
+     * 16/10/2020 14:16
+     * @return Environment
+     */
+    private static function getTwig(): Environment
+    {
+        return self::getPageManager()->getTwig();
+    }
+
+    /**
+     * isDateInCurrentYear
+     *
+     * 17/10/2020 09:31
+     * @param DateTimeImmutable $date
+     * @return bool
+     */
+    public static function isDateInCurrentYear(DateTimeImmutable $date): bool
+    {
+        return $date >= self::getCurrentAcademicYear()->getFirstDay() && $date <= self::getCurrentAcademicYear()->getLastDay();
+    }
+
+    /**
+     * getPreviousSchoolDays
+     *
+     * 21/10/2020 11:31
+     * @param DateTimeImmutable|null $date
+     * @param int $days
+     * @return array
+     */
+    public static function getPreviousSchoolDays(?DateTimeImmutable $date = null, int $days = 5): array
+    {
+        $date = $date ?: new DateTimeImmutable();
+        $result = [];
+        if (!self::isDateInCurrentYear($date)) return $result;
+        $period = new DateInterval('P1D');
+        for ($i=0; $i<$days; $i++) {
+            $date = $date->sub($period);
+            $day = new Day(clone $date);
+            while (self::isDateInCurrentYear($day->getDate()) && !$day->isSchoolOpen()) {
+                $date = $date->sub($period);
+                $day = new Day(clone $date);
+            }
+            if (self::isDateInCurrentYear($day->getDate()) && $day->isSchoolOpen()) {
+                array_unshift($result, $day->toArray());
+            }
+
+            if (!self::isDateInCurrentYear($day->getDate())) return $result;
+        }
+
+        return $result;
     }
 }

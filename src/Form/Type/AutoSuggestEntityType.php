@@ -55,6 +55,7 @@ class AutoSuggestEntityType extends AbstractType
         $resolver->setDefaults(
             [
                 'buttons' => [],
+                'placeholder' => 'Enter any part of the name to select...,'
             ]
         );
     }

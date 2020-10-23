@@ -1046,7 +1046,7 @@ parameters:
         Attendance:
             dailyAttendanceTimes:
                 type: array
-                value: []
+                value: ['all_day']
             attendanceReasons:
                 value:
                     - Pending

@@ -42,7 +42,7 @@ class RollGroupVoter extends RouteVoter
         if (in_array('ROLE_ROLL_GROUP', $attributes)) {
             if (($vote = parent::vote($token, $subject, ['ROLE_ROUTE'])) === VoterInterface::ACCESS_GRANTED) {
                 if (!$subject instanceof RollGroup) {
-                    VoterInterface::ACCESS_DENIED;
+                    return VoterInterface::ACCESS_DENIED;
                 }
 
                 // Roll Group are available to Principals and System Admin and the tutors of the RollGroup.

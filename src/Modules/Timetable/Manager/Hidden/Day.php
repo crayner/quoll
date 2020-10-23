@@ -32,32 +32,32 @@ class Day
     /**
      * @var DateTimeImmutable
      */
-    private $date;
+    private DateTimeImmutable $date;
 
     /**
      * @var AcademicYearSpecialDay|null
      */
-    private $specialDay;
+    private ?AcademicYearSpecialDay $specialDay;
 
     /**
      * @var bool
      */
-    private $schoolDay;
+    private bool $schoolDay;
 
     /**
      * @var bool
      */
-    private $schoolOpen;
+    private bool $schoolOpen;
 
     /**
-     * @var DaysOfWeek
+     * @var DaysOfWeek|null
      */
-    private $dayOfWeek;
+    private ?DaysOfWeek $dayOfWeek;
 
     /**
-     * @var TimetableDate
+     * @var TimetableDate|null
      */
-    private $timetableDate;
+    private ?TimetableDate $timetableDate;
 
     /**
      * Day constructor.
@@ -66,6 +66,7 @@ class Day
     public function __construct(DateTimeImmutable $date)
     {
         $this->date = $date;
+        $this->isSchoolOpen();
     }
 
     /**
@@ -91,7 +92,7 @@ class Day
      */
     public function getSpecialDay(): ?AcademicYearSpecialDay
     {
-        return $this->specialDay;
+        return isset($this->specialDay) ? $this->specialDay : null;
     }
 
     /**
@@ -109,9 +110,9 @@ class Day
      */
     public function isSchoolDay(): bool
     {
-        if (null === $this->schoolDay) {
-            $dow = ProviderFactory::getRepository(DaysOfWeek::class)->findOneBySortOrder(intval($this->getDate()->format('N')));
-            $this->schoolDay = $dow->isSchoolDay();
+        if (!isset($this->schoolDay)) {
+            $this->setDayOfWeek(ProviderFactory::getRepository(DaysOfWeek::class)->findOneBySortOrder(intval($this->getDate()->format('N'))));
+            $this->setSchoolDay($this->getDayOfWeek()->isSchoolDay());
         }
         return (bool)$this->schoolDay;
     }
@@ -122,7 +123,7 @@ class Day
      */
     public function setSchoolDay(bool $schoolDay): Day
     {
-        $this->schoolDay = (bool)$schoolDay;
+        $this->schoolDay = $schoolDay;
         return $this;
     }
 
@@ -131,7 +132,7 @@ class Day
      */
     public function isSchoolOpen(): bool
     {
-        if ($this->schoolOpen === null) {
+        if (!isset($this->schoolOpen)) {
             if ($this->isSchoolDay()) {
                 if ($this->getSpecialDay() !== null) {
                     if ($this->getSpecialDay()->getType() === 'School Closure') {
@@ -145,7 +146,7 @@ class Day
                 $this->setSchoolOpen(false);
             }
         }
-        return (bool)$this->schoolOpen;
+        return $this->schoolOpen;
     }
 
     /**
@@ -163,6 +164,9 @@ class Day
      */
     public function getDayOfWeek(): DaysOfWeek
     {
+        if (!isset($this->dayOfWeek)) {
+            $this->dayOfWeek = ProviderFactory::getRepository(DaysOfWeek::class)->findOneBySortOrder(intval($this->getDate()->format('N')));
+        }
         return $this->dayOfWeek;
     }
 
@@ -181,6 +185,9 @@ class Day
      */
     public function getTimetableDate(): ?TimetableDate
     {
+        if (!isset($this->timetableDate)) {
+            $this->timetableDate = ProviderFactory::getRepository(TimetableDate::class)->findOneByAcademicYearDate($this->getDate());
+        }
         return $this->timetableDate;
     }
 

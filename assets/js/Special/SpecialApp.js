@@ -38,6 +38,7 @@ export default class SpecialApp extends Component {
         } else {
             console.log(this)
             console.error('The programmer needs to build the special.')
+            result.push(<div key={'error'}>The programmer needs to build the special.</div> )
         }
         return result
     }

@@ -21,7 +21,7 @@ use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Modules\School\Entity\AcademicYear;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
@@ -32,7 +32,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\School\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class SpecialDayPagination extends AbstractPaginationManager
+class SpecialDayPagination extends AbstractPagination
 {
     /**
      * execute

@@ -17,7 +17,7 @@
 
 namespace App\Modules\People\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * Class FamilyPagination
  * @package App\Modules\People\Pagination
  */
-class FamilyPagination extends AbstractPaginationManager
+class FamilyPagination extends AbstractPagination
 {
     /**
      * execute

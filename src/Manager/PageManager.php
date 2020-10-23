@@ -548,7 +548,6 @@ class PageManager
      */
     public function setTitle($title): PageManager
     {
-        dump($title);
         $this->title = $title;
         return $this;
     }

@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Department\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\Department\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class HeadTeacherPagination extends AbstractPaginationManager
+class HeadTeacherPagination extends AbstractPagination
 {
     /**
      * execute

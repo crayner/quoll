@@ -17,7 +17,7 @@
 
 namespace App\Manager\Hidden;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -116,7 +116,7 @@ class PaginationAction
     public function setRoute($route): PaginationAction
     {
         $route = is_string($route) ? ['url' => $route] : $route;
-        $this->route = AbstractPaginationManager::resolveRoute($route);
+        $this->route = AbstractPagination::resolveRoute($route);
         return $this;
     }
 

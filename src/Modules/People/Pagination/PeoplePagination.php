@@ -22,7 +22,7 @@ use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Modules\People\Entity\Person;
 use App\Modules\Security\Manager\RoleHierarchy;
 use App\Util\TranslationHelper;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
  * Class ManagePagination
  * @package App\Modules\People\Pagination
  */
-class PeoplePagination extends AbstractPaginationManager
+class PeoplePagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

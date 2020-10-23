@@ -51,10 +51,11 @@ class StudentRepository extends ServiceEntityRepository
      * findByRollGroup
      * @param RollGroup $rollGroup
      * @param string $sortBy
+     * @param bool $queryOnly
      * @return int|mixed|string
      * 16/07/2020 10:00
      */
-    public function findByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
+    public function findByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder', bool $queryOnly = false)
     {
         $query = $this->createQueryBuilder('s')
             ->select(["s.id","CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Reversed').") AS reversed_name","CONCAT(".PersonNameManager::formatNameQuery('p', 'Student', 'Preferred').") AS full_name",'se.rollOrder', "COALESCE(d.personalImage, 'build/static/DefaultPerson.png') AS photo",'p.id as person_id'])
@@ -82,6 +83,8 @@ class StudentRepository extends ServiceEntityRepository
                     ->addOrderBy('p.surname', 'ASC');
                 break;
         }
+
+        if ($queryOnly) return $query;
 
         return $query->getQuery()
             ->getResult();
@@ -123,7 +126,6 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
     /**
      * countInHouse

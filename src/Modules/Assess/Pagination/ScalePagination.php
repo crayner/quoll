@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Assess\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -29,7 +29,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\Assess\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class ScalePagination extends AbstractPaginationManager
+class ScalePagination extends AbstractPagination
 {
     /**
      * execute

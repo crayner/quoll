@@ -20,7 +20,7 @@ use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Util\TranslationHelper;
 
 /**
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\IndividualNeed\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class INDescriptorPagination extends AbstractPaginationManager
+class INDescriptorPagination extends AbstractPagination
 {
     /**
      * execute

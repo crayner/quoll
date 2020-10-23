@@ -13,6 +13,7 @@
  */
 namespace App\Modules\Timetable\Repository;
 
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Timetable\Entity\Timetable;
 use App\Modules\Timetable\Entity\TimetableDay;
 use App\Modules\Timetable\Entity\TimetableDate;
@@ -161,6 +162,22 @@ class TimetableDateRepository extends ServiceEntityRepository
                 ->getSingleScalarResult());
         } catch (NoResultException | NonUniqueResultException $e) {
             return 0;
+        }
+    }
+
+    public function findOneByAcademicYearDate(DateTimeImmutable $date)
+    {
+        try {
+            return $this->createQueryBuilder('tdate')
+                ->leftJoin('tdate.timetableDay', 'tday')
+                ->leftJoin('tday.timetable', 't')
+                ->where('t.academicYear = :current')
+                ->andWhere('tdate.date = :date')
+                ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(), 'date' => $date])
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
         }
     }
 }

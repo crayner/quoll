@@ -51,9 +51,9 @@ class EntitySortManager
     private ?string $entityName = null;
 
     /**
-     * @var AbstractPaginationManager
+     * @var AbstractPagination
      */
-    private AbstractPaginationManager $pagination;
+    private AbstractPagination $pagination;
 
     /**
      * @var array
@@ -99,12 +99,12 @@ class EntitySortManager
      *
      * @param AbstractEntity $source
      * @param AbstractEntity $target
-     * @param AbstractPaginationManager $pagination
+     * @param AbstractPagination $pagination
      */
     public function execute(
         AbstractEntity $source,
         AbstractEntity $target,
-        AbstractPaginationManager $pagination
+        AbstractPagination $pagination
     ) {
         $this->setSource($source)
             ->setTarget($target)
@@ -312,18 +312,18 @@ class EntitySortManager
     }
 
     /**
-     * @return AbstractPaginationManager
+     * @return AbstractPagination
      */
-    public function getPagination(): AbstractPaginationManager
+    public function getPagination(): AbstractPagination
     {
         return $this->pagination;
     }
 
     /**
-     * @param AbstractPaginationManager $pagination
+     * @param AbstractPagination $pagination
      * @return EntitySortManager
      */
-    public function setPagination(AbstractPaginationManager $pagination): EntitySortManager
+    public function setPagination(AbstractPagination $pagination): EntitySortManager
     {
         $this->pagination = $pagination;
         return $this;

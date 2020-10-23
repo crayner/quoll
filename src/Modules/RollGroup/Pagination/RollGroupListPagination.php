@@ -16,7 +16,7 @@
  */
 namespace App\Modules\RollGroup\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @package App\Modules\RollGroup\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class RollGroupListPagination  extends AbstractPaginationManager
+class RollGroupListPagination  extends AbstractPagination
 {
     /**
      * execute

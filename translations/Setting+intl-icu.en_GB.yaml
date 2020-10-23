@@ -726,6 +726,9 @@ Staff:
         name: 'Notification Groups'
         description: 'Which messenger groups can staff members send absence notifications to?'
 Attendance:
+    dailyAttendanceTimes:
+        name: 'Daily Attendance Groups'
+        description: 'A list of times that daily attendance is taken.  If empty, then attendance is only taken once per day. This has on impact on class attendance information.'
     attendanceReasons:
         name: 'Attendance Reasons'
         description: 'A list of reasons which are available when taking attendance.'

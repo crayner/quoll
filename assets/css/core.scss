@@ -959,3 +959,27 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 .panel_section {
     clear: both;
 }
+.historyCalendarMini {
+    width: 134px;
+    height: 25px;
+    margin: 0 auto 0 auto;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #555;
+}
+.highlightNoData, .dayNoData {
+    --bg-opacity: 1;
+    background-color: hsl(0, 1%, 91%);
+    background-color: rgba(232.2795, 231.8205, 231.8205, var(--bg-opacity));
+    --text-opacity: 1;
+    color: hsl(0, 2%, 52%);
+    color: rgba(130.152, 130.152, 130.152, var(--text-opacity));
+}
+.historyCalendarMini a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.historyCalendarMini a:hover {
+    color: #21759b;
+}

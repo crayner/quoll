@@ -21,14 +21,14 @@ use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Util\TranslationHelper;
 
 /**
  * Class FamilyChildrenPagination
  * @package App\Modules\People\Pagination
  */
-class FamilyStudentsPagination extends AbstractPaginationManager
+class FamilyStudentsPagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

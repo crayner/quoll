@@ -1,1050 +1,30 @@
 -
-    student: '1367'
-    rollGroup: '11.1'
--
-    student: '1867'
-    rollGroup: '11.3'
--
-    student: '2380'
-    rollGroup: '11.3'
--
-    student: '913'
-    rollGroup: '13.1'
--
-    student: '1019'
-    rollGroup: '13.1'
--
-    student: '2490'
-    rollGroup: '11.2'
--
-    student: '1358'
-    rollGroup: '11.1'
--
-    student: '964'
-    rollGroup: '13.1'
--
-    student: '2729'
-    rollGroup: '11.3'
--
-    student: '1585'
-    rollGroup: '11.2'
--
-    student: '1352'
-    rollGroup: '11.1'
--
-    student: '1430'
-    rollGroup: '11.2'
--
-    student: '905'
-    rollGroup: '13.1'
--
-    student: '1191'
-    rollGroup: '12.1'
--
-    student: '2084'
-    rollGroup: '11.2'
--
-    student: '1377'
-    rollGroup: '11.2'
--
-    student: '2398'
-    rollGroup: '11.3'
--
-    student: '1364'
-    rollGroup: '11.3'
--
-    student: '1178'
-    rollGroup: '12.1'
--
-    student: '1393'
-    rollGroup: '11.1'
--
-    student: '2357'
-    rollGroup: '11.1'
--
-    student: '1416'
-    rollGroup: '11.1'
--
-    student: '1440'
-    rollGroup: '11.2'
--
-    student: '1160'
-    rollGroup: '12.1'
--
-    student: '2444'
-    rollGroup: '11.2'
--
-    student: '922'
-    rollGroup: '13.1'
--
-    student: '1492'
-    rollGroup: '11.2'
--
-    student: '1465'
-    rollGroup: '11.1'
--
-    student: '2407'
-    rollGroup: '11.1'
--
-    student: '1214'
-    rollGroup: '12.1'
--
-    student: '2120'
-    rollGroup: '12.2'
--
-    student: '1200'
-    rollGroup: '12.2'
--
-    student: '1680'
-    rollGroup: '12.2'
--
-    student: '1193'
-    rollGroup: '12.2'
--
-    student: '1259'
-    rollGroup: '12.2'
--
-    student: '1233'
-    rollGroup: '12.2'
--
-    student: '1548'
-    rollGroup: '12.2'
--
-    student: '1814'
-    rollGroup: '12.2'
--
-    student: '1254'
-    rollGroup: '12.2'
--
-    student: '1528'
-    rollGroup: '12.2'
--
-    student: '1201'
-    rollGroup: '12.2'
--
-    student: '2090'
-    rollGroup: '12.2'
--
-    student: '1242'
-    rollGroup: '12.2'
--
-    student: '2103'
-    rollGroup: '12.2'
--
-    student: '2505'
-    rollGroup: '08.1'
--
-    student: '2283'
-    rollGroup: '08.1'
--
-    student: '2511'
-    rollGroup: '08.1'
--
-    student: '2193'
-    rollGroup: '08.1'
--
-    student: '2537'
-    rollGroup: '08.1'
--
-    student: '2212'
-    rollGroup: '08.1'
--
-    student: '2374'
-    rollGroup: '08.1'
--
-    student: '2323'
-    rollGroup: '08.1'
--
-    student: '2364'
-    rollGroup: '08.1'
--
-    student: '2333'
-    rollGroup: '08.1'
--
-    student: '2233'
-    rollGroup: '08.1'
--
-    student: '2243'
-    rollGroup: '08.1'
--
-    student: '2216'
-    rollGroup: '08.1'
--
-    student: '2330'
-    rollGroup: '08.1'
--
-    student: '2514'
-    rollGroup: '08.1'
--
-    student: '2215'
-    rollGroup: '08.1'
--
-    student: '2340'
-    rollGroup: '08.1'
--
-    student: '2169'
-    rollGroup: '08.1'
--
-    student: '2498'
-    rollGroup: '08.1'
--
-    student: '2302'
-    rollGroup: '08.1'
--
-    student: '2517'
-    rollGroup: '08.1'
--
-    student: '2371'
-    rollGroup: '08.2'
--
-    student: '2190'
-    rollGroup: '08.2'
--
-    student: '2334'
-    rollGroup: '08.2'
--
-    student: '2236'
-    rollGroup: '08.2'
--
-    student: '2520'
-    rollGroup: '08.2'
--
-    student: '2150'
-    rollGroup: '08.2'
--
-    student: '2239'
-    rollGroup: '08.2'
--
-    student: '2501'
-    rollGroup: '08.2'
--
-    student: '2523'
-    rollGroup: '08.2'
--
-    student: '2178'
-    rollGroup: '08.2'
--
-    student: '2206'
-    rollGroup: '08.2'
--
-    student: '2271'
-    rollGroup: '08.2'
--
-    student: '2420'
-    rollGroup: '08.2'
--
-    student: '2175'
-    rollGroup: '08.2'
--
-    student: '2253'
-    rollGroup: '08.2'
--
-    student: '2383'
-    rollGroup: '08.2'
--
-    student: '2360'
-    rollGroup: '08.2'
--
-    student: '2166'
-    rollGroup: '08.2'
--
-    student: '2535'
-    rollGroup: '08.2'
--
-    student: '2529'
-    rollGroup: '08.2'
--
-    student: '2247'
-    rollGroup: '09.3'
--
-    student: '2194'
-    rollGroup: '09.3'
--
-    student: '2172'
-    rollGroup: '09.1'
--
-    student: '2293'
-    rollGroup: '09.2'
--
-    student: '2250'
-    rollGroup: '09.2'
--
-    student: '2277'
-    rollGroup: '09.3'
--
-    student: '2319'
-    rollGroup: '09.1'
--
-    student: '2508'
-    rollGroup: '09.1'
--
-    student: '2504'
-    rollGroup: '09.3'
--
-    student: '2200'
-    rollGroup: '09.3'
--
-    student: '2545'
-    rollGroup: '09.1'
--
-    student: '2231'
-    rollGroup: '09.1'
--
-    student: '2160'
-    rollGroup: '09.3'
--
-    student: '2203'
-    rollGroup: '09.3'
--
-    student: '2296'
-    rollGroup: '09.2'
--
-    student: '2299'
-    rollGroup: '09.2'
--
-    student: '2348'
-    rollGroup: '09.1'
--
-    student: '2163'
-    rollGroup: '09.1'
--
-    student: '2526'
-    rollGroup: '09.3'
--
-    student: '2187'
-    rollGroup: '09.3'
--
-    student: '2469'
-    rollGroup: '07.4'
--
-    student: '2695'
-    rollGroup: '07.2'
--
-    student: '2450'
+    student: '925'
     rollGroup: '07.1'
--
-    student: '2459'
-    rollGroup: '07.1'
--
-    student: '2611'
-    rollGroup: '07.1'
--
-    student: '2679'
-    rollGroup: '07.1'
--
-    student: '2447'
-    rollGroup: '07.1'
--
-    student: '2683'
-    rollGroup: '07.1'
--
-    student: '2760'
-    rollGroup: '07.1'
--
-    student: '2614'
-    rollGroup: '07.1'
--
-    student: '2485'
-    rollGroup: '07.4'
--
-    student: '2472'
-    rollGroup: '07.4'
--
-    student: '2610'
-    rollGroup: '07.1'
--
-    student: '2636'
-    rollGroup: '07.1'
--
-    student: '2627'
-    rollGroup: '07.1'
--
-    student: '2754'
-    rollGroup: '07.1'
--
-    student: '2615'
-    rollGroup: '07.4'
--
-    student: '2601'
-    rollGroup: '07.1'
--
-    student: '2746'
-    rollGroup: '07.1'
--
-    student: '2482'
-    rollGroup: '07.1'
--
-    student: '2715'
-    rollGroup: '07.1'
--
-    student: '2430'
-    rollGroup: '07.2'
--
-    student: '2657'
-    rollGroup: '07.2'
--
-    student: '2460'
-    rollGroup: '07.2'
--
-    student: '2630'
-    rollGroup: '07.2'
--
-    student: '2621'
-    rollGroup: '07.2'
--
-    student: '2692'
-    rollGroup: '07.2'
--
-    student: '2607'
-    rollGroup: '07.2'
--
-    student: '2633'
-    rollGroup: '07.2'
--
-    student: '2426'
-    rollGroup: '07.2'
--
-    student: '2652'
-    rollGroup: '07.2'
--
-    student: '2699'
-    rollGroup: '07.2'
--
-    student: '2642'
-    rollGroup: '07.2'
--
-    student: '2453'
-    rollGroup: '07.2'
--
-    student: '2702'
-    rollGroup: '07.2'
--
-    student: '2743'
-    rollGroup: '07.2'
--
-    student: '2645'
-    rollGroup: '07.2'
--
-    student: '2476'
-    rollGroup: '07.2'
--
-    student: '2663'
-    rollGroup: '07.2'
--
-    student: '2651'
-    rollGroup: '07.2'
--
-    student: '2563'
-    rollGroup: '07.2'
--
-    student: '2696'
-    rollGroup: '07.2'
--
-    student: '2749'
-    rollGroup: '07.3'
--
-    student: '2580'
-    rollGroup: '07.3'
--
-    student: '2624'
-    rollGroup: '07.3'
--
-    student: '2654'
-    rollGroup: '07.3'
--
-    student: '2666'
-    rollGroup: '07.3'
--
-    student: '2466'
-    rollGroup: '07.3'
--
-    student: '2686'
-    rollGroup: '07.3'
--
-    student: '2726'
-    rollGroup: '07.3'
--
-    student: '2586'
-    rollGroup: '07.3'
--
-    student: '2639'
-    rollGroup: '07.3'
--
-    student: '2473'
-    rollGroup: '07.3'
--
-    student: '2433'
-    rollGroup: '07.3'
--
-    student: '2711'
-    rollGroup: '07.3'
--
-    student: '2436'
-    rollGroup: '07.3'
--
-    student: '2479'
-    rollGroup: '07.3'
--
-    student: '2427'
-    rollGroup: '07.3'
--
-    student: '2689'
-    rollGroup: '07.3'
--
-    student: '2708'
-    rollGroup: '07.3'
--
-    student: '2670'
-    rollGroup: '07.3'
--
-    student: '2576'
-    rollGroup: '07.3'
--
-    student: '2566'
-    rollGroup: '07.3'
--
-    student: '2618'
-    rollGroup: '07.4'
--
-    student: '2573'
-    rollGroup: '07.4'
--
-    student: '2592'
-    rollGroup: '07.4'
--
-    student: '2583'
-    rollGroup: '07.4'
--
-    student: '2705'
-    rollGroup: '07.4'
--
-    student: '2660'
-    rollGroup: '07.4'
--
-    student: '2286'
-    rollGroup: '11.2'
--
-    student: '2598'
-    rollGroup: '07.4'
--
-    student: '2589'
-    rollGroup: '07.4'
--
-    student: '2604'
-    rollGroup: '07.4'
--
-    student: '2425'
-    rollGroup: '07.4'
--
-    student: '2676'
-    rollGroup: '07.4'
--
-    student: '2595'
-    rollGroup: '07.4'
--
-    student: '2700'
-    rollGroup: '07.4'
--
-    student: '2463'
-    rollGroup: '07.4'
--
-    student: '2648'
-    rollGroup: '07.4'
--
-    student: '2761'
-    rollGroup: '07.4'
--
-    student: '2714'
-    rollGroup: '07.4'
--
-    student: '2680'
-    rollGroup: '07.4'
--
-    student: '2570'
-    rollGroup: '07.3'
--
-    student: '2770'
-    rollGroup: '07.1'
--
-    student: '2577'
-    rollGroup: '07.1'
--
-    student: '2757'
-    rollGroup: '07.4'
--
-    student: '2225'
-    rollGroup: '07.1'
--
-    student: '2764'
-    rollGroup: '07.1'
--
-    student: '2567'
-    rollGroup: '07.1'
--
-    student: '2456'
-    rollGroup: '07.1'
--
-    student: '2667'
-    rollGroup: '07.1'
--
-    student: '2740'
-    rollGroup: '07.2'
--
-    student: '2274'
-    rollGroup: '07.4'
--
-    student: '2752'
-    rollGroup: '07.1'
--
-    student: '2767'
-    rollGroup: '07.1'
--
-    student: '2033'
-    rollGroup: '10.1'
--
-    student: '2022'
-    rollGroup: '09.1'
--
-    student: '1677'
-    rollGroup: '10.2'
--
-    student: '2404'
-    rollGroup: '09.1'
--
-    student: '2079'
-    rollGroup: '09.1'
--
-    student: '1819'
-    rollGroup: '13.1'
--
-    student: '2113'
-    rollGroup: '09.1'
--
-    student: '2386'
-    rollGroup: '10.3'
--
-    student: '2081'
-    rollGroup: '10.2'
--
-    student: '1977'
-    rollGroup: '09.2'
--
-    student: '1974'
-    rollGroup: '09.1'
--
-    student: '1591'
-    rollGroup: '10.1'
--
-    student: '1744'
-    rollGroup: '10.1'
--
-    student: '2505'
-    rollGroup: '07.1'
--
-    student: '1617'
-    rollGroup: '10.2'
--
-    student: '1891'
-    rollGroup: '09.2'
--
-    student: '1207'
-    rollGroup: '12.2'
--
-    student: '2123'
-    rollGroup: '09.1'
--
-    student: '2093'
-    rollGroup: '09.1'
--
-    student: '1263'
-    rollGroup: '12.1'
--
-    student: '1878'
-    rollGroup: '09.1'
--
-    student: '2541'
-    rollGroup: '13.1'
--
-    student: '2037'
-    rollGroup: '09.2'
--
-    student: '1970'
-    rollGroup: '09.1'
--
-    student: '2135'
-    rollGroup: '09.2'
--
-    student: '2035'
-    rollGroup: '10.2'
--
-    student: '1918'
-    rollGroup: '09.2'
--
-    student: '1686'
-    rollGroup: '10.1'
--
-    student: '2327'
-    rollGroup: '09.1'
--
-    student: '2389'
-    rollGroup: '09.2'
--
-    student: '1901'
-    rollGroup: '09.1'
--
-    student: '1700'
-    rollGroup: '10.2'
--
-    student: '1779'
-    rollGroup: '10.1'
--
-    student: '1882'
-    rollGroup: '09.1'
--
-    student: '1739'
-    rollGroup: '10.2'
--
-    student: '2265'
-    rollGroup: '09.1'
--
-    student: '1992'
-    rollGroup: '09.1'
--
-    student: '1934'
-    rollGroup: '09.1'
--
-    student: '2116'
-    rollGroup: '09.3'
--
-    student: '1879'
-    rollGroup: '09.1'
--
-    student: '1657'
-    rollGroup: '10.3'
--
-    student: '1801'
-    rollGroup: '10.1'
--
-    student: '2019'
-    rollGroup: '09.1'
--
-    student: '2548'
-    rollGroup: '10.3'
--
-    student: '2514'
-    rollGroup: '13.1'
--
-    student: '2517'
-    rollGroup: '13.1'
--
-    student: '2511'
-    rollGroup: '13.1'
--
-    student: '2087'
-    rollGroup: '10.2'
--
-    student: '1831'
-    rollGroup: '10.3'
--
-    student: '2268'
-    rollGroup: '09.1'
--
-    student: '1928'
-    rollGroup: '09.1'
--
-    student: '1925'
-    rollGroup: '09.1'
--
-    student: '2495'
-    rollGroup: '09.1'
--
-    student: '1667'
-    rollGroup: '10.3'
--
-    student: '1937'
-    rollGroup: '09.2'
--
-    student: '1791'
-    rollGroup: '10.1'
--
-    student: '1986'
-    rollGroup: '09.2'
--
-    student: '1913'
-    rollGroup: '09.2'
--
-    student: '2673'
-    rollGroup: '10.2'
--
-    student: '1885'
-    rollGroup: '09.2'
--
-    student: '2006'
-    rollGroup: '09.1'
--
-    student: '1753'
-    rollGroup: '10.3'
--
-    student: '2009'
-    rollGroup: '09.1'
--
-    student: '2076'
-    rollGroup: '09.2'
--
-    student: '1616'
-    rollGroup: '10.3'
--
-    student: '2611'
-    rollGroup: '13.1'
--
-    student: '2401'
-    rollGroup: '10.2'
--
-    student: '1960'
-    rollGroup: '09.2'
--
-    student: '1983'
-    rollGroup: '09.2'
--
-    student: '1905'
-    rollGroup: '09.2'
--
-    student: '1888'
-    rollGroup: '09.2'
--
-    student: '1721'
-    rollGroup: '10.1'
--
-    student: '2395'
-    rollGroup: '08.1'
--
-    student: '1796'
-    rollGroup: '10.3'
--
-    student: '2156'
-    rollGroup: '10.1'
--
-    student: '2029'
-    rollGroup: '09.3'
--
-    student: '2262'
-    rollGroup: '09.3'
--
-    student: '2719'
-    rollGroup: '10.1'
--
-    student: '2060'
-    rollGroup: '10.2'
--
-    student: '2066'
-    rollGroup: '10.2'
--
-    student: '2000'
-    rollGroup: '09.2'
--
-    student: '2441'
-    rollGroup: '10.3'
--
-    student: '1222'
-    rollGroup: '12.1'
--
-    student: '1870'
-    rollGroup: '09.2'
--
-    student: '1921'
-    rollGroup: '09.2'
--
-    student: '2129'
-    rollGroup: '09.3'
--
-    student: '1773'
-    rollGroup: '10.2'
--
-    student: '1761'
-    rollGroup: '10.1'
--
-    student: '2109'
-    rollGroup: '12.1'
--
-    student: '2723'
-    rollGroup: '10.3'
--
-    student: '2555'
-    rollGroup: '09.2'
--
-    student: '1603'
-    rollGroup: '10.3'
--
-    student: '1946'
-    rollGroup: '09.3'
--
-    student: '1914'
-    rollGroup: '09.3'
--
-    student: '2309'
-    rollGroup: '10.1'
--
-    student: '1955'
-    rollGroup: '09.2'
--
-    student: '2141'
-    rollGroup: '09.2'
--
-    student: '2063'
-    rollGroup: '10.3'
--
-    student: '2491'
-    rollGroup: '09.3'
--
-    student: '1897'
-    rollGroup: '09.3'
--
-    student: '2508'
-    rollGroup: '13.1'
--
-    student: '1995'
-    rollGroup: '09.3'
--
-    student: '1904'
-    rollGroup: '09.3'
--
-    student: '1609'
-    rollGroup: '10.3'
--
-    student: '1730'
-    rollGroup: '10.1'
--
-    student: '2184'
-    rollGroup: '13.1'
--
-    student: '1848'
-    rollGroup: '10.2'
--
-    student: '2056'
-    rollGroup: '09.2'
--
-    student: '2737'
-    rollGroup: '10.1'
--
-    student: '1627'
-    rollGroup: '10.2'
--
-    student: '1600'
-    rollGroup: '10.1'
--
-    student: '1894'
-    rollGroup: '09.3'
--
-    student: '2012'
-    rollGroup: '09.2'
--
-    student: '1645'
-    rollGroup: '10.2'
--
-    student: '1915'
-    rollGroup: '09.3'
--
-    student: '1980'
-    rollGroup: '09.3'
--
-    student: '2532'
-    rollGroup: '09.3'
--
-    student: '1639'
-    rollGroup: '10.1'
--
-    student: '1642'
-    rollGroup: '10.1'
--
-    student: '2482'
-    rollGroup: '13.1'
--
-    student: '1924'
-    rollGroup: '09.2'
--
-    student: '1182'
-    rollGroup: '12.1'
--
-    student: '2232'
-    rollGroup: '08.1'
--
-    student: '1706'
-    rollGroup: '10.2'
--
-    student: '2040'
-    rollGroup: '09.3'
--
-    student: '1654'
-    rollGroup: '10.3'
--
-    student: '1828'
-    rollGroup: '10.2'
--
-    student: '1911'
-    rollGroup: '09.3'
--
-    student: '1858'
-    rollGroup: '10.3'
--
-    student: '2280'
-    rollGroup: '09.3'
--
-    student: '1735'
-    rollGroup: '10.2'
--
-    student: '1898'
-    rollGroup: '09.2'
--
-    student: '1964'
-    rollGroup: '09.2'
--
-    student: '1931'
-    rollGroup: '09.3'
--
-    student: '1713'
-    rollGroup: '10.3'
--
-    student: '1989'
-    rollGroup: '09.3'
--
-    student: '1593'
-    rollGroup: '10.1'
--
-    student: '1864'
-    rollGroup: '09.3'
--
-    student: '1612'
-    rollGroup: '10.2'
--
-    student: '2097'
-    rollGroup: '10.1'
--
-    student: '1628'
-    rollGroup: '10.3'
--
-    student: '1621'
-    rollGroup: '10.3'
--
-    student: '2488'
-    rollGroup: '10.2'
--
-    student: '2392'
-    rollGroup: '13.1'
--
-    student: '1875'
-    rollGroup: '09.3'
--
-    student: '1538'
-    rollGroup: '11.1'
--
-    student: '2138'
-    rollGroup: '12.1'
 -
     student: '928'
     rollGroup: '13.1'
 -
-    student: '1374'
-    rollGroup: '11.2'
+    student: '931'
+    rollGroup: '13.1'
+-
+    student: '934'
+    rollGroup: '13.1'
+-
+    student: '937'
+    rollGroup: '13.1'
+-
+    student: '964'
+    rollGroup: '13.1'
+-
+    student: '1008'
+    rollGroup: '13.1'
+-
+    student: '1016'
+    rollGroup: '13.1'
+-
+    student: '1019'
+    rollGroup: '13.1'
 -
     student: '1022'
     rollGroup: '13.1'
@@ -1052,107 +32,80 @@
     student: '1154'
     rollGroup: '12.2'
 -
-    student: '1399'
-    rollGroup: '11.3'
+    student: '1157'
+    rollGroup: '12.1'
 -
-    student: '1483'
-    rollGroup: '11.3'
--
-    student: '1424'
-    rollGroup: '11.1'
--
-    student: '2306'
-    rollGroup: '11.2'
--
-    student: '1355'
-    rollGroup: '11.1'
--
-    student: '2316'
-    rollGroup: '11.2'
--
-    student: '1845'
-    rollGroup: '11.1'
--
-    student: '876'
-    rollGroup: '13.1'
--
-    student: '1427'
-    rollGroup: '11.2'
--
-    student: '1486'
-    rollGroup: '11.1'
--
-    student: '1396'
-    rollGroup: '11.3'
--
-    student: '1520'
-    rollGroup: '11.1'
+    student: '1160'
+    rollGroup: '12.1'
 -
     student: '1163'
+    rollGroup: '12.1'
+-
+    student: '1166'
+    rollGroup: '12.1'
+-
+    student: '1178'
     rollGroup: '12.1'
 -
     student: '1179'
     rollGroup: '12.2'
 -
-    student: '1157'
+    student: '1182'
     rollGroup: '12.1'
 -
-    student: '1631'
-    rollGroup: '11.3'
--
-    student: '1166'
+    student: '1191'
     rollGroup: '12.1'
 -
-    student: '1388'
-    rollGroup: '11.3'
+    student: '1193'
+    rollGroup: '12.2'
 -
-    student: '1400'
-    rollGroup: '11.3'
+    student: '1200'
+    rollGroup: '12.2'
 -
-    student: '1710'
-    rollGroup: '11.3'
+    student: '1201'
+    rollGroup: '12.2'
 -
-    student: '1257'
+    student: '1204'
     rollGroup: '12.1'
 -
-    student: '1477'
-    rollGroup: '11.2'
+    student: '1207'
+    rollGroup: '12.2'
+-
+    student: '1214'
+    rollGroup: '12.1'
+-
+    student: '1222'
+    rollGroup: '12.1'
 -
     student: '1226'
     rollGroup: '12.1'
 -
-    student: '2145'
+    student: '1233'
+    rollGroup: '12.2'
+-
+    student: '1236'
     rollGroup: '12.1'
 -
-    student: '934'
-    rollGroup: '13.1'
--
-    student: '897'
-    rollGroup: '13.1'
--
-    student: '1571'
-    rollGroup: '11.3'
--
-    student: '1016'
-    rollGroup: '13.1'
--
-    student: '937'
-    rollGroup: '13.1'
--
-    student: '1410'
-    rollGroup: '11.2'
+    student: '1242'
+    rollGroup: '12.2'
 -
     student: '1245'
     rollGroup: '12.2'
 -
-    student: '1008'
-    rollGroup: '13.1'
+    student: '1251'
+    rollGroup: '12.1'
 -
-    student: '931'
-    rollGroup: '13.1'
+    student: '1254'
+    rollGroup: '12.2'
 -
-    student: '1445'
-    rollGroup: '11.3'
+    student: '1257'
+    rollGroup: '12.1'
+-
+    student: '1259'
+    rollGroup: '12.2'
+-
+    student: '1263'
+    rollGroup: '12.1'
 -
     student: '1275'
     rollGroup: '12.1'
@@ -1160,35 +113,1082 @@
     student: '1276'
     rollGroup: '12.1'
 -
+    student: '1352'
+    rollGroup: '11.1'
+-
+    student: '1355'
+    rollGroup: '11.1'
+-
+    student: '1358'
+    rollGroup: '11.1'
+-
+    student: '1364'
+    rollGroup: '11.3'
+-
+    student: '1367'
+    rollGroup: '11.1'
+-
+    student: '1374'
+    rollGroup: '11.2'
+-
+    student: '1377'
+    rollGroup: '11.2'
+-
+    student: '1388'
+    rollGroup: '11.3'
+-
     student: '1391'
     rollGroup: '11.2'
+-
+    student: '1393'
+    rollGroup: '11.1'
+-
+    student: '1396'
+    rollGroup: '11.3'
+-
+    student: '1399'
+    rollGroup: '11.3'
+-
+    student: '1400'
+    rollGroup: '11.3'
 -
     student: '1403'
     rollGroup: '11.3'
 -
-    student: '1204'
-    rollGroup: '12.1'
+    student: '1410'
+    rollGroup: '11.2'
 -
-    student: '2100'
-    rollGroup: '12.1'
+    student: '1416'
+    rollGroup: '11.1'
+-
+    student: '1424'
+    rollGroup: '11.1'
+-
+    student: '1427'
+    rollGroup: '11.2'
+-
+    student: '1430'
+    rollGroup: '11.2'
+-
+    student: '1440'
+    rollGroup: '11.2'
+-
+    student: '1445'
+    rollGroup: '11.3'
+-
+    student: '1465'
+    rollGroup: '11.1'
+-
+    student: '1471'
+    rollGroup: '11.1'
+-
+    student: '1477'
+    rollGroup: '11.2'
+-
+    student: '1483'
+    rollGroup: '11.3'
+-
+    student: '1486'
+    rollGroup: '11.1'
+-
+    student: '1492'
+    rollGroup: '11.2'
 -
     student: '1507'
     rollGroup: '11.3'
 -
-    student: '925'
-    rollGroup: '07.1'
+    student: '1520'
+    rollGroup: '11.1'
+-
+    student: '1528'
+    rollGroup: '12.2'
+-
+    student: '1538'
+    rollGroup: '11.1'
+-
+    student: '1548'
+    rollGroup: '12.2'
+-
+    student: '1571'
+    rollGroup: '11.3'
+-
+    student: '1585'
+    rollGroup: '11.2'
+-
+    student: '1591'
+    rollGroup: '10.1'
+-
+    student: '1593'
+    rollGroup: '10.1'
+-
+    student: '1600'
+    rollGroup: '10.1'
+-
+    student: '1603'
+    rollGroup: '10.3'
+-
+    student: '1609'
+    rollGroup: '10.3'
+-
+    student: '1612'
+    rollGroup: '10.2'
+-
+    student: '1616'
+    rollGroup: '10.3'
+-
+    student: '1617'
+    rollGroup: '10.2'
+-
+    student: '1621'
+    rollGroup: '10.3'
+-
+    student: '1627'
+    rollGroup: '10.2'
+-
+    student: '1628'
+    rollGroup: '10.3'
+-
+    student: '1631'
+    rollGroup: '11.3'
+-
+    student: '1639'
+    rollGroup: '10.1'
+-
+    student: '1642'
+    rollGroup: '10.1'
+-
+    student: '1645'
+    rollGroup: '10.2'
+-
+    student: '1654'
+    rollGroup: '10.3'
+-
+    student: '1657'
+    rollGroup: '10.3'
+-
+    student: '1667'
+    rollGroup: '10.3'
+-
+    student: '1677'
+    rollGroup: '10.2'
+-
+    student: '1680'
+    rollGroup: '12.2'
+-
+    student: '1686'
+    rollGroup: '10.1'
 -
     student: '1692'
+    rollGroup: '11.1'
+-
+    student: '1700'
+    rollGroup: '10.2'
+-
+    student: '1706'
+    rollGroup: '10.2'
+-
+    student: '1710'
+    rollGroup: '11.3'
+-
+    student: '1713'
+    rollGroup: '10.3'
+-
+    student: '1721'
+    rollGroup: '10.1'
+-
+    student: '1730'
+    rollGroup: '10.1'
+-
+    student: '1735'
+    rollGroup: '10.2'
+-
+    student: '1739'
+    rollGroup: '10.2'
+-
+    student: '1744'
+    rollGroup: '10.1'
+-
+    student: '1753'
+    rollGroup: '10.3'
+-
+    student: '1761'
+    rollGroup: '10.1'
+-
+    student: '1773'
+    rollGroup: '10.2'
+-
+    student: '1779'
+    rollGroup: '10.1'
+-
+    student: '1791'
+    rollGroup: '10.1'
+-
+    student: '1796'
+    rollGroup: '10.3'
+-
+    student: '1801'
+    rollGroup: '10.1'
+-
+    student: '1814'
+    rollGroup: '12.2'
+-
+    student: '1819'
+    rollGroup: '13.1'
+-
+    student: '1828'
+    rollGroup: '10.2'
+-
+    student: '1831'
+    rollGroup: '10.3'
+-
+    student: '1845'
+    rollGroup: '11.1'
+-
+    student: '1848'
+    rollGroup: '10.2'
+-
+    student: '1858'
+    rollGroup: '10.3'
+-
+    student: '1864'
+    rollGroup: '09.3'
+-
+    student: '1867'
+    rollGroup: '11.3'
+-
+    student: '1870'
+    rollGroup: '09.2'
+-
+    student: '1875'
+    rollGroup: '09.3'
+-
+    student: '1878'
+    rollGroup: '09.1'
+-
+    student: '1879'
+    rollGroup: '09.1'
+-
+    student: '1882'
+    rollGroup: '09.1'
+-
+    student: '1885'
+    rollGroup: '09.2'
+-
+    student: '1888'
+    rollGroup: '09.2'
+-
+    student: '1891'
+    rollGroup: '09.2'
+-
+    student: '1894'
+    rollGroup: '09.3'
+-
+    student: '1897'
+    rollGroup: '09.3'
+-
+    student: '1898'
+    rollGroup: '09.2'
+-
+    student: '1901'
+    rollGroup: '09.1'
+-
+    student: '1904'
+    rollGroup: '09.3'
+-
+    student: '1905'
+    rollGroup: '09.2'
+-
+    student: '1911'
+    rollGroup: '09.3'
+-
+    student: '1913'
+    rollGroup: '09.2'
+-
+    student: '1914'
+    rollGroup: '09.3'
+-
+    student: '1915'
+    rollGroup: '09.3'
+-
+    student: '1918'
+    rollGroup: '09.2'
+-
+    student: '1921'
+    rollGroup: '09.2'
+-
+    student: '1924'
+    rollGroup: '09.2'
+-
+    student: '1925'
+    rollGroup: '09.1'
+-
+    student: '1928'
+    rollGroup: '09.1'
+-
+    student: '1931'
+    rollGroup: '09.3'
+-
+    student: '1934'
+    rollGroup: '09.1'
+-
+    student: '1937'
+    rollGroup: '09.2'
+-
+    student: '1946'
+    rollGroup: '09.3'
+-
+    student: '1955'
+    rollGroup: '09.2'
+-
+    student: '1960'
+    rollGroup: '09.2'
+-
+    student: '1964'
+    rollGroup: '09.2'
+-
+    student: '1970'
+    rollGroup: '09.1'
+-
+    student: '1974'
+    rollGroup: '09.1'
+-
+    student: '1977'
+    rollGroup: '09.2'
+-
+    student: '1980'
+    rollGroup: '09.3'
+-
+    student: '1983'
+    rollGroup: '09.2'
+-
+    student: '1986'
+    rollGroup: '09.2'
+-
+    student: '1989'
+    rollGroup: '09.3'
+-
+    student: '1992'
+    rollGroup: '09.1'
+-
+    student: '1995'
+    rollGroup: '09.3'
+-
+    student: '2000'
+    rollGroup: '09.2'
+-
+    student: '2006'
+    rollGroup: '09.1'
+-
+    student: '2009'
+    rollGroup: '09.1'
+-
+    student: '2012'
+    rollGroup: '09.2'
+-
+    student: '2019'
+    rollGroup: '09.1'
+-
+    student: '2022'
+    rollGroup: '09.1'
+-
+    student: '2029'
+    rollGroup: '09.3'
+-
+    student: '2033'
+    rollGroup: '10.1'
+-
+    student: '2035'
+    rollGroup: '10.2'
+-
+    student: '2037'
+    rollGroup: '09.2'
+-
+    student: '2040'
+    rollGroup: '09.3'
+-
+    student: '2056'
+    rollGroup: '09.2'
+-
+    student: '2060'
+    rollGroup: '10.2'
+-
+    student: '2063'
+    rollGroup: '10.3'
+-
+    student: '2066'
+    rollGroup: '10.2'
+-
+    student: '2076'
+    rollGroup: '09.2'
+-
+    student: '2079'
+    rollGroup: '09.1'
+-
+    student: '2081'
+    rollGroup: '10.2'
+-
+    student: '2084'
+    rollGroup: '11.2'
+-
+    student: '2087'
+    rollGroup: '10.2'
+-
+    student: '2090'
+    rollGroup: '12.2'
+-
+    student: '2093'
+    rollGroup: '09.1'
+-
+    student: '2097'
+    rollGroup: '10.1'
+-
+    student: '2100'
+    rollGroup: '12.1'
+-
+    student: '2103'
+    rollGroup: '12.2'
+-
+    student: '2109'
+    rollGroup: '12.1'
+-
+    student: '2113'
+    rollGroup: '09.1'
+-
+    student: '2116'
+    rollGroup: '09.3'
+-
+    student: '2120'
+    rollGroup: '12.2'
+-
+    student: '2123'
+    rollGroup: '09.1'
+-
+    student: '2129'
+    rollGroup: '09.3'
+-
+    student: '2135'
+    rollGroup: '09.2'
+-
+    student: '2138'
+    rollGroup: '12.1'
+-
+    student: '2141'
+    rollGroup: '09.2'
+-
+    student: '2145'
+    rollGroup: '12.1'
+-
+    student: '2150'
+    rollGroup: '08.2'
+-
+    student: '2156'
+    rollGroup: '10.1'
+-
+    student: '2160'
+    rollGroup: '09.3'
+-
+    student: '2163'
+    rollGroup: '09.1'
+-
+    student: '2166'
+    rollGroup: '08.2'
+-
+    student: '2169'
+    rollGroup: '08.1'
+-
+    student: '2172'
+    rollGroup: '09.1'
+-
+    student: '2175'
+    rollGroup: '08.2'
+-
+    student: '2178'
+    rollGroup: '08.2'
+-
+    student: '2184'
+    rollGroup: '13.1'
+-
+    student: '2187'
+    rollGroup: '09.3'
+-
+    student: '2190'
+    rollGroup: '08.2'
+-
+    student: '2193'
+    rollGroup: '08.1'
+-
+    student: '2194'
+    rollGroup: '09.3'
+-
+    student: '2200'
+    rollGroup: '09.3'
+-
+    student: '2203'
+    rollGroup: '09.3'
+-
+    student: '2206'
+    rollGroup: '08.2'
+-
+    student: '2212'
+    rollGroup: '08.1'
+-
+    student: '2215'
+    rollGroup: '08.1'
+-
+    student: '2216'
+    rollGroup: '08.1'
+-
+    student: '2225'
+    rollGroup: '07.1'
+-
+    student: '2231'
+    rollGroup: '09.1'
+-
+    student: '2232'
+    rollGroup: '08.1'
+-
+    student: '2233'
+    rollGroup: '08.1'
+-
+    student: '2236'
+    rollGroup: '08.2'
+-
+    student: '2239'
+    rollGroup: '08.2'
+-
+    student: '2243'
+    rollGroup: '08.1'
+-
+    student: '2247'
+    rollGroup: '09.3'
+-
+    student: '2250'
+    rollGroup: '09.2'
+-
+    student: '2253'
+    rollGroup: '08.2'
+-
+    student: '2262'
+    rollGroup: '09.3'
+-
+    student: '2265'
+    rollGroup: '09.1'
+-
+    student: '2268'
+    rollGroup: '09.1'
+-
+    student: '2271'
+    rollGroup: '08.2'
+-
+    student: '2274'
+    rollGroup: '07.4'
+-
+    student: '2277'
+    rollGroup: '09.3'
+-
+    student: '2280'
+    rollGroup: '09.3'
+-
+    student: '2283'
+    rollGroup: '08.1'
+-
+    student: '2286'
+    rollGroup: '11.2'
+-
+    student: '2293'
+    rollGroup: '09.2'
+-
+    student: '2296'
+    rollGroup: '09.2'
+-
+    student: '2299'
+    rollGroup: '09.2'
+-
+    student: '2302'
+    rollGroup: '08.1'
+-
+    student: '2306'
+    rollGroup: '11.2'
+-
+    student: '2309'
+    rollGroup: '10.1'
+-
+    student: '2316'
+    rollGroup: '11.2'
+-
+    student: '2319'
+    rollGroup: '09.1'
+-
+    student: '2323'
+    rollGroup: '08.1'
+-
+    student: '2327'
+    rollGroup: '09.1'
+-
+    student: '2330'
+    rollGroup: '08.1'
+-
+    student: '2333'
+    rollGroup: '08.1'
+-
+    student: '2334'
+    rollGroup: '08.2'
+-
+    student: '2340'
+    rollGroup: '08.1'
+-
+    student: '2348'
+    rollGroup: '09.1'
+-
+    student: '2357'
+    rollGroup: '11.1'
+-
+    student: '2360'
+    rollGroup: '08.2'
+-
+    student: '2364'
+    rollGroup: '08.1'
+-
+    student: '2371'
+    rollGroup: '08.2'
+-
+    student: '2374'
+    rollGroup: '08.1'
+-
+    student: '2380'
+    rollGroup: '11.3'
+-
+    student: '2383'
+    rollGroup: '08.2'
+-
+    student: '2386'
+    rollGroup: '10.3'
+-
+    student: '2389'
+    rollGroup: '09.2'
+-
+    student: '2392'
+    rollGroup: '13.1'
+-
+    student: '2395'
+    rollGroup: '08.1'
+-
+    student: '2398'
+    rollGroup: '11.3'
+-
+    student: '2401'
+    rollGroup: '10.2'
+-
+    student: '2404'
+    rollGroup: '09.1'
+-
+    student: '2407'
     rollGroup: '11.1'
 -
     student: '2411'
     rollGroup: '12.1'
 -
-    student: '1251'
-    rollGroup: '12.1'
+    student: '2420'
+    rollGroup: '08.2'
 -
-    student: '1471'
-    rollGroup: '11.1'
+    student: '2425'
+    rollGroup: '07.4'
 -
-    student: '1236'
-    rollGroup: '12.1'
+    student: '2426'
+    rollGroup: '07.2'
+-
+    student: '2427'
+    rollGroup: '07.3'
+-
+    student: '2430'
+    rollGroup: '07.2'
+-
+    student: '2433'
+    rollGroup: '07.3'
+-
+    student: '2436'
+    rollGroup: '07.3'
+-
+    student: '2441'
+    rollGroup: '10.3'
+-
+    student: '2444'
+    rollGroup: '11.2'
+-
+    student: '2447'
+    rollGroup: '07.1'
+-
+    student: '2450'
+    rollGroup: '07.1'
+-
+    student: '2453'
+    rollGroup: '07.2'
+-
+    student: '2456'
+    rollGroup: '07.1'
+-
+    student: '2459'
+    rollGroup: '07.1'
+-
+    student: '2460'
+    rollGroup: '07.2'
+-
+    student: '2463'
+    rollGroup: '07.4'
+-
+    student: '2466'
+    rollGroup: '07.3'
+-
+    student: '2469'
+    rollGroup: '07.4'
+-
+    student: '2472'
+    rollGroup: '07.4'
+-
+    student: '2473'
+    rollGroup: '07.3'
+-
+    student: '2476'
+    rollGroup: '07.2'
+-
+    student: '2479'
+    rollGroup: '07.3'
+-
+    student: '2482'
+    rollGroup: '07.1'
+-
+    student: '2482'
+    rollGroup: '13.1'
+-
+    student: '2485'
+    rollGroup: '07.4'
+-
+    student: '2488'
+    rollGroup: '10.2'
+-
+    student: '2490'
+    rollGroup: '11.2'
+-
+    student: '2491'
+    rollGroup: '09.3'
+-
+    student: '2495'
+    rollGroup: '09.1'
+-
+    student: '2498'
+    rollGroup: '08.1'
+-
+    student: '2501'
+    rollGroup: '08.2'
+-
+    student: '2504'
+    rollGroup: '09.3'
+-
+    student: '2505'
+    rollGroup: '07.1'
+-
+    student: '2505'
+    rollGroup: '08.1'
+-
+    student: '2508'
+    rollGroup: '09.1'
+-
+    student: '2508'
+    rollGroup: '13.1'
+-
+    student: '2511'
+    rollGroup: '08.1'
+-
+    student: '2511'
+    rollGroup: '13.1'
+-
+    student: '2514'
+    rollGroup: '08.1'
+-
+    student: '2514'
+    rollGroup: '13.1'
+-
+    student: '2517'
+    rollGroup: '08.1'
+-
+    student: '2517'
+    rollGroup: '13.1'
+-
+    student: '2520'
+    rollGroup: '08.2'
+-
+    student: '2523'
+    rollGroup: '08.2'
+-
+    student: '2526'
+    rollGroup: '09.3'
+-
+    student: '2529'
+    rollGroup: '08.2'
+-
+    student: '2532'
+    rollGroup: '09.3'
+-
+    student: '2535'
+    rollGroup: '08.2'
+-
+    student: '2537'
+    rollGroup: '08.1'
+-
+    student: '2541'
+    rollGroup: '13.1'
+-
+    student: '2545'
+    rollGroup: '09.1'
+-
+    student: '2548'
+    rollGroup: '10.3'
+-
+    student: '2555'
+    rollGroup: '09.2'
+-
+    student: '2563'
+    rollGroup: '07.2'
+-
+    student: '2566'
+    rollGroup: '07.3'
+-
+    student: '2567'
+    rollGroup: '07.1'
+-
+    student: '2570'
+    rollGroup: '07.3'
+-
+    student: '2573'
+    rollGroup: '07.4'
+-
+    student: '2576'
+    rollGroup: '07.3'
+-
+    student: '2577'
+    rollGroup: '07.1'
+-
+    student: '2580'
+    rollGroup: '07.3'
+-
+    student: '2583'
+    rollGroup: '07.4'
+-
+    student: '2586'
+    rollGroup: '07.3'
+-
+    student: '2589'
+    rollGroup: '07.4'
+-
+    student: '2592'
+    rollGroup: '07.4'
+-
+    student: '2595'
+    rollGroup: '07.4'
+-
+    student: '2598'
+    rollGroup: '07.4'
+-
+    student: '2601'
+    rollGroup: '07.1'
+-
+    student: '2604'
+    rollGroup: '07.4'
+-
+    student: '2607'
+    rollGroup: '07.2'
+-
+    student: '2610'
+    rollGroup: '07.1'
+-
+    student: '2611'
+    rollGroup: '07.1'
+-
+    student: '2611'
+    rollGroup: '13.1'
+-
+    student: '2614'
+    rollGroup: '07.1'
+-
+    student: '2615'
+    rollGroup: '07.4'
+-
+    student: '2618'
+    rollGroup: '07.4'
+-
+    student: '2621'
+    rollGroup: '07.2'
+-
+    student: '2624'
+    rollGroup: '07.3'
+-
+    student: '2627'
+    rollGroup: '07.1'
+-
+    student: '2630'
+    rollGroup: '07.2'
+-
+    student: '2633'
+    rollGroup: '07.2'
+-
+    student: '2636'
+    rollGroup: '07.1'
+-
+    student: '2639'
+    rollGroup: '07.3'
+-
+    student: '2642'
+    rollGroup: '07.2'
+-
+    student: '2645'
+    rollGroup: '07.2'
+-
+    student: '2648'
+    rollGroup: '07.4'
+-
+    student: '2651'
+    rollGroup: '07.2'
+-
+    student: '2652'
+    rollGroup: '07.2'
+-
+    student: '2654'
+    rollGroup: '07.3'
+-
+    student: '2657'
+    rollGroup: '07.2'
+-
+    student: '2660'
+    rollGroup: '07.4'
+-
+    student: '2663'
+    rollGroup: '07.2'
+-
+    student: '2666'
+    rollGroup: '07.3'
+-
+    student: '2667'
+    rollGroup: '07.1'
+-
+    student: '2670'
+    rollGroup: '07.3'
+-
+    student: '2673'
+    rollGroup: '10.2'
+-
+    student: '2676'
+    rollGroup: '07.4'
+-
+    student: '2679'
+    rollGroup: '07.1'
+-
+    student: '2680'
+    rollGroup: '07.4'
+-
+    student: '2683'
+    rollGroup: '07.1'
+-
+    student: '2686'
+    rollGroup: '07.3'
+-
+    student: '2689'
+    rollGroup: '07.3'
+-
+    student: '2692'
+    rollGroup: '07.2'
+-
+    student: '2695'
+    rollGroup: '07.2'
+-
+    student: '2696'
+    rollGroup: '07.2'
+-
+    student: '2699'
+    rollGroup: '07.2'
+-
+    student: '2700'
+    rollGroup: '07.4'
+-
+    student: '2702'
+    rollGroup: '07.2'
+-
+    student: '2705'
+    rollGroup: '07.4'
+-
+    student: '2708'
+    rollGroup: '07.3'
+-
+    student: '2711'
+    rollGroup: '07.3'
+-
+    student: '2714'
+    rollGroup: '07.4'
+-
+    student: '2715'
+    rollGroup: '07.1'
+-
+    student: '2719'
+    rollGroup: '10.1'
+-
+    student: '2723'
+    rollGroup: '10.3'
+-
+    student: '2726'
+    rollGroup: '07.3'
+-
+    student: '2729'
+    rollGroup: '11.3'
+-
+    student: '2737'
+    rollGroup: '10.1'
+-
+    student: '2740'
+    rollGroup: '07.2'
+-
+    student: '2743'
+    rollGroup: '07.2'
+-
+    student: '2746'
+    rollGroup: '07.1'
+-
+    student: '2749'
+    rollGroup: '07.3'
+-
+    student: '2752'
+    rollGroup: '07.1'
+-
+    student: '2754'
+    rollGroup: '07.1'
+-
+    student: '2757'
+    rollGroup: '07.4'
+-
+    student: '2760'
+    rollGroup: '07.1'
+-
+    student: '2761'
+    rollGroup: '07.4'
+-
+    student: '2764'
+    rollGroup: '07.1'
+-
+    student: '2767'
+    rollGroup: '07.1'
+-
+    student: '2770'
+    rollGroup: '07.1'
+-
+    student: '876'
+    rollGroup: '13.1'
+-
+    student: '897'
+    rollGroup: '13.1'
+-
+    student: '905'
+    rollGroup: '13.1'
+-
+    student: '913'
+    rollGroup: '13.1'
+-
+    student: '922'
+    rollGroup: '13.1'

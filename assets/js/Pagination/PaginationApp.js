@@ -41,17 +41,18 @@ export default class PaginationApp extends Component {
         this.storeFilterWait = true
         this.functions = props.functions
         this.functions.handleAddClick = typeof this.functions.handleAddClick === 'function' ? this.functions.handleAddClick : this.handleAddClick.bind(this)
-        this.functions.areYouSure = this.areYouSure.bind(this)
-        this.functions.loadNewPage = this.loadNewPage.bind(this)
-        this.functions.displayInformation = this.displayInformation.bind(this)
-        this.functions.dropEvent = this.dropEvent.bind(this)
-        this.functions.headerRow = this.headerRow.bind(this)
         this.functions.sortColumn = this.sortColumn.bind(this)
         this.functions.toggleAll = this.toggleAll.bind(this)
         this.functions.toggleSelectedRow = this.toggleSelectedRow.bind(this)
         this.functions.manageSelectedRowAction = this.manageSelectedRowAction.bind(this)
         this.functions.deleteItem = this.deleteItem.bind(this)
+        this.functions.areYouSure = this.areYouSure.bind(this)
+        this.functions.loadNewPage = this.loadNewPage.bind(this)
+        this.functions.displayInformation = this.displayInformation.bind(this)
+        this.functions.dropEvent = this.dropEvent.bind(this)
+        this.functions.headerRow = this.headerRow.bind(this)
         this.functions.callSelectedRowAction = this.callSelectedRowAction.bind(this)
+        this.paginationContext = typeof props.context === 'array' ? {} : props.context
 
 
         this.sortColumn = this.sortColumn.bind(this)
@@ -802,6 +803,10 @@ PaginationApp.propTypes = {
         PropTypes.object,
         PropTypes.string,
     ]),
+    context: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]),
 }
 
 PaginationApp.defaultProps = {
@@ -810,4 +815,5 @@ PaginationApp.defaultProps = {
     returnRoute: '',
     addElementRoute: '',
     refreshRoute: '',
+    context: {},
 }

@@ -621,6 +621,15 @@
     target: action
 -
     findBy:
+        entryRoute: attendance_code_list
+    source:
+        table: App\Modules\System\Entity\Action
+        findBy:
+            entryRoute: attendance_roll_group_manage
+            precedence: null
+    target: action
+-
+    findBy:
         entryRoute: behaviour_settings
     source:
         table: App\Modules\System\Entity\Action

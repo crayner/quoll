@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Comms\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * Class NotificationPagination
  * @package App\Modules\System\Pagination
  */
-class NotificationEventPagination extends AbstractPaginationManager
+class NotificationEventPagination extends AbstractPagination
 {
     /**
      * execute

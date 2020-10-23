@@ -18,14 +18,14 @@
 namespace App\Modules\Timetable\Pagination;
 
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
 use App\Util\TranslationHelper;
 
-class TimetablePagination extends AbstractPaginationManager
+class TimetablePagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

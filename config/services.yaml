@@ -186,3 +186,13 @@ services:
     App\Manager\EntitySortManager:
         calls:
             - [ setMessages, ['@App\Manager\StatusManager'] ]
+
+    App\Modules\School\Util\AcademicYearHelper:
+        calls:
+            - [ setPageManager, ['@App\Manager\PageManager'] ]
+        tags:
+            - { name: 'container.preload', class: 'App\Manager\StatusManager' }
+
+    App\Modules\Attendance\Listeners\AttendanceListener:
+        tags:
+            - { name: 'doctrine.event_subscriber' }

@@ -4,14 +4,11 @@ Active: Active
 Add Grade Scale: Add Grade Scale
 Add Scale: Add Scale
 Assess: Assess
-
-Descriptor: Descriptor
+escriptor: Descriptor
 Edit Grade Scale: Edit Grade Scale
 'Edit Scale ({name})': 'Edit Scale ({name})'
-
 Is Default?: Is Default?
 Numeric: Numeric
-
 Scales: Scales
 Usage: Usage
 Value: Value

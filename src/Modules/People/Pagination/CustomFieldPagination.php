@@ -16,7 +16,7 @@
  */
 namespace App\Modules\People\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -29,7 +29,7 @@ use App\Util\TranslationHelper;
  * Class CustomFieldPagination
  * @package App\Modules\People\Pagination
  */
-class CustomFieldPagination extends AbstractPaginationManager
+class CustomFieldPagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

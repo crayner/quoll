@@ -24,6 +24,7 @@ use App\Provider\ProviderFactory;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,22 @@ abstract class AbstractPageController extends AbstractController
     protected function getPageManager(): PageManager
     {
         return $this->get('page_manager');
+    }
+
+    /**
+     * Does a parameter exist
+     *
+     * 23/10/2020 10:16
+     * @param string $name
+     * @return mixed
+     */
+    protected function hasParameter(string $name)
+    {
+        if (!$this->container->has('parameter_bag')) {
+            throw new ServiceNotFoundException('parameter_bag.', null, null, [], sprintf('The "%s::getParameter()" method is missing a parameter bag to work properly. Did you forget to register your controller as a service subscriber? This can be fixed either by using autoconfiguration or by manually wiring a "parameter_bag" in the service locator passed to the controller.', static::class));
+        }
+
+        return $this->container->get('parameter_bag')->has($name);
     }
 
 
@@ -158,7 +175,7 @@ abstract class AbstractPageController extends AbstractController
      */
     protected function isPostContent(): bool
     {
-        return $this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '';
+        return $this->getRequest()->getMethod() === 'POST' && $this->getRequest()->getContent() !== '' && $this->getRequest()->getContentType() === 'json';
     }
 
     /**

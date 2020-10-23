@@ -18,7 +18,6 @@ namespace App\Manager\Hidden;
 
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
-use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -159,10 +158,12 @@ class WarningItem implements SidebarContentInterface
     public function render(array $options): string
     {
         try {
-            return $this->getTwig()->render('components/warning,html.twig', [
+            return $this->getTwig()->render('components/warning.html.twig', [
                 'warning' => $this,
             ]);
-        } catch (LoaderError | RuntimeError | SyntaxError $e) {}
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            throw $e;
+        }
         return '';
     }
 

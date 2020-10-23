@@ -16,7 +16,7 @@
  */
 namespace App\Modules\School\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\School\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class YearGroupPagination extends AbstractPaginationManager
+class YearGroupPagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

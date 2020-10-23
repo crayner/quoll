@@ -16,7 +16,7 @@
  */
 namespace App\Modules\People\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
@@ -27,7 +27,7 @@ use App\Util\TranslationHelper;
  * Class LocalityPagination
  * @package App\Modules\People\Pagination
  */
-class LocalityPagination extends AbstractPaginationManager
+class LocalityPagination extends AbstractPagination
 {
     /**
      * execute

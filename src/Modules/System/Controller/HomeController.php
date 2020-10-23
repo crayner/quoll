@@ -49,9 +49,14 @@ class HomeController extends AbstractPageController
      */
     public function home(string $timeout = '')
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
-            return $this->redirectToRoute('personal_page');
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null) {
+                $this->addFlash('info', 'A base route redirection was applied.');
+                return $this->redirectToRoute($this->getParameter('base_route'));
+            }
 
+            return $this->redirectToRoute('personal_page');
+        }
         if (!$this->getParameter('installed')) {
             return $this->redirectToRoute('installation_check');
         }
@@ -113,6 +118,11 @@ class HomeController extends AbstractPageController
                 ]
             );
         } else {
+            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null) {
+                $this->addFlash('info', 'A base route redirection was applied.');
+                return $this->redirectToRoute($this->getParameter('base_route'));
+            }
+
             return $this->getPageManager()->render(
                 [
                     'content' => '<h3 key="personal_page">Personal Page</h3>',

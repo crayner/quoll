@@ -1,0 +1,11 @@
+{% trans_default_domain 'School' %}
+{% set preferences = 'Preferences'|trans({}, 'People') %}
+<p class="text-extrabold underline">{{ 'Academic Year Restriction'|trans }}</p>
+<p>{{ 'This page is restricted to changes within the academic year which you are currently accessing.  You can change the current academic year (if permitted) in your{anchor}preferences.</a>'|trans({'{anchor}': '<a href="' ~ path('preferences') ~ '" title="' ~ preferences ~ '" target="_self">' })|raw }}</p>
+{% if isCurrentAcademicYear() %}
+    <p>{{ 'You are accessing the current academic year: {name}.'|trans({'{name}': getAcademicYear().name}) }}</p>
+{% elseif isFutureAcademicYear() %}
+    <p>{{ 'You are accessing a future academic year: {name}.'|trans({'{name}': getAcademicYear().name}) }}</p>
+{% elseif isPastAcademicYear() %}
+    <p>{{ 'You are accessing a past academic year: {name}.'|trans({'{name}': getAcademicYear().name}) }}</p>
+{% endif %}

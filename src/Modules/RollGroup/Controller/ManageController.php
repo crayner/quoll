@@ -72,6 +72,7 @@ class ManageController extends AbstractPageController
             ->setMessages($this->getStatusManager()->getMessageArray())
             ->setPageHeader($pageHeader)
             ->createBreadcrumbs('Roll Groups')
+            ->setTitle('Roll Groups')
             ->setUrl($this->generateUrl('roll_group_list'))
             ->renderContainer($container);
     }

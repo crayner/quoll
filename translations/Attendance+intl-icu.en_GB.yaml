@@ -66,3 +66,18 @@ attendancecode:
 role_multiple_select: Controls who can use this code.<br/>Use Control, Command and/or Shift to select multiple.
 Your current IP address ({ip}) is included in the saved list.: Your current IP address ({ip}) is included in the saved list.
 Edit Attendance Code: Edit Attendance Code
+no_attendance_recorded: >-
+    {time, select,
+        all_day  {Attendance has not been taken for this group yet for "date". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+        other    {Attendance has not been taken for this group yet for "date" at "time". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+    }
+'The value is not valid. Use one of: "{times}"': 'The value is not valid. Use one of: "{times}"'
+Days Absent: >-
+    {count, plural,
+        =0    {No Absences}
+        one   {One Absence}
+        other {# Absences}
+    }
+not_a_school_day: 'School is closed on "{date}", and so attendance information cannot be recorded.'
+'The reason is not valid. Valid reasons are: "{reasons}"': 'The reason is not valid. Valid reasons are: "{reasons}"'
+'Attendance (Daily) Record Time': 'Attendance (Daily) Record Time'

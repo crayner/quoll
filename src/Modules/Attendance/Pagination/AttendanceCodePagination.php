@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Attendance\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -30,7 +30,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\Attendance\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceCodePagination extends AbstractPaginationManager
+class AttendanceCodePagination extends AbstractPagination
 {
     /**
      * execute

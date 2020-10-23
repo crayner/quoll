@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Security\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
@@ -28,7 +28,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\Security\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class SecurityRolePagination extends AbstractPaginationManager
+class SecurityRolePagination extends AbstractPagination
 {
     /**
      * execute

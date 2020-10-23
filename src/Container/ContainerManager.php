@@ -16,7 +16,7 @@
  */
 namespace App\Container;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -214,8 +214,8 @@ class ContainerManager
             $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();
-            $container['returnRoute'] = AbstractPaginationManager::resolveRoute($this->getReturnRoute());
-            $container['addElementRoute'] = AbstractPaginationManager::resolveRoute($this->getAddElementRoute());
+            $container['returnRoute'] = AbstractPagination::resolveRoute($this->getReturnRoute());
+            $container['addElementRoute'] = AbstractPagination::resolveRoute($this->getAddElementRoute());
             $container['hideSingleFormWarning'] = $this->isHideSingleFormWarning();
             $containers[$target] = $container;
         }

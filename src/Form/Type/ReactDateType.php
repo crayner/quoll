@@ -23,7 +23,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ReactDateType
+ *
+ * 17/10/2020 08:40
  * @package App\Form\Type
+ * @author Craig Rayner <craig@craigrayner.com>
  */
 class ReactDateType extends AbstractType
 {
@@ -38,6 +41,8 @@ class ReactDateType extends AbstractType
 
     /**
      * configureOptions
+     *
+     * 17/10/2020 08:40
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -45,6 +50,7 @@ class ReactDateType extends AbstractType
         $resolver->setDefaults(
             [
                 'widget' => 'single_text',
+                'input' => 'datetime_immutable',
             ]
         );
     }

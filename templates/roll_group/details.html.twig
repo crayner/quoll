@@ -1,52 +1,51 @@
 {% trans_default_domain 'RollGroup' %}
-
-    <h3>
-        <button class="close-button gray" title="{{ 'Return'|trans({}, 'messages') }}" type="button" href="{{ path('roll_group_list') }}"><span class="fas fa-reply fa-fw"/></button>
-        {{ 'Basic Information'|trans }}</h3>
-    <table class='smallIntBorder' cellspacing='0' style='width: 100%'>
-        <tbody>
-        <tr>
-            <td style='width: 33%; vertical-align: top'>
-               <span style='font-size: 115%; font-weight: bold'>{{ 'Name'|trans }}</span><br/>
-                <i>{{ rollGroup.name }}</i>
-            </td>
-            <td style='width: 33%; vertical-align: top'>
-                <span style='font-size: 115%; font-weight: bold'>{{ 'Tutors'|trans }}</span><br/>
-                {% for tutor in rollGroup.tutors %}
-                    {% if staffView %}
-                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
-                    {% else %}
-                            <i>{{ tutor.getFullName() }}
-                    {% endif %}
-                    {% if rollGroup.tutors|length > 1 and loop.index is same as(1) %} ({{ 'Main Tutor'|trans }}){% endif %}
-                    </i><br/>
-                {% endfor %}
-            </td>
-            <td style='width: 33%; vertical-align: top'>
-                <span style='font-size: 115%; font-weight: bold'>{{ 'Educational Assistants'|trans }}</span><br/>
-                {% for tutor in rollGroup.assistants %}
-                    {% if staffView %}
-                        <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
-                    {% else %}
+<h3>
+    <button class="close-button gray" title="{{ 'Return'|trans({}, 'messages') }}" type="button" href="{{ path('roll_group_list') }}"><span class="fas fa-reply fa-fw"/></button>
+    {{ 'Basic Information'|trans }}</h3>
+<table class='smallIntBorder' cellspacing='0' style='width: 100%'>
+    <tbody>
+    <tr>
+        <td style='width: 33%; vertical-align: top'>
+           <span style='font-size: 115%; font-weight: bold'>{{ 'Name'|trans }}</span><br/>
+            <i>{{ rollGroup.name }}</i>
+        </td>
+        <td style='width: 33%; vertical-align: top'>
+            <span style='font-size: 115%; font-weight: bold'>{{ 'Tutors'|trans }}</span><br/>
+            {% for tutor in rollGroup.tutors %}
+                {% if staffView %}
+                    <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
+                {% else %}
                         <i>{{ tutor.getFullName() }}
-                    {% endif %}
-                    </i><br/>
-                {% endfor %}
-            </td>
-        </tr>
+                {% endif %}
+                {% if rollGroup.tutors|length > 1 and loop.index is same as(1) %} ({{ 'Main Tutor'|trans }}){% endif %}
+                </i><br/>
+            {% endfor %}
+        </td>
+        <td style='width: 33%; vertical-align: top'>
+            <span style='font-size: 115%; font-weight: bold'>{{ 'Educational Assistants'|trans }}</span><br/>
+            {% for tutor in rollGroup.assistants %}
+                {% if staffView %}
+                    <i><a href='{{ path('legacy', {q: '/modules/Staff/staff_view_details.php', gibbonPersonID: tutor.id}) }}'>{{ tutor.getFullName() }}</a>
+                {% else %}
+                    <i>{{ tutor.getFullName() }}
+                {% endif %}
+                </i><br/>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td style='width: 33%; vertical-align: top' colspan=3>
+            <span style='font-size: 115%; font-weight: bold'>{{ 'Location'| trans }}</span><br/>
+            <i>{{ rollGroup.facilityName }}</i>
+        </td>
+    </tr>
+    {% if rollGroup.website|length > 0 %}
         <tr>
             <td style='width: 33%; vertical-align: top' colspan=3>
-                <span style='font-size: 115%; font-weight: bold'>{{ 'Location'| trans }}</span><br/>
-                <i>{{ rollGroup.facilityName }}</i>
+                <span style='font-size: 115%; font-weight: bold'>{{ 'Website'| trans }}</span><br/>
+                <a target='_blank' href='{{ rollGroup.website }}'>{{ rollGroup.website }}</a>
             </td>
         </tr>
-        {% if rollGroup.website|length > 0 %}
-            <tr>
-                <td style='width: 33%; vertical-align: top' colspan=3>
-                    <span style='font-size: 115%; font-weight: bold'>{{ 'Website'| trans }}</span><br/>
-                    <a target='_blank' href='{{ rollGroup.website }}'>{{ rollGroup.website }}</a>
-                </td>
-            </tr>
-        {% endif %}
-        </tbody>
-    </table>
+    {% endif %}
+    </tbody>
+</table>

@@ -16,7 +16,7 @@
  */
 namespace App\Modules\RollGroup\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationRow;
 use App\Manager\PaginationInterface;
@@ -27,7 +27,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\RollGroup\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class RollGroupStudentsPagination extends AbstractPaginationManager
+class RollGroupStudentsPagination extends AbstractPagination
 {
     /**
      * execute
@@ -46,13 +46,10 @@ class RollGroupStudentsPagination extends AbstractPaginationManager
         $row->setSpecial('Roll Group Students');
 
         $column = new PaginationColumn();
-
-        $column->setLabel('Photo')
+        $row->addColumn($column->setLabel('Photo')
             ->setContentKey('photo')
             ->setContentType('image')
-            ->setDefaultValue(['/build/static/DefaultPerson.png'])
-        ;
-        $row->addColumn($column);
+            ->setDefaultValue(['/build/static/DefaultPerson.png']));
 
         $column->setLabel('Name')
             ->setContentKey('full_name')

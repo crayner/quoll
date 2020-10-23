@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Enrolment\Pagination;
 
-use App\Manager\AbstractPaginationManager;
+use App\Manager\AbstractPagination;
 use App\Manager\Hidden\PaginationAction;
 use App\Manager\Hidden\PaginationColumn;
 use App\Manager\Hidden\PaginationFilter;
@@ -33,7 +33,7 @@ use App\Util\TranslationHelper;
  * @package App\Modules\Enrolment\Pagination
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class IndividualEnrolmentPagination extends AbstractPaginationManager
+class IndividualEnrolmentPagination extends AbstractPagination
 {
     public function execute(): PaginationInterface
     {

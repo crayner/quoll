@@ -25,12 +25,14 @@ use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\RollGroup\Form\DetailStudentSortType;
 use App\Modules\RollGroup\Pagination\RollGroupStudentsPagination;
+use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContent;
 use App\Twig\Sidebar\Photo;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -43,21 +45,21 @@ class ViewController extends AbstractPageController
 {
     /**
      * detail
+     *
+     * 18/10/2020 09:45
      * @param RollGroup $rollGroup
-     * @param SidebarContent $sidebar
-     * @param ContainerManager $manager
      * @param RollGroupStudentsPagination $pagination
-     * @return Response
      * @Route("/roll/group/{rollGroup}/detail/",name="roll_group_detail")
      * @IsGranted("ROLE_ROUTE")
-     * @todo This method is not finished.
-     * 17/06/2020 12:39
+     * @return JsonResponse
      */
-    public function detail(RollGroup $rollGroup, SidebarContent $sidebar, ContainerManager $manager, RollGroupStudentsPagination $pagination)
+    public function detail(RollGroup $rollGroup, RollGroupStudentsPagination $pagination)
     {
         if ($rollGroup->getTutor()) {
             $image = new Photo($rollGroup->getTutor()->getPerson()->getPersonalDocumentation(), 'getPersonalImage', 200, 'max200 user','/build/static/DefaultPerson.png');
-            $sidebar->addContent($image->setTitle($rollGroup->getTutor()->getFullName()));
+            $this->getPageManager()
+                ->getSidebar()
+                ->addContent($image->setTitle($rollGroup->getTutor()->getFullName()));
         }
 
         $canPrint = SecurityHelper::isActionAccessible('report_students_roll_group_print');
@@ -92,19 +94,19 @@ class ViewController extends AbstractPageController
         $container->addForm('Roll Group', $form->createView());
 
         if ($canViewStudents) {
-            $students = ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy);
-            $pagination->setContent($students);
+            $pagination->setContent(ProviderFactory::getRepository(Student::class)->findByRollGroup($rollGroup, $sortBy));
             $panel->addSection(new Section('pagination', $pagination));
         }
-        $container->addPanel($panel);
+        $container->addPanel(AcademicYearHelper::academicYearWarning($panel));
 
-        $manager->addContainer($container);
         return $this->getPageManager()
             ->createBreadcrumbs(['View Roll Group {name}', ['{name}' => $rollGroup->getName()]],
                 [
                     ['uri' => 'roll_group_list', 'name' => 'Roll Groups'],
                 ]
             )
-            ->render(['containers' => $manager->getBuiltContainers()]);
+            ->render(['containers' => $this->getContainerManager()
+                ->addContainer($container)
+                ->getBuiltContainers()]);
     }
 }

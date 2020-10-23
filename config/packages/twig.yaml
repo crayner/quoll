@@ -5,3 +5,6 @@ twig:
     paths:
         # point this wherever your images live
         '%kernel.project_dir%/public/build/static': images
+    date:
+        format: 'D, jS M/Y'
+        timezone: '%timezone%'
