@@ -19,6 +19,7 @@ namespace App\Modules\Attendance\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\Attendance\Validator\AttendanceLogTime;
 use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\Security\Util\SecurityHelper;
 use App\Modules\Staff\Entity\Staff;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,12 +39,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     indexes={
  *      @ORM\Index(name="recorder",columns={"recorder"}),
+ *      @ORM\Index(name="creator",columns={"creator"}),
  *      @ORM\Index(name="roll_group",columns={"roll_group"})
  *     }
  * )
  * @UniqueEntity(ignoreNull=false,fields={"dailyTime","rollGroup","date"})
  * @AttendanceLogTime()
- * @ORM\HasLifecycleCallbacks()
  */
 class AttendanceLogRollGroup extends AbstractEntity
 {
@@ -74,6 +75,14 @@ class AttendanceLogRollGroup extends AbstractEntity
     private ?Staff $recorder;
 
     /**
+     * @var Staff|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
+     * @ORM\JoinColumn(name="recorder",nullable=false,name="creator")
+     * @Assert\NotBlank()
+     */
+    private ?Staff $creator;
+
+    /**
      * @var string
      * @ORM\Column(length=32,nullable=false,name="daily_time",options={"default": "all_day"})
      */
@@ -90,6 +99,12 @@ class AttendanceLogRollGroup extends AbstractEntity
      * @ORM\Column(type="datetime_immutable",nullable=false,name="creation_date")
      */
     private DateTimeImmutable $creationDate;
+
+    /**
+     * @var DateTimeImmutable
+     * @ORM\Column(type="datetime_immutable",nullable=false,name="recorded_date")
+     */
+    private DateTimeImmutable $recordedDate;
 
     /**
      * AttendanceLogRollGroup constructor.
@@ -161,14 +176,15 @@ class AttendanceLogRollGroup extends AbstractEntity
     }
 
     /**
-     * Recorder
+     * setRecorder
      *
+     * 24/10/2020 15:19
      * @param Staff|null $recorder
-     * @return AttendanceLogRollGroup
+     * @return $this
      */
-    public function setRecorder(?Staff $recorder): AttendanceLogRollGroup
+    public function setRecorder(?Staff $recorder = null): AttendanceLogRollGroup
     {
-        $this->recorder = $recorder;
+        $this->recorder = $recorder ?: SecurityHelper::getCurrentUser()->getStaff();
         return $this;
     }
 
@@ -219,7 +235,6 @@ class AttendanceLogRollGroup extends AbstractEntity
     /**
      * CreationDate
      *
-     * @ORM\PrePersist()
      * @return DateTimeImmutable
      */
     public function getCreationDate(): DateTimeImmutable
@@ -228,14 +243,62 @@ class AttendanceLogRollGroup extends AbstractEntity
     }
 
     /**
-     * CreationDate
+     * setCreationDate
      *
-     * @param DateTimeImmutable $creationDate
-     * @return AttendanceLogRollGroup
+     * 24/10/2020 15:18
+     * @param DateTimeImmutable|null $creationDate
+     * @return $this
      */
-    public function setCreationDate(DateTimeImmutable $creationDate): AttendanceLogRollGroup
+    public function setCreationDate(?DateTimeImmutable $creationDate = null): AttendanceLogRollGroup
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = $creationDate ?: new DateTimeImmutable();
+        $this->setRecordedDate();
+        return $this;
+    }
+
+    /**
+     * Creator
+     *
+     * @return Staff|null
+     */
+    public function getCreator(): ?Staff
+    {
+        return $this->creator;
+    }
+
+    /**
+     * setCreator
+     *
+     * 24/10/2020 15:17
+     * @param Staff|null $creator
+     * @return $this
+     */
+    public function setCreator(?Staff $creator = null): AttendanceLogRollGroup
+    {
+        $this->creator = $creator ?: SecurityHelper::getCurrentUser()->getStaff();
+        return $this;
+    }
+
+    /**
+     * RecordedDate
+     *
+     * @return DateTimeImmutable
+     */
+    public function getRecordedDate(): DateTimeImmutable
+    {
+        return $this->recordedDate;
+    }
+
+    /**
+     * setRecordedDate
+     *
+     * 24/10/2020 15:17
+     * @param DateTimeImmutable|null $recordedDate
+     * @return $this
+     */
+    public function setRecordedDate(?DateTimeImmutable $recordedDate = null): AttendanceLogRollGroup
+    {
+        $this->recordedDate = $recordedDate ?: new DateTimeImmutable();
         return $this;
     }
 

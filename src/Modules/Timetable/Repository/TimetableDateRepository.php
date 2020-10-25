@@ -180,4 +180,26 @@ class TimetableDateRepository extends ServiceEntityRepository
             return null;
         }
     }
+
+    /**
+     * findPreviousTimetableDates
+     *
+     * 25/10/2020 12:01
+     * @param DateTimeImmutable $date
+     * @param int $limit
+     * @return array
+     */
+    public function findPreviousTimetableDates(DateTimeImmutable $date, int $limit = 5): array
+    {
+        return $this->createQueryBuilder('tdate')
+            ->leftJoin('tdate.timetableDay', 'tday')
+            ->leftJoin('tday.timetable', 't')
+            ->where('t.academicYear = :current')
+            ->andWhere('tdate.date < :date')
+            ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(), 'date' => $date])
+            ->setMaxResults($limit)
+            ->orderBy('tdate.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

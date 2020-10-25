@@ -3,12 +3,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import CollectionRows from "./Template/Table/CollectionRows"
+import AttendanceStudentCollection from './Special/AttendanceStudentCollection'
 
 export default function CollectionApp(props) {
     const {
         functions,
         form,
     } = props
+
+    if (form.special !== false) {
+        if (form.special === 'display_student_attendance') {
+            return (<AttendanceStudentCollection {...props} />)
+        }
+    }
 
     let columnCount = 0
     let prototype = {...form.prototype}

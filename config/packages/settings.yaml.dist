@@ -1047,6 +1047,11 @@ parameters:
             dailyAttendanceTimes:
                 type: array
                 value: ['all_day']
+            logAttendance:
+                class: App\Modules\Attendance\Manager\Hidden\AttendanceLog
+                method: getLogAttendance
+                value: 'Daily Only'
+                type: enum
             attendanceReasons:
                 value:
                     - Pending

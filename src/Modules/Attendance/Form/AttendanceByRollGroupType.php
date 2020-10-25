@@ -19,6 +19,7 @@ namespace App\Modules\Attendance\Form;
 use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
@@ -52,6 +53,19 @@ class AttendanceByRollGroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['data']->isValid()) {
+            $builder
+                ->add('students', ReactCollectionType::class,
+                    [
+                        'entry_type' => AttendanceForStudentType::class,
+                        'element_delete_route' => false,
+                        'special' => 'display_student_attendance',
+                        'row_style' => 'single',
+                    ]
+                )
+            ;
+        }
+
         $builder
             ->add('header', HeaderType::class,
                 [
@@ -111,6 +125,7 @@ class AttendanceByRollGroupType extends AbstractType
                 )
             ;
         }
+
         $builder
             ->add('submit', SubmitType::class)
         ;

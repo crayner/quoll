@@ -288,13 +288,14 @@ class ReactFormType extends AbstractType
         if (in_array($vars['type'], ['collection'])) {
             if (isset($view->vars['prototype']))
                 $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
-            if (key_exists('column_count', $view->vars)) $vars['column_count'] = $view->vars['column_count'];
+            $vars['column_count'] = key_exists('column_count', $view->vars) ? $view->vars['column_count'] : null;
             $vars['collection_key'] = uniqid('collection', true);
-            $vars['header_row'] = $view->vars['header_row'] ;
+            $vars['header_row'] = key_exists('header_row', $view->vars) ? $view->vars['header_row'] : false;
+            $vars['special'] = key_exists('special', $view->vars) ? $view->vars['special'] : false;
             $vars['allow_delete'] = $view->vars['allow_delete'];
             $vars['allow_add'] = $view->vars['allow_add'];
-            $vars['element_delete_route'] = $view->vars['element_delete_route'];
-            $vars['element_delete_options'] = $view->vars['element_delete_options'];
+            $vars['element_delete_route'] = key_exists('element_delete_route', $view->vars) ? $view->vars['element_delete_route'] : false;
+            $vars['element_delete_options'] = key_exists('element_delete_options',$view->vars) ? $view->vars['element_delete_options'] : [];
         }
         if (in_array($vars['type'], ['simple_array'])) {
             if (isset($view->vars['prototype']))

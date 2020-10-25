@@ -20,6 +20,7 @@ Manage {name} Enrolment: Manage {name} Enrolment
 Participant: Participant
 Remove: Remove
 Role: Role
+Total Student Enrolment: Total Student Enrolment
 courseclassperson:
     role:
         assistant: Assistant

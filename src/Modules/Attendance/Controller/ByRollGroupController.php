@@ -71,13 +71,17 @@ class ByRollGroupController extends AbstractPageController
         $manager->setDate($date)
             ->setRollGroup($rollGroup)
             ->setDailyTime($dailyTime);
-        $form = $this->createForm(AttendanceByRollGroupType::class, $manager, ['action' => $this->generateUrl('attendance_roll_group_manage',
+        $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
             [
-                'date' => $date ? $date->format('Y-m-d') : null,
-                'dailyTime' => $dailyTime,
-                'rollGroup' => $rollGroup ? $rollGroup->getId() : null
+                'action' => $this->generateUrl('attendance_roll_group_manage',
+                    [
+                        'date' => $date ? $date->format('Y-m-d') : null,
+                        'dailyTime' => $dailyTime,
+                        'rollGroup' => $rollGroup ? $rollGroup->getId() : null
+                    ]
+                )
             ]
-        )]);
+        );
 
         if ($this->isPostContent()) {
             $this->submitForm($form);
@@ -89,7 +93,7 @@ class ByRollGroupController extends AbstractPageController
 
 
         $container = new Container();
-        $panel = new Panel('single', 'Attendance', new Section('form','single'));
+        $panel = new Panel('single', 'Attendance');
 
         if ($manager->isValid()) {
             $pagination
@@ -100,7 +104,8 @@ class ByRollGroupController extends AbstractPageController
                 ->setContent($manager->generateContent())
                 ;
         }
-        $panel->addSection(new Section('html', $this->renderView('attendance/attendance_roll_group.html.twig', ['pagination' => $pagination, 'manager' => $manager])));
+        $panel->addSection(new Section('html', $this->renderView('attendance/attendance_roll_group.html.twig', ['pagination' => $pagination, 'manager' => $manager])))
+            ->addSection(new Section('form','single'));
 
         $container->addForm('single', $form)
             ->addPanel(AcademicYearHelper::academicYearWarning($panel));

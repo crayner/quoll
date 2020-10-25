@@ -17,6 +17,8 @@
 namespace App\Modules\Attendance\Repository;
 
 use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
+use App\Modules\RollGroup\Entity\RollGroup;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

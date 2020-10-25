@@ -196,3 +196,6 @@ services:
     App\Modules\Attendance\Listeners\AttendanceListener:
         tags:
             - { name: 'doctrine.event_subscriber' }
+        calls:
+            - [ setLog, ['@monolog.logger.attendance'] ]
+

@@ -66,10 +66,16 @@ attendancecode:
 role_multiple_select: Controls who can use this code.<br/>Use Control, Command and/or Shift to select multiple.
 Your current IP address ({ip}) is included in the saved list.: Your current IP address ({ip}) is included in the saved list.
 Edit Attendance Code: Edit Attendance Code
+attendance_recorded: 'Attendance has been taken at the following times for this group: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>'
+partial_attendance_recorded: >-
+    {count, plural,
+        one     {Attendance has been started at the following times for this group, but one student has not had attendance recorded: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>}
+        other   {Attendance has been started at the following times for this group, but # students have not had attendance recorded: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>}
+    }
 no_attendance_recorded: >-
-    {time, select,
-        all_day  {Attendance has not been taken for this group yet for "date". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
-        other    {Attendance has not been taken for this group yet for "date" at "time". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+    {dailyTime, select,
+        all_day  {Attendance has not been taken for this group yet for "roll_date". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+        other    {Attendance has not been taken for this group yet for "roll_date" at "dailyTime". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
     }
 'The value is not valid. Use one of: "{times}"': 'The value is not valid. Use one of: "{times}"'
 Days Absent: >-
@@ -81,3 +87,20 @@ Days Absent: >-
 not_a_school_day: 'School is closed on "{date}", and so attendance information cannot be recorded.'
 'The reason is not valid. Valid reasons are: "{reasons}"': 'The reason is not valid. Valid reasons are: "{reasons}"'
 'Attendance (Daily) Record Time': 'Attendance (Daily) Record Time'
+Attendance Record Time: Attendance Record Time
+Attendance by Roll Group: Attendance by Roll Group
+Choose Roll Group: Choose Roll Group
+Date: Date
+Enter any part of the name to select...,: Enter any part of the name to select...,
+Roll Group: Roll Group
+Take Attendance by Roll Group: Take Attendance by Roll Group
+attendance_log_change: >-
+    {original, select,
+        persist {"name: 'change'"}
+        other   {"name: 'original' => 'change'"}
+    }
+attendance_log_student_roll_group: >-
+    {time, select,
+        all_day     {Daily Attendance: student: [result] on date by recorder}
+        other       {Daily Attendance: student: [result] on date at time by recorder}
+    }

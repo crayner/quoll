@@ -67,10 +67,10 @@ class FastFinder implements ContentInterface
 
         $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
         $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')
-            .($plannerView->isActionAccessible() && $plannerView->getHighestGroupedAction() !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
-            .($studentView->isActionAccessible() ? ', '.$this->translate('Students', [], 'messages') : '')
-            .($staffView->isActionAccessible() ? ', '.$this->translate('Staff', [], 'messages') : ''));
-        $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentRollGroup::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
+            .($plannerView->isActionAccessible() && $plannerView->getHighestGroupedAction() !== 'viewMyChildrenClasses' ? ', ' . $this->translate('Classes', [], 'Enrolment') : '')
+            .($studentView->isActionAccessible() ? ', '.$this->translate('Students', [], 'Student') : '')
+            .($staffView->isActionAccessible() ? ', '.$this->translate('Staff', [], 'Staff') : ''));
+        $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment', [], 'Enrolment') . ' ' .ProviderFactory::getRepository(StudentRollGroup::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
         $this->addAttribute('themeName', $this->getSession()->get('theme'));
         $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
         $this->addAttribute('trans_close', $this->translate('Close', [], 'messages'));

@@ -14,35 +14,27 @@
     </div>
     <div class="mx-auto float-none w-32 m-0 mb-px mb-1">
         <div class="flex-1 relative">
-            <select id="{{ 'attendance_roll_group_students_' ~ person.id ~ '_code' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][code]' }}" class="mx-auto float-none w-32 m-0 mb-px">
+            <select id="{{ 'attendance_roll_group_students_' ~ person.id ~ '_code' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][code]' }}" class="mx-auto float-none w-32 m-0 mb-px" defaultValue="{{ person.code|default(null) }}">
                 {% for id,name in pagination.getContext('Code Select') %}
-                    {% set selected  = '' %}
-                    {% if person.code|default('') is same as(name) %}
-                        {% set selected  = ' selected' %}
-                    {% endif %}
-                    <option value="{{ id }}"{{ selected }}>{{ name }}</option>
+                    <option value="{{ id }}">{{ name }}</option>
                 {% endfor %}
             </select>
         </div>
     </div>
     <div class="mx-auto float-none w-32 m-0 mb-px mb-1">
         <div class="flex-1 relative">
-            <select id="{{ 'attendance_roll_group_students_' ~ person.id ~ '_reason' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][reason]' }}" class="mx-auto float-none w-32 m-0 mb-px">
+            <select id="{{ 'attendance_roll_group_students_' ~ person.id ~ '_reason' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][reason]' }}" class="mx-auto float-none w-32 m-0 mb-px" defaultValue="{{ person.reason|default(null) }}">
                 <option/>
                 {% for name in pagination.getContext('Reason Select') %}
-                    {% set selected  = '' %}
-                    {% if person.reason|default('') is same as(name) %}
-                        {% set selected  = ' selected' %}
-                    {% endif %}
-                    <option value="{{ name }}"{{ selected }}>{{ name }}</option>
+                    <option value="{{ name }}">{{ name }}</option>
                 {% endfor %}
             </select>
         </div>
     </div>
     <div class="mx-auto float-none w-32 m-0 mb-2 mb-1">
         <div class="flex-1 relative">
-            <input type="text" id="{{ 'attendance_roll_group_students' ~ person.id ~ '_comment' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][comment]' }}" class="mx-auto float-none w-32 m-0 mb-2" maxlength="191" value="{{ person.comment|default('') }}">
-            <input type="hidden" id="{{ 'attendance_roll_group_students' ~ person.id ~ '_student' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][student]' }}" class="mx-auto float-none w-32 m-0 mb-2" value="{{ person.id }}">
+            <input type="text" id="{{ 'attendance_roll_group_students' ~ person.id ~ '_comment' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][comment]' }}" class="mx-auto float-none w-32 m-0 mb-2" maxlength="191" value="{{ person.comment|default(null) }}" on_change="updateCommentValue({{ 'attendance_roll_group_students' ~ person.id ~ '_comment' }})" />
+            <input type="hidden" id="{{ 'attendance_roll_group_students' ~ person.id ~ '_student' }}" name="{{ 'attendance_roll_group[students][' ~ person.id ~ '][student]' }}" class="mx-auto float-none w-32 m-0 mb-2" value="{{ person.id }}" />
         </div>
     </div>
     <div class=" mb-1">

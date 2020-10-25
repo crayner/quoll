@@ -113,7 +113,7 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
     public function countOutByRollGroupDateDailyTimeStudent(RollGroup $rollGroup, DateTimeImmutable $date, array $studentList, string $dailyTime = 'all_day'): array
     {
         return $this->createQueryBuilder('a')
-            ->select(['s.id AS student',"COUNT(a.id) AS absentCount"])
+            ->select(['s.id AS student',"COALESCE(COUNT(a.id), '0') AS absentCount"])
             ->leftJoin('a.student', 's')
             ->leftJoin('a.attendanceRollGroup', 'arg')
             ->leftJoin('a.code', 'c')
@@ -144,7 +144,6 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
      */
     public function findOneByStudentDateRollGroupDailyTime(string $id, string $date, RollGroup $rollGroup, string $dailyTime = 'all_day'): ?AttendanceLogStudent
     {
-        $time = empty($time) ? null : $time;
         try {
             return $this->createQueryBuilder('a')
                 ->leftJoin('a.student', 's')
@@ -155,13 +154,65 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
                 ->setParameter('rollGroup', $rollGroup)
                 ->andWhere('a.date = :date')
                 ->setParameter('date', new DateTimeImmutable($date))
-                ->andWhere('a.time = :time')
-                ->setParameter('time', $time)
+                ->andWhere('a.dailyTime = :dailyTime')
+                ->setParameter('dailyTime', $dailyTime)
                 ->getQuery()
                 ->getOneOrNullResult();
         } catch (NonUniqueResultException | Exception $e) {
             return null;
         }
+    }
 
+    /**
+     * countStudentAbsences
+     *
+     * 25/10/2020 09:52
+     * @param AttendanceLogStudent $als
+     * @return int
+     */
+    public function countStudentAbsences(AttendanceLogStudent $als): int
+    {
+        try {
+            return intval($this->createQueryBuilder('a')
+                ->select(['COUNT(a.id)'])
+                ->leftJoin('a.attendanceRollGroup', 'arg')
+                ->leftJoin('a.code', 'c')
+                ->andWhere('a.student = :student')
+                ->setParameter('student', $als->getStudent())
+                ->andWhere('arg.rollGroup = :rollGroup')
+                ->setParameter('rollGroup', $als->getAttendanceRollGroup()->getRollGroup())
+                ->andWhere('c.direction = :out')
+                ->setParameter('out', 'Out')
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * findPreviousDays
+     *
+     * 25/10/2020 11:49
+     * @param AttendanceLogStudent $als
+     * @param int $count
+     * @return array
+     */
+    public function findPreviousDays(AttendanceLogStudent $als, int $count): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.attendanceRollGroup', 'arg')
+            ->leftJoin('a.code', 'c')
+            ->andWhere('a.student = :student')
+            ->setParameter('student', $als->getStudent())
+            ->andWhere('arg.rollGroup = :rollGroup')
+            ->setParameter('rollGroup', $als->getAttendanceRollGroup()->getRollGroup())
+            ->andWhere('a.date < :date')
+            ->setParameter('date', $als->getDate())
+            ->setMaxResults($count)
+            ->orderBy('a.date', 'DESC')
+            ->addOrderBy('a.dailyTime', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

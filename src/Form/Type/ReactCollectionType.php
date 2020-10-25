@@ -52,11 +52,13 @@ class ReactCollectionType extends AbstractType
                 'element_delete_options' => ['__id__' => 'id'],
                 'header_row' => false,
                 'column_count' => false,
+                'special' => false,
             ]
         );
 
         $resolver->setAllowedTypes('header_row', ['boolean', 'array']);
         $resolver->setAllowedTypes('column_count', ['boolean', 'integer']);
+        $resolver->setAllowedTypes('special', ['boolean', 'string']);
     }
 
     /**
@@ -110,6 +112,7 @@ class ReactCollectionType extends AbstractType
         $view->vars['header_row'] = $this->checkHeaderRow($options);
         $view->vars['label'] = $options['label'];
         $view->vars['column_count'] = $options['column_count'];
+        $view->vars['special'] = $options['special'];
     }
 
     /**
