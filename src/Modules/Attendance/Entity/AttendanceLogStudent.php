@@ -165,6 +165,11 @@ class AttendanceLogStudent extends AbstractEntity
     private DateTimeImmutable $creationDate;
 
     /**
+     * @var array|null
+     */
+    private ?array $previousDays;
+
+    /**
      * Id
      *
      * @return string|null
@@ -574,5 +579,17 @@ class AttendanceLogStudent extends AbstractEntity
     public function getPreviousDays(): array
     {
         return ProviderFactory::create(AttendanceLogStudent::class)->getPreviousDaysStatus($this) ;
+    }
+
+    /**
+     * PreviousDays
+     *
+     * @param array|null $previousDays
+     * @return AttendanceLogStudent
+     */
+    public function setPreviousDays(?array $previousDays): AttendanceLogStudent
+    {
+        $this->previousDays = $previousDays;
+        return $this;
     }
 }

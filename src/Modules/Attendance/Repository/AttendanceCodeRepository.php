@@ -99,4 +99,37 @@ class AttendanceCodeRepository extends ServiceEntityRepository
             return 1;
         }
     }
+
+    /**
+     * clearDefaultCode
+     *
+     * 26/10/2020 12:00
+     * @param AttendanceCode $ac
+     */
+    public function clearDefaultCode(AttendanceCode $ac)
+    {
+
+        $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.defaultCode', '0')
+            ->where('c.defaultCode = :true')
+            ->andWhere('c.id <> :codeId')
+            ->setParameters(['true' => 1, 'codeId' => $ac->getId()])
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * findInOrOut
+     *
+     * 26/10/2020 15:39
+     * @return array
+     */
+    public function findInOrOut(): array
+    {
+        return $this->createQueryBuilder('c', 'c.id')
+            ->select(['c.id','c.direction'])
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -61,7 +61,7 @@ class AttendanceCodePagination extends AbstractPagination
         $column = new PaginationColumn();
         $column->setLabel('Direction')
             ->setContentKey('direction')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
         $row->addColumn($column);
 
         $column = new PaginationColumn();
@@ -73,7 +73,13 @@ class AttendanceCodePagination extends AbstractPagination
         $column = new PaginationColumn();
         $column->setLabel('Active')
             ->setContentKey('active')
-            ->setClass('column relative pr-4 cursor-pointer widthAuto');
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
+        $row->addColumn($column);
+
+        $column = new PaginationColumn();
+        $column->setLabel('Default')
+            ->setContentKey('default')
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre');
         $row->addColumn($column);
 
         $action = new PaginationAction();

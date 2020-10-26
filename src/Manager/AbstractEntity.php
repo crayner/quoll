@@ -17,6 +17,7 @@
 namespace App\Manager;
 
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -121,5 +122,17 @@ abstract class AbstractEntity implements EntityInterface
         $method = 'set' . ucfirst($name);
         $value = $field['convertDate'];
         return $this->$method(new \DateTimeImmutable($value));
+    }
+
+    /**
+     * translateBoolean
+     *
+     * 26/10/2020 10:42
+     * @param bool $value
+     * @return string
+     */
+    public function translateBoolean(bool $value): string
+    {
+        return $value ? TranslationHelper::translate('Yes', [], 'messages') : TranslationHelper::translate('No', [], 'messages');
     }
 }

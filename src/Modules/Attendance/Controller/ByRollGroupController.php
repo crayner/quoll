@@ -25,12 +25,9 @@ use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
 use App\Modules\Attendance\Entity\AttendanceLogStudent;
 use App\Modules\Attendance\Form\AttendanceByRollGroupType;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
-use App\Modules\Attendance\Pagination\AttendanceByRollGroupPagination;
 use App\Modules\RollGroup\Entity\RollGroup;
-use App\Modules\School\Provider\DaysOfWeekProvider;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use DateTimeImmutable;
@@ -53,7 +50,6 @@ class ByRollGroupController extends AbstractPageController
      *
      * 16/10/2020 14:25
      * @param AttendanceByRollGroupManager $manager
-     * @param AttendanceByRollGroupPagination $pagination
      * @param DateTimeImmutable|null $date
      * @param RollGroup|null $rollGroup
      * @param string|null $dailyTime
@@ -63,7 +59,6 @@ class ByRollGroupController extends AbstractPageController
      */
     public function manage(
         AttendanceByRollGroupManager $manager,
-        AttendanceByRollGroupPagination $pagination,
         ?DateTimeImmutable $date = null,
         ?RollGroup $rollGroup = null,
         ?string $dailyTime = null
@@ -71,6 +66,7 @@ class ByRollGroupController extends AbstractPageController
         $manager->setDate($date)
             ->setRollGroup($rollGroup)
             ->setDailyTime($dailyTime);
+
         $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
             [
                 'action' => $this->generateUrl('attendance_roll_group_manage',
@@ -84,29 +80,62 @@ class ByRollGroupController extends AbstractPageController
         );
 
         if ($this->isPostContent()) {
-            $this->submitForm($form);
+            $content = $this->jsonDecode();
+            if (key_exists('students',$content)) {
+                $students = [];
+                foreach ($content['students'] as $q=>$w) {
+                    foreach ($w as $name=>$value) {
+                        if (!in_array($name, ['inOrOut','previousDays'])) {
+                            $students[$q][$name] = $value;
+                        }
+                    }
+                }
+                $content['students'] = $students;
+            }
+
+            $form->submit($content);
             if ($form->isValid()) {
-                $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
+                if ($manager->requestEqualsSubmit($this->getRequest()->attributes->get('_route_params'))) {
+                    $manager->storeAttendance($content);
+                    $manager->getStudents();
+                    $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
+                        [
+                            'action' => $this->generateUrl('attendance_roll_group_manage',
+                                [
+                                    'date' => $date ? $date->format('Y-m-d') : null,
+                                    'dailyTime' => $dailyTime,
+                                    'rollGroup' => $rollGroup ? $rollGroup->getId() : null
+                                ]
+                            )
+                        ]
+                    );
+                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
+                } else {
+                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
+                }
             }
             return $this->singleForm($form);
         }
 
+        if ($manager->isValid()) {
+            $manager->getStudents();
+            $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
+                [
+                    'action' => $this->generateUrl('attendance_roll_group_manage',
+                        [
+                            'date' => $date ? $date->format('Y-m-d') : null,
+                            'dailyTime' => $dailyTime,
+                            'rollGroup' => $rollGroup ? $rollGroup->getId() : null
+                        ]
+                    )
+                ]
+            );
+        }
 
         $container = new Container();
-        $panel = new Panel('single', 'Attendance');
+        $panel = new Panel('single', 'Attendance', new Section('html', $this->renderView('attendance/attendance_roll_group_status.html.twig', ['manager' => $manager])));
 
-        if ($manager->isValid()) {
-            $pagination
-                ->addContext('Roll Group Name', $rollGroup->getName())
-                ->addContext('Code Select', $manager->getAttendanceCodes())
-                ->addContext('Reason Select', $manager->getReasons())
-                ->addContext('Previous Days', $manager->getPreviousDays())
-                ->setContent($manager->generateContent())
-                ;
-        }
-        $panel->addSection(new Section('html', $this->renderView('attendance/attendance_roll_group.html.twig', ['pagination' => $pagination, 'manager' => $manager])))
-            ->addSection(new Section('form','single'));
-
+        $panel->addSection(new Section('form','single'));
         $container->addForm('single', $form)
             ->addPanel(AcademicYearHelper::academicYearWarning($panel));
 
@@ -121,56 +150,5 @@ class ByRollGroupController extends AbstractPageController
                 ]
             )
         ;
-    }
-
-
-    /**
-     * postRollGroupDetails
-     *
-     * 22/10/2020 12:50
-     * @param RollGroup $rollGroup
-     * @param DateTimeImmutable $date
-     * @param string $dailyTime
-     * @return RedirectResponse
-     * @Route("/attendance/roll/group/{rollGroup}/on/{date}/{dailyTime}",name="attendance_roll_group_post_api")
-     */
-    public function postRollGroupDetails(
-        RollGroup $rollGroup,
-        DateTimeImmutable $date,
-        string $dailyTime = 'all_day'
-    ) {
-
-        $post = $this->getRequest()->request->get('attendance_roll_group');
-        $submittedToken = $post['_token'];
-
-        if ($this->isCsrfTokenValid('attendance_roll_group', $submittedToken)) {
-            $staff = SecurityHelper::getCurrentUser()->getStaff();
-            ProviderFactory::getEntityManager()->refresh($staff);
-            $alrg = ProviderFactory::getRepository(AttendanceLogRollGroup::class)->findOneBy(['rollGroup' => $rollGroup, 'date' => $date, 'dailyTime' => $dailyTime]) ?: new AttendanceLogRollGroup($rollGroup, $date, $dailyTime);
-            $alrg->setRecorder($staff);
-            if ($alrg->getId() === null) ProviderFactory::create(AttendanceLogRollGroup::class)->persist($alrg);
-            $codes = [];
-            foreach ($post['students'] as $student) {
-                $codes[$student['code']] = key_exists($student['code'],$codes) ? $codes[$student['code']] : ProviderFactory::getRepository(AttendanceCode::class)->find($student['code']);
-                $studentEntity = ProviderFactory::getRepository(Student::class)->find($student['student']);
-                $als = ProviderFactory::getRepository(AttendanceLogStudent::class)->findOneBy(['dailyTime' => $dailyTime, 'date' => $date, 'attendanceRollGroup' => $alrg, 'student' => $studentEntity]) ?: new AttendanceLogStudent();
-                $als->setStudent($studentEntity)
-                    ->setAttendanceRollGroup($alrg)
-                    ->setCode($codes[$student['code']])
-                    ->setDate($date)
-                    ->setDailyTime($dailyTime)
-                    ->setComment($student['comment'])
-                    ->setRecorder($staff)
-                    ->setReason($student['reason'])
-                    ->setContext('Roll Group');
-                ProviderFactory::create(AttendanceLogStudent::class)->persist($als);
-            }
-            ProviderFactory::create(AttendanceLogStudent::class)->flush();
-        } else {
-            $this->getStatusManager()->invalidInputs();
-        }
-        $this->getStatusManager()->convertToFlash();
-
-        return $this->redirectToRoute('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]);
     }
 }

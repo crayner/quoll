@@ -107,6 +107,12 @@ class AttendanceCodeType extends AbstractType
                     'help' => 'Can this code be used in Set Future Absence?'
                 ]
             )
+            ->add('defaultCode', ToggleType::class,
+                [
+                    'label' => 'Default Code',
+                    'help' => 'Only one code can be set as default. Setting the default on will turn off the current default.'
+                ]
+            )
             ->add('securityRoles', ChoiceType::class,
                 [
                     'label' => 'Available to Roles',

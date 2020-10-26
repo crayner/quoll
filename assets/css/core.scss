@@ -960,9 +960,10 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     clear: both;
 }
 .historyCalendarMini {
+    @apply bg-gray-200;
     width: 134px;
     height: 20px;
-    margin: -1 auto 0 auto;
+    margin: -1px auto 0;
     border-width: 1px;
     border-style: solid;
     border-color: #555;
@@ -975,7 +976,7 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     text-decoration: none;
 }
 .historyCalendarMini a:hover {
-    color: #21759b;
+    color: mediumblue;
 }
 .highlightAbsent, .dayAbsent {
     @apply bg-red-200 border-red-800 text-red-800;
