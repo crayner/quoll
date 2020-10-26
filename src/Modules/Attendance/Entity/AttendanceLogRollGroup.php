@@ -263,7 +263,7 @@ class AttendanceLogRollGroup extends AbstractEntity
      */
     public function getCreator(): ?Staff
     {
-        return $this->creator;
+        return isset($this->creator) ? $this->creator : null;
     }
 
     /**
@@ -286,7 +286,7 @@ class AttendanceLogRollGroup extends AbstractEntity
      */
     public function getRecordedDate(): DateTimeImmutable
     {
-        return $this->recordedDate;
+        return isset($this->recordedDate) ? $this->recordedDate : new DateTimeImmutable();
     }
 
     /**

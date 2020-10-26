@@ -104,3 +104,17 @@ attendance_log_student_roll_group: >-
         all_day     {Daily Attendance: student: [result] on date by recorder}
         other       {Daily Attendance: student: [result] on date at time by recorder}
     }
+Present: Present
+Absent: Absent
+Default Code: Default Code
+Only one code can be set as default. Setting the default on will turn off the current default.: Only one code can be set as default. Setting the default on will turn off the current default.
+Only one code can be set as default: Only one code can be set as default
+Save Attendance: Save Attendance
+Total students absent from the room: Total students absent from the room
+Total students present in the room: Total students present in the room
+Total students: Total students
+attendancelogstudent:
+    code: Code
+    comment: Comment
+    context: Context
+    reason: Reason

@@ -23,9 +23,11 @@ use App\Form\Type\SimpleArrayType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Entity\AttendanceLogStudent;
 use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -76,9 +78,17 @@ class AttendanceForStudentType extends AbstractType
                     'label' => false,
                 ]
             )
-            ->add('previousDays',DisplayType::class,
+            ->add('previousDays',HiddenType::class,
                 [
                     'label' => false,
+                    'constraints' => [],
+                    'required' => false,
+                ]
+            )
+            ->add('inOrOut',HiddenType::class,
+                [
+                    'mapped' => false,
+                    'data' => ProviderFactory::getRepository(AttendanceCode::class)->findInOrOut(),
                 ]
             )
         ;

@@ -198,4 +198,3 @@ services:
             - { name: 'doctrine.event_subscriber' }
         calls:
             - [ setLog, ['@monolog.logger.attendance'] ]
-

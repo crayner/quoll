@@ -130,6 +130,12 @@ class AttendanceCode extends AbstractEntity
     private $sortOrder;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean",name="default_code")
+     */
+    private bool $defaultCode = false;
+
+    /**
      * AttendanceCode constructor.
      */
     public function __construct()
@@ -384,6 +390,28 @@ class AttendanceCode extends AbstractEntity
     }
 
     /**
+     * DefaultCode
+     *
+     * @return bool
+     */
+    public function isDefaultCode(): bool
+    {
+        return $this->defaultCode;
+    }
+
+    /**
+     * DefaultCode
+     *
+     * @param bool $defaultCode
+     * @return AttendanceCode
+     */
+    public function setDefaultCode(bool $defaultCode): AttendanceCode
+    {
+        $this->defaultCode = $defaultCode;
+        return $this;
+    }
+
+    /**
      * toArray
      * @param string|null $name
      * @return array
@@ -397,7 +425,8 @@ class AttendanceCode extends AbstractEntity
             'scope' => $this->getScope(),
             'scope_filter' => explode(' - ', $this->getScope())[0],
             'id' => $this->getId(),
-            'active' => $this->isActive() ? TranslationHelper::translate('Yes', [], 'messages') :  TranslationHelper::translate('No', [], 'messages'),
+            'active' => $this->translateBoolean($this->isActive()),
+            'default' => $this->translateBoolean($this->isDefaultCode()),
             'canDelete' => ProviderFactory::create(AttendanceCode::class)->canDelete($this),
         ];
     }
@@ -410,5 +439,17 @@ class AttendanceCode extends AbstractEntity
     public function coreData(): array
     {
         return Yaml::parse(file_get_contents(__DIR__ . '/AttendanceCodeCoreData.yaml'));
+    }
+
+    /**
+     * clearDefaultCode
+     *
+     * 26/10/2020 11:59
+     * @ORM\PreUpdate()
+     * @ORM\PrePersist()
+     */
+    public function clearDefaultCode()
+    {
+        if ($this->isDefaultCode()) ProviderFactory::getRepository(AttendanceCode::class)->clearDefaultCode($this);
     }
 }
