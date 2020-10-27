@@ -21,13 +21,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class AttendanceLogStudentValidator
+ * Class AttendanceStudentValidator
  *
  * 19/10/2020 13:03
  * @package App\Modules\Attendance\Validator
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceLogStudentValidator extends ConstraintValidator
+class AttendanceStudentValidator extends ConstraintValidator
 {
     /**
      * validate
@@ -38,35 +38,35 @@ class AttendanceLogStudentValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$value instanceof \App\Modules\Attendance\Entity\AttendanceLogStudent) return;
+        if (!$value instanceof \App\Modules\Attendance\Entity\AttendanceStudent) return;
 
         if ($value->getAttendanceClass() === null && $value->getAttendanceRollGroup() === null) {
             $this->context->buildViolation('The Class or Roll Group must be selected.')
-                ->setCode(AttendanceLogStudent::DUPLICATE_ATTENDANCE_ERROR)
+                ->setCode(AttendanceStudent::DUPLICATE_ATTENDANCE_ERROR)
                 ->atPath('attendanceClass')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();
             $this->context->buildViolation('The Class or Roll Group must be selected.')
-                ->setCode(AttendanceLogStudent::DUPLICATE_ATTENDANCE_ERROR)
+                ->setCode(AttendanceStudent::DUPLICATE_ATTENDANCE_ERROR)
                 ->atPath('attendanceRollGroup')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();
             return;
         }
 
-        if (ProviderFactory::getRepository(\App\Modules\Attendance\Entity\AttendanceLogStudent::class)->hasDuplicates($value)) {
+        if (ProviderFactory::getRepository(\App\Modules\Attendance\Entity\AttendanceStudent::class)->hasDuplicates($value)) {
             $this->context->buildViolation('The student attendance record is a duplicated')
-                ->setCode(AttendanceLogStudent::DUPLICATE_ATTENDANCE_ERROR)
+                ->setCode(AttendanceStudent::DUPLICATE_ATTENDANCE_ERROR)
                 ->atPath('date')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();
             $this->context->buildViolation('The student attendance record is a duplicated')
-                ->setCode(AttendanceLogStudent::DUPLICATE_ATTENDANCE_ERROR)
+                ->setCode(AttendanceStudent::DUPLICATE_ATTENDANCE_ERROR)
                 ->atPath('time')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();
             $this->context->buildViolation('The student attendance record is a duplicated')
-                ->setCode(AttendanceLogStudent::DUPLICATE_ATTENDANCE_ERROR)
+                ->setCode(AttendanceStudent::DUPLICATE_ATTENDANCE_ERROR)
                 ->atPath('student')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();

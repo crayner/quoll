@@ -19,8 +19,6 @@ namespace App\Modules\Attendance\Entity;
 use App\Manager\AbstractEntity;
 use App\Modules\Attendance\Validator\AttendanceLogTime;
 use App\Modules\Attendance\Validator\Reason;
-use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Staff\Entity\Staff;
 use App\Modules\Student\Entity\Student;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
@@ -30,26 +28,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AttendanceLogStudent
+ * Class AttendanceStudent
  *
  * 19/10/2020 12:23
  * @package App\Modules\Attendance\Entity
  * @author Craig Rayner <craig@craigrayner.com>
- * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceLogStudentRepository")
- * @ORM\Table(name="AttendanceLogStudent",
+ * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceStudentRepository")
+ * @ORM\Table(name="AttendanceStudent",
  *     indexes={
  *      @ORM\Index(name="student",columns={"student"}),
- *      @ORM\Index(name="recorder",columns={"recorder"}),
- *      @ORM\Index(name="creator",columns={"creator"}),
  *      @ORM\Index(name="attendance_code",columns={"attendance_code"}),
  *      @ORM\Index(name="attendance_course_class",columns={"attendance_course_class"}),
  *      @ORM\Index(name="attendance_roll_group",columns={"attendance_roll_group"})
- *     },
+ *     }
  * )
  * @AttendanceLogTime()
- * @\App\Modules\Attendance\Validator\AttendanceLogStudent()
+ * @\App\Modules\Attendance\Validator\AttendanceStudent()
  */
-class AttendanceLogStudent extends AbstractEntity
+class AttendanceStudent extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -123,46 +119,18 @@ class AttendanceLogStudent extends AbstractEntity
     private string $dailyTime = 'all_day';
 
     /**
-     * @var Staff
-     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
-     * @ORM\JoinColumn(nullable=false,name="recorder")
-     * @Assert\NotBlank()
-     */
-    private Staff $recorder;
-
-    /**
-     * @var Staff|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Staff\Entity\Staff")
-     * @ORM\JoinColumn(nullable=false,name="creator")
-     * @Assert\NotBlank()
-     */
-    private Staff $creator;
-
-    /**
-     * @var AttendanceLogRollGroup|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Attendance\Entity\AttendanceLogRollGroup")
+     * @var AttendanceRollGroup|null
+     * @ORM\ManyToOne(targetEntity="AttendanceRollGroup")
      * @ORM\JoinColumn(nullable=true,name="attendance_roll_group")
      */
-    private ?AttendanceLogRollGroup $attendanceRollGroup;
+    private ?AttendanceRollGroup $attendanceRollGroup;
 
     /**
-     * @var AttendanceLogClass|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Attendance\Entity\AttendanceLogClass")
+     * @var AttendanceCourseClass|null
+     * @ORM\ManyToOne(targetEntity="AttendanceCourseClass")
      * @ORM\JoinColumn(nullable=true,name="attendance_course_class")
      */
-    private ?AttendanceLogClass $attendanceClass;
-
-    /**
-     * @var DateTimeImmutable
-     * @ORM\Column(type="datetime_immutable",nullable=false,name="recorder_date")
-     */
-    private DateTimeImmutable $recorderDate;
-
-    /**
-     * @var DateTimeImmutable
-     * @ORM\Column(type="datetime_immutable",nullable=false,name="creation_date")
-     */
-    private DateTimeImmutable $creationDate;
+    private ?AttendanceCourseClass $attendanceClass;
 
     /**
      * @var array|null
@@ -183,9 +151,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Id
      *
      * @param string|null $id
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setId(?string $id): AttendanceLogStudent
+    public function setId(?string $id): AttendanceStudent
     {
         $this->id = $id;
         return $this;
@@ -205,9 +173,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Code
      *
      * @param AttendanceCode|null $code
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setCode(?AttendanceCode $code): AttendanceLogStudent
+    public function setCode(?AttendanceCode $code): AttendanceStudent
     {
         $this->code = $code;
         return $this;
@@ -227,9 +195,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Student
      *
      * @param Student|null $student
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setStudent(?Student $student): AttendanceLogStudent
+    public function setStudent(?Student $student): AttendanceStudent
     {
         $this->student = $student;
         return $this;
@@ -249,9 +217,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Reason
      *
      * @param string|null $reason
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setReason(?string $reason): AttendanceLogStudent
+    public function setReason(?string $reason): AttendanceStudent
     {
         $this->reason = in_array($reason, self::getReasonList()) ? $reason : null;
         return $this;
@@ -282,9 +250,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Context
      *
      * @param string|null $context
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setContext(?string $context): AttendanceLogStudent
+    public function setContext(?string $context): AttendanceStudent
     {
         $this->context = $context;
         return $this;
@@ -322,9 +290,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Comment
      *
      * @param string|null $comment
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setComment(?string $comment): AttendanceLogStudent
+    public function setComment(?string $comment): AttendanceStudent
     {
         $this->comment = !empty($comment) ? $comment : null;
         return $this;
@@ -344,9 +312,9 @@ class AttendanceLogStudent extends AbstractEntity
      * Date
      *
      * @param DateTimeImmutable|null $date
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setDate(?DateTimeImmutable $date): AttendanceLogStudent
+    public function setDate(?DateTimeImmutable $date): AttendanceStudent
     {
         $this->date = $date;
         return $this;
@@ -366,9 +334,9 @@ class AttendanceLogStudent extends AbstractEntity
      * DailyTime
      *
      * @param string|null $dailyTime
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setDailyTime(?string $dailyTime): AttendanceLogStudent
+    public function setDailyTime(?string $dailyTime): AttendanceStudent
     {
         $this->dailyTime = $dailyTime ?: 'all_day';
         return $this;
@@ -386,34 +354,12 @@ class AttendanceLogStudent extends AbstractEntity
     }
 
     /**
-     * Recorder
-     *
-     * @return Staff|null
-     */
-    public function getRecorder(): ?Staff
-    {
-        return $this->recorder;
-    }
-
-    /**
-     * Recorder
-     *
-     * @param Staff|null $recorder
-     * @return AttendanceLogStudent
-     */
-    public function setRecorder(?Staff $recorder = null): AttendanceLogStudent
-    {
-        $this->recorder = $recorder ?: SecurityHelper::getCurrentUser()->getStaff();
-        return $this;
-    }
-
-    /**
      * getAttendanceRollGroup
      *
      * 19/10/2020 13:09
-     * @return AttendanceLogRollGroup|null
+     * @return AttendanceRollGroup|null
      */
-    public function getAttendanceRollGroup(): ?AttendanceLogRollGroup
+    public function getAttendanceRollGroup(): ?AttendanceRollGroup
     {
         return isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : null;
     }
@@ -421,10 +367,10 @@ class AttendanceLogStudent extends AbstractEntity
     /**
      * AttendanceRollGroup
      *
-     * @param AttendanceLogRollGroup|null $attendanceRollGroup
-     * @return AttendanceLogStudent
+     * @param AttendanceRollGroup|null $attendanceRollGroup
+     * @return AttendanceStudent
      */
-    public function setAttendanceRollGroup(?AttendanceLogRollGroup $attendanceRollGroup): AttendanceLogStudent
+    public function setAttendanceRollGroup(?AttendanceRollGroup $attendanceRollGroup): AttendanceStudent
     {
         $this->attendanceRollGroup = $attendanceRollGroup;
         return $this;
@@ -434,9 +380,9 @@ class AttendanceLogStudent extends AbstractEntity
      * getAttendanceClass
      *
      * 19/10/2020 13:09
-     * @return AttendanceLogClass|null
+     * @return AttendanceCourseClass|null
      */
-    public function getAttendanceClass(): ?AttendanceLogClass
+    public function getAttendanceClass(): ?AttendanceCourseClass
     {
         return isset($this->attendanceClass) ? $this->attendanceClass : null;
     }
@@ -444,84 +390,12 @@ class AttendanceLogStudent extends AbstractEntity
     /**
      * AttendanceClass
      *
-     * @param AttendanceLogClass|null $attendanceClass
-     * @return AttendanceLogStudent
+     * @param AttendanceCourseClass|null $attendanceClass
+     * @return AttendanceStudent
      */
-    public function setAttendanceClass(?AttendanceLogClass $attendanceClass): AttendanceLogStudent
+    public function setAttendanceClass(?AttendanceCourseClass $attendanceClass): AttendanceStudent
     {
         $this->attendanceClass = $attendanceClass;
-        return $this;
-    }
-
-    /**
-     * CreationDate
-     *
-     * @return DateTimeImmutable
-     */
-    public function getCreationDate(): DateTimeImmutable
-    {
-        $this->getRecorderDate();
-        return $this->creationDate = isset($this->creationDate) ? $this->creationDate : new DateTimeImmutable();
-    }
-
-    /**
-     * CreationDate
-     *
-     * @param DateTimeImmutable|null $creationDate
-     * @return AttendanceLogStudent
-     */
-    public function setCreationDate(?DateTimeImmutable $creationDate = null): AttendanceLogStudent
-    {
-        $this->setRecorderDate();
-        if (isset($this->creationDate)) return $this;
-        $this->creationDate = $creationDate ?: new DateTimeImmutable();
-        return $this;
-    }
-
-    /**
-     * Creator
-     *
-     * @return Staff|null
-     */
-    public function getCreator(): ?Staff
-    {
-        return $this->creator = isset($this->creator) ? $this->creator : SecurityHelper::getCurrentUser()->getStaff();
-    }
-
-    /**
-     * setCreator
-     *
-     * 24/10/2020 10:19
-     * @param Staff|null $creator
-     * @return $this
-     */
-    public function setCreator(?Staff $creator = null): AttendanceLogStudent
-    {
-        $this->creator = $creator ?: SecurityHelper::getCurrentUser()->getStaff();
-        $this->setRecorder();
-        return $this;
-    }
-
-    /**
-     * RecorderDate
-     *
-     * @return DateTimeImmutable
-     */
-    public function getRecorderDate(): DateTimeImmutable
-    {
-        return $this->recorderDate = isset($this->recorderDate) ? $this->recorderDate : new DateTimeImmutable();
-    }
-
-    /**
-     * setRecorderDate
-     *
-     * 24/10/2020 09:43
-     * @param DateTimeImmutable|null $recorderDate
-     * @return $this
-     */
-    public function setRecorderDate(?DateTimeImmutable $recorderDate = null): AttendanceLogStudent
-    {
-        $this->recorderDate = $recorderDate ?: new DateTimeImmutable();
         return $this;
     }
 
@@ -567,7 +441,7 @@ class AttendanceLogStudent extends AbstractEntity
      */
     public function getAbsenceCount(): string
     {
-        return TranslationHelper::translate('Days Absent', ['count' => ProviderFactory::getRepository(AttendanceLogStudent::class)->countStudentAbsences($this) ?: 0], 'Attendance');
+        return TranslationHelper::translate('Days Absent', ['count' => ProviderFactory::getRepository(AttendanceStudent::class)->countStudentAbsences($this) ?: 0], 'Attendance');
     }
 
     /**
@@ -578,18 +452,33 @@ class AttendanceLogStudent extends AbstractEntity
      */
     public function getPreviousDays(): array
     {
-        return ProviderFactory::create(AttendanceLogStudent::class)->getPreviousDaysStatus($this) ;
+        return ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($this) ;
     }
 
     /**
      * PreviousDays
      *
      * @param array|null $previousDays
-     * @return AttendanceLogStudent
+     * @return AttendanceStudent
      */
-    public function setPreviousDays(?array $previousDays): AttendanceLogStudent
+    public function setPreviousDays(?array $previousDays): AttendanceStudent
     {
         $this->previousDays = $previousDays;
         return $this;
+    }
+
+    /**
+     * getContextType
+     *
+     * 27/10/2020 12:51
+     * @return string
+     */
+    public function getContextType(): string
+    {
+        if ($this->getAttendanceRollGroup() !== null && in_array($this->getContext(), ['Roll Group','Person'])) return 'roll_group';
+        if ($this->getAttendanceClass() !== null && in_array($this->getContext(), ['Class','Person'])) return 'course_class';
+        if ($this->getContext() === 'Future') return 'future';
+        if ($this->getContext() === 'Self Registration') return 'self';
+        return 'unknown';
     }
 }

@@ -20,20 +20,13 @@ use App\Container\Container;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
-use App\Modules\Attendance\Entity\AttendanceCode;
-use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
 use App\Modules\Attendance\Form\AttendanceByRollGroupType;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
-use App\Modules\Security\Util\SecurityHelper;
-use App\Modules\Student\Entity\Student;
-use App\Provider\ProviderFactory;
 use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

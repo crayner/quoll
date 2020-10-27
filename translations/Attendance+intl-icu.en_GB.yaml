@@ -66,7 +66,8 @@ attendancecode:
 role_multiple_select: Controls who can use this code.<br/>Use Control, Command and/or Shift to select multiple.
 Your current IP address ({ip}) is included in the saved list.: Your current IP address ({ip}) is included in the saved list.
 Edit Attendance Code: Edit Attendance Code
-attendance_recorded: 'Attendance has been taken at the following times for this group: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>'
+attendance_recorded: 'Attendance has been taken at the following times for this group: Additional information can be collected in the Attendance Log for the specified day.'
+attendance_recorder_details: Recorded at time on date by person.
 partial_attendance_recorded: >-
     {count, plural,
         one     {Attendance has been started at the following times for this group, but one student has not had attendance recorded: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>}
@@ -74,8 +75,8 @@ partial_attendance_recorded: >-
     }
 no_attendance_recorded: >-
     {dailyTime, select,
-        all_day  {Attendance has not been taken for this group yet for "roll_date". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
-        other    {Attendance has not been taken for this group yet for "roll_date" at "dailyTime". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+        all_day  {Attendance has not been taken for this group on "roll_date". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
+        other    {Attendance has not been taken for this group on "roll_date" at "dailyTime". The entries below are a best-guess based on defaults and information put into the system in advance, not actual data.}
     }
 'The value is not valid. Use one of: "{times}"': 'The value is not valid. Use one of: "{times}"'
 Days Absent: >-
@@ -99,10 +100,29 @@ attendance_log_change: >-
         persist {"name: 'change'"}
         other   {"name: 'original' => 'change'"}
     }
-attendance_log_student_roll_group: >-
-    {time, select,
-        all_day     {Daily Attendance: student: [result] on date by recorder}
-        other       {Daily Attendance: student: [result] on date at time by recorder}
+attendance_log_student: >-
+    { type, select,
+        roll_group      {
+                            { time, select,
+                                all_day     { Daily Attendance: studentroll_group): Changes [result] for date by recorder. }
+                                other       { Daily Attendance: studentroll_group): Changes [result] for date at time by recorder. }
+                            }
+                        }
+        future          { { time, select,
+                            all_day     { Future Daily Attendance: student: Changes [result] for date by recorder. }
+                            other       { Future Daily Attendance: student: Changes [result] for date at time by recorder. }
+                        } }
+        self            { { time, select,
+                            all_day     { Self Register Daily Attendance: student: Changes [result] for date by recorder. }
+                            other       { Self Register Daily Attendance: student: Changes [result] for date at time by recorder. }
+                        } }
+        course_class    { { time, select,
+                            all_day     { Class Attendance in class_name: student: Changes [result] for date by recorder. }
+                            other       { Class Attendance in class_name: student: Changes [result] for date at time by recorder. }
+                        } }
+        other           { { time, select,
+                            other { No details are available as the attendance type was not set correctly: Changes [result] by recorder. }
+                        } }
     }
 Present: Present
 Absent: Absent
@@ -113,8 +133,10 @@ Save Attendance: Save Attendance
 Total students absent from the room: Total students absent from the room
 Total students present in the room: Total students present in the room
 Total students: Total students
-attendancelogstudent:
+attendancestudent:
     code: Code
     comment: Comment
     context: Context
     reason: Reason
+'Change all students to these settings': 'Change all students to these settings'
+Change All?: Change All?

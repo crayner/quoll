@@ -17,7 +17,6 @@
 namespace App\Listeners;
 
 use App\Modules\Library\Entity\Library;
-use App\Modules\People\Entity\Person;
 use App\Modules\People\Entity\PersonalDocumentation;
 use App\Modules\School\Entity\House;
 use App\Modules\Staff\Entity\Staff;

@@ -14,9 +14,7 @@
  * Date: 17/04/2020
  * Time: 10:56
  */
-
 namespace App\Listeners;
-
 
 use App\Modules\People\Entity\Person;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

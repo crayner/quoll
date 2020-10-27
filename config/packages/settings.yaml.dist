@@ -1048,7 +1048,7 @@ parameters:
                 type: array
                 value: ['all_day']
             logAttendance:
-                class: App\Modules\Attendance\Manager\Hidden\AttendanceLog
+                class: App\Modules\Attendance\Manager\Hidden\AttendanceRecorderLog
                 method: getLogAttendance
                 value: 'Daily Only'
                 type: enum

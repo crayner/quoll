@@ -16,7 +16,7 @@
  */
 namespace App\Modules\Attendance\Repository;
 
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
+use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\RollGroup\Entity\RollGroup;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,27 +27,27 @@ use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
 /**
- * Class AttendanceLogStudentRepository
+ * Class AttendanceStudentRepository
  *
  * 19/10/2020 12:25
  * @package App\Modules\Attendance\Repository
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceLogStudentRepository extends ServiceEntityRepository
+class AttendanceStudentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AttendanceLogStudent::class);
+        parent::__construct($registry, AttendanceStudent::class);
     }
 
     /**
      * hasDuplicates
      *
      * 19/10/2020 13:18
-     * @param AttendanceLogStudent $student
+     * @param AttendanceStudent $student
      * @return bool
      */
-    public function hasDuplicates(AttendanceLogStudent $student): bool
+    public function hasDuplicates(AttendanceStudent $student): bool
     {
         try {
             return intval($this->createQueryBuilder('a')
@@ -140,9 +140,9 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
      * @param string $date
      * @param RollGroup $rollGroup
      * @param string $dailyTime
-     * @return AttendanceLogStudent|null
+     * @return AttendanceStudent|null
      */
-    public function findOneByStudentDateRollGroupDailyTime(string $id, string $date, RollGroup $rollGroup, string $dailyTime = 'all_day'): ?AttendanceLogStudent
+    public function findOneByStudentDateRollGroupDailyTime(string $id, string $date, RollGroup $rollGroup, string $dailyTime = 'all_day'): ?AttendanceStudent
     {
         try {
             return $this->createQueryBuilder('a')
@@ -167,10 +167,10 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
      * countStudentAbsences
      *
      * 25/10/2020 09:52
-     * @param AttendanceLogStudent $als
+     * @param AttendanceStudent $als
      * @return int
      */
-    public function countStudentAbsences(AttendanceLogStudent $als): int
+    public function countStudentAbsences(AttendanceStudent $als): int
     {
         try {
             return intval($this->createQueryBuilder('a')
@@ -194,11 +194,11 @@ class AttendanceLogStudentRepository extends ServiceEntityRepository
      * findPreviousDays
      *
      * 25/10/2020 11:49
-     * @param AttendanceLogStudent $als
+     * @param AttendanceStudent $als
      * @param int $count
      * @return array
      */
-    public function findPreviousDays(AttendanceLogStudent $als, int $count): array
+    public function findPreviousDays(AttendanceStudent $als, int $count): array
     {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.attendanceRollGroup', 'arg')

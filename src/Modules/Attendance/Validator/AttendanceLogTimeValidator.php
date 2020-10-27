@@ -17,9 +17,9 @@
 namespace App\Modules\Attendance\Validator;
 
 use App\Manager\EntityInterface;
-use App\Modules\Attendance\Entity\AttendanceLogClass;
-use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
+use App\Modules\Attendance\Entity\AttendanceCourseClass;
+use App\Modules\Attendance\Entity\AttendanceRollGroup;
+use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\System\Manager\SettingFactory;
 use Symfony\Component\Validator\Constraint;
@@ -69,8 +69,8 @@ class AttendanceLogTimeValidator extends ConstraintValidator
     private function isValid(object $value): bool
     {
         if ($value instanceof AttendanceByRollGroupManager) return true;
-        if ($value instanceof AttendanceLogStudent) return true;
-        if ($value instanceof AttendanceLogRollGroup) return true;
+        if ($value instanceof AttendanceStudent) return true;
+        if ($value instanceof AttendanceRollGroup) return true;
         return false;
     }
 }

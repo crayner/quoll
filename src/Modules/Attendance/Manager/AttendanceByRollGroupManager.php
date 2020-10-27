@@ -17,8 +17,8 @@
 namespace App\Modules\Attendance\Manager;
 
 use App\Modules\Attendance\Entity\AttendanceCode;
-use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
+use App\Modules\Attendance\Entity\AttendanceRollGroup;
+use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Security\Util\SecurityHelper;
@@ -83,9 +83,9 @@ class AttendanceByRollGroupManager
     private ?CsrfTokenManagerInterface $csrfTokenManager;
 
     /**
-     * @var AttendanceLogRollGroup|null
+     * @var AttendanceRollGroup|null
      */
-    private ?AttendanceLogRollGroup $attendanceLogRollGroup;
+    private ?AttendanceRollGroup $AttendanceRollGroup;
 
     /**
      * AttendanceByRollGroupManager constructor.
@@ -101,6 +101,8 @@ class AttendanceByRollGroupManager
         TranslationHelper::addTranslation('Total students', [], 'Attendance');
         TranslationHelper::addTranslation('Total students present in the room', [], 'Attendance');
         TranslationHelper::addTranslation('Total students absent from the room', [], 'Attendance');
+        TranslationHelper::addTranslation('Change All?', [], 'Attendance');
+        TranslationHelper::addTranslation('Change all students to these settings', [], 'Attendance');
     }
 
     /**
@@ -205,7 +207,7 @@ class AttendanceByRollGroupManager
         $day = new Day($this->getDate());
         if (!$day->isSchoolOpen()) return $this->setStatusMessage('not_a_school_day');
 
-        if ($this->getAttendanceLogRollGroup() === null || $this->getAttendanceLogRollGroup()->getId() === null) {
+        if ($this->getAttendanceRollGroup() === null || $this->getAttendanceRollGroup()->getId() === null) {
             $this->setStatusMessage('no_attendance_recorded');
             return true;
         }
@@ -280,12 +282,12 @@ class AttendanceByRollGroupManager
             $studentList = array_keys($students);
 
             // grab student attendance loo for date/time/rollGroup
-            $result = ProviderFactory::getRepository(AttendanceLogStudent::class)->findByRollGroupDateDailyTimeStudent($this->getRollGroup(), $this->getDate(), $studentList, $this->getDailyTime());
+            $result = ProviderFactory::getRepository(AttendanceStudent::class)->findByRollGroupDateDailyTimeStudent($this->getRollGroup(), $this->getDate(), $studentList, $this->getDailyTime());
             foreach ($result as $student) {
                 $id = $student['student'];
                 $students[$id] = array_merge($student, $students[$id]);
             }
-            $result = ProviderFactory::getRepository(AttendanceLogStudent::class)->countOutByRollGroupDateDailyTimeStudent($this->getRollGroup(), $this->getDate(), $studentList, $this->getDailyTime());
+            $result = ProviderFactory::getRepository(AttendanceStudent::class)->countOutByRollGroupDateDailyTimeStudent($this->getRollGroup(), $this->getDate(), $studentList, $this->getDailyTime());
             foreach ($result as $student) {
                 $id = $student['student'];
                 $students[$id] = array_merge($student, $students[$id]);
@@ -294,7 +296,7 @@ class AttendanceByRollGroupManager
             foreach ($students as $id => $student) {
                 foreach ($this->getPreviousDays() as $time) {
                     foreach ($time['days'] as $day) {
-                        $detail = ProviderFactory::getRepository(AttendanceLogStudent::class)->findOneByStudentDateRollGroupDailyTime($id, $day['date'], $this->getRollGroup(), $time['name']);
+                        $detail = ProviderFactory::getRepository(AttendanceStudent::class)->findOneByStudentDateRollGroupDailyTime($id, $day['date'], $this->getRollGroup(), $time['name']);
                         $name = empty($time['name']) ? '' : $time['name'];
                         if ($detail === null) {
                             $students[$id][$name][$day['date']]['className'] = 'highlightNoData';
@@ -384,25 +386,25 @@ class AttendanceByRollGroupManager
     }
 
     /**
-     * getAttendanceLogRollGroup
+     * getAttendanceRollGroup
      *
      * 24/10/2020 15:03
-     * @return AttendanceLogRollGroup|null
+     * @return AttendanceRollGroup|null
      */
-    public function getAttendanceLogRollGroup(): ?AttendanceLogRollGroup
+    public function getAttendanceRollGroup(): ?AttendanceRollGroup
     {
-        return $this->attendanceLogRollGroup = isset($this->attendanceLogRollGroup) ? $this->attendanceLogRollGroup : ProviderFactory::getRepository(AttendanceLogRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]);
+        return $this->AttendanceRollGroup = isset($this->AttendanceRollGroup) ? $this->AttendanceRollGroup : ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]);
     }
 
     /**
-     * getRecorderName
+     * getRecorderLogs
      *
-     * 24/10/2020 15:29
-     * @return string
+     * 27/10/2020 09:45
+     * @return ArrayCollection
      */
-    public function getRecorderName(): string
+    public function getRecorderLogs(): ArrayCollection
     {
-        return $this->getAttendanceLogRollGroup() && $this->getAttendanceLogRollGroup()->getRecorder() ? $this->getAttendanceLogRollGroup()->getRecorder()->getFullName() : '';
+        return $this->getAttendanceRollGroup() ? $this->getAttendanceRollGroup()->getRecorderLogs() : new ArrayCollection();
     }
 
     /**
@@ -413,7 +415,7 @@ class AttendanceByRollGroupManager
      */
     public function getCreatorName(): string
     {
-        return $this->getAttendanceLogRollGroup() && $this->getAttendanceLogRollGroup()->getCreator() ? $this->getAttendanceLogRollGroup()->getCreator()->getFullName() : '';
+        return $this->getAttendanceRollGroup() && $this->getAttendanceRollGroup()->getCreator() ? $this->getAttendanceRollGroup()->getCreator()->getFullName() : '';
     }
 
     /**
@@ -424,7 +426,7 @@ class AttendanceByRollGroupManager
      */
     public function getCreationDate(): ?DateTimeImmutable
     {
-        return $this->getAttendanceLogRollGroup() && $this->getAttendanceLogRollGroup()->getCreationDate() ? $this->getAttendanceLogRollGroup()->getCreationDate() : null;
+        return $this->getAttendanceRollGroup() && $this->getAttendanceRollGroup()->getCreationDate() ? $this->getAttendanceRollGroup()->getCreationDate() : null;
     }
 
     /**
@@ -435,7 +437,7 @@ class AttendanceByRollGroupManager
      */
     public function getRecordedDate(): ?DateTimeImmutable
     {
-        return $this->getAttendanceLogRollGroup() && $this->getAttendanceLogRollGroup()->getRecordedDate() ? $this->getAttendanceLogRollGroup()->getRecordedDate() : null;
+        return $this->getAttendanceRollGroup() && $this->getAttendanceRollGroup()->getRecordedDate() ? $this->getAttendanceRollGroup()->getRecordedDate() : null;
     }
 
     /**
@@ -446,7 +448,7 @@ class AttendanceByRollGroupManager
      */
     public function getMissingAttendanceTakenCount(): int
     {
-        return ($this->getRollGroup() ? $this->getRollGroup()->getStudentCount() : 0) - count(ProviderFactory::getRepository(AttendanceLogStudent::class)->findBy(['attendanceRollGroup' => $this->getAttendanceLogRollGroup()]));
+        return ($this->getRollGroup() ? $this->getRollGroup()->getStudentCount() : 0) - count(ProviderFactory::getRepository(AttendanceStudent::class)->findBy(['attendanceRollGroup' => $this->getAttendanceRollGroup()]));
     }
 
     /**
@@ -457,18 +459,18 @@ class AttendanceByRollGroupManager
      */
     public function getStudents(): Collection
     {
-        if ((!isset($this->students) || $this->students === null) && $this->getAttendanceLogRollGroup() !== null) {
+        if ((!isset($this->students) || $this->students === null) && $this->getAttendanceRollGroup() !== null) {
 
-            $this->students = new ArrayCollection(ProviderFactory::getRepository(AttendanceLogStudent::class)->findBy(['attendanceRollGroup' => $this->getAttendanceLogRollGroup()]));
+            $this->students = new ArrayCollection(ProviderFactory::getRepository(AttendanceStudent::class)->findBy(['attendanceRollGroup' => $this->getAttendanceRollGroup()]));
 
         }
 
-        if ((!isset($this->students) || $this->students === null) && $this->getAttendanceLogRollGroup() === null) {
-            $this->attendanceLogRollGroup = new AttendanceLogRollGroup($this->getRollGroup(),$this->getDate(),$this->getDailyTime());
+        if ((!isset($this->students) || $this->students === null) && $this->getAttendanceRollGroup() === null) {
+            $this->AttendanceRollGroup = new AttendanceRollGroup($this->getRollGroup(),$this->getDate(),$this->getDailyTime());
             $this->students = new ArrayCollection();
             foreach ($this->getRollGroup()->getStudentRollGroups() as $srg) {
-                $als = new AttendanceLogStudent();
-                $als->setAttendanceRollGroup($this->getAttendanceLogRollGroup())
+                $als = new AttendanceStudent();
+                $als->setAttendanceRollGroup($this->getAttendanceRollGroup())
                     ->setDailyTime($this->getDailyTime())
                     ->setDate($this->getDate())
                     ->setStudent($srg->getStudent());
@@ -486,8 +488,8 @@ class AttendanceByRollGroupManager
                     }
                 }
                 if (!$found) {
-                    $als = new AttendanceLogStudent();
-                    $als->setAttendanceRollGroup($this->getAttendanceLogRollGroup())
+                    $als = new AttendanceStudent();
+                    $als->setAttendanceRollGroup($this->getAttendanceRollGroup())
                         ->setDailyTime($this->getDailyTime())
                         ->setDate($this->getDate())
                         ->setStudent($srg->getStudent());
@@ -510,7 +512,7 @@ class AttendanceByRollGroupManager
             $iterator = $this->students->getIterator();
 
             $iterator->uasort(
-                function (AttendanceLogStudent $a, AttendanceLogStudent $b) {
+                function (AttendanceStudent $a, AttendanceStudent $b) {
                     return $a->getStudent()->getFullNameReversed() < $b->getStudent()->getFullNameReversed() ? -1 : 1 ;
                 }
             );
@@ -565,27 +567,25 @@ class AttendanceByRollGroupManager
     {
         $staff = SecurityHelper::getCurrentUser()->getStaff();
         ProviderFactory::getEntityManager()->refresh($staff);
-        $alrg = ProviderFactory::getRepository(AttendanceLogRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]) ?: new AttendanceLogRollGroup($this->getRollGroup(), $this->getDate(), $this->getDailyTime());
-        $alrg->setRecorder($staff);
+        $alrg = ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]) ?: new AttendanceRollGroup($this->getRollGroup(), $this->getDate(), $this->getDailyTime());
         $defaultCode = ProviderFactory::getRepository(AttendanceCode::class)->findOneByDefaultCode(true);
-        if ($alrg->getId() === null) ProviderFactory::create(AttendanceLogRollGroup::class)->persist($alrg);
+        if ($alrg->getId() === null) ProviderFactory::create(AttendanceRollGroup::class)->persist($alrg);
         $codes = [];
         foreach ($post['students'] as $student) {
             $student['code'] = $student['code'] === '' ? $defaultCode->getId() : $student['code'];
             $codes[$student['code']] = key_exists($student['code'],$codes) ? $codes[$student['code']] : ProviderFactory::getRepository(AttendanceCode::class)->find($student['code']);
             $studentEntity = ProviderFactory::getRepository(Student::class)->find($student['student']);
-            $als = ProviderFactory::getRepository(AttendanceLogStudent::class)->findOneBy(['dailyTime' => $this->getDailyTime(), 'date' => $this->getDate(), 'attendanceRollGroup' => $alrg, 'student' => $studentEntity]) ?: new AttendanceLogStudent();
+            $als = ProviderFactory::getRepository(AttendanceStudent::class)->findOneBy(['dailyTime' => $this->getDailyTime(), 'date' => $this->getDate(), 'attendanceRollGroup' => $alrg, 'student' => $studentEntity]) ?: new AttendanceStudent();
             $als->setStudent($studentEntity)
                 ->setAttendanceRollGroup($alrg)
                 ->setCode($codes[$student['code']])
                 ->setDate($this->getDate())
                 ->setDailyTime($this->getDailyTime())
                 ->setComment($student['comment'])
-                ->setRecorder($staff)
                 ->setReason($student['reason'])
                 ->setContext('Roll Group');
-            ProviderFactory::create(AttendanceLogStudent::class)->persist($als);
+            ProviderFactory::create(AttendanceStudent::class)->persist($als);
         }
-        ProviderFactory::create(AttendanceLogStudent::class)->flush();
+        ProviderFactory::create(AttendanceStudent::class)->flush();
     }
 }

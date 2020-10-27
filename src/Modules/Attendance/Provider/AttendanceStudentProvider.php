@@ -16,34 +16,34 @@
  */
 namespace App\Modules\Attendance\Provider;
 
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
+use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\System\Manager\SettingFactory;
 use App\Modules\Timetable\Entity\TimetableDate;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
 
 /**
- * Class AttendanceLogStudentProvider
+ * Class AttendanceStudentProvider
  *
  * 19/10/2020 12:26
  * @package App\Modules\Attendance\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceLogStudentProvider extends AbstractProvider
+class AttendanceStudentProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected string $entityName = AttendanceLogStudent::class;
+    protected string $entityName = AttendanceStudent::class;
 
     /**
      * getPreviousDaysStatus
      *
      * 25/10/2020 11:52
-     * @param AttendanceLogStudent $als
+     * @param AttendanceStudent $als
      * @return array
      */
-    public function getPreviousDaysStatus(AttendanceLogStudent $als): array
+    public function getPreviousDaysStatus(AttendanceStudent $als): array
     {
         $count = 5 * count(SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']));
         $result = [];

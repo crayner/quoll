@@ -48,11 +48,12 @@ export default function Widget(props) {
 
     if (form.type === 'submit') {
         widget_attr.type = 'button'
-        widget_attr.style = {float: 'right'}
-        widget_attr.className = 'btn-gibbon'
+        if (widget_attr.className === '') {
+            widget_attr.className = 'btn-gibbon float-right'
+        }
         if (form.label_class === 'use_save_button') {
-            widget_attr.title = functions.translate('Submit')
-            form.label = '<span class="far fa-save fa-fw"></span>'
+            widget_attr.title = form.name === 'submit' ? functions.translate('Submit') : functions.translate(form.name)
+            form.label = '<span class="far fa-save fa-fw"/>'
         }
         widget_attr.onClick = (e) => functions.submitForm(e,form)
         return (
@@ -65,8 +66,7 @@ export default function Widget(props) {
 
     if (form.type === 'button') {
         widget_attr.type = 'button'
-        widget_attr.style = {float: 'right'}
-        widget_attr.className = 'btn-gibbon'
+        widget_attr.className = 'btn-gibbon float-right'
         if (typeof form.on_click === 'object' && typeof form.on_click.function === 'string' && typeof form.on_click.route === 'string') {
             widget_attr.onClick = () => functions[form.on_click.function](form)
         }

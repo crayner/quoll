@@ -19,14 +19,14 @@ namespace App\Modules\Attendance\Validator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class AttendanceLogStudent
+ * Class AttendanceStudent
  *
  * 19/10/2020 13:02
  * @package App\Modules\Attendance\Validator
  * @author Craig Rayner <craig@craigrayner.com>
  * @Annotation()
  */
-class AttendanceLogStudent extends Constraint
+class AttendanceStudent extends Constraint
 {
     const DUPLICATE_ATTENDANCE_ERROR = 'e055cc14-dd43-4c90-840c-dc51b3ba7496';
 

@@ -20,15 +20,16 @@ use App\Manager\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class AttendanceLogClass
+ * Class AttendanceRecorderLogClass
  *
  * 19/10/2020 12:51
  * @package App\Modules\Attendance\Entity
  * @author Craig Rayner <craig@craigrayner.com>
- * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceLogClassRepository")
- * @ORM\Table(name="AttendanceLogCourseCLass")
+ * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceCourseClassRepository")
+ * @ORM\Table(name="AttendanceCourseClass"
+ * )
  */
-class AttendanceLogClass extends AbstractEntity
+class AttendanceCourseClass extends AbstractEntity
 {
     CONST VERSION = '1.0.00';
 
@@ -54,9 +55,9 @@ class AttendanceLogClass extends AbstractEntity
      * Id
      *
      * @param string|null $id
-     * @return AttendanceLogClass
+     * @return AttendanceCourseClass
      */
-    public function setId(?string $id): AttendanceLogClass
+    public function setId(?string $id): AttendanceCourseClass
     {
         $this->id = $id;
         return $this;

@@ -17,13 +17,13 @@
 namespace App\Modules\Attendance\Manager\Hidden;
 
 /**
- * Class AttendanceLogManager
+ * Class AttendanceRecorderLogManager
  *
  * 24/10/2020 10:29
  * @package App\Modules\Attendance\Manager\Hidden
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceLogManager
+class AttendanceRecorderLogManager
 {
     /**
      * @var array

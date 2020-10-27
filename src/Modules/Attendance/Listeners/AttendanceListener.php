@@ -16,16 +16,12 @@
  */
 namespace App\Modules\Attendance\Listeners;
 
-use App\Modules\Attendance\Entity\AttendanceLogClass;
-use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
-use App\Modules\System\Manager\SettingFactory;
-use App\Util\TranslationHelper;
+use App\Modules\Attendance\Entity\AttendanceStudent;
+use App\Modules\Attendance\Manager\AttendanceLogger;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class AttendanceListener
@@ -37,9 +33,9 @@ use Psr\Log\LoggerInterface;
 class AttendanceListener implements EventSubscriber
 {
     /**
-     * @var LoggerInterface
+     * @var AttendanceLogger
      */
-    private LoggerInterface $log;
+    private AttendanceLogger $logger;
 
     /**
      * getSubscribedEvents
@@ -62,20 +58,8 @@ class AttendanceListener implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof AttendanceLogStudent) {
-            $entity->setCreator()
-                ->setCreationDate();
-            $this->logEntityChanges($entity, []);
-        }
-
-        if ($entity instanceof AttendanceLogRollGroup) {
-            $entity->setCreator()
-                ->setCreationDate();
-        }
-
-        if ($entity instanceof AttendanceLogClass) {
-            $entity->setCreator()
-                ->setCreationDate();
+        if ($entity instanceof AttendanceStudent) {
+            $this->addAttendanceRecorderLog($entity, []);
         }
     }
 
@@ -93,7 +77,7 @@ class AttendanceListener implements EventSubscriber
         $uow->computeChangeSets(); // do not compute changes if inside a listener
         $changeSet = $uow->getEntityChangeSet($entity);
 
-        if ($entity instanceof AttendanceLogStudent) {
+        if ($entity instanceof AttendanceStudent) {
             $changed = false;
             foreach ($changeSet as $name => $compare) {
                 if (in_array($name, ['reason','comment','code','context'])) {
@@ -103,90 +87,47 @@ class AttendanceListener implements EventSubscriber
             }
 
             if ($changed) {
-                $logStatus = SettingFactory::getSettingManager()->get('Attendance', 'logAttendance');
-                if ($logStatus !== 'None') {
-                    if ($entity->getAttendanceRollGroup() !== null && in_array($logStatus, ['All','Daily Only'])) {
-                        $this->logEntityChanges($entity, $changeSet);
-                    }
-                    if ($entity->getAttendanceClass() !== null && in_array($logStatus, ['All','Class Only'])) {
-                        $this->logEntityChanges($entity, $changeSet);
-                    }
-                }
-                $entity->setRecorderDate()
-                    ->setRecorder();
-
+                $this->addAttendanceRecorderLog($entity, $changeSet);
             } else {
                 $uow->clearEntityChangeSet(spl_object_hash($entity));
             }
         }
-
-        if ($entity instanceof AttendanceLogRollGroup) {
-            $entity->setRecordedDate()
-                ->setRecorder();
-        }
-
-        if ($entity instanceof AttendanceLogClass) {
-            $entity->setRecordedDate()
-                ->setRecorder();
-        }
     }
 
     /**
-     * Log
+     * addAttendanceRecorderLog
      *
-     * @return LoggerInterface
-     */
-    public function getLog(): LoggerInterface
-    {
-        return $this->log;
-    }
-
-    /**
-     * Log
-     *
-     * @param LoggerInterface $log
+     * 27/10/2020 11:22
+     * @param AttendanceStudent $entity
+     * @param array $changeSet
      * @return AttendanceListener
      */
-    public function setLog(LoggerInterface $log): AttendanceListener
+    private function addAttendanceRecorderLog(AttendanceStudent $entity, array $changeSet): AttendanceListener
     {
-        $this->log = $log;
+        $this->getLogger()->addEvent(['entity' => $entity, 'changeSet' => $changeSet]);
         return $this;
     }
 
     /**
-     * logEntityChanges
+     * Logger
      *
-     * 24/10/2020 10:50
-     * @param AttendanceLogStudent $entity
-     * @param array $changeSet
+     * @return AttendanceLogger
      */
-    public function logEntityChanges(AttendanceLogStudent $entity, array $changeSet)
+    private function getLogger(): AttendanceLogger
     {
-        $result = [];
-        foreach ($changeSet as $name=>$item) {
-            switch ($name) {
-                case 'context':
-                case 'reason':
-                case 'comment':
-                    $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.'.$name), [], 'Attendance'),'original' => $item[0], 'change' => $item[1]]);
-                    break;
-                case 'code':
-                    $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.'.$name), [], 'Attendance'),'original' => $item[0]->getName(), 'change' => $item[1]->getName()]);
-                    break;
-            }
-        }
-        if ($changeSet === []) {
-            $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.code'), [], 'Attendance'),'original' => 'persist', 'change' => $entity->getCode()->getName()], 'Attendance');
-            $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.context'), [], 'Attendance'),'original' => 'persist', 'change' => $entity->getContext()], 'Attendance');
-            $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.reason'), [], 'Attendance'),'original' => 'persist', 'change' => $entity->getReason()], 'Attendance');
-            $result[] = TranslationHelper::translate('attendance_log_change', ['name' => TranslationHelper::translate(strtolower('attendancelogstudent.comment'), [], 'Attendance'),'original' => 'persist', 'change' => $entity->getComment()], 'Attendance');
-        }
-
-        if ($entity->getAttendanceRollGroup() !== null) {
-            $this->getLog()->notice(TranslationHelper::translate('attendance_log_student_roll_group', ['result' => implode(', ', $result), 'student' => $entity->getStudent()->getFullName(), 'recorder' => $entity->getRecorder()->getFullName(), 'date' => $entity->getDate()->format('Y-m-d'), 'time' => $entity->getDailyTime()], 'Attendance'));
-        }
-        if ($entity->getAttendanceClass() !== null) {
-            $this->getLog()->notice(TranslationHelper::translate('attendance_log_student_class', ['result' => implode(', ', $result), 'student' => $entity->getStudent()->getFullName(), 'recorder' => $entity->getRecorder()->getFullName(), 'date' => $entity->getDate()->format('Y-m-d'), 'class' => $entity->getAttendanceClass()->getFullName()], 'Attendance'));
-        }
+        return $this->logger;
     }
+
+    /**
+     * Logger
+     *
+     * @param AttendanceLogger $logger
+     * @return AttendanceListener
+     */
+    public function setLogger(AttendanceLogger $logger): AttendanceListener
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
 }

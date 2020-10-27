@@ -224,6 +224,7 @@ export default class PageApp extends Component {
                 pageHeader: data.pageHeader,
                 warning: data.warning
             })
+            this.mergeTranslations(data.translations)
             if (data.url.includes('?path=') > 0) {
                 data.url = data.url.slice(0,data.url.includes('?path=') + 3)
             }

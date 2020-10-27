@@ -17,9 +17,7 @@
 namespace App\Form\Type;
 
 use App\Exception\MissingActionException;
-use App\Manager\AbstractEntity;
 use App\Manager\EntityInterface;
-use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -28,7 +26,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ReactFormType
@@ -36,21 +33,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ReactFormType extends AbstractType
 {
-     /**
-      * @var TranslatorInterface
-      */
-     private $translator;
-
-    /**
-     * ReactFormType constructor.
-     * @param TranslatorInterface $translator
-     * @param ReactFormHelper $helper
-     */
-     public function __construct(TranslatorInterface $translator, ReactFormHelper $helper)
-     {
-         $this->translator = $translator;
-     }
-
      /**
      * {@inheritdoc}
      */
@@ -163,11 +145,7 @@ class ReactFormType extends AbstractType
       */
      private function translate(string $id, array $params = [], ?string $domain = 'messages'): string
      {
-         if (is_null($domain))
-         {
-             return str_replace(array_keys($params), array_values($params), $id);
-         }
-         return $this->translator->trans($id, $params, $domain);
+         return TranslationHelper::translate($id, $params, $domain);
      }
 
     /**
@@ -473,7 +451,10 @@ class ReactFormType extends AbstractType
 
     /**
      * renderErrors
-     * @param array $errors
+     *
+     * 27/10/2020 10:25
+     * @param FormErrorIterator $errors
+     * @return array
      */
     private function renderErrors(FormErrorIterator $errors) {
         $result = [];
@@ -486,6 +467,9 @@ class ReactFormType extends AbstractType
 
     /**
      * addTranslation
+     * @param string $id
+     * @param array $options
+     * @param string|null $domain
      * @return ReactFormType
      */
     public function addTranslation(string $id, array $options = [], ?string $domain = null): ReactFormType

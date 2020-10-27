@@ -11,25 +11,25 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 17/10/2020
- * Time: 10:31
+ * Date: 19/10/2020
+ * Time: 12:55
  */
 namespace App\Modules\Attendance\Provider;
 
-use App\Modules\Attendance\Entity\AttendanceLogRollGroup;
+use App\Modules\Attendance\Entity\AttendanceCourseClass;
 use App\Provider\AbstractProvider;
 
 /**
- * Class AttendanceLogRollGroupProvider
+ * Class AttendanceRecorderLogClassProvider
  *
- * 17/10/2020 10:32
+ * 19/10/2020 12:55
  * @package App\Modules\Attendance\Provider
  * @author Craig Rayner <craig@craigrayner.com>
  */
-class AttendanceLogRollGroupProvider extends AbstractProvider
+class AttendanceCourseClassProvider extends AbstractProvider
 {
     /**
      * @var string
      */
-    protected string $entityName = AttendanceLogRollGroup::class;
+    protected string $entityName = AttendanceCourseClass::class;
 }

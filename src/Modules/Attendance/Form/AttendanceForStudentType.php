@@ -21,13 +21,14 @@ use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SimpleArrayType;
 use App\Modules\Attendance\Entity\AttendanceCode;
-use App\Modules\Attendance\Entity\AttendanceLogStudent;
+use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -91,6 +92,11 @@ class AttendanceForStudentType extends AbstractType
                     'data' => ProviderFactory::getRepository(AttendanceCode::class)->findInOrOut(),
                 ]
             )
+            ->add('submit', SubmitType::class ,
+                [
+                    'label' => 'Save Attendance',
+                ]
+            )
         ;
     }
 
@@ -105,7 +111,7 @@ class AttendanceForStudentType extends AbstractType
         $resolver->setDefaults(
             [
                 'translation_domain' => 'Attendance',
-                'data_class' => AttendanceLogStudent::class,
+                'data_class' => AttendanceStudent::class,
             ]
         );
     }

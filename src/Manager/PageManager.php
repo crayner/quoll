@@ -487,6 +487,7 @@ class PageManager
                 'special' => [],
                 'sidebar' => [],
                 'containers' => [],
+                'translations' => $this->getTranslations(),
                 'messages' => [],
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl(),
@@ -707,7 +708,7 @@ class PageManager
      */
     public function getTranslations(): array
     {
-        return $this->translations;
+        return $this->translations = $this->translations === [] ? TranslationHelper::getTranslations() : $this->translations;
     }
 
     /**

@@ -1,2 +1,10 @@
 {% trans_default_domain 'Attendance' %}
-<div class="{{ manager.statusMessage.status }}">{{ manager.statusMessage.message|trans({roll_date: manager.date|date, dailyTime: manager.dailyTime, recorder: manager.getRecorderName(), creator: manager.getCreatorName(), creation_date: manager.getCreationDate()|date, recorded_date: manager.getRecordedDate()|date, creation_time: manager.getCreationDate()|date('H:i:s'), recorded_time: manager.getRecordedDate()|date('H:i:s'), count: manager.getMissingAttendanceTakenCount() })|raw }}</div>
+<div class="{{ manager.statusMessage.status }}">{{ manager.statusMessage.message|trans({roll_date: manager.date|date, dailyTime: manager.dailyTime, count: manager.getMissingAttendanceTakenCount() })|raw }}
+    {% if manager.getRecorderLogs()|length > 0 %}
+        <ul>
+            {% for log in manager.getRecorderLogs %}
+                <li>{{ 'attendance_recorder_details'|trans({date: log.recordedOn|date('d M/Y'), time: log.recordedOn|date('H:i:s'), person: log.recorder.getFullName()}) }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
