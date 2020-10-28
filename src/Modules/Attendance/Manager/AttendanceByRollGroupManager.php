@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Attendance\Manager;
 
+use App\Manager\StatusManager;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Entity\AttendanceRollGroup;
 use App\Modules\Attendance\Entity\AttendanceStudent;
@@ -30,8 +31,6 @@ use App\Util\TranslationHelper;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Class AttendanceByRollGroupManager
@@ -558,6 +557,37 @@ class AttendanceByRollGroupManager
                 ->setContext('Roll Group');
             ProviderFactory::create(AttendanceStudent::class)->persist($als);
         }
+        ProviderFactory::create(AttendanceStudent::class)->flush();
+    }
+
+    /**
+     * changeAll
+     *
+     * 29/10/2020 08:22
+     * @param array $data
+     * @param StatusManager $statusManager
+     */
+    public function changeAll(array $data, StatusManager $statusManager)
+    {
+        $count = 0;
+        foreach ($this->getStudents() as $student) {
+            if ($student->getId() === null) {
+                $statusManager->warning('The attendance for student could not be changed as it not been recorded.', ['student' => $student->getStudent()->getFullName()], 'Attendance');
+                continue;
+            }
+            if (!empty($data['code'])) $student->setCode($data['code']);
+            $student
+                ->setComment(empty($data['comment']) ? null : $data['comment'])
+                ->setReason(empty($data['reason']) ? null : $data['reason']);
+            $count++;
+            ProviderFactory::create(AttendanceStudent::class)->persist($student);
+        }
+        if ($count === $this->getStudents()->count()) {
+            $statusManager->success('roll_group_change_all', ['count' => $count, 'student_number' => $this->getStudents()->count()], 'Attendance');
+        } else {
+            $statusManager->warning('roll_group_change_all', ['count' => $count, 'student_number' => $this->getStudents()->count()], 'Attendance');
+        }
+
         ProviderFactory::create(AttendanceStudent::class)->flush();
     }
 }

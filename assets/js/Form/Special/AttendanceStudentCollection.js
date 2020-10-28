@@ -18,7 +18,7 @@ export default function AttendanceStudentCollection(props) {
 
     function getAttendance()
     {
-        let inOrOut = form.children[0].children.['inOrOut'].value
+        let inOrOut = form.children[0].children['inOrOut'].value
 
         let z = 0
         let xxx = []
@@ -118,59 +118,11 @@ export default function AttendanceStudentCollection(props) {
         })
     }
 
-    function getSaveAttendance()
-    {
-        let submit = {...form.children[0].children['submit']}
-        submit.name = functions.translate('Save Attendance')
-        submit.help = ''
-        return (<Widget columns={1} functions={functions} form={submit} />)
-    }
-
-    function getChangeAllButton()
-    {
-        let submit = {...form.children[0].children['submit']}
-        submit.label = functions.translate('Change All?')
-        submit.help = ''
-        submit.label_class = ''
-        submit.attr = {className: 'button w-32 m-px sm:self-center float-left', title: functions.translate('Change all students to these settings')}
-        submit.full_name = 'attendance_by_roll_group[changeAll][submit]'
-        submit.id = 'attendance_by_roll_group_changeAll_submit'
-        submit.value = 'changeAll'
-        let code = {...form.children[0].children['code']}
-        code.attr = {className: 'flex float-left'}
-        code.full_name = 'attendance_by_roll_group[changeAll][code]'
-        code.id = 'attendance_by_roll_group_changeAll_code'
-        let reason = {...form.children[0].children['reason']}
-        reason.attr = {className: 'flex float-left'}
-        reason.placeholder = ' '
-        reason.full_name = 'attendance_by_roll_group[changeAll][reason]'
-        reason.id = 'attendance_by_roll_group_changeAll_reason'
-        let comment = {...form.children[0].children['comment']}
-        comment.attr = {className: 'flex float-left'}
-        comment.placeholder = ' '
-        comment.full_name = 'attendance_by_roll_group[changeAll][comment]'
-        comment.id = 'attendance_by_roll_group_changeAll_comment'
-        return (
-            <div className={'w-3/4 bg-yellow-200'}>
-                <Widget columns={1} functions={functions} form={submit} />
-                <Widget columns={1} functions={functions} form={code} />
-                <Widget columns={1} functions={functions} form={reason} />
-                <Widget columns={1} functions={functions} form={comment} />
-            </div>)
-    }
-
     return (<div>
-        <div className={'w-full flex flex-wrap items-stretch'} id={'react-attendance'} key={loop++}>{getAttendance()}
-    </div>
+        <div className={'w-full flex flex-wrap items-stretch'} id={'react-attendance'} key={loop++}>{getAttendance()}</div>
         <div className={'clear-both success text-right w-full border-t border-black'}>{functions.translate('Total students')}: {form.children.length}</div>
         <div className={'text-right font-bold w-full'}>{functions.translate('Total students present in the room')}: {present}</div>
         <div className={'text-right font-bold'}>{functions.translate('Total students absent from the room')}: {absent}</div>
-        <div className={'w-full flex flex-wrap items-stretch'}>
-            {getChangeAllButton()}
-            <div className={'w-1/4'}>
-                {getSaveAttendance()}
-            </div>
-        </div>
     </div>)
 }
 

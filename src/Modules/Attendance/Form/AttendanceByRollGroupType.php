@@ -63,6 +63,7 @@ class AttendanceByRollGroupType extends AbstractType
                         'row_style' => 'single',
                     ]
                 )
+                ->add('changeAll', AttendanceRollGroupChangeAllType::class)
             ;
         }
 

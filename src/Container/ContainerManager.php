@@ -319,12 +319,13 @@ class ContainerManager
     }
 
     /**
-     * ShowSubmitButton.
+     * setShowSubmitButton
      *
+     * 28/10/2020 16:43
      * @param bool $showSubmitButton
-     * @return ContainerManager
+     * @return $this
      */
-    public function setShowSubmitButton(bool $showSubmitButton): ContainerManager
+    public function setShowSubmitButton(bool $showSubmitButton = true): ContainerManager
     {
         $this->showSubmitButton = $showSubmitButton;
         return $this;

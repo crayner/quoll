@@ -106,7 +106,6 @@ class AttendanceStudentProvider extends AbstractProvider
     {
         if (!isset($this->timetableDates)) {
             $this->timetableDates = ProviderFactory::getRepository(TimetableDate::class)->findPreviousTimetableDates($date, $days);
-            dump($date, $days, $this->timetableDates);
         }
         return $this->timetableDates;
     }

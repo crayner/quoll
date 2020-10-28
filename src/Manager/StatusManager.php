@@ -493,11 +493,13 @@ class StatusManager
     /**
      * invalidInputs
      *
-     * 21/08/2020 07:59
+     * 28/10/2020 16:56
+     * @return $this
      */
-    public function invalidInputs()
+    public function invalidInputs(): StatusManager
     {
         $this->error(static::INVALID_INPUTS);
+        return $this;
     }
 
     /**

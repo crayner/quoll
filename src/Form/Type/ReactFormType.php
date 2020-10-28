@@ -240,6 +240,7 @@ class ReactFormType extends AbstractType
         $vars['multiple'] = isset($view->vars['multiple']) ? $view->vars['multiple'] : false;
         $vars['label_colspan'] = $view->vars['label_colspan'];
         $vars['parse_value'] = key_exists('parse_value', $view->vars) ? $view->vars['parse_value'] : false;
+        $vars['special_name'] = key_exists('special_name', $view->vars) ? $view->vars['special_name'] : false;
         $vars['widget_colspan'] = $view->vars['widget_colspan'];
         $vars['label_class'] = $view->vars['label_class'];
         $vars['widget_class'] = $view->vars['widget_class'];

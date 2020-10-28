@@ -7,6 +7,7 @@ import ParagraphRow from "./ParagraphRow"
 import SingleRow from "./SingleRow"
 import Widget from "../../Widget"
 import Standard from "./Standard"
+import AttendanceRollGroupChangeAll from '../../Special/AttendanceRollGroupChangeAll'
 
 export default function Row(props) {
     const {
@@ -102,6 +103,23 @@ export default function Row(props) {
 
     if (form.row_style === 'simple_array') {
         return (<Standard form={form} functions={functions} columns={columns} />)
+    }
+
+
+    if (form.row_style === 'special') {
+        if (form.special_name === false) {
+            console.log(form)
+            console.error("The form has set a style of special without setting the special_name in the options.", form.row_style)
+            return (<tr><td> Form Row {form.row_style}</td></tr>)
+        }
+        if (form.special_name === 'AttendanceRollGroupChangeAll') {
+            return (<AttendanceRollGroupChangeAll form={form} functions={functions} />)
+        }
+
+        console.log(form)
+        console.error("The form has set a style of special but the name given has not been coded in REACT." , form.special_name)
+        return (<tr><td> Form Row {form.special_name}</td></tr>)
+
     }
 
 

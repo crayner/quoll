@@ -64,6 +64,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
                 'visible_labels' => [],
                 'visible_parent' => null,
                 'parse_value'     => false,
+                'special_name'  => false,
             ]
         );
 
@@ -77,9 +78,10 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('visible_labels', ['array']);
         $resolver->setAllowedTypes('submit_on_change', ['boolean']);
         $resolver->setAllowedTypes('parse_value', ['string', 'boolean']);
+        $resolver->setAllowedTypes('special_name', ['string', 'boolean']);
         $resolver->setAllowedTypes('visible_parent', ['string', 'null']);
 
-        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget','simple_array']);
+        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget','simple_array','special']);
     }
 
     /**
@@ -103,5 +105,6 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $view->vars['visible_labels'] = $options['visible_labels'];
         $view->vars['visible_parent'] = $options['visible_parent'];
         $view->vars['parse_value'] = $options['parse_value'];
+        $view->vars['special_name'] = $options['special_name'];
     }
 }

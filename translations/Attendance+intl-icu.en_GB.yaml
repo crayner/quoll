@@ -102,12 +102,10 @@ attendance_log_change: >-
     }
 attendance_log_student: >-
     { type, select,
-        roll_group      {
-                            { time, select,
-                                all_day     { Daily Attendance: studentroll_group): Changes [result] for date by recorder. }
-                                other       { Daily Attendance: studentroll_group): Changes [result] for date at time by recorder. }
-                            }
-                        }
+        roll_group      { { time, select,
+                            all_day     { Daily Attendance: studentroll_group): Changes [result] for date by recorder. }
+                            other       { Daily Attendance: studentroll_group): Changes [result] for date at time by recorder. }
+                        } }
         future          { { time, select,
                             all_day     { Future Daily Attendance: student: Changes [result] for date by recorder. }
                             other       { Future Daily Attendance: student: Changes [result] for date at time by recorder. }
@@ -169,3 +167,22 @@ attendance_student:
       'future': Future
       'self registration': Self Registration
 Out: Out
+The attendance for student could not be changed as it not been recorded.: 'The attendance for "student" could not be changed as it not been recorded.'
+roll_group_change_all: >-
+    { count, plural,
+        =0      { { student_number, plural,
+                    =0      { No students were found to change. }
+                    one     { One student was found, but there were no changes. }
+                    other   { student_number students were found, but there were no changes. }
+                } }
+        one     { { student_number, plural,
+                    =0      { No students were found to change. }
+                    one     { One student was found. One change. }
+                    other   { student_number students were found. There was one change. }
+                } }
+        other   { { student_number, plural,
+                    =0      { No students were found to change. }
+                    one     { One student was found. There were count changes. }
+                    other   { student_number students were found. There were count changes.  }
+                } }
+    }

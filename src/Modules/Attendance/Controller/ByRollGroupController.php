@@ -28,6 +28,7 @@ use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class ByRollGroupController
@@ -72,8 +73,13 @@ class ByRollGroupController extends AbstractPageController
             ]
         );
 
+        $submitClicked = '';
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();
+            if (key_exists('submit_clicked', $content)) {
+                $submitClicked = $content['submit_clicked'];
+                unset($content['submit_clicked']);
+            }
             if (key_exists('students',$content)) {
                 $students = [];
                 foreach ($content['students'] as $q=>$w) {
@@ -84,6 +90,13 @@ class ByRollGroupController extends AbstractPageController
                     }
                 }
                 $content['students'] = $students;
+            }
+
+            if ($submitClicked === 'changeAll') {
+                $manager->changeAll($content['changeAll'], $this->getStatusManager());
+                $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
+
+                return $this->singleForm($form);
             }
 
             $form->submit($content);
@@ -104,7 +117,9 @@ class ByRollGroupController extends AbstractPageController
                     );
                     $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
                 } else {
-                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
+                    $this->getStatusManager()
+                        ->invalidInputs()
+                        ->setReDirect($this->generateUrl('attendance_roll_group_manage', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
                 }
             }
             return $this->singleForm($form);
@@ -138,6 +153,7 @@ class ByRollGroupController extends AbstractPageController
             ->render(
                 [
                     'containers' => $this->getContainerManager()
+                        ->setShowSubmitButton()
                         ->addContainer($container)
                         ->getBuiltContainers(),
                 ]
