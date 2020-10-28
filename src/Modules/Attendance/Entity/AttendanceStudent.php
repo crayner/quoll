@@ -450,9 +450,9 @@ class AttendanceStudent extends AbstractEntity
      * 25/10/2020 11:43
      * @return array
      */
-    public function getPreviousDays(): array
+    public function getPreviousDays(array $days = []): array
     {
-        return ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($this) ;
+        return ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($this, $days) ;
     }
 
     /**

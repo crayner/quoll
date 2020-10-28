@@ -18,6 +18,8 @@ namespace App\Modules\Attendance\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Staff\Entity\Staff;
+use App\Util\StringHelper;
+use App\Util\TranslationHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,7 +31,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Craig Rayner <craig@craigrayner.com>
  * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceRecorderLogRepository")
  * @ORM\Table(name="AttendanceRecorderLog",
- *      indexes={@ORM\Index(name="recorder",columns="recorder")}
+ *      indexes={
+ *          @ORM\Index(name="recorder",columns="recorder"),
+ *          @ORM\Index(name="code",columns="code")
+ *      }
  * )
  */
 class AttendanceRecorderLog extends AbstractEntity
@@ -66,6 +71,32 @@ class AttendanceRecorderLog extends AbstractEntity
      * @Assert\NotBlank()
      */
     private ?string $logId;
+
+    /**
+     * @var AttendanceCode|null
+     * @ORM\ManyToOne(targetEntity="App\Modules\Attendance\Entity\AttendanceCode")
+     * @ORM\JoinColumn(name="code",nullable=true)
+     */
+    private ?AttendanceCode $code;
+
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=31,nullable=true)
+     */
+    private ?string $context;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=31,nullable=true)
+     */
+    private ?string $reason;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=191,nullable=true)
+     */
+    private ?string $comment;
 
     /**
      * @var Staff|null
@@ -167,6 +198,96 @@ class AttendanceRecorderLog extends AbstractEntity
     }
 
     /**
+     * getCode
+     *
+     * 28/10/2020 10:02
+     * @return AttendanceCode|null
+     */
+    public function getCode(): ?AttendanceCode
+    {
+        return isset($this->code) ? $this->code : null;
+    }
+
+    /**
+     * Code
+     *
+     * @param AttendanceCode|null $code
+     * @return AttendanceRecorderLog
+     */
+    public function setCode(?AttendanceCode $code): AttendanceRecorderLog
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * getContext
+     *
+     * 28/10/2020 10:17
+     * @return string|null
+     */
+    public function getContext(): ?string
+    {
+        return isset($this->context) ? $this->context : null;
+    }
+
+    /**
+     * Context
+     *
+     * @param string|null $context
+     * @return AttendanceRecorderLog
+     */
+    public function setContext(?string $context): AttendanceRecorderLog
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    /**
+     * Reason
+     *
+     * @return string|null
+     */
+    public function getReason(): ?string
+    {
+        return isset($this->reason) ? $this->reason : null;
+    }
+
+    /**
+     * Reason
+     *
+     * @param string|null $reason
+     * @return AttendanceRecorderLog
+     */
+    public function setReason(?string $reason): AttendanceRecorderLog
+    {
+        $this->reason = $reason;
+        return $this;
+    }
+
+    /**
+     * Comment
+     *
+     * @return string|null
+     */
+    public function getComment(): ?string
+    {
+        return isset($this->comment) ? $this->comment : null;
+    }
+
+    /**
+     * Comment
+     *
+     * @param string|null $comment
+     * @return AttendanceRecorderLog
+     */
+    public function setComment(?string $comment): AttendanceRecorderLog
+    {
+        $this->comment = $comment;
+        return $this;
+    }
+
+    /**
      * Recorder
      *
      * @return Staff|null
@@ -219,7 +340,15 @@ class AttendanceRecorderLog extends AbstractEntity
      */
     public function toArray(?string $name = null): array
     {
-        return [];
+        return [
+            'recorded_on' => $this->getRecordedOn()->format('d M @ H:i'),
+            'direction' => $this->getCode() ? $this->getCode()->getDirection() : 'Out',
+            'direction_translated' => '<strong>' . TranslationHelper::translate($this->getCode() ? $this->getCode()->getDirection() : 'In', [], 'Attendance') . '</strong>',
+            'details' => ($this->getCode() ? $this->getCode()->getName() : 'Present') . ', ' . $this->getReason() . "<br />\n" . $this->getComment(),
+            'context' => $this->getContext() ? TranslationHelper::translate('attendance_student.context.' . strtolower($this->getContext()), [], 'Attendance'): 'Roll Group',
+            'recorder' => $this->getRecorder()->getFullName('Standard'),
+            'id' => $this->getId(),
+        ];
     }
 
 }

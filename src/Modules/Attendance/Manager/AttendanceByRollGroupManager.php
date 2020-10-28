@@ -78,11 +78,6 @@ class AttendanceByRollGroupManager
     private array $statusMessage;
 
     /**
-     * @var CsrfTokenManagerInterface|null
-     */
-    private ?CsrfTokenManagerInterface $csrfTokenManager;
-
-    /**
      * @var AttendanceRollGroup|null
      */
     private ?AttendanceRollGroup $AttendanceRollGroup;
@@ -90,11 +85,9 @@ class AttendanceByRollGroupManager
     /**
      * AttendanceByRollGroupManager constructor.
      *
-     * @param CsrfTokenManagerInterface|null $csrfTokenManager
      */
-    public function __construct(?CsrfTokenManagerInterface $csrfTokenManager = null)
+    public function __construct()
     {
-        $this->csrfTokenManager = $csrfTokenManager;
         TranslationHelper::addTranslation('Present', [], 'Attendance');
         TranslationHelper::addTranslation('Absent', [], 'Attendance');
         TranslationHelper::addTranslation('Save Attendance', [], 'Attendance');
@@ -362,27 +355,6 @@ class AttendanceByRollGroupManager
             $this->previousDays = $result;
         }
         return $this->previousDays;
-    }
-
-    /**
-     * CsrfTokenManager
-     *
-     * @return CsrfTokenManagerInterface
-     */
-    public function getCsrfTokenManager(): CsrfTokenManagerInterface
-    {
-        return $this->csrfTokenManager;
-    }
-
-    /**
-     * getCsrfToken
-     *
-     * 23/10/2020 09:50
-     * @return CsrfToken
-     */
-    public function getCsrfToken(): CsrfToken
-    {
-        return $this->getCsrfTokenManager()->getToken('attendance_roll_group');
     }
 
     /**

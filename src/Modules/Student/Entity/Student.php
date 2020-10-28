@@ -709,4 +709,19 @@ class Student extends AbstractEntity
         });
         return $se->count() === 1 ? $se->first() : null;
     }
+
+    /**
+     * getFullNameReversedWithRollGroup
+     *
+     * 28/10/2020 08:52
+     * @return string
+     */
+    public function getFullNameReversedWithRollGroup(): string
+    {
+
+        $rollGroup = $this->getCurrentEnrolment();
+        if (null === $rollGroup) return $this->getFullNameReversed() . ' (Unknown)';
+        $rollGroup = $rollGroup->getRollGroup();
+        return $this->getFullNameReversed() . ' (' . $rollGroup->getName() . ')';
+    }
 }

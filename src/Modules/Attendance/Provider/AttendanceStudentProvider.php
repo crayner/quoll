@@ -21,6 +21,9 @@ use App\Modules\System\Manager\SettingFactory;
 use App\Modules\Timetable\Entity\TimetableDate;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AttendanceStudentProvider
@@ -37,18 +40,37 @@ class AttendanceStudentProvider extends AbstractProvider
     protected string $entityName = AttendanceStudent::class;
 
     /**
+     * @var array
+     */
+    private array $timetableDates;
+
+    /**
      * getPreviousDaysStatus
      *
-     * 25/10/2020 11:52
+     * 28/10/2020 12:04
      * @param AttendanceStudent $als
+     * @param array $days
      * @return array
      */
-    public function getPreviousDaysStatus(AttendanceStudent $als): array
+    public function getPreviousDaysStatus(AttendanceStudent $als, array $days = []): array
     {
-        $count = 5 * count(SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']));
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'previous' => 5,
+                'future' => 0,
+            ]
+        );
+        // Future includes today, so 1 = today, 2 = today and next school day.
+        $resolver->setAllowedTypes('previous', 'integer')
+            ->setAllowedTypes('future', 'integer');
+        $days = $resolver->resolve($days);
+
         $result = [];
-        $days = $this->getRepository()->findPreviousDays($als, $count);
-        foreach (ProviderFactory::getRepository(TimetableDate::class)->findPreviousTimetableDates($als->getDate()) as $td) {
+        $dates = $this->getTimetableDates($als->getDate(), $days);
+
+        $days = $this->getRepository()->findPreviousDays($als, $dates);
+        foreach ($dates as $td) {
             foreach (SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']) as $dailyTime) {
                 $found = false;
                 foreach ($days as $q=>$w) {
@@ -71,4 +93,22 @@ class AttendanceStudentProvider extends AbstractProvider
 
         return $result;
     }
+
+    /**
+     * getTimetableDates
+     *
+     * 28/10/2020 12:08
+     * @param DateTimeImmutable $date
+     * @param array $days
+     * @return array
+     */
+    public function getTimetableDates(DateTimeImmutable $date, array $days): array
+    {
+        if (!isset($this->timetableDates)) {
+            $this->timetableDates = ProviderFactory::getRepository(TimetableDate::class)->findPreviousTimetableDates($date, $days);
+            dump($date, $days, $this->timetableDates);
+        }
+        return $this->timetableDates;
+    }
+
 }

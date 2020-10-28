@@ -136,7 +136,12 @@ class AttendanceRecorderListener implements EventSubscriberInterface
                 $arl->setRecorder($recorder)
                     ->setRecordedOn(new DateTimeImmutable())
                     ->setLogKey('Student')
-                    ->setLogId($entity->getId());
+                    ->setLogId($entity->getId())
+                    ->setCode($entity->getCode())
+                    ->setReason($entity->getReason())
+                    ->setComment($entity->getComment())
+                    ->setContext($entity->getContext())
+                ;
                 $em->persist($arl);
             }
 
@@ -145,6 +150,7 @@ class AttendanceRecorderListener implements EventSubscriberInterface
                 $arl->setRecorder($recorder)
                     ->setRecordedOn(new DateTimeImmutable())
                     ->setLogKey('Roll Group')
+                    ->setContext('Roll Group')
                     ->setLogId($rollGroup->getId());
                $em->persist($arl);
             }
@@ -154,6 +160,7 @@ class AttendanceRecorderListener implements EventSubscriberInterface
                 $arl->setRecorder($recorder)
                     ->setRecordedOn(new DateTimeImmutable())
                     ->setLogKey('Course Class')
+                    ->setContext('Class')
                     ->setLogId($rollGroup->getId());
                 $em->persist($arl);
             }

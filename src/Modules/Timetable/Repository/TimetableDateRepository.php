@@ -24,13 +24,13 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class TTDayDateRepository
+ * Class TtDayDateRepository
  * @package App\Modules\Timetable\Repository
  */
 class TimetableDateRepository extends ServiceEntityRepository
 {
     /**
-     * TTDayDateRepository constructor.
+     * TtDayDateRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -168,11 +168,11 @@ class TimetableDateRepository extends ServiceEntityRepository
     public function findOneByAcademicYearDate(DateTimeImmutable $date)
     {
         try {
-            return $this->createQueryBuilder('tdate')
-                ->leftJoin('tdate.timetableDay', 'tday')
-                ->leftJoin('tday.timetable', 't')
+            return $this->createQueryBuilder('tDate')
+                ->leftJoin('tDate.timetableDay', 'tDay')
+                ->leftJoin('tDay.timetable', 't')
                 ->where('t.academicYear = :current')
-                ->andWhere('tdate.date = :date')
+                ->andWhere('tDate.date = :date')
                 ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(), 'date' => $date])
                 ->getQuery()
                 ->getOneOrNullResult();
@@ -186,20 +186,35 @@ class TimetableDateRepository extends ServiceEntityRepository
      *
      * 25/10/2020 12:01
      * @param DateTimeImmutable $date
-     * @param int $limit
+     * @param array $days
      * @return array
      */
-    public function findPreviousTimetableDates(DateTimeImmutable $date, int $limit = 5): array
+    public function findPreviousTimetableDates(DateTimeImmutable $date, array $days): array
     {
-        return $this->createQueryBuilder('tdate')
-            ->leftJoin('tdate.timetableDay', 'tday')
-            ->leftJoin('tday.timetable', 't')
+        $future = [];
+        if ($days['future'] > 0) {
+            $future = $this->createQueryBuilder('tDate', 'tDate.id')
+                ->leftJoin('tDate.timetableDay', 'tDay')
+                ->leftJoin('tDay.timetable', 't')
+                ->where('t.academicYear = :current')
+                ->andWhere('tDate.date >= :date')
+                ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(), 'date' => $date])
+                ->setMaxResults($days['future'])
+                ->orderBy('tDate.date', 'ASC')
+                ->getQuery()
+                ->getResult();
+        }
+        $previous = $this->createQueryBuilder('tDate', 'tDate.id')
+            ->leftJoin('tDate.timetableDay', 'tDay')
+            ->leftJoin('tDay.timetable', 't')
             ->where('t.academicYear = :current')
-            ->andWhere('tdate.date < :date')
+            ->andWhere('tDate.date < :date')
             ->setParameters(['current' => AcademicYearHelper::getCurrentAcademicYear(), 'date' => $date])
-            ->setMaxResults($limit)
-            ->orderBy('tdate.date', 'DESC')
+            ->setMaxResults($days['previous'])
+            ->orderBy('tDate.date', 'DESC')
             ->getQuery()
             ->getResult();
+        
+        return array_values(array_merge($previous, $future));
     }
 }

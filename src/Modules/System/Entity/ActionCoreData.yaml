@@ -1196,6 +1196,21 @@
         arrayField:
             - ROLE_PRINCIPAL
 -
+    name: 'Attendance by Student'
+    category: 'Take Attendance'
+    description: 'Attendance management for an individual student.'
+    routeList:
+        arrayField:
+            - attendance_by_student
+    entryRoute: attendance_by_student
+    entrySidebar: true
+    menuShow: true
+    precedence: null
+    restriction: null
+    securityRoles:
+        arrayField:
+            - ROLE_TEACHER
+-
     name: 'Attendance by Roll Group'
     category: 'Take Attendance'
     description: 'Roll Group Attendance management'

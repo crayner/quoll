@@ -70,8 +70,8 @@ attendance_recorded: 'Attendance has been taken at the following times for this 
 attendance_recorder_details: Recorded at time on date by person.
 partial_attendance_recorded: >-
     {count, plural,
-        one     {Attendance has been started at the following times for this group, but one student has not had attendance recorded: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>}
-        other   {Attendance has been started at the following times for this group, but # students have not had attendance recorded: <ul><li>Created at creation_time on creation_date by creator</li><li>Last modified at recorded_time on recorded_date by recorder.</li></ul>}
+        one     {Attendance has been started at the following times for this group, but one student has not had attendance recorded. }
+        other   {Attendance has been started at the following times for this group, but # students have not had attendance recorded.}
     }
 no_attendance_recorded: >-
     {dailyTime, select,
@@ -140,3 +140,32 @@ attendancestudent:
     reason: Reason
 'Change all students to these settings': 'Change all students to these settings'
 Change All?: Change All?
+A change was made in the attendance selection.  No data has been saved.: A change was made in the attendance selection.  No data has been saved.
+Attendance Type: Attendance Type
+Attendance by Student: Attendance by Student
+Choose Student: Choose Student
+Comment: Comment
+Default: Default
+In: In
+Reason: Reason
+Recorded By: Recorded By
+Recorded On: Recorded On
+Student: Student
+Take Attendance by Student: Take Attendance by Student
+The Class or Roll Group must be selected.: The Class or Roll Group must be selected.
+Time: Time
+Person: Person
+attendance_student:
+    reason:
+        pending: Pending
+        education: Education
+        family: Family
+        medical: Medical
+        other: Other
+    context:
+      'roll group': Roll Group
+      'class': Course Class
+      'person': Person
+      'future': Future
+      'self registration': Self Registration
+Out: Out

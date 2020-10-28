@@ -21,6 +21,7 @@ use App\Util\ReactFormHelper;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -275,6 +276,7 @@ class ContainerManager
     public function singlePanel($view, ?string $application = null, string $target = 'formContent', string $domain = 'messages'): ContainerManager
     {
         if ($view instanceof FormInterface) $view = $view->createView();
+        if (!$view instanceof FormView) throw new \TypeError('You must provide a ' . FormView::class);
         $container = new Container();
         $container->addForm('single', $view);
         $panel = new Panel('single');

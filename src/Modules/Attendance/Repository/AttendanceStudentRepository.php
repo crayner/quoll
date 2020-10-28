@@ -58,8 +58,8 @@ class AttendanceStudentRepository extends ServiceEntityRepository
                     ->setParameter('student', $student->getStudent())
                     ->andWhere('a.date = :date')
                     ->setParameter('date', $student->getDate())
-                    ->andWhere('a.time = :time')
-                    ->setParameter('time', $student->getTime())
+                    ->andWhere('a.dailyTime = :time')
+                    ->setParameter('time', $student->getDailyTime())
                     ->andWhere('a.attendanceClass = :rollGroup')
                     ->setParameter('rollGroup', $student->getAttendanceRollGroup())
                     ->andWhere('a.attendanceClass = :class')
@@ -195,21 +195,29 @@ class AttendanceStudentRepository extends ServiceEntityRepository
      *
      * 25/10/2020 11:49
      * @param AttendanceStudent $als
-     * @param int $count
+     * @param array $dates
      * @return array
      */
-    public function findPreviousDays(AttendanceStudent $als, int $count): array
+    public function findPreviousDays(AttendanceStudent $als, array $dates): array
     {
+        if (empty($dates)) return [];
+        $first = reset($dates);
+        $last = end($dates);
+        $parameters = [
+            'student' => $als->getStudent(),
+            'rollGroup' => $als->getAttendanceRollGroup()->getRollGroup(),
+            'start' => $first->getDate(),
+            'last' => $last->getDate(),
+        ];
+
         return $this->createQueryBuilder('a')
             ->leftJoin('a.attendanceRollGroup', 'arg')
             ->leftJoin('a.code', 'c')
             ->andWhere('a.student = :student')
-            ->setParameter('student', $als->getStudent())
             ->andWhere('arg.rollGroup = :rollGroup')
-            ->setParameter('rollGroup', $als->getAttendanceRollGroup()->getRollGroup())
-            ->andWhere('a.date < :date')
-            ->setParameter('date', $als->getDate())
-            ->setMaxResults($count)
+            ->andWhere('a.date <= :start')
+            ->andWhere('a.date >= :last')
+            ->setParameters($parameters)
             ->orderBy('a.date', 'DESC')
             ->addOrderBy('a.dailyTime', 'DESC')
             ->getQuery()
