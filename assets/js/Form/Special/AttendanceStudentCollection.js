@@ -3,6 +3,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Widget from '../Widget'
+import { getAttendanceStatus } from './AttendanceSummaryStatus'
 
 export default function AttendanceStudentCollection(props) {
     const {
@@ -69,7 +70,7 @@ export default function AttendanceStudentCollection(props) {
                     </div>
                 </div>
                 <div className="mb-1">
-                    {getPreviousDaysStatus(child.children.previousDays.value)}
+                    {getAttendanceStatus(child.children.previousDays.value, functions)}
                     {generatePreviousDayElement(child)}
                 </div>
             </div>)
@@ -84,38 +85,6 @@ export default function AttendanceStudentCollection(props) {
         days.value = 'Done'
 
         return (<Widget columns={1} form={days} functions={functions} />)
-    }
-
-    function getPreviousDaysStatus(data)
-    {
-        return Object.keys(data).map(dailyTime => {
-            let dates = Object.keys(data[dailyTime]).map(date => {
-                let x = data[dailyTime][date]
-                let y = ''
-                if (x === '') {
-                    x = 'highlightNoData w-1/6 float-left text-xxs'
-                }
-                if (x === 'In') {
-                    x = 'highlightPresent w-1/6 float-left text-xxs'
-                    y = functions.translate('Present') + ' '
-                }
-                if (x === 'Out') {
-                    x = 'highlightAbsent w-1/6 float-left text-xxs'
-                    y = functions.translate('Absent') + ' '
-                }
-                let dd = date.split(' ')
-                return (<div className={x} key={loop++}>
-                    <a href="./index.php?q=/modules/Attendance/attendance_take_byPerson.php&amp;gibbonPersonID=0000002746&amp;currentDate=2020-10-19" title={y + date}>
-                        {dd[0]}<br />{dd[1]}
-                    </a>
-                </div>)
-            })
-
-            return (<div className="historyCalendarMini" key={loop++}>
-                <div className="highlightNoData w-1/6 float-left text-xxs"><span title={dailyTime}>{dailyTime}</span></div>
-                {dates}
-            </div>)
-        })
     }
 
     return (<div>

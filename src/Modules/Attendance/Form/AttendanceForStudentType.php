@@ -19,6 +19,7 @@ namespace App\Modules\Attendance\Form;
 use App\Form\Type\DisplayType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
+use App\Form\Type\SpecialType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Student\Entity\Student;
@@ -91,6 +92,7 @@ class AttendanceForStudentType extends AbstractType
                     'label' => false,
                     'constraints' => [],
                     'required' => false,
+                    'special_name' => 'AttendanceSummary',
                 ]
             )
             ->add('inOrOut',HiddenType::class,

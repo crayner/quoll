@@ -908,6 +908,9 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 .w-1\/8 {
     width: 12.5%;
 }
+.w-1\/7 {
+    width: 14.28%;
+}
 .width1 {
     width: 1%;
 }
@@ -960,16 +963,15 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     clear: both;
 }
 .historyCalendarMini {
-    @apply bg-gray-200;
-    width: 134px;
-    height: 20px;
+    @apply bg-gray-200 clear-both border-gray-800 h-5;
     margin: -1px auto 0;
     border-width: 1px;
     border-style: solid;
-    border-color: #555;
 }
 .highlightNoData, .dayNoData {
-    @apply bg-gray-200 border-gray-800 text-gray-800;
+    @apply bg-gray-200 text-gray-800 float-left text-xxs;
+    min-width: 1.25rem;
+    max-width: 1.25rem;
 }
 .historyCalendarMini a {
     color: inherit;
@@ -979,8 +981,12 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     color: mediumblue;
 }
 .highlightAbsent, .dayAbsent {
-    @apply bg-red-200 border-red-800 text-red-800;
+    @apply bg-red-200 text-red-800 float-left text-xxs;
+    min-width: 1.25rem;
+    max-width: 1.25rem;
 }
 .highlightPresent, .dayPresent {
-    @apply bg-green-200 border-green-800 text-green-800;
+    @apply bg-green-200 text-green-800 float-left text-xxs;
+    min-width: 1.25rem;
+    max-width: 1.25rem;
 }

@@ -21,6 +21,7 @@ use App\Modules\System\Manager\SettingFactory;
 use App\Modules\Timetable\Entity\TimetableDate;
 use App\Provider\AbstractProvider;
 use App\Provider\ProviderFactory;
+use App\Util\UrlGeneratorHelper;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,10 +56,11 @@ class AttendanceStudentProvider extends AbstractProvider
     public function getPreviousDaysStatus(AttendanceStudent $als, array $days = []): array
     {
         $resolver = new OptionsResolver();
+        $dailyTimes = SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']);
         $resolver->setDefaults(
             [
                 'previous' => 5,
-                'future' => 0,
+                'future' => count($dailyTimes) === 1 ? 0 : 1,
             ]
         );
         // Future includes today, so 1 = today, 2 = today and next school day.
@@ -69,20 +71,21 @@ class AttendanceStudentProvider extends AbstractProvider
         $result = [];
         $dates = $this->getTimetableDates($als->getDate(), $days);
 
-        $days = $this->getRepository()->findPreviousDays($als, $dates);
+        $days = $this->getRepository()->findAttendanceDays($als, $dates);
         foreach ($dates as $td) {
-            foreach (SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']) as $dailyTime) {
+            foreach ($dailyTimes as $dailyTime) {
                 $found = false;
                 foreach ($days as $q=>$w) {
                     if ($w->getDate()->format('Y-m-d') === $td->getDate()->format('Y-m-d') && $dailyTime === $w->getDailyTime()) {
-                        $result[$w->getDailyTime()][$w->getDate()->format('d M')] =  $w->getCode()->getDirection();
+                        $result[$w->getDailyTime()][$w->getDate()->format('Y-m-d')] = ['direction' => $w->getCode()->getDirection()];
                         unset($days[$q]);
                         $found = true;
                     }
                 }
                 if (!$found) {
-                    $result[$dailyTime][$td->getDate()->format('d M')] = '';
+                    $result[$dailyTime][$td->getDate()->format('Y-m-d')] = ['direction' => ''];
                 }
+                $result[$dailyTime][$td->getDate()->format('Y-m-d')]['href'] = UrlGeneratorHelper::getUrl('attendance_by_student', ['dailyTime' => $als->getAttendanceRollGroup()->getDailyTime(), 'date' => $als->getAttendanceRollGroup()->getDate()->format('Y-m-d'), 'student' => $als->getStudent()->getId()]);
             }
         }
 
@@ -90,6 +93,7 @@ class AttendanceStudentProvider extends AbstractProvider
             ksort($w);
             $result[$q] = $w;
         }
+
 
         return $result;
     }

@@ -21,11 +21,13 @@ use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\SpecialType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -122,6 +124,13 @@ class AttendanceByStudentType extends AbstractType
             ->add('takeAttendance', HeaderType::class,
                 [
                     'label' => 'Take Attendance',
+                ]
+            )
+            ->add('previousDays', SpecialType::class,
+                [
+                    'label' => 'Attendance Summary',
+                    'special_name' => 'AttendanceSummary',
+                    'special_data' => ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($options['data'], ['previous' => 5, 'future' => 1]),
                 ]
             )
             ->add('code', EntityType::class,

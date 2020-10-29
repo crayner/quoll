@@ -215,6 +215,6 @@ class TimetableDateRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         
-        return array_values(array_merge($previous, $future));
+        return array_values(array_merge($future, $previous));
     }
 }

@@ -191,14 +191,14 @@ class AttendanceStudentRepository extends ServiceEntityRepository
     }
 
     /**
-     * findPreviousDays
+     * findAttendanceDays
      *
      * 25/10/2020 11:49
      * @param AttendanceStudent $als
      * @param array $dates
      * @return array
      */
-    public function findPreviousDays(AttendanceStudent $als, array $dates): array
+    public function findAttendanceDays(AttendanceStudent $als, array $dates): array
     {
         if (empty($dates)) return [];
         $first = reset($dates);

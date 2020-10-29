@@ -8,6 +8,7 @@ import SingleRow from "./SingleRow"
 import Widget from "../../Widget"
 import Standard from "./Standard"
 import AttendanceRollGroupChangeAll from '../../Special/AttendanceRollGroupChangeAll'
+import AttendanceSummary from '../../Special/AttendanceSummary'
 
 export default function Row(props) {
     const {
@@ -114,6 +115,9 @@ export default function Row(props) {
         }
         if (form.special_name === 'AttendanceRollGroupChangeAll') {
             return (<AttendanceRollGroupChangeAll form={form} functions={functions} />)
+        }
+        if (form.special_name === 'AttendanceSummary') {
+            return (<AttendanceSummary form={form} functions={functions} />)
         }
 
         console.log(form)
