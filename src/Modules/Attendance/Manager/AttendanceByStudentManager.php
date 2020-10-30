@@ -171,12 +171,9 @@ class AttendanceByStudentManager
             return;
         }
 
-        if ($as->getAttendanceRollGroup() === null) {
-            $arg = ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $as->getStudent()->getCurrentEnrolment()->getRollGroup(), 'date' => new DateTimeImmutable($params['date']), 'dailyTime' => $params['dailyTime']]) ?: new AttendanceRollGroup($as->getStudent()->getCurrentEnrolment()->getRollGroup(), new DateTimeImmutable($params['date']), $params['dailyTime']);
-            $as->setAttendanceRollGroup($arg);
-            ProviderFactory::create(AttendanceRollGroup::class)->persistFlush($arg);
-        }
+        ProviderFactory::create(AttendanceRollGroup::class)->persistFlush($as->getAttendanceRollGroup());
 
+        dump($as);
         $form->submit($content);
 
 

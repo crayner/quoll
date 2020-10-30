@@ -22,10 +22,12 @@ use App\Form\Type\HeaderType;
 use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\ToggleType;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\Attendance\Validator\AttendanceLogTime;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
+use App\Modules\System\Manager\SettingFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -122,6 +124,15 @@ class AttendanceByRollGroupType extends AbstractType
                         'constraints' => [
                             new Choice(['choices' => AttendanceByRollGroupManager::getDailyTimeList()]),
                         ],
+                    ]
+                )
+                ->add('autoFill', ToggleType::class,
+                    [
+                        'label' => 'Attendance.autoFillDailyTimes.name',
+                        'help' => 'Attendance.autoFillDailyTimes.description',
+                        'translation_domain' => 'Setting',
+                        'mapped' => false,
+                        'data' => SettingFactory::getSettingManager()->get('Attendance', 'autoFillDailyTimes', false),
                     ]
                 )
             ;

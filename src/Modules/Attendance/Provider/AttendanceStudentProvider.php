@@ -46,14 +46,14 @@ class AttendanceStudentProvider extends AbstractProvider
     private array $timetableDates;
 
     /**
-     * getPreviousDaysStatus
+     * getAttendanceDayStatus
      *
      * 28/10/2020 12:04
      * @param AttendanceStudent $als
      * @param array $days
      * @return array
      */
-    public function getPreviousDaysStatus(AttendanceStudent $als, array $days = []): array
+    public function getAttendanceDayStatus(AttendanceStudent $als, array $days = []): array
     {
         $resolver = new OptionsResolver();
         $dailyTimes = SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']);
@@ -85,7 +85,7 @@ class AttendanceStudentProvider extends AbstractProvider
                 if (!$found) {
                     $result[$dailyTime][$td->getDate()->format('Y-m-d')] = ['direction' => ''];
                 }
-                $result[$dailyTime][$td->getDate()->format('Y-m-d')]['href'] = UrlGeneratorHelper::getUrl('attendance_by_student', ['dailyTime' => $als->getAttendanceRollGroup()->getDailyTime(), 'date' => $als->getAttendanceRollGroup()->getDate()->format('Y-m-d'), 'student' => $als->getStudent()->getId()]);
+                $result[$dailyTime][$td->getDate()->format('Y-m-d')]['href'] = UrlGeneratorHelper::getUrl('attendance_by_student', ['dailyTime' => $dailyTime, 'date' => $td->getDate()->format('Y-m-d'), 'student' => $als->getStudent()->getId()]);
             }
         }
 

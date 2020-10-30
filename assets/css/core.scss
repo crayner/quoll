@@ -969,7 +969,7 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     border-style: solid;
 }
 .highlightNoData, .dayNoData {
-    @apply bg-gray-200 text-gray-800 float-left text-xxs;
+    @apply bg-gray-200 text-gray-800 float-left text-xxs text-center;
     min-width: 1.25rem;
     max-width: 1.25rem;
 }
@@ -981,12 +981,12 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     color: mediumblue;
 }
 .highlightAbsent, .dayAbsent {
-    @apply bg-red-200 text-red-800 float-left text-xxs;
+    @apply bg-red-200 text-red-800 float-left text-xxs text-center;
     min-width: 1.25rem;
     max-width: 1.25rem;
 }
 .highlightPresent, .dayPresent {
-    @apply bg-green-200 text-green-800 float-left text-xxs;
+    @apply bg-green-200 text-green-800 float-left text-xxs text-center;
     min-width: 1.25rem;
     max-width: 1.25rem;
 }

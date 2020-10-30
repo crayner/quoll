@@ -1047,9 +1047,12 @@ parameters:
             dailyAttendanceTimes:
                 type: array
                 value: ['all_day']
+            autoFillDailyTimes:
+                type: boolean
+                value: true
             logAttendance:
-                class: App\Modules\Attendance\Manager\Hidden\AttendanceRecorderLog
-                method: getLogAttendance
+                class: 'App\Modules\Attendance\Form\AttendanceContextType'
+                method: getLogAttendanceList
                 value: 'Daily Only'
                 type: enum
             attendanceReasons:
@@ -1083,10 +1086,14 @@ parameters:
                 type: boolean
             defaultRollGroupAttendanceType:
                 value: Present
-                type: string
+                type: enum
+                class: 'App\Modules\Attendance\Form\AttendanceContextType'
+                method: getAttendanceTypeList
             defaultClassAttendanceType:
                 value: Present
-                type: string
+                type: enum
+                class: 'App\Modules\Attendance\Form\AttendanceContextType'
+                method: getAttendanceTypeList
             selfRegistrationRedirect:
                 value: false
                 type: boolean

@@ -74,6 +74,7 @@ class ByRollGroupController extends AbstractPageController
         );
 
         $submitClicked = '';
+        $autoFill = false;
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();
             if (key_exists('submit_clicked', $content)) {
@@ -91,6 +92,10 @@ class ByRollGroupController extends AbstractPageController
                 }
                 $content['students'] = $students;
             }
+            if (key_exists('autoFill', $content)) {
+                $autoFill = $content['autoFill'];
+                unset($content['autoFill']);
+            }
 
             if ($submitClicked === 'changeAll') {
                 $manager->changeAll($content['changeAll'], $this->getStatusManager());
@@ -102,7 +107,7 @@ class ByRollGroupController extends AbstractPageController
             $form->submit($content);
             if ($form->isValid()) {
                 if ($manager->requestEqualsSubmit($this->getRequest()->attributes->get('_route_params'))) {
-                    $manager->storeAttendance($content);
+                    $manager->storeAttendance($content, $autoFill);
                     $manager->getStudents();
                     $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
                         [

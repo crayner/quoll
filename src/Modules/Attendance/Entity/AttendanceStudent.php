@@ -361,7 +361,18 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getAttendanceRollGroup(): ?AttendanceRollGroup
     {
-        return isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : null;
+        return $this->attendanceRollGroup = isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : $this->generateAttendanceRollGroup();
+    }
+
+    /**
+     * generateAttendanceRollGroup
+     *
+     * 30/10/2020 10:44
+     * @return AttendanceRollGroup
+     */
+    public function generateAttendanceRollGroup(): AttendanceRollGroup
+    {
+        return ProviderFactory::create(AttendanceRollGroup::class)->generateAttendanceRollGroup($this);
     }
 
     /**
@@ -452,7 +463,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getPreviousDays(array $days = []): array
     {
-        return ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($this, $days) ;
+        return ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($this, $days) ;
     }
 
     /**

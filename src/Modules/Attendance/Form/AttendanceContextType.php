@@ -23,6 +23,7 @@ use App\Form\Type\SimpleArrayType;
 use App\Form\Type\ToggleType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\System\Form\SettingsType;
+use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -60,6 +61,16 @@ class AttendanceContextType extends AbstractType
                         ],
                         [
                             'scope' => 'Attendance',
+                            'name' => 'autoFillDailyTimes',
+                            'entry_type' => ToggleType::class,
+                        ],
+                        [
+                            'scope' => 'Attendance',
+                            'name' => 'logAttendance',
+                            'entry_type' => EnumType::class,
+                        ],
+                        [
+                            'scope' => 'Attendance',
                             'name' => 'countClassAsSchool',
                             'entry_type' => ToggleType::class,
                         ],
@@ -72,18 +83,12 @@ class AttendanceContextType extends AbstractType
                             'scope' => 'Attendance',
                             'name' => 'defaultRollGroupAttendanceType',
                             'entry_type' => EnumType::class,
-                            'entry_options' => [
-                                'choice_list_class' => AttendanceContextType::class,
-                                'choice_list_method' => 'getAttendanceTypeList',
-                            ],
                         ],
                         [
                             'scope' => 'Attendance',
                             'name' => 'defaultClassAttendanceType',
                             'entry_type' => EnumType::class,
                             'entry_options' => [
-                                'choice_list_class' => AttendanceContextType::class,
-                                'choice_list_method' => 'getAttendanceTypeList',
                                 'choice_list_prefix' => 'attendancecontexttype.attendance__defaultrollgroupattendancetype',
                             ],
                         ],
@@ -134,4 +139,25 @@ class AttendanceContextType extends AbstractType
             $x[] = $w['name'];
         return $x;
     }
+    /**
+     * @var array
+     */
+    private static array $logAttendanceList = [
+        'All',
+        'Daily Only',
+        'Class Only',
+        'None',
+    ];
+
+    /**
+     * getLogAttendanceList
+     *
+     * 30/10/2020 11:40
+     * @return array
+     */
+    public static function getLogAttendanceList(): array
+    {
+        return self::$logAttendanceList;
+    }
+
 }

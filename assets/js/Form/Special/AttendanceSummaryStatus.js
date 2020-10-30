@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export function AttendanceSummaryStatus(data, functions)
+export function getAttendanceSummaryStatus(data, functions)
 {
      return (<div>{getAttendanceStatus(data, functions)}</div>)
 }

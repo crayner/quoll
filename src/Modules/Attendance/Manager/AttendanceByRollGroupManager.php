@@ -528,27 +528,27 @@ class AttendanceByRollGroupManager
     /**
      * storeAttendance
      *
-     * 26/10/2020 12:17
+     * 30/10/2020 12:43
      * @param array $post
-     * @param RollGroup $rollGroup
-     * @param DateTimeImmutable $date
-     * @param string $dailyTime
+     * @param bool $autoFill
      */
-    public function storeAttendance(array $post)
+    public function storeAttendance(array $post, bool $autoFill)
     {
         $staff = SecurityHelper::getCurrentUser()->getStaff();
         ProviderFactory::getEntityManager()->refresh($staff);
-        $alrg = ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]) ?: new AttendanceRollGroup($this->getRollGroup(), $this->getDate(), $this->getDailyTime());
+        $alrgs = [];
+        $alrgs[$this->getDailyTime()] = ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $this->getDailyTime()]) ?: new AttendanceRollGroup($this->getRollGroup(), $this->getDate(), $this->getDailyTime());
         $defaultCode = ProviderFactory::getRepository(AttendanceCode::class)->findOneByDefaultCode(true);
-        if ($alrg->getId() === null) ProviderFactory::create(AttendanceRollGroup::class)->persist($alrg);
+        if ($alrgs[$this->getDailyTime()]->getId() === null) ProviderFactory::create(AttendanceRollGroup::class)->persist($alrgs[$this->getDailyTime()]);
         $codes = [];
+        $dailyTimes = SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']);
         foreach ($post['students'] as $student) {
             $student['code'] = $student['code'] === '' ? $defaultCode->getId() : $student['code'];
             $codes[$student['code']] = key_exists($student['code'],$codes) ? $codes[$student['code']] : ProviderFactory::getRepository(AttendanceCode::class)->find($student['code']);
             $studentEntity = ProviderFactory::getRepository(Student::class)->find($student['student']);
-            $als = ProviderFactory::getRepository(AttendanceStudent::class)->findOneBy(['dailyTime' => $this->getDailyTime(), 'date' => $this->getDate(), 'attendanceRollGroup' => $alrg, 'student' => $studentEntity]) ?: new AttendanceStudent();
+            $als = ProviderFactory::getRepository(AttendanceStudent::class)->findOneBy(['dailyTime' => $this->getDailyTime(), 'date' => $this->getDate(), 'attendanceRollGroup' => $alrgs[$this->getDailyTime()], 'student' => $studentEntity]) ?: new AttendanceStudent();
             $als->setStudent($studentEntity)
-                ->setAttendanceRollGroup($alrg)
+                ->setAttendanceRollGroup($alrgs[$this->getDailyTime()])
                 ->setCode($codes[$student['code']])
                 ->setDate($this->getDate())
                 ->setDailyTime($this->getDailyTime())
@@ -556,6 +556,25 @@ class AttendanceByRollGroupManager
                 ->setReason($student['reason'])
                 ->setContext('Roll Group');
             ProviderFactory::create(AttendanceStudent::class)->persist($als);
+            if ($autoFill && count($dailyTimes) > 1) {
+                foreach ($dailyTimes as $dailyTime) {
+                    if ($dailyTime === $this->getDailyTime()) continue;
+                    $alrgs[$dailyTime] = key_exists($dailyTime, $alrgs) ? $alrgs[$dailyTime] : (ProviderFactory::getRepository(AttendanceRollGroup::class)->findOneBy(['rollGroup' => $this->getRollGroup(), 'date' => $this->getDate(), 'dailyTime' => $dailyTime]) ?: new AttendanceRollGroup($this->getRollGroup(), $this->getDate(), $dailyTime));
+                    if ($alrgs[$dailyTime]->getId() === null) ProviderFactory::create(AttendanceRollGroup::class)->persist($alrgs[$dailyTime]);
+                    $als = ProviderFactory::getRepository(AttendanceStudent::class)->findOneBy(['dailyTime' => $dailyTime, 'date' => $this->getDate(), 'attendanceRollGroup' => $alrgs[$dailyTime], 'student' => $studentEntity]) ?: new AttendanceStudent();
+                    if ($als->getId() === null) {
+                        $als->setStudent($studentEntity)
+                            ->setAttendanceRollGroup($alrgs[$dailyTime])
+                            ->setCode($codes[$student['code']])
+                            ->setDate($this->getDate())
+                            ->setDailyTime($dailyTime)
+                            ->setComment($student['comment'])
+                            ->setReason($student['reason'])
+                            ->setContext('Roll Group');
+                        ProviderFactory::create(AttendanceStudent::class)->persist($als);
+                    }
+                }
+            }
         }
         ProviderFactory::create(AttendanceStudent::class)->flush();
     }

@@ -130,7 +130,7 @@ class AttendanceByStudentType extends AbstractType
                 [
                     'label' => 'Attendance Summary',
                     'special_name' => 'AttendanceSummary',
-                    'special_data' => ProviderFactory::create(AttendanceStudent::class)->getPreviousDaysStatus($options['data'], ['previous' => 5, 'future' => 1]),
+                    'special_data' => ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($options['data'], ['previous' => 5, 'future' => 1]),
                 ]
             )
             ->add('code', EntityType::class,

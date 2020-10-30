@@ -46,6 +46,11 @@ attendancecontexttype:
         present - late: Tardy
         present - offsite: Present - Offsite
         present: Present
+    attendance__logattendance:
+        all: All
+        class only: Class Only
+        daily only: Daily Only
+        none: None
 Add Attendance Code: Add Attendance Code
 Allow Future Use: Allow Future Use
 Attendance  Code Settings: Attendance  Code Settings
@@ -186,3 +191,5 @@ roll_group_change_all: >-
                     other   { student_number students were found. There were count changes.  }
                 } }
     }
+Attendance Summary: Attendance Summary
+Change all too...: Change all too...

@@ -729,6 +729,12 @@ Attendance:
     dailyAttendanceTimes:
         name: 'Daily Attendance Groups'
         description: 'A list of times that daily attendance is taken.  If empty, then attendance is only taken once per day. This has on impact on class attendance information.'
+    autoFillDailyTimes:
+        name: 'Automatically Fill Daily Attendance'
+        description: 'When taking attendance for the first time today, flow results to additional times that attendance is taken in the day.'
+    logAttendance:
+        name: 'Log Attendance'
+        description: 'Keep a record of all attendance changes in a separate log.  Details can be selected for All, Daily Only, Class Only or None.'
     attendanceReasons:
         name: 'Attendance Reasons'
         description: 'A list of reasons which are available when taking attendance.'
