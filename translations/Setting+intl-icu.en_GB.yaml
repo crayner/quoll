@@ -735,6 +735,9 @@ Attendance:
     logAttendance:
         name: 'Log Attendance'
         description: 'Keep a record of all attendance changes in a separate log.  Details can be selected for All, Daily Only, Class Only or None.'
+    attendanceLogRetention:
+        name: 'Log Attendance Retention'
+        value: 'How long, in days, will the system keep attendance log files.'
     attendanceReasons:
         name: 'Attendance Reasons'
         description: 'A list of reasons which are available when taking attendance.'

@@ -26,6 +26,7 @@ use App\Modules\System\Form\SettingsType;
 use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -68,6 +69,17 @@ class AttendanceContextType extends AbstractType
                             'scope' => 'Attendance',
                             'name' => 'logAttendance',
                             'entry_type' => EnumType::class,
+                        ],
+                        [
+                            'scope' => 'Attendance',
+                            'name' => 'attendanceLogRetention',
+                            'entry_type' => IntegerType::class,
+                            'entry_options' => [
+                                'attr' => [
+                                    'min' => '14',
+                                    'max' => '366',
+                                ],
+                            ],
                         ],
                         [
                             'scope' => 'Attendance',

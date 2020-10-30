@@ -105,16 +105,17 @@ class AttendanceController extends AbstractPageController
     /**
      * saveSettings
      *
-     * 17/10/2020 10:28
+     * 30/10/2020 16:01
      * @param string $tabName
-     * @param ContainerManager $manager
      * @return JsonResponse
      */
-    private function saveSettings(string $tabName, ContainerManager $manager)
+    private function saveSettings(string $tabName)
     {
         $form = $this->getForm($tabName);
 
-        SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
+        if (SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest())) {
+            $form = $this->getForm($tabName);
+        }
 
         return $this->singleForm($form);
     }

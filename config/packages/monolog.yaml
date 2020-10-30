@@ -41,7 +41,7 @@ monolog:
             type:     rotating_file
             path:     '%kernel.logs_dir%/attendance.log'
             channels: [attendance]
-            max_files: 93
+            max_files: '%attendance_log_retention%'
         page:
             level:    debug
             type:     rotating_file

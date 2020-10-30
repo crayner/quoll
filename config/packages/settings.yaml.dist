@@ -1055,6 +1055,9 @@ parameters:
                 method: getLogAttendanceList
                 value: 'Daily Only'
                 type: enum
+            attendanceLogRetention:
+                type: integer
+                value: 366
             attendanceReasons:
                 value:
                     - Pending

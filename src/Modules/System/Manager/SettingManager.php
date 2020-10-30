@@ -222,13 +222,14 @@ class SettingManager
         }
 
         $setting = $this->getSettings()->get($scope)->get($name);
-
+        $changed = false;
         switch ($setting['type']) {
             case 'entity':
                 $value = $value instanceof EntityInterface ? $value->getId() : $value;
                 if ($setting['value'] !== $value) {
                     $setting['value'] = $value;
                     $this->setSettingsChanged();
+                    $changed = true;
                 }
                 break;
             case 'image':
@@ -237,6 +238,7 @@ class SettingManager
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
+                        $changed = true;
                     }
                 }
                 break;
@@ -245,6 +247,7 @@ class SettingManager
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
+                        $changed = true;
                     }
                 }
                 break;
@@ -254,6 +257,7 @@ class SettingManager
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
+                        $changed = true;
                     }
                 }
                 break;
@@ -263,6 +267,7 @@ class SettingManager
                     if ($setting['value'] !== $value) {
                         $setting['value'] = $value;
                         $this->setSettingsChanged();
+                        $changed = true;
                     }
                 }
                 break;
@@ -271,6 +276,7 @@ class SettingManager
         }
 
         $this->getSettings()->get($scope)->set($name, $setting);
+        if ($changed) $this->writeSettingParameters($scope, $name, $setting);
 
         return $this;
     }
@@ -596,6 +602,81 @@ class SettingManager
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    /**
+     * @var array|\string[][]
+     */
+    private array $settingParameters = [
+        'Attendance' => [
+            'attendanceLogRetention' => 'attendance_log_retention'
+        ],
+    ];
+
+    /**
+     * SettingParameters
+     *
+     * @return array|\string[][]
+     */
+    public function getSettingParameters()
+    {
+        return $this->settingParameters;
+    }
+
+    /**
+     * writeSettingParameters
+     *
+     * 30/10/2020 15:40
+     * @param string $scope
+     * @param string $name
+     * @param array $setting
+     */
+    public function writeSettingParameters(string $scope, string $name, array $setting)
+    {
+        if (key_exists($scope, $this->getSettingParameters())) {
+            if (key_exists($name,  $this->getSettingParameters()[$scope])) {
+                $config = $this->readParameterFile();
+                $parameterName = $this->getSettingParameters()[$scope][$name];
+                $config['parameters'][$parameterName] = $setting['value'];
+                $this->writeParameterFile($config);
+            }
+        }
+    }
+
+    /**
+     * readParameterFile
+     * @return array
+     */
+    private function readParameterFile(): array
+    {
+        if ($this->getParameterPath())
+            return Yaml::parse(file_get_contents($this->getParameterPath()));
+        return [];
+    }
+
+    /**
+     * writeParameterFile
+     *
+     * 30/08/2020 11:05
+     * @param array $config
+     */
+    private function writeParameterFile(array $config)
+    {
+        if ($this->getParameterPath()) {
+            $fs = new Filesystem();
+            $fs->dumpFile($this->getParameterPath(), Yaml::dump($config, 8));
+        }
+    }
+
+    /**
+     * getParameterPath
+     *
+     * 30/10/2020 15:46
+     * @return string
+     */
+    protected function getParameterPath()
+    {
+        return realpath(__DIR__ . '/../../../../config/packages') . '/quoll.yaml';
     }
 
 }
