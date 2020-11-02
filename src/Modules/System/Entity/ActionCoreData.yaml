@@ -1169,8 +1169,8 @@
     description: 'Take attendance by class on date'
     routeList:
         arrayField:
-            - attendance_by_class
-    entryRoute: attendance_by_class
+            - attendance_by_course_class
+    entryRoute: attendance_by_course_class
     entrySidebar: true
     menuShow: true
     precedence: null
@@ -1216,8 +1216,8 @@
     description: 'Roll Group Attendance management'
     routeList:
         arrayField:
-            - attendance_roll_group_manage
-    entryRoute: attendance_roll_group_manage
+            - attendance_by_roll_group
+    entryRoute: attendance_by_roll_group
     entrySidebar: true
     menuShow: true
     precedence: null

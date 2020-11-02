@@ -616,7 +616,7 @@
     source:
         table: App\Modules\System\Entity\Action
         findBy:
-            entryRoute: attendance_by_class
+            entryRoute: attendance_by_course_class
             precedence: null
     target: action
 -
@@ -634,7 +634,7 @@
     source:
         table: App\Modules\System\Entity\Action
         findBy:
-            entryRoute: attendance_roll_group_manage
+            entryRoute: attendance_by_roll_group
             precedence: null
     target: action
 -

@@ -28,7 +28,6 @@ use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class ByRollGroupController
@@ -48,7 +47,7 @@ class ByRollGroupController extends AbstractPageController
      * @param RollGroup|null $rollGroup
      * @param string|null $dailyTime
      * @return JsonResponse
-     * @Route("/attendance/roll/group/manager/{rollGroup}/{date}/{dailyTime}",name="attendance_roll_group_manage")
+     * @Route("/attendance/roll/group/manager/{rollGroup}/{date}/{dailyTime}",name="attendance_by_roll_group")
      * @IsGranted("ROLE_ROUTE")
      */
     public function manage(
@@ -63,7 +62,7 @@ class ByRollGroupController extends AbstractPageController
 
         $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
             [
-                'action' => $this->generateUrl('attendance_roll_group_manage',
+                'action' => $this->generateUrl('attendance_by_roll_group',
                     [
                         'date' => $date ? $date->format('Y-m-d') : null,
                         'dailyTime' => $dailyTime,
@@ -99,7 +98,7 @@ class ByRollGroupController extends AbstractPageController
 
             if ($submitClicked === 'changeAll') {
                 $manager->changeAll($content['changeAll'], $this->getStatusManager());
-                $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
+                $this->getStatusManager()->setReDirect($this->generateUrl('attendance_by_roll_group', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
 
                 return $this->singleForm($form);
             }
@@ -111,7 +110,7 @@ class ByRollGroupController extends AbstractPageController
                     $manager->getStudents();
                     $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
                         [
-                            'action' => $this->generateUrl('attendance_roll_group_manage',
+                            'action' => $this->generateUrl('attendance_by_roll_group',
                                 [
                                     'date' => $date ? $date->format('Y-m-d') : null,
                                     'dailyTime' => $dailyTime,
@@ -120,11 +119,11 @@ class ByRollGroupController extends AbstractPageController
                             )
                         ]
                     );
-                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_roll_group_manage', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
+                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_by_roll_group', ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]), true);
                 } else {
                     $this->getStatusManager()
                         ->invalidInputs()
-                        ->setReDirect($this->generateUrl('attendance_roll_group_manage', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
+                        ->setReDirect($this->generateUrl('attendance_by_roll_group', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
                 }
             }
             return $this->singleForm($form);
@@ -134,7 +133,7 @@ class ByRollGroupController extends AbstractPageController
             $manager->getStudents();
             $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
                 [
-                    'action' => $this->generateUrl('attendance_roll_group_manage',
+                    'action' => $this->generateUrl('attendance_by_roll_group',
                         [
                             'date' => $date ? $date->format('Y-m-d') : null,
                             'dailyTime' => $dailyTime,
@@ -154,7 +153,7 @@ class ByRollGroupController extends AbstractPageController
 
         return $this->getPageManager()
             ->createBreadcrumbs('Take Attendance by Roll Group')
-            ->setUrl($this->generateUrl('attendance_roll_group_manage', $rollGroup ? ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime] : []))
+            ->setUrl($this->generateUrl('attendance_by_roll_group', $rollGroup ? ['rollGroup' => $rollGroup->getId(), 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime] : []))
             ->render(
                 [
                     'containers' => $this->getContainerManager()

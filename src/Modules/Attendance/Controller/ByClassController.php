@@ -34,7 +34,7 @@ class ByClassController extends AbstractPageController
      * byClass
      *
      * 2/10/2020 15:58
-     * @Route("/attendance/by/class/on/date/",name="attendance_by_class")
+     * @Route("/attendance/by/class/on/date/",name="attendance_by_course_class")
      * @IsGranted("ROLE_ROUTE")
      */
     public function byClass()
