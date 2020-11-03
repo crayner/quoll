@@ -15,6 +15,7 @@ namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
 use App\Modules\Staff\Entity\Staff;
+use App\Util\StringHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -60,7 +61,7 @@ class DepartmentStaff extends AbstractEntity
      * @ORM\JoinColumn(name="staff",referencedColumnName="id",nullable=false)
      * @Assert\NotBlank()
      */
-    private $staff;
+    private ?Staff $staff;
 
     /**
      * @var string|null
@@ -68,12 +69,35 @@ class DepartmentStaff extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Choice({"Coordinator","Assistant Coordinator","Teacher (Curriculum)","Teacher","Director","Manager","Administrator","Other"})
      */
-    private $role;
+    private ?string $role;
 
     /**
      * @var array
      */
-    private static $roleList = ['Learning Area' => ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher', 'Other'], 'Administration' => ['Director','Manager','Administrator','Other']];
+    private static array $roleList =
+        [
+            'Learning Area' =>
+                [
+                    'Coordinator',
+                    'Assistant Coordinator',
+                    'Teacher (Curriculum)',
+                    'Teacher',
+                    'Other'
+                ],
+            'Administration' =>
+                [
+                    'Director',
+                    'Manager',
+                    'Administrator',
+                    'Other'
+                ]
+        ];
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean",options={"default": 0},name="head_teacher")
+     */
+    private bool $headTeacher = false;
 
     /**
      * @return string|null
@@ -157,6 +181,28 @@ class DepartmentStaff extends AbstractEntity
     }
 
     /**
+     * HeadTeacher
+     *
+     * @return bool
+     */
+    public function isHeadTeacher(): bool
+    {
+        return $this->headTeacher;
+    }
+
+    /**
+     * HeadTeacher
+     *
+     * @param bool $headTeacher
+     * @return DepartmentStaff
+     */
+    public function setHeadTeacher(bool $headTeacher): DepartmentStaff
+    {
+        $this->headTeacher = $headTeacher;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public static function getRoleList(): array
@@ -186,9 +232,16 @@ class DepartmentStaff extends AbstractEntity
             'id' => $this->getId(),
             'departmentId' => $this->getDepartment()->getId(),
             'canDelete' => true,
+            'head_teacher' => StringHelper::getYesNo($this->isHeadTeacher(), true),
         ];
     }
 
+    /**
+     * getPerson
+     *
+     * 3/11/2020 13:57
+     * @throws \Exception
+     */
     public function getPerson()
     {
         throw new \Exception('Stopping here as this should call getStaff()');

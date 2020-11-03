@@ -22,6 +22,7 @@ use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
+use App\Form\Type\ToggleType;
 use App\Modules\Department\Entity\Department;
 use App\Modules\People\Entity\Person;
 use App\Modules\Department\Entity\DepartmentStaff;
@@ -104,6 +105,11 @@ class DepartmentStaffType extends AbstractType
                 [
                     'label' => 'Role',
                     'placeholder' => 'Please select...',
+                ]
+            )
+            ->add('headTeacher', ToggleType::class,
+                [
+                    'label' => 'Head Teacher',
                 ]
             )
             ->add('submit', SubmitType::class)

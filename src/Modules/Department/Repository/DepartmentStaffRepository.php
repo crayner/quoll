@@ -16,6 +16,7 @@ namespace App\Modules\Department\Repository;
 use App\Modules\Department\Entity\Department;
 use App\Modules\Department\Entity\DepartmentStaff;
 use App\Modules\People\Entity\Person;
+use App\Modules\Staff\Entity\Staff;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NonUniqueResultException;
@@ -65,7 +66,7 @@ class DepartmentStaffRepository extends ServiceEntityRepository
      * @return int
      * 19/06/2020 14:19
      */
-    public function countWhenPersonIsHeadOf(Person $headTeacher, array $staffIDList, bool $includeAssistant): int
+    public function countWhenPersonIsHeadOf(Staff $headTeacher, array $staffIDList, bool $includeAssistant): int
     {
         $coordinatorList = [];
         $coordinatorList[] = 'Coordinator';
@@ -77,7 +78,6 @@ class DepartmentStaffRepository extends ServiceEntityRepository
                 ->select(['COUNT(d.id)'])
                 ->leftJoin('ht.department', 'd')
                 ->leftJoin('d.staff', 's')
-                ->leftJoin('s.person','p')
                 ->where('p.id IN (:staffList)')
                 ->andWhere('ht.person = :headTeacher')
                 ->andWhere('ht.role IN (:leaders)')

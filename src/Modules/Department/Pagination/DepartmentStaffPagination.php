@@ -56,6 +56,12 @@ class DepartmentStaffPagination extends AbstractPagination
         ;
         $row->addColumn($column);
 
+        $column = new PaginationColumn();
+        $row->addColumn($column->setLabel('Head Teacher')
+            ->setContentKey('head_teacher')
+            ->setSort()
+            ->setClass('column relative pr-4 cursor-pointer widthAuto text-centre'));
+
         $action = new PaginationAction();
         $action->setTitle('Change Role')
             ->setAClass('p-3 sm:p-0')

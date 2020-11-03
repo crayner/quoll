@@ -17,7 +17,6 @@
 namespace App\Modules\Department\Controller;
 
 use App\Container\Container;
-use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Container\Section;
 use App\Controller\AbstractPageController;
@@ -34,11 +33,9 @@ use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
-use App\Util\ErrorMessageHelper;
 use App\Util\TranslationHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
