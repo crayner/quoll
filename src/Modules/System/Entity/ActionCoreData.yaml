@@ -253,7 +253,7 @@
             - department_list
             - department_add
             - department_content_loader
-            - department.edit
+            - department_edit
             - department_delete
             - department_staff_delete
             - department_staff_add_popup

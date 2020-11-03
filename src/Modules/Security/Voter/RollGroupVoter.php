@@ -76,5 +76,4 @@ class RollGroupVoter extends RouteVoter
         }
         return VoterInterface::ACCESS_ABSTAIN;
     }
-
 }

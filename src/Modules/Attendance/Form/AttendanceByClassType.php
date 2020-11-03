@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Attendance\Form;
 
+use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
 use App\Modules\Attendance\Manager\Hidden\AttendanceByClass;
@@ -38,10 +39,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttendanceByClassType extends AbstractType
 {
+    /**
+     * AttendanceByClassType constructor.
+     *
+     * @param TeacherManager $manager
+     */
+    public function __construct(TeacherManager $manager)
+    {
+    }
+
+    /**
+     * buildForm
+     *
+     * 3/11/2020 13:46
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('class', EntityType::class,
+            ->add('class', AutoSuggestEntityType::class,
                 [
                     'class' => CourseClass::class,
                     'label' => 'Course Class',

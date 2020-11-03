@@ -10,7 +10,6 @@ import Footer from "./Footer"
 import {fetchJson} from "../component/fetchJson"
 import Parser from "html-react-parser"
 import { openUrl, trans } from '../Container/ContainerFunctions'
-import { isEmpty } from '../component/isEmpty'
 
 export default class PageApp extends Component {
     constructor (props) {

@@ -89,7 +89,6 @@ class RouteVoter extends RoleHierarchyVoter
 
             if (!$this->definition->isValidPage()) {
                 $this->logger->error(sprintf('The page for route "%s" has not been defined in the database correctly. Access is denied as the page definition is not valid.', $route), [$this->definition]);
-                dump($action,$this);
                 return VoterInterface::ACCESS_DENIED;
 
             }
@@ -131,5 +130,16 @@ class RouteVoter extends RoleHierarchyVoter
         if (!isset($this->request))
             $this->request = $this->stack->getCurrentRequest();
         return $this->request;
+    }
+
+    /**
+     * getLogger
+     *
+     * 3/11/2020 09:15
+     * @return LoggerInterface
+     */
+    protected function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 }

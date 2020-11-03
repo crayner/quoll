@@ -55,11 +55,14 @@ class AttendanceByClass
     }
 
     /**
-     * @return DateTimeImmutable|null
+     * getDate
+     *
+     * 3/11/2020 13:55
+     * @return DateTimeImmutable
      */
-    public function getDate(): ?DateTimeImmutable
+    public function getDate(): DateTimeImmutable
     {
-        return isset($this->date) ? $this->date : null;
+        return $this->date = isset($this->date) ? $this->date : new DateTimeImmutable();
     }
 
     /**

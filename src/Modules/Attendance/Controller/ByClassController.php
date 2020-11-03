@@ -40,7 +40,7 @@ class ByClassController extends AbstractPageController
     public function byClass()
     {
         $attendanceByClass = new AttendanceByClass();
-        $form = $this->createForm(AttendanceByClassType::class, $attendanceByClass, ['action' => $this->generateUrl('attendance_by_class')]);
+        $form = $this->createForm(AttendanceByClassType::class, $attendanceByClass, ['action' => $this->generateUrl('attendance_by_course_class')]);
 
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();

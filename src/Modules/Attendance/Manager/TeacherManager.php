@@ -44,11 +44,14 @@ class TeacherManager
     }
 
     /**
-     * @return AuthorizationCheckerInterface
+     * getChecker
+     *
+     * 3/11/2020 08:42
+     * @return AuthorizationCheckerInterface|null
      */
-    public static function getChecker(): AuthorizationCheckerInterface
+    public static function getChecker(): ?AuthorizationCheckerInterface
     {
-        return self::$checker;
+        return isset(self::$checker) ? self::$checker : null;
     }
 
     /**
