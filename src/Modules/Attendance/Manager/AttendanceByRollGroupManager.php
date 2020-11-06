@@ -31,6 +31,7 @@ use App\Util\TranslationHelper;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class AttendanceByRollGroupManager
@@ -82,8 +83,12 @@ class AttendanceByRollGroupManager
     private ?AttendanceRollGroup $AttendanceRollGroup;
 
     /**
+     * @var Security
+     */
+    private Security $security;
+
+    /**
      * AttendanceByRollGroupManager constructor.
-     *
      */
     public function __construct()
     {
@@ -193,6 +198,8 @@ class AttendanceByRollGroupManager
         if (!AcademicYearHelper::isDateInCurrentYear($this->getDate())) return false;
 
         if ($this->getRollGroup()->getStudentCount() === 0) return false;
+
+        if ($this->getSecurity() && !$this->getSecurity()->isGranted('ROLE_ROLL_GROUP', $this->getRollGroup())) return false;
 
         if (count(self::getDailyTimeList()) > 1 && $this->getDailyTime() === null) return false;
 
@@ -608,5 +615,28 @@ class AttendanceByRollGroupManager
         }
 
         ProviderFactory::create(AttendanceStudent::class)->flush();
+    }
+
+    /**
+     * getSecurity
+     *
+     * 6/11/2020 10:27
+     * @return Security|null
+     */
+    public function getSecurity(): ?Security
+    {
+        return isset($this->security) ? $this->security : null;
+    }
+
+    /**
+     * Security
+     *
+     * @param Security $security
+     * @return AttendanceByRollGroupManager
+     */
+    public function setSecurity(Security $security): AttendanceByRollGroupManager
+    {
+        $this->security = $security;
+        return $this;
     }
 }

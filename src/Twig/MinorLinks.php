@@ -37,7 +37,7 @@ class MinorLinks implements ContentInterface
     /**
      * @var array
      */
-    private $content = [];
+    private array $content;
 
     /**
      * @var array
@@ -52,6 +52,8 @@ class MinorLinks implements ContentInterface
     {
         if (!$this->hasSession())
             return;
+
+        if (isset($this->content) && !empty($this->content)) return;
 
         $links = [];
         $person = $this->getPerson();

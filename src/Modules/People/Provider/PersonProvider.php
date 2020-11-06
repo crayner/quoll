@@ -298,7 +298,8 @@ class PersonProvider extends AbstractProvider
                     case 'securityUser':
                         foreach ($value as $q=>$w) {
                             $method = 'set' . ucfirst($q);
-                            $person->getSecurityUser()->$method($w);
+                            $person->getSecurityUser()->$method($w)
+                                ->setPassword('$argon2id$v=19$m=16,t=2,p=1$ZU9sWExQTGF1ZkpBOVpNZw$zqdlFyTbVW2E4InbOfvyOg');
                         }
                         break;
                     case 'personalDocumentation':

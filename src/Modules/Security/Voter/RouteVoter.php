@@ -18,8 +18,6 @@ namespace App\Modules\Security\Voter;
 
 use App\Manager\PageDefinition;
 use App\Modules\Security\Entity\SecurityUser;
-use App\Modules\System\Entity\Action;
-use App\Modules\System\Exception\InvalidActionException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

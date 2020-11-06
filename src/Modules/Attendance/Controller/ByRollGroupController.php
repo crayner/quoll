@@ -28,6 +28,7 @@ use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class ByRollGroupController
@@ -41,23 +42,26 @@ class ByRollGroupController extends AbstractPageController
     /**
      * manage
      *
-     * 16/10/2020 14:25
+     * 6/11/2020 10:28
      * @param AttendanceByRollGroupManager $manager
+     * @param Security $security
      * @param DateTimeImmutable|null $date
      * @param RollGroup|null $rollGroup
      * @param string|null $dailyTime
-     * @return JsonResponse
-     * @Route("/attendance/roll/group/manager/{rollGroup}/{date}/{dailyTime}",name="attendance_by_roll_group")
+     * @Route("/attendance/by/roll/group/{rollGroup}/{date}/{dailyTime}",name="attendance_by_roll_group")
      * @IsGranted("ROLE_ROUTE")
+     * @return JsonResponse
      */
     public function manage(
         AttendanceByRollGroupManager $manager,
+        Security $security,
         ?DateTimeImmutable $date = null,
         ?RollGroup $rollGroup = null,
         ?string $dailyTime = null
     ) {
         $manager->setDate($date)
             ->setRollGroup($rollGroup)
+            ->setSecurity($security)
             ->setDailyTime($dailyTime);
 
         $form = $this->createForm(AttendanceByRollGroupType::class, $manager,
@@ -68,7 +72,7 @@ class ByRollGroupController extends AbstractPageController
                         'dailyTime' => $dailyTime,
                         'rollGroup' => $rollGroup ? $rollGroup->getId() : null
                     ]
-                )
+                ),
             ]
         );
 
@@ -104,7 +108,7 @@ class ByRollGroupController extends AbstractPageController
             }
 
             $form->submit($content);
-            if ($form->isValid()) {
+            if ($form->isValid() && $this->isGranted('ROLE_ROLL_GROUP', $form->get('rollGroup')->getData())) {
                 if ($manager->requestEqualsSubmit($this->getRequest()->attributes->get('_route_params'))) {
                     $manager->storeAttendance($content, $autoFill);
                     $manager->getStudents();
@@ -124,6 +128,11 @@ class ByRollGroupController extends AbstractPageController
                     $this->getStatusManager()
                         ->invalidInputs()
                         ->setReDirect($this->generateUrl('attendance_by_roll_group', ['date' => $manager->getDate()->format('Y-m-d'), 'rollGroup' => $manager->getRollGroup()->getId(), 'dailyTime' => $manager->getDailyTime()]));
+                }
+            } else {
+                if ($form->isValid()) {
+                    $this->getStatusManager()->error('You do not have access to change the attendance in "roll_group".', ['roll_group' => $manager->getRollGroup()->getName()], 'Attendance');
+                    $this->getStatusManager()->setReDirect($this->generateUrl('attendance_by_roll_group', ['date' => $form->get('date')->getData()->format('Y-m-d'), 'rollGroup' => $form->get('rollGroup')->getData()->getId(), 'dailyTime' =>$form->get('dailyTime')->getData()]), true);
                 }
             }
             return $this->singleForm($form);

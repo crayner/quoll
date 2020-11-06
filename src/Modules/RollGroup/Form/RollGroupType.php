@@ -18,9 +18,9 @@ namespace App\Modules\RollGroup\Form;
 
 use App\Form\Type\AutoSuggestEntityType;
 use App\Form\Type\DisplayType;
+use App\Form\Type\HiddenEntityType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
-use App\Modules\People\Entity\Person;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Entity\Facility;
 use App\Modules\School\Entity\YearGroup;
@@ -30,7 +30,6 @@ use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -46,9 +45,10 @@ class RollGroupType extends AbstractType
 {
     /**
      * buildForm
+     *
+     * 5/11/2020 08:21
      * @param FormBuilderInterface $builder
      * @param array $options
-     * 22/06/2020 13:43
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,25 +56,45 @@ class RollGroupType extends AbstractType
             ->add('academicYear', DisplayType::class,
                 [
                     'label' => 'Academic Year',
-                    'help' => 'This value cannot be changed.',
                     'mapped' => false,
                     'data' => $options['data']->getAcademicYear()->getName(),
                 ]
             )
-            ->add('yearGroup', EntityType::class,
-                [
-                    'label' => 'Year Group',
-                    'help' => 'Once set, the year group cannot be changed.',
-                    'class' => YearGroup::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'Please select...',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('yg')
-                            ->orderBy('yg.sortOrder');
-                    },
-                    'disabled' => $options['data']->getYearGroup() ? true : false,
-                ]
-            )
+            ;
+        if ($options['data']->getYearGroup()) {
+            $builder
+                ->add('yearGroup', HiddenEntityType::class,
+                    [
+                        'class' => YearGroup::class,
+                    ]
+                )
+                ->add('yearGroupDisplay', DisplayType::class,
+                    [
+                        'label' => 'Year Group',
+                        'help' => 'Once set, the year group cannot be changed.',
+                        'data' => $options['data']->getYearGroup()->getName(),
+                        'mapped' => false,
+                    ]
+               )
+            ;
+        } else {
+            $builder
+                ->add('yearGroup', EntityType::class,
+                    [
+                        'label' => 'Year Group',
+                        'help' => 'Once set, the year group cannot be changed.',
+                        'class' => YearGroup::class,
+                        'choice_label' => 'name',
+                        'placeholder' => 'Please select...',
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('yg')
+                                ->orderBy('yg.sortOrder');
+                        },
+                    ]
+                )
+            ;
+        }
+        $builder
             ->add('name', TextType::class,
                 [
                     'label' => 'Name',
@@ -102,6 +122,7 @@ class RollGroupType extends AbstractType
                     'class' => Staff::class,
                     'placeholder' => 'Type any part of the name...',
                     'choice_label' => 'getFullNameReversed',
+                    'required' => false,
                     'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
@@ -109,6 +130,7 @@ class RollGroupType extends AbstractType
                 [
                     'label' => '3rd Tutor',
                     'class' => Staff::class,
+                    'required' => false,
                     'placeholder' => 'Type any part of the name...',
                     'choice_label' => 'getFullNameReversed',
                     'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
@@ -120,6 +142,7 @@ class RollGroupType extends AbstractType
                     'class' => Staff::class,
                     'placeholder' => 'Type any part of the name...',
                     'choice_label' => 'getFullNameReversed',
+                    'required' => false,
                     'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
             )
@@ -128,6 +151,7 @@ class RollGroupType extends AbstractType
                     'label' => '2nd Educational Assistant',
                     'class' => Staff::class,
                     'placeholder' => 'Type any part of the name...',
+                    'required' => false,
                     'choice_label' => 'getFullNameReversed',
                     'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
@@ -137,6 +161,7 @@ class RollGroupType extends AbstractType
                     'label' => '3rd Educational Assistant',
                     'class' => Staff::class,
                     'placeholder' => 'Type any part of the name...',
+                    'required' => false,
                     'choice_label' => 'getFullNameReversed',
                     'query_builder' => ProviderFactory::getRepository(Staff::class)->getStaffQuery(),
                 ]
@@ -161,6 +186,7 @@ class RollGroupType extends AbstractType
                     'class' => RollGroup::class,
                     'placeholder' => ' ',
                     'choice_label' => 'name',
+                    'required' => false,
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('r')
                             ->orderBy('r.name')
@@ -179,13 +205,10 @@ class RollGroupType extends AbstractType
             ->add('website', UrlType::class,
                 [
                     'label' => 'Website',
+                    'required' => false,
                 ]
             )
-            ->add('submit', SubmitType::class,
-                [
-                    'label' => 'Submit',
-                ]
-            )
+            ->add('submit', SubmitType::class)
         ;
     }
 

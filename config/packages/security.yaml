@@ -1,4 +1,5 @@
 security:
+    enable_authenticator_manager: true
     encoders:
         native:
             algorithm: auto
@@ -11,7 +12,6 @@ security:
             pattern: ^/(_(profiler|wdt|home)|css|images|build|js)/
             security: false
         main:
-            anonymous: ~
             form_login:
                 login_path:             login
                 check_path:             login
@@ -19,7 +19,7 @@ security:
                 csrf_token_id:          authenticate
                 default_target_path:    home
                 use_referer:            true
-                csrf_token_generator:   security.csrf.token_manager
+                enable_csrf:            true
                 username_parameter:     'authenticate[_username]'
                 password_parameter:     'authenticate[_password]'
                 failure_path_parameter: login
@@ -43,4 +43,5 @@ security:
                     - App\Modules\Security\Manager\GoogleAuthenticator
                 entry_point: App\Modules\Security\Manager\LoginFormAuthenticator
             context: main
+            entry_point: App\Modules\Security\Manager\LoginFormAuthenticator
     role_hierarchy: '%security.hierarchy.roles%'

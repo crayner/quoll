@@ -56,26 +56,26 @@ class Staff extends AbstractEntity
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
+    private ?string $id;
 
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="App\Modules\People\Entity\Person")
      * @ORM\JoinColumn(name="person",referencedColumnName="id",nullable=false)
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @var string|null
      * @ORM\Column(length=20)
      * @Assert\Choice(callback="getTypeList")
      */
-    private $type;
+    private ?string $type;
 
     /**
      * @var array
      */
-    private static $typeList = [
+    private static array $typeList = [
         'Teaching',
         'Support',
         'Volunteer',
@@ -189,11 +189,14 @@ class Staff extends AbstractEntity
     }
 
     /**
+     * getId
+     *
+     * 5/11/2020 08:03
      * @return string|null
      */
     public function getId(): ?string
     {
-        return $this->id;
+        return isset($this->id) ? $this->id : null;
     }
 
     /**

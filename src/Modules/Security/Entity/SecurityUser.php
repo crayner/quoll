@@ -593,11 +593,14 @@ class SecurityUser extends AbstractEntity implements UserInterface, EncoderAware
     }
 
     /**
+     * getLocale
+     *
+     * 5/11/2020 09:18
      * @return Locale|null
      */
     public function getLocale(): ?Locale
     {
-        return $this->locale;
+        return isset($this->locale) ? $this->locale : null;
     }
 
     /**

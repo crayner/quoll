@@ -468,6 +468,20 @@ class AttendanceStudent extends AbstractEntity
     }
 
     /**
+     * PreviousDays
+     *
+     * @param array|null $previousDays
+     * @return AttendanceStudent
+     */
+    public function setPreviousDays(?array $previousDays): AttendanceStudent
+    {
+        $this->previousDays = $previousDays;
+        return $this;
+    }
+
+
+
+    /**
      * getContextType
      *
      * 27/10/2020 12:51

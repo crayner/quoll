@@ -622,4 +622,23 @@ class RollGroup extends AbstractEntity
     {
         return AcademicYearHelper::isCurrentYear() && AcademicYearHelper::hasNextYear() && $this->getNextRollGroup() === null && SecurityHelper::getCurrentUser()->isAllowedFutureYears();
     }
+
+    /**
+     * isTutor
+     *
+     * 4/11/2020 15:53
+     * @param Staff $staff
+     * @param bool $assistants
+     * @return bool
+     */
+    public function isTutor(Staff $staff, bool $assistants = true): bool
+    {
+        if ($staff->isEqualTo($this->getTutor()) || $staff->isEqualTo($this->getTutor2()) || $staff->isEqualTo($this->getTutor3())) return true;
+
+        if ($assistants) {
+            if ($staff->isEqualTo($this->getAssistant()) || $staff->isEqualTo($this->getAssistant2()) || $staff->isEqualTo($this->getAssistant3())) return true;
+        }
+
+        return false;
+    }
 }

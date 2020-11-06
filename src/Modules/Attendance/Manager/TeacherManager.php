@@ -20,7 +20,6 @@ use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class TeacherManager
@@ -30,31 +29,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class TeacherManager
 {
     /**
-     * @var AuthorizationCheckerInterface
-     */
-    private static AuthorizationCheckerInterface $checker;
-
-    /**
-     * TeacherManager constructor.
-     * @param AuthorizationCheckerInterface $checker
-     */
-    public function __construct(AuthorizationCheckerInterface $checker)
-    {
-        self::$checker = $checker;
-    }
-
-    /**
-     * getChecker
-     *
-     * 3/11/2020 08:42
-     * @return AuthorizationCheckerInterface|null
-     */
-    public static function getChecker(): ?AuthorizationCheckerInterface
-    {
-        return isset(self::$checker) ? self::$checker : null;
-    }
-
-    /**
      * getClassListQuery
      *
      * 3/10/2020 07:38
@@ -62,26 +36,13 @@ class TeacherManager
      */
     public static function getClassListQuery(): QueryBuilder
     {
-        if (self::getChecker()->isGranted('ROLE_PRINCIPAL')) {
-            return ProviderFactory::getRepository(CourseClass::class)->createQueryBuilder('cc')
-                ->select(['cc','c'])
-                ->orderBy('c.abbreviation', 'ASC')
-                ->addOrderBy('cc.name', 'ASC')
-                ->leftJoin('cc.course', 'c')
-                ->where('c.academicYear = :current')
-                ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
-                ;
-        }
-        if (self::getChecker()->isGranted('ROLE_HEAD_TEACHER')) {
-            return ProviderFactory::getRepository(CourseClass::class)->createQueryBuilder('cc')
-                ->select(['cc','c'])
-                ->orderBy('c.abbreviation', 'ASC')
-                ->addOrderBy('cc.name', 'ASC')
-                ->leftJoin('cc.course', 'c')
-                ->where('c.academicYear = :current')
-                ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
-                ;
-        }
-
+        return ProviderFactory::getRepository(CourseClass::class)->createQueryBuilder('cc')
+            ->select(['cc','c'])
+            ->orderBy('c.abbreviation', 'ASC')
+            ->addOrderBy('cc.name', 'ASC')
+            ->leftJoin('cc.course', 'c')
+            ->where('c.academicYear = :current')
+            ->setParameter('current', AcademicYearHelper::getCurrentAcademicYear())
+            ;
     }
 }

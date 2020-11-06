@@ -22,12 +22,11 @@ use App\Modules\System\Manager\SettingFactory;
 use App\Provider\ProviderFactory;
 use App\Util\ParameterBagHelper;
 use App\Util\TranslationHelper;
-use Doctrine\DBAL\Driver\PDOException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -43,11 +42,6 @@ class SecurityHelper
     private static $logger;
 
     /**
-     * @var AuthorizationCheckerInterface
-     */
-    private static $checker;
-
-    /**
      * @var RoleHierarchyInterface
      */
     private static $hierarchy;
@@ -58,14 +52,19 @@ class SecurityHelper
     private static PageDefinition $definition;
 
     /**
-     * @var TokenStorageInterface
+     * @var Security
      */
-    private static $storage;
+    private static Security $security;
 
     /**
      * @var SecurityUser|null
      */
     private static $currentUser;
+
+    /**
+     * @var bool
+     */
+    private static bool $switchedUser = false;
 
     /**
      * @var UserPasswordEncoderInterface
@@ -80,24 +79,21 @@ class SecurityHelper
     /**
      * SecurityHelper constructor.
      * @param LoggerInterface $logger
-     * @param AuthorizationCheckerInterface $checker
-     * @param TokenStorageInterface $storage
+     * @param Security $security
      * @param RoleHierarchyInterface $hierarchy
      * @param PageDefinition $definition
      * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(
         LoggerInterface $logger,
-        AuthorizationCheckerInterface $checker,
-        TokenStorageInterface $storage,
+        Security $security,
         RoleHierarchyInterface $hierarchy,
         PageDefinition $definition,
         UserPasswordEncoderInterface $encoder
     ) {
         self::$logger = $logger;
-        self::$checker = $checker;
+        self::$security = $security;
         self::$hierarchy = $hierarchy;
-        self::$storage = $storage;
         self::$encoder = $encoder;
         self::$definition = $definition;
     }
@@ -249,14 +245,6 @@ class SecurityHelper
     }
 
     /**
-     * @return AuthorizationCheckerInterface
-     */
-    public static function getChecker(): AuthorizationCheckerInterface
-    {
-        return self::$checker;
-    }
-
-    /**
      * @var null|string
      */
     private static $passwordPolicy;
@@ -297,6 +285,7 @@ class SecurityHelper
     /**
      * isGranted
      * @param string|string[] $roles
+     * @param null $subject
      * @return bool
      * 11/06/2020 12:04
      */
@@ -307,7 +296,7 @@ class SecurityHelper
         }
 
         foreach($roles as $role) {
-            if (self::$checker->isGranted($role, $subject)) return true;
+            if (self::$security->isGranted($role, $subject)) return true;
         }
         return false;
     }
@@ -373,14 +362,22 @@ class SecurityHelper
      */
     public static function getCurrentUser(): ?SecurityUser
     {
-        if (self::$currentUser === null && self::$storage !== null) {
-            $token = self::$storage->getToken();
+        if (self::$security instanceof SwitchUserToken && !self::$switchedUser) {
+            self::$currentUser = null;
+            self::$switchedUser = true;
+        }
+        if (!self::$security instanceof SwitchUserToken || self::$switchedUser) {
+            self::$switchedUser = false;
+            self::$currentUser = null;
+        }
+        if (self::$currentUser === null) {
+            $token = self::$security->getToken();
 
             if ($token !== null && $token->getUser() instanceof SecurityUser) {
                 self::$currentUser = $token->getUser();
             }
         }
-        if (self::$storage === null) {
+        if (self::$security->getToken() === null) {
             self::$currentUser = null;
         }
 
@@ -563,5 +560,15 @@ class SecurityHelper
     public static function getRoute(): string
     {
         return self::getDefinition()->getRoute();
+    }
+
+    /**
+     * Security
+     *
+     * @return Security
+     */
+    public static function getSecurity(): Security
+    {
+        return self::$security;
     }
 }
