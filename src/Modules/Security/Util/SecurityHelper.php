@@ -362,16 +362,16 @@ class SecurityHelper
      */
     public static function getCurrentUser(): ?SecurityUser
     {
-        if (self::$security instanceof SwitchUserToken && !self::$switchedUser) {
+        if (self::getSecurity()->getToken() instanceof SwitchUserToken && !self::$switchedUser) {
             self::$currentUser = null;
             self::$switchedUser = true;
         }
-        if (!self::$security instanceof SwitchUserToken || self::$switchedUser) {
+        if (!self::getSecurity()->getToken() instanceof SwitchUserToken || self::$switchedUser) {
             self::$switchedUser = false;
             self::$currentUser = null;
         }
         if (self::$currentUser === null) {
-            $token = self::$security->getToken();
+            $token = self::getSecurity()->getToken();
 
             if ($token !== null && $token->getUser() instanceof SecurityUser) {
                 self::$currentUser = $token->getUser();
