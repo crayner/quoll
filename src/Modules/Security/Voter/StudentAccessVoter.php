@@ -11,28 +11,22 @@
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 4/11/2020
- * Time: 15:38
+ * Date: 6/11/2020
+ * Time: 14:11
  */
+
 namespace App\Modules\Security\Voter;
 
+
 use App\Manager\PageDefinition;
-use App\Modules\RollGroup\Entity\RollGroup;
+use App\Modules\Student\Entity\Student;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-/**
- * Class StudentRollGroupAccessVoter
- *
- * 4/11/2020 15:38
- * The user has access to students in the given roll group.
- * @package App\Modules\Security\Voter
- * @author Craig Rayner <craig@craigrayner.com>
- */
-class RollGroupAccessVoter extends RouteVoter
+class StudentAccessVoter extends RouteVoter
 {
     /**
      * RouteVoter constructor.
@@ -55,7 +49,7 @@ class RollGroupAccessVoter extends RouteVoter
      */
     private function supports(array $attributes): bool
     {
-        return in_array('ROLE_ROLL_GROUP', $attributes);
+        return in_array('ROLE_STUDENT_ACCESS', $attributes);
     }
 
     /**
@@ -70,18 +64,19 @@ class RollGroupAccessVoter extends RouteVoter
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
         if ($this->supports($attributes)) {
-            $this->getLogger()->debug('Checking access to Roll Group');
-            if (parent::vote($token, null, ['ROLE_ROUTE']) === VoterInterface::ACCESS_GRANTED && $subject instanceof RollGroup) {
+            $this->getLogger()->debug('Checking access to Student');
+            if (parent::vote($token, null, ['ROLE_ROUTE']) === VoterInterface::ACCESS_GRANTED && $subject instanceof Student) {
                 if ($token->getUser()->getPerson()->isPrincipal()) return VoterInterface::ACCESS_GRANTED;
                 if ($token->getUser()->getPerson()->isSuperUser()) return VoterInterface::ACCESS_GRANTED;
                 if ($token->getUser()->getPerson()->isRegistrar()) return VoterInterface::ACCESS_GRANTED;
 
-                if ($subject->isTutor($token->getUser()->getStaff())) return VoterInterface::ACCESS_GRANTED;
+                $rollGroup = $subject->getCurrentEnrolment()->getRollGroup();
+                if ($rollGroup->isTutor($token->getUser()->getStaff())) return VoterInterface::ACCESS_GRANTED;
             }
-            if ($subject instanceof RollGroup) {
-                $this->getLogger()->warning(sprintf('The user "%s" attempted to access the roll group "%s" and was denied.', $token->getUser()->getPerson()->getFullNameReversed(), $subject->getName()));
+            if ($subject instanceof Student) {
+                $this->getLogger()->warning(sprintf('The user "%s" attempted to access the student "%s" and was denied.', $token->getUser()->getPerson()->getFullNameReversed(), $subject->getFullName('Formal'). ' ('.$subject->getStudentIdentifier().')'));
             } else {
-                $this->getLogger()->warning(sprintf('The user "%s" attempted to access an invalid roll group.', $token->getUser()->getPerson()->getFullNameReversed()));
+                $this->getLogger()->warning(sprintf('The user "%s" attempted to access an invalid student.', $token->getUser()->getPerson()->getFullNameReversed()));
             }
             return VoterInterface::ACCESS_DENIED;
         }

@@ -23,6 +23,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
@@ -43,30 +44,37 @@ class AttendanceStudentRepository extends ServiceEntityRepository
     /**
      * hasDuplicates
      *
-     * 19/10/2020 13:18
-     * @param AttendanceStudent $student
+     * 7/11/2020 08:54
+     * @param AttendanceStudent|null $student
      * @return bool
      */
-    public function hasDuplicates(AttendanceStudent $student): bool
+    public function hasDuplicates(?AttendanceStudent $student): bool
     {
+        dump($student);
+        $query = $this->createQueryBuilder('a')
+                ->select('COUNT(a.id)')
+                ->where('a.id <> :id')
+                ->setParameter('id', $student->getId())
+                ->andWhere('a.student = :student')
+                ->setParameter('student', $student->getStudent())
+                ->andWhere('a.date = :date')
+                ->setParameter('date', $student->getDate())
+                ->andWhere('a.dailyTime = :time')
+                ->setParameter('time', $student->getDailyTime());
+        if ($student->getContext() === 'Class') {
+            $query
+                ->andWhere('a.attendanceClass = :courseClass')
+                ->setParameter('courseClass', $student->getAttendanceClass());
+        } else {
+            $query
+                ->andWhere('a.attendanceRollGroup = :rollGroup')
+                ->setParameter('rollGroup', $student->getAttendanceRollGroup());
+        }
         try {
-            return intval($this->createQueryBuilder('a')
-                    ->select('COUNT(a.id)')
-                    ->where('a.id <> :id')
-                    ->setParameter('id', $student->getId())
-                    ->andWhere('a.student = :student')
-                    ->setParameter('student', $student->getStudent())
-                    ->andWhere('a.date = :date')
-                    ->setParameter('date', $student->getDate())
-                    ->andWhere('a.dailyTime = :time')
-                    ->setParameter('time', $student->getDailyTime())
-                    ->andWhere('a.attendanceClass = :rollGroup')
-                    ->setParameter('rollGroup', $student->getAttendanceRollGroup())
-                    ->andWhere('a.attendanceClass = :class')
-                    ->setParameter('class', $student->getAttendanceClass())
+                return intval($query
                     ->getQuery()
                     ->getSingleScalarResult()) > 0;
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException | ORMInvalidArgumentException $e) {
             return false;
         }
     }

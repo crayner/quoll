@@ -19,6 +19,7 @@ return:
         8: 'Your request failed because some values are still in use within the data.'
         9: 'The highest grouped action cannot be determined.'
         csrf: 'Invalid Cross Site Request Forgery Token.'
+        student: 'Your request failed as you do not have access to "student_name" student record.'
     warning:
         3: 'The record "{id}" is locked and will not be deleted from class "{class}".'
         4: 'Your request did not require any action.'

@@ -21,6 +21,7 @@ use App\Modules\Attendance\Validator\AttendanceLogTime;
 use App\Modules\Attendance\Validator\Reason;
 use App\Modules\Student\Entity\Student;
 use App\Modules\System\Manager\SettingFactory;
+use App\Modules\Timetable\Entity\TimetableDate;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use DateTimeImmutable;
@@ -144,7 +145,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getId(): ?string
     {
-        return isset($this->id) ? $this->id : null;
+        return $this->id = isset($this->id) ? $this->id : null;
     }
 
     /**
@@ -188,7 +189,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getStudent(): ?Student
     {
-        return $this->student;
+        return isset($this->student) ? $this->student : null;
     }
 
     /**
@@ -305,7 +306,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getDate(): ?DateTimeImmutable
     {
-        return $this->date;
+        return isset($this->date) ? $this->date : null;
     }
 
     /**
@@ -368,9 +369,9 @@ class AttendanceStudent extends AbstractEntity
      * generateAttendanceRollGroup
      *
      * 30/10/2020 10:44
-     * @return AttendanceRollGroup
+     * @return AttendanceRollGroup|null
      */
-    public function generateAttendanceRollGroup(): AttendanceRollGroup
+    public function generateAttendanceRollGroup(): ?AttendanceRollGroup
     {
         return ProviderFactory::create(AttendanceRollGroup::class)->generateAttendanceRollGroup($this);
     }
@@ -395,7 +396,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getAttendanceClass(): ?AttendanceCourseClass
     {
-        return isset($this->attendanceClass) ? $this->attendanceClass : null;
+        return $this->attendanceClass = isset($this->attendanceClass) ? $this->attendanceClass : null;
     }
 
     /**
@@ -494,5 +495,20 @@ class AttendanceStudent extends AbstractEntity
         if ($this->getContext() === 'Future') return 'future';
         if ($this->getContext() === 'Self Registration') return 'self';
         return 'unknown';
+    }
+
+    /**
+     * isValid
+     *
+     * 7/11/2020 09:11
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        if ($this->getStudent() === null) return false;
+        if ($this->getDate() === null) return false;
+        if (!in_array($this->getDailyTime(), SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']))) return false;
+        if (ProviderFactory::getRepository(TimetableDate::class)->countValidDates($this->getDate(), true) === 0) return false;
+        return true;
     }
 }

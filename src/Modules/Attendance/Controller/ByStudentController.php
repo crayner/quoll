@@ -28,6 +28,7 @@ use App\Modules\Attendance\Pagination\AttendanceRecorderLogPagination;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationHelper;
 use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -65,10 +66,25 @@ class ByStudentController extends AbstractPageController
             ->setContext('Person')
         ;
 
-        $form = $this->createForm(AttendanceByStudentType::class, $as, ['action' => $this->generateUrl('attendance_by_student', ['student' => $student ? $student->getId() : null, 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime])]);
+        if ($this->isPostContent()) {
+            $content = $this->jsonDecode();
+            if ($content['student'] !== ($student instanceof Student ? $student->getId() : '')) {
+                $student = ProviderFactory::getRepository(Student::class)->find($content['student']);
+                $as->setStudent($student);
+            }
+        }
+
+        $studentAccess = $student instanceof Student ? $this->isGranted('ROLE_STUDENT_ACCESS', $student) : false;
+
+        $form = $this->createForm(AttendanceByStudentType::class, $as,
+            [
+                'action' => $this->generateUrl('attendance_by_student', ['student' => $student ? $student->getId() : null, 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]),
+                'studentAccess' => $studentAccess,
+            ]
+        );
 
         if ($this->isPostContent()) {
-            $manager->handleSubmit($form, $this->getRequest());
+            $form = $manager->handleSubmit($form, $this->getRequest(), $student, $studentAccess);
 
             return $this->singleForm($form);
         }
@@ -76,7 +92,7 @@ class ByStudentController extends AbstractPageController
         $container = new Container();
         $panel = new Panel('single', 'Attendance', new Section('form', 'single'));
         $pagination->setContent(ProviderFactory::getRepository(AttendanceRecorderLog::class)->findBy(['logKey' => 'Student', 'logId' => $as ? $as->getId() : null],['recordedOn' => 'ASC']));
-        $panel->addSection(new Section('pagination', $pagination));
+        if ($studentAccess) $panel->addSection(new Section('pagination', $pagination));
         $container->addForm('single', $form)
             ->addPanel(AcademicYearHelper::academicYearWarning($panel));
 

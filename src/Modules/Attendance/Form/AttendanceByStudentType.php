@@ -27,6 +27,7 @@ use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Student\Entity\Student;
+use App\Modules\Timetable\Validator\SchoolDay;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -98,6 +99,7 @@ class AttendanceByStudentType extends AbstractType
                                 'max' => AcademicYearHelper::getCurrentAcademicYear()->getLastDay()->format('Y-m-d'),
                             ]
                         ),
+                        new SchoolDay(),
                     ],
 
                 ]
@@ -113,6 +115,7 @@ class AttendanceByStudentType extends AbstractType
                         'choice_list_prefix' => false,
                         'placeholder' => 'Please select...',
                         'constraints' => [
+                            new NotBlank(),
                             new Choice(['choices' => AttendanceByRollGroupManager::getDailyTimeList()]),
                         ],
                     ]
@@ -120,58 +123,61 @@ class AttendanceByStudentType extends AbstractType
             ;
         }
 
+        if ($options['studentAccess'] && $options['data']->isValid()) {
+            $builder
+                ->add('takeAttendance', HeaderType::class,
+                    [
+                        'label' => 'Take Attendance',
+                    ]
+                )
+                ->add('previousDays', SpecialType::class,
+                    [
+                        'label' => 'Attendance Summary',
+                        'special_name' => 'AttendanceSummary',
+                        'special_data' => ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($options['data'], ['previous' => 5, 'future' => 3]),
+                    ]
+                )
+                ->add('code', EntityType::class,
+                    [
+                        'class' => AttendanceCode::class,
+                        'choice_label' => 'name',
+                        'label' => 'Attendance Type',
+                        'placeholder' => 'Please select...',
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('a')
+                                ->where('a.active = :true')
+                                ->setParameter('true', true)
+                                ->orderBy('a.sortOrder');
+                        },
+                    ]
+                )
+                ->add('reason', EnumType::class,
+                    [
+                        'label' => "Reason",
+                        'placeholder' => ' ',
+                        'choice_list_prefix' => 'attendance_student.reason',
+                        'required' => false,
+                    ]
+                )
+                ->add('comment', TextareaType::class,
+                    [
+                        'label' => 'Comment',
+                        'attr' => [
+                            'rows' => 3,
+                        ],
+                        'required' => false,
+                    ]
+                )
+            ;
+        }
         $builder
-            ->add('takeAttendance', HeaderType::class,
-                [
-                    'label' => 'Take Attendance',
-                ]
-            )
-            ->add('previousDays', SpecialType::class,
-                [
-                    'label' => 'Attendance Summary',
-                    'special_name' => 'AttendanceSummary',
-                    'special_data' => ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($options['data'], ['previous' => 5, 'future' => 1]),
-                ]
-            )
-            ->add('code', EntityType::class,
-                [
-                    'class' => AttendanceCode::class,
-                    'choice_label' => 'name',
-                    'label' => 'Attendance Type',
-                    'placeholder' => 'Please select...',
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('a')
-                            ->where('a.active = :true')
-                            ->setParameter('true', true)
-                            ->orderBy('a.sortOrder')
-                        ;
-                    },
-                ]
-            )
-            ->add('reason', EnumType::class,
-                [
-                    'label' => "Reason",
-                    'placeholder' => ' ',
-                    'choice_list_prefix' => 'attendance_student.reason',
-                    'required' => false,
-                ]
-            )
-            ->add('comment', TextareaType::class,
-                [
-                    'label' => 'Comment',
-                    'attr' => [
-                        'rows' => 3,
-                    ],
-                    'required' => false,
-                ]
-            )
             ->add('submit', SubmitType::class);
     }
 
     /**
      * configureOptions
      *
-     * 27/10/2020 17:21
+     * 6/11/2020 14:01
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -182,7 +188,15 @@ class AttendanceByStudentType extends AbstractType
                     'translation_domain' => 'Attendance',
                     'data_class' => AttendanceStudent::class,
                 ]
-            );
+            )
+            ->setRequired(
+                [
+                    'studentAccess',
+                ]
+            )
+            ->setAllowedTypes('studentAccess', ['boolean'])
+        ;
+
     }
 
     /**

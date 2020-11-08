@@ -40,10 +40,11 @@ class AttendanceRollGroupProvider extends AbstractProvider
      *
      * 30/10/2020 10:43
      * @param AttendanceStudent $als
-     * @return AttendanceRollGroup
+     * @return AttendanceRollGroup|null
      */
-    public function generateAttendanceRollGroup(AttendanceStudent $als): AttendanceRollGroup
+    public function generateAttendanceRollGroup(AttendanceStudent $als): ?AttendanceRollGroup
     {
+        if (!$als->getStudent()) return null;
         return $this->getRepository()->findOneBy(['rollGroup' => $als->getStudent()->getCurrentEnrolment()->getRollGroup(), 'dailyTime' => $als->getDailyTime(), 'date' => $als->getDate()]) ?: new AttendanceRollGroup($als->getStudent()->getCurrentEnrolment()->getRollGroup(), $als->getDate(), $als->getDailyTime());
     }
 }

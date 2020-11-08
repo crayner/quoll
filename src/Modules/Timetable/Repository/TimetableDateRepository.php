@@ -217,4 +217,35 @@ class TimetableDateRepository extends ServiceEntityRepository
         
         return array_values(array_merge($future, $previous));
     }
+
+    /**
+     * countValidDates
+     *
+     * 7/11/2020 08:42
+     * @param DateTimeImmutable $value
+     * @param bool $enforceCurrentYear
+     * @return int
+     */
+    public function countValidDates(DateTimeImmutable $value, bool $enforceCurrentYear = true): int
+    {
+        $query = $this->createQueryBuilder('tDate')
+            ->select('COUNT(tDate.id)')
+            ->where('tDate.date = :date')
+        ;
+        $parameters = ['date' => $value];
+        if ($enforceCurrentYear) {
+            $query->andWhere('t.academicYear = :current')
+                ->leftJoin('tDate.timetableDay', 'tDay')
+                ->leftJoin('tDay.timetable', 't');
+            $parameters['current'] = AcademicYearHelper::getCurrentAcademicYear();
+        }
+
+        try {
+            return intval($query->setParameters($parameters)
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 }

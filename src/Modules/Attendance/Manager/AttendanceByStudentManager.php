@@ -20,13 +20,24 @@ namespace App\Modules\Attendance\Manager;
 use App\Manager\StatusManager;
 use App\Modules\Attendance\Entity\AttendanceRollGroup;
 use App\Modules\Attendance\Entity\AttendanceStudent;
+use App\Modules\Attendance\Form\AttendanceByStudentType;
 use App\Modules\Student\Entity\Student;
+use App\Modules\Timetable\Entity\TimetableDate;
+use App\Modules\Timetable\Validator\SchoolDay;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
+use App\Util\UrlGeneratorHelper;
 use DateTimeImmutable;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class AttendanceByStudentManager
@@ -63,15 +74,36 @@ class AttendanceByStudentManager
     private RouterInterface $router;
 
     /**
+     * @var Security
+     */
+    private Security $security;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private ValidatorInterface $validator;
+
+    /**
+     * @var FormFactory 
+     */
+    private  FormFactoryInterface $formFactory;
+
+    /**
      * AttendanceByStudentManager constructor.
      *
      * @param StatusManager $status
      * @param RouterInterface $router
+     * @param Security $security
+     * @param ValidatorInterface $validator
+     * @param FormFactoryInterface $formFactory
      */
-    public function __construct(StatusManager $status, RouterInterface $router)
+    public function __construct(StatusManager $status, RouterInterface $router, Security $security, ValidatorInterface $validator, FormFactoryInterface $formFactory)
     {
         $this->status = $status;
         $this->router = $router;
+        $this->security = $security;
+        $this->validator = $validator;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -146,10 +178,18 @@ class AttendanceByStudentManager
      * 28/10/2020 07:52
      * @param FormInterface $form
      * @param Request $request
+     * @param Student|null $student
+     * @param bool $studentAccess
+     * @throws \Exception
      */
-    public function handleSubmit(FormInterface $form, Request $request)
+    public function handleSubmit(FormInterface $form, Request $request, ?Student $student, bool $studentAccess)
     {
         $content = json_decode($request->getContent(), true);
+
+        $form = $this->refreshForm($form, $content, $student);
+        if (!$this->isValidSelection($form, $content, $student)) {
+            return $form;
+        }
 
         $params = $request->attributes->get('_route_params');
 
@@ -166,25 +206,43 @@ class AttendanceByStudentManager
         }
 
         if (!$same) {
-            $this->getStatus()->info('A change was made in the attendance selection.  No data has been saved.',[],'Attendance');
+            $errors = false;
+            $form = $this->refreshForm($form, $content, $student);
+
+            if (!$studentAccess) {
+                $form->get('student')->addError(new FormError(TranslationHelper::translate('return.error.student', ['student_name' => $student->getFullName('Formal') . ' ('.$student->getStudentIdentifier().')'], 'messages')));
+                $this->getStatus()->invalidInputs();
+                $errors = true;
+            }
+            if (ProviderFactory::getRepository(TimetableDate::class)->countValidDates(new DateTimeImmutable($content['date'])) === 0) {
+                $this->getStatus()->invalidInputs();
+                $form->get('date')->addError(new FormError(TranslationHelper::translate('"_date_" is not a valid school date.', ['_date_' => $content['date']], 'Timetable')));
+                $errors = true;
+            }
+            if ($errors) return $form;
+            $this->getStatus()->warning('A change was made in the attendance selection.  No data has been saved.', [], 'Attendance');
             $this->getStatus()->setReDirect($this->getRouter()->generate('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'], 'dailyTime' => $content['dailyTime']]), true);
-            return;
+            return $form;
         }
 
         ProviderFactory::create(AttendanceRollGroup::class)->persistFlush($as->getAttendanceRollGroup());
 
-        dump($as);
         $form->submit($content);
 
-
-
-        if ($form->isValid()) {
-            $as = $form->getData();
-            ProviderFactory::create(AttendanceStudent::class)->persistFlush($as);
-            if ($this->getStatus()->isStatusSuccess()) {
-                $this->getStatus()->setReDirect($this->getRouter()->generate('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'], 'dailyTime' => $content['dailyTime']]), true);
+        if ($this->getStatus()->isStatusSuccess()) {
+            if ($form->isValid()) {
+                $as = $form->getData();
+                ProviderFactory::create(AttendanceStudent::class)->persistFlush($as);
+                if ($this->getStatus()->isStatusSuccess()) {
+                    $this->getStatus()->setReDirect($this->getRouter()->generate('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'], 'dailyTime' => $content['dailyTime']]), true);
+                }
+            } else {
+                $this->getStatus()
+                    ->resetStatus()
+                    ->invalidInputs();
             }
         }
+        return $form;
     }
 
     /**
@@ -208,4 +266,119 @@ class AttendanceByStudentManager
         return $this->router;
     }
 
+    /**
+     * Security
+     *
+     * @return Security
+     */
+    public function getSecurity(): Security
+    {
+        return $this->security;
+    }
+
+    /**
+     * isValidSelection
+     *
+     * 7/11/2020 13:22
+     * @param FormInterface $form
+     * @param array $content
+     * @param Student|null $student
+     * @return bool
+     * @throws \Exception
+     */
+    public function isValidSelection(FormInterface $form, array $content, ?Student $student): bool
+    {
+        $errors = false;
+        if ($student === null) {
+            $form->get('student')->addError(new FormError(TranslationHelper::translate('This value must not be blank', [],'validators')));
+            $errors = true;
+        } else if (!$this->getSecurity()->isGranted('ROLE_STUDENT_ACCESS', $student)) {
+            $form->get('student')->addError(new FormError(TranslationHelper::translate('return.error.student', ['student_name' => $student->getFullName('Formal')],'messages')));
+            $errors = true;
+        }
+
+        if (key_exists('date', $content)) {
+            $errorList = $this->getValidator()->validate(new DateTimeImmutable($content['date']), [new NotBlank(), new SchoolDay()]);
+            if ($errorList->count() > 0) {
+                foreach ($errorList as $error) {
+                    $form->get('date')->addError(new FormError($error->getMessage()));
+                }
+                $errors = true;
+            }
+        } else {
+            $errorList = $this->getValidator()->validate(null, [new NotBlank(), new SchoolDay()]);
+            if ($errorList->count() > 0) {
+                foreach ($errorList as $error) {
+                    $form->get('date')->addError(new FormError($error->getMessage()));
+                }
+                $errors = true;
+            }
+        }
+
+        if (key_exists('dailyTime', $content)) {
+            $errorList = $this->getValidator()->validate($content['dailyTime'], [new NotBlank(), new Choice(['choices' => AttendanceByRollGroupManager::getDailyTimeList()])]);
+            if ($errorList->count() > 0) {
+                foreach ($errorList as $error) {
+                    $form->get('dailyTime')->addError(new FormError($error->getMessage()));
+                }
+                $errors = true;
+            }
+        }
+
+        if ($errors) {
+            $this->getStatus()->invalidInputs();
+        };
+
+        return !$errors;
+    }
+
+    /**
+     * Validator
+     *
+     * @return ValidatorInterface
+     */
+    public function getValidator(): ValidatorInterface
+    {
+        return $this->validator;
+    }
+
+    /**
+     * FormFactory
+     *
+     * @return FormFactory
+     */
+    public function getFormFactory(): FormFactory
+    {
+        return $this->formFactory;
+    }
+
+    /**
+     * refreshForm
+     *
+     * 7/11/2020 14:05
+     * @param FormInterface $form
+     * @param array $content
+     * @param Student|null $student
+     * @return FormInterface
+     */
+    private function refreshForm(FormInterface $form, array $content, ?Student $student): FormInterface
+    {
+        $as = $form->getData();
+        try {
+            $as->setStudent($student)
+                ->setDate(new DateTimeImmutable($content['date']))
+                ->setDailyTime($content['dailyTime']);
+        } catch (\Exception $e) {
+            $as->setStudent($student)
+                ->setDate(new DateTimeImmutable())
+                ->setDailyTime($content['dailyTime']);
+        }
+        return $this->getFormFactory()->create(AttendanceByStudentType::class, $as,
+            [
+                'action' => UrlGeneratorHelper::getUrl('attendance_by_student', ['student' => $student ? $student->getId() : null, 'date' => $content['date'], 'dailyTime' => $content['dailyTime'] ?: 'all_day']),
+                'studentAccess' => $student ? $this->getSecurity()->isGranted('ROLE_STUDENT_ACCESS', $student) : false,
+            ]
+        );
+
+    }
 }

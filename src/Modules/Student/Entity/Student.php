@@ -229,11 +229,11 @@ class Student extends AbstractEntity
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getStudentIdentifier(): ?string
+    public function getStudentIdentifier(): string
     {
-        return $this->studentIdentifier;
+        return isset($this->studentIdentifier) ? $this->studentIdentifier : 'No Set Identifier';
     }
 
     /**
@@ -704,10 +704,10 @@ class Student extends AbstractEntity
      */
     public function getCurrentEnrolment(): ?StudentRollGroup
     {
-        $se = $this->getStudentRollGroups()->filter(function($w) {
+        $se = $this->getStudentRollGroups()->filter(function(StudentRollGroup $w) {
             if ($w->getRollGroup()->getAcademicYear()->isEqualTo(AcademicYearHelper::getCurrentAcademicYear())) return $w;
         });
-        return $se->count() === 1 ? $se->first() : null;
+        return $se->count() >= 1 ? $se->first() : null;
     }
 
     /**
