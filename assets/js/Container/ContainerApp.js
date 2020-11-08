@@ -138,7 +138,6 @@ export default class ContainerApp extends Component {
 
         if (typeof panelErrors === 'undefined')
             panelErrors = this.state.panelErrors
-
         this.setState({
             forms: forms,
             panelErrors: panelErrors,
@@ -604,9 +603,9 @@ export default class ContainerApp extends Component {
     {
         if (typeof parent === 'undefined') {
             parent = getParentForm({ ...this.state.forms }, form, this.formNames)
-            let name = getParentFormName(this.formNames, parent)
             id = parent.id
         }
+        let formName = getParentFormName(this.formNames, parent)
         if (typeof parent.children !== 'undefined') {
             Object.keys(parent.children).map(key => {
                 let child = { ...parent.children[key] }
@@ -620,7 +619,7 @@ export default class ContainerApp extends Component {
         }
         if (id === parent.id) {
             this.setState({
-                forms: mergeParentForm(this.state.forms, name, parent)
+                forms: mergeParentForm(this.state.forms, formName, parent)
             })
         }
         return parent

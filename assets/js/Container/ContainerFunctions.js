@@ -87,10 +87,22 @@ export function getParentForm(forms,form,formNames) {
 }
 
 export function getParentFormName(formNames,form) {
-    return formNames[form.full_name.substring(0, form.full_name.indexOf('['))]
+    let name = form.full_name
+    if (name.indexOf('[') > 0) {
+        name = name.substring(0, form.full_name.indexOf('['))
+    }
+    return formNames[name]
 }
 
 export function mergeParentForm(forms, name, form){
+    if (name === '') {
+        name = 'single'
+        console.error('The name of a form MUST be set correctly. "" is not a valid name')
+    }
+    if (typeof name === 'undefined') {
+        name = 'single'
+        console.error('The name of a form MUST be set correctly. The name is not defined.')
+    }
     forms[name] = {...form}
     return {...forms}
 }
