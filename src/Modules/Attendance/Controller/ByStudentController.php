@@ -31,6 +31,7 @@ use App\Provider\ProviderFactory;
 use App\Util\TranslationHelper;
 use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -66,27 +67,31 @@ class ByStudentController extends AbstractPageController
             ->setContext('Person')
         ;
 
+        $studentAccess = $student instanceof Student ? $this->isGranted('ROLE_STUDENT_ACCESS', $student) : false;
+
+        $form = $this->createAttendanceByStudentForm($as, $studentAccess);
+        dump($this->getRequest());
+
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();
             if ($content['student'] !== ($student instanceof Student ? $student->getId() : '')) {
                 $student = ProviderFactory::getRepository(Student::class)->find($content['student']);
                 $as->setStudent($student);
+                $form = $this->createAttendanceByStudentForm($as, $studentAccess);
             }
-        }
 
-        $studentAccess = $student instanceof Student ? $this->isGranted('ROLE_STUDENT_ACCESS', $student) : false;
-
-        $form = $this->createForm(AttendanceByStudentType::class, $as,
-            [
-                'action' => $this->generateUrl('attendance_by_student', ['student' => $student ? $student->getId() : null, 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]),
-                'studentAccess' => $studentAccess,
-            ]
-        );
-
-        if ($this->isPostContent()) {
-            $form = $manager->handleSubmit($form, $this->getRequest(), $student, $studentAccess);
+            if ($manager->isSelectionChanged($content, $this->getRequest())) {
+                $manager->isSelectionValid($form, $content, $student);
+                $this->getStatusManager()->setReDirect($this->generateUrl('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'] !== '' ? $content['date'] : date('Y-m-d'), 'dailyTime' => $content['dailyTime'] === '' ? 'all_day' : $content['dailyTime']]), true);
+            } else if ($manager->isSelectionValid($form,$content,$student)) {
+                return $this->singleForm($manager->handleSubmit($form, $content));
+            }
 
             return $this->singleForm($form);
+        }
+        $params = $this->getRequest()->get('_route_params');
+        if (key_exists('student', $params) && $params['student'] !== null) {
+            $manager->isSelectionValid($form, $params, $student);
         }
 
         $container = new Container();
@@ -106,5 +111,26 @@ class ByStudentController extends AbstractPageController
                         ->getBuiltContainers()
                 ]
             );
+    }
+
+    /**
+     * createAttendanceByStudentForm
+     *
+     * 11/11/2020 10:13
+     * @param AttendanceStudent $as
+     * @param bool $studentAccess
+     * @return FormInterface
+     */
+    private function createAttendanceByStudentForm(AttendanceStudent $as, bool $studentAccess): FormInterface
+    {
+        $date = $as->getDate();
+        $dailyTime = $as->getDailyTime();
+        $student = $as->getStudent();
+        return $this->createForm(AttendanceByStudentType::class, $as,
+            [
+                'action' => $this->generateUrl('attendance_by_student', ['student' => $student ? $student->getId() : null, 'date' => $date->format('Y-m-d'), 'dailyTime' => $dailyTime]),
+                'studentAccess' => $studentAccess,
+            ]
+        );
     }
 }

@@ -175,55 +175,14 @@ class AttendanceByStudentManager
     /**
      * handleSubmit
      *
-     * 28/10/2020 07:52
+     * 11/11/2020 11:02
      * @param FormInterface $form
-     * @param Request $request
-     * @param Student|null $student
-     * @param bool $studentAccess
-     * @throws \Exception
+     * @param array $content
+     * @return FormInterface
      */
-    public function handleSubmit(FormInterface $form, Request $request, ?Student $student, bool $studentAccess)
+    public function handleSubmit(FormInterface $form, array $content)
     {
-        $content = json_decode($request->getContent(), true);
-
-        $form = $this->refreshForm($form, $content, $student);
-        if (!$this->isValidSelection($form, $content, $student)) {
-            return $form;
-        }
-
-        $params = $request->attributes->get('_route_params');
-
-        $content['dailyTime'] = empty($content['dailyTime']) ? 'all_day' : $content['dailyTime'];
-
         $as = $form->getData();
-
-        $same = true;
-        foreach ($params as $name=>$value) {
-            if ($content[$name] !== $value) {
-                $same = false;
-                break;
-            }
-        }
-
-        if (!$same) {
-            $errors = false;
-            $form = $this->refreshForm($form, $content, $student);
-
-            if (!$studentAccess) {
-                $form->get('student')->addError(new FormError(TranslationHelper::translate('return.error.student', ['student_name' => $student->getFullName('Formal') . ' ('.$student->getStudentIdentifier().')'], 'messages')));
-                $this->getStatus()->invalidInputs();
-                $errors = true;
-            }
-            if (ProviderFactory::getRepository(TimetableDate::class)->countValidDates(new DateTimeImmutable($content['date'])) === 0) {
-                $this->getStatus()->invalidInputs();
-                $form->get('date')->addError(new FormError(TranslationHelper::translate('"_date_" is not a valid school date.', ['_date_' => $content['date']], 'Timetable')));
-                $errors = true;
-            }
-            if ($errors) return $form;
-            $this->getStatus()->warning('A change was made in the attendance selection.  No data has been saved.', [], 'Attendance');
-            $this->getStatus()->setReDirect($this->getRouter()->generate('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'], 'dailyTime' => $content['dailyTime']]), true);
-            return $form;
-        }
 
         ProviderFactory::create(AttendanceRollGroup::class)->persistFlush($as->getAttendanceRollGroup());
 
@@ -235,13 +194,18 @@ class AttendanceByStudentManager
                 ProviderFactory::create(AttendanceStudent::class)->persistFlush($as);
                 if ($this->getStatus()->isStatusSuccess()) {
                     $this->getStatus()->setReDirect($this->getRouter()->generate('attendance_by_student', ['student' => $content['student'], 'date' => $content['date'], 'dailyTime' => $content['dailyTime']]), true);
+                } else {
+                    $this->getStatus()->databaseError();
                 }
             } else {
                 $this->getStatus()
                     ->resetStatus()
                     ->invalidInputs();
             }
+        } else {
+            $this->getStatus()->databaseError();
         }
+
         return $form;
     }
 
@@ -277,28 +241,29 @@ class AttendanceByStudentManager
     }
 
     /**
-     * isValidSelection
+     * isSelectionValid
      *
      * 7/11/2020 13:22
      * @param FormInterface $form
      * @param array $content
      * @param Student|null $student
      * @return bool
-     * @throws \Exception
      */
-    public function isValidSelection(FormInterface $form, array $content, ?Student $student): bool
+    public function isSelectionValid(FormInterface $form, array $content, ?Student $student): bool
     {
         $errors = false;
-        if ($student === null) {
-            $form->get('student')->addError(new FormError(TranslationHelper::translate('This value must not be blank', [],'validators')));
-            $errors = true;
-        } else if (!$this->getSecurity()->isGranted('ROLE_STUDENT_ACCESS', $student)) {
+        if ($student !== null && !$this->getSecurity()->isGranted('ROLE_STUDENT_ACCESS', $student)) {
             $form->get('student')->addError(new FormError(TranslationHelper::translate('return.error.student', ['student_name' => $student->getFullName('Formal')],'messages')));
             $errors = true;
         }
 
         if (key_exists('date', $content)) {
-            $errorList = $this->getValidator()->validate(new DateTimeImmutable($content['date']), [new NotBlank(), new SchoolDay()]);
+            try {
+                $date = new DateTimeImmutable($content['date']);
+            } catch (\Exception $e) {
+                $date = null;
+            }
+            $errorList = $this->getValidator()->validate($date, [new NotBlank(), new SchoolDay()]);
             if ($errorList->count() > 0) {
                 foreach ($errorList as $error) {
                     $form->get('date')->addError(new FormError($error->getMessage()));
@@ -380,5 +345,27 @@ class AttendanceByStudentManager
             ]
         );
 
+    }
+
+    /**
+     * isSelectionChanged
+     *
+     * 11/11/2020 10:46
+     * @param array $content
+     * @param Request $request
+     * @return bool
+     */
+    public function isSelectionChanged(array $content, Request $request): bool
+    {
+        $params = $request->attributes->get('_route_params');
+
+        foreach ($params as $name=>$value) {
+            if ($content[$name] !== $value) {
+                $this->getStatus()->warning('A change was made in the attendance selection.  No data has been saved.', [], 'Attendance');
+                return true;
+            }
+        }
+
+        return false;
     }
 }

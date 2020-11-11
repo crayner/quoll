@@ -990,3 +990,6 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     min-width: 1.25rem;
     max-width: 1.25rem;
 }
+.errors .react-autosuggest__suggestion {
+    @apply text-gray-800 text-sm;
+}

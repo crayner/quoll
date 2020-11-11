@@ -362,22 +362,22 @@ class SecurityHelper
      */
     public static function getCurrentUser(): ?SecurityUser
     {
-        if (self::getSecurity()->getToken() instanceof SwitchUserToken && !self::$switchedUser) {
+        if (self::getSecurity() && self::getSecurity()->getToken() instanceof SwitchUserToken && !self::$switchedUser) {
             self::$currentUser = null;
             self::$switchedUser = true;
         }
-        if (!self::getSecurity()->getToken() instanceof SwitchUserToken || self::$switchedUser) {
+        if (self::getSecurity() && !self::getSecurity()->getToken() instanceof SwitchUserToken || self::$switchedUser) {
             self::$switchedUser = false;
             self::$currentUser = null;
         }
         if (self::$currentUser === null) {
-            $token = self::getSecurity()->getToken();
+            $token = self::getSecurity() ? self::getSecurity()->getToken() : null;
 
             if ($token !== null && $token->getUser() instanceof SecurityUser) {
                 self::$currentUser = $token->getUser();
             }
         }
-        if (self::$security->getToken() === null) {
+        if (self::getSecurity() === null || self::getSecurity()->getToken() === null) {
             self::$currentUser = null;
         }
 
@@ -563,12 +563,13 @@ class SecurityHelper
     }
 
     /**
-     * Security
+     * getSecurity
      *
-     * @return Security
+     * 8/11/2020 16:42
+     * @return Security|null
      */
-    public static function getSecurity(): Security
+    public static function getSecurity(): ?Security
     {
-        return self::$security;
+        return isset(self::$security) ? self::$security : null;
     }
 }
