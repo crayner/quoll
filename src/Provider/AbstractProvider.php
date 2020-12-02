@@ -18,8 +18,6 @@ namespace App\Provider;
 
 use App\Manager\EntityInterface;
 use App\Manager\StatusManager;
-use Doctrine\Persistence\ObjectRepository;
-use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +25,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -301,7 +300,7 @@ abstract class AbstractProvider implements EntityProviderInterface
     /**
      * getRepository
      *
-     * @param string $className
+     * @param string|null $className
      * @return ObjectRepository|null
      */
     public function getRepository(?string $className = ''): ?ObjectRepository
@@ -436,13 +435,14 @@ abstract class AbstractProvider implements EntityProviderInterface
      * flush
      *
      * 16/08/2020 14:57
+     * @param bool $addSuccess
      * @return StatusManager
      */
-    public function flush(): StatusManager
+    public function flush(bool $addSuccess = true): StatusManager
     {
         try {
             $this->getEntityManager()->flush();
-            $this->getMessageManager()->success();
+            if ($addSuccess) $this->getMessageManager()->success();
         } catch (Exception $e) {
             if ($this->env === 'dev') $this->getMessageManager()->setLogger($this->getLogger())->error($e->getMessage() . ' ' . get_class($e),[],false);
             $this->getMessageManager()->error(StatusManager::DATABASE_ERROR);
