@@ -26,7 +26,6 @@ use App\Twig\Sidebar\Register;
 use App\Util\TranslationHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\ORM\Tools\SchemaTool;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,7 +49,7 @@ class HomeController extends AbstractPageController
     public function home(string $timeout = '')
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null) {
+            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null && $this->getParameter('environment') !== 'prod') {
                 $this->addFlash('info', 'A base route redirection was applied.');
                 return $this->redirectToRoute($this->getParameter('base_route'));
             }
@@ -104,10 +103,11 @@ class HomeController extends AbstractPageController
 
     /**
      * personalPage
-     * @return JsonResponse
+     *
+     * 22/11/2020 08:33
      * @Route("/personal/page/", name="personal_page")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
-     * 28/06/2020 10:33
+     * @return JsonResponse|RedirectResponse
      */
     public function personalPage()
     {
@@ -118,7 +118,7 @@ class HomeController extends AbstractPageController
                 ]
             );
         } else {
-            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null) {
+            if ($this->hasParameter('base_route') && $this->getParameter('base_route') !== null && $this->getParameter('environment') !== 'prod') {
                 $this->addFlash('info', 'A base route redirection was applied.');
                 return $this->redirectToRoute($this->getParameter('base_route'));
             }

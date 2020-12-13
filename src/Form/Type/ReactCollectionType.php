@@ -53,12 +53,14 @@ class ReactCollectionType extends AbstractType
                 'header_row' => false,
                 'column_count' => false,
                 'special' => false,
+                'special_data' => [],
             ]
         );
 
         $resolver->setAllowedTypes('header_row', ['boolean', 'array']);
         $resolver->setAllowedTypes('column_count', ['boolean', 'integer']);
         $resolver->setAllowedTypes('special', ['boolean', 'string']);
+        $resolver->setAllowedTypes('special_data', ['array']);
     }
 
     /**
@@ -113,6 +115,7 @@ class ReactCollectionType extends AbstractType
         $view->vars['label'] = $options['label'];
         $view->vars['column_count'] = $options['column_count'];
         $view->vars['special'] = $options['special'];
+        $view->vars['special_data'] = $options['special_data'];
     }
 
     /**

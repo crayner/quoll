@@ -85,12 +85,10 @@ export function widgetAttr(form, defaultClass, functions) {
 
 
 export function wrapperAttr(form, defaultClass) {
-
     let wrapper_attr = {}
-
     wrapper_attr.className = defaultClass
-    if (form.wrapper_class !== null) wrapper_attr.className = form.wrapper_class
-
+    if (typeof form.wrapper_class === 'undefined') console.log(form)
+    if (typeof form.wrapper_class !== 'undefined' && form.wrapper_class !== null) wrapper_attr.className = form.wrapper_class
     return wrapper_attr
 }
 

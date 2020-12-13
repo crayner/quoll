@@ -53,13 +53,12 @@ class SettingController extends AbstractPageController
         $manager = $this->getContainerManager();
 
         $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
-dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors')->getData());
+
         if ($this->getRequest()->getContent() !== '') {
             try {
                 SettingFactory::getSettingManager()->handleSettingsForm($form, $this->getRequest());
                 if ($this->getStatusManager()->getStatus() === 'success') {
                     $form = $this->createForm(BehaviourSettingsType::class, null, ['action' => $this->generateUrl('behaviour_settings')]);
-                    dump($form->get('descriptorSettings')->get('Behaviour__enableDescriptors'));
                 }
             } catch (\Exception $e) {
                 $this->getStatusManager()->error(StatusManager::INVALID_INPUTS);

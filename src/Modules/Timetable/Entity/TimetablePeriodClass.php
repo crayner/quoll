@@ -173,4 +173,15 @@ class TimetablePeriodClass extends AbstractEntity
             'period' => $this->getPeriod()->getId(),
         ];
     }
+
+    /**
+     * getPeriodName
+     *
+     * 14/11/2020 07:50
+     * @return string
+     */
+    public function getPeriodName(): string
+    {
+        return $this->getPeriod() ? $this->getPeriod()->getName() . ' ('.$this->getPeriod()->getAbbreviation().')': '';
+    }
 }

@@ -14,7 +14,6 @@
  * Date: 7/11/2019
  * Time: 11:00
  */
-
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -51,6 +50,7 @@ class ReactDateType extends AbstractType
             [
                 'widget' => 'single_text',
                 'input' => 'datetime_immutable',
+                'help' => 'Format dd/mm/yyyy',
             ]
         );
     }

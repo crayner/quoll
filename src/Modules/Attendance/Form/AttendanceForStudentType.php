@@ -19,14 +19,13 @@ namespace App\Modules\Attendance\Form;
 use App\Form\Type\DisplayType;
 use App\Form\Type\EnumType;
 use App\Form\Type\HiddenEntityType;
-use App\Form\Type\SpecialType;
 use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\Student\Entity\Student;
-use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -87,18 +86,25 @@ class AttendanceForStudentType extends AbstractType
                     'label' => false,
                 ]
             )
-            ->add('previousDays',HiddenType::class,
-                [
-                    'label' => false,
-                    'constraints' => [],
-                    'required' => false,
-                    'special_name' => 'AttendanceSummary',
-                ]
-            )
-            ->add('inOrOut',HiddenType::class,
+        ;
+        if ($options['is_roll_group']) {
+            $builder
+                ->add('previousDays', HiddenType::class,
+                    [
+                        'label' => false,
+                        'constraints' => [],
+                        'required' => false,
+                        'special_name' => 'AttendanceSummary',
+                    ]
+                )
+            ;
+        }
+        $builder
+            ->add('dateChoice', ChoiceType::class,
                 [
                     'mapped' => false,
-                    'data' => ProviderFactory::getRepository(AttendanceCode::class)->findInOrOut(),
+                    'required' => false,
+                    'choices' => [],
                 ]
             )
             ->add('submit', SubmitType::class ,
@@ -117,12 +123,17 @@ class AttendanceForStudentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'translation_domain' => 'Attendance',
-                'data_class' => AttendanceStudent::class,
-            ]
-        );
+        $resolver
+            ->setDefaults(
+                [
+                    'translation_domain' => 'Attendance',
+                    'data_class' => AttendanceStudent::class,
+                    'is_roll_group' => true,
+                ]
+            )
+            ->setAllowedTypes('is_roll_group', ['boolean'])
+        ;
+
     }
 
     /**

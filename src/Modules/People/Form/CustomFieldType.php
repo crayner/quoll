@@ -73,7 +73,6 @@ class CustomFieldType extends AbstractType
                     'placeholder' => 'Please select...',
                 ]
             );
-        dump($options['data']);
         if ($options['data']->getFieldType() === 'text') {
             $builder
                 ->add('optionPrompt', ParagraphType::class,

@@ -13,6 +13,7 @@
  */
 namespace App\Modules\Timetable\Repository;
 
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\Timetable\Entity\Timetable;
 use App\Modules\Timetable\Entity\TimetableDay;

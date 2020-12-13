@@ -31,7 +31,7 @@ class PersonNameManager
     /**
      * @var string[]
      */
-    private static $styleList = [
+    private static array $styleList = [
         'Standard',
         'Formal',
         'Reversed',
@@ -41,7 +41,7 @@ class PersonNameManager
     /**
      * @var string[]
      */
-    private static $personTypeList = [
+    private static array $personTypeList = [
         'General',
         'Student',
         'Staff',
@@ -50,7 +50,7 @@ class PersonNameManager
     /**
      * @var string[]
      */
-    private static $nameParts = [
+    private static array $nameParts = [
         'initial',
         'firstName',
         'surname',

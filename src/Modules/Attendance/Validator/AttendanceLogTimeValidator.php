@@ -52,7 +52,7 @@ class AttendanceLogTimeValidator extends ConstraintValidator
             $this->context->buildViolation('The value is not valid. Use one of: "{times}"')
                 ->setCode(AttendanceLogTime::ATTENDANCE_TIME_ERROR)
                 ->setParameter('{times}', implode('","', $times))
-                ->atPath('time')
+                ->atPath('dailyTime')
                 ->setTranslationDomain('Attendance')
                 ->addViolation();
             return;

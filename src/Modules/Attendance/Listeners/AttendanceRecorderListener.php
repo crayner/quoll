@@ -87,7 +87,8 @@ class AttendanceRecorderListener implements EventSubscriberInterface
      * 27/10/2020 15:08
      * @param TerminateEvent $event
      */
-    public function recorder(TerminateEvent $event) {
+    public function recorder(TerminateEvent $event)
+    {
         if (count($this->getLogger()->getEvents()) > 0) {
             $em = ProviderFactory::getEntityManager();
             $attendanceLog = $this->getLogger()->getEvents();
@@ -130,6 +131,8 @@ class AttendanceRecorderListener implements EventSubscriberInterface
                         'recorder' => $recorder->getFullName(),
                         'student' => $entity->getStudent()->getFullName(),
                         'roll_group' => $entity->getAttendanceRollGroup() ? ' (' . $entity->getAttendanceRollGroup()->getRollGroup()->getName() . ')' : '',
+                        'class_name' => $entity->getAttendanceCourseClass() ? $entity->getAttendanceCourseClass()->getCourseClass()->getFullName(): '',
+                        'period' => $entity->getAttendanceCourseClass() && $entity->getAttendanceCourseCLass()->getPeriodClass() ? $entity->getAttendanceCourseCLass()->getPeriodClass()->getPeriodName() : TranslationHelper::translate('No Class', [], 'Attendance'),
                         'result' => implode(', ', $result),
                     ], 'Attendance')));
                 $arl = new AttendanceRecorderLog();
@@ -154,7 +157,7 @@ class AttendanceRecorderListener implements EventSubscriberInterface
                     ->setLogId($rollGroup->getId());
                $em->persist($arl);
             }
-
+dump($courseClasses);
             foreach ($courseClasses as $rollGroup) {
                 $arl = new AttendanceRecorderLog();
                 $arl->setRecorder($recorder)
@@ -194,8 +197,8 @@ class AttendanceRecorderListener implements EventSubscriberInterface
      */
     private function addCourseClass(array $courseClasses, AttendanceStudent $entity): array
     {
-        if ($entity->getAttendanceClass() !== null) {
-            $courseClasses[$entity->getAttendanceClass()->getId()] = $entity->getAttendanceClass();
+        if ($entity->getAttendanceCourseClass() !== null) {
+            $courseClasses[$entity->getAttendanceCourseClass()->getId()] = $entity->getAttendanceCourseClass();
         }
         return $courseClasses;
     }

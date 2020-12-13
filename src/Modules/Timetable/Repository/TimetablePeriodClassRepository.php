@@ -13,10 +13,14 @@
  */
 namespace App\Modules\Timetable\Repository;
 
+use App\Modules\Enrolment\Entity\CourseClass;
 use App\Modules\Timetable\Entity\TimetableDay;
 use App\Modules\Timetable\Entity\TimetablePeriod;
 use App\Modules\Timetable\Entity\TimetablePeriodClass;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -89,5 +93,53 @@ class TimetablePeriodClassRepository extends ServiceEntityRepository
             ->addOrderBy('cc.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findCourseClassDate
+     *
+     * 12/11/2020 12:05
+     * @param CourseClass|null $class
+     * @param DateTimeImmutable|null $date
+     * @return array
+     */
+    public function findCourseClassDate(?CourseClass $class, ?DateTimeImmutable $date): array
+    {
+        return $this->createQueryBuilder('tpc')
+            ->leftJoin('tpc.period', 'tp')
+            ->leftJoin('tp.timetableDay', 'tDay')
+            ->leftJoin('tDay.timetableDates', 'tDate')
+            ->where('tpc.courseClass = :courseClass')
+            ->andWhere('tDate.date = :date')
+            ->setParameters(['date' => $date,'courseClass' => $class])
+            ->orderBy('tp.timeStart', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * countCourseClassDate
+     *
+     * 12/11/2020 11:29
+     * @param CourseClass $class
+     * @param DateTimeImmutable $date
+     * @return int
+     */
+    public function countCourseClassDate(CourseClass $class, DateTimeImmutable $date): int
+    {
+        try {
+            return $this->createQueryBuilder('tpc')
+                ->select('COUNT(tDate.id)')
+                ->leftJoin('tpc.period', 'tp')
+                ->leftJoin('tp.timetableDay','tDay')
+                ->leftJoin('tDay.timetableDates', 'tDate')
+                ->where('tpc.courseClass = :courseClass')
+                ->andWhere('tDate.date = :date')
+                ->setParameters(['date' => $date,'courseClass' => $class])
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 }

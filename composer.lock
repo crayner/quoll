@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4eca10219be0c7abab7fd8aa12035998",
+    "content-hash": "2ee4c97cfa439f2d8f317b3f6c8d8e29",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -81,20 +81,20 @@
         },
         {
             "name": "crayner/doctrine-bundle",
-            "version": "1.0.07",
+            "version": "1.0.09",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/doctrine-bundle.git",
-                "reference": "a219bbff62a788655820ae686bb20b21ed84ea90"
+                "reference": "e1c29005ac68de6067ac5beb45a181c7fdceba78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/doctrine-bundle/zipball/a219bbff62a788655820ae686bb20b21ed84ea90",
-                "reference": "a219bbff62a788655820ae686bb20b21ed84ea90",
+                "url": "https://api.github.com/repos/crayner/doctrine-bundle/zipball/e1c29005ac68de6067ac5beb45a181c7fdceba78",
+                "reference": "e1c29005ac68de6067ac5beb45a181c7fdceba78",
                 "shasum": ""
             },
             "require": {
-                "doctrine/orm": "^2.7",
+                "doctrine/orm": "^2",
                 "php": "^7.2"
             },
             "require-dev": {
@@ -125,9 +125,9 @@
             ],
             "support": {
                 "issues": "https://github.com/crayner/doctrine-bundle/issues",
-                "source": "https://github.com/crayner/doctrine-bundle/tree/master"
+                "source": "https://github.com/crayner/doctrine-bundle/tree/1.0.09"
             },
-            "time": "2020-04-11T04:13:24+00:00"
+            "time": "2020-12-04T05:17:32+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -4366,16 +4366,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "e38520236bdc911c2f219634b485bc328746e980"
+                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/e38520236bdc911c2f219634b485bc328746e980",
-                "reference": "e38520236bdc911c2f219634b485bc328746e980",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
+                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
                 "shasum": ""
             },
             "require": {
@@ -4385,6 +4385,7 @@
             "require-dev": {
                 "composer/composer": "^1.0.2|^2.0",
                 "symfony/dotenv": "^4.4|^5.0",
+                "symfony/filesystem": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^4.4|^5.0",
                 "symfony/process": "^3.4|^4.4|^5.0"
             },
@@ -4413,7 +4414,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.10.0"
+                "source": "https://github.com/symfony/flex/tree/v1.11.0"
             },
             "funding": [
                 {
@@ -4429,7 +4430,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-05T10:56:45+00:00"
+            "time": "2020-12-03T10:57:35+00:00"
         },
         {
             "name": "symfony/form",
@@ -8639,16 +8640,16 @@
     "packages-dev": [
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.2",
+            "version": "v4.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de"
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/658f1be311a230e0907f5dfe0213742aff0596de",
-                "reference": "658f1be311a230e0907f5dfe0213742aff0596de",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
+                "reference": "dbe56d23de8fcb157bbc0cfb3ad7c7de0cfb0984",
                 "shasum": ""
             },
             "require": {
@@ -8689,9 +8690,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.2"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.3"
             },
-            "time": "2020-09-26T10:30:38+00:00"
+            "time": "2020-12-03T17:45:45+00:00"
         },
         {
             "name": "symfony/browser-kit",

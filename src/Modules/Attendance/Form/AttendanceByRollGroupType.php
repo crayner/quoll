@@ -23,11 +23,13 @@ use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactDateType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
+use App\Modules\Attendance\Entity\AttendanceCode;
 use App\Modules\Attendance\Manager\AttendanceByRollGroupManager;
 use App\Modules\Attendance\Validator\AttendanceLogTime;
 use App\Modules\RollGroup\Entity\RollGroup;
 use App\Modules\School\Util\AcademicYearHelper;
 use App\Modules\System\Manager\SettingFactory;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -56,12 +58,17 @@ class AttendanceByRollGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['data']->isValid()) {
+            $defaultAttendanceCode = ProviderFactory::getRepository(AttendanceCode::class)->findOneByName(SettingFactory::getSettingManager()->get('Attendance', 'defaultRollGroupAttendanceType', 'Present'));
             $builder
                 ->add('students', ReactCollectionType::class,
                     [
                         'entry_type' => AttendanceForStudentType::class,
                         'element_delete_route' => false,
                         'special' => 'display_student_attendance',
+                        'special_data' => [
+                            'default_code' => $defaultAttendanceCode->getId(),
+                            'inOrOut' => ProviderFactory::getRepository(AttendanceCode::class)->findInOrOut(),
+                        ],
                         'row_style' => 'single',
                     ]
                 )
@@ -122,6 +129,7 @@ class AttendanceByRollGroupType extends AbstractType
                         'choice_list_prefix' => false,
                         'placeholder' => 'Please select...',
                         'constraints' => [
+                            new NotBlank(),
                             new Choice(['choices' => AttendanceByRollGroupManager::getDailyTimeList()]),
                         ],
                     ]

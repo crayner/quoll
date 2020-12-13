@@ -993,3 +993,15 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 .errors .react-autosuggest__suggestion {
     @apply text-gray-800 text-sm;
 }
+@keyframes submittedForm {
+    from { @apply border-blue-700 }
+    to { @apply border-indigo-900 }
+}
+.submittedForm {
+    @apply border-blue-700 border-l-4;
+    animation-name: submittedForm;
+    animation-direction: alternate;
+    animation-delay: 0.5s;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}

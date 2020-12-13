@@ -77,6 +77,9 @@ class CourseClassAccessVoter extends RouteVoter
                 if ($token->getUser()->getPerson()->isRegistrar()) return VoterInterface::ACCESS_GRANTED;
 
                 if ($subject->isTutor($token->getUser()->getStaff())) return VoterInterface::ACCESS_GRANTED;
+
+                $department = $subject->getCourse()->getDepartment();
+                if ($department->isHeadTeacher($token->getUser()->getStaff())) return VoterInterface::ACCESS_GRANTED;
             }
             $this->getLogger()->warning(sprintf('The user "%s" attempted to access the course class "%s" and was denied.', $token->getUser()->getPerson()->getFullNameReversed(), $subject->getFullName()));
             return VoterInterface::ACCESS_DENIED;

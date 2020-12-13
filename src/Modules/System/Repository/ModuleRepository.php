@@ -13,7 +13,6 @@
  */
 namespace App\Modules\System\Repository;
 
-use App\Modules\Security\Entity\Role;
 use App\Modules\System\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

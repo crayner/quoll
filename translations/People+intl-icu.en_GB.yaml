@@ -24,7 +24,6 @@ Address 2 Locality: Address 2 Locality
 Address 2: Address 2
 All Roles: All Roles
 Alternate Email: Alternate Email
-Background Information: {name}: Background Information: {name}
 Background: Background
 Basic Information: Basic Information
 Basic: Basic
@@ -46,7 +45,6 @@ Contact 2 Name: Contact 2 Name
 Contact 2 Number 1: Contact 2 Number 1
 Contact 2 Number 2: Contact 2 Number 2
 Contact 2 Relationship: Contact 2 Relationship
-Contact Information: {name}: Contact Information: {name}
 Contact: Contact
 Controls what a user can do and see. Use Control, Command and/or Shift to select multiple.: Controls what a user can do and see. Use Control, Command and/or Shift to select multiple.
 Controls what a user can do and see.: Controls what a user can do and see.
@@ -56,7 +54,6 @@ Departure Reason: Departure Reason
     Displayed at 240px by 320px.
 Edit Person: Edit Person
 Email: Email
-Emergency Contacts: {name}: Emergency Contacts: {name}
 Emergency: Emergency
 End Date: End Date
 Enter Personal Address: Enter Personal Address
@@ -86,13 +83,11 @@ Preferred Name: Preferred Name
 Primary Role: Primary Role
 Religion selection can be altered at {anchor}People Settings{endAnchor}: Religion selection can be altered at {anchor}People Settings{endAnchor}
 Religion: Religion
-School Information: {name}: School Information: {name}
 School: School
 Second Language: Second Language
 Start Date: Start Date
 Status: Status
 Surname: Surname
-System Access: {name}: System Access: {name}
 System login name.: System login name.
 System: System
 The first day at school for this person.: The first day at school for this person.
@@ -501,7 +496,6 @@ MLocalities: MLocalities
 Phones: Phones
 Custom Fields: Custom Fields
 Assigned Roles: Assigned Roles
-Employment Details: {name}: Employment Details: {name}
 Employment: Employment
 A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.: A list of choices to make available if privacy options are turned on. If blank, privacy fields will not be displayed.
 A list of ethnicities available in system: A list of ethnicities available in system

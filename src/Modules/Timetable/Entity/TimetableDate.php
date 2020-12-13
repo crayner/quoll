@@ -39,7 +39,7 @@ class TimetableDate extends AbstractEntity
 
     /**
      * @var TimetableDay|null
-     * @ORM\ManyToOne(targetEntity="App\Modules\Timetable\Entity\TimetableDay")
+     * @ORM\ManyToOne(targetEntity="App\Modules\Timetable\Entity\TimetableDay",inversedBy="timetableDates")
      * @ORM\JoinColumn(name="timetable_day",referencedColumnName="id")
      * @Assert\NotBlank()
      */

@@ -15,7 +15,7 @@
         "node-sass": "^4.12.0",
         "postcss-loader": "^3.0.0",
         "prop-types": "^15.7.2",
-        "sass-loader": "7.1.0",
+        "sass-loader": "^10.1.0",
         "webpack-notifier": "^1.7.0"
     },
     "license": "MIT",
@@ -34,6 +34,7 @@
         "acorn": "^7.1.1",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "html-react-parser": "^0.9.1",
+        "ini": "^2.0.0",
         "kind-of": "^6.0.3",
         "lodash": "^4.17.19",
         "minimist": "^1.2.5",

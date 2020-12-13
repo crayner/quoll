@@ -70,7 +70,6 @@ class ByStudentController extends AbstractPageController
         $studentAccess = $student instanceof Student ? $this->isGranted('ROLE_STUDENT_ACCESS', $student) : false;
 
         $form = $this->createAttendanceByStudentForm($as, $studentAccess);
-        dump($this->getRequest());
 
         if ($this->isPostContent()) {
             $content = $this->jsonDecode();

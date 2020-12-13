@@ -131,7 +131,7 @@ class AttendanceStudent extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="AttendanceCourseClass")
      * @ORM\JoinColumn(nullable=true,name="attendance_course_class")
      */
-    private ?AttendanceCourseClass $attendanceClass;
+    private ?AttendanceCourseClass $attendanceCourseClass;
 
     /**
      * @var array|null
@@ -167,16 +167,16 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getCode(): ?AttendanceCode
     {
-        return $this->code;
+        return isset($this->code) ? $this->code : null;
     }
 
     /**
      * Code
      *
-     * @param AttendanceCode|null $code
+     * @param AttendanceCode $code
      * @return AttendanceStudent
      */
-    public function setCode(?AttendanceCode $code): AttendanceStudent
+    public function setCode(AttendanceCode $code): AttendanceStudent
     {
         $this->code = $code;
         return $this;
@@ -244,7 +244,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getContext(): ?string
     {
-        return $this->context;
+        return isset($this->context) ? $this->context : null;
     }
 
     /**
@@ -351,7 +351,7 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getDailyTimeList(): array
     {
-        return array_values(SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day']));
+        return array_values(SettingFactory::getSettingManager()->get('Attendance', 'dailyAttendanceTimes', ['all_day', 'not_used']));
     }
 
     /**
@@ -362,7 +362,8 @@ class AttendanceStudent extends AbstractEntity
      */
     public function getAttendanceRollGroup(): ?AttendanceRollGroup
     {
-        return $this->attendanceRollGroup = isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : $this->generateAttendanceRollGroup();
+        if ($this->getAttendanceCourseClass() === null) return $this->attendanceRollGroup = isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : $this->generateAttendanceRollGroup();
+        return $this->attendanceRollGroup = isset($this->attendanceRollGroup) ? $this->attendanceRollGroup : null;
     }
 
     /**
@@ -389,25 +390,25 @@ class AttendanceStudent extends AbstractEntity
     }
 
     /**
-     * getAttendanceClass
+     * getAttendanceCourseClass
      *
      * 19/10/2020 13:09
      * @return AttendanceCourseClass|null
      */
-    public function getAttendanceClass(): ?AttendanceCourseClass
+    public function getAttendanceCourseClass(): ?AttendanceCourseClass
     {
-        return $this->attendanceClass = isset($this->attendanceClass) ? $this->attendanceClass : null;
+        return $this->attendanceCourseClass = isset($this->attendanceCourseClass) ? $this->attendanceCourseClass : null;
     }
 
     /**
-     * AttendanceClass
+     * AttendanceCourseClass
      *
-     * @param AttendanceCourseClass|null $attendanceClass
+     * @param AttendanceCourseClass|null $attendanceCourseClass
      * @return AttendanceStudent
      */
-    public function setAttendanceClass(?AttendanceCourseClass $attendanceClass): AttendanceStudent
+    public function setAttendanceCourseClass(?AttendanceCourseClass $attendanceCourseClass): AttendanceStudent
     {
-        $this->attendanceClass = $attendanceClass;
+        $this->attendanceCourseClass = $attendanceCourseClass;
         return $this;
     }
 
@@ -459,13 +460,14 @@ class AttendanceStudent extends AbstractEntity
     /**
      * getPreviousDays
      *
-     * 3/11/2020 14:12
+     * 15/11/2020 10:19
      * @param array $days
      * @return array
      */
     public function getPreviousDays(array $days = []): array
     {
-        return $this->previousDays = isset($this->previousDays) ? $this->previousDays : ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($this, $days) ;
+        if ($this->getAttendanceRollGroup() instanceof AttendanceRollGroup) return $this->previousDays = isset($this->previousDays) ? $this->previousDays : ProviderFactory::create(AttendanceStudent::class)->getAttendanceDayStatus($this, $days) ;
+        return [];
     }
 
     /**
@@ -491,7 +493,7 @@ class AttendanceStudent extends AbstractEntity
     public function getContextType(): string
     {
         if ($this->getAttendanceRollGroup() !== null && in_array($this->getContext(), ['Roll Group','Person'])) return 'roll_group';
-        if ($this->getAttendanceClass() !== null && in_array($this->getContext(), ['Class','Person'])) return 'course_class';
+        if ($this->getAttendanceCourseClass() !== null && in_array($this->getContext(), ['Class','Person'])) return 'course_class';
         if ($this->getContext() === 'Future') return 'future';
         if ($this->getContext() === 'Self Registration') return 'self';
         return 'unknown';

@@ -80,15 +80,15 @@ class TimetableDay extends AbstractEntity
      * @Assert\NotBlank()
      * @Assert\Length(max=30)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=12,name="abbreviation")
+     * @ORM\Column(length=12)
      * @Assert\NotBlank()
      * @Assert\Length(max=12)
      */
-    private $abbreviation;
+    private ?string $abbreviation;
 
     /**
      * @var Collection|DaysOfWeek[]|null
@@ -126,6 +126,12 @@ class TimetableDay extends AbstractEntity
      * @Assert\Range(min=1,max=99)
      */
     private $rotateOrder;
+
+    /**
+     * @var Collection|null
+     * @ORM\OneToMany(targetEntity="App\Modules\Timetable\Entity\TimetableDate",mappedBy="timetableDay")
+     */
+    private ?Collection $timetableDates;
 
     /**
      * TimetableColumn constructor.

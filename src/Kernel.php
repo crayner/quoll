@@ -47,6 +47,7 @@ class Kernel extends BaseKernel
         $container->setParameter('current_month', date('m'));
         $container->setParameter('kernel.public_dir', $this->getPublicDir());
         $container->setParameter('upload_path', $this->getPublicDir() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m'));
+        $container->setParameter('environment', $this->environment);
         $confDir = $this->getProjectDir().'/config';
 
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');

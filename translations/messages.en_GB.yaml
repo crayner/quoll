@@ -25,3 +25,5 @@ People: People
 Status: Status
 Enter any part of the name to select...: Enter any part of the name to select...
 Disabled: Disabled
+multiple_select: Use Control, Command and/or Shift to select multiple.
+Format dd/mm/yyyy: Format dd/mm/yyyy

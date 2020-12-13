@@ -40,7 +40,7 @@ export function getAttendanceStatus(data, functions)
         calendarWidth.toString
         let calendarStyle = {width: calendarWidth + 'rem'}
 
-        return (<div className="historyCalendarMini craig" key={loop++} style={calendarStyle} >
+        return (<div className="historyCalendarMini" key={loop++} style={calendarStyle} >
             <div className="highlightNoData"><span title={dailyTime}>{dailyTime}</span></div>
             {dates}
         </div>)

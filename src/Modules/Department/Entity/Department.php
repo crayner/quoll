@@ -14,6 +14,7 @@
 namespace App\Modules\Department\Entity;
 
 use App\Manager\AbstractEntity;
+use App\Modules\Staff\Entity\Staff;
 use App\Util\TranslationHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -356,5 +357,21 @@ class Department extends AbstractEntity
         if (empty($result))
             $result[] = TranslationHelper::translate('None', [], 'Department');
         return implode("\n<br/>", $result);
+    }
+
+    /**
+     * isHeadTeacher
+     *
+     * 12/11/2020 08:34
+     * @param Staff $staff
+     * @return bool
+     */
+    public function isHeadTeacher(Staff $staff): bool
+    {
+        $result = $this->getStaff()->filter(function (DepartmentStaff $ds) use ($staff) {
+            if ($ds->getStaff()->isEqualTo($staff) && $ds->isHeadTeacher())
+                return $ds;
+        });
+        return $result->count() > 0;
     }
 }

@@ -83,14 +83,12 @@ class CourseClassPersonManager
             $errors = $this->validator->validate($ccp);
             if (count($errors) === 0) {
                 ProviderFactory::create(CourseClassStudent::class)->persistFlush($ccp, false);
-                dump($ccp, $this->getStatusManager());
                 $valid++;
             } else {
                 foreach($errors as $error) $this->getStatusManager()->error($error->getMessage());
             }
         }
         if ($valid > 0) ProviderFactory::create(CourseClassStudent::class)->flush();
-        dump($this->getStatusManager());
     }
 
     /**

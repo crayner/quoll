@@ -204,7 +204,6 @@ class ClassEnrolmentController extends AbstractPageController
             if ($form->isValid()) {
                 if ($person === null) {
                     $person = ProviderFactory::getRepository(Person::class)->find($content['student']);
-                    dump($person);
                 }
                 if ($person->isStudent()) {
                     $id = $ccs->getId();

@@ -111,7 +111,7 @@ class PageListener implements EventSubscriberInterface
             return;
         }
 
-        if ($request->query->has('raw_page')) {
+        if ($request->query->has('debug')) {
             return;
         }
         if (preg_match("#(popup)#", $route)) {

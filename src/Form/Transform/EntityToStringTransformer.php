@@ -37,10 +37,15 @@ class EntityToStringTransformer implements DataTransformerInterface
      */
 	private $entityRepository;
 
-	/**
-	 * @var bool
-	 */
-	private $multiple;
+    /**
+     * @var bool
+     */
+    private $multiple;
+
+    /**
+     * @var array
+     */
+    private $options;
 
     /**
      * EntityToStringTransformer constructor.
@@ -70,6 +75,7 @@ class EntityToStringTransformer implements DataTransformerInterface
 
 		$this->setEntityClass($options['class']);
 		$this->setMultiple($options['multiple']);
+		$this->options = $options;
 	}
 
     /**
@@ -108,20 +114,22 @@ class EntityToStringTransformer implements DataTransformerInterface
 
 		if (is_array($entity))
 		    $entity = new ArrayCollection($entity);
-		if (is_iterable($entity))
-			if ($entity->count() == 0)
-				return [];
-			else
-			{
-				return $entity->toArray();
-			}
-
-
-		if (is_object($entity) && $entity instanceof $this->entityClass)
-		    return $entity->getId();
-
-        if (is_null($entity) || '' === $entity)
-            return null;
+		if (is_iterable($entity)) {
+            if ($entity->count() === 0)
+                return [];
+            else {
+                $result = [];
+                foreach ($entity as $item) {
+                    dump($item,$this);
+                    if (is_object($item) && $item instanceof $this->entityClass) {
+                        $result[] = $item->getId();
+                    } else {
+                        $result[] = $item;
+                    }
+                }
+                return $result;
+            }
+        }
 
 		throw new \Exception('What to do with: ' . json_encode($entity) . ' for class ' . $this->entityClass);
 	}

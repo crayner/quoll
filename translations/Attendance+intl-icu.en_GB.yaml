@@ -120,8 +120,8 @@ attendance_log_student: >-
                             other       { Self Register Daily Attendance: student: Changes [result] for date at time by recorder. }
                         } }
         course_class    { { time, select,
-                            all_day     { Class Attendance in class_name: student: Changes [result] for date by recorder. }
-                            other       { Class Attendance in class_name: student: Changes [result] for date at time by recorder. }
+                            all_day     { Class Attendance in class_name: student: Changes [result] for date (period) by recorder. }
+                            other       { Class Attendance in class_name: student: Changes [result] for date (period) by recorder. }
                         } }
         other           { { time, select,
                             other { No details are available as the attendance type was not set correctly: Changes [result] by recorder. }
@@ -195,3 +195,11 @@ Attendance Summary: Attendance Summary
 Change all too...: Change all too...
 Course Class: Course Class
 Take Attendance by Class: Take Attendance by Class
+'The class "course_class" occurs more that once in the timetable for "_date_". Attendance records are not available for all periods that "course_class" is held on this day. Data for missing periods is inferred by the data available.': 'The class "course_class" occurs more that once in the timetable for "_date_". Attendance records are not available for all periods that "course_class" is held on this day. Data for missing periods is inferred by the data available.'
+course_class_attendance_history: 'Attendance has been recorded at the following times for "course_class" on "_date_". <ul>_periods_</ul>'
+an unscheduled class: an unscheduled class
+course_class_recorder_details: >-
+    {_period_, select,
+        no_period   {Recorded on recorded_on by _recorder_. The class is not scheduled for this date.}
+        other       {Recorded on recorded_on by _recorder_ for _period_.}
+    }

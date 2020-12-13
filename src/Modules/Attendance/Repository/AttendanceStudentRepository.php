@@ -16,6 +16,7 @@
  */
 namespace App\Modules\Attendance\Repository;
 
+use App\Modules\Attendance\Entity\AttendanceRollGroup;
 use App\Modules\Attendance\Entity\AttendanceStudent;
 use App\Modules\RollGroup\Entity\RollGroup;
 use DateTimeImmutable;
@@ -50,7 +51,6 @@ class AttendanceStudentRepository extends ServiceEntityRepository
      */
     public function hasDuplicates(?AttendanceStudent $student): bool
     {
-        dump($student);
         $query = $this->createQueryBuilder('a')
                 ->select('COUNT(a.id)')
                 ->where('a.id <> :id')
@@ -181,18 +181,33 @@ class AttendanceStudentRepository extends ServiceEntityRepository
     public function countStudentAbsences(AttendanceStudent $als): int
     {
         try {
-            return intval($this->createQueryBuilder('a')
-                ->select(['COUNT(a.id)'])
-                ->leftJoin('a.attendanceRollGroup', 'arg')
-                ->leftJoin('a.code', 'c')
-                ->andWhere('a.student = :student')
-                ->setParameter('student', $als->getStudent())
-                ->andWhere('arg.rollGroup = :rollGroup')
-                ->setParameter('rollGroup', $als->getAttendanceRollGroup()->getRollGroup())
-                ->andWhere('c.direction = :out')
-                ->setParameter('out', 'Out')
-                ->getQuery()
-                ->getSingleScalarResult());
+            if ($als->getAttendanceRollGroup() instanceof AttendanceRollGroup) {
+                return intval($this->createQueryBuilder('a')
+                    ->select(['COUNT(a.id)'])
+                    ->leftJoin('a.attendanceRollGroup', 'arg')
+                    ->leftJoin('a.code', 'c')
+                    ->andWhere('a.student = :student')
+                    ->setParameter('student', $als->getStudent())
+                    ->andWhere('arg.rollGroup = :rollGroup')
+                    ->setParameter('rollGroup', $als->getAttendanceRollGroup()->getRollGroup())
+                    ->andWhere('c.direction = :out')
+                    ->setParameter('out', 'Out')
+                    ->getQuery()
+                    ->getSingleScalarResult());
+            } else {
+                return intval($this->createQueryBuilder('a')
+                    ->select(['COUNT(a.id)'])
+                    ->leftJoin('a.attendanceCourseClass', 'acc')
+                    ->leftJoin('a.code', 'c')
+                    ->andWhere('a.student = :student')
+                    ->setParameter('student', $als->getStudent())
+                    ->andWhere('acc.courseClass = :courseClass')
+                    ->setParameter('courseClass', $als->getAttendanceCourseClass()->getCourseClass())
+                    ->andWhere('c.direction = :out')
+                    ->setParameter('out', 'Out')
+                    ->getQuery()
+                    ->getSingleScalarResult());
+            }
         } catch (NoResultException | NonUniqueResultException $e) {
             return 0;
         }

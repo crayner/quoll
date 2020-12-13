@@ -24,6 +24,7 @@ use App\Provider\ProviderFactory;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,7 +36,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Modules\Attendance\Repository\AttendanceCourseClassRepository")
  * @ORM\Table(name="AttendanceCourseClass",
  *     indexes={@ORM\Index(name="course_class",columns={"course_class"}),
- *      @ORM\Index(name="period_class",columns={"period_class"})})
+ *      @ORM\Index(name="period_class",columns={"period_class"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="unique_key",columns={"unique_key"})})
+ * @UniqueEntity({"uniqueKey"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class AttendanceCourseClass extends AbstractEntity
 {
@@ -71,6 +75,14 @@ class AttendanceCourseClass extends AbstractEntity
     private ?DateTimeImmutable $date;
 
     /**
+     * @var string|null
+     * This is provided to ensure uniqueness when periodClass is NULL, on days the class is not normally timetabled.
+     * It should not be set manually.
+     * @ORM\Column(nullable=false,name="unique_key",length=191)
+     */
+    private ?string $uniqueKey;
+
+    /**
      * @var ArrayCollection|null
      */
     private ?ArrayCollection $recorderLogs;
@@ -85,7 +97,7 @@ class AttendanceCourseClass extends AbstractEntity
     public function __construct(?CourseClass $courseClass, ?DateTimeImmutable $date, ?TimetablePeriodClass $period)
     {
         $this->setCourseClass($courseClass)
-            ->setPeriod($period)
+            ->setPeriodClass($period)
             ->setDate($date);
     }
 
@@ -177,6 +189,30 @@ class AttendanceCourseClass extends AbstractEntity
     public function setDate(?DateTimeImmutable $date): AttendanceCourseClass
     {
         $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * UniqueKey
+     *
+     * @return string|null
+     */
+    public function getUniqueKey(): ?string
+    {
+        return isset($this->uniqueKey) ? $this->uniqueKey : null;
+    }
+
+    /**
+     * setUniqueKey
+     *
+     * 13/11/2020 08:41
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @return AttendanceCourseClass
+     */
+    public function setUniqueKey(): AttendanceCourseClass
+    {
+        $this->uniqueKey = ($this->getCourseClass() ? $this->getCourseClass()->getId() : '') . ($this->getDate() ? $this->getDate()->format('Y-m-d') : '') . ($this->getPeriodClass() ? $this->getPeriodClass()->getId() : '');
         return $this;
     }
 

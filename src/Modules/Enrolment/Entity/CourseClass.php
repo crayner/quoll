@@ -474,4 +474,15 @@ class CourseClass extends AbstractEntity
         }
         return $result;
     }
+
+    /**
+     * getStudentCount
+     *
+     * 13/11/2020 09:19
+     * @return int
+     */
+    public function getStudentCount(): int
+    {
+        return $this->getStudents()->count();
+    }
 }
