@@ -29,7 +29,6 @@ use Twig\TwigFunction;
  */
 class SettingExtension extends AbstractExtension
 {
-
     /**
      * getFunctions
      * @return array|TwigFunction[]
